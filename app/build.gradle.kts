@@ -58,23 +58,32 @@ afterEvaluate {
 }
 
 dependencies {
+    // Kotlin
     implementation(kotlin("stdlib-jdk8"))
+    implementation(Dependencies.Kotlin.coroutinesCore)
+    implementation(Dependencies.Kotlin.coroutinesAndroid)
+
+    // Core
     implementation(Dependencies.Core.appCompat)
     implementation(Dependencies.Core.coreKtx)
-    implementation(Dependencies.Core.webkit)
+
+    // UI
+    implementation(Dependencies.UI.webkitX)
+    implementation(Dependencies.UI.coil)
+
+    // Health
+    implementation(Dependencies.Health.timber)
+    debugImplementation(Dependencies.Health.leakCanary)
 
     // Testing
-    testImplementation(Dependencies.Testing.junit5)
-    testRuntimeOnly(Dependencies.Testing.junit5Engine)
-    testImplementation(Dependencies.Testing.kotestAssertions)
-    testImplementation(Dependencies.Testing.kotestProperty)
-    testImplementation(Dependencies.Testing.kotestRunner)
-    testImplementation(Dependencies.Testing.mockk)
-    androidTestImplementation(Dependencies.Testing.androidXRunner)
-    androidTestImplementation(Dependencies.Testing.androidXEspresso)
-
-    // LeakCanary
-    debugImplementation(Dependencies.Testing.leakCanary)
+    testImplementation(Dependencies.Health.junit5)
+    testRuntimeOnly(Dependencies.Health.junit5Engine)
+    testImplementation(Dependencies.Health.kotestAssertions)
+    testImplementation(Dependencies.Health.kotestProperty)
+    testImplementation(Dependencies.Health.kotestRunner)
+    testImplementation(Dependencies.Health.mockk)
+    androidTestImplementation(Dependencies.Health.androidXRunner)
+    androidTestImplementation(Dependencies.Health.androidXEspresso)
 }
 
 tasks.withType<DependencyUpdatesTask> {
