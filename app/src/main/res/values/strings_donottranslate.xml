@@ -1,0 +1,5 @@
+<resources>
+    <string name="pref_ignore_battery_optimizations" translatable="false">pref_ignore_battery_optimizations</string>
+    <string name="pref_download_method_dialog_shown" translatable="false">pref_download_method_dialog_shown</string>
+    <string name="pref_download_method" translatable="false">pref_download_method</string>
+</resources>

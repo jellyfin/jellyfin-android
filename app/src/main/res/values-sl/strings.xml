@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloading">Prenašanje</string>
+    <string name="mobile_data_and_roaming">Mobilni podatki in gostovanje</string>
+    <string name="mobile_data">Mobilni podatki</string>
+    <string name="wifi_only">Samo WiFi</string>
+    <string name="network_message">Ali želite omogočiti prenos prek mobilnih podatkov ali v gostovanju\?</string>
+    <string name="network_title">Dovoljene vrste omrežja</string>
+    <string name="battery_optimizations_message">Prosimo onemogočite optimizacijo akumulatorja za predvajanje predstavnosti pri izklopljenem zaslonu.</string>
+    <string name="battery_optimizations_title">Onemogoči optimizacijo akumulatorja</string>
+</resources>

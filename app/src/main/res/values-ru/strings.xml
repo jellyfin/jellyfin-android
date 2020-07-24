@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="battery_optimizations_message">Пожалуйста выключите оптимизацию энергопотребления от батареи для проигрывателя при выключенном экране.</string>
+    <string name="downloading">Скачивание</string>
+    <string name="mobile_data_and_roaming">Мобильный интернет и роуминг</string>
+    <string name="mobile_data">Мобильный интернет</string>
+    <string name="wifi_only">Только WiFi</string>
+    <string name="network_message">Вы разрешаете осуществлять скачивание при использовании мобильным интернетом или в роуминге\?</string>
+    <string name="network_title">Доступные типы сетей</string>
+    <string name="battery_optimizations_title">Выключить оптимизацию энергопотребления при работе от батареи</string>
+</resources>

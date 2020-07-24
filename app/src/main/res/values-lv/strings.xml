@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloading">Lejupielādē</string>
+    <string name="mobile_data_and_roaming">Mobilie dati un viesabonēšana</string>
+    <string name="mobile_data">Mobilie Dati</string>
+    <string name="wifi_only">Tikai WiFi</string>
+    <string name="network_message">Vai tu vēlies atļaut lejupielādēt izmantojot mobilos vai viesabonēšanas tīklus\?</string>
+    <string name="network_title">Atļautie Tīkla Veidi</string>
+    <string name="battery_optimizations_message">Lūdzu atspējo baterijas optimizāciju lai atskaņotu saturu kamēr ekrāns ir izslēgts.</string>
+    <string name="battery_optimizations_title">Atspējo Baterijas Optimizāciju</string>
+</resources>

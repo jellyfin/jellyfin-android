@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wifi_only">Vain WiFi</string>
+    <string name="network_message">Haluatko sallia latauksen mobiilidatalla tai roaming-verkoissa\?</string>
+    <string name="network_title">Sallitut verkkotyypit</string>
+    <string name="battery_optimizations_message">Ole hyvä ja poista akun käytön optimointi käytöstä median toistolle, kun näyttö on suljettuna.</string>
+    <string name="battery_optimizations_title">Poista akun käytön optimointi käytöstä</string>
+    <string name="downloading">Lataus</string>
+    <string name="mobile_data_and_roaming">Mobiilidata &amp; Roaming</string>
+    <string name="mobile_data">Mobiilidata</string>
+</resources>

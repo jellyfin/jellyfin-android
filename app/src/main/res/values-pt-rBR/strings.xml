@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloading">Baixando</string>
+    <string name="mobile_data_and_roaming">Dados Móveis &amp; Roaming</string>
+    <string name="mobile_data">Dados Móveis</string>
+    <string name="wifi_only">Apenas WiFi</string>
+    <string name="network_message">Gostaria de habilitar o download através de dados móveis ou roaming\?</string>
+    <string name="network_title">Tipos de Rede Permitidos</string>
+    <string name="battery_optimizations_message">Por favor desative otimizações da bateria para possibilitar a reprodução de mídia com a tela desligada.</string>
+    <string name="battery_optimizations_title">Desativar Otimizações da Bateria</string>
+</resources>

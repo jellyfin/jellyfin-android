@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloading">Stahování</string>
+    <string name="mobile_data_and_roaming">Mobilní data a roaming</string>
+    <string name="mobile_data">Mobilní data</string>
+    <string name="wifi_only">Pouze wifi</string>
+    <string name="network_message">Chcete povolit stahování přes mobilní data či roaming\?</string>
+    <string name="network_title">Povolené typy sítě</string>
+    <string name="battery_optimizations_message">Systémovou správu baterie pro tuto aplikaci je nutné vypnout, pokud chcete přehrávat s vypnutou obrazovkou.</string>
+    <string name="battery_optimizations_title">Vypnout systémovou správu baterie</string>
+</resources>

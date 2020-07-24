@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloading">Se descarcă</string>
+    <string name="mobile_data_and_roaming">Date Mobile &amp; Roaming</string>
+    <string name="mobile_data">Date mobile</string>
+    <string name="wifi_only">Doar WiFi</string>
+    <string name="network_message">Doriți să permiteți descărcarea să ruleze pe date mobile sau rețele de roaming\?</string>
+    <string name="network_title">Tipuri de rețea permise</string>
+    <string name="battery_optimizations_message">Vă rugăm să dezactivați optimizările bateriei pentru redarea media cu ecranul stins.</string>
+    <string name="battery_optimizations_title">Dezactivați optimizările bateriei</string>
+</resources>

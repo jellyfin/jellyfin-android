@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloading">Descargando</string>
+    <string name="mobile_data_and_roaming">Datos móviles e itinerancia</string>
+    <string name="mobile_data">Datos móviles</string>
+    <string name="wifi_only">Sólo Wi-Fi</string>
+    <string name="network_message">¿Desea permitir que la descarga se ejecute a través de datos móviles o redes de itinerancia\?</string>
+    <string name="network_title">Tipos de red permitidos</string>
+    <string name="battery_optimizations_message">Deshabilite las optimizaciones de batería para la reproducción de medios mientras la pantalla está apagada.</string>
+    <string name="battery_optimizations_title">Deshabilitar optimizaciones de batería</string>
+</resources>

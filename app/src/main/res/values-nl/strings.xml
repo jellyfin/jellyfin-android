@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="network_message">Wil je downloads toestaan over mobiele data of tijdens roaming\?</string>
+    <string name="network_title">Toegestane netwerk types</string>
+    <string name="downloading">Downloaden</string>
+    <string name="mobile_data_and_roaming">Mobiele data &amp; roaming</string>
+    <string name="mobile_data">Mobiele data</string>
+    <string name="wifi_only">Alleen op WiFi</string>
+    <string name="battery_optimizations_message">Zet batterijoptimalisatie uit om media te spelen wanneer het scherm uit is.</string>
+    <string name="battery_optimizations_title">Batterijoptimalisaties uitschakelen</string>
+</resources>

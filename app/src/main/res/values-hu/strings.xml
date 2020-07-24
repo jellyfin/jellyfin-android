@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="downloading">Letöltés</string>
+    <string name="mobile_data_and_roaming">Mobil adat és Roaming</string>
+    <string name="mobile_data">Mobil adat</string>
+    <string name="wifi_only">Csak WiFi</string>
+    <string name="network_message">Engedélyezed a letöltést mobil adatforgalom és roaming esetén\?</string>
+    <string name="network_title">Engedélyezett hálózat típusok</string>
+    <string name="battery_optimizations_message">Ahhoz, hogy a lejátszás kikapcsolt képernyő mellett is működhessen, kapcsold ki az akkumulátor optimalizálást.</string>
+    <string name="battery_optimizations_title">Akkumulátor optimalizálás letiltása</string>
+</resources>

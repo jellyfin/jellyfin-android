@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="network_title">Позволен мрежови тип</string>
+    <string name="battery_optimizations_message">Моля изключете оптимизациите на батерията при възпроизвеждане на медия, когато екрана е изключен.</string>
+    <string name="battery_optimizations_title">Изключване оптимизациите на батерията</string>
+    <string name="network_message">Желаете ли да позволите изтеглянето да стартира през мобилните данни или мрежа в Роуминг\?</string>
+    <string name="downloading">Изтегляне</string>
+    <string name="mobile_data_and_roaming">Мобилни Данни и Роуминг</string>
+    <string name="mobile_data">Мобилни Данни</string>
+    <string name="wifi_only">Само през Безжична Мрежа</string>
+</resources>
