@@ -51,7 +51,30 @@ afterEvaluate {
             dependsOn(assembleWebapp)
 
             from(assembleWebapp.outputs)
-            into(mergeTask.outputDir.get().dir("www"))
+            val outputDir = mergeTask.outputDir.get().dir("www")
+            into(outputDir)
+
+            doLast {
+                val indexFile = outputDir.file("index.html").asFile
+                val reader = indexFile.bufferedReader()
+                val writer = outputDir.file("index_app.html").asFile.bufferedWriter()
+                var line: String?
+                do {
+                    line = reader.readLine()?.let {
+                        if (it == "</body>") {
+                            outputDir.dir("native").asFile.list()?.forEach { script ->
+                                writer.write("<script src=\"native/$script\" defer></script>")
+                                writer.newLine()
+                            }
+                        }
+                        writer.write(it)
+                        writer.newLine()
+                        it
+                    }
+                } while (line != null)
+                reader.close()
+                writer.close()
+            }
         }
         mergeTask.finalizedBy(copyTask)
     }
