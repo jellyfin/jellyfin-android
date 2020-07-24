@@ -1,3 +1,4 @@
+import com.android.build.gradle.tasks.MergeSourceSetFolders
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.github.benmanes.gradle.versions.updates.gradle.GradleReleaseChannel
 
@@ -36,6 +37,23 @@ android {
     }
     lintOptions {
         isAbortOnError = false
+    }
+}
+
+afterEvaluate {
+    android.applicationVariants.forEach { appVariant ->
+        val variantName = appVariant.name.run { substring(0, 1).toUpperCase() + substring(1) }
+        val mergeTask = tasks.getByName<MergeSourceSetFolders>("merge${variantName}Assets")
+        val copyTask = tasks.register<Copy>("copy${variantName}Webapp") {
+            dependsOn(mergeTask)
+
+            val assembleWebapp by project(":webapp").tasks.getting(DefaultTask::class)
+            dependsOn(assembleWebapp)
+
+            from(assembleWebapp.outputs)
+            into(mergeTask.outputDir.get().dir("www"))
+        }
+        mergeTask.finalizedBy(copyTask)
     }
 }
 

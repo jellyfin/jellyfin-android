@@ -1,4 +1,4 @@
-include(":app")
+include(":app", ":webapp")
 
 rootProject.name = "Jellyfin"
 

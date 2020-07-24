@@ -4,6 +4,7 @@ object Dependencies {
     object Versions {
         // Gradle plugins
         const val dependencyUpdates = "0.29.0"
+        const val nodeGradle = "2.2.4"
 
         // Core
         const val appCompat = "1.1.0"
