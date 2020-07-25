@@ -204,8 +204,8 @@ class RemotePlayerService : Service(), CoroutineScope {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val action = when {
-                isPaused -> generateAction(android.R.drawable.ic_media_play, "Play", Constants.ACTION_PLAY)
-                else -> generateAction(android.R.drawable.ic_media_pause, "Pause", Constants.ACTION_PAUSE)
+                isPaused -> generateAction(R.drawable.ic_play_black_42dp, "Play", Constants.ACTION_PLAY)
+                else -> generateAction(R.drawable.ic_pause_black_42dp, "Pause", Constants.ACTION_PAUSE)
             }
             val style = MediaStyle()
                 .setMediaSession(mediaSession!!.sessionToken)
@@ -257,11 +257,11 @@ class RemotePlayerService : Service(), CoroutineScope {
             }
 
             // setup actions
-            builder.addAction(generateAction(android.R.drawable.ic_media_previous, "Previous", Constants.ACTION_PREVIOUS))
-            builder.addAction(generateAction(android.R.drawable.ic_media_rew, "Rewind", Constants.ACTION_REWIND))
+            builder.addAction(generateAction(R.drawable.ic_skip_previous_black_32dp, "Previous", Constants.ACTION_PREVIOUS))
+            builder.addAction(generateAction(R.drawable.ic_fast_rewind_black_32dp, "Rewind", Constants.ACTION_REWIND))
             builder.addAction(action)
-            builder.addAction(generateAction(android.R.drawable.ic_media_ff, "Fast Forward", Constants.ACTION_FAST_FORWARD))
-            builder.addAction(generateAction(android.R.drawable.ic_media_next, "Next", Constants.ACTION_NEXT))
+            builder.addAction(generateAction(R.drawable.ic_fast_forward_black_32dp, "Fast Forward", Constants.ACTION_FAST_FORWARD))
+            builder.addAction(generateAction(R.drawable.ic_skip_next_black_32dp, "Next", Constants.ACTION_NEXT))
             try {
                 val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 nm.notify(notifyId, builder.build())
