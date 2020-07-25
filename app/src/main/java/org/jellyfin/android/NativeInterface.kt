@@ -11,7 +11,9 @@ import android.provider.Settings.Secure
 import android.view.View
 import android.view.WindowManager
 import android.webkit.JavascriptInterface
+import org.jellyfin.android.cast.CallbackContext
 import org.jellyfin.android.utils.Constants
+import org.json.JSONArray
 import org.json.JSONObject
 import timber.log.Timber
 
@@ -160,5 +162,16 @@ class NativeInterface(private val activity: WebappActivity) {
         }
         val downloadManager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         downloadManager.enqueue(request)
+    }
+
+    @JavascriptInterface
+    fun execCast(action: String, args: String) {
+        activity.chromecast.execute(action, JSONArray(args), object : CallbackContext {
+            override fun callback(keep: Boolean, err: String?, result: String?) {
+                activity.runOnUiThread {
+                    activity.loadUrl("""javascript:window.NativeShell.castCallback("$action", $keep, $err, $result);""")
+                }
+            }
+        })
     }
 }

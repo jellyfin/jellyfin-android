@@ -63,7 +63,7 @@ afterEvaluate {
                     line = reader.readLine()?.let {
                         if (it == "</body>") {
                             outputDir.dir("native").asFile.list()?.forEach { script ->
-                                writer.write("<script src=\"native/$script\" defer></script>")
+                                writer.write("""<script type="text/javascript" charset="utf-8" src="native/$script" defer></script>""")
                                 writer.newLine()
                             }
                         }
@@ -93,6 +93,11 @@ dependencies {
     // UI
     implementation(Dependencies.UI.webkitX)
     implementation(Dependencies.UI.coil)
+
+    // Cast
+    implementation(Dependencies.Cast.mediaRouter)
+    implementation(Dependencies.Cast.playServicesCast)
+    implementation(Dependencies.Cast.playServicesCastFramework)
 
     // Health
     implementation(Dependencies.Health.timber)

@@ -14,11 +14,13 @@ import android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
+import org.jellyfin.android.cast.Chromecast
 import org.jellyfin.android.utils.lazyView
 
 class WebappActivity : AppCompatActivity(), WebViewController {
 
     val appPreferences: AppPreferences by lazy { AppPreferences(this) }
+    val chromecast = Chromecast()
 
     private var serviceBinder: RemotePlayerService.ServiceBinder? = null
     private val serviceConnection = object : ServiceConnection {
@@ -54,6 +56,8 @@ class WebappActivity : AppCompatActivity(), WebViewController {
         webView.loadUrl("file:///android_asset/www/index_app.html")
 
         requestNoBatteryOptimizations()
+
+        chromecast.initializePlugin(this)
     }
 
     private fun requestNoBatteryOptimizations() {
