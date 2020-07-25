@@ -120,7 +120,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         return super.onUnbind(intent)
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (mediaSessionManager == null) {
             initMediaSessions()
         }
