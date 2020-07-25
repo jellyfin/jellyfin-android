@@ -1,7 +1,6 @@
 package org.jellyfin.android
 
 import android.app.*
-import android.app.Notification.MediaStyle
 import android.bluetooth.BluetoothA2dp
 import android.bluetooth.BluetoothHeadset
 import android.content.BroadcastReceiver
@@ -13,7 +12,6 @@ import android.media.MediaMetadata
 import android.media.Rating
 import android.media.session.MediaController
 import android.media.session.MediaSession
-import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
 import android.os.Binder
 import android.os.Build
@@ -28,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.jellyfin.android.utils.Constants
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 class RemotePlayerService : Service(), CoroutineScope {
@@ -38,11 +37,10 @@ class RemotePlayerService : Service(), CoroutineScope {
 
     private lateinit var wakeLock: PowerManager.WakeLock
 
-    private var mediaController: MediaController? = null
-    private var mediaSessionManager: MediaSessionManager? = null
     private var mediaSession: MediaSession? = null
+    private var mediaController: MediaController? = null
     private var largeItemIcon: Bitmap? = null
-    private var mediaSessionId: String? = null
+    private var currentItemId: String? = null
     private val notifyId = 84
 
     private val binder = ServiceBinder()
@@ -83,31 +81,31 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     override fun onCreate() {
+        super.onCreate()
         job = Job()
 
-        // create wakelock for the music service
+        // Create wakelock for the service
         val powerManager: PowerManager = getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "jellyfin:WakeLock")
+        wakeLock.setReferenceCounted(false)
 
-        // add intent filter to watch for headphone state
+        // Add intent filter to watch for headphone state
         val filter = IntentFilter().apply {
             addAction(Intent.ACTION_HEADSET_PLUG)
 
-            // bluetooth related filters - needs BLUETOOTH permission
+            // Bluetooth related filters - needs BLUETOOTH permission
             addAction(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED)
             addAction(BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED)
         }
         registerReceiver(receiver, filter)
 
-        // create notification channel
+        // Create notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            val name = "Jellyfin"
-            val description = "Media notifications"
-            val importance = NotificationManager.IMPORTANCE_LOW
-            val notificationChannel = NotificationChannel(CHANNEL_ID, name, importance)
-            notificationChannel.description = description
-            notificationManager.createNotificationChannel(notificationChannel)
+            val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationChannel = NotificationChannel(CHANNEL_ID, "Jellyfin", NotificationManager.IMPORTANCE_LOW).apply {
+                description = "Media notifications"
+            }
+            nm.createNotificationChannel(notificationChannel)
         }
     }
 
@@ -121,8 +119,8 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (mediaSessionManager == null) {
-            initMediaSessions()
+        if (mediaSession == null) {
+            initMediaSession()
         }
         handleIntent(intent)
         return super.onStartCommand(intent, flags, startId)
@@ -169,7 +167,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         }
         val itemId = handledIntent.getStringExtra("itemId")
         val imageUrl = handledIntent.getStringExtra("imageUrl")
-        if (largeItemIcon != null && mediaSessionId == itemId) {
+        if (largeItemIcon != null && currentItemId == itemId) {
             notifyWithBitmap(handledIntent, largeItemIcon)
             return
         }
@@ -178,7 +176,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                 val request = GetRequest.Builder(this@RemotePlayerService).data(imageUrl).build()
                 val bitmap = Coil.imageLoader(this@RemotePlayerService).execute(request).drawable?.toBitmap()
                 largeItemIcon = bitmap
-                notifyWithBitmap(handledIntent, bitmap);
+                notifyWithBitmap(handledIntent, bitmap)
             }
         } else {
             notifyWithBitmap(handledIntent, null)
@@ -192,83 +190,104 @@ class RemotePlayerService : Service(), CoroutineScope {
         val itemId = handledIntent.getStringExtra("itemId")
         val isPaused = handledIntent.getBooleanExtra("isPaused", false)
         val canSeek = handledIntent.getBooleanExtra("canSeek", false)
-        val isLocalPlayer = handledIntent.getBooleanExtra("isLocalPlayer", false)
-        val position = handledIntent.getIntExtra("position", 0)
-        val duration = handledIntent.getIntExtra("duration", 0)
+        //val isLocalPlayer = handledIntent.getBooleanExtra("isLocalPlayer", false)
+        val position = handledIntent.getLongExtra("position", PlaybackState.PLAYBACK_POSITION_UNKNOWN)
+        val duration = handledIntent.getLongExtra("duration", 0)
 
         // system will recognize notification as media playback
         // show cover art and controls on lock screen
-        if (mediaSessionId == null || mediaSessionId != itemId) {
-            setMediaSessionMetadata(mediaSession, itemId, artist, album, title, duration, largeIcon)
-            mediaSessionId = itemId
+        if (currentItemId == null || currentItemId != itemId) {
+            val metadata = MediaMetadata.Builder().apply {
+                putString(MediaMetadata.METADATA_KEY_MEDIA_ID, itemId)
+                putString(MediaMetadata.METADATA_KEY_ARTIST, artist)
+                putString(MediaMetadata.METADATA_KEY_ALBUM, album)
+                putString(MediaMetadata.METADATA_KEY_TITLE, title)
+                putLong(MediaMetadata.METADATA_KEY_DURATION, duration)
+                if (largeIcon != null) putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, largeIcon)
+            }.build()
+            mediaSession!!.setMetadata(metadata)
+            currentItemId = itemId
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val action = when {
+
+        val state = PlaybackState.Builder().apply {
+            setState(if (isPaused) PlaybackState.STATE_PAUSED else PlaybackState.STATE_PLAYING, position, 1.0f)
+            val playbackActions = PlaybackState.ACTION_PLAY_PAUSE or
+                    PlaybackState.ACTION_PLAY or
+                    PlaybackState.ACTION_PAUSE or
+                    PlaybackState.ACTION_STOP or
+                    PlaybackState.ACTION_SKIP_TO_NEXT or
+                    PlaybackState.ACTION_SKIP_TO_PREVIOUS or
+                    PlaybackState.ACTION_SET_RATING
+            setActions(if (canSeek) playbackActions or PlaybackState.ACTION_SEEK_TO else playbackActions)
+            //setActiveQueueItemId(MediaSession.QueueItem.UNKNOWN_ID.toLong())
+        }.build()
+        mediaSession!!.setPlaybackState(state)
+
+        val supportsNativeSeek = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+
+        val compactActions = if (supportsNativeSeek) intArrayOf(0, 1, 2) else intArrayOf(0, 2, 4)
+        val style = Notification.MediaStyle().apply {
+            setMediaSession(mediaSession!!.sessionToken)
+            setShowActionsInCompactView(*compactActions)
+        }
+
+        @Suppress("DEPRECATION")
+        val notification = Notification.Builder(this).apply {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                setChannelId(CHANNEL_ID) // Set Notification Channel on Android O and above
+                setColorized(true) // Color notification based on cover art
+            } else {
+                setPriority(Notification.PRIORITY_LOW)
+            }
+            setContentTitle(title)
+            setContentText(artist)
+            setSubText(album)
+            if (position != PlaybackState.PLAYBACK_POSITION_UNKNOWN) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                    // Show current position in "when" field pre-N
+                    setShowWhen(!isPaused)
+                    setUsesChronometer(!isPaused)
+                    setWhen(System.currentTimeMillis() - position)
+                }
+            }
+            setStyle(style)
+            setVisibility(Notification.VISIBILITY_PUBLIC) // Privacy value for lock screen
+            setOngoing(!isPaused) // Swipe to dismiss if paused
+            setDeleteIntent(createDeleteIntent())
+            setContentIntent(createContentIntent())
+
+            // Set icons
+            if (largeIcon != null) {
+                setLargeIcon(largeIcon)
+            }
+            setSmallIcon(R.drawable.ic_notification)
+
+            // Setup actions
+            addAction(generateAction(R.drawable.ic_skip_previous_black_32dp, "Previous", Constants.ACTION_PREVIOUS))
+            if (!supportsNativeSeek) {
+                addAction(generateAction(R.drawable.ic_fast_rewind_black_32dp, "Rewind", Constants.ACTION_REWIND))
+            }
+            val playbackAction = when {
                 isPaused -> generateAction(R.drawable.ic_play_black_42dp, "Play", Constants.ACTION_PLAY)
                 else -> generateAction(R.drawable.ic_pause_black_42dp, "Pause", Constants.ACTION_PAUSE)
             }
-            val style = MediaStyle()
-                .setMediaSession(mediaSession!!.sessionToken)
-                .setShowActionsInCompactView(0, 2, 4)
-
-            val state = PlaybackState.Builder().apply {
-                setActiveQueueItemId(MediaSession.QueueItem.UNKNOWN_ID.toLong())
-                setActions(PlaybackState.ACTION_PLAY_PAUSE or PlaybackState.ACTION_STOP or PlaybackState.ACTION_SKIP_TO_NEXT or PlaybackState.ACTION_SKIP_TO_PREVIOUS or PlaybackState.ACTION_SEEK_TO or PlaybackState.ACTION_SET_RATING or PlaybackState.ACTION_PLAY or PlaybackState.ACTION_PAUSE)
-                setState(if (isPaused) PlaybackState.STATE_PAUSED else PlaybackState.STATE_PLAYING, position.toLong(), 1.0f)
-            }.build()
-
-            mediaSession!!.setPlaybackState(state)
-
-            val builder = Notification.Builder(this)
-                .setContentTitle(title)
-                .setContentText(artist)
-                .setSubText(album)
-                .setPriority(Notification.PRIORITY_LOW)
-                .setDeleteIntent(createDeleteIntent())
-                .setContentIntent(createContentIntent())
-                .setProgress(duration, position, duration == 0)
-                .setStyle(style)
-
-            // newer versions of android require notification channel to display
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                builder.setChannelId(CHANNEL_ID)
-                // color notification based on cover art
-                builder.setColorized(true)
+            addAction(playbackAction)
+            if (!supportsNativeSeek) {
+                addAction(generateAction(R.drawable.ic_fast_forward_black_32dp, "Fast Forward", Constants.ACTION_FAST_FORWARD))
             }
+            addAction(generateAction(R.drawable.ic_skip_next_black_32dp, "Next", Constants.ACTION_NEXT))
+        }.build()
 
-            // swipe to dismiss if paused
-            builder.setOngoing(!isPaused)
-
-            // show current position in "when" field pre-O
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                builder.setShowWhen(!isPaused)
-                builder.setUsesChronometer(!isPaused)
-                builder.setWhen(System.currentTimeMillis() - position)
-            }
-
-            // privacy value for lock screen
-            builder.setVisibility(Notification.VISIBILITY_PUBLIC)
-
-            if (largeIcon != null) {
-                builder.setLargeIcon(largeIcon)
-                builder.setSmallIcon(R.drawable.ic_notification)
-            } else {
-                builder.setSmallIcon(R.drawable.ic_notification)
-            }
-
-            // setup actions
-            builder.addAction(generateAction(R.drawable.ic_skip_previous_black_32dp, "Previous", Constants.ACTION_PREVIOUS))
-            builder.addAction(generateAction(R.drawable.ic_fast_rewind_black_32dp, "Rewind", Constants.ACTION_REWIND))
-            builder.addAction(action)
-            builder.addAction(generateAction(R.drawable.ic_fast_forward_black_32dp, "Fast Forward", Constants.ACTION_FAST_FORWARD))
-            builder.addAction(generateAction(R.drawable.ic_skip_next_black_32dp, "Next", Constants.ACTION_NEXT))
-            try {
-                val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                nm.notify(notifyId, builder.build())
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+        // Post notification
+        try {
+            val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            nm.notify(notifyId, notification)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to post notification")
         }
+
+        // Activate MediaSession
+        mediaSession!!.isActive = true
     }
 
     private fun createDeleteIntent(): PendingIntent {
@@ -291,14 +310,14 @@ class RemotePlayerService : Service(), CoroutineScope {
             action = intentAction
         }
         val pendingIntent = PendingIntent.getService(applicationContext, notifyId, intent, 0)
-        return Notification.Action(icon, title, pendingIntent)
+        @Suppress("DEPRECATION")
+        return Notification.Action.Builder(icon, title, pendingIntent).build()
     }
 
-    private fun initMediaSessions() {
-        mediaSessionManager = getSystemService(Context.MEDIA_SESSION_SERVICE) as MediaSessionManager
+    private fun initMediaSession() {
         mediaSession = MediaSession(applicationContext, javaClass.toString()).apply {
             mediaController = MediaController(applicationContext, sessionToken)
-            isActive = true
+            @Suppress("DEPRECATION")
             setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS or MediaSession.FLAG_HANDLES_MEDIA_BUTTONS)
             setCallback(object : MediaSession.Callback() {
                 override fun onPlay() {
@@ -339,29 +358,6 @@ class RemotePlayerService : Service(), CoroutineScope {
         }
     }
 
-    private fun setMediaSessionMetadata(
-        mediaSession: MediaSession?,
-        itemId: String?,
-        artist: String?,
-        album: String?,
-        title: String?,
-        duration: Int,
-        largeIcon: Bitmap?
-    ) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val metadataBuilder = MediaMetadata.Builder()
-                .putString(MediaMetadata.METADATA_KEY_ARTIST, artist)
-                .putString(MediaMetadata.METADATA_KEY_ALBUM, album)
-                .putString(MediaMetadata.METADATA_KEY_TITLE, title)
-                .putLong(MediaMetadata.METADATA_KEY_DURATION, duration.toLong())
-                .putString(MediaMetadata.METADATA_KEY_MEDIA_ID, itemId)
-            if (largeIcon != null) {
-                metadataBuilder.putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, largeIcon)
-            }
-            mediaSession!!.setMetadata(metadataBuilder.build())
-        }
-    }
-
     private fun sendCommand(action: String) {
         webViewController?.loadUrl("javascript:require(['inputManager'], function(inputManager){inputManager.trigger('$action');});")
     }
@@ -373,7 +369,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     private fun onStopped() {
         val nm = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         nm.cancel(notifyId)
-        mediaSession!!.release()
+        mediaSession!!.isActive = false
         headphoneFlag = false
         stopWakelock()
         stopSelf()
@@ -382,6 +378,8 @@ class RemotePlayerService : Service(), CoroutineScope {
     override fun onDestroy() {
         unregisterReceiver(receiver)
         job.cancel()
+        mediaSession!!.release()
+        mediaSession = null
         super.onDestroy()
     }
 
