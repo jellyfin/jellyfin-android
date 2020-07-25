@@ -276,6 +276,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                 addAction(generateAction(R.drawable.ic_fast_forward_black_32dp, "Fast Forward", Constants.ACTION_FAST_FORWARD))
             }
             addAction(generateAction(R.drawable.ic_skip_next_black_32dp, "Next", Constants.ACTION_NEXT))
+            addAction(generateAction(R.drawable.ic_stop_black_32dp, "Stop", Constants.ACTION_STOP))
         }.build()
 
         // Post notification
