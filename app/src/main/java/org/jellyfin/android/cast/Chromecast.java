@@ -6,6 +6,7 @@ import androidx.mediarouter.media.MediaRouter.RouteInfo;
 
 import com.google.android.gms.cast.CastDevice;
 
+import org.jellyfin.android.bridge.JavascriptCallback;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,11 +40,11 @@ public final class Chromecast {
     /**
      * Holds the reference to the current client initiated scan callback.
      */
-    private CallbackContext scanCallback;
+    private JavascriptCallback scanCallback;
     /**
      * Client's event listener callback.
      */
-    private CallbackContext eventCallback;
+    private JavascriptCallback eventCallback;
     /**
      * In the case that chromecast can't be used.
      **/
@@ -98,7 +99,7 @@ public final class Chromecast {
         }
     }
 
-    public boolean execute(String action, JSONArray args, CallbackContext cbContext) throws JSONException {
+    public boolean execute(String action, JSONArray args, JavascriptCallback cbContext) throws JSONException {
         if (noChromecastError != null) {
             cbContext.error(ChromecastUtilities.createError("api_not_initialized", noChromecastError));
             return true;
@@ -167,11 +168,11 @@ public final class Chromecast {
      * Do everything you need to for "setup" - calling back sets the isAvailable and lets every function on the
      * javascript side actually do stuff.
      *
-     * @param callbackContext called with .success or .error depending on the result
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean setup(CallbackContext callbackContext) {
-        this.eventCallback = callbackContext;
+    public boolean setup(JavascriptCallback javascriptCallback) {
+        this.eventCallback = javascriptCallback;
         // Ensure any existing scan is stopped
         connection.stopRouteScan(clientScan, () -> {
             if (scanCallback != null) {
@@ -190,11 +191,11 @@ public final class Chromecast {
      * @param appId               The appId we're going to use for ALL session requests
      * @param autoJoinPolicy      tab_and_origin_scoped | origin_scoped | page_scoped
      * @param defaultActionPolicy create_session | cast_this_tab
-     * @param callbackContext     called with .success or .error depending on the result
+     * @param javascriptCallback  called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean initialize(final String appId, String autoJoinPolicy, String defaultActionPolicy, final CallbackContext callbackContext) {
-        connection.initialize(appId, callbackContext);
+    public boolean initialize(final String appId, String autoJoinPolicy, String defaultActionPolicy, final JavascriptCallback javascriptCallback) {
+        connection.initialize(appId, javascriptCallback);
         return true;
     }
 
@@ -204,25 +205,25 @@ public final class Chromecast {
      * or, if we already have a session launch the connection options
      * dialog which will have the option to stop casting at minimum.
      *
-     * @param callbackContext called with .success or .error depending on the result
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean requestSession(final CallbackContext callbackContext) {
+    public boolean requestSession(final JavascriptCallback javascriptCallback) {
         connection.requestSession(new ChromecastConnection.RequestSessionCallback() {
             @Override
             public void onJoin(JSONObject jsonSession) {
-                callbackContext.success(jsonSession);
+                javascriptCallback.success(jsonSession);
             }
 
             @Override
             public void onError(int errorCode) {
                 // TODO maybe handle some of the error codes better
-                callbackContext.errorString("session_error");
+                javascriptCallback.error("session_error");
             }
 
             @Override
             public void onCancel() {
-                callbackContext.errorString("cancel");
+                javascriptCallback.error("cancel");
             }
         });
         return true;
@@ -231,20 +232,20 @@ public final class Chromecast {
     /**
      * Selects a route by its id.
      *
-     * @param routeId         the id of the route to join
-     * @param callbackContext called with .success or .error depending on the result
+     * @param routeId            the id of the route to join
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean selectRoute(final String routeId, final CallbackContext callbackContext) {
+    public boolean selectRoute(final String routeId, final JavascriptCallback javascriptCallback) {
         connection.selectRoute(routeId, new ChromecastConnection.SelectRouteCallback() {
             @Override
             public void onJoin(JSONObject jsonSession) {
-                callbackContext.success(jsonSession);
+                javascriptCallback.success(jsonSession);
             }
 
             @Override
             public void onError(JSONObject message) {
-                callbackContext.error(message);
+                javascriptCallback.error(message);
             }
         });
         return true;
@@ -253,120 +254,120 @@ public final class Chromecast {
     /**
      * Set the volume level on the receiver - this is a Chromecast volume, not a Media volume.
      *
-     * @param newLevel        the level to set the volume to
-     * @param callbackContext called with .success or .error depending on the result
+     * @param newLevel           the level to set the volume to
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean setReceiverVolumeLevel(Integer newLevel, CallbackContext callbackContext) {
-        return this.setReceiverVolumeLevel(newLevel.doubleValue(), callbackContext);
+    public boolean setReceiverVolumeLevel(Integer newLevel, JavascriptCallback javascriptCallback) {
+        return this.setReceiverVolumeLevel(newLevel.doubleValue(), javascriptCallback);
     }
 
     /**
      * Set the volume level on the receiver - this is a Chromecast volume, not a Media volume.
      *
-     * @param newLevel        the level to set the volume to
-     * @param callbackContext called with .success or .error depending on the result
+     * @param newLevel           the level to set the volume to
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean setReceiverVolumeLevel(Double newLevel, CallbackContext callbackContext) {
-        this.media.setVolume(newLevel, callbackContext);
+    public boolean setReceiverVolumeLevel(Double newLevel, JavascriptCallback javascriptCallback) {
+        this.media.setVolume(newLevel, javascriptCallback);
         return true;
     }
 
     /**
      * Sets the muted boolean on the receiver - this is a Chromecast mute, not a Media mute.
      *
-     * @param muted           if true set the media to muted, else, unmute
-     * @param callbackContext called with .success or .error depending on the result
+     * @param muted              if true set the media to muted, else, unmute
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean setReceiverMuted(Boolean muted, CallbackContext callbackContext) {
-        this.media.setMute(muted, callbackContext);
+    public boolean setReceiverMuted(Boolean muted, JavascriptCallback javascriptCallback) {
+        this.media.setMute(muted, javascriptCallback);
         return true;
     }
 
     /**
      * Send a custom message to the receiver - we don't need this just yet... it was just simple to implement on the js side.
      *
-     * @param namespace       namespace
-     * @param message         the message to send
-     * @param callbackContext called with .success or .error depending on the result
+     * @param namespace          namespace
+     * @param message            the message to send
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean sendMessage(String namespace, String message, final CallbackContext callbackContext) {
-        this.media.sendMessage(namespace, message, callbackContext);
+    public boolean sendMessage(String namespace, String message, final JavascriptCallback javascriptCallback) {
+        this.media.sendMessage(namespace, message, javascriptCallback);
         return true;
     }
 
     /**
      * Adds a listener to a specific namespace.
      *
-     * @param namespace       namespace
-     * @param callbackContext called with .success or .error depending on the result
+     * @param namespace          namespace
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean addMessageListener(String namespace, CallbackContext callbackContext) {
+    public boolean addMessageListener(String namespace, JavascriptCallback javascriptCallback) {
         this.media.addMessageListener(namespace);
-        callbackContext.success();
+        javascriptCallback.success();
         return true;
     }
 
     /**
      * Loads some media on the Chromecast using the media APIs.
      *
-     * @param contentId       The URL of the media item
-     * @param customData      CustomData
-     * @param contentType     MIME type of the content
-     * @param duration        Duration of the content
-     * @param streamType      buffered | live | other
-     * @param autoPlay        Whether or not to automatically start playing the media
-     * @param currentTime     Where to begin playing from
-     * @param metadata        Metadata
-     * @param textTrackStyle  The text track style
-     * @param callbackContext called with .success or .error depending on the result
+     * @param contentId          The URL of the media item
+     * @param customData         CustomData
+     * @param contentType        MIME type of the content
+     * @param duration           Duration of the content
+     * @param streamType         buffered | live | other
+     * @param autoPlay           Whether or not to automatically start playing the media
+     * @param currentTime        Where to begin playing from
+     * @param metadata           Metadata
+     * @param textTrackStyle     The text track style
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean loadMedia(String contentId, JSONObject customData, String contentType, Integer duration, String streamType, Boolean autoPlay, Integer currentTime, JSONObject metadata, JSONObject textTrackStyle, final CallbackContext callbackContext) {
-        return this.loadMedia(contentId, customData, contentType, duration, streamType, autoPlay, new Double(currentTime.doubleValue()), metadata, textTrackStyle, callbackContext);
+    public boolean loadMedia(String contentId, JSONObject customData, String contentType, Integer duration, String streamType, Boolean autoPlay, Integer currentTime, JSONObject metadata, JSONObject textTrackStyle, final JavascriptCallback javascriptCallback) {
+        return this.loadMedia(contentId, customData, contentType, duration, streamType, autoPlay, new Double(currentTime.doubleValue()), metadata, textTrackStyle, javascriptCallback);
     }
 
-    private boolean loadMedia(String contentId, JSONObject customData, String contentType, Integer duration, String streamType, Boolean autoPlay, Double currentTime, JSONObject metadata, JSONObject textTrackStyle, final CallbackContext callbackContext) {
-        this.media.loadMedia(contentId, customData, contentType, duration, streamType, autoPlay, currentTime, metadata, textTrackStyle, callbackContext);
+    private boolean loadMedia(String contentId, JSONObject customData, String contentType, Integer duration, String streamType, Boolean autoPlay, Double currentTime, JSONObject metadata, JSONObject textTrackStyle, final JavascriptCallback javascriptCallback) {
+        this.media.loadMedia(contentId, customData, contentType, duration, streamType, autoPlay, currentTime, metadata, textTrackStyle, javascriptCallback);
         return true;
     }
 
     /**
      * Play on the current media in the current session.
      *
-     * @param callbackContext called with .success or .error depending on the result
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean mediaPlay(CallbackContext callbackContext) {
-        media.mediaPlay(callbackContext);
+    public boolean mediaPlay(JavascriptCallback javascriptCallback) {
+        media.mediaPlay(javascriptCallback);
         return true;
     }
 
     /**
      * Pause on the current media in the current session.
      *
-     * @param callbackContext called with .success or .error depending on the result
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean mediaPause(CallbackContext callbackContext) {
-        media.mediaPause(callbackContext);
+    public boolean mediaPause(JavascriptCallback javascriptCallback) {
+        media.mediaPause(javascriptCallback);
         return true;
     }
 
     /**
      * Seeks the current media in the current session.
      *
-     * @param seekTime        - Seconds to seek to
-     * @param resumeState     - Resume state once seeking is complete: PLAYBACK_PAUSE or PLAYBACK_START
-     * @param callbackContext called with .success or .error depending on the result
+     * @param seekTime           - Seconds to seek to
+     * @param resumeState        - Resume state once seeking is complete: PLAYBACK_PAUSE or PLAYBACK_START
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean mediaSeek(Integer seekTime, String resumeState, CallbackContext callbackContext) {
-        media.mediaSeek(seekTime.longValue() * 1000, resumeState, callbackContext);
+    public boolean mediaSeek(Integer seekTime, String resumeState, JavascriptCallback javascriptCallback) {
+        media.mediaSeek(seekTime.longValue() * 1000, resumeState, javascriptCallback);
         return true;
     }
 
@@ -374,48 +375,48 @@ public final class Chromecast {
     /**
      * Set the volume level and mute state on the media.
      *
-     * @param level           the level to set the volume to
-     * @param muted           if true set the media to muted, else, unmute
-     * @param callbackContext called with .success or .error depending on the result
+     * @param level              the level to set the volume to
+     * @param muted              if true set the media to muted, else, unmute
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean setMediaVolume(Integer level, Boolean muted, CallbackContext callbackContext) {
-        return this.setMediaVolume(level.doubleValue(), muted, callbackContext);
+    public boolean setMediaVolume(Integer level, Boolean muted, JavascriptCallback javascriptCallback) {
+        return this.setMediaVolume(level.doubleValue(), muted, javascriptCallback);
     }
 
     /**
      * Set the volume level and mute state on the media.
      *
-     * @param level           the level to set the volume to
-     * @param muted           if true set the media to muted, else, unmute
-     * @param callbackContext called with .success or .error depending on the result
+     * @param level              the level to set the volume to
+     * @param muted              if true set the media to muted, else, unmute
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean setMediaVolume(Double level, Boolean muted, CallbackContext callbackContext) {
-        media.mediaSetVolume(level, muted, callbackContext);
+    public boolean setMediaVolume(Double level, Boolean muted, JavascriptCallback javascriptCallback) {
+        media.mediaSetVolume(level, muted, javascriptCallback);
         return true;
     }
 
     /**
      * Stops the current media.
      *
-     * @param callbackContext called with .success or .error depending on the result
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean mediaStop(CallbackContext callbackContext) {
-        media.mediaStop(callbackContext);
+    public boolean mediaStop(JavascriptCallback javascriptCallback) {
+        media.mediaStop(javascriptCallback);
         return true;
     }
 
     /**
      * Handle Track changes.
      *
-     * @param activeTrackIds  track Ids to set.
-     * @param textTrackStyle  text track style to set.
-     * @param callbackContext called with .success or .error depending on the result
+     * @param activeTrackIds     track Ids to set.
+     * @param textTrackStyle     text track style to set.
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean mediaEditTracksInfo(JSONArray activeTrackIds, JSONObject textTrackStyle, final CallbackContext callbackContext) {
+    public boolean mediaEditTracksInfo(JSONArray activeTrackIds, JSONObject textTrackStyle, final JavascriptCallback javascriptCallback) {
         long[] trackIds = new long[activeTrackIds.length()];
 
         try {
@@ -426,45 +427,45 @@ public final class Chromecast {
             Timber.tag(TAG).e("Wrong format in activeTrackIds");
         }
 
-        this.media.mediaEditTracksInfo(trackIds, textTrackStyle, callbackContext);
+        this.media.mediaEditTracksInfo(trackIds, textTrackStyle, javascriptCallback);
         return true;
     }
 
     /**
      * Loads a queue of media to the Chromecast.
      *
-     * @param queueLoadRequest chrome.cast.media.QueueLoadRequest
-     * @param callbackContext  called with .success or .error depending on the result
+     * @param queueLoadRequest   chrome.cast.media.QueueLoadRequest
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean queueLoad(JSONObject queueLoadRequest, final CallbackContext callbackContext) {
-        this.media.queueLoad(queueLoadRequest, callbackContext);
+    public boolean queueLoad(JSONObject queueLoadRequest, final JavascriptCallback javascriptCallback) {
+        this.media.queueLoad(queueLoadRequest, javascriptCallback);
         return true;
     }
 
     /**
      * Plays the item with itemId in the queue.
      *
-     * @param itemId          The ID of the item to jump to.
-     * @param callbackContext called with .success or .error depending on the result
+     * @param itemId             The ID of the item to jump to.
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean queueJumpToItem(Integer itemId, final CallbackContext callbackContext) {
-        this.media.queueJumpToItem(itemId, callbackContext);
+    public boolean queueJumpToItem(Integer itemId, final JavascriptCallback javascriptCallback) {
+        this.media.queueJumpToItem(itemId, javascriptCallback);
         return true;
     }
 
     /**
      * Plays the item with itemId in the queue.
      *
-     * @param itemId          The ID of the item to jump to.
-     * @param callbackContext called with .success or .error depending on the result
+     * @param itemId             The ID of the item to jump to.
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean queueJumpToItem(Double itemId, final CallbackContext callbackContext) {
+    public boolean queueJumpToItem(Double itemId, final JavascriptCallback javascriptCallback) {
         if (itemId - Double.valueOf(itemId).intValue() == 0) {
             // Only perform the jump if the double is a whole number
-            return queueJumpToItem(Double.valueOf(itemId).intValue(), callbackContext);
+            return queueJumpToItem(Double.valueOf(itemId).intValue(), javascriptCallback);
         } else {
             return true;
         }
@@ -473,22 +474,22 @@ public final class Chromecast {
     /**
      * Stops the session.
      *
-     * @param callbackContext called with .success or .error depending on the result
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean sessionStop(CallbackContext callbackContext) {
-        connection.endSession(true, callbackContext);
+    public boolean sessionStop(JavascriptCallback javascriptCallback) {
+        connection.endSession(true, javascriptCallback);
         return true;
     }
 
     /**
      * Stops the session.
      *
-     * @param callbackContext called with .success or .error depending on the result
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean sessionLeave(CallbackContext callbackContext) {
-        connection.endSession(false, callbackContext);
+    public boolean sessionLeave(JavascriptCallback javascriptCallback) {
+        connection.endSession(false, javascriptCallback);
         return true;
     }
 
@@ -497,20 +498,20 @@ public final class Chromecast {
      * It is super important that client calls "stopRouteScan", otherwise the
      * battery could drain quickly.
      *
-     * @param callbackContext called with .success or .error depending on the result
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean startRouteScan(CallbackContext callbackContext) {
+    public boolean startRouteScan(JavascriptCallback javascriptCallback) {
         if (scanCallback != null) {
             scanCallback.error(ChromecastUtilities.createError("cancel", "Started a new route scan before stopping previous one."));
         }
-        scanCallback = callbackContext;
+        scanCallback = javascriptCallback;
         Runnable startScan = () -> {
             clientScan = new ChromecastConnection.ScanCallback() {
                 @Override
                 void onRouteUpdate(List<RouteInfo> routes) {
                     if (scanCallback != null) {
-                        scanCallback.callback(true, null, ChromecastUtilities.createRoutesArray(routes).toString());
+                        scanCallback.success(true, ChromecastUtilities.createRoutesArray(routes));
                     } else {
                         // Try to get the scan to stop because we already ended the scanCallback
                         connection.stopRouteScan(clientScan, null);
@@ -531,17 +532,17 @@ public final class Chromecast {
     /**
      * Stops the scan started by startRouteScan.
      *
-     * @param callbackContext called with .success or .error depending on the result
+     * @param javascriptCallback called with .success or .error depending on the result
      * @return true for cordova
      */
-    public boolean stopRouteScan(CallbackContext callbackContext) {
+    public boolean stopRouteScan(JavascriptCallback javascriptCallback) {
         // Stop any other existing clientScan
         connection.stopRouteScan(clientScan, () -> {
             if (scanCallback != null) {
                 scanCallback.error(ChromecastUtilities.createError("cancel", "Scan stopped."));
                 scanCallback = null;
             }
-            callbackContext.success();
+            javascriptCallback.success();
         });
         return true;
     }
@@ -556,6 +557,6 @@ public final class Chromecast {
         if (eventCallback == null) {
             return;
         }
-        eventCallback.callback(true, null, new JSONArray().put(eventName).put(args).toString());
+        eventCallback.success(true, new JSONArray().put(eventName).put(args));
     }
 }

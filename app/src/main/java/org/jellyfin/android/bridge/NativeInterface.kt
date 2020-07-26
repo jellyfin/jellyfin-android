@@ -1,4 +1,4 @@
-package org.jellyfin.android
+package org.jellyfin.android.bridge
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -11,7 +11,10 @@ import android.provider.Settings.Secure
 import android.view.View
 import android.view.WindowManager
 import android.webkit.JavascriptInterface
-import org.jellyfin.android.cast.CallbackContext
+import org.jellyfin.android.BuildConfig
+import org.jellyfin.android.R
+import org.jellyfin.android.RemotePlayerService
+import org.jellyfin.android.WebappActivity
 import org.jellyfin.android.utils.Constants
 import org.json.JSONArray
 import org.json.JSONObject
@@ -166,7 +169,7 @@ class NativeInterface(private val activity: WebappActivity) {
 
     @JavascriptInterface
     fun execCast(action: String, args: String) {
-        activity.chromecast.execute(action, JSONArray(args), object : CallbackContext {
+        activity.chromecast.execute(action, JSONArray(args), object : JavascriptCallback() {
             override fun callback(keep: Boolean, err: String?, result: String?) {
                 activity.runOnUiThread {
                     activity.loadUrl("""javascript:window.NativeShell.castCallback("$action", $keep, $err, $result);""")

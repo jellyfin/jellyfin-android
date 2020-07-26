@@ -22,6 +22,7 @@ import com.google.android.gms.cast.framework.SessionManager;
 import com.google.android.gms.cast.framework.SessionManagerListener;
 
 import org.jellyfin.android.R;
+import org.jellyfin.android.bridge.JavascriptCallback;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class ChromecastConnection {
      * @param applicationId the app id to use
      * @param callback      called when initialization is complete
      */
-    public void initialize(String applicationId, CallbackContext callback) {
+    public void initialize(String applicationId, JavascriptCallback callback) {
         activity.runOnUiThread(new Runnable() {
             public void run() {
                 // If the app Id changed
@@ -463,7 +464,7 @@ public class ChromecastConnection {
      * @param stopCasting should the receiver application  be stopped as well?
      * @param callback    called with .success or .error depending on the initial result
      */
-    void endSession(boolean stopCasting, CallbackContext callback) {
+    void endSession(boolean stopCasting, JavascriptCallback callback) {
         activity.runOnUiThread(new Runnable() {
             public void run() {
                 getSessionManager().addSessionManagerListener(new SessionListener() {

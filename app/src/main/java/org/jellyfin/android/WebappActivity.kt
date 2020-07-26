@@ -14,6 +14,7 @@ import android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
+import org.jellyfin.android.bridge.NativeInterface
 import org.jellyfin.android.cast.Chromecast
 import org.jellyfin.android.utils.lazyView
 
