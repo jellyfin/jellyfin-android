@@ -209,19 +209,7 @@ class RemotePlayerService : Service(), CoroutineScope {
             currentItemId = itemId
         }
 
-        val state = PlaybackState.Builder().apply {
-            setState(if (isPaused) PlaybackState.STATE_PAUSED else PlaybackState.STATE_PLAYING, position, 1.0f)
-            val playbackActions = PlaybackState.ACTION_PLAY_PAUSE or
-                    PlaybackState.ACTION_PLAY or
-                    PlaybackState.ACTION_PAUSE or
-                    PlaybackState.ACTION_STOP or
-                    PlaybackState.ACTION_SKIP_TO_NEXT or
-                    PlaybackState.ACTION_SKIP_TO_PREVIOUS or
-                    PlaybackState.ACTION_SET_RATING
-            setActions(if (canSeek) playbackActions or PlaybackState.ACTION_SEEK_TO else playbackActions)
-            //setActiveQueueItemId(MediaSession.QueueItem.UNKNOWN_ID.toLong())
-        }.build()
-        mediaSession!!.setPlaybackState(state)
+        setPlaybackState(!isPaused, position, canSeek)
 
         val supportsNativeSeek = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
@@ -291,6 +279,21 @@ class RemotePlayerService : Service(), CoroutineScope {
         mediaSession!!.isActive = true
     }
 
+    private fun setPlaybackState(isPlaying: Boolean, position: Long, canSeek: Boolean) {
+        val state = PlaybackState.Builder().apply {
+            setState(if (isPlaying) PlaybackState.STATE_PLAYING else PlaybackState.STATE_PAUSED, position, 1.0f)
+            val playbackActions = PlaybackState.ACTION_PLAY_PAUSE or
+                    PlaybackState.ACTION_PLAY or
+                    PlaybackState.ACTION_PAUSE or
+                    PlaybackState.ACTION_STOP or
+                    PlaybackState.ACTION_SKIP_TO_NEXT or
+                    PlaybackState.ACTION_SKIP_TO_PREVIOUS or
+                    PlaybackState.ACTION_SET_RATING
+            setActions(if (canSeek) playbackActions or PlaybackState.ACTION_SEEK_TO else playbackActions)
+        }.build()
+        mediaSession!!.setPlaybackState(state)
+    }
+
     private fun createDeleteIntent(): PendingIntent {
         val intent = Intent(applicationContext, RemotePlayerService::class.java).apply {
             action = Constants.ACTION_STOP
@@ -352,6 +355,10 @@ class RemotePlayerService : Service(), CoroutineScope {
 
                 override fun onSeekTo(pos: Long) {
                     sendSeekCommand(pos)
+                    val currentState = mediaSession!!.controller.playbackState ?: return
+                    val isPlaying = currentState.state == PlaybackState.STATE_PLAYING
+                    val canSeek = (currentState.actions and PlaybackState.ACTION_SEEK_TO) != 0L
+                    setPlaybackState(isPlaying, pos, canSeek)
                 }
 
                 override fun onSetRating(rating: Rating) {}
