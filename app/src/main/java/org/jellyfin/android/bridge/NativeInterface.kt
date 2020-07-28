@@ -66,7 +66,7 @@ class NativeInterface(private val activity: WebappActivity) {
     }
 
     @JavascriptInterface
-    fun openIntent(uri: String): Boolean = try {
+    fun openUrl(uri: String, target: String): Boolean = try {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         activity.startActivity(intent)
         true
