@@ -8,7 +8,6 @@ window.NativeShell = {
         window.NativeInterface.updateMediaSession(JSON.stringify(mediaInfo));
     },
 
-
     downloadFile(downloadInfo) {
         window.NativeInterface.downloadFile(JSON.stringify(downloadInfo));
     },

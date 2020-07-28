@@ -147,7 +147,7 @@ window.NativeShell.AppHost = {
     getDeviceProfile,
     init() {
         try {
-            window.NativeInterface.getDeviceInformation();
+            const result = window.NativeInterface.getDeviceInformation();
             // set globally so they can be used elsewhere
             deviceId = result.deviceId;
             deviceName = result.deviceName;
