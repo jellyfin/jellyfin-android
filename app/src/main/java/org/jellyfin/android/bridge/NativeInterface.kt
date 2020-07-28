@@ -112,6 +112,11 @@ class NativeInterface(private val activity: WebappActivity) {
     }
 
     @JavascriptInterface
+    fun updateVolumeLevel(value: Int) {
+        activity.updateRemoteVolumeLevel(value)
+    }
+
+    @JavascriptInterface
     fun downloadFile(args: String): Boolean {
         val title: String
         val url: String

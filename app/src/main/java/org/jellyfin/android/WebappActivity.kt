@@ -24,7 +24,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
     val chromecast = Chromecast()
 
     private var serviceBinder: RemotePlayerService.ServiceBinder? = null
-    private val serviceConnection = object : ServiceConnection {
+    private val serviceConnection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
             serviceBinder = binder as? RemotePlayerService.ServiceBinder
             serviceBinder?.run { webViewController = this@WebappActivity }
@@ -86,6 +86,10 @@ class WebappActivity : AppCompatActivity(), WebViewController {
 
     override fun loadUrl(url: String) {
         webView.loadUrl(url)
+    }
+
+    fun updateRemoteVolumeLevel(value: Int) {
+        serviceBinder?.run { remoteVolumeProvider.currentVolume = value }
     }
 
     override fun onBackPressed() {

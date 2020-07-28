@@ -19,6 +19,10 @@ window.NativeShell = {
         window.NativeInterface.hideMediaSession();
     },
 
+    updateVolumeLevel(value) {
+        window.NativeInterface.updateVolumeLevel(value);
+    },
+
     downloadFile(downloadInfo) {
         window.NativeInterface.downloadFile(JSON.stringify(downloadInfo));
     },

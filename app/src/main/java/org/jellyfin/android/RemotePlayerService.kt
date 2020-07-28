@@ -8,8 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
-import android.media.MediaMetadata
-import android.media.Rating
+import android.media.*
 import android.media.session.MediaController
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
@@ -35,6 +34,8 @@ class RemotePlayerService : Service(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
+    private val binder = ServiceBinder()
+
     private lateinit var wakeLock: PowerManager.WakeLock
 
     private var mediaSession: MediaSession? = null
@@ -42,10 +43,6 @@ class RemotePlayerService : Service(), CoroutineScope {
     private var largeItemIcon: Bitmap? = null
     private var currentItemId: String? = null
     private val notifyId = 84
-
-    private val binder = ServiceBinder()
-
-    private val webViewController: WebViewController? get() = binder.webViewController
 
     /**
      * only trip this flag if the user switches from headphones to speaker
@@ -57,24 +54,24 @@ class RemotePlayerService : Service(), CoroutineScope {
             if (intent.action == Intent.ACTION_HEADSET_PLUG) {
                 val state = intent.getIntExtra("state", 2)
                 if (state == 0) {
-                    sendInputManagerCommand("playpause")
+                    binder.sendInputManagerCommand("playpause")
                     headphoneFlag = true
                 } else if (headphoneFlag) {
-                    sendInputManagerCommand("playpause")
+                    binder.sendInputManagerCommand("playpause")
                 }
             } else if (intent.action == BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED) {
                 val extras = intent.extras ?: return
                 val state = extras.getInt(BluetoothA2dp.EXTRA_STATE)
                 val previousState = extras.getInt(BluetoothA2dp.EXTRA_PREVIOUS_STATE)
                 if ((state == BluetoothA2dp.STATE_DISCONNECTED || state == BluetoothA2dp.STATE_DISCONNECTING) && previousState == BluetoothA2dp.STATE_CONNECTED) {
-                    sendInputManagerCommand("pause")
+                    binder.sendInputManagerCommand("pause")
                 }
             } else if (intent.action == BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED) {
                 val extras = intent.extras ?: return
                 val state = extras.getInt(BluetoothHeadset.EXTRA_STATE)
                 val previousState = extras.getInt(BluetoothHeadset.EXTRA_PREVIOUS_STATE)
                 if (state == BluetoothHeadset.STATE_AUDIO_DISCONNECTED && previousState == BluetoothHeadset.STATE_AUDIO_CONNECTED) {
-                    sendInputManagerCommand("pause")
+                    binder.sendInputManagerCommand("pause")
                 }
             }
         }
@@ -192,7 +189,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         val itemId = handledIntent.getStringExtra("itemId")
         val isPaused = handledIntent.getBooleanExtra("isPaused", false)
         val canSeek = handledIntent.getBooleanExtra("canSeek", false)
-        //val isLocalPlayer = handledIntent.getBooleanExtra("isLocalPlayer", false)
+        val isLocalPlayer = handledIntent.getBooleanExtra("isLocalPlayer", true)
         val position = handledIntent.getLongExtra("position", PlaybackState.PLAYBACK_POSITION_UNKNOWN)
         val duration = handledIntent.getLongExtra("duration", 0)
 
@@ -212,6 +209,19 @@ class RemotePlayerService : Service(), CoroutineScope {
         }
 
         setPlaybackState(!isPaused, position, canSeek)
+
+        if (isLocalPlayer) {
+            val audioAttributes = AudioAttributes.Builder().apply {
+                setUsage(AudioAttributes.USAGE_MEDIA)
+                setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    setAllowedCapturePolicy(AudioAttributes.ALLOW_CAPTURE_BY_ALL)
+                }
+            }.build()
+            mediaSession.setPlaybackToLocal(audioAttributes)
+        } else {
+            mediaSession.setPlaybackToRemote(binder.remoteVolumeProvider)
+        }
 
         val supportsNativeSeek = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
@@ -327,36 +337,36 @@ class RemotePlayerService : Service(), CoroutineScope {
             setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS or MediaSession.FLAG_HANDLES_MEDIA_BUTTONS)
             setCallback(object : MediaSession.Callback() {
                 override fun onPlay() {
-                    sendInputManagerCommand("playpause")
+                    binder.sendInputManagerCommand("playpause")
                 }
 
                 override fun onPause() {
-                    sendInputManagerCommand("playpause")
+                    binder.sendInputManagerCommand("playpause")
                 }
 
                 override fun onSkipToNext() {
-                    sendInputManagerCommand("next")
+                    binder.sendInputManagerCommand("next")
                 }
 
                 override fun onSkipToPrevious() {
-                    sendInputManagerCommand("previous")
+                    binder.sendInputManagerCommand("previous")
                 }
 
                 override fun onFastForward() {
-                    sendInputManagerCommand("fastforward")
+                    binder.sendInputManagerCommand("fastforward")
                 }
 
                 override fun onRewind() {
-                    sendInputManagerCommand("rewind")
+                    binder.sendInputManagerCommand("rewind")
                 }
 
                 override fun onStop() {
-                    sendInputManagerCommand("stop")
+                    binder.sendInputManagerCommand("stop")
                     onStopped()
                 }
 
                 override fun onSeekTo(pos: Long) {
-                    sendSeekCommand(pos)
+                    binder.sendSeekCommand(pos)
                     val currentState = mediaSession!!.controller.playbackState ?: return
                     val isPlaying = currentState.state == PlaybackState.STATE_PLAYING
                     val canSeek = (currentState.actions and PlaybackState.ACTION_SEEK_TO) != 0L
@@ -366,14 +376,6 @@ class RemotePlayerService : Service(), CoroutineScope {
                 override fun onSetRating(rating: Rating) {}
             })
         }
-    }
-
-    private fun sendInputManagerCommand(action: String) {
-        webViewController?.loadUrl("javascript:require(['inputManager'], function(inputManager){inputManager.trigger('$action');});")
-    }
-
-    private fun sendSeekCommand(pos: Long) {
-        webViewController?.loadUrl("javascript:require(['inputManager'], function(inputManager){inputManager.trigger('seek', $pos);});")
     }
 
     private fun onStopped() {
@@ -395,6 +397,38 @@ class RemotePlayerService : Service(), CoroutineScope {
 
     class ServiceBinder : Binder() {
         var webViewController: WebViewController? = null
+
+        val remoteVolumeProvider = object : VolumeProvider(VOLUME_CONTROL_ABSOLUTE, 100, 0) {
+            override fun onAdjustVolume(direction: Int) {
+                when (direction) {
+                    AudioManager.ADJUST_RAISE -> {
+                        sendInputManagerCommand("volumeup")
+                        currentVolume += 2 // TODO: have web notify app with new volume instead
+                    }
+                    AudioManager.ADJUST_LOWER -> {
+                        sendInputManagerCommand("volumedown")
+                        currentVolume -= 2 // TODO: have web notify app with new volume instead
+                    }
+                }
+            }
+
+            override fun onSetVolumeTo(volume: Int) {
+                sendSetVolumeCommand(volume)
+                currentVolume = volume // TODO: have web notify app with new volume instead
+            }
+        }
+
+        fun sendInputManagerCommand(action: String) {
+            webViewController?.loadUrl("javascript:require(['inputManager'], function(inputManager){inputManager.trigger('$action');});")
+        }
+
+        fun sendSeekCommand(pos: Long) {
+            webViewController?.loadUrl("javascript:require(['inputManager'], function(inputManager){inputManager.trigger('seek', $pos);});")
+        }
+
+        fun sendSetVolumeCommand(value: Int) {
+            webViewController?.loadUrl("javascript:require(['playbackManager'], function(playbackManager){playbackManager.sendCommand({Name:'SetVolume', Arguments:{Volume:$value}});});")
+        }
     }
 
     companion object {
