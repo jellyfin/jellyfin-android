@@ -4,15 +4,6 @@ window.NativeShell = {
     openUrl: NativeInterface.openUrl,
     hideMediaSession: NativeInterface.hideMediaSession,
 
-    getDeviceInformation() {
-        const result = window.NativeInterface.getDeviceInformation();
-        if (result) {
-            successCallback && successCallback(JSON.parse(result));
-        } else {
-            errorCallback && errorCallback();
-        }
-    },
-
     updateMediaSession(mediaInfo) {
         window.NativeInterface.updateMediaSession(JSON.stringify(mediaInfo));
     },
