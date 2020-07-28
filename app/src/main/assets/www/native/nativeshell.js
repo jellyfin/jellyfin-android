@@ -1,11 +1,22 @@
 window.NativeShell = {
-    enableFullscreen: NativeInterface.enableFullscreen,
-    disableFullscreen: NativeInterface.disableFullscreen,
-    openUrl: NativeInterface.openUrl,
-    hideMediaSession: NativeInterface.hideMediaSession,
+    enableFullscreen() {
+        window.NativeInterface.enableFullscreen();
+    },
+
+    disableFullscreen() {
+        window.NativeInterface.disableFullscreen();
+    },
+
+    openUrl(url, target) {
+        window.NativeInterface.openUrl(url, target);
+    },
 
     updateMediaSession(mediaInfo) {
         window.NativeInterface.updateMediaSession(JSON.stringify(mediaInfo));
+    },
+
+    hideMediaSession() {
+        window.NativeInterface.hideMediaSession();
     },
 
     downloadFile(downloadInfo) {
