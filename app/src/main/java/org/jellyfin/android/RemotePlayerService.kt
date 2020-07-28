@@ -45,7 +45,7 @@ class RemotePlayerService : Service(), CoroutineScope {
 
     private val binder = ServiceBinder()
 
-    var webViewController: WebViewController? = null
+    private val webViewController: WebViewController? get() = binder.webViewController
 
     /**
      * only trip this flag if the user switches from headphones to speaker
@@ -57,24 +57,24 @@ class RemotePlayerService : Service(), CoroutineScope {
             if (intent.action == Intent.ACTION_HEADSET_PLUG) {
                 val state = intent.getIntExtra("state", 2)
                 if (state == 0) {
-                    sendCommand("playpause")
+                    sendInputManagerCommand("playpause")
                     headphoneFlag = true
                 } else if (headphoneFlag) {
-                    sendCommand("playpause")
+                    sendInputManagerCommand("playpause")
                 }
             } else if (intent.action == BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED) {
                 val extras = intent.extras ?: return
                 val state = extras.getInt(BluetoothA2dp.EXTRA_STATE)
                 val previousState = extras.getInt(BluetoothA2dp.EXTRA_PREVIOUS_STATE)
                 if ((state == BluetoothA2dp.STATE_DISCONNECTED || state == BluetoothA2dp.STATE_DISCONNECTING) && previousState == BluetoothA2dp.STATE_CONNECTED) {
-                    sendCommand("pause")
+                    sendInputManagerCommand("pause")
                 }
             } else if (intent.action == BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED) {
                 val extras = intent.extras ?: return
                 val state = extras.getInt(BluetoothHeadset.EXTRA_STATE)
                 val previousState = extras.getInt(BluetoothHeadset.EXTRA_PREVIOUS_STATE)
                 if (state == BluetoothHeadset.STATE_AUDIO_DISCONNECTED && previousState == BluetoothHeadset.STATE_AUDIO_CONNECTED) {
-                    sendCommand("pause")
+                    sendInputManagerCommand("pause")
                 }
             }
         }
@@ -184,6 +184,8 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     private fun notifyWithBitmap(handledIntent: Intent, largeIcon: Bitmap?) {
+        val mediaSession = mediaSession!!
+
         val artist = handledIntent.getStringExtra("artist")
         val album = handledIntent.getStringExtra("album")
         val title = handledIntent.getStringExtra("title")
@@ -205,7 +207,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                 putLong(MediaMetadata.METADATA_KEY_DURATION, duration)
                 if (largeIcon != null) putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, largeIcon)
             }.build()
-            mediaSession!!.setMetadata(metadata)
+            mediaSession.setMetadata(metadata)
             currentItemId = itemId
         }
 
@@ -215,7 +217,7 @@ class RemotePlayerService : Service(), CoroutineScope {
 
         val compactActions = if (supportsNativeSeek) intArrayOf(0, 1, 2) else intArrayOf(0, 2, 4)
         val style = Notification.MediaStyle().apply {
-            setMediaSession(mediaSession!!.sessionToken)
+            setMediaSession(mediaSession.sessionToken)
             setShowActionsInCompactView(*compactActions)
         }
 
@@ -276,7 +278,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         }
 
         // Activate MediaSession
-        mediaSession!!.isActive = true
+        mediaSession.isActive = true
     }
 
     private fun setPlaybackState(isPlaying: Boolean, position: Long, canSeek: Boolean) {
@@ -325,31 +327,31 @@ class RemotePlayerService : Service(), CoroutineScope {
             setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS or MediaSession.FLAG_HANDLES_MEDIA_BUTTONS)
             setCallback(object : MediaSession.Callback() {
                 override fun onPlay() {
-                    sendCommand("playpause")
+                    sendInputManagerCommand("playpause")
                 }
 
                 override fun onPause() {
-                    sendCommand("playpause")
+                    sendInputManagerCommand("playpause")
                 }
 
                 override fun onSkipToNext() {
-                    sendCommand("next")
+                    sendInputManagerCommand("next")
                 }
 
                 override fun onSkipToPrevious() {
-                    sendCommand("previous")
+                    sendInputManagerCommand("previous")
                 }
 
                 override fun onFastForward() {
-                    sendCommand("fastforward")
+                    sendInputManagerCommand("fastforward")
                 }
 
                 override fun onRewind() {
-                    sendCommand("rewind")
+                    sendInputManagerCommand("rewind")
                 }
 
                 override fun onStop() {
-                    sendCommand("stop")
+                    sendInputManagerCommand("stop")
                     onStopped()
                 }
 
@@ -366,7 +368,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         }
     }
 
-    private fun sendCommand(action: String) {
+    private fun sendInputManagerCommand(action: String) {
         webViewController?.loadUrl("javascript:require(['inputManager'], function(inputManager){inputManager.trigger('$action');});")
     }
 
@@ -377,7 +379,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     private fun onStopped() {
         val nm = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         nm.cancel(notifyId)
-        mediaSession!!.isActive = false
+        mediaSession?.isActive = false
         headphoneFlag = false
         stopWakelock()
         stopSelf()
@@ -386,13 +388,13 @@ class RemotePlayerService : Service(), CoroutineScope {
     override fun onDestroy() {
         unregisterReceiver(receiver)
         job.cancel()
-        mediaSession!!.release()
+        mediaSession?.release()
         mediaSession = null
         super.onDestroy()
     }
 
-    inner class ServiceBinder : Binder() {
-        val service get() = this@RemotePlayerService
+    class ServiceBinder : Binder() {
+        var webViewController: WebViewController? = null
     }
 
     companion object {

@@ -27,11 +27,11 @@ class WebappActivity : AppCompatActivity(), WebViewController {
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
             serviceBinder = binder as? RemotePlayerService.ServiceBinder
-            serviceBinder?.run { service.webViewController = this@WebappActivity }
+            serviceBinder?.run { webViewController = this@WebappActivity }
         }
 
         override fun onServiceDisconnected(componentName: ComponentName) {
-            serviceBinder?.run { service.webViewController = null }
+            serviceBinder?.run { webViewController = null }
         }
     }
     private val webView: WebView by lazyView<WebView>(R.id.web_view)
