@@ -93,10 +93,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
     }
 
     override fun onBackPressed() {
-        val history = webView.copyBackForwardList()
-        if (webView.canGoBack() && history.currentIndex > 1) {
-            webView.goBack()
-        }
+        serviceBinder?.sendInputManagerCommand("back")
     }
 
     override fun onDestroy() {

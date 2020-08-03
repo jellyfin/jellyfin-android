@@ -173,6 +173,11 @@ class NativeInterface(private val activity: WebappActivity) {
     }
 
     @JavascriptInterface
+    fun exitApp() {
+        activity.finish()
+    }
+
+    @JavascriptInterface
     fun execCast(action: String, args: String) {
         activity.chromecast.execute(action, JSONArray(args), object : JavascriptCallback() {
             override fun callback(keep: Boolean, err: String?, result: String?) {

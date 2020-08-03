@@ -131,11 +131,7 @@ let appVersion;
 
 window.NativeShell.AppHost = {
     exit() {
-        if (navigator.app && navigator.app.exitApp) {
-            navigator.app.exitApp();
-        } else {
-            window.close();
-        }
+        window.NativeInterface.exitApp();
     },
     supports(command) {
         return features.includes(command.toLowerCase());
