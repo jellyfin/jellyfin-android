@@ -484,6 +484,11 @@ public class ChromecastConnection {
         });
     }
 
+    public void destroy() {
+        getSessionManager().removeSessionManagerListener(newConnectionListener, CastSession.class);
+        activity = null;
+    }
+
     /**
      * Create this empty class so that we don't have to override every function
      * each time we need a SessionManagerListener.

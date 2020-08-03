@@ -98,6 +98,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
 
     override fun onDestroy() {
         unbindService(serviceConnection)
+        chromecast.destroy()
         super.onDestroy()
     }
 

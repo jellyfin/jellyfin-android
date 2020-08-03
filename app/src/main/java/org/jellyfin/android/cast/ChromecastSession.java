@@ -718,6 +718,10 @@ public class ChromecastSession {
         return ChromecastUtilities.createSessionObject(session);
     }
 
+    public void destroy() {
+        activity = null;
+    }
+
     /**
      * Last sent media object.
      **/

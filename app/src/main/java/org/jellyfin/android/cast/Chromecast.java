@@ -7,6 +7,7 @@ import androidx.mediarouter.media.MediaRouter.RouteInfo;
 import com.google.android.gms.cast.CastDevice;
 
 import org.jellyfin.android.bridge.JavascriptCallback;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -558,5 +559,22 @@ public final class Chromecast {
             return;
         }
         eventCallback.success(true, new JSONArray().put(eventName).put(args));
+    }
+
+    public void destroy() {
+        final JavascriptCallback callback = new JavascriptCallback() {
+            @Override
+            protected void callback(boolean keep, @Nullable String err, @Nullable String result) {
+                // ignored
+            }
+        };
+
+        stopRouteScan(callback);
+        sessionStop(callback);
+        media.destroy();
+        media = null;
+        connection.destroy();
+        connection = null;
+        eventCallback = null;
     }
 }
