@@ -73,7 +73,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
         // Load main page
         webView.loadUrl(indexUrl)
 
-        requestNoBatteryOptimizations(appPreferences)
+        requestNoBatteryOptimizations()
 
         chromecast.initializePlugin(this)
     }
