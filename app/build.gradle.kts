@@ -44,39 +44,19 @@ afterEvaluate {
     android.applicationVariants.forEach { appVariant ->
         val variantName = appVariant.name.run { substring(0, 1).toUpperCase() + substring(1) }
         val mergeTask = tasks.getByName<MergeSourceSetFolders>("merge${variantName}Assets")
-        val copyTask = tasks.register<Copy>("copy${variantName}Webapp") {
+        val patchTask = tasks.register("create${variantName}IndexPatch") {
             dependsOn(mergeTask)
-
-            val assembleWebapp by project(":webapp").tasks.getting(DefaultTask::class)
-            dependsOn(assembleWebapp)
-
-            from(assembleWebapp.outputs)
-            val outputDir = mergeTask.outputDir.get().dir("www")
-            into(outputDir)
-
+            val outputDir = mergeTask.outputDir.get()
             doLast {
-                val indexFile = outputDir.file("index.html").asFile
-                val reader = indexFile.bufferedReader()
-                val writer = outputDir.file("index_app.html").asFile.bufferedWriter()
-                var line: String?
-                do {
-                    line = reader.readLine()?.let {
-                        if (it == "</body>") {
-                            outputDir.dir("native").asFile.list()?.forEach { script ->
-                                writer.write("""<script type="text/javascript" charset="utf-8" src="native/$script" defer></script>""")
-                                writer.newLine()
-                            }
-                        }
-                        writer.write(it)
-                        writer.newLine()
-                        it
-                    }
-                } while (line != null)
-                reader.close()
+                val writer = outputDir.file("index_patch.html").asFile.bufferedWriter()
+                outputDir.dir("native").asFile.list()?.forEach { script ->
+                    writer.write("""<script type="text/javascript" charset="utf-8" src="native/$script" defer></script>""")
+                    writer.newLine()
+                }
                 writer.close()
             }
         }
-        mergeTask.finalizedBy(copyTask)
+        mergeTask.finalizedBy(patchTask)
     }
 }
 

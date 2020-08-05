@@ -1,6 +1,8 @@
 package org.jellyfin.android.utils
 
 object Constants {
+    const val INDEX_PATCH_PATH = "index_patch.html"
+
     const val ACTION_PLAYPAUSE = "action_playpause"
     const val ACTION_PLAY = "action_play"
     const val ACTION_PAUSE = "action_pause"
