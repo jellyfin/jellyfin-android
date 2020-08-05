@@ -24,7 +24,8 @@ class WebappActivity : AppCompatActivity(), WebViewController {
     val httpClient = OkHttpClient()
     val chromecast = Chromecast()
 
-    private var serviceBinder: RemotePlayerService.ServiceBinder? = null
+    var serviceBinder: RemotePlayerService.ServiceBinder? = null
+        private set
     private val serviceConnection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
             serviceBinder = binder as? RemotePlayerService.ServiceBinder

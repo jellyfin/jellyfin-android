@@ -174,7 +174,11 @@ class NativeInterface(private val activity: WebappActivity) {
 
     @JavascriptInterface
     fun exitApp() {
-        activity.finish()
+        if (activity.serviceBinder?.isPlaying == true) {
+            activity.moveTaskToBack(false)
+        } else {
+            activity.finish()
+        }
     }
 
     @JavascriptInterface

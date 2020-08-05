@@ -34,7 +34,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
-    private val binder = ServiceBinder()
+    private val binder = ServiceBinder(this)
 
     private lateinit var wakeLock: PowerManager.WakeLock
 
@@ -43,6 +43,8 @@ class RemotePlayerService : Service(), CoroutineScope {
     private var largeItemIcon: Bitmap? = null
     private var currentItemId: String? = null
     private val notifyId = 84
+
+    val playbackState: PlaybackState? get() = mediaSession?.controller?.playbackState
 
     /**
      * only trip this flag if the user switches from headphones to speaker
@@ -367,7 +369,7 @@ class RemotePlayerService : Service(), CoroutineScope {
 
                 override fun onSeekTo(pos: Long) {
                     binder.sendSeekCommand(pos)
-                    val currentState = mediaSession!!.controller.playbackState ?: return
+                    val currentState = playbackState ?: return
                     val isPlaying = currentState.state == PlaybackState.STATE_PLAYING
                     val canSeek = (currentState.actions and PlaybackState.ACTION_SEEK_TO) != 0L
                     setPlaybackState(isPlaying, pos, canSeek)
@@ -395,8 +397,11 @@ class RemotePlayerService : Service(), CoroutineScope {
         super.onDestroy()
     }
 
-    class ServiceBinder : Binder() {
+    class ServiceBinder(private val service: RemotePlayerService) : Binder() {
         var webViewController: WebViewController? = null
+
+        val isPlaying: Boolean
+            get() = service.playbackState?.state == PlaybackState.STATE_PLAYING
 
         val remoteVolumeProvider = object : VolumeProvider(VOLUME_CONTROL_ABSOLUTE, 100, 0) {
             override fun onAdjustVolume(direction: Int) {
