@@ -13,6 +13,10 @@ object Dependencies {
         // Core
         const val appCompat = "1.1.0"
         const val coreKtx = "1.3.0"
+        const val okHttp = "4.8.0"
+
+        // Lifecycle
+        const val lifecycleExtensions = "2.2.0"
 
         // UI
         const val webkitX = "1.2.0"
@@ -46,6 +50,12 @@ object Dependencies {
     object Core {
         const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
         const val coreKtx = "androidx.core:core-ktx:${Versions.coreKtx}"
+        const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
+    }
+
+    object LifecycleX {
+        val runtime = lifecycleX("runtime-ktx")
+        val common = lifecycleX("common-java8")
     }
 
     object UI {
@@ -77,4 +87,5 @@ object Dependencies {
 
     // Helpers
     private fun kotlinx(module: String, version: String) = "org.jetbrains.kotlinx:kotlinx-$module:$version"
+    private fun lifecycleX(module: String) = "androidx.lifecycle:lifecycle-$module:${Versions.lifecycleExtensions}"
 }

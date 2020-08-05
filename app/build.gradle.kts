@@ -89,6 +89,11 @@ dependencies {
     // Core
     implementation(Dependencies.Core.appCompat)
     implementation(Dependencies.Core.coreKtx)
+    implementation(Dependencies.Core.okHttp)
+
+    // Lifecycle
+    implementation(Dependencies.LifecycleX.runtime)
+    implementation(Dependencies.LifecycleX.common)
 
     // UI
     implementation(Dependencies.UI.webkitX)
