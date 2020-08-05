@@ -3,8 +3,8 @@
 package org.jellyfin.android.utils
 
 import android.app.Activity
-import android.webkit.WebView
+import android.view.View
 import androidx.annotation.IdRes
 
-inline fun <T> Activity.lazyView(@IdRes id: Int) =
-    lazy(LazyThreadSafetyMode.NONE) { findViewById<WebView>(id) }
+inline fun <T : View> Activity.lazyView(@IdRes id: Int) =
+    lazy(LazyThreadSafetyMode.NONE) { findViewById<T>(id) }

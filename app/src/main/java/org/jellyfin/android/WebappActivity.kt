@@ -36,7 +36,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
             serviceBinder?.run { webViewController = null }
         }
     }
-    private val webView: WebView by lazyView<WebView>(R.id.web_view)
+    private val webView: WebView by lazyView(R.id.web_view)
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
