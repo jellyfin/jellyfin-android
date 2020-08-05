@@ -1,16 +1,12 @@
 package org.jellyfin.android
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.Service
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.os.PowerManager
-import android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +14,7 @@ import androidx.core.content.ContextCompat
 import org.jellyfin.android.bridge.NativeInterface
 import org.jellyfin.android.cast.Chromecast
 import org.jellyfin.android.utils.lazyView
+import org.jellyfin.android.utils.requestNoBatteryOptimizations
 
 class WebappActivity : AppCompatActivity(), WebViewController {
 
@@ -58,32 +55,9 @@ class WebappActivity : AppCompatActivity(), WebViewController {
         // Load main page
         webView.loadUrl("file:///android_asset/www/index_app.html")
 
-        requestNoBatteryOptimizations()
+        requestNoBatteryOptimizations(appPreferences)
 
         chromecast.initializePlugin(this)
-    }
-
-    private fun requestNoBatteryOptimizations() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val powerManager: PowerManager = getSystemService(POWER_SERVICE) as PowerManager
-            if (!appPreferences.ignoreBatteryOptimizations && !powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) {
-                val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-                builder.setTitle(getString(R.string.battery_optimizations_title))
-                builder.setMessage(getString(R.string.battery_optimizations_message))
-                builder.setNegativeButton(android.R.string.cancel) { _, _ ->
-                    appPreferences.ignoreBatteryOptimizations = true
-                }
-                builder.setPositiveButton(android.R.string.ok) { _, _ ->
-                    try {
-                        val intent = Intent(ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
-                        startActivity(intent)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-                builder.show()
-            }
-        }
     }
 
     override fun loadUrl(url: String) {
