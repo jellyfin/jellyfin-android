@@ -2,12 +2,12 @@ package org.jellyfin.android
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import androidx.core.content.edit
 
 class AppPreferences(context: Context) {
     private val context: Context = context.applicationContext
-    private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
 
     var ignoreBatteryOptimizations: Boolean
         get() = sharedPreferences.getBoolean(context.getString(R.string.pref_ignore_battery_optimizations), false)
