@@ -4,7 +4,6 @@ object Dependencies {
     object Versions {
         // Gradle plugins
         const val dependencyUpdates = "0.29.0"
-        const val nodeGradle = "2.2.4"
 
         // KotlinX
         const val coroutinesCore = "1.3.5"
@@ -19,6 +18,7 @@ object Dependencies {
         const val lifecycleExtensions = "2.2.0"
 
         // UI
+        const val constraintLayout = "1.1.3"
         const val webkitX = "1.2.0"
         const val coil = "0.11.0"
 
@@ -48,23 +48,27 @@ object Dependencies {
     }
 
     object Core {
-        const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
+        val appCompat = androidx("appcompat", Versions.appCompat)
         const val coreKtx = "androidx.core:core-ktx:${Versions.coreKtx}"
-        const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
     }
 
-    object LifecycleX {
-        val runtime = lifecycleX("runtime-ktx")
-        val common = lifecycleX("common-java8")
+    object Lifecycle {
+        val runtime = lifecycle("runtime-ktx")
+        val common = lifecycle("common-java8")
     }
 
     object UI {
-        const val webkitX = "androidx.webkit:webkit:${Versions.webkitX}"
+        val constraintLayout = androidx("constraintlayout", Versions.constraintLayout)
+        val webkitX = androidx("webkit", Versions.webkitX)
+    }
+
+    object Network {
+        const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
         const val coil = "io.coil-kt:coil:${Versions.coil}"
     }
 
     object Cast {
-        const val mediaRouter = "androidx.mediarouter:mediarouter:${Versions.mediaRouter}"
+        val mediaRouter = androidx("mediarouter", Versions.mediaRouter)
         const val playServicesCast = "com.google.android.gms:play-services-cast:${Versions.playServicesCast}"
         const val playServicesCastFramework = "com.google.android.gms:play-services-cast-framework:${Versions.playServicesCast}"
     }
@@ -86,6 +90,7 @@ object Dependencies {
     }
 
     // Helpers
+    private fun androidx(module: String, version: String) = "androidx.$module:$module:$version"
     private fun kotlinx(module: String, version: String) = "org.jetbrains.kotlinx:kotlinx-$module:$version"
-    private fun lifecycleX(module: String) = "androidx.lifecycle:lifecycle-$module:${Versions.lifecycleExtensions}"
+    private fun lifecycle(module: String) = "androidx.lifecycle:lifecycle-$module:${Versions.lifecycleExtensions}"
 }

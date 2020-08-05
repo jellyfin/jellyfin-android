@@ -69,15 +69,18 @@ dependencies {
     // Core
     implementation(Dependencies.Core.appCompat)
     implementation(Dependencies.Core.coreKtx)
-    implementation(Dependencies.Core.okHttp)
 
     // Lifecycle
-    implementation(Dependencies.LifecycleX.runtime)
-    implementation(Dependencies.LifecycleX.common)
+    implementation(Dependencies.Lifecycle.runtime)
+    implementation(Dependencies.Lifecycle.common)
 
     // UI
+    implementation(Dependencies.UI.constraintLayout)
     implementation(Dependencies.UI.webkitX)
-    implementation(Dependencies.UI.coil)
+
+    // Network
+    implementation(Dependencies.Network.okHttp)
+    implementation(Dependencies.Network.coil)
 
     // Cast
     implementation(Dependencies.Cast.mediaRouter)
