@@ -77,10 +77,4 @@ class WebappActivity : AppCompatActivity(), WebViewController {
         chromecast.destroy()
         super.onDestroy()
     }
-
-    companion object {
-        init {
-            if (BuildConfig.DEBUG) WebView.setWebContentsDebuggingEnabled(true)
-        }
-    }
 }
