@@ -7,10 +7,10 @@
 <img alt="Logo Banner" src="https://raw.githubusercontent.com/jellyfin/jellyfin-ux/master/branding/SVG/banner-logo-solid.svg?sanitize=true"/>
 <br/>
 <br/>
-<a href="https://github.com/jellyfin/jellyfin-android">
+<a href="https://github.com/jellyfin/jellyfin-android-next">
 <img alt="GPL 2.0 License" src="https://img.shields.io/github/license/jellyfin/jellyfin-android-next.svg"/>
 </a>
-<a href="https://github.com/jellyfin/jellyfin-android/releases">
+<a href="https://github.com/jellyfin/jellyfin-android-next/releases">
 <img alt="Current Release" src="https://img.shields.io/github/release/jellyfin/jellyfin-android-next.svg"/>
 </a>
 <a href="https://translate.jellyfin.org/projects/jellyfin/jellyfin-web/?utm_source=widget">
@@ -35,7 +35,7 @@
 </p>
 
 Jellyfin Mobile is an Android app that connects to Jellyfin instances and integrates with the official web client. We welcome all contributions and pull requests! If you have a larger feature in mind please open an issue so we can discuss the implementation before you start. Even though the client is only a web wrapper there are still lots of improvements and bug fixes that can be accomplished with Android and Kotlin knowledge.
-<!--For APKs, see <a href="https://github.com/jellyfin/jellyfin-android/releases">releases page</a> where you can choose between the regular APK and a debugging version (we're also working on a libre version that doesn't depend on Google Play Service, but it's <a href="https://github.com/jellyfin/jellyfin-android/issues/327">not ready yet</a>).-->
+<!--For APKs, see <a href="https://github.com/jellyfin/jellyfin-android-next/releases">releases page</a> where you can choose between the regular APK and a debugging version (we're also working on a libre version that doesn't depend on Google Play Service, but it's <a href="https://github.com/jellyfin/jellyfin-android/issues/327">not ready yet</a>).-->
 
 Most of the translations can be found in the web client since it's the base for the Android client as well. Translations can be improved very easily from our Weblate instance linked above. Look through the following graphic to see if your native language could use some work!
 
