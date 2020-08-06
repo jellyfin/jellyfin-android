@@ -1,13 +1,30 @@
 package org.jellyfin.android.utils
 
 import android.content.Context
+import android.os.Build
+import android.webkit.WebResourceError
 import android.webkit.WebResourceResponse
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.io.IOException
+import java.net.InetAddress
 
-fun Context.loadPatchedIndex(httpClient: OkHttpClient, url: String): WebResourceResponse {
+suspend fun HttpUrl.isReachable() = withContext(Dispatchers.IO) {
+    try {
+        InetAddress.getByName(host).isReachable(1000)
+    } catch (e: IOException) {
+        false
+    }
+}
+
+fun Context.loadPatchedIndex(httpClient: OkHttpClient, url: String): WebResourceResponse? = try {
     val result = StringBuilder()
     httpClient.newCall(Request.Builder().url(url).build()).execute().use { response ->
+        if (response.code >= 400)
+            return@use
         response.body?.run {
             val responseReader = byteStream().bufferedReader()
             loop@ while (true) {
@@ -26,9 +43,17 @@ fun Context.loadPatchedIndex(httpClient: OkHttpClient, url: String): WebResource
             }
         }
     }
-    return WebResourceResponse("text/html", Charsets.UTF_8.name(), result.toString().byteInputStream())
+    val data = result.toString()
+    if (data.isNotEmpty()) WebResourceResponse("text/html", Charsets.UTF_8.name(), data.byteInputStream()) else null
+} catch (e: IOException) {
+    null
 }
 
 fun Context.loadAsset(url: String): WebResourceResponse {
     return WebResourceResponse("text/html", Charsets.UTF_8.name(), assets.open(url))
 }
+
+val emptyResponse = WebResourceResponse("text/html", Charsets.UTF_8.toString(), "".byteInputStream())
+
+val WebResourceError.descriptionOrNull
+    get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) description else null

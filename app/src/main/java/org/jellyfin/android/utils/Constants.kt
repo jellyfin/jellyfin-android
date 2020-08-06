@@ -9,6 +9,7 @@ object Constants {
 
     // Misc
     const val INDEX_PATCH_PATH = "index_patch.html"
+    const val INDEX_PATH = "web/index.html"
 
     // Player actions
     const val ACTION_PLAY = "action_play"

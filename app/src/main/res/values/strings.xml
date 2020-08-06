@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Jellyfin</string>
 
+    <string name="connect_to_server_title">Connect to Server</string>
+    <string name="host_input_hint">Host</string>
+    <string name="connect_button_text">Connect</string>
+
+    <string name="toast_error_missing_scheme">Missing scheme (https or http)</string>
+    <string name="toast_error_invalid_format">Host has an invalid format</string>
+    <string name="toast_error_cannot_connect_host">Connection to %s cannot be established.\nPlease check the hostname and your network connection.</string>
+
     <string name="battery_optimizations_title">Disable Battery Optimizations</string>
     <string name="battery_optimizations_message">Please disable battery optimizations for media playback while the screen is off.</string>
     <string name="network_title">Allowed Network Types</string>
