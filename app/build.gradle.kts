@@ -6,6 +6,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
+    id("de.mannodermaus.android-junit5")
     id("com.github.ben-manes.versions") version Dependencies.Versions.dependencyUpdates
 }
 
@@ -16,16 +17,20 @@ android {
         minSdkVersion(21)
         targetSdkVersion(30)
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0-alpha"
+        setProperty("archivesBaseName", "jellyfin-android-next-$versionName")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            //isMinifyEnabled = true
+            //isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+        getByName("debug") {
+            isDebuggable = true
+            aaptOptions.cruncherEnabled = false // Disable png crunching
         }
     }
     compileOptions {
@@ -100,6 +105,14 @@ dependencies {
     testImplementation(Dependencies.Health.mockk)
     androidTestImplementation(Dependencies.Health.androidXRunner)
     androidTestImplementation(Dependencies.Health.androidXEspresso)
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    testLogging {
+        outputs.upToDateWhen { false }
+        showStandardStreams = true
+    }
 }
 
 tasks.withType<DependencyUpdatesTask> {
