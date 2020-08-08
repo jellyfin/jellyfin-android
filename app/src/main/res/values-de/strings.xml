@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="battery_optimizations_title">Batterieoptimierungen deaktivieren</string>
-    <string name="battery_optimizations_message">Bitte die Batterieoptimierungen deaktivieren um Medien mit ausgeschaltetem Bildschirm abgespielt werden können.</string>
+    <string name="battery_optimizations_message">Bitte deaktiviere die Batterieoptimierungen damit Medien bei ausgeschaltetem Bildschirm abgespielt werden können.</string>
     <string name="network_title">Erlaubte Verbindungsmöglichkeiten</string>
     <string name="network_message">Wollen Sie den Download über Mobile Daten oder Roaming elauben?</string>
     <string name="wifi_only">Nur WLAN</string>
@@ -10,4 +10,10 @@
     <string name="downloading">Herunterladen</string>
     <string name="connect_button_text">Verbinden</string>
     <string name="host_input_hint">Adresse</string>
+    <string name="app_name">Jellyfin</string>
+    <string name="connect_to_server_title">Serververbindung herstellen</string>
+    <string name="toast_error_cannot_connect_host">Verbindung zu %s konnte nicht hergestellt werden.
+\nPrüfe deine Netzwerkverbindung.</string>
+    <string name="toast_error_invalid_format">Adressformat ungültig</string>
+    <string name="toast_error_missing_scheme">Protokoll fehlt (https oder http)</string>
 </resources>
