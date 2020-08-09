@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="battery_optimizations_message">请禁用电池优化以在屏幕关闭时播放媒体。</string>
+    <string name="battery_optimizations_message">为了在屏幕关闭时播放媒体，请禁用电池优化。</string>
     <string name="battery_optimizations_title">禁用电池优化</string>
     <string name="mobile_data_and_roaming">移动数据和漫游</string>
     <string name="mobile_data">移动数据</string>
@@ -8,4 +8,12 @@
     <string name="network_message">您是否允许使用移动数据或漫游网络下载？</string>
     <string name="network_title">允许的网络连接类型</string>
     <string name="downloading">下载中</string>
+    <string name="app_name">Jellyfin</string>
+    <string name="toast_error_cannot_connect_host">无法建立到 %s 的连接。
+\n请检查主机名和你的网络连接。</string>
+    <string name="toast_error_invalid_format">主机格式无效</string>
+    <string name="toast_error_missing_scheme">缺少URL地址 (https 或 http)</string>
+    <string name="connect_button_text">连接</string>
+    <string name="host_input_hint">主机</string>
+    <string name="connect_to_server_title">连接到服务器</string>
 </resources>
