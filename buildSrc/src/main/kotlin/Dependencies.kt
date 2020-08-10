@@ -12,7 +12,9 @@ object Dependencies {
         // Core
         const val appCompat = "1.1.0"
         const val coreKtx = "1.3.0"
+        const val activityKtx = "1.1.0"
         const val okHttp = "4.8.0"
+        const val exoPlayer = "2.11.7"
 
         // Lifecycle
         const val lifecycleExtensions = "2.2.0"
@@ -50,21 +52,28 @@ object Dependencies {
     object Core {
         val appCompat = androidx("appcompat", Versions.appCompat)
         const val coreKtx = "androidx.core:core-ktx:${Versions.coreKtx}"
+        const val activityKtx = "androidx.activity:activity-ktx:${Versions.activityKtx}"
+        val exoPlayer = exoPlayer("core")
     }
 
     object Lifecycle {
+        val viewModel = lifecycle("viewmodel-ktx")
+        val liveData = lifecycle("livedata-ktx")
         val runtime = lifecycle("runtime-ktx")
         val common = lifecycle("common-java8")
+        val process = lifecycle("process")
     }
 
     object UI {
         val constraintLayout = androidx("constraintlayout", Versions.constraintLayout)
         val webkitX = androidx("webkit", Versions.webkitX)
+        val exoPlayer = exoPlayer("ui")
     }
 
     object Network {
         const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
         const val coil = "io.coil-kt:coil:${Versions.coil}"
+        val exoPlayerHLS = exoPlayer("hls")
     }
 
     object Cast {
@@ -92,5 +101,6 @@ object Dependencies {
     // Helpers
     private fun androidx(module: String, version: String) = "androidx.$module:$module:$version"
     private fun kotlinx(module: String, version: String) = "org.jetbrains.kotlinx:kotlinx-$module:$version"
+    private fun exoPlayer(module: String) = "com.google.android.exoplayer:exoplayer-$module:${Versions.exoPlayer}"
     private fun lifecycle(module: String) = "androidx.lifecycle:lifecycle-$module:${Versions.lifecycleExtensions}"
 }
