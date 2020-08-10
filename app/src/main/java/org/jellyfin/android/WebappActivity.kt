@@ -72,7 +72,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun WebView.initialize() {
-        setBackgroundColor(ContextCompat.getColor(this@WebappActivity, R.color.colorBackground))
+        setBackgroundColor(ContextCompat.getColor(this@WebappActivity, R.color.theme_background))
         webViewClient = object : WebViewClient() {
             override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
                 val url = request.url

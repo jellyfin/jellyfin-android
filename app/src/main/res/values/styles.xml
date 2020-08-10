@@ -1,9 +1,9 @@
 <resources>
     <!-- Application theme -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="colorPrimary">@color/jellyfin_primary</item>
+        <item name="colorPrimaryDark">@color/jellyfin_primary_dark</item>
+        <item name="colorAccent">@color/jellyfin_accent</item>
+        <item name="android:windowBackground">@color/theme_background</item>
     </style>
 </resources>

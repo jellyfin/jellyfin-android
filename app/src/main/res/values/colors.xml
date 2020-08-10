@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#202020</color>
-    <color name="colorPrimaryDark">#101010</color>
-    <color name="colorAccent">#00a4dc</color>
+    <!-- Brand and base colors -->
+    <color name="jellyfin_primary">#202020</color>
+    <color name="jellyfin_primary_dark">#101010</color>
+    <color name="jellyfin_accent">#00a4dc</color>
 
-    <color name="colorBackground">#101010</color>
+    <!-- Launcher icon background -->
+    <color name="ic_launcher_background">#000b25</color>
 
-    <color name="colorLauncherBackground">#000b25</color>
+    <!-- App colors -->
+    <color name="theme_background">#101010</color>
 </resources>
