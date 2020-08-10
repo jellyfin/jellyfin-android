@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="mobile_data_and_roaming">Datos móviles e itinerancia</string>
-    <string name="battery_optimizations_title">Desactivar la optimización de la batería</string>
+    <string name="battery_optimizations_title">Desactivar Optimizaciones de Batería</string>
     <string name="downloading">Descargando</string>
     <string name="mobile_data">Datos móviles</string>
     <string name="wifi_only">Solo WiFi</string>
     <string name="network_message">¿Quieres permitir que la descarga se realice a través de redes de datos móviles o de itinerancia\?</string>
     <string name="network_title">Tipos de red permitidos</string>
-    <string name="battery_optimizations_message">Por favor, desactiva la optimización de la batería para la reproducción de medios mientras la pantalla está apagada.</string>
+    <string name="battery_optimizations_message">Por favor desactiva las optimizaciones de batería para la reproducción de medios mientras la pantalla este apagada.</string>
+    <string name="toast_error_cannot_connect_host">No se pudo establecer la conexión a %s.
+\nPor favor revisa el nombre de host y las configuaciones de tu red.</string>
+    <string name="toast_error_invalid_format">Host tiene un formato inválido</string>
+    <string name="toast_error_missing_scheme">Faltó el scheme (http o https)</string>
+    <string name="connect_button_text">Conectar</string>
+    <string name="host_input_hint">Host</string>
+    <string name="connect_to_server_title">Conectar a un Servidor</string>
+    <string name="app_name">Jellyfin</string>
 </resources>
