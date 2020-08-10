@@ -8,4 +8,6 @@
     <string name="network_title">Tipos de red permitidos</string>
     <string name="battery_optimizations_message">Deshabilite las optimizaciones de batería para la reproducción de medios mientras la pantalla está apagada.</string>
     <string name="battery_optimizations_title">Deshabilitar optimizaciones de batería</string>
+    <string name="connect_to_server_title">Conectar al servidor</string>
+    <string name="app_name">Jellyfin</string>
 </resources>
