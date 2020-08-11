@@ -14,4 +14,6 @@
     <string name="host_input_hint">Gazdă</string>
     <string name="connect_to_server_title">Conectați-vă la server</string>
     <string name="app_name">Jellyfin</string>
+    <string name="toast_error_cannot_connect_host">Conectarea la %s nu poate realizată.
+\nVerificați numele gazdei și conexiunea de rețea.</string>
 </resources>
