@@ -25,6 +25,7 @@ import org.jellyfin.android.bridge.NativeInterface
 import org.jellyfin.android.cast.Chromecast
 import org.jellyfin.android.utils.*
 import timber.log.Timber
+import java.io.Reader
 
 class WebappActivity : AppCompatActivity(), WebViewController {
 
@@ -86,7 +87,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
             }
 
             override fun onReceivedHttpError(view: WebView, request: WebResourceRequest, errorResponse: WebResourceResponse) {
-                val errorMessage = errorResponse.data.bufferedReader().use { it.readText() }
+                val errorMessage = errorResponse.data?.run { bufferedReader().use(Reader::readText) }
                 Timber.e("Received WebView HTTP %d error: %s", errorResponse.statusCode, errorMessage)
                 if (request.url.path?.endsWith(Constants.INDEX_PATH) != false) {
                     resetAndReload(true)
