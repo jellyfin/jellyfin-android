@@ -7,15 +7,19 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.webkit.*
 import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
@@ -134,14 +138,24 @@ class WebappActivity : AppCompatActivity(), WebViewController {
     private fun showServerSetup() {
         rootView.addView(serverSetupLayout)
         hostInput.setText(appPreferences.instanceUrl)
-        hostInput.setOnEditorActionListener { _, action, _ ->
-            if (action == EditorInfo.IME_ACTION_DONE) {
-                connect(hostInput.text.toString())
-                true
-            } else false
+        hostInput.setSelection(hostInput.length())
+        hostInput.setOnEditorActionListener { _, action, event ->
+            when {
+                action == EditorInfo.IME_ACTION_DONE || event.keyCode == KeyEvent.KEYCODE_ENTER -> {
+                    connect(hostInput.text.toString())
+                    true
+                }
+                else -> false
+            }
         }
         connectButton.setOnClickListener {
             connect(hostInput.text.toString())
+        }
+
+        // Show keyboard
+        hostInput.postDelayed(25) {
+            hostInput.requestFocus()
+            getSystemService<InputMethodManager>()?.showSoftInput(hostInput, InputMethodManager.SHOW_IMPLICIT)
         }
     }
 
