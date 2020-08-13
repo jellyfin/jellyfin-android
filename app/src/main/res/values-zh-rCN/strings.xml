@@ -12,7 +12,7 @@
     <string name="toast_error_cannot_connect_host">无法建立到 %s 的连接。
 \n请检查主机名和你的网络连接。</string>
     <string name="toast_error_invalid_format">主机格式无效</string>
-    <string name="toast_error_missing_scheme">缺少URL地址 (https 或 http)</string>
+    <string name="toast_error_missing_scheme">缺少协议类型 (https 或 http)</string>
     <string name="connect_button_text">连接</string>
     <string name="host_input_hint">主机</string>
     <string name="connect_to_server_title">连接到服务器</string>
