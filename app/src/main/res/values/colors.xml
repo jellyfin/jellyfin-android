@@ -10,4 +10,5 @@
 
     <!-- App colors -->
     <color name="theme_background">#101010</color>
+    <color name="playback_controls_background">#ab000000</color>
 </resources>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@color/playback_controls_background"
+    android:paddingBottom="8dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/track_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Star Wars: A New Hope" />
+
+    <com.google.android.exoplayer2.ui.DefaultTimeBar
+        android:id="@+id/exo_progress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/track_title"
+        app:played_color="?colorAccent"
+        app:scrubber_color="?colorAccent"
+        app:scrubber_dragged_size="24dp"
+        app:scrubber_enabled_size="16dp" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/exo_prev"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/ripple_background_circular"
+        android:padding="8dp"
+        android:src="@drawable/exo_icon_previous"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/play_pause_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/exo_progress" />
+
+    <FrameLayout
+        android:id="@+id/play_pause_container"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/exo_next"
+        app:layout_constraintStart_toEndOf="@id/exo_prev"
+        app:layout_constraintTop_toBottomOf="@id/exo_progress">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/exo_play"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ripple_background_circular"
+            android:padding="8dp"
+            android:src="@drawable/exo_icon_play" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/exo_pause"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ripple_background_circular"
+            android:padding="8dp"
+            android:src="@drawable/exo_icon_pause"
+            tools:visibility="gone" />
+    </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/exo_next"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/ripple_background_circular"
+        android:padding="8dp"
+        android:src="@drawable/exo_icon_next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/subtitles_button"
+        app:layout_constraintStart_toEndOf="@id/play_pause_container"
+        app:layout_constraintTop_toBottomOf="@id/exo_progress" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/subtitles_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/ripple_background_circular"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="8dp"
+        android:src="@drawable/ic_closed_caption_white_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/playback_settings"
+        app:layout_constraintStart_toEndOf="@id/exo_next"
+        app:layout_constraintTop_toBottomOf="@id/exo_progress" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/playback_settings"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/ripple_background_circular"
+        android:padding="8dp"
+        android:src="@drawable/ic_settings_white_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/spacer"
+        app:layout_constraintStart_toEndOf="@id/subtitles_button"
+        app:layout_constraintTop_toBottomOf="@id/exo_progress" />
+
+    <Space
+        android:id="@+id/spacer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/exo_position"
+        app:layout_constraintStart_toEndOf="@id/playback_settings"
+        app:layout_constraintTop_toBottomOf="@id/exo_progress" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/exo_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="?android:textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/duration_divider"
+        app:layout_constraintStart_toEndOf="@id/spacer"
+        app:layout_constraintTop_toBottomOf="@id/exo_progress"
+        tools:text="33:01" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/duration_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/position_duration_divider"
+        android:textColor="?android:textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/exo_duration"
+        app:layout_constraintStart_toEndOf="@id/exo_position"
+        app:layout_constraintTop_toBottomOf="@id/exo_progress" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/exo_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?android:textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fullscreen_switcher"
+        app:layout_constraintStart_toEndOf="@id/duration_divider"
+        app:layout_constraintTop_toBottomOf="@id/exo_progress"
+        tools:text="0:49:04" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/fullscreen_switcher"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/ripple_background_circular"
+        android:padding="8dp"
+        android:src="@drawable/ic_fullscreen_enter_white_32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/exo_duration"
+        app:layout_constraintTop_toBottomOf="@id/exo_progress" />
+</androidx.constraintlayout.widget.ConstraintLayout>
