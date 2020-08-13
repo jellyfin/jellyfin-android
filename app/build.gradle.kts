@@ -1,4 +1,3 @@
-import com.android.build.gradle.tasks.MergeSourceSetFolders
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.github.benmanes.gradle.versions.updates.gradle.GradleReleaseChannel
 
