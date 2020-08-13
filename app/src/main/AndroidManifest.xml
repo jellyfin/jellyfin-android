@@ -32,6 +32,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".player.PlayerActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.Player" />
+
         <service android:name=".RemotePlayerService" />
 
         <meta-data

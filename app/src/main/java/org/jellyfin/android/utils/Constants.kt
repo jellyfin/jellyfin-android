@@ -9,6 +9,8 @@ object Constants {
     // Misc
     const val INDEX_PATCH_PATH = "index_patch.html"
     const val INDEX_PATH = "web/index.html"
+    const val EXTRA_MEDIA_SOURCE_ITEM = "org.jellyfin.android.MEDIA_SOURCE_ITEM"
+    const val TICKS_PER_MILLISECOND = 10000
 
     // Player actions
     const val ACTION_PLAY = "action_play"
