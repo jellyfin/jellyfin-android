@@ -45,26 +45,6 @@ android {
     }
 }
 
-afterEvaluate {
-    android.applicationVariants.forEach { appVariant ->
-        val variantName = appVariant.name.run { substring(0, 1).toUpperCase() + substring(1) }
-        val mergeTask = tasks.getByName<MergeSourceSetFolders>("merge${variantName}Assets")
-        val patchTask = tasks.register("create${variantName}IndexPatch") {
-            dependsOn(mergeTask)
-            val outputDir = mergeTask.outputDir.get()
-            doLast {
-                val writer = outputDir.file("index_patch.html").asFile.bufferedWriter()
-                outputDir.dir("native").asFile.list()?.forEach { script ->
-                    writer.write("""<script type="text/javascript" charset="utf-8" src="native/$script" defer></script>""")
-                    writer.newLine()
-                }
-                writer.close()
-            }
-        }
-        mergeTask.finalizedBy(patchTask)
-    }
-}
-
 dependencies {
     // Kotlin
     implementation(kotlin("stdlib-jdk8"))
