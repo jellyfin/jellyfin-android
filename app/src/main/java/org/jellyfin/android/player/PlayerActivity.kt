@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.OrientationEventListener
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
@@ -13,10 +14,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import com.google.android.exoplayer2.ui.PlayerView
 import org.jellyfin.android.R
-import org.jellyfin.android.utils.disableFullscreen
-import org.jellyfin.android.utils.enableFullscreen
-import org.jellyfin.android.utils.isFullscreen
-import org.jellyfin.android.utils.lazyView
+import org.jellyfin.android.utils.*
 
 
 class PlayerActivity : AppCompatActivity() {
@@ -27,6 +25,30 @@ class PlayerActivity : AppCompatActivity() {
     private val titleTextView: TextView by lazyView(R.id.track_title)
     private val fullscreenSwitcher: ImageButton by lazyView(R.id.fullscreen_switcher)
     private lateinit var playbackMenus: PlaybackMenus
+
+    /**
+     * Listener that watches the current device orientation.
+     * It makes sure that the orientation sensor can still be used after toggling
+     * the orientation through the fullscreen button (and if enabled).
+     *
+     * If the requestedOrientation was reset directly after setting it in the fullscreenSwitcher click handler,
+     * the orientation would get reverted before the user had any chance to rotate the device to the desired position.
+     */
+    private val orientationListener: OrientationEventListener by lazy {
+        object : OrientationEventListener(this) {
+            override fun onOrientationChanged(orientation: Int) {
+                val isAtTarget = when (requestedOrientation) {
+                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT -> orientation in Constants.ORIENTATION_PORTRAIT_RANGE
+                    ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE -> orientation in Constants.ORIENTATION_LANDSCAPE_RANGE
+                    else -> false
+                }
+                if (isAtTarget && isAutoRotateOn()) {
+                    // Reset to unspecified orientation
+                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +66,7 @@ class PlayerActivity : AppCompatActivity() {
             titleTextView.text = jellyfinMediaSource.title
         }
 
-        // Handle orientation and fullscreen
+        // Handle current orientation and update fullscreen state
         val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         if (isLandscape) enableFullscreen() else disableFullscreen()
         setupFullscreenSwitcher()
@@ -61,6 +83,11 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.mediaSourceManager.handleIntent(intent, true)
     }
 
+    override fun onStart() {
+        super.onStart()
+        orientationListener.enable()
+    }
+
     private fun setupFullscreenSwitcher() {
         val fullscreenDrawable = when {
             !isFullscreen() -> R.drawable.ic_fullscreen_enter_white_32dp
@@ -74,6 +101,11 @@ class PlayerActivity : AppCompatActivity() {
                 else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        orientationListener.disable()
     }
 
     override fun onDestroy() {

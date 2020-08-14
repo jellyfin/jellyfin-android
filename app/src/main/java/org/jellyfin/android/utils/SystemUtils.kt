@@ -1,5 +1,6 @@
 package org.jellyfin.android.utils
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.DownloadManager
 import android.content.Context
@@ -9,6 +10,7 @@ import android.os.Build
 import android.os.Environment
 import android.os.PowerManager
 import android.provider.Settings
+import android.provider.Settings.System.ACCELEROMETER_ROTATION
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import org.jellyfin.android.BuildConfig
@@ -79,3 +81,5 @@ private fun Context.downloadFile(request: DownloadManager.Request, @DownloadMeth
     }
     getSystemService<DownloadManager>()?.enqueue(request)
 }
+
+fun Activity.isAutoRotateOn() = Settings.System.getInt(contentResolver, ACCELEROMETER_ROTATION, 0) == 1

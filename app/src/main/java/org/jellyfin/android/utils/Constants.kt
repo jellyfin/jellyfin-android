@@ -22,4 +22,8 @@ object Constants {
     const val ACTION_STOP = "action_stop"
     const val ACTION_REPORT = "action_report"
     const val ACTION_SHOW_PLAYER = "ACTION_SHOW_PLAYER"
+
+    // Orientation constants
+    val ORIENTATION_PORTRAIT_RANGE = CombinedIntRange(340..360, 0..20)
+    val ORIENTATION_LANDSCAPE_RANGE = CombinedIntRange(70..110, 250..290)
 }
