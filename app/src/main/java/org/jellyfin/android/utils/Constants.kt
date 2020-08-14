@@ -4,7 +4,6 @@ object Constants {
     // Preference keys
     const val PREF_INSTANCE_URL = "pref_instance_url"
     const val PREF_IGNORE_BATTERY_OPTIMIZATIONS = "pref_ignore_battery_optimizations"
-    const val PREF_DOWNLOAD_METHOD_DIALOG_SHOWN = "pref_download_method_dialog_shown"
     const val PREF_DOWNLOAD_METHOD = "pref_download_method"
 
     // Misc

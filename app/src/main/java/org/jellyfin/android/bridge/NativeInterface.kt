@@ -1,9 +1,6 @@
 package org.jellyfin.android.bridge
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.app.DownloadManager
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -12,10 +9,10 @@ import android.view.View
 import android.view.WindowManager
 import android.webkit.JavascriptInterface
 import org.jellyfin.android.BuildConfig
-import org.jellyfin.android.R
 import org.jellyfin.android.RemotePlayerService
 import org.jellyfin.android.WebappActivity
 import org.jellyfin.android.utils.Constants
+import org.jellyfin.android.utils.requestDownload
 import org.json.JSONArray
 import org.json.JSONObject
 import timber.log.Timber
@@ -119,58 +116,21 @@ class NativeInterface(private val activity: WebappActivity) {
     @JavascriptInterface
     fun downloadFile(args: String): Boolean {
         val title: String
+        val filename: String
         val url: String
         try {
             val options = JSONObject(args)
             title = options.getString("title")
+            filename = options.getString("filename")
             url = options.getString("url")
         } catch (e: Exception) {
-            Timber.e("download: %s", e.message)
+            Timber.e("Download failed: %s", e.message)
             return false
         }
-        val context: Context = activity
-        val uri = Uri.parse(url)
-        val request = DownloadManager.Request(uri)
-            .setTitle(title)
-            .setDescription(activity.getString(R.string.downloading))
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-        if (activity.appPreferences.downloadMethodDialogShown) {
-            startDownload(request)
-        } else {
-            activity.runOnUiThread {
-                AlertDialog.Builder(context)
-                    .setTitle(context.getString(R.string.network_title))
-                    .setMessage(context.getString(R.string.network_message))
-                    .setNegativeButton(context.getString(R.string.wifi_only)) { _, _ ->
-                        activity.appPreferences.downloadMethod = 0
-                        startDownload(request)
-                    }
-                    .setPositiveButton(activity.getString(R.string.mobile_data)) { _, _ ->
-                        activity.appPreferences.downloadMethod = 1
-                        startDownload(request)
-                    }
-                    .setPositiveButton(activity.getString(R.string.mobile_data_and_roaming)) { _, _ ->
-                        activity.appPreferences.downloadMethod = 2
-                        startDownload(request)
-                    }
-                    .setCancelable(false)
-                    .show()
-                activity.appPreferences.downloadMethodDialogShown = true
-            }
-        }
+        activity.requestDownload(Uri.parse(url), title, filename)
         return true
     }
 
-    @JavascriptInterface
-    fun startDownload(request: DownloadManager.Request) {
-        when (activity.appPreferences.downloadMethod) {
-            0 -> request.setAllowedOverMetered(false).setAllowedOverRoaming(false)
-            1 -> request.setAllowedOverMetered(true).setAllowedOverRoaming(false)
-            2 -> request.setAllowedOverMetered(true).setAllowedOverRoaming(true)
-        }
-        val downloadManager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        downloadManager.enqueue(request)
-    }
 
     @JavascriptInterface
     fun exitApp() {

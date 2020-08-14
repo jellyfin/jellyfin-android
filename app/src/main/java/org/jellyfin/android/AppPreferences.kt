@@ -25,16 +25,8 @@ class AppPreferences(context: Context) {
             }
         }
 
-    var downloadMethodDialogShown: Boolean
-        get() = sharedPreferences.getBoolean(Constants.PREF_DOWNLOAD_METHOD_DIALOG_SHOWN, false)
-        set(value) {
-            sharedPreferences.edit {
-                putBoolean(Constants.PREF_DOWNLOAD_METHOD_DIALOG_SHOWN, value)
-            }
-        }
-
     var downloadMethod: Int
-        get() = sharedPreferences.getInt(Constants.PREF_DOWNLOAD_METHOD, 0)
+        get() = sharedPreferences.getInt(Constants.PREF_DOWNLOAD_METHOD, -1)
         set(value) {
             sharedPreferences.edit {
                 putInt(Constants.PREF_DOWNLOAD_METHOD, value)
