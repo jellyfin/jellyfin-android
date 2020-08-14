@@ -4,6 +4,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
+import androidx.core.view.get
+import androidx.core.view.size
 import org.jellyfin.android.R
 import org.jellyfin.android.player.source.ExoPlayerTrack
 import org.jellyfin.android.player.source.ExoPlayerTracksGroup
@@ -65,7 +67,7 @@ class PlaybackMenus(private val activity: PlayerActivity) {
             }
         } else {
             // No selection, check first item if possible
-            menu.getItem(0)?.isChecked = true
+            if (menu.size > 0) menu[0].isChecked = true
         }
     }
 
