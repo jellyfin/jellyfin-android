@@ -283,7 +283,7 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
                         'ts': ['mp3', 'aac', 'mp1', 'mp2', 'ac3', 'dts'],
                         'flac': ['flac'],
                         'aac': ['aac'],
-                        'mkv': ['mp3', 'aac', 'dts', 'flac', 'vorbis', 'ac3', 'wma', 'mp1', 'mp2'],
+                        'mkv': ['mp3', 'aac', 'dts', 'flac', 'vorbis', 'opus', 'ac3', 'wma', 'mp1', 'mp2'],
                         'mp3': ['mp3'],
                         'ogg': ['ogg', 'opus', 'vorbis'],
                         'webm': ['vorbis', 'opus'],
@@ -383,11 +383,11 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
                             profile.DirectPlayProfiles.push({
                                 Container: container,
                                 Type: 'Video',
-                                AudioCodec: audioProfiles[container].filter(function (codec) {
-                                    return audioCodecs.indexOf(codec) !== -1;
-                                }).join(','),
                                 VideoCodec: videoProfiles[container].filter(function (codec) {
                                     return videoCodecs.indexOf(codec) !== -1;
+                                }).join(','),
+                                AudioCodec: audioProfiles[container].filter(function (codec) {
+                                    return audioCodecs.indexOf(codec) !== -1;
                                 }).join(',')
                             });
                         }
@@ -398,7 +398,7 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
                             profile.DirectPlayProfiles.push({
                                 Container: container,
                                 Type: 'Audio',
-                                VideoCodec: audioProfiles[container].filter(function (codec) {
+                                AudioCodec: audioProfiles[container].filter(function (codec) {
                                     return audioCodecs.indexOf(codec) !== -1;
                                 }).join(',')
                             });

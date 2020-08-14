@@ -28,7 +28,7 @@ object ExoPlayerFormats {
                 }
             }
         }
-        SupportedCodecs(videoCodecs, videoCodecs)
+        SupportedCodecs(videoCodecs, audioCodecs)
     }
 
     fun getVideoCodec(mimeType: String): String? = when (mimeType) {
@@ -136,12 +136,12 @@ object ExoPlayerFormats {
     }
 
     private fun getVP9Profile(profile: Int): String? = when (profile) {
-        MediaCodecInfo.CodecProfileLevel.VP9Profile0 -> "0"
-        MediaCodecInfo.CodecProfileLevel.VP9Profile1 -> "1"
-        MediaCodecInfo.CodecProfileLevel.VP9Profile2 -> "2"
-        MediaCodecInfo.CodecProfileLevel.VP9Profile3 -> "3"
-        MediaCodecInfo.CodecProfileLevel.VP9Profile2HDR -> "2 hdr"
-        MediaCodecInfo.CodecProfileLevel.VP9Profile3HDR -> "3 hdr"
+        MediaCodecInfo.CodecProfileLevel.VP9Profile0 -> "Profile 0"
+        MediaCodecInfo.CodecProfileLevel.VP9Profile1 -> "Profile 1"
+        MediaCodecInfo.CodecProfileLevel.VP9Profile2,
+        MediaCodecInfo.CodecProfileLevel.VP9Profile2HDR -> "Profile 2"
+        MediaCodecInfo.CodecProfileLevel.VP9Profile3,
+        MediaCodecInfo.CodecProfileLevel.VP9Profile3HDR -> "Profile 3"
         else -> null
     }
 
@@ -264,7 +264,7 @@ object ExoPlayerFormats {
     fun getSubtitleFormat(format: String?): String? {
         return when (format) {
             "ssa", "ass" -> MimeTypes.TEXT_SSA
-            "vtt" -> MimeTypes.TEXT_VTT
+            "vtt", "webvtt" -> MimeTypes.TEXT_VTT
             "ttml" -> MimeTypes.APPLICATION_TTML
             "srt", "sub", "subrip" -> MimeTypes.APPLICATION_SUBRIP
             else -> null
