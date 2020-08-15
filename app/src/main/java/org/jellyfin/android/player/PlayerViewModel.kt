@@ -49,6 +49,17 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
     }
 
+    fun seekToOffset(offsetMs: Long) {
+        val player = _player.value ?: return
+        var positionMs = player.currentPosition + offsetMs
+        val durationMs = player.duration
+        if (durationMs != C.TIME_UNSET) {
+            positionMs = positionMs.coerceAtMost(durationMs)
+        }
+        positionMs = positionMs.coerceAtLeast(0)
+        player.seekTo(positionMs)
+    }
+
     fun getPlayerRendererIndex(type: Int): Int {
         return _player.value?.getRendererIndexByType(type) ?: -1
     }

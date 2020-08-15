@@ -1,9 +1,12 @@
 package org.jellyfin.android.player
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.view.OrientationEventListener
 import android.view.View
 import android.widget.ImageButton
@@ -15,6 +18,7 @@ import androidx.lifecycle.observe
 import com.google.android.exoplayer2.ui.PlayerView
 import org.jellyfin.android.R
 import org.jellyfin.android.utils.*
+import org.jellyfin.android.utils.Constants.DEFAULT_SEEK_TIME_MS
 
 
 class PlayerActivity : AppCompatActivity() {
@@ -73,6 +77,9 @@ class PlayerActivity : AppCompatActivity() {
         // Create playback menus
         playbackMenus = PlaybackMenus(this)
 
+        // Setup gesture handling
+        setupGestureDetector()
+
         // Handle intent
         viewModel.mediaSourceManager.handleIntent(intent)
     }
@@ -104,6 +111,25 @@ class PlayerActivity : AppCompatActivity() {
                 Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                 else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             }
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupGestureDetector() {
+        // Handle double tap gesture on controls
+        val gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onDoubleTap(e: MotionEvent): Boolean {
+                val seekTime = when {
+                    e.x.toInt() > playerView.measuredWidth / 2 -> DEFAULT_SEEK_TIME_MS
+                    else -> DEFAULT_SEEK_TIME_MS.unaryMinus()
+                }
+                viewModel.seekToOffset(seekTime)
+                return true
+            }
+        })
+        playerView.setOnTouchListener { _, event ->
+            gestureDetector.onTouchEvent(event)
+            false
         }
     }
 

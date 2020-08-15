@@ -11,6 +11,7 @@ object Constants {
     const val INDEX_PATH = "web/index.html"
     const val EXTRA_MEDIA_SOURCE_ITEM = "org.jellyfin.android.MEDIA_SOURCE_ITEM"
     const val TICKS_PER_MILLISECOND = 10000
+    const val DEFAULT_SEEK_TIME_MS = 5000L
     const val LANGUAGE_UNDEFINED = "und"
 
     // Player actions
