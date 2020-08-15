@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:background="@color/playback_controls_background"
+    android:fitsSystemWindows="true"
     android:paddingBottom="8dp">
 
     <androidx.appcompat.widget.AppCompatTextView

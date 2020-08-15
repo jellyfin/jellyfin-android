@@ -40,6 +40,9 @@ class PlaybackMenus(private val activity: PlayerActivity) {
                 }
             }
         }
+        setOnDismissListener {
+            activity.restoreFullscreenState()
+        }
     }
 
     private fun createPlaybackSettingsMenu() = PopupMenu(activity, playbackSettingsButton).apply {
@@ -52,6 +55,9 @@ class PlaybackMenus(private val activity: PlayerActivity) {
                 }
                 else -> false
             }
+        }
+        setOnDismissListener {
+            activity.restoreFullscreenState()
         }
     }
 

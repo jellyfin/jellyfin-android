@@ -67,8 +67,7 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         // Handle current orientation and update fullscreen state
-        val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        if (isLandscape) enableFullscreen() else disableFullscreen()
+        restoreFullscreenState()
         setupFullscreenSwitcher()
 
         // Create playback menus
@@ -86,6 +85,11 @@ class PlayerActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         orientationListener.enable()
+    }
+
+    fun restoreFullscreenState() {
+        val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        if (isLandscape) enableFullscreen() else disableFullscreen()
     }
 
     private fun setupFullscreenSwitcher() {
