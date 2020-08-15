@@ -1,5 +1,6 @@
 package org.jellyfin.android.player.source
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -13,18 +14,21 @@ import com.google.android.exoplayer2.source.MergingMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import org.jellyfin.android.player.PlayerViewModel
 import org.jellyfin.android.utils.Constants
+import org.jellyfin.android.utils.indexOfFormatId
 import org.json.JSONException
 import org.json.JSONObject
 
 class MediaSourceManager(private val viewModel: PlayerViewModel) {
     private val _jellyfinMediaSource = MutableLiveData<JellyfinMediaSource>()
-
     val jellyfinMediaSource: LiveData<JellyfinMediaSource> get() = _jellyfinMediaSource
+
+    val trackSelector = DefaultTrackSelector(viewModel.getApplication<Application>())
 
     fun handleIntent(intent: Intent, replace: Boolean = false): Boolean {
         return if (_jellyfinMediaSource.value == null || replace) {
@@ -101,5 +105,33 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
                 SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(track.url), format, C.TIME_UNSET)
             } else null
         }.toTypedArray()
+    }
+
+    /**
+     * @return true if the subtitle was changed
+     */
+    fun selectSubtitle(selectedSubtitleIndex: Int, initial: Boolean = false): Boolean {
+        val source = _jellyfinMediaSource.value ?: return false
+        val currentSelectedSubtitleIndex = source.subtitleTracksGroup.selectedTrack
+        if (!initial && selectedSubtitleIndex == currentSelectedSubtitleIndex)
+            return true // Track is already selected
+        val parameters = trackSelector.buildUponParameters()
+        val rendererIndex = viewModel.getPlayerRendererIndex(C.TRACK_TYPE_TEXT)
+        val trackInfo = trackSelector.currentMappedTrackInfo
+        return if (rendererIndex >= 0 && trackInfo != null) {
+            val trackGroups = trackInfo.getTrackGroups(rendererIndex)
+            val trackGroupIndex = trackGroups.indexOfFormatId(selectedSubtitleIndex.toString())
+            if (trackGroupIndex >= 0) {
+                val selection = DefaultTrackSelector.SelectionOverride(trackGroupIndex, 0)
+                parameters.setSelectionOverride(rendererIndex, trackGroups, selection)
+                parameters.setRendererDisabled(rendererIndex, false)
+            } else {
+                parameters.clearSelectionOverride(rendererIndex, trackGroups)
+                parameters.setRendererDisabled(rendererIndex, true)
+            }
+            trackSelector.setParameters(parameters)
+            source.subtitleTracksGroup.selectedTrack = selectedSubtitleIndex
+            true
+        } else false
     }
 }

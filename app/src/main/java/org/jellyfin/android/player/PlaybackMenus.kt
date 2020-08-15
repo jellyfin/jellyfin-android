@@ -4,6 +4,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
+import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.core.view.size
 import org.jellyfin.android.R
@@ -31,8 +32,13 @@ class PlaybackMenus(private val activity: PlayerActivity) {
     }
 
     private fun createSubtitlesMenu() = PopupMenu(activity, subtitlesButton).apply {
-        setOnMenuItemClickListener {
-            false
+        setOnMenuItemClickListener { clickedItem ->
+            activity.onSubtitleSelected(clickedItem.itemId).also { success ->
+                if (success) {
+                    menu.forEach { it.isChecked = false }
+                    clickedItem.isChecked = true
+                }
+            }
         }
     }
 

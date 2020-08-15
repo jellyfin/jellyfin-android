@@ -8,6 +8,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
 import org.jellyfin.android.player.source.MediaSourceManager
+import org.jellyfin.android.utils.getRendererIndexByType
 
 class PlayerViewModel(application: Application) : AndroidViewModel(application), LifecycleObserver, Player.EventListener {
     val mediaSourceManager = MediaSourceManager(this)
@@ -26,9 +27,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     private fun setupPlayer() {
-        _player.value = SimpleExoPlayer.Builder(getApplication()).build().apply {
-            addListener(this@PlayerViewModel)
-        }
+        _player.value = SimpleExoPlayer.Builder(getApplication())
+            .setTrackSelector(mediaSourceManager.trackSelector)
+            .build()
+            .apply { addListener(this@PlayerViewModel) }
     }
 
     private fun releasePlayer() {
@@ -44,6 +46,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             player.prepare(source, false, false)
             player.playWhenReady = true
         }
+    }
+
+    fun getPlayerRendererIndex(type: Int): Int {
+        return _player.value?.getRendererIndexByType(type) ?: -1
     }
 
     // (Lifecycle) Callbacks

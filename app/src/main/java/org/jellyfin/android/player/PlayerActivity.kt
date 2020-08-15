@@ -103,6 +103,13 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * @return true if the subtitle was changed
+     */
+    fun onSubtitleSelected(index: Int): Boolean {
+        return viewModel.mediaSourceManager.selectSubtitle(index)
+    }
+
     override fun onStop() {
         super.onStop()
         orientationListener.disable()
