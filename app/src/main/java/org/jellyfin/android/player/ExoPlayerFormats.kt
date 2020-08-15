@@ -261,7 +261,7 @@ object ExoPlayerFormats {
      * @param format subtitle format given by jellyfin
      * @return exoplayer subtitle format, otherwise null if not supported
      */
-    fun getSubtitleFormat(format: String?): String? {
+    fun getSubtitleFormat(format: String): String? {
         return when (format) {
             "ssa", "ass" -> MimeTypes.TEXT_SSA
             "vtt", "webvtt" -> MimeTypes.TEXT_VTT

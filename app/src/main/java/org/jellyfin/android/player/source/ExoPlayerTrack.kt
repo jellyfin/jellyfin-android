@@ -1,48 +1,35 @@
 package org.jellyfin.android.player.source
 
 import org.jellyfin.android.player.ExoPlayerFormats
+import org.jellyfin.android.utils.Constants
 import org.json.JSONObject
 
-sealed class ExoPlayerTrack {
-    val index: Int
-    val title: String
+sealed class ExoPlayerTrack(track: JSONObject) {
+    val index: Int = track.optInt("Index", -1)
+    val title: String = track.optString("DisplayTitle", "")
 
-    constructor() {
-        index = -1
-        title = "None"
+    class Video(track: JSONObject) : ExoPlayerTrack(track) {
+        override fun toString() = "ExoPlayerTrack.Video#$index(title=$title)"
     }
-
-    constructor(track: JSONObject) {
-        index = track.getInt("Index")
-        title = track.getString("DisplayTitle")
-    }
-
-    class Video(track: JSONObject) : ExoPlayerTrack(track)
 
     class Audio(track: JSONObject) : ExoPlayerTrack(track) {
-        val language: String? = if (track.has("Language")) track.getString("Language") else null
-        val supportsDirectPlay: Boolean = track.getBoolean("supportsDirectPlay")
+        val language: String = track.optString("Language", Constants.LANGUAGE_UNDEFINED)
+        val supportsDirectPlay: Boolean = track.optBoolean("supportsDirectPlay", false)
+
+        override fun toString() = "ExoPlayerTrack.Audio#$index(title=$title, lang=$language)"
     }
 
-    class Text : ExoPlayerTrack {
-        val language: String?
-        val uri: String?
-        val format: String?
+    class Text(track: JSONObject, textTracksUrl: Map<Int, String>) : ExoPlayerTrack(track) {
+        val language: String = track.optString("Language", Constants.LANGUAGE_UNDEFINED)
+        val uri: String? = if (textTracksUrl.containsKey(index)) textTracksUrl[index] else null
+        val format: String? = ExoPlayerFormats.getSubtitleFormat(track.optString("Codec", ""))
         val localDelivery: Boolean
 
-        constructor() : super() {
-            language = null
-            uri = null
-            format = null
-            localDelivery = false
-        }
-
-        constructor(track: JSONObject, textTracksUrl: Map<Int, String>) : super(track) {
-            language = if (track.has("Language")) track.getString("Language") else "und"
-            uri = if (textTracksUrl.containsKey(index)) textTracksUrl[index] else null
-            format = ExoPlayerFormats.getSubtitleFormat(track.getString("Codec"))
-            val deliveryMethod = track.getString("DeliveryMethod")
+        init {
+            val deliveryMethod = track.optString("DeliveryMethod", "")
             localDelivery = deliveryMethod == "Embed" || deliveryMethod == "External"
         }
+
+        override fun toString() = "ExoPlayerTrack.Text#$index(title=$title, lang=$language, fmt=$format, url=$uri)"
     }
 }

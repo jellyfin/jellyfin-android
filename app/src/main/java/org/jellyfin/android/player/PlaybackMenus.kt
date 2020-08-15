@@ -7,7 +7,6 @@ import android.widget.PopupMenu
 import androidx.core.view.get
 import androidx.core.view.size
 import org.jellyfin.android.R
-import org.jellyfin.android.player.source.ExoPlayerTrack
 import org.jellyfin.android.player.source.ExoPlayerTracksGroup
 import org.jellyfin.android.player.source.JellyfinMediaSource
 
@@ -27,8 +26,8 @@ class PlaybackMenus(private val activity: PlayerActivity) {
     }
 
     fun onItemChanged(item: JellyfinMediaSource) {
-        buildMenuItems(subtitlesMenu.menu, item.subtitleTracksGroup, SUBTITLES_MENU_GROUP)
-        buildMenuItems(audioSubmenu, item.audioTracksGroup, AUDIO_MENU_GROUP)
+        buildMenuItems(subtitlesMenu.menu, SUBTITLES_MENU_GROUP, item.subtitleTracksGroup, true)
+        buildMenuItems(audioSubmenu, AUDIO_MENU_GROUP, item.audioTracksGroup)
     }
 
     private fun createSubtitlesMenu() = PopupMenu(activity, subtitlesButton).apply {
@@ -50,8 +49,9 @@ class PlaybackMenus(private val activity: PlayerActivity) {
         }
     }
 
-    private fun <T : ExoPlayerTrack> buildMenuItems(menu: Menu, tracksGroup: ExoPlayerTracksGroup<T>, groupId: Int) {
+    private fun buildMenuItems(menu: Menu, groupId: Int, tracksGroup: ExoPlayerTracksGroup<*>, showNone: Boolean = false) {
         menu.clear()
+        if (showNone) menu.add(groupId, -1, 0, "None" /* TODO add string resource */)
         for (track in tracksGroup.tracks.values) {
             menu.add(groupId, track.index, 0, track.title)
         }

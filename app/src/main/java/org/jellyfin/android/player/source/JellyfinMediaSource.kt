@@ -69,7 +69,6 @@ class JellyfinMediaSource(private val item: JSONObject) {
             }
         }
         val finalTracks: MutableMap<Int, ExoPlayerTrack.Text> = HashMap()
-        finalTracks[-1] = ExoPlayerTrack.Text()
         for (track in tracks) {
             finalTracks[track.getInt("Index")] = ExoPlayerTrack.Text(track, textTracksUrl)
         }
