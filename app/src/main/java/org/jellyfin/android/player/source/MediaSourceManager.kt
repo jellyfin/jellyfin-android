@@ -107,6 +107,11 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
         }.toTypedArray()
     }
 
+    fun selectInitialTracks() {
+        val source = _jellyfinMediaSource.value ?: return
+        selectSubtitle(source.subtitleTracksGroup.selectedTrack, true)
+    }
+
     /**
      * @return true if the subtitle was changed
      */

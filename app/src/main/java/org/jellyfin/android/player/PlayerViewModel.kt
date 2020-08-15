@@ -1,5 +1,6 @@
 package org.jellyfin.android.player
 
+import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.*
 import com.google.android.exoplayer2.C
@@ -54,7 +55,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
     // (Lifecycle) Callbacks
 
+    @SuppressLint("SwitchIntDef")
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+        when (playbackState) {
+            Player.STATE_READY -> mediaSourceManager.selectInitialTracks()
+        }
         _loading.value = playbackState == Player.STATE_BUFFERING
     }
 
