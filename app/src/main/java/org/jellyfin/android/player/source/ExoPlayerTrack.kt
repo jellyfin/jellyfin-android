@@ -19,17 +19,11 @@ sealed class ExoPlayerTrack(track: JSONObject) {
         override fun toString() = "ExoPlayerTrack.Audio#$index(title=$title, lang=$language)"
     }
 
-    class Text(track: JSONObject, textTracksUrl: Map<Int, String>) : ExoPlayerTrack(track) {
+    class Text(track: JSONObject, val url: String?) : ExoPlayerTrack(track) {
         val language: String = track.optString("Language", Constants.LANGUAGE_UNDEFINED)
-        val uri: String? = if (textTracksUrl.containsKey(index)) textTracksUrl[index] else null
         val format: String? = ExoPlayerFormats.getSubtitleFormat(track.optString("Codec", ""))
-        val localDelivery: Boolean
+        val embedded: Boolean = track.optString("DeliveryMethod", "") == "Embed"
 
-        init {
-            val deliveryMethod = track.optString("DeliveryMethod", "")
-            localDelivery = deliveryMethod == "Embed" || deliveryMethod == "External"
-        }
-
-        override fun toString() = "ExoPlayerTrack.Text#$index(title=$title, lang=$language, fmt=$format, url=$uri)"
+        override fun toString() = "ExoPlayerTrack.Text#$index(title=$title, lang=$language, fmt=$format, url=$url)"
     }
 }

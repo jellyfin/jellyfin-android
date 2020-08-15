@@ -95,10 +95,10 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
         private fun createSubtitleMediaSources(
             subtitleTracks: ExoPlayerTracksGroup<ExoPlayerTrack.Text>,
             dataSourceFactory: DataSource.Factory
-        ): Array<MediaSource> = subtitleTracks.tracks.mapNotNull { (key, track) ->
-            if (track.uri != null && track.format != null) {
-                val format = Format.createTextSampleFormat(key.toString(), track.format, C.SELECTION_FLAG_AUTOSELECT, track.language)
-                SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(track.uri), format, C.TIME_UNSET)
+        ): Array<MediaSource> = subtitleTracks.tracks.values.mapNotNull { track ->
+            if (!track.embedded && track.url != null && track.format != null) {
+                val format = Format.createTextSampleFormat(track.index.toString(), track.format, C.SELECTION_FLAG_AUTOSELECT, track.language)
+                SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(track.url), format, C.TIME_UNSET)
             } else null
         }.toTypedArray()
     }
