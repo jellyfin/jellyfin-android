@@ -7,7 +7,10 @@ import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.analytics.AnalyticsCollector
 import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.util.Clock
+import org.jellyfin.android.BuildConfig
 import org.jellyfin.android.player.source.MediaSourceManager
 import org.jellyfin.android.utils.getRendererIndexByType
 
@@ -28,10 +31,16 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     private fun setupPlayer() {
-        _player.value = SimpleExoPlayer.Builder(getApplication())
-            .setTrackSelector(mediaSourceManager.trackSelector)
-            .build()
-            .apply { addListener(this@PlayerViewModel) }
+        _player.value = SimpleExoPlayer.Builder(getApplication()).apply {
+            setTrackSelector(mediaSourceManager.trackSelector)
+            if (BuildConfig.DEBUG) {
+                setAnalyticsCollector(AnalyticsCollector(Clock.DEFAULT).apply {
+                    addListener(mediaSourceManager.eventLogger)
+                })
+            }
+        }.build().apply {
+            addListener(this@PlayerViewModel)
+        }
     }
 
     private fun releasePlayer() {

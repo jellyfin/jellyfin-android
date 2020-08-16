@@ -17,6 +17,7 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.util.EventLogger
 import com.google.android.exoplayer2.util.Util
 import org.jellyfin.android.player.PlayerViewModel
 import org.jellyfin.android.utils.Constants
@@ -28,6 +29,7 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
     val jellyfinMediaSource: LiveData<JellyfinMediaSource> get() = _jellyfinMediaSource
 
     val trackSelector = DefaultTrackSelector(viewModel.getApplication<Application>())
+    val eventLogger = EventLogger(trackSelector)
 
     fun handleIntent(intent: Intent, replace: Boolean = false): Boolean {
         return if (_jellyfinMediaSource.value == null || replace) {
