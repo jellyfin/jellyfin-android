@@ -26,6 +26,7 @@ import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import org.jellyfin.android.bridge.NativeInterface
+import org.jellyfin.android.bridge.NativePlayer
 import org.jellyfin.android.cast.Chromecast
 import org.jellyfin.android.utils.*
 import timber.log.Timber
@@ -120,6 +121,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
             domStorageEnabled = true
         }
         addJavascriptInterface(NativeInterface(this@WebappActivity), "NativeInterface")
+        addJavascriptInterface(NativePlayer(this@WebappActivity), "NativePlayer")
     }
 
     private fun checkServerAndLoad() {

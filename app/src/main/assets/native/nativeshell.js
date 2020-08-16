@@ -27,8 +27,12 @@ window.NativeShell = {
         window.NativeInterface.downloadFile(JSON.stringify(downloadInfo));
     },
 
+    openClientSettings() {
+        window.NativeInterface.openClientSettings();
+    },
+
     getPlugins() {
-        return [];
+        return JSON.parse(window.NativeInterface.getPlugins());
     },
 
     execCast(action, args, callback) {

@@ -6,4 +6,10 @@
         <item name="colorAccent">@color/jellyfin_accent</item>
         <item name="android:windowBackground">@color/theme_background</item>
     </style>
+
+    <style name="AppTheme.Player">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+    <style name="AppTheme.Settings" />
 </resources>

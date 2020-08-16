@@ -53,18 +53,26 @@ dependencies {
     // Core
     implementation(Dependencies.Core.appCompat)
     implementation(Dependencies.Core.coreKtx)
+    implementation(Dependencies.Core.activityKtx)
+    implementation(Dependencies.Core.exoPlayer)
 
     // Lifecycle
+    implementation(Dependencies.Lifecycle.viewModel)
+    implementation(Dependencies.Lifecycle.liveData)
     implementation(Dependencies.Lifecycle.runtime)
     implementation(Dependencies.Lifecycle.common)
+    implementation(Dependencies.Lifecycle.process)
 
     // UI
     implementation(Dependencies.UI.constraintLayout)
     implementation(Dependencies.UI.webkitX)
+    implementation(Dependencies.UI.exoPlayer)
+    implementation(Dependencies.UI.modernAndroidPreferences)
 
     // Network
     implementation(Dependencies.Network.okHttp)
     implementation(Dependencies.Network.coil)
+    implementation(Dependencies.Network.exoPlayerHLS)
 
     // Cast
     implementation(Dependencies.Cast.mediaRouter)

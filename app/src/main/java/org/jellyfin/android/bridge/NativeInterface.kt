@@ -5,13 +5,14 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings.Secure
-import android.view.View
-import android.view.WindowManager
 import android.webkit.JavascriptInterface
 import org.jellyfin.android.BuildConfig
 import org.jellyfin.android.RemotePlayerService
 import org.jellyfin.android.WebappActivity
+import org.jellyfin.android.settings.SettingsActivity
 import org.jellyfin.android.utils.Constants
+import org.jellyfin.android.utils.disableFullscreen
+import org.jellyfin.android.utils.enableFullscreen
 import org.jellyfin.android.utils.requestDownload
 import org.json.JSONArray
 import org.json.JSONObject
@@ -33,32 +34,21 @@ class NativeInterface(private val activity: WebappActivity) {
         null
     }
 
-    @Suppress("DEPRECATION")
+    @JavascriptInterface
+    fun getPlugins(): String = JSONArray().apply {
+        if (activity.appPreferences.enableExoPlayer)
+            put("native/exoplayer")
+    }.toString()
+
     @JavascriptInterface
     fun enableFullscreen(): Boolean {
-        activity.runOnUiThread {
-            val visibility = (View.SYSTEM_UI_FLAG_FULLSCREEN
-                    or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
-            activity.window.apply {
-                decorView.systemUiVisibility = visibility
-                addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-                clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
-            }
-        }
+        activity.runOnUiThread { activity.enableFullscreen() }
         return true
     }
 
-    @Suppress("DEPRECATION")
     @JavascriptInterface
     fun disableFullscreen(): Boolean {
-        activity.runOnUiThread {
-            activity.window.apply {
-                decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
-                clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-                addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
-            }
-        }
+        activity.runOnUiThread { activity.disableFullscreen() }
         return true
     }
 
@@ -131,6 +121,10 @@ class NativeInterface(private val activity: WebappActivity) {
         return true
     }
 
+    @JavascriptInterface
+    fun openClientSettings() {
+        activity.startActivity(Intent(activity, SettingsActivity::class.java))
+    }
 
     @JavascriptInterface
     fun exitApp() {
