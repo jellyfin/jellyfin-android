@@ -123,10 +123,11 @@ object ExoPlayerFormats {
     }
 
     private fun getHEVCProfile(profile: Int): String? = when (profile) {
-        MediaCodecInfo.CodecProfileLevel.HEVCProfileMain -> "main"
-        MediaCodecInfo.CodecProfileLevel.HEVCProfileMain10 -> "main 10"
-        MediaCodecInfo.CodecProfileLevel.HEVCProfileMainStill -> "main still"
-        MediaCodecInfo.CodecProfileLevel.HEVCProfileMain10HDR10 -> "main 10 hdr 10"
+        MediaCodecInfo.CodecProfileLevel.HEVCProfileMain -> "Main"
+        MediaCodecInfo.CodecProfileLevel.HEVCProfileMain10 -> "Main 10"
+        MediaCodecInfo.CodecProfileLevel.HEVCProfileMain10HDR10 -> "Main 10 HDR 10"
+        MediaCodecInfo.CodecProfileLevel.HEVCProfileMain10HDR10Plus -> "Main 10 HDR 10 Plus"
+        MediaCodecInfo.CodecProfileLevel.HEVCProfileMainStill -> "Main Still"
         else -> null
     }
 
