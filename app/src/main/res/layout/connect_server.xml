@@ -22,13 +22,15 @@
         style="@style/TextAppearance.AppCompat.Display2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="24dp"
+        android:fontFamily="@font/quicksand"
         android:text="@string/app_name"
+        android:textColor="@color/logo_text_color"
         app:layout_constraintBottom_toBottomOf="@id/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/logo"
-        app:layout_constraintTop_toTopOf="@id/logo" />
+        app:layout_constraintTop_toTopOf="@id/logo"
+        app:layout_constraintVertical_bias="0.1" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/connect_title"
