@@ -20,7 +20,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import org.jellyfin.android.player.PlayerViewModel
 import org.jellyfin.android.utils.Constants
-import org.jellyfin.android.utils.indexOfFormatId
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -99,7 +98,7 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
         private fun createSubtitleMediaSources(
             subtitleTracks: ExoPlayerTracksGroup<ExoPlayerTrack.Text>,
             dataSourceFactory: DataSource.Factory
-        ): Array<MediaSource> = subtitleTracks.tracks.values.mapNotNull { track ->
+        ): Array<MediaSource> = subtitleTracks.tracks.mapNotNull { track ->
             if (!track.embedded && track.url != null && track.format != null) {
                 val format = Format.createTextSampleFormat(track.index.toString(), track.format, C.SELECTION_FLAG_AUTOSELECT, track.language)
                 SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(track.url), format, C.TIME_UNSET)
@@ -125,9 +124,8 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
         val trackInfo = trackSelector.currentMappedTrackInfo
         return if (rendererIndex >= 0 && trackInfo != null) {
             val trackGroups = trackInfo.getTrackGroups(rendererIndex)
-            val trackGroupIndex = trackGroups.indexOfFormatId(selectedSubtitleIndex.toString())
-            if (trackGroupIndex >= 0) {
-                val selection = DefaultTrackSelector.SelectionOverride(trackGroupIndex, 0)
+            if (selectedSubtitleIndex >= 0) {
+                val selection = DefaultTrackSelector.SelectionOverride(selectedSubtitleIndex, 0)
                 parameters.setSelectionOverride(rendererIndex, trackGroups, selection)
                 parameters.setRendererDisabled(rendererIndex, false)
             } else {

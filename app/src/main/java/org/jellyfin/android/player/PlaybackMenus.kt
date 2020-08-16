@@ -63,9 +63,9 @@ class PlaybackMenus(private val activity: PlayerActivity) {
 
     private fun buildMenuItems(menu: Menu, groupId: Int, tracksGroup: ExoPlayerTracksGroup<*>, showNone: Boolean = false) {
         menu.clear()
-        if (showNone) menu.add(groupId, -1, 0, "None" /* TODO add string resource */)
-        for (track in tracksGroup.tracks.values) {
-            menu.add(groupId, track.index, 0, track.title)
+        if (showNone) menu.add(groupId, -1, Menu.NONE, "None" /* TODO add string resource */)
+        tracksGroup.tracks.forEachIndexed { index, track ->
+            menu.add(groupId, index, Menu.NONE, track.title)
         }
         menu.setGroupCheckable(groupId, true, true)
         val selectedTrack = tracksGroup.selectedTrack
