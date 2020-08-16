@@ -134,6 +134,13 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     /**
+     * @return true if the audio track was changed
+     */
+    fun onAudioTrackSelected(index: Int): Boolean {
+        return viewModel.mediaSourceManager.selectAudioTrack(index)
+    }
+
+    /**
      * @return true if the subtitle was changed
      */
     fun onSubtitleSelected(index: Int): Boolean {

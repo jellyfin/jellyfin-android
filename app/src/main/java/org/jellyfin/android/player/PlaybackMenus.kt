@@ -47,10 +47,15 @@ class PlaybackMenus(private val activity: PlayerActivity) {
 
     private fun createPlaybackSettingsMenu() = PopupMenu(activity, playbackSettingsButton).apply {
         audioSubmenu = menu.addSubMenu("Audio")
-        setOnMenuItemClickListener { item: MenuItem ->
-            when (item.groupId) {
+        setOnMenuItemClickListener { clickedItem: MenuItem ->
+            when (clickedItem.groupId) {
                 AUDIO_MENU_GROUP -> {
-
+                    activity.onAudioTrackSelected(clickedItem.itemId).also { success ->
+                        if (success) {
+                            menu.forEach { it.isChecked = false }
+                            clickedItem.isChecked = true
+                        }
+                    }
                     true
                 }
                 else -> false

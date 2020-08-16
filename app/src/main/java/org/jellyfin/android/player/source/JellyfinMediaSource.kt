@@ -14,6 +14,9 @@ class JellyfinMediaSource(item: JSONObject) {
     val subtitleTracksGroup: ExoPlayerTracksGroup<ExoPlayerTrack.Text>
     val isTranscoding: Boolean
 
+    val audioTracksCount: Int get() = audioTracksGroup.tracks.size
+    val subtitleTracksCount: Int get() = subtitleTracksGroup.tracks.size
+
     init {
         val mediaSource = item.optJSONObject("mediaSource")
         if (mediaSource != null) {

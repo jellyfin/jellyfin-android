@@ -108,7 +108,39 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
 
     fun selectInitialTracks() {
         val source = _jellyfinMediaSource.value ?: return
+        selectAudioTrack(source.audioTracksGroup.selectedTrack, true)
         selectSubtitle(source.subtitleTracksGroup.selectedTrack, true)
+    }
+
+    /**
+     * @return true if the audio track was changed
+     */
+    fun selectAudioTrack(selectedAudioIndex: Int, initial: Boolean = false): Boolean {
+        val source = _jellyfinMediaSource.value ?: return false
+        val currentAudioIndex = source.audioTracksGroup.selectedTrack
+        if (source.audioTracksCount == 1 || (!initial && selectedAudioIndex == currentAudioIndex))
+            return true
+        val audio: ExoPlayerTrack.Audio = source.audioTracksGroup.tracks[selectedAudioIndex]
+        if (source.isTranscoding || !audio.supportsDirectPlay) {
+            //if (!initial) callWebMethod("changeAudioStream", selectedAudioIndex.toString())
+            return true
+        }
+        val parameters = trackSelector.buildUponParameters()
+        val rendererIndex = viewModel.getPlayerRendererIndex(C.TRACK_TYPE_AUDIO)
+        val trackInfo = trackSelector.currentMappedTrackInfo
+        return if (rendererIndex >= 0 && trackInfo != null) {
+            val trackGroups = trackInfo.getTrackGroups(rendererIndex)
+            if (selectedAudioIndex >= 0) {
+                val selection = DefaultTrackSelector.SelectionOverride(selectedAudioIndex, 0)
+                parameters.setSelectionOverride(rendererIndex, trackGroups, selection)
+            } else {
+                parameters.clearSelectionOverride(rendererIndex, trackGroups)
+            }
+            parameters.setRendererDisabled(rendererIndex, false)
+            trackSelector.setParameters(parameters)
+            source.audioTracksGroup.selectedTrack = selectedAudioIndex
+            true
+        } else false
     }
 
     /**
