@@ -256,6 +256,7 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
                     var bitrateSetting = appSettings.maxStreamingBitrate();
 
                     var profile = {};
+                    profile.Name = "Android ExoPlayer"
                     profile.MaxStreamingBitrate = bitrateSetting;
                     profile.MaxStaticBitrate = 100000000;
                     profile.MusicStreamingTranscodingBitrate = 192000;
