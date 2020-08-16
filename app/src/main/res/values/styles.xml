@@ -7,5 +7,7 @@
         <item name="android:windowBackground">@color/theme_background</item>
     </style>
 
-    <style name="AppTheme.Player" />
+    <style name="AppTheme.Player">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
 </resources>
