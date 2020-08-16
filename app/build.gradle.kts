@@ -17,7 +17,7 @@ android {
         targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0-alpha"
-        setProperty("archivesBaseName", "jellyfin-android-next-$versionName")
+        setProperty("archivesBaseName", "jellyfin-android-next-v$versionName")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
