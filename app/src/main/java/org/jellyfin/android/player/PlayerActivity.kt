@@ -5,7 +5,9 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Message
 import android.os.Messenger
+import android.os.RemoteException
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.OrientationEventListener
@@ -21,6 +23,7 @@ import com.google.android.exoplayer2.ui.PlayerView
 import org.jellyfin.android.R
 import org.jellyfin.android.utils.*
 import org.jellyfin.android.utils.Constants.DEFAULT_SEEK_TIME_MS
+import timber.log.Timber
 
 
 class PlayerActivity : AppCompatActivity() {
@@ -67,7 +70,10 @@ class PlayerActivity : AppCompatActivity() {
         }
         viewModel.playerState.observe(this) { playerState ->
             when (playerState) {
-                Player.STATE_ENDED -> finish()
+                Player.STATE_ENDED -> {
+                    callWebAppFunction("notifyEnded()")
+                    finish()
+                }
             }
             loadingBar.isVisible = playerState == Player.STATE_BUFFERING
         }
@@ -137,6 +143,18 @@ class PlayerActivity : AppCompatActivity() {
         playerView.setOnTouchListener { _, event ->
             gestureDetector.onTouchEvent(event)
             false
+        }
+    }
+
+    fun callWebAppFunction(function: String) {
+        with(Message.obtain()) {
+            obj = function
+            try {
+                webappMessenger?.send(this)
+            } catch (e: RemoteException) {
+                Timber.e(e, "Could not send message to webapp")
+                recycle()
+            }
         }
     }
 
