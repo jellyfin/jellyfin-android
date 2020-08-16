@@ -18,12 +18,12 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     val mediaSourceManager = MediaSourceManager(this)
 
     private val _player = MutableLiveData<ExoPlayer?>()
-    private val _loading = MutableLiveData<Boolean>(false)
+    private val _playerState = MutableLiveData<Int>()
     private var shouldPlayOnStart = false
 
     // Public LiveData getters
     val player: LiveData<ExoPlayer?> get() = _player
-    val loading: LiveData<Boolean> get() = _loading
+    val playerState: LiveData<Int> get() = _playerState
 
     init {
         // Alternatively expose this as a dependency
@@ -80,7 +80,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         when (playbackState) {
             Player.STATE_READY -> mediaSourceManager.selectInitialTracks()
         }
-        _loading.value = playbackState == Player.STATE_BUFFERING
+        _playerState.value = playbackState
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)

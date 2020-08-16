@@ -15,6 +15,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerView
 import org.jellyfin.android.R
 import org.jellyfin.android.utils.*
@@ -62,8 +63,11 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.player.observe(this) { player ->
             playerView.player = player
         }
-        viewModel.loading.observe(this) { loading ->
-            loadingBar.isVisible = loading
+        viewModel.playerState.observe(this) { playerState ->
+            when (playerState) {
+                Player.STATE_ENDED -> finish()
+            }
+            loadingBar.isVisible = playerState == Player.STATE_BUFFERING
         }
         viewModel.mediaSourceManager.jellyfinMediaSource.observe(this) { jellyfinMediaSource ->
             playbackMenus.onItemChanged(jellyfinMediaSource)
