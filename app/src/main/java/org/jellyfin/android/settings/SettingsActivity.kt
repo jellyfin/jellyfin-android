@@ -23,6 +23,11 @@ class SettingsActivity : AppCompatActivity() {
         recyclerView.adapter = settingsAdapter
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     private fun buildSettingsScreen() = screen(this) {
         collapseIcon = true
         checkBox(Constants.PREF_ENABLE_EXOPLAYER) {
