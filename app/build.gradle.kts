@@ -12,7 +12,7 @@ plugins {
 android {
     compileSdkVersion(30)
     defaultConfig {
-        applicationId = "org.jellyfin.android"
+        applicationId = "org.jellyfin.mobile"
         minSdkVersion(21)
         targetSdkVersion(30)
         versionCode = 1
