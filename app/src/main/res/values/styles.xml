@@ -10,4 +10,6 @@
     <style name="AppTheme.Player">
         <item name="android:windowBackground">@android:color/black</item>
     </style>
+
+    <style name="AppTheme.Settings" />
 </resources>

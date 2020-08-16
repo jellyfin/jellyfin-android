@@ -8,6 +8,7 @@ const features = [
     "htmlaudioautoplay",
     "htmlvideoautoplay",
     "externallinks",
+    "clientsettings",
     "multiserver",
     "physicalvolumecontrol",
     "remotecontrol",

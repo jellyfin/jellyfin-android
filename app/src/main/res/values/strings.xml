@@ -17,4 +17,8 @@
     <string name="mobile_data">Mobile Data</string>
     <string name="mobile_data_and_roaming">Mobile Data &amp; Roaming</string>
     <string name="downloading">Downloading</string>
+
+    <string name="activity_name_settings">Jellyfin Settings</string>
+    <string name="pref_enable_exoplayer_title">Enable ExoPlayer integration</string>
+    <string name="pref_enable_exoplayer_summary">Enable the experimental native player interface which is tightly integrated into the OS and supports more codecs.\nThere are possibly still some bugs and incompatibilities, thus it can be disabled here if necessary.\n(Requires app restart)</string>
 </resources>

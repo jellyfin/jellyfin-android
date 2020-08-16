@@ -32,4 +32,12 @@ class AppPreferences(context: Context) {
                 putInt(Constants.PREF_DOWNLOAD_METHOD, value)
             }
         }
+
+    var enableExoPlayer: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_ENABLE_EXOPLAYER, true)
+        set(value) {
+            sharedPreferences.edit {
+                putBoolean(Constants.PREF_ENABLE_EXOPLAYER, value)
+            }
+        }
 }

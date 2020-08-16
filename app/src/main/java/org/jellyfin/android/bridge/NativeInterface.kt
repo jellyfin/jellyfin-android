@@ -9,6 +9,7 @@ import android.webkit.JavascriptInterface
 import org.jellyfin.android.BuildConfig
 import org.jellyfin.android.RemotePlayerService
 import org.jellyfin.android.WebappActivity
+import org.jellyfin.android.settings.SettingsActivity
 import org.jellyfin.android.utils.Constants
 import org.jellyfin.android.utils.disableFullscreen
 import org.jellyfin.android.utils.enableFullscreen
@@ -32,6 +33,12 @@ class NativeInterface(private val activity: WebappActivity) {
     } catch (e: Exception) {
         null
     }
+
+    @JavascriptInterface
+    fun getPlugins(): String = JSONArray().apply {
+        if (activity.appPreferences.enableExoPlayer)
+            put("native/exoplayer")
+    }.toString()
 
     @JavascriptInterface
     fun enableFullscreen(): Boolean {
@@ -114,6 +121,10 @@ class NativeInterface(private val activity: WebappActivity) {
         return true
     }
 
+    @JavascriptInterface
+    fun openClientSettings() {
+        activity.startActivity(Intent(activity, SettingsActivity::class.java))
+    }
 
     @JavascriptInterface
     fun exitApp() {

@@ -67,6 +67,7 @@ dependencies {
     implementation(Dependencies.UI.constraintLayout)
     implementation(Dependencies.UI.webkitX)
     implementation(Dependencies.UI.exoPlayer)
+    implementation(Dependencies.UI.modernAndroidPreferences)
 
     // Network
     implementation(Dependencies.Network.okHttp)

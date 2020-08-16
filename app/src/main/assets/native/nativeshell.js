@@ -27,8 +27,12 @@ window.NativeShell = {
         window.NativeInterface.downloadFile(JSON.stringify(downloadInfo));
     },
 
+    openClientSettings() {
+        window.NativeInterface.openClientSettings();
+    },
+
     getPlugins() {
-        return ['native/exoplayer'];
+        return JSON.parse(window.NativeInterface.getPlugins());
     },
 
     execCast(action, args, callback) {
