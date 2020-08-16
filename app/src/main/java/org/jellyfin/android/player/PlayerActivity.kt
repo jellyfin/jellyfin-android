@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Messenger
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.OrientationEventListener
@@ -30,6 +31,7 @@ class PlayerActivity : AppCompatActivity() {
     private val titleTextView: TextView by lazyView(R.id.track_title)
     private val fullscreenSwitcher: ImageButton by lazyView(R.id.fullscreen_switcher)
     private lateinit var playbackMenus: PlaybackMenus
+    private var webappMessenger: Messenger? = null
 
     /**
      * Listener that watches the current device orientation.
@@ -86,6 +88,7 @@ class PlayerActivity : AppCompatActivity() {
 
         // Handle intent
         viewModel.mediaSourceManager.handleIntent(intent)
+        webappMessenger = intent.extras?.getParcelable(Constants.EXTRA_WEBAPP_MESSENGER)
     }
 
     override fun onNewIntent(intent: Intent) {

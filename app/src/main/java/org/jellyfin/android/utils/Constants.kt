@@ -10,6 +10,7 @@ object Constants {
     const val INDEX_PATCH_PATH = "index_patch.html"
     const val INDEX_PATH = "web/index.html"
     const val EXTRA_MEDIA_SOURCE_ITEM = "org.jellyfin.android.MEDIA_SOURCE_ITEM"
+    const val EXTRA_WEBAPP_MESSENGER = "org.jellyfin.android.WEBAPP_MESSENGER"
     const val TICKS_PER_MILLISECOND = 10000
     const val DEFAULT_SEEK_TIME_MS = 5000L
     const val LANGUAGE_UNDEFINED = "und"

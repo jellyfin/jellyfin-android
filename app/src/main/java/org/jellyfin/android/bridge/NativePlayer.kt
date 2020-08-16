@@ -1,6 +1,9 @@
 package org.jellyfin.android.bridge
 
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
+import android.os.Messenger
 import android.webkit.JavascriptInterface
 import org.jellyfin.android.WebappActivity
 import org.jellyfin.android.player.ExoPlayerFormats
@@ -9,6 +12,11 @@ import org.jellyfin.android.utils.Constants
 
 class NativePlayer(private val activity: WebappActivity) {
 
+    private val playerMessageHandler = Handler(Looper.getMainLooper()) {
+        true
+    }
+    private val webappMessenger = Messenger(playerMessageHandler)
+
     @JavascriptInterface
     fun getSupportedFormats() = ExoPlayerFormats.supportedCodecs.toJSONString()
 
@@ -16,6 +24,7 @@ class NativePlayer(private val activity: WebappActivity) {
     fun loadPlayer(args: String) {
         val playerIntent = Intent(activity, PlayerActivity::class.java).apply {
             putExtra(Constants.EXTRA_MEDIA_SOURCE_ITEM, args)
+            putExtra(Constants.EXTRA_WEBAPP_MESSENGER, webappMessenger)
         }
         activity.startActivity(playerIntent)
     }
