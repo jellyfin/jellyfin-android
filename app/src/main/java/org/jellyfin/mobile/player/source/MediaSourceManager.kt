@@ -46,6 +46,7 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
                 val mediaSource = prepareStreams(newSource)
                 if (mediaSource != null) {
                     viewModel.playMedia(mediaSource, startPosition = newSource.mediaStartMs)
+                    viewModel.updateMediaMetadata(newSource)
                 }
                 true
             } else false

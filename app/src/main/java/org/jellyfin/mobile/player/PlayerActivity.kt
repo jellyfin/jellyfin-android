@@ -84,6 +84,7 @@ class PlayerActivity : AppCompatActivity() {
         // Observe ViewModel
         viewModel.player.observe(this) { player ->
             playerView.player = player
+            if (player == null) finish()
         }
         viewModel.playerState.observe(this) { playerState ->
             val isPlaying = viewModel.player.value?.isPlaying == true
