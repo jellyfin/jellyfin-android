@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="exo_title_text_size">16sp</dimen>
+    <dimen name="exo_player_controls_display_padding">12dp</dimen>
+    <dimen name="exo_center_icon_padding">12dp</dimen>
+    <dimen name="exo_center_controls_distance">24dp</dimen>
+    <dimen name="exo_bottom_controls_size">42dp</dimen>
+    <dimen name="exo_bottom_controls_padding">8dp</dimen>
+    <dimen name="exo_bottom_controls_margin">8dp</dimen>
+</resources>
