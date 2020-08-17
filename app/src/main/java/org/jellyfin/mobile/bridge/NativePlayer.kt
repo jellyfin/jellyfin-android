@@ -14,7 +14,7 @@ class NativePlayer(private val activity: WebappActivity) {
 
     private val playerMessageHandler = Handler(Looper.getMainLooper()) { message ->
         val function = message.obj as? String
-        if (function != null) activity.loadUrl("javascript:window.ExoPlayer.$function")
+        if (function != null) activity.loadUrl("javascript:$function")
         true
     }
     private val webappMessenger = Messenger(playerMessageHandler)

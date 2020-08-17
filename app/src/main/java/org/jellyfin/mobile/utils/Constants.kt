@@ -12,9 +12,10 @@ object Constants {
     const val INDEX_PATH = "web/index.html"
     const val EXTRA_MEDIA_SOURCE_ITEM = "org.jellyfin.mobile.MEDIA_SOURCE_ITEM"
     const val EXTRA_WEBAPP_MESSENGER = "org.jellyfin.mobile.WEBAPP_MESSENGER"
-    const val TICKS_PER_MILLISECOND = 10000
-    const val DEFAULT_SEEK_TIME_MS = 5000L
     const val LANGUAGE_UNDEFINED = "und"
+    const val TICKS_PER_MILLISECOND = 10000
+    const val PLAYER_TIME_UPDATE_RATE = 3000L
+    const val DEFAULT_SEEK_TIME_MS = 5000L
 
     // Player actions
     const val ACTION_PLAY = "action_play"
@@ -26,6 +27,12 @@ object Constants {
     const val ACTION_STOP = "action_stop"
     const val ACTION_REPORT = "action_report"
     const val ACTION_SHOW_PLAYER = "ACTION_SHOW_PLAYER"
+
+    // Player events
+    const val EVENT_PLAYING = "Playing"
+    const val EVENT_PAUSE = "Pause"
+    const val EVENT_ENDED = "Ended"
+    const val EVENT_TIME_UPDATE = "TimeUpdate"
 
     // Orientation constants
     val ORIENTATION_PORTRAIT_RANGE = CombinedIntRange(340..360, 0..20)
