@@ -60,7 +60,7 @@ class PlaybackMenus(private val activity: PlayerActivity) {
 
     private fun buildMenuItems(menu: Menu, groupId: Int, tracksGroup: ExoPlayerTracksGroup<*>, showNone: Boolean = false) {
         menu.clear()
-        if (showNone) menu.add(groupId, -1, Menu.NONE, "None" /* TODO add string resource */)
+        if (showNone) menu.add(groupId, -1, Menu.NONE, activity.getString(R.string.menu_item_none))
         tracksGroup.tracks.forEachIndexed { index, track ->
             menu.add(groupId, index, Menu.NONE, track.title)
         }

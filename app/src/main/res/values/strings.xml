@@ -18,6 +18,8 @@
     <string name="mobile_data_and_roaming">Mobile Data &amp; Roaming</string>
     <string name="downloading">Downloading</string>
 
+    <string name="menu_item_none">None</string>
+
     <string name="activity_name_settings">Jellyfin Settings</string>
     <string name="pref_category_music_player">Music player</string>
     <string name="pref_music_notification_always_dismissible_title">Make music player notification always dismissible</string>
