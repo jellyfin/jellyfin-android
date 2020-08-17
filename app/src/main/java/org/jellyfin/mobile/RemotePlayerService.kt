@@ -36,6 +36,8 @@ class RemotePlayerService : Service(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
+    private val appPreferences: AppPreferences by lazy { AppPreferences(this) }
+
     private val binder = ServiceBinder(this)
 
     private lateinit var wakeLock: PowerManager.WakeLock
@@ -256,7 +258,7 @@ class RemotePlayerService : Service(), CoroutineScope {
             }
             setStyle(style)
             setVisibility(Notification.VISIBILITY_PUBLIC) // Privacy value for lock screen
-            setOngoing(!isPaused) // Swipe to dismiss if paused
+            setOngoing(!isPaused && !appPreferences.musicNotificationAlwaysDismissible) // Swipe to dismiss if paused
             setDeleteIntent(createDeleteIntent())
             setContentIntent(createContentIntent())
 

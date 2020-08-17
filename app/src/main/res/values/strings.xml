@@ -19,6 +19,9 @@
     <string name="downloading">Downloading</string>
 
     <string name="activity_name_settings">Jellyfin Settings</string>
+    <string name="pref_category_music_player">Music player</string>
+    <string name="pref_music_notification_always_dismissible_title">Make music player notification always dismissible</string>
+    <string name="pref_category_video_player">Native video player</string>
     <string name="pref_enable_exoplayer_title">Enable video player integration</string>
     <string name="pref_enable_exoplayer_summary">Enable the experimental ExoPlayer video player which supports more video formats and codecs is more integrated into the OS</string>
 </resources>

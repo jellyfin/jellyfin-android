@@ -33,6 +33,14 @@ class AppPreferences(context: Context) {
             }
         }
 
+    var musicNotificationAlwaysDismissible: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_MUSIC_NOTIFICATION_ALWAYS_DISMISSIBLE, false)
+        set(value) {
+            sharedPreferences.edit {
+                putBoolean(Constants.PREF_MUSIC_NOTIFICATION_ALWAYS_DISMISSIBLE, value)
+            }
+        }
+
     var enableExoPlayer: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_ENABLE_EXOPLAYER, true)
         set(value) {
