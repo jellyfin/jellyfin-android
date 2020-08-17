@@ -145,14 +145,14 @@ class WebappActivity : AppCompatActivity(), WebViewController {
         hostInput.setOnEditorActionListener { _, action, event ->
             when {
                 action == EditorInfo.IME_ACTION_DONE || event.keyCode == KeyEvent.KEYCODE_ENTER -> {
-                    connect(hostInput.text.toString())
+                    connect()
                     true
                 }
                 else -> false
             }
         }
         connectButton.setOnClickListener {
-            connect(hostInput.text.toString())
+            connect()
         }
 
         // Show keyboard
@@ -164,7 +164,11 @@ class WebappActivity : AppCompatActivity(), WebViewController {
         }
     }
 
-    private fun connect(url: String) {
+    private fun connect() {
+        val url = hostInput.text.toString().run {
+            if (lastOrNull() == '/') this
+            else "$this/"
+        }
         hostInput.isEnabled = false
         connectButton.isEnabled = false
         lifecycleScope.launch {
