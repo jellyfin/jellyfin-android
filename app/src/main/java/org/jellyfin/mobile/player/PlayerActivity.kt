@@ -8,10 +8,7 @@ import android.os.Bundle
 import android.os.Message
 import android.os.Messenger
 import android.os.RemoteException
-import android.view.GestureDetector
-import android.view.MotionEvent
-import android.view.OrientationEventListener
-import android.view.View
+import android.view.*
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -78,6 +75,11 @@ class PlayerActivity : AppCompatActivity() {
         }
         viewModel.playerState.observe(this) { playerState ->
             val isPlaying = viewModel.player.value?.isPlaying == true
+            if (isPlaying) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            } else {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            }
             when (playerState) {
                 Player.STATE_READY -> {
                     setupTimeUpdates()
