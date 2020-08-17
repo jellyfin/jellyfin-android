@@ -24,6 +24,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.jellyfin.mobile.bridge.Commands
+import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
 import org.jellyfin.mobile.utils.Constants
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
@@ -424,15 +426,15 @@ class RemotePlayerService : Service(), CoroutineScope {
         }
 
         fun sendInputManagerCommand(action: String) {
-            webViewController?.loadUrl("javascript:require(['inputManager'], function(inputManager){inputManager.trigger('$action');});")
+            webViewController?.triggerInputManagerAction(action)
         }
 
         fun sendSeekCommand(pos: Long) {
-            webViewController?.loadUrl("javascript:require(['inputManager'], function(inputManager){inputManager.trigger('seek', $pos);});")
+            webViewController?.loadUrl(Commands.buildInputManagerCommand("trigger('seek', $pos)"))
         }
 
         fun sendSetVolumeCommand(value: Int) {
-            webViewController?.loadUrl("javascript:require(['playbackManager'], function(playbackManager){playbackManager.sendCommand({Name:'SetVolume', Arguments:{Volume:$value}});});")
+            webViewController?.loadUrl(Commands.buildPlaybackManagerCommand("sendCommand({Name:'SetVolume', Arguments:{Volume:$value}})"))
         }
     }
 

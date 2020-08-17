@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
+import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
 import org.jellyfin.mobile.bridge.NativeInterface
 import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.cast.Chromecast
@@ -216,7 +217,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
                 cachedInstanceUrl = appPreferences.instanceUrl?.toHttpUrlOrNull()
                 webView.isVisible = true
             }
-            else -> serviceBinder?.sendInputManagerCommand("back")
+            else -> triggerInputManagerAction("back")
         }
     }
 
