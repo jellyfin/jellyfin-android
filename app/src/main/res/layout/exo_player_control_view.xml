@@ -2,11 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/player_controls"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="bottom"
-    android:background="@color/playback_controls_background"
-    android:fitsSystemWindows="true">
+    android:background="@color/playback_controls_background">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/track_title"
@@ -63,12 +62,6 @@
             android:src="@drawable/ic_pause_black_42dp"
             android:tint="?android:textColorPrimary"
             tools:visibility="gone" />
-
-        <ProgressBar
-            android:id="@+id/loading_indicator"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_gravity="center" />
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatImageButton

@@ -7,4 +7,15 @@
         android:id="@+id/player_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/loading_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center" />
+    </FrameLayout>
 </FrameLayout>

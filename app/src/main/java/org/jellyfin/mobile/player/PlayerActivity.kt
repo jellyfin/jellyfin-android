@@ -13,7 +13,9 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import com.google.android.exoplayer2.Player
@@ -34,6 +36,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private val viewModel: PlayerViewModel by viewModels()
     private val playerView: PlayerView by lazyView(R.id.player_view)
+    private val playerControlsView: View by lazyView(R.id.player_controls)
     private val loadingBar: View by lazyView(R.id.loading_indicator)
     private val titleTextView: TextView by lazyView(R.id.track_title)
     private val fullscreenSwitcher: ImageButton by lazyView(R.id.fullscreen_switcher)
@@ -68,6 +71,13 @@ class PlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
+
+        // Handle system window insets
+        ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { _, insets ->
+            playerControlsView.updatePadding(left = insets.systemWindowInsetLeft, right = insets.systemWindowInsetRight)
+            loadingBar.updatePadding(left = insets.systemWindowInsetLeft, right = insets.systemWindowInsetRight)
+            insets
+        }
 
         // Observe ViewModel
         viewModel.player.observe(this) { player ->
