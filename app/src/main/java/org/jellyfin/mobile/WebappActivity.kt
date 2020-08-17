@@ -53,6 +53,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
     }
 
     private var cachedInstanceUrl: HttpUrl? = null
+    private var connected = false
 
     private val rootView: FrameLayout by lazyView(R.id.root_view)
     private val webView: WebView by lazyView(R.id.web_view)
@@ -85,9 +86,21 @@ class WebappActivity : AppCompatActivity(), WebViewController {
                 val url = request.url
                 val path = url.path ?: return null
                 return when {
-                    path.endsWith(Constants.INDEX_PATH) -> loadPatchedIndex(httpClient, url.toString()) ?: resetAndReload(true)
+                    path.endsWith(Constants.INDEX_PATH) -> {
+                        val patchedIndex = loadPatchedIndex(httpClient, url.toString())
+                        if (patchedIndex != null) {
+                            runOnUiThread { onConnectedToWebapp() }
+                            patchedIndex
+                        } else {
+                            runOnUiThread { onErrorReceived() }
+                            emptyResponse
+                        }
+                    }
                     path.contains("native") -> loadAsset("native/${url.lastPathSegment}")
-                    path.endsWith("web/selectserver.html") -> resetAndReload(false)
+                    path.endsWith("web/selectserver.html") -> {
+                        runOnUiThread { onSelectServer() }
+                        emptyResponse
+                    }
                     else -> null
                 }
             }
@@ -95,25 +108,12 @@ class WebappActivity : AppCompatActivity(), WebViewController {
             override fun onReceivedHttpError(view: WebView, request: WebResourceRequest, errorResponse: WebResourceResponse) {
                 val errorMessage = errorResponse.data?.run { bufferedReader().use(Reader::readText) }
                 Timber.e("Received WebView HTTP %d error: %s", errorResponse.statusCode, errorMessage)
-                if (request.url.path?.endsWith(Constants.INDEX_PATH) != false) {
-                    resetAndReload(true)
-                }
+                if (request.url.path?.endsWith(Constants.INDEX_PATH) != false)
+                    runOnUiThread { onErrorReceived() }
             }
 
             override fun onReceivedError(view: WebView, request: WebResourceRequest, errorResponse: WebResourceError) {
-                Timber.e("Received WebView error: %s", errorResponse.descriptionOrNull)
-                if (request.url.path?.endsWith(Constants.INDEX_PATH) != false) {
-                    resetAndReload(true)
-                }
-            }
-
-            fun resetAndReload(permanent: Boolean): WebResourceResponse {
-                runOnUiThread {
-                    if (permanent) appPreferences.instanceUrl = null
-                    cachedInstanceUrl = null
-                    checkServerAndLoad()
-                }
-                return emptyResponse
+                Timber.e("Received WebView error at ${request.url}: %s", errorResponse.descriptionOrNull)
             }
         }
         webChromeClient = WebChromeClient()
@@ -130,7 +130,6 @@ class WebappActivity : AppCompatActivity(), WebViewController {
             if (url != null) {
                 webView.isVisible = true
                 webView.loadUrl(url.resolve(Constants.INDEX_PATH).toString())
-                requestNoBatteryOptimizations()
             } else {
                 webView.isVisible = false
                 showServerSetup()
@@ -185,8 +184,24 @@ class WebappActivity : AppCompatActivity(), WebViewController {
         }
     }
 
+    private fun onConnectedToWebapp() {
+        connected = true
+        requestNoBatteryOptimizations()
+    }
+
+    private fun onSelectServer() {
+        cachedInstanceUrl = null
+        checkServerAndLoad()
+    }
+
+    private fun onErrorReceived() {
+        connected = false
+        appPreferences.instanceUrl = null
+        onSelectServer()
+    }
+
     override fun loadUrl(url: String) {
-        webView.loadUrl(url)
+        if (connected) webView.loadUrl(url)
     }
 
     fun updateRemoteVolumeLevel(value: Int) {
@@ -194,7 +209,15 @@ class WebappActivity : AppCompatActivity(), WebViewController {
     }
 
     override fun onBackPressed() {
-        serviceBinder?.sendInputManagerCommand("back")
+        when {
+            !connected -> super.onBackPressed()
+            serverSetupLayout.isAttachedToWindow -> {
+                rootView.removeView(serverSetupLayout)
+                cachedInstanceUrl = appPreferences.instanceUrl?.toHttpUrlOrNull()
+                webView.isVisible = true
+            }
+            else -> serviceBinder?.sendInputManagerCommand("back")
+        }
     }
 
     override fun onDestroy() {
