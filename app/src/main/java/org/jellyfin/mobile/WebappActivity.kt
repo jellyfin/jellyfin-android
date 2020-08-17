@@ -18,6 +18,7 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
+import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.lifecycle.lifecycleScope
@@ -155,9 +156,11 @@ class WebappActivity : AppCompatActivity(), WebViewController {
         }
 
         // Show keyboard
-        hostInput.postDelayed(25) {
-            hostInput.requestFocus()
-            getSystemService<InputMethodManager>()?.showSoftInput(hostInput, InputMethodManager.SHOW_IMPLICIT)
+        serverSetupLayout.doOnNextLayout {
+            hostInput.postDelayed(25) {
+                hostInput.requestFocus()
+                getSystemService<InputMethodManager>()?.showSoftInput(hostInput, InputMethodManager.SHOW_IMPLICIT)
+            }
         }
     }
 
