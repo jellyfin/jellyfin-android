@@ -50,10 +50,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         player.release()
     }
 
-    fun playMedia(source: MediaSource, replace: Boolean = false) {
+    fun playMedia(source: MediaSource, replace: Boolean = false, startPosition: Long = 0) {
         val player = _player.value ?: return
         if (replace || player.contentDuration == C.TIME_UNSET /* no content loaded yet */) {
             player.prepare(source, false, false)
+            if (startPosition > 0) player.seekTo(startPosition)
             player.playWhenReady = true
         }
     }

@@ -45,11 +45,7 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
                 }
                 val mediaSource = prepareStreams(newSource)
                 if (mediaSource != null) {
-                    val startMs: Long = newSource.mediaStartMs
-                    if (startMs > 0) {
-                        // TODO seek to right position
-                    }
-                    viewModel.playMedia(mediaSource)
+                    viewModel.playMedia(mediaSource, startPosition = newSource.mediaStartMs)
                 }
                 true
             } else false
