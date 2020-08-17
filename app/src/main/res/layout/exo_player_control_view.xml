@@ -126,17 +126,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="top"
-        app:constraint_referenced_ids="subtitles_button,playback_settings,fullscreen_switcher" />
+        app:constraint_referenced_ids="subtitles_button,@+id/audio_streams_button,fullscreen_switcher" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/playback_settings"
+        android:id="@+id/audio_streams_button"
         android:layout_width="@dimen/exo_bottom_controls_size"
         android:layout_height="@dimen/exo_bottom_controls_size"
         android:layout_marginStart="@dimen/exo_bottom_controls_margin"
         android:layout_marginBottom="@dimen/exo_bottom_controls_margin"
         android:background="@drawable/ripple_background_circular"
         android:padding="@dimen/exo_bottom_controls_padding"
-        android:src="@drawable/ic_settings_white_24dp"
+        android:src="@drawable/ic_music_note_white_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -149,7 +149,7 @@
         android:padding="@dimen/exo_bottom_controls_padding"
         android:src="@drawable/ic_closed_caption_white_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/playback_settings" />
+        app:layout_constraintStart_toEndOf="@id/audio_streams_button" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/fullscreen_switcher"

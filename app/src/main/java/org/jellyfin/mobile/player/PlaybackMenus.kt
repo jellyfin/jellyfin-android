@@ -16,19 +16,18 @@ import org.jellyfin.mobile.player.source.JellyfinMediaSource
  */
 class PlaybackMenus(private val activity: PlayerActivity) {
     private val subtitlesButton: View = activity.findViewById(R.id.subtitles_button)
-    private val playbackSettingsButton: View = activity.findViewById(R.id.playback_settings)
+    private val audioStreamsButton: View = activity.findViewById(R.id.audio_streams_button)
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
-    private val playbackSettingsMenu: PopupMenu = createPlaybackSettingsMenu()
-    private lateinit var audioSubmenu: Menu
+    private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
 
     init {
         subtitlesButton.setOnClickListener { subtitlesMenu.show() }
-        playbackSettingsButton.setOnClickListener { playbackSettingsMenu.show() }
+        audioStreamsButton.setOnClickListener { audioStreamsMenu.show() }
     }
 
     fun onItemChanged(item: JellyfinMediaSource) {
         buildMenuItems(subtitlesMenu.menu, SUBTITLES_MENU_GROUP, item.subtitleTracksGroup, true)
-        buildMenuItems(audioSubmenu, AUDIO_MENU_GROUP, item.audioTracksGroup)
+        buildMenuItems(audioStreamsMenu.menu, AUDIO_MENU_GROUP, item.audioTracksGroup)
     }
 
     private fun createSubtitlesMenu() = PopupMenu(activity, subtitlesButton).apply {
@@ -45,20 +44,13 @@ class PlaybackMenus(private val activity: PlayerActivity) {
         }
     }
 
-    private fun createPlaybackSettingsMenu() = PopupMenu(activity, playbackSettingsButton).apply {
-        audioSubmenu = menu.addSubMenu("Audio")
+    private fun createAudioStreamsMenu() = PopupMenu(activity, audioStreamsButton).apply {
         setOnMenuItemClickListener { clickedItem: MenuItem ->
-            when (clickedItem.groupId) {
-                AUDIO_MENU_GROUP -> {
-                    activity.onAudioTrackSelected(clickedItem.itemId).also { success ->
-                        if (success) {
-                            menu.forEach { it.isChecked = false }
-                            clickedItem.isChecked = true
-                        }
-                    }
-                    true
+            activity.onAudioTrackSelected(clickedItem.itemId).also { success ->
+                if (success) {
+                    menu.forEach { it.isChecked = false }
+                    clickedItem.isChecked = true
                 }
-                else -> false
             }
         }
         setOnDismissListener {
