@@ -31,6 +31,7 @@ object Constants {
     const val LANGUAGE_UNDEFINED = "und"
     const val TICKS_PER_MILLISECOND = 10000
     const val PLAYER_TIME_UPDATE_RATE = 3000L
+    const val DEFAULT_CONTROLS_TIMEOUT_MS = 2500
     const val DEFAULT_SEEK_TIME_MS = 5000L
 
     // Video player events

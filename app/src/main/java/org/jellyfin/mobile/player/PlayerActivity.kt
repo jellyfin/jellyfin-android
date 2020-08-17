@@ -15,6 +15,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
@@ -23,6 +24,7 @@ import com.google.android.exoplayer2.ui.PlayerView
 import kotlinx.coroutines.delay
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.utils.*
+import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_SEEK_TIME_MS
 import org.jellyfin.mobile.utils.Constants.EVENT_ENDED
 import org.jellyfin.mobile.utils.Constants.EVENT_PAUSE
@@ -116,6 +118,9 @@ class PlayerActivity : AppCompatActivity() {
         // Create playback menus
         playbackMenus = PlaybackMenus(this)
 
+        // Set controller timeout
+        playerView.controllerShowTimeoutMs = DEFAULT_CONTROLS_TIMEOUT_MS
+
         // Setup gesture handling
         setupGestureDetector()
 
@@ -164,12 +169,23 @@ class PlayerActivity : AppCompatActivity() {
                     else -> DEFAULT_SEEK_TIME_MS.unaryMinus()
                 }
                 viewModel.seekToOffset(seekTime)
+                playerView.postDelayed(DEFAULT_CONTROLS_TIMEOUT_MS.toLong()) {
+                    playerView.hideController()
+                }
+                return true
+            }
+
+            override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+                playerView.apply {
+                    if (!isControllerVisible) showController()
+                    else hideController()
+                }
                 return true
             }
         })
         playerView.setOnTouchListener { _, event ->
             gestureDetector.onTouchEvent(event)
-            false
+            true
         }
     }
 
