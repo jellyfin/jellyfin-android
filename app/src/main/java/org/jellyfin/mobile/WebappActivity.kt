@@ -139,7 +139,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
 
     private fun showServerSetup() {
         rootView.addView(serverSetupLayout)
-        hostInput.setText(appPreferences.instanceUrl)
+        hostInput.setText(appPreferences.instanceUrl ?: "https://")
         hostInput.setSelection(hostInput.length())
         hostInput.setOnEditorActionListener { _, action, event ->
             when {
