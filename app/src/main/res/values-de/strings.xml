@@ -16,4 +16,11 @@
 \nPrüfe deine Netzwerkverbindung.</string>
     <string name="toast_error_invalid_format">Adressformat ungültig</string>
     <string name="toast_error_missing_scheme">Protokoll fehlt (https oder http)</string>
+    <string name="pref_music_notification_always_dismissible_title">Musik Player Benachrichtigung immer verwerfbar</string>
+    <string name="pref_enable_exoplayer_summary">Aktiviere den experimentellen ExoPlayer Video Player, welcher mehr Videoformate und -Codecs unterstützt und besser ins Betriebssystem integriert ist</string>
+    <string name="pref_enable_exoplayer_title">Aktiviere Video Player Integration</string>
+    <string name="pref_category_video_player">Integrierter Video Player</string>
+    <string name="pref_category_music_player">Musik Player</string>
+    <string name="activity_name_settings">Jellyfin Einstellungen</string>
+    <string name="menu_item_none">Keiner</string>
 </resources>
