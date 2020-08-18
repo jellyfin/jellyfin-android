@@ -2,9 +2,25 @@
 <resources>
     <string name="pref_music_notification_always_dismissible_title">Jadikan notifikasi pemutar musik selalu dapat ditutup</string>
     <string name="pref_category_music_player">Pemutar lagu</string>
-    <string name="activity_name_settings">Pengaturan</string>
+    <string name="activity_name_settings">Pengaturan Jellyfin</string>
     <string name="wifi_only">Hanya WiFi</string>
     <string name="connect_button_text">Menghubungkan</string>
     <string name="connect_to_server_title">Sambungkan ke Server</string>
     <string name="app_name">Jellyfin</string>
+    <string name="menu_item_none">Tidak ada</string>
+    <string name="toast_error_missing_scheme">Alamat tidak ditemukan (https atau http)</string>
+    <string name="host_input_hint">Host</string>
+    <string name="pref_enable_exoplayer_summary">Aktifkan pemutar video ExoPlayer eksperimental yang mendukung lebih banyak format video dan codec yang lebih terintegrasi ke dalam OS</string>
+    <string name="pref_enable_exoplayer_title">Aktifkan integrasi pemutar video</string>
+    <string name="pref_category_video_player">Pemutar video asli</string>
+    <string name="network_title">Jenis Jaringan yang Diizinkan</string>
+    <string name="mobile_data_and_roaming">Data Seluler dan Roaming</string>
+    <string name="mobile_data">Data Seluler</string>
+    <string name="network_message">Apakah Anda ingin mengizinkan unduhan berjalan melalui data seluler atau jaringan roaming\?</string>
+    <string name="battery_optimizations_message">Nonaktifkan pengoptimalan baterai untuk pemutaran media saat layar mati.</string>
+    <string name="battery_optimizations_title">Nonaktifkan Pengoptimalan Baterai</string>
+    <string name="toast_error_cannot_connect_host">Koneksi ke %s tidak dapat dibuat.
+\nSilakan periksa nama host dan koneksi jaringan Anda.</string>
+    <string name="toast_error_invalid_format">Host memiliki format yang tidak valid</string>
+    <string name="downloading">Mengunduh</string>
 </resources>
