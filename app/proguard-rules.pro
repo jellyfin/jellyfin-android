@@ -5,17 +5,44 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Keep names of all Jellyfin classes
+-keepnames class org.jellyfin.mobile.**.* { *; }
+-keepnames interface org.jellyfin.mobile.**.* { *; }
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Keep WebView JS interfaces
+-keepclassmembers class org.jellyfin.mobile.bridge.* {
+    @android.webkit.JavascriptInterface public *;
+}
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Keep Chromecast methods
+-keepclassmembers class org.jellyfin.mobile.cast.Chromecast {
+    public *;
+}
+
+# Keep file names/line numbers
+-keepattributes SourceFile,LineNumberTable
+
+# Keep custom exceptions
+-keep public class * extends java.lang.Exception
+
+# Keep AndroidX ComponentFactory
+-keep class androidx.core.app.CoreComponentFactory { *; }
+
+# Assume SDK >= 21 to remove unnecessary compat code
+-assumevalues class android.os.Build$VERSION {
+  int SDK_INT return 21..2147483647;
+}
+
+# Remove default Android logging methods
+-assumenosideeffects class android.util.Log {
+  public static *** v(...);
+  public static *** d(...);
+  public static *** i(...);
+}
+
+# Remove Timber logging methods
+-assumenosideeffects class timber.log.Timber {
+  public static *** v(...);
+  public static *** d(...);
+  public static *** i(...);
+}
