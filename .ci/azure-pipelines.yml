@@ -73,7 +73,7 @@ jobs:
         displayName: 'Publish APKs'
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          ArtifactName: 'jellyfin-android-next'
+          ArtifactName: 'jellyfin-android'
           publishLocation: 'Container'
 
   - job: Publish
@@ -93,7 +93,7 @@ jobs:
         displayName: 'Download APKs'
         inputs:
           source: 'current'
-          artifact: 'jellyfin-android-next'
+          artifact: 'jellyfin-android'
           path: '$(System.ArtifactsDirectory)'
           runVersion: 'latest'
 
@@ -103,7 +103,7 @@ jobs:
         inputs:
           secureFile: 'keystore'
 
-      - script: '$(find / -name apksigner -print -quit) sign --ks ${KEYSTORE_SECUREFILEPATH} --ks-pass pass:${PASSWORD} --out ${SYSTEM_ARTIFACTSDIRECTORY}/jellyfin-android-next-${TAG}-release.apk ${SYSTEM_ARTIFACTSDIRECTORY}/jellyfin-android-next-${TAG}-release-unsigned.apk'
+      - script: '$(find / -name apksigner -print -quit) sign --ks ${KEYSTORE_SECUREFILEPATH} --ks-pass pass:${PASSWORD} --out ${SYSTEM_ARTIFACTSDIRECTORY}/jellyfin-android-${TAG}-release.apk ${SYSTEM_ARTIFACTSDIRECTORY}/jellyfin-android-${TAG}-release-unsigned.apk'
         displayName: 'Sign Release APK'
         env:
           PASSWORD: $(KeyStorePassword)
@@ -112,13 +112,13 @@ jobs:
         displayName: 'Remove Unsigned APK'
         inputs:
           sourceFolder: '$(System.ArtifactsDirectory)'
-          contents: 'jellyfin-android-next-${TAG}-release-unsigned.apk'
+          contents: 'jellyfin-android-${TAG}-release-unsigned.apk'
 
       - task: GithubRelease@0
         displayName: 'GitHub Upload'
         inputs:
           gitHubConnection: Jellyfin Release Download
-          repositoryName: jellyfin/jellyfin-android-next
+          repositoryName: jellyfin/jellyfin-android
           assets: '$(System.ArtifactsDirectory)/*.apk'
           action: 'edit'
           assetUploadMode: 'replace'
@@ -129,10 +129,10 @@ jobs:
           sshEndpoint: repository
           sourceFolder: '$(System.ArtifactsDirectory)'
           contents: '**'
-          targetFolder: '/srv/repository/releases/client/android-next/versions/$(TAG)'
+          targetFolder: '/srv/repository/releases/client/android/versions/$(TAG)'
 
       - task: SSH@0
         inputs:
           sshEndpoint: repository
           runOptions: 'inline'
-          inline: 'cd /srv/repository/releases/client/android-next && rm -rf *.apk && ln -s versions/$(TAG)/jellyfin-android-next-$(TAG)-*.apk .'
+          inline: 'cd /srv/repository/releases/client/android && rm -rf *.apk && ln -s versions/$(TAG)/jellyfin-android-$(TAG)-*.apk .'

@@ -7,11 +7,11 @@
 <img alt="Logo Banner" src="https://raw.githubusercontent.com/jellyfin/jellyfin-ux/master/branding/SVG/banner-logo-solid.svg?sanitize=true"/>
 <br/>
 <br/>
-<a href="https://github.com/jellyfin/jellyfin-android-next">
-<img alt="GPL 2.0 License" src="https://img.shields.io/github/license/jellyfin/jellyfin-android-next.svg"/>
+<a href="https://github.com/jellyfin/jellyfin-android">
+<img alt="GPL 2.0 License" src="https://img.shields.io/github/license/jellyfin/jellyfin-android.svg"/>
 </a>
-<a href="https://github.com/jellyfin/jellyfin-android-next/releases">
-<img alt="Current Release" src="https://img.shields.io/github/release/jellyfin/jellyfin-android-next.svg"/>
+<a href="https://github.com/jellyfin/jellyfin-android/releases">
+<img alt="Current Release" src="https://img.shields.io/github/release/jellyfin/jellyfin-android.svg"/>
 </a>
 <a href="https://translate.jellyfin.org/projects/jellyfin/jellyfin-android-next/?utm_source=widget">
 <img alt="Translation Status" src="https://translate.jellyfin.org/widgets/jellyfin/-/jellyfin-android-next/svg-badge.svg"/>
@@ -53,8 +53,8 @@ Most of the translations can be found in the [web client](https://translate.jell
 1. Clone or download this repository
 
    ```sh
-   git clone https://github.com/jellyfin/jellyfin-android-next.git
-   cd jellyfin-android-next
+   git clone https://github.com/jellyfin/jellyfin-android.git
+   cd jellyfin-android
    ```
 
 2. Open the project in Android Studio and run it from there or build an APK directly through Gradle:
