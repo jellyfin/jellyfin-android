@@ -16,4 +16,11 @@
     <string name="host_input_hint">Hostiteľ</string>
     <string name="connect_to_server_title">Pripojiť k serveru</string>
     <string name="app_name">Jellyfin</string>
+    <string name="pref_enable_exoplayer_summary">Povoliť experimentálny prehrávač videa ExoPlayer, ktorý podporuje viac formátov a kodekov, a je lepšie integrovaný do operačného systému</string>
+    <string name="pref_enable_exoplayer_title">Povoliť integráciu prehrávača videa</string>
+    <string name="pref_category_video_player">Natívny prehrávač videa</string>
+    <string name="pref_music_notification_always_dismissible_title">Umožniť odstránenie oznámení hudobného prehrávača</string>
+    <string name="pref_category_music_player">Prehrávač hudby</string>
+    <string name="activity_name_settings">Nastavenia Jellyfinu</string>
+    <string name="menu_item_none">Žiadny</string>
 </resources>
