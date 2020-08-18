@@ -14,15 +14,21 @@ import org.jellyfin.mobile.player.source.JellyfinMediaSource
 /**
  *  Provides a menu UI for subtitle, audio and video stream selection
  */
-class PlaybackMenus(private val activity: PlayerActivity) {
+class PlaybackMenus(private val activity: PlayerActivity) : PopupMenu.OnDismissListener {
     private val subtitlesButton: View = activity.findViewById(R.id.subtitles_button)
     private val audioStreamsButton: View = activity.findViewById(R.id.audio_streams_button)
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
 
     init {
-        subtitlesButton.setOnClickListener { subtitlesMenu.show() }
-        audioStreamsButton.setOnClickListener { audioStreamsMenu.show() }
+        subtitlesButton.setOnClickListener {
+            activity.suppressControllerAutoHide(true)
+            subtitlesMenu.show()
+        }
+        audioStreamsButton.setOnClickListener {
+            activity.suppressControllerAutoHide(true)
+            audioStreamsMenu.show()
+        }
     }
 
     fun onItemChanged(item: JellyfinMediaSource) {
@@ -39,9 +45,7 @@ class PlaybackMenus(private val activity: PlayerActivity) {
                 }
             }
         }
-        setOnDismissListener {
-            activity.restoreFullscreenState()
-        }
+        setOnDismissListener(this@PlaybackMenus)
     }
 
     private fun createAudioStreamsMenu() = PopupMenu(activity, audioStreamsButton).apply {
@@ -53,9 +57,7 @@ class PlaybackMenus(private val activity: PlayerActivity) {
                 }
             }
         }
-        setOnDismissListener {
-            activity.restoreFullscreenState()
-        }
+        setOnDismissListener(this@PlaybackMenus)
     }
 
     private fun buildMenuItems(menu: Menu, groupId: Int, tracksGroup: ExoPlayerTracksGroup<*>, showNone: Boolean = false) {
@@ -78,6 +80,11 @@ class PlaybackMenus(private val activity: PlayerActivity) {
             // No selection, check first item if possible
             if (menu.size > 0) menu[0].isChecked = true
         }
+    }
+
+    override fun onDismiss(menu: PopupMenu) {
+        activity.restoreFullscreenState()
+        activity.suppressControllerAutoHide(false)
     }
 
     companion object {

@@ -120,7 +120,7 @@ class PlayerActivity : AppCompatActivity() {
         playbackMenus = PlaybackMenus(this)
 
         // Set controller timeout
-        playerView.controllerShowTimeoutMs = DEFAULT_CONTROLS_TIMEOUT_MS
+        suppressControllerAutoHide(false)
 
         // Setup gesture handling
         setupGestureDetector()
@@ -158,6 +158,13 @@ class PlayerActivity : AppCompatActivity() {
                 else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             }
         }
+    }
+
+    /**
+     * If true, the player controls will show indefinitely
+     */
+    fun suppressControllerAutoHide(suppress: Boolean) {
+        playerView.controllerShowTimeoutMs = if (suppress) -1 else DEFAULT_CONTROLS_TIMEOUT_MS
     }
 
     @SuppressLint("ClickableViewAccessibility")
