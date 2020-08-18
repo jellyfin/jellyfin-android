@@ -165,11 +165,28 @@ class PlayerActivity : AppCompatActivity() {
         // Handle double tap gesture on controls
         val gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onDoubleTap(e: MotionEvent): Boolean {
-                val seekTime = when {
-                    e.x.toInt() > playerView.measuredWidth / 2 -> DEFAULT_SEEK_TIME_MS
-                    else -> DEFAULT_SEEK_TIME_MS.unaryMinus()
+                val viewWidth = playerView.measuredWidth
+                val viewHeight = playerView.measuredHeight
+                val viewCenterX = viewWidth / 2
+                val viewCenterY = viewHeight / 2
+                val fastForward = e.x.toInt() > viewCenterX
+
+                // Show ripple effect
+                playerView.foreground?.apply {
+                    val left = if (fastForward) viewCenterX else 0
+                    val right = if (fastForward) viewWidth else viewCenterX
+                    setBounds(left, viewCenterY - viewCenterX / 2, right, viewCenterY + viewCenterX / 2)
+                    setHotspot(e.x, e.y)
+                    state = intArrayOf(android.R.attr.state_enabled, android.R.attr.state_pressed)
+                    playerView.postDelayed(100) {
+                        state = IntArray(0)
+                    }
                 }
-                viewModel.seekToOffset(seekTime)
+
+                // Fast-forward/rewind
+                viewModel.seekToOffset(if (fastForward) DEFAULT_SEEK_TIME_MS else DEFAULT_SEEK_TIME_MS.unaryMinus())
+
+                // Ensure controller gets hidden after seeking
                 playerView.postDelayed(DEFAULT_CONTROLS_TIMEOUT_MS.toLong()) {
                     playerView.hideController()
                 }
