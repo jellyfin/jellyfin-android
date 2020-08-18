@@ -1,2 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pref_enable_exoplayer_summary">மேலும் வீடியோ வடிவங்கள் மற்றும் கோடெக்குகளை ஆதரிக்கும், மேலும் OS இல் மேலும் ஒருங்கிணைந்த சோதனை எக்ஸோபிளேயர் வீடியோ பிளேயரை இயக்கவும்</string>
+    <string name="pref_enable_exoplayer_title">வீடியோ பிளேயர் ஒருங்கிணைப்பை இயக்கு</string>
+    <string name="pref_category_video_player">வீடியோ பிளேயர்</string>
+    <string name="pref_music_notification_always_dismissible_title">மியூசிக் பிளேயர் அறிவிப்பை எப்போதும் நிராகரிக்கும்படி செய்யுங்கள்</string>
+    <string name="pref_category_music_player">இசைப்பான்</string>
+    <string name="activity_name_settings">ஜெல்லிஃபின் அமைப்புகள்</string>
+    <string name="menu_item_none">எதுவுமில்லை</string>
+    <string name="downloading">பதிவிறக்குகிறது</string>
+    <string name="mobile_data_and_roaming">மொபைல் தரவு &amp; ரோமிங்</string>
+    <string name="mobile_data">மொபைல் தரவு</string>
+    <string name="wifi_only">வைஃபை மட்டும்</string>
+    <string name="network_message">மொபைல் தரவு அல்லது ரோமிங் நெட்வொர்க்குகள் மூலம் பதிவிறக்கத்தை இயக்க அனுமதிக்க விரும்புகிறீர்களா\?</string>
+    <string name="network_title">அனுமதிக்கப்பட்ட பிணைய வகைகள்</string>
+    <string name="battery_optimizations_message">திரை முடக்கத்தில் இருக்கும்போது மீடியா பிளேபேக்கிற்கான பேட்டரி மேம்படுத்தல்களை முடக்கவும்.</string>
+    <string name="battery_optimizations_title">பேட்டரி உகப்பாக்கங்களை முடக்கு</string>
+    <string name="toast_error_cannot_connect_host">%s உடன் இணைப்பை நிறுவ முடியாது.
+\nஹோஸ்ட்பெயர் மற்றும் உங்கள் பிணைய இணைப்பை சரிபார்க்கவும்.</string>
+    <string name="toast_error_invalid_format">ஹோஸ்ட் தவறான வடிவத்தைக் கொண்டுள்ளது</string>
+    <string name="toast_error_missing_scheme">விடுபட்ட திட்டம் (https அல்லது http)</string>
+    <string name="connect_button_text">இணை</string>
+    <string name="host_input_hint">ஹோஸ்ட்</string>
+    <string name="connect_to_server_title">சேவையகத்துடன் இணைக்கவும்</string>
+    <string name="app_name">ஜெல்லிஃபின்</string>
+</resources>
