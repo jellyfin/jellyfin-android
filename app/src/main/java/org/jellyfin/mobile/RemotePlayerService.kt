@@ -27,6 +27,19 @@ import kotlinx.coroutines.launch
 import org.jellyfin.mobile.bridge.Commands
 import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_FAST_FORWARD
+import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_NEXT
+import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_PAUSE
+import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_PLAY_PAUSE
+import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_PREVIOUS
+import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_REWIND
+import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_STOP
+import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_VOL_DOWN
+import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_VOL_UP
+import org.jellyfin.mobile.utils.Constants.MUSIC_NOTIFICATION_CHANNEL_ID
+import org.jellyfin.mobile.utils.Constants.SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS
+import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
+import org.jellyfin.mobile.utils.setPlaybackState
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
@@ -60,24 +73,24 @@ class RemotePlayerService : Service(), CoroutineScope {
             if (intent.action == Intent.ACTION_HEADSET_PLUG) {
                 val state = intent.getIntExtra("state", 2)
                 if (state == 0) {
-                    binder.sendInputManagerCommand("playpause")
+                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
                     headphoneFlag = true
                 } else if (headphoneFlag) {
-                    binder.sendInputManagerCommand("playpause")
+                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
                 }
             } else if (intent.action == BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED) {
                 val extras = intent.extras ?: return
                 val state = extras.getInt(BluetoothA2dp.EXTRA_STATE)
                 val previousState = extras.getInt(BluetoothA2dp.EXTRA_PREVIOUS_STATE)
                 if ((state == BluetoothA2dp.STATE_DISCONNECTED || state == BluetoothA2dp.STATE_DISCONNECTING) && previousState == BluetoothA2dp.STATE_CONNECTED) {
-                    binder.sendInputManagerCommand("pause")
+                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PAUSE)
                 }
             } else if (intent.action == BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED) {
                 val extras = intent.extras ?: return
                 val state = extras.getInt(BluetoothHeadset.EXTRA_STATE)
                 val previousState = extras.getInt(BluetoothHeadset.EXTRA_PREVIOUS_STATE)
                 if (state == BluetoothHeadset.STATE_AUDIO_DISCONNECTED && previousState == BluetoothHeadset.STATE_AUDIO_CONNECTED) {
-                    binder.sendInputManagerCommand("pause")
+                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PAUSE)
                 }
             }
         }
@@ -105,7 +118,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         // Create notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            val notificationChannel = NotificationChannel(CHANNEL_ID, "Jellyfin", NotificationManager.IMPORTANCE_LOW).apply {
+            val notificationChannel = NotificationChannel(MUSIC_NOTIFICATION_CHANNEL_ID, "Jellyfin", NotificationManager.IMPORTANCE_LOW).apply {
                 description = "Media notifications"
             }
             nm.createNotificationChannel(notificationChannel)
@@ -217,14 +230,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         setPlaybackState(!isPaused, position, canSeek)
 
         if (isLocalPlayer) {
-            val audioAttributes = AudioAttributes.Builder().apply {
-                setUsage(AudioAttributes.USAGE_MEDIA)
-                setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    setAllowedCapturePolicy(AudioAttributes.ALLOW_CAPTURE_BY_ALL)
-                }
-            }.build()
-            mediaSession.setPlaybackToLocal(audioAttributes)
+            mediaSession.applyDefaultLocalAudioAttributes(AudioAttributes.CONTENT_TYPE_MUSIC)
         } else {
             mediaSession.setPlaybackToRemote(binder.remoteVolumeProvider)
         }
@@ -240,7 +246,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         @Suppress("DEPRECATION")
         val notification = Notification.Builder(this).apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                setChannelId(CHANNEL_ID) // Set Notification Channel on Android O and above
+                setChannelId(MUSIC_NOTIFICATION_CHANNEL_ID) // Set Notification Channel on Android O and above
                 setColorized(true) // Color notification based on cover art
             } else {
                 setPriority(Notification.PRIORITY_LOW)
@@ -298,18 +304,10 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     private fun setPlaybackState(isPlaying: Boolean, position: Long, canSeek: Boolean) {
-        val state = PlaybackState.Builder().apply {
-            setState(if (isPlaying) PlaybackState.STATE_PLAYING else PlaybackState.STATE_PAUSED, position, 1.0f)
-            val playbackActions = PlaybackState.ACTION_PLAY_PAUSE or
-                    PlaybackState.ACTION_PLAY or
-                    PlaybackState.ACTION_PAUSE or
-                    PlaybackState.ACTION_STOP or
-                    PlaybackState.ACTION_SKIP_TO_NEXT or
-                    PlaybackState.ACTION_SKIP_TO_PREVIOUS or
-                    PlaybackState.ACTION_SET_RATING
-            setActions(if (canSeek) playbackActions or PlaybackState.ACTION_SEEK_TO else playbackActions)
-        }.build()
-        mediaSession!!.setPlaybackState(state)
+        val playbackActions = if (canSeek) {
+            SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS or PlaybackState.ACTION_SEEK_TO
+        } else SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS
+        mediaSession!!.setPlaybackState(isPlaying, position, playbackActions)
     }
 
     private fun createDeleteIntent(): PendingIntent {
@@ -343,31 +341,31 @@ class RemotePlayerService : Service(), CoroutineScope {
             setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS or MediaSession.FLAG_HANDLES_MEDIA_BUTTONS)
             setCallback(object : MediaSession.Callback() {
                 override fun onPlay() {
-                    binder.sendInputManagerCommand("playpause")
+                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
                 }
 
                 override fun onPause() {
-                    binder.sendInputManagerCommand("playpause")
-                }
-
-                override fun onSkipToNext() {
-                    binder.sendInputManagerCommand("next")
+                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
                 }
 
                 override fun onSkipToPrevious() {
-                    binder.sendInputManagerCommand("previous")
+                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PREVIOUS)
                 }
 
-                override fun onFastForward() {
-                    binder.sendInputManagerCommand("fastforward")
+                override fun onSkipToNext() {
+                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_NEXT)
                 }
 
                 override fun onRewind() {
-                    binder.sendInputManagerCommand("rewind")
+                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_REWIND)
+                }
+
+                override fun onFastForward() {
+                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_FAST_FORWARD)
                 }
 
                 override fun onStop() {
-                    binder.sendInputManagerCommand("stop")
+                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_STOP)
                     onStopped()
                 }
 
@@ -411,11 +409,11 @@ class RemotePlayerService : Service(), CoroutineScope {
             override fun onAdjustVolume(direction: Int) {
                 when (direction) {
                     AudioManager.ADJUST_RAISE -> {
-                        sendInputManagerCommand("volumeup")
+                        sendInputManagerCommand(INPUT_MANAGER_COMMAND_VOL_UP)
                         currentVolume += 2 // TODO: have web notify app with new volume instead
                     }
                     AudioManager.ADJUST_LOWER -> {
-                        sendInputManagerCommand("volumedown")
+                        sendInputManagerCommand(INPUT_MANAGER_COMMAND_VOL_DOWN)
                         currentVolume -= 2 // TODO: have web notify app with new volume instead
                     }
                 }
@@ -438,9 +436,5 @@ class RemotePlayerService : Service(), CoroutineScope {
         fun sendSetVolumeCommand(value: Int) {
             webViewController?.loadUrl(Commands.buildPlaybackManagerCommand("sendCommand({Name:'SetVolume', Arguments:{Volume:$value}})"))
         }
-    }
-
-    companion object {
-        const val CHANNEL_ID = "JellyfinChannelId"
     }
 }

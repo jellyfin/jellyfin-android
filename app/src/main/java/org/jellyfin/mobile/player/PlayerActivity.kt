@@ -87,7 +87,7 @@ class PlayerActivity : AppCompatActivity() {
             if (player == null) finish()
         }
         viewModel.playerState.observe(this) { playerState ->
-            val isPlaying = viewModel.player.value?.isPlaying == true
+            val isPlaying = viewModel.playerOrNull?.isPlaying == true
             if (isPlaying) {
                 window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             } else {
@@ -216,7 +216,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun updatePlaybackPosition() {
-        val player = viewModel.player.value ?: return
+        val player = viewModel.playerOrNull ?: return
         val playbackPositionMillis = player.currentPosition
         if (player.playbackState == Player.STATE_READY && playbackPositionMillis > 0 && playbackPositionMillis != lastReportedPosition) {
             notifyEvent(EVENT_TIME_UPDATE, playbackPositionMillis.toString())

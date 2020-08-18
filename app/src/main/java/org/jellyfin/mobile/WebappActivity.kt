@@ -31,6 +31,7 @@ import org.jellyfin.mobile.bridge.NativeInterface
 import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.cast.Chromecast
 import org.jellyfin.mobile.utils.*
+import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_BACK
 import timber.log.Timber
 import java.io.Reader
 
@@ -221,7 +222,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
                 cachedInstanceUrl = appPreferences.instanceUrl?.toHttpUrlOrNull()
                 webView.isVisible = true
             }
-            else -> triggerInputManagerAction("back")
+            else -> triggerInputManagerAction(INPUT_MANAGER_COMMAND_BACK)
         }
     }
 
