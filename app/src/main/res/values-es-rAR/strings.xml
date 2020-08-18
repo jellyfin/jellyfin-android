@@ -16,4 +16,11 @@
     <string name="toast_error_missing_scheme">Esquema faltante (https o http)</string>
     <string name="connect_button_text">Conectar</string>
     <string name="host_input_hint">Host</string>
+    <string name="pref_enable_exoplayer_summary">Habilite el reproductor de video experimental ExoPlayer que admite más formatos de video y códecs y está más integrado en el sistema operativo</string>
+    <string name="pref_enable_exoplayer_title">Habilitar la integración del reproductor de video</string>
+    <string name="pref_category_video_player">Reproductor de video nativo</string>
+    <string name="pref_music_notification_always_dismissible_title">Hacer que la notificación del reproductor de música sea siempre descartable</string>
+    <string name="pref_category_music_player">Reproductor de Música</string>
+    <string name="activity_name_settings">Configuración de Jellyfin</string>
+    <string name="menu_item_none">Ninguno</string>
 </resources>
