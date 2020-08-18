@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pref_music_notification_always_dismissible_title">Jadikan notifikasi pemutar musik selalu dapat ditutup</string>
+    <string name="pref_category_music_player">Pemutar lagu</string>
+    <string name="activity_name_settings">Pengaturan</string>
+    <string name="wifi_only">Hanya WiFi</string>
+    <string name="connect_button_text">Menghubungkan</string>
+    <string name="connect_to_server_title">Sambungkan ke Server</string>
+    <string name="app_name">Jellyfin</string>
+</resources>
