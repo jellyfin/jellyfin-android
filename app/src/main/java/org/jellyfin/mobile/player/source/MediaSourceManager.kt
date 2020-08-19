@@ -129,7 +129,7 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
         val trackInfo = trackSelector.currentMappedTrackInfo
         return if (rendererIndex >= 0 && trackInfo != null) {
             val trackGroups = trackInfo.getTrackGroups(rendererIndex)
-            if (selectedAudioIndex >= 0) {
+            if (selectedAudioIndex in 0 until trackGroups.length) {
                 val selection = DefaultTrackSelector.SelectionOverride(selectedAudioIndex, 0)
                 parameters.setSelectionOverride(rendererIndex, trackGroups, selection)
             } else {
@@ -155,7 +155,7 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
         val trackInfo = trackSelector.currentMappedTrackInfo
         return if (rendererIndex >= 0 && trackInfo != null) {
             val trackGroups = trackInfo.getTrackGroups(rendererIndex)
-            if (selectedSubtitleIndex >= 0) {
+            if (selectedSubtitleIndex in 0 until trackGroups.length) {
                 val selection = DefaultTrackSelector.SelectionOverride(selectedSubtitleIndex, 0)
                 parameters.setSelectionOverride(rendererIndex, trackGroups, selection)
                 parameters.setRendererDisabled(rendererIndex, false)
