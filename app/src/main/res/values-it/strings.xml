@@ -8,4 +8,18 @@
     <string name="battery_optimizations_message">Disabilita le ottimizzazioni della battera per consentire la riproduzione in background quando lo schermo è spento.</string>
     <string name="battery_optimizations_title">Disabilita ottimizzazione della batteria</string>
     <string name="network_title">Tipi di Rete Permessi</string>
+    <string name="pref_enable_exoplayer_summary">Abilita il lettore ExoPlayer sperimentale che supporta numerosi formati video ed è più integrato nel Sistema Operativo</string>
+    <string name="pref_enable_exoplayer_title">Abilita integrazione del video player</string>
+    <string name="pref_category_video_player">Video player nativo</string>
+    <string name="pref_music_notification_always_dismissible_title">Rendi le notifiche del player musicale sempre rimovibili</string>
+    <string name="pref_category_music_player">Player Musicale</string>
+    <string name="activity_name_settings">Impostazioni Jellyfin</string>
+    <string name="toast_error_cannot_connect_host">La connessione verso %s non può essere stabilita.
+\nControllare il nome Host e la connessione di rete.</string>
+    <string name="toast_error_invalid_format">L\'Host non ha un formato valido</string>
+    <string name="toast_error_missing_scheme">Schema mancante (https o http)</string>
+    <string name="connect_button_text">Connetti</string>
+    <string name="host_input_hint">Host</string>
+    <string name="connect_to_server_title">Connetti al Server</string>
+    <string name="app_name">Jellyfin</string>
 </resources>
