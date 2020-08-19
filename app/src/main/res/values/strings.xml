@@ -18,6 +18,7 @@
     <string name="downloading">Downloading</string>
 
     <string name="menu_item_none">None</string>
+    <string name="playback_info">Transcoding: %b\n\nVideo streams:\n%s\n\nAudio streams:\n%s</string>
 
     <string name="activity_name_settings">Jellyfin Settings</string>
     <string name="pref_category_music_player">Music player</string>

@@ -4,8 +4,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.core.view.forEach
 import androidx.core.view.get
+import androidx.core.view.isVisible
 import androidx.core.view.size
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.player.source.ExoPlayerTracksGroup
@@ -17,8 +19,10 @@ import org.jellyfin.mobile.player.source.JellyfinMediaSource
 class PlaybackMenus(private val activity: PlayerActivity) : PopupMenu.OnDismissListener {
     private val subtitlesButton: View = activity.findViewById(R.id.subtitles_button)
     private val audioStreamsButton: View = activity.findViewById(R.id.audio_streams_button)
+    private val infoButton: View = activity.findViewById(R.id.info_button)
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
+    val playbackInfo: TextView = activity.findViewById(R.id.playback_info)
 
     init {
         subtitlesButton.setOnClickListener {
@@ -29,11 +33,24 @@ class PlaybackMenus(private val activity: PlayerActivity) : PopupMenu.OnDismissL
             activity.suppressControllerAutoHide(true)
             audioStreamsMenu.show()
         }
+        infoButton.setOnClickListener {
+            activity.suppressControllerAutoHide(true)
+            playbackInfo.isVisible = !playbackInfo.isVisible
+        }
     }
 
     fun onItemChanged(item: JellyfinMediaSource) {
         buildMenuItems(subtitlesMenu.menu, SUBTITLES_MENU_GROUP, item.subtitleTracksGroup, true)
         buildMenuItems(audioStreamsMenu.menu, AUDIO_MENU_GROUP, item.audioTracksGroup)
+        playbackInfo.text = activity.getString(R.string.playback_info,
+            item.isTranscoding,
+            item.videoTracksGroup.tracks.joinToString("\n") { video ->
+                "- ${video.title}"
+            },
+            item.audioTracksGroup.tracks.joinToString("\n") { audio ->
+                "- ${audio.title} (${audio.language})"
+            }
+        )
     }
 
     private fun createSubtitlesMenu() = PopupMenu(activity, subtitlesButton).apply {

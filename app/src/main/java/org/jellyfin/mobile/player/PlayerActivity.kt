@@ -172,6 +172,9 @@ class PlayerActivity : AppCompatActivity() {
         // Handle double tap gesture on controls
         val gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onDoubleTap(e: MotionEvent): Boolean {
+                if (playbackMenus.playbackInfo.isVisible)
+                    return true
+
                 val viewWidth = playerView.measuredWidth
                 val viewHeight = playerView.measuredHeight
                 val viewCenterX = viewWidth / 2
@@ -202,8 +205,13 @@ class PlayerActivity : AppCompatActivity() {
 
             override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
                 playerView.apply {
-                    if (!isControllerVisible) showController()
-                    else hideController()
+                    if (!isControllerVisible) {
+                        showController()
+                    } else {
+                        if (playbackMenus.playbackInfo.isVisible)
+                            playbackMenus.playbackInfo.isVisible = false
+                        hideController()
+                    }
                 }
                 return true
             }
