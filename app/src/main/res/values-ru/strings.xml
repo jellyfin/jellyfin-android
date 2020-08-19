@@ -8,4 +8,6 @@
     <string name="network_message">Вы разрешаете осуществлять скачивание при использовании мобильным интернетом или в роуминге\?</string>
     <string name="network_title">Доступные типы сетей</string>
     <string name="battery_optimizations_title">Выключить оптимизацию энергопотребления при работе от батареи</string>
+    <string name="connect_to_server_title">Соединение</string>
+    <string name="app_name">Jellyfin</string>
 </resources>
