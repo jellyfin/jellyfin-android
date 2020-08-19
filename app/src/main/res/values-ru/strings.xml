@@ -10,4 +10,13 @@
     <string name="battery_optimizations_title">Выключить оптимизацию энергопотребления при работе от батареи</string>
     <string name="connect_to_server_title">Соединение</string>
     <string name="app_name">Jellyfin</string>
+    <string name="pref_category_video_player">Встроенный видео плеер</string>
+    <string name="pref_category_music_player">Музыкальный проигрыватель</string>
+    <string name="activity_name_settings">Настройки</string>
+    <string name="menu_item_none">Нет</string>
+    <string name="toast_error_cannot_connect_host">Соединение с %s не установлено.
+\nПроверьте имя сервера и ваше подключение к сети.</string>
+    <string name="toast_error_invalid_format">Неправильный формат имени сервера</string>
+    <string name="connect_button_text">Соединение</string>
+    <string name="host_input_hint">Сервер</string>
 </resources>
