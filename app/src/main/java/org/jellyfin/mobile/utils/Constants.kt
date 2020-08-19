@@ -34,12 +34,12 @@ object Constants {
     // Music player constants
     const val MUSIC_NOTIFICATION_CHANNEL_ID = "JellyfinChannelId"
     const val SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS: Long = PlaybackState.ACTION_PLAY_PAUSE or
-            PlaybackState.ACTION_PLAY or
-            PlaybackState.ACTION_PAUSE or
-            PlaybackState.ACTION_STOP or
-            PlaybackState.ACTION_SKIP_TO_NEXT or
-            PlaybackState.ACTION_SKIP_TO_PREVIOUS or
-            PlaybackState.ACTION_SET_RATING
+        PlaybackState.ACTION_PLAY or
+        PlaybackState.ACTION_PAUSE or
+        PlaybackState.ACTION_STOP or
+        PlaybackState.ACTION_SKIP_TO_NEXT or
+        PlaybackState.ACTION_SKIP_TO_PREVIOUS or
+        PlaybackState.ACTION_SET_RATING
 
     // Music player actions
     const val ACTION_PLAY = "action_play"
@@ -59,12 +59,12 @@ object Constants {
     const val DEFAULT_CONTROLS_TIMEOUT_MS = 2500
     const val DEFAULT_SEEK_TIME_MS = 5000L
     const val SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS: Long = PlaybackState.ACTION_PLAY_PAUSE or
-            PlaybackState.ACTION_PLAY or
-            PlaybackState.ACTION_PAUSE or
-            PlaybackState.ACTION_SEEK_TO or
-            PlaybackState.ACTION_REWIND or
-            PlaybackState.ACTION_FAST_FORWARD or
-            PlaybackState.ACTION_STOP
+        PlaybackState.ACTION_PLAY or
+        PlaybackState.ACTION_PAUSE or
+        PlaybackState.ACTION_SEEK_TO or
+        PlaybackState.ACTION_REWIND or
+        PlaybackState.ACTION_FAST_FORWARD or
+        PlaybackState.ACTION_STOP
 
     // Video player events
     const val EVENT_PLAYING = "Playing"

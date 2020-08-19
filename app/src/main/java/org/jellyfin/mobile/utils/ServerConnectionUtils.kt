@@ -12,8 +12,6 @@ import org.jellyfin.mobile.utils.Constants.SERVER_INFO_PATH
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
-import java.io.IOException
-import java.net.InetAddress
 
 suspend fun WebappActivity.checkServerUrlAndConnection(enteredUrl: String): HttpUrl? {
     val normalizedUrl = enteredUrl.run {
