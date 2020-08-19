@@ -41,16 +41,29 @@ object Constants {
         PlaybackState.ACTION_SKIP_TO_PREVIOUS or
         PlaybackState.ACTION_SET_RATING
 
-    // Music player actions
-    const val ACTION_PLAY = "action_play"
-    const val ACTION_PAUSE = "action_pause"
-    const val ACTION_REWIND = "action_rewind"
-    const val ACTION_FAST_FORWARD = "action_fast_foward"
-    const val ACTION_NEXT = "action_next"
-    const val ACTION_PREVIOUS = "action_previous"
-    const val ACTION_STOP = "action_stop"
-    const val ACTION_REPORT = "action_report"
-    const val ACTION_SHOW_PLAYER = "ACTION_SHOW_PLAYER"
+    // Music player intent actions
+    const val ACTION_SHOW_PLAYER = "org.jellyfin.mobile.intent.action.SHOW_PLAYER"
+    const val ACTION_PLAY = "org.jellyfin.mobile.intent.action.PLAY"
+    const val ACTION_PAUSE = "org.jellyfin.mobile.intent.action.PAUSE"
+    const val ACTION_REWIND = "org.jellyfin.mobile.intent.action.REWIND"
+    const val ACTION_FAST_FORWARD = "org.jellyfin.mobile.intent.action.FAST_FORWARD"
+    const val ACTION_PREVIOUS = "org.jellyfin.mobile.intent.action.PREVIOUS"
+    const val ACTION_NEXT = "org.jellyfin.mobile.intent.action.NEXT"
+    const val ACTION_STOP = "org.jellyfin.mobile.intent.action.STOP"
+    const val ACTION_REPORT = "org.jellyfin.mobile.intent.action.REPORT"
+
+    // Music player intent extras
+    const val EXTRA_PLAYER_ACTION = "action"
+    const val EXTRA_ITEM_ID = "itemId"
+    const val EXTRA_TITLE = "title"
+    const val EXTRA_ARTIST = "artist"
+    const val EXTRA_ALBUM = "album"
+    const val EXTRA_IMAGE_URL = "imageUrl"
+    const val EXTRA_POSITION = "position"
+    const val EXTRA_DURATION = "duration"
+    const val EXTRA_CAN_SEEK = "canSeek"
+    const val EXTRA_IS_LOCAL_PLAYER = "isLocalPlayer"
+    const val EXTRA_IS_PAUSED = "isPaused"
 
     // Video player constants
     const val LANGUAGE_UNDEFINED = "und"
