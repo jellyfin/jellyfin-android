@@ -37,5 +37,5 @@ class AppPreferences(context: Context) {
         get() = sharedPreferences.getBoolean(Constants.PREF_MUSIC_NOTIFICATION_ALWAYS_DISMISSIBLE, false)
 
     val enableExoPlayer: Boolean
-        get() = sharedPreferences.getBoolean(Constants.PREF_ENABLE_EXOPLAYER, true)
+        get() = sharedPreferences.getBoolean(Constants.PREF_ENABLE_EXOPLAYER, false)
 }

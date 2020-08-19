@@ -43,7 +43,6 @@ class SettingsActivity : AppCompatActivity() {
         checkBox(Constants.PREF_ENABLE_EXOPLAYER) {
             titleRes = R.string.pref_enable_exoplayer_title
             summaryRes = R.string.pref_enable_exoplayer_summary
-            defaultValue = true
         }
     }
 
