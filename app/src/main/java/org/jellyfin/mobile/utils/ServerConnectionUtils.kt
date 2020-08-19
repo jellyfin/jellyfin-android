@@ -30,18 +30,15 @@ suspend fun WebappActivity.checkServerUrlAndConnection(enteredUrl: String): Http
     var serverInfoResponse: String? = null
     loop@ for (url in urls) {
         httpUrl = url.toHttpUrlOrNull()
-        when {
-            httpUrl == null -> {
-                toast(R.string.toast_error_invalid_format)
-                return null // Format is invalid, don't try any other variants
-            }
-            !httpUrl.isReachable() -> continue@loop
-            else -> {
-                serverInfoResponse = fetchServerInfo(httpClient, httpUrl)
-                if (serverInfoResponse != null)
-                    break@loop
-            }
+
+        if (httpUrl == null) {
+            toast(R.string.toast_error_invalid_format)
+            return null // Format is invalid, don't try any other variants
         }
+
+        serverInfoResponse = fetchServerInfo(httpClient, httpUrl)
+        if (serverInfoResponse != null)
+            break@loop
     }
 
     if (httpUrl == null || serverInfoResponse == null) {
@@ -67,14 +64,6 @@ suspend fun WebappActivity.checkServerUrlAndConnection(enteredUrl: String): Http
     return if (isValidInstance) httpUrl else {
         toast(getString(R.string.toast_error_cannot_connect_host, normalizedUrl))
         null
-    }
-}
-
-suspend fun HttpUrl.isReachable() = withContext(Dispatchers.IO) {
-    try {
-        InetAddress.getByName(host).isReachable(1000)
-    } catch (e: IOException) {
-        false
     }
 }
 
