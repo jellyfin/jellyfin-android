@@ -16,4 +16,11 @@
 \nControleer de hostname en de netwerk verbindingen.</string>
     <string name="connect_button_text">Verbind</string>
     <string name="connect_to_server_title">Verbind met server</string>
+    <string name="pref_enable_exoplayer_summary">Gebruik de experimentele video speler voor betere integratie met het besturingssysteem</string>
+    <string name="pref_enable_exoplayer_title">Gebruik ingebouwde video speler</string>
+    <string name="pref_category_video_player">Ingebouwde video speler</string>
+    <string name="pref_music_notification_always_dismissible_title">Muziek notificatie kan weggeveegd worden</string>
+    <string name="pref_category_music_player">Muziek speler</string>
+    <string name="activity_name_settings">Jellyfin Instellingen</string>
+    <string name="menu_item_none">Geen</string>
 </resources>
