@@ -10,7 +10,7 @@
     <string name="menu_item_none">Tidak ada</string>
     <string name="toast_error_missing_scheme">Alamat tidak ditemukan (https atau http)</string>
     <string name="host_input_hint">Host</string>
-    <string name="pref_enable_exoplayer_summary">Aktifkan pemutar video ExoPlayer eksperimental yang mendukung lebih banyak format video dan codec yang lebih terintegrasi ke dalam OS</string>
+    <string name="pref_enable_exoplayer_summary">Aktifkan pemutar video ExoPlayer eksperimental yang mendukung lebih banyak format video dan codec, dan lebih terintegrasi ke dalam OS</string>
     <string name="pref_enable_exoplayer_title">Aktifkan integrasi pemutar video</string>
     <string name="pref_category_video_player">Pemutar video asli</string>
     <string name="network_title">Jenis Jaringan yang Diizinkan</string>
