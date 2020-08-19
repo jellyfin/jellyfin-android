@@ -75,7 +75,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
 
         // Load content
         cachedInstanceUrl = appPreferences.instanceUrl?.toHttpUrlOrNull()
-        checkServerAndLoad()
+        loadOrShowSetup()
 
         chromecast.initializePlugin(this)
     }
@@ -127,7 +127,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
         addJavascriptInterface(NativePlayer(this@WebappActivity), "NativePlayer")
     }
 
-    private fun checkServerAndLoad() {
+    private fun loadOrShowSetup() {
         cachedInstanceUrl.let { url ->
             if (url != null) {
                 webView.isVisible = true
@@ -141,7 +141,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
 
     private fun showServerSetup() {
         rootView.addView(serverSetupLayout)
-        hostInput.setText(appPreferences.instanceUrl ?: "https://")
+        hostInput.setText(appPreferences.instanceUrl)
         hostInput.setSelection(hostInput.length())
         hostInput.setOnEditorActionListener { _, action, event ->
             when {
@@ -166,24 +166,15 @@ class WebappActivity : AppCompatActivity(), WebViewController {
     }
 
     private fun connect() {
-        val url = hostInput.text.toString().run {
-            if (lastOrNull() == '/') this
-            else "$this/"
-        }
         hostInput.isEnabled = false
         connectButton.isEnabled = false
         lifecycleScope.launch {
-            val httpUrl = url.toHttpUrlOrNull()
-            when {
-                !url.startsWith("https") && !url.startsWith("http") -> toast(R.string.toast_error_missing_scheme)
-                httpUrl == null -> toast(R.string.toast_error_invalid_format)
-                !httpUrl.isReachable() -> toast(getString(R.string.toast_error_cannot_connect_host, httpUrl.toString()))
-                else -> {
-                    appPreferences.instanceUrl = httpUrl.toString()
-                    cachedInstanceUrl = httpUrl
-                    rootView.removeView(serverSetupLayout)
-                    checkServerAndLoad()
-                }
+            val httpUrl = checkServerUrlAndConnection(hostInput.text.toString())
+            if (httpUrl != null) {
+                appPreferences.instanceUrl = httpUrl.toString()
+                cachedInstanceUrl = httpUrl
+                rootView.removeView(serverSetupLayout)
+                loadOrShowSetup()
             }
             hostInput.isEnabled = true
             connectButton.isEnabled = true
@@ -197,7 +188,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
 
     private fun onSelectServer() {
         cachedInstanceUrl = null
-        checkServerAndLoad()
+        loadOrShowSetup()
     }
 
     private fun onErrorReceived() {

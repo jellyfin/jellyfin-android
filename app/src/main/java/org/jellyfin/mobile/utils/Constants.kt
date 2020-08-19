@@ -6,6 +6,7 @@ object Constants {
     // Webapp constants
     const val INDEX_PATCH_PATH = "index_patch.html"
     const val INDEX_PATH = "web/index.html"
+    const val SERVER_INFO_PATH = "system/info/public"
 
     // Preference keys
     const val PREF_INSTANCE_URL = "pref_instance_url"

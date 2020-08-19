@@ -4,21 +4,9 @@ import android.content.Context
 import android.os.Build
 import android.webkit.WebResourceError
 import android.webkit.WebResourceResponse
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
-import java.net.InetAddress
-
-suspend fun HttpUrl.isReachable() = withContext(Dispatchers.IO) {
-    try {
-        InetAddress.getByName(host).isReachable(1000)
-    } catch (e: IOException) {
-        false
-    }
-}
 
 fun Context.loadPatchedIndex(httpClient: OkHttpClient, url: String): WebResourceResponse? = try {
     val result = StringBuilder()
