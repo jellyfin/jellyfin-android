@@ -43,5 +43,5 @@ fun Context.loadAsset(url: String): WebResourceResponse {
 
 val emptyResponse = WebResourceResponse("text/html", Charsets.UTF_8.toString(), "".byteInputStream())
 
-val WebResourceError.descriptionOrNull
-    get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) description else null
+val WebResourceError.descriptionOrNull: String?
+    get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) description.toString() else null

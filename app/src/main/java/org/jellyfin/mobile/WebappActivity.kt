@@ -115,7 +115,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
             }
 
             override fun onReceivedError(view: WebView, request: WebResourceRequest, errorResponse: WebResourceError) {
-                Timber.e("Received WebView error at ${request.url}: %s", errorResponse.descriptionOrNull)
+                Timber.e("Received WebView error at %s: %s", request.url.toString(), errorResponse.descriptionOrNull)
             }
         }
         webChromeClient = WebChromeClient()
