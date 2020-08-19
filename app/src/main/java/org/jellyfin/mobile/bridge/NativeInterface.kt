@@ -15,6 +15,7 @@ import org.jellyfin.mobile.utils.disableFullscreen
 import org.jellyfin.mobile.utils.enableFullscreen
 import org.jellyfin.mobile.utils.requestDownload
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
 
@@ -30,7 +31,7 @@ class NativeInterface(private val activity: WebappActivity) {
             put("appName", "Jellyfin Android")
             put("appVersion", BuildConfig.VERSION_CODE.toString())
         }.toString()
-    } catch (e: Exception) {
+    } catch (e: JSONException) {
         null
     }
 
@@ -64,25 +65,25 @@ class NativeInterface(private val activity: WebappActivity) {
 
     @JavascriptInterface
     fun updateMediaSession(args: String): Boolean {
-        val options = JSONObject(args)
+        val options = try {
+            JSONObject(args)
+        } catch (e: JSONException) {
+            Timber.e("updateMediaSession: %s", e.message)
+            return false
+        }
         val intent = Intent(activity, RemotePlayerService::class.java).apply {
             action = Constants.ACTION_REPORT
-            try {
-                putExtra("playerAction", options.getString("action"))
-                putExtra("title", options.getString("title"))
-                putExtra("artist", options.getString("artist"))
-                putExtra("album", options.getString("album"))
-                putExtra("duration", options.getLong("duration"))
-                putExtra("position", options.getLong("position"))
-                putExtra("imageUrl", options.getString("imageUrl"))
-                putExtra("canSeek", options.getBoolean("canSeek"))
-                putExtra("isPaused", options.getBoolean("isPaused"))
-                putExtra("itemId", options.getString("itemId"))
-                putExtra("isLocalPlayer", options.getBoolean("isLocalPlayer"))
-            } catch (e: Exception) {
-                Timber.e("updateMediaSession: %s", e.message)
-                return false
-            }
+            putExtra("playerAction", options.optString("action"))
+            putExtra("title", options.optString("title"))
+            putExtra("artist", options.optString("artist"))
+            putExtra("album", options.optString("album"))
+            putExtra("duration", options.optString("duration"))
+            putExtra("position", options.optString("position"))
+            putExtra("imageUrl", options.optString("imageUrl"))
+            putExtra("canSeek", options.optBoolean("canSeek"))
+            putExtra("isPaused", options.optBoolean("isPaused", true))
+            putExtra("itemId", options.optString("itemId"))
+            putExtra("isLocalPlayer", options.optBoolean("isLocalPlayer", true))
         }
         activity.startService(intent)
         return true
@@ -113,7 +114,7 @@ class NativeInterface(private val activity: WebappActivity) {
             title = options.getString("title")
             filename = options.getString("filename")
             url = options.getString("url")
-        } catch (e: Exception) {
+        } catch (e: JSONException) {
             Timber.e("Download failed: %s", e.message)
             return false
         }
