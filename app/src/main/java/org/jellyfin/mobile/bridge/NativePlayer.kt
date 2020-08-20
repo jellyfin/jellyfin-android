@@ -2,21 +2,21 @@ package org.jellyfin.mobile.bridge
 
 import android.content.Intent
 import android.os.Handler
-import android.os.Looper
 import android.os.Messenger
 import android.webkit.JavascriptInterface
 import org.jellyfin.mobile.WebappActivity
 import org.jellyfin.mobile.player.ExoPlayerFormats
 import org.jellyfin.mobile.player.PlayerActivity
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.LifecycleAwareHandler
 
 class NativePlayer(private val activity: WebappActivity) {
 
-    private val playerMessageHandler = Handler(Looper.getMainLooper()) { message ->
+    private val playerMessageHandler = LifecycleAwareHandler(activity.lifecycle, Handler.Callback { message ->
         val function = message.obj as? String
         if (function != null) activity.loadUrl("javascript:$function")
         true
-    }
+    })
     private val webappMessenger = Messenger(playerMessageHandler)
 
     @JavascriptInterface
