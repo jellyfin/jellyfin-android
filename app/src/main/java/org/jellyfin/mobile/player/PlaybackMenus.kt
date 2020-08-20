@@ -47,7 +47,7 @@ class PlaybackMenus(private val activity: PlayerActivity) : PopupMenu.OnDismissL
         val videoTracksInfo = item.videoTracksGroup.tracks.run {
             joinToString(
                 "\n",
-                activity.getString(R.string.playback_info_video_streams),
+                "${activity.getString(R.string.playback_info_video_streams)}:\n",
                 limit = 3,
                 truncated = activity.getString(R.string.playback_info_and_x_more, size - 3)
             ) { "- ${it.title}" }
@@ -55,7 +55,7 @@ class PlaybackMenus(private val activity: PlayerActivity) : PopupMenu.OnDismissL
         val audioTracksInfo = item.audioTracksGroup.tracks.run {
             joinToString(
                 "\n",
-                activity.getString(R.string.playback_info_audio_streams),
+                "${activity.getString(R.string.playback_info_audio_streams)}:\n",
                 limit = 5,
                 truncated = activity.getString(R.string.playback_info_and_x_more, size - 3)
             ) { "- ${it.title} (${it.language})" }
