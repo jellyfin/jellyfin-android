@@ -39,7 +39,8 @@ class PlayerActivity : AppCompatActivity() {
     private val viewModel: PlayerViewModel by viewModels()
     private val playerView: PlayerView by lazyView(R.id.player_view)
     private val playerControlsView: View by lazyView(R.id.player_controls)
-    private val loadingBar: View by lazyView(R.id.loading_indicator)
+    private val playerOverlay: View by lazyView(R.id.player_overlay)
+    private val loadingIndicator: View by lazyView(R.id.loading_indicator)
     private val titleTextView: TextView by lazyView(R.id.track_title)
     private val fullscreenSwitcher: ImageButton by lazyView(R.id.fullscreen_switcher)
     private lateinit var playbackMenus: PlaybackMenus
@@ -77,7 +78,7 @@ class PlayerActivity : AppCompatActivity() {
         // Handle system window insets
         ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { _, insets ->
             playerControlsView.updatePadding(left = insets.systemWindowInsetLeft, right = insets.systemWindowInsetRight)
-            loadingBar.updatePadding(left = insets.systemWindowInsetLeft, right = insets.systemWindowInsetRight)
+            playerOverlay.updatePadding(left = insets.systemWindowInsetLeft, right = insets.systemWindowInsetRight)
             insets
         }
 
@@ -105,7 +106,7 @@ class PlayerActivity : AppCompatActivity() {
             }
             notifyEvent(if (isPlaying) EVENT_PLAYING else EVENT_PAUSE)
             updatePlaybackPosition()
-            loadingBar.isVisible = playerState == Player.STATE_BUFFERING
+            loadingIndicator.isVisible = playerState == Player.STATE_BUFFERING
         }
         viewModel.mediaSourceManager.jellyfinMediaSource.observe(this) { jellyfinMediaSource ->
             playbackMenus.onItemChanged(jellyfinMediaSource)
@@ -172,9 +173,6 @@ class PlayerActivity : AppCompatActivity() {
         // Handle double tap gesture on controls
         val gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onDoubleTap(e: MotionEvent): Boolean {
-                if (playbackMenus.playbackInfo.isVisible)
-                    return true
-
                 val viewWidth = playerView.measuredWidth
                 val viewHeight = playerView.measuredHeight
                 val viewCenterX = viewWidth / 2
@@ -205,13 +203,7 @@ class PlayerActivity : AppCompatActivity() {
 
             override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
                 playerView.apply {
-                    if (!isControllerVisible) {
-                        showController()
-                    } else {
-                        if (playbackMenus.playbackInfo.isVisible)
-                            playbackMenus.playbackInfo.isVisible = false
-                        hideController()
-                    }
+                    if (!isControllerVisible) showController() else hideController()
                 }
                 return true
             }

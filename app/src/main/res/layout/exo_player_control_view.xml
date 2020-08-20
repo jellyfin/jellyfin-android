@@ -78,22 +78,6 @@
         app:layout_constraintTop_toTopOf="@id/play_pause_container" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/playback_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/exo_player_controls_display_padding"
-        android:background="@drawable/playback_info_background"
-        android:clickable="true"
-        android:padding="16dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/exo_progress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/track_title"
-        tools:ignore="KeyboardInaccessibleWidget"
-        tools:visibility="visible" />
-
-    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/exo_position"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

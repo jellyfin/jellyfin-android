@@ -22,7 +22,7 @@ class PlaybackMenus(private val activity: PlayerActivity) : PopupMenu.OnDismissL
     private val infoButton: View = activity.findViewById(R.id.info_button)
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
-    val playbackInfo: TextView = activity.findViewById(R.id.playback_info)
+    private val playbackInfo: TextView = activity.findViewById(R.id.playback_info)
 
     init {
         subtitlesButton.setOnClickListener {
@@ -34,8 +34,10 @@ class PlaybackMenus(private val activity: PlayerActivity) : PopupMenu.OnDismissL
             audioStreamsMenu.show()
         }
         infoButton.setOnClickListener {
-            activity.suppressControllerAutoHide(true)
             playbackInfo.isVisible = !playbackInfo.isVisible
+        }
+        playbackInfo.setOnClickListener {
+            playbackInfo.isVisible = false
         }
     }
 
