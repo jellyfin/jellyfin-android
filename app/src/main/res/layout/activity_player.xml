@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,13 +11,31 @@
         android:foreground="@drawable/ripple_background" />
 
     <FrameLayout
-        android:id="@+id/loading_indicator"
+        android:id="@+id/player_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ProgressBar
+            android:id="@+id/loading_indicator"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/playback_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:layout_marginStart="@dimen/exo_player_controls_display_padding"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="@dimen/exo_player_controls_display_padding"
+            android:layout_marginBottom="96dp"
+            android:background="@drawable/playback_info_background"
+            android:clickable="true"
+            android:padding="16dp"
+            android:visibility="gone"
+            tools:ignore="KeyboardInaccessibleWidget"
+            tools:visibility="visible" />
     </FrameLayout>
 </FrameLayout>
