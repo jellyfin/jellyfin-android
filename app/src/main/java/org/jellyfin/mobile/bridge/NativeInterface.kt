@@ -11,6 +11,17 @@ import org.jellyfin.mobile.RemotePlayerService
 import org.jellyfin.mobile.WebappActivity
 import org.jellyfin.mobile.settings.SettingsActivity
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.Constants.EXTRA_ALBUM
+import org.jellyfin.mobile.utils.Constants.EXTRA_ARTIST
+import org.jellyfin.mobile.utils.Constants.EXTRA_CAN_SEEK
+import org.jellyfin.mobile.utils.Constants.EXTRA_DURATION
+import org.jellyfin.mobile.utils.Constants.EXTRA_IMAGE_URL
+import org.jellyfin.mobile.utils.Constants.EXTRA_IS_LOCAL_PLAYER
+import org.jellyfin.mobile.utils.Constants.EXTRA_IS_PAUSED
+import org.jellyfin.mobile.utils.Constants.EXTRA_ITEM_ID
+import org.jellyfin.mobile.utils.Constants.EXTRA_PLAYER_ACTION
+import org.jellyfin.mobile.utils.Constants.EXTRA_POSITION
+import org.jellyfin.mobile.utils.Constants.EXTRA_TITLE
 import org.jellyfin.mobile.utils.disableFullscreen
 import org.jellyfin.mobile.utils.enableFullscreen
 import org.jellyfin.mobile.utils.requestDownload
@@ -73,17 +84,17 @@ class NativeInterface(private val activity: WebappActivity) {
         }
         val intent = Intent(activity, RemotePlayerService::class.java).apply {
             action = Constants.ACTION_REPORT
-            putExtra("playerAction", options.optString("action"))
-            putExtra("title", options.optString("title"))
-            putExtra("artist", options.optString("artist"))
-            putExtra("album", options.optString("album"))
-            putExtra("duration", options.optString("duration"))
-            putExtra("position", options.optString("position"))
-            putExtra("imageUrl", options.optString("imageUrl"))
-            putExtra("canSeek", options.optBoolean("canSeek"))
-            putExtra("isPaused", options.optBoolean("isPaused", true))
-            putExtra("itemId", options.optString("itemId"))
-            putExtra("isLocalPlayer", options.optBoolean("isLocalPlayer", true))
+            putExtra(EXTRA_PLAYER_ACTION, options.optString(EXTRA_PLAYER_ACTION))
+            putExtra(EXTRA_ITEM_ID, options.optString(EXTRA_ITEM_ID))
+            putExtra(EXTRA_TITLE, options.optString(EXTRA_TITLE))
+            putExtra(EXTRA_ARTIST, options.optString(EXTRA_ARTIST))
+            putExtra(EXTRA_ALBUM, options.optString(EXTRA_ALBUM))
+            putExtra(EXTRA_IMAGE_URL, options.optString(EXTRA_IMAGE_URL))
+            putExtra(EXTRA_POSITION, options.optString(EXTRA_POSITION))
+            putExtra(EXTRA_DURATION, options.optString(EXTRA_DURATION))
+            putExtra(EXTRA_CAN_SEEK, options.optBoolean(EXTRA_CAN_SEEK))
+            putExtra(EXTRA_IS_LOCAL_PLAYER, options.optBoolean(EXTRA_IS_LOCAL_PLAYER, true))
+            putExtra(EXTRA_IS_PAUSED, options.optBoolean(EXTRA_IS_PAUSED, true))
         }
         activity.startService(intent)
         return true
@@ -93,7 +104,7 @@ class NativeInterface(private val activity: WebappActivity) {
     fun hideMediaSession(): Boolean {
         val intent = Intent(activity, RemotePlayerService::class.java).apply {
             action = Constants.ACTION_REPORT
-            putExtra("playerAction", "playbackstop")
+            putExtra(EXTRA_PLAYER_ACTION, "playbackstop")
         }
         activity.startService(intent)
         return true

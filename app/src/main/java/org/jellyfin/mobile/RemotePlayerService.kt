@@ -27,6 +27,17 @@ import kotlinx.coroutines.launch
 import org.jellyfin.mobile.bridge.Commands
 import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.Constants.EXTRA_ALBUM
+import org.jellyfin.mobile.utils.Constants.EXTRA_ARTIST
+import org.jellyfin.mobile.utils.Constants.EXTRA_CAN_SEEK
+import org.jellyfin.mobile.utils.Constants.EXTRA_DURATION
+import org.jellyfin.mobile.utils.Constants.EXTRA_IMAGE_URL
+import org.jellyfin.mobile.utils.Constants.EXTRA_IS_LOCAL_PLAYER
+import org.jellyfin.mobile.utils.Constants.EXTRA_IS_PAUSED
+import org.jellyfin.mobile.utils.Constants.EXTRA_ITEM_ID
+import org.jellyfin.mobile.utils.Constants.EXTRA_PLAYER_ACTION
+import org.jellyfin.mobile.utils.Constants.EXTRA_POSITION
+import org.jellyfin.mobile.utils.Constants.EXTRA_TITLE
 import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_FAST_FORWARD
 import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_NEXT
 import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_PAUSE
@@ -70,7 +81,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     private var headphoneFlag = false
     private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == Intent.ACTION_HEADSET_PLUG) {
+            if (intent.action == AudioManager.ACTION_HEADSET_PLUG) {
                 val state = intent.getIntExtra("state", 2)
                 if (state == 0) {
                     binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
@@ -118,7 +129,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         // Create notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            val notificationChannel = NotificationChannel(MUSIC_NOTIFICATION_CHANNEL_ID, "Jellyfin", NotificationManager.IMPORTANCE_LOW).apply {
+            val notificationChannel = NotificationChannel(MUSIC_NOTIFICATION_CHANNEL_ID, getString(R.string.app_name), NotificationManager.IMPORTANCE_LOW).apply {
                 description = "Media notifications"
             }
             nm.createNotificationChannel(notificationChannel)
@@ -176,13 +187,12 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     private fun notify(handledIntent: Intent) {
-        val playerAction = handledIntent.getStringExtra("playerAction")
-        if (playerAction == "playbackstop") {
+        if (handledIntent.getStringExtra(EXTRA_PLAYER_ACTION) == "playbackstop") {
             onStopped()
             return
         }
-        val itemId = handledIntent.getStringExtra("itemId")
-        val imageUrl = handledIntent.getStringExtra("imageUrl")
+        val itemId = handledIntent.getStringExtra(EXTRA_ITEM_ID)
+        val imageUrl = handledIntent.getStringExtra(EXTRA_IMAGE_URL)
         if (largeItemIcon != null && currentItemId == itemId) {
             notifyWithBitmap(handledIntent, largeItemIcon)
             return
@@ -202,15 +212,15 @@ class RemotePlayerService : Service(), CoroutineScope {
     private fun notifyWithBitmap(handledIntent: Intent, largeIcon: Bitmap?) {
         val mediaSession = mediaSession!!
 
-        val artist = handledIntent.getStringExtra("artist")
-        val album = handledIntent.getStringExtra("album")
-        val title = handledIntent.getStringExtra("title")
-        val itemId = handledIntent.getStringExtra("itemId")
-        val isPaused = handledIntent.getBooleanExtra("isPaused", false)
-        val canSeek = handledIntent.getBooleanExtra("canSeek", false)
-        val isLocalPlayer = handledIntent.getBooleanExtra("isLocalPlayer", true)
-        val position = handledIntent.getLongExtra("position", PlaybackState.PLAYBACK_POSITION_UNKNOWN)
-        val duration = handledIntent.getLongExtra("duration", 0)
+        val itemId = handledIntent.getStringExtra(EXTRA_ITEM_ID)
+        val title = handledIntent.getStringExtra(EXTRA_TITLE)
+        val artist = handledIntent.getStringExtra(EXTRA_ARTIST)
+        val album = handledIntent.getStringExtra(EXTRA_ALBUM)
+        val position = handledIntent.getLongExtra(EXTRA_POSITION, PlaybackState.PLAYBACK_POSITION_UNKNOWN)
+        val duration = handledIntent.getLongExtra(EXTRA_DURATION, 0)
+        val canSeek = handledIntent.getBooleanExtra(EXTRA_CAN_SEEK, false)
+        val isLocalPlayer = handledIntent.getBooleanExtra(EXTRA_IS_LOCAL_PLAYER, true)
+        val isPaused = handledIntent.getBooleanExtra(EXTRA_IS_PAUSED, false)
 
         // system will recognize notification as media playback
         // show cover art and controls on lock screen
