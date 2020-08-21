@@ -69,6 +69,10 @@ suspend fun fetchServerInfo(httpClient: OkHttpClient, url: HttpUrl): String? {
     val serverInfoUrl = url.resolve(SERVER_INFO_PATH) ?: return null
     val request = httpClient.newCall(Request.Builder().url(serverInfoUrl).build())
     return withContext(Dispatchers.IO) {
-        request.execute().use { it.body?.string() }
+        try {
+            request.execute().use { it.body?.string() }
+        }catch (e:IOException){
+            null
+        }
     }
 }
