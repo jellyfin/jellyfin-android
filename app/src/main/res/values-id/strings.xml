@@ -23,4 +23,8 @@
 \nSilakan periksa nama host dan koneksi jaringan Anda.</string>
     <string name="toast_error_invalid_format">Host memiliki format yang tidak valid</string>
     <string name="downloading">Mengunduh</string>
+    <string name="playback_info_and_x_more">… Dan %d lainnya</string>
+    <string name="playback_info_audio_streams">Aliran audio</string>
+    <string name="playback_info_video_streams">Aliran video</string>
+    <string name="playback_info_transcoding">Transcoding : %b</string>
 </resources>
