@@ -23,4 +23,8 @@
     <string name="pref_category_music_player">Přehrávač hudby</string>
     <string name="activity_name_settings">Nastavení Jellyfin</string>
     <string name="menu_item_none">Žádný</string>
+    <string name="playback_info_and_x_more">…a %d dalších</string>
+    <string name="playback_info_audio_streams">Audio proudy</string>
+    <string name="playback_info_video_streams">Video proudy</string>
+    <string name="playback_info_transcoding">Překódování: %b</string>
 </resources>
