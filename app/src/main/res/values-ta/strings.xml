@@ -23,4 +23,8 @@
     <string name="host_input_hint">ஹோஸ்ட்</string>
     <string name="connect_to_server_title">சேவையகத்துடன் இணைக்கவும்</string>
     <string name="app_name">ஜெல்லிஃபின்</string>
+    <string name="playback_info_and_x_more">… மேலும் %d மேலும்</string>
+    <string name="playback_info_audio_streams">ஆடியோ ஸ்ட்ரீம்கள்</string>
+    <string name="playback_info_video_streams">வீடியோ ஸ்ட்ரீம்கள்</string>
+    <string name="playback_info_transcoding">டிரான்ஸ்கோடிங்: %b</string>
 </resources>
