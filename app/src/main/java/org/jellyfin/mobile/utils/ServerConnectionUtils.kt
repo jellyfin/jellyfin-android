@@ -71,7 +71,7 @@ suspend fun fetchServerInfo(httpClient: OkHttpClient, url: HttpUrl): String? {
     return withContext(Dispatchers.IO) {
         try {
             request.execute().use { it.body?.string() }
-        }catch (e:IOException){
+        } catch (e: IOException) {
             null
         }
     }
