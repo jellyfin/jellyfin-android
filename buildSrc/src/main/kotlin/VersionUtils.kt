@@ -16,19 +16,17 @@
  */
 fun getVersionCode(versionName: String): Int? {
     // Split to core and pre release parts with a default for pre release (null)
-    val (versionCore, versionPreRelease) = versionName
-        .split("-", limit = 2)
-        .let {
-            when (it.size) {
-                // No pre release part included
-                1 -> arrayOf(it[0], null)
-                // Pre release part included
-                else -> arrayOf(it[0], it[1])
-            }
+    val (versionCore, versionPreRelease) =
+        when (val index = versionName.indexOf('-')) {
+            // No pre-release part included
+            -1 -> versionName to null
+            // Pre-release part included
+            else -> versionName.substring(0, index) to
+                versionName.substring(index + 1, versionName.length)
         }
 
     // Parse core part
-    val (major, minor, patch) = versionCore!!
+    val (major, minor, patch) = versionCore
         .splitToSequence('.')
         .mapNotNull(String::toIntOrNull)
         .take(3)
@@ -36,8 +34,7 @@ fun getVersionCode(versionName: String): Int? {
 
     // Parse pre release part (ignore type, only get the number)
     val buildVersion = versionPreRelease
-        ?.split('.', limit = 2)
-        ?.getOrNull(1)
+        ?.substringAfter('.')
         ?.let(String::toIntOrNull)
 
     // Build code
