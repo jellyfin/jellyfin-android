@@ -23,4 +23,8 @@
     <string name="pref_category_music_player">Prehrávač hudby</string>
     <string name="activity_name_settings">Nastavenia Jellyfinu</string>
     <string name="menu_item_none">Žiadny</string>
+    <string name="playback_info_and_x_more">…a %d ďalších</string>
+    <string name="playback_info_audio_streams">Audio streamy</string>
+    <string name="playback_info_video_streams">Video streamy</string>
+    <string name="playback_info_transcoding">Transkódovanie: %b</string>
 </resources>
