@@ -81,27 +81,31 @@ class RemotePlayerService : Service(), CoroutineScope {
     private var headphoneFlag = false
     private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == AudioManager.ACTION_HEADSET_PLUG) {
-                val state = intent.getIntExtra("state", 2)
-                if (state == 0) {
-                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
-                    headphoneFlag = true
-                } else if (headphoneFlag) {
-                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
+            when (intent.action) {
+                AudioManager.ACTION_HEADSET_PLUG -> {
+                    val state = intent.getIntExtra("state", 2)
+                    if (state == 0) {
+                        binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
+                        headphoneFlag = true
+                    } else if (headphoneFlag) {
+                        binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
+                    }
                 }
-            } else if (intent.action == BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED) {
-                val extras = intent.extras ?: return
-                val state = extras.getInt(BluetoothA2dp.EXTRA_STATE)
-                val previousState = extras.getInt(BluetoothA2dp.EXTRA_PREVIOUS_STATE)
-                if ((state == BluetoothA2dp.STATE_DISCONNECTED || state == BluetoothA2dp.STATE_DISCONNECTING) && previousState == BluetoothA2dp.STATE_CONNECTED) {
-                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PAUSE)
+                BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED -> {
+                    val extras = intent.extras ?: return
+                    val state = extras.getInt(BluetoothA2dp.EXTRA_STATE)
+                    val previousState = extras.getInt(BluetoothA2dp.EXTRA_PREVIOUS_STATE)
+                    if ((state == BluetoothA2dp.STATE_DISCONNECTED || state == BluetoothA2dp.STATE_DISCONNECTING) && previousState == BluetoothA2dp.STATE_CONNECTED) {
+                        binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PAUSE)
+                    }
                 }
-            } else if (intent.action == BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED) {
-                val extras = intent.extras ?: return
-                val state = extras.getInt(BluetoothHeadset.EXTRA_STATE)
-                val previousState = extras.getInt(BluetoothHeadset.EXTRA_PREVIOUS_STATE)
-                if (state == BluetoothHeadset.STATE_AUDIO_DISCONNECTED && previousState == BluetoothHeadset.STATE_AUDIO_CONNECTED) {
-                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PAUSE)
+                BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED -> {
+                    val extras = intent.extras ?: return
+                    val state = extras.getInt(BluetoothHeadset.EXTRA_STATE)
+                    val previousState = extras.getInt(BluetoothHeadset.EXTRA_PREVIOUS_STATE)
+                    if (state == BluetoothHeadset.STATE_AUDIO_DISCONNECTED && previousState == BluetoothHeadset.STATE_AUDIO_CONNECTED) {
+                        binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PAUSE)
+                    }
                 }
             }
         }
