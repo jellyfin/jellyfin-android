@@ -81,7 +81,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     private var headphoneFlag = false
     private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            when (intent.action ) {
+            when (intent.action) {
                 AudioManager.ACTION_HEADSET_PLUG -> {
                     val state = intent.getIntExtra("state", 2)
                     if (state == 0) {
