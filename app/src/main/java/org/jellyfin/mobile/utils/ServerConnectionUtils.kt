@@ -12,6 +12,7 @@ import org.jellyfin.mobile.utils.Constants.SERVER_INFO_PATH
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
+import java.io.IOException
 
 suspend fun WebappActivity.checkServerUrlAndConnection(enteredUrl: String): HttpUrl? {
     val normalizedUrl = enteredUrl.run {
@@ -69,6 +70,11 @@ suspend fun fetchServerInfo(httpClient: OkHttpClient, url: HttpUrl): String? {
     val serverInfoUrl = url.resolve(SERVER_INFO_PATH) ?: return null
     val request = httpClient.newCall(Request.Builder().url(serverInfoUrl).build())
     return withContext(Dispatchers.IO) {
-        request.execute().use { it.body?.string() }
+        try {
+            request.execute().use { it.body?.string() }
+        } catch (e: IOException) {
+            Timber.e(e, "Cannot connect to server")
+            null
+        }
     }
 }
