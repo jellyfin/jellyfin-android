@@ -1,7 +1,5 @@
 include(":app")
 
-rootProject.name = "Jellyfin"
-
 pluginManagement {
     val kotlinVersion: String by settings
     resolutionStrategy {
