@@ -46,6 +46,8 @@ fun Activity.disableFullscreen(keepStableLayout: Boolean = false) {
     }
 }
 
+inline fun Context.dip(px: Int) = (px * resources.displayMetrics.density).toInt()
+
 inline fun Context.toast(@StringRes text: Int, duration: Int = Toast.LENGTH_SHORT) =
     Toast.makeText(this, text, duration).show()
 

@@ -5,6 +5,8 @@ import android.app.Service
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
+import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.view.OrientationEventListener
@@ -13,6 +15,7 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.doOnNextLayout
 import androidx.core.view.updatePadding
 import okhttp3.OkHttpClient
 import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
@@ -62,6 +65,13 @@ class WebappActivity : AppCompatActivity(), WebViewController {
         ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
             v.updatePadding(top = insets.systemWindowInsets.top)
             insets
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            webView.doOnNextLayout { webView ->
+                val verticalCenter = webView.measuredHeight / 2
+                val offset = dip(100)
+                webView.systemGestureExclusionRects = listOf(Rect(0, verticalCenter - offset, dip(96), verticalCenter + offset))
+            }
         }
 
         // Setup WebView
