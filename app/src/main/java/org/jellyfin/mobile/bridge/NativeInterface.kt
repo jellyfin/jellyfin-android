@@ -2,6 +2,7 @@ package org.jellyfin.mobile.bridge
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings.Secure
@@ -54,13 +55,19 @@ class NativeInterface(private val activity: WebappActivity) {
 
     @JavascriptInterface
     fun enableFullscreen(): Boolean {
-        activity.runOnUiThread { activity.enableFullscreen() }
+        activity.runOnUiThread {
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+            activity.enableFullscreen()
+        }
         return true
     }
 
     @JavascriptInterface
     fun disableFullscreen(): Boolean {
-        activity.runOnUiThread { activity.disableFullscreen() }
+        activity.runOnUiThread {
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            activity.disableFullscreen()
+        }
         return true
     }
 

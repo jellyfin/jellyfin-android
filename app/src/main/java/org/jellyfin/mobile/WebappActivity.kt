@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.view.OrientationEventListener
 import android.webkit.*
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -45,6 +46,8 @@ class WebappActivity : AppCompatActivity(), WebViewController {
         }
     }
 
+    private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(this) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,6 +62,11 @@ class WebappActivity : AppCompatActivity(), WebViewController {
         connectionHelper.initialize()
 
         chromecast.initializePlugin(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        orientationListener.enable()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -121,6 +129,11 @@ class WebappActivity : AppCompatActivity(), WebViewController {
             !connectionHelper.connected -> super.onBackPressed()
             !connectionHelper.onBackPressed() -> triggerInputManagerAction(INPUT_MANAGER_COMMAND_BACK)
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        orientationListener.disable()
     }
 
     override fun onDestroy() {
