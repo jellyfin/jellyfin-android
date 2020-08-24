@@ -23,4 +23,8 @@
     <string name="pref_category_music_player">Zenelejátszó</string>
     <string name="activity_name_settings">Jellyfin Beállítások</string>
     <string name="menu_item_none">Nincs</string>
+    <string name="playback_info_and_x_more">...és %d további</string>
+    <string name="playback_info_audio_streams">Audio sávok</string>
+    <string name="playback_info_video_streams">Video sávok</string>
+    <string name="playback_info_transcoding">Transzkódolás: %b</string>
 </resources>
