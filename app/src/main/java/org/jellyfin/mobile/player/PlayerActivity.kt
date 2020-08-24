@@ -49,27 +49,13 @@ class PlayerActivity : AppCompatActivity() {
 
     /**
      * Listener that watches the current device orientation.
-     * It makes sure that the orientation sensor can still be used after toggling
-     * the orientation through the fullscreen button (and if enabled).
+     * It makes sure that the orientation sensor can still be used (if enabled)
+     * after toggling the orientation through the fullscreen button.
      *
      * If the requestedOrientation was reset directly after setting it in the fullscreenSwitcher click handler,
      * the orientation would get reverted before the user had any chance to rotate the device to the desired position.
      */
-    private val orientationListener: OrientationEventListener by lazy {
-        object : OrientationEventListener(this) {
-            override fun onOrientationChanged(orientation: Int) {
-                val isAtTarget = when (requestedOrientation) {
-                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT -> orientation in Constants.ORIENTATION_PORTRAIT_RANGE
-                    ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE -> orientation in Constants.ORIENTATION_LANDSCAPE_RANGE
-                    else -> false
-                }
-                if (isAtTarget && isAutoRotateOn()) {
-                    // Reset to unspecified orientation
-                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-                }
-            }
-        }
-    }
+    private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
