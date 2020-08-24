@@ -5,7 +5,8 @@
     android:id="@+id/player_controls"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/playback_controls_background">
+    android:background="@color/playback_controls_background"
+    tools:viewBindingIgnore="true">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/track_title"

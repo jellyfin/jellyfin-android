@@ -25,6 +25,7 @@ import okhttp3.Request
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.WebappActivity
+import org.jellyfin.mobile.databinding.ConnectServerBinding
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SERVER_INFO_PATH
 import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
@@ -32,7 +33,6 @@ import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
 import java.io.IOException
-
 
 class ConnectionHelper(private val activity: WebappActivity) {
     private val appPreferences: AppPreferences get() = activity.appPreferences
@@ -43,10 +43,13 @@ class ConnectionHelper(private val activity: WebappActivity) {
     var connected = false
         private set
 
-    private val serverSetupLayout: View by lazy { activity.layoutInflater.inflate(R.layout.connect_server, rootView, false) }
-    private val hostInput: EditText by lazy { serverSetupLayout.findViewById<EditText>(R.id.host_input) }
-    private val connectionErrorText: TextView by lazy { serverSetupLayout.findViewById<TextView>(R.id.connection_error_text) }
-    private val connectButton: Button by lazy { serverSetupLayout.findViewById<Button>(R.id.connect_button) }
+    private val connectServerBinding: ConnectServerBinding by lazy {
+        ConnectServerBinding.inflate(activity.layoutInflater, rootView, false)
+    }
+    private val serverSetupLayout: View get() = connectServerBinding.root
+    private val hostInput: EditText get() = connectServerBinding.hostInput
+    private val connectionErrorText: TextView get() = connectServerBinding.connectionErrorText
+    private val connectButton: Button get() = connectServerBinding.connectButton
 
     fun initialize() {
         cachedInstanceUrl = appPreferences.instanceUrl?.toHttpUrlOrNull()
