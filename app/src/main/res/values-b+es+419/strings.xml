@@ -10,7 +10,7 @@
     <string name="battery_optimizations_message">Por favor desactiva las optimizaciones de batería para la reproducción de medios mientras la pantalla este apagada.</string>
     <string name="toast_error_cannot_connect_host">No se pudo establecer la conexión a %s.
 \nPor favor revisa el nombre de host y las configuaciones de tu red.</string>
-    <string name="toast_error_invalid_format">Host tiene un formato inválido</string>
+    <string name="connection_error_invalid_format">Host tiene un formato inválido</string>
     <string name="toast_error_missing_scheme">Faltó el scheme (http o https)</string>
     <string name="connect_button_text">Conectar</string>
     <string name="host_input_hint">Host</string>

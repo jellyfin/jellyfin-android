@@ -10,7 +10,7 @@
     <string name="battery_optimizations_title">Zakázať optimalizáciu batérie</string>
     <string name="toast_error_cannot_connect_host">Pripojenie k %s sa nepodarilo.
 \nSkontrolujte názov hostiteľa a pripojenie k sieti.</string>
-    <string name="toast_error_invalid_format">Formát hostiteľa je neplatný</string>
+    <string name="connection_error_invalid_format">Formát hostiteľa je neplatný</string>
     <string name="toast_error_missing_scheme">Chýba protokol (https alebo http)</string>
     <string name="connect_button_text">Pripojiť</string>
     <string name="host_input_hint">Hostiteľ</string>

@@ -9,7 +9,7 @@
     <string name="battery_optimizations_message">Zet batterijoptimalisatie uit om media te spelen wanneer het scherm uit is.</string>
     <string name="battery_optimizations_title">Batterijoptimalisaties uitschakelen</string>
     <string name="app_name">Jellyfin</string>
-    <string name="toast_error_invalid_format">Host heeft een ongeldig formaat</string>
+    <string name="connection_error_invalid_format">Host heeft een ongeldig formaat</string>
     <string name="host_input_hint">Host</string>
     <string name="toast_error_missing_scheme">Geen schema opgegeven (https of http)</string>
     <string name="toast_error_cannot_connect_host">Verbinding met %s kan niet worden opgezet.

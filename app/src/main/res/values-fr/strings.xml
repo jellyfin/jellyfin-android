@@ -10,7 +10,7 @@
     <string name="battery_optimizations_title">Désactiver les optimisations de la batterie</string>
     <string name="toast_error_cannot_connect_host">La connexion à %s ne peut être établie.
 \nVeuillez vérifier le nom d\'hôte et votre connexion au réseau.</string>
-    <string name="toast_error_invalid_format">L\'hôte a un format invalide</string>
+    <string name="connection_error_invalid_format">L\'hôte a un format invalide</string>
     <string name="toast_error_missing_scheme">Schéma manquant (https ou http)</string>
     <string name="connect_button_text">Se connecter</string>
     <string name="host_input_hint">Hôte</string>

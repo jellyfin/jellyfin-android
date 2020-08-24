@@ -9,7 +9,7 @@
     <string name="battery_optimizations_title">배터리 최적화 비활성화</string>
     <string name="toast_error_cannot_connect_host">%s으로의 연결이 성립되지 않았습니다.
 \nhostname과 네트워크 연결 상태를 확인해주십시오.</string>
-    <string name="toast_error_invalid_format">호스트가 올바르지 않은 포맷을 사용합니다</string>
+    <string name="connection_error_invalid_format">호스트가 올바르지 않은 포맷을 사용합니다</string>
     <string name="toast_error_missing_scheme">스킴이 존재하지 않음 (https 혹은 http)</string>
     <string name="connect_button_text">연결</string>
     <string name="host_input_hint">호스트</string>

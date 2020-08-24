@@ -10,7 +10,7 @@
     <string name="battery_optimizations_title">Onemogoči optimizacijo akumulatorja</string>
     <string name="toast_error_cannot_connect_host">Povezave s %s ni mogoče vzpostaviti.
 \nPreverite naslov in internetno povezavo.</string>
-    <string name="toast_error_invalid_format">Napačen format naslova</string>
+    <string name="connection_error_invalid_format">Napačen format naslova</string>
     <string name="toast_error_missing_scheme">Manjka protokol (https ali http)</string>
     <string name="connect_button_text">Poveži</string>
     <string name="host_input_hint">Naslov</string>

@@ -10,7 +10,7 @@
     <string name="battery_optimizations_title">Deaktiver batterioptimaliseringer</string>
     <string name="toast_error_cannot_connect_host">Tilkobling til %s kunne ikke etableres.
 \nVennligst sjekk tjenernavnet og nettverksforbindelsen din.</string>
-    <string name="toast_error_invalid_format">Tjeneren har et ugyldig format</string>
+    <string name="connection_error_invalid_format">Tjeneren har et ugyldig format</string>
     <string name="toast_error_missing_scheme">Mangler skjema (https eller http)</string>
     <string name="connect_button_text">Koble til</string>
     <string name="host_input_hint">Tjener</string>
