@@ -23,4 +23,6 @@
     <string name="playback_info_video_streams">Flujos de video</string>
     <string name="playback_info_transcoding">Transcodificando: %b</string>
     <string name="menu_item_none">Ninguno</string>
+    <string name="pref_category_video_player">Reproductor de video nativo</string>
+    <string name="pref_music_notification_always_dismissible_title">Hacer que la notificación del reproductor de música pueda ser siempre descartada</string>
 </resources>
