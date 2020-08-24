@@ -35,6 +35,7 @@
         <activity
             android:name=".player.PlayerActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="sensorLandscape"
             android:theme="@style/AppTheme.Player" />
 
         <activity
