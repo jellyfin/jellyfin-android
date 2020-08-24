@@ -1,13 +1,11 @@
 package org.jellyfin.mobile.player
 
 import android.annotation.SuppressLint
+import android.app.PictureInPictureParams
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import android.os.Bundle
-import android.os.Message
-import android.os.Messenger
-import android.os.RemoteException
+import android.os.*
 import android.view.*
 import android.widget.ImageButton
 import android.widget.TextView
@@ -97,6 +95,11 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.mediaSourceManager.jellyfinMediaSource.observe(this) { jellyfinMediaSource ->
             playbackMenus.onItemChanged(jellyfinMediaSource)
             titleTextView.text = jellyfinMediaSource.title
+        }
+
+        // Disable controller in PiP
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && isInPictureInPictureMode) {
+            playerView.useController = false
         }
 
         // Handle current orientation and update fullscreen state
@@ -246,6 +249,16 @@ class PlayerActivity : AppCompatActivity() {
      */
     fun onSubtitleSelected(index: Int): Boolean {
         return viewModel.mediaSourceManager.selectSubtitle(index)
+    }
+
+    override fun onUserLeaveHint() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && viewModel.playerOrNull?.isPlaying == true) {
+            enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+        }
+    }
+
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
+        playerView.useController = !isInPictureInPictureMode
     }
 
     override fun onStop() {
