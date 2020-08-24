@@ -14,9 +14,17 @@ inline fun <T : View> Activity.lazyView(@IdRes id: Int) =
     lazy(LazyThreadSafetyMode.NONE) { findViewById<T>(id) }
 
 @Suppress("DEPRECATION")
+const val STABLE_LAYOUT_FLAGS = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+
+@Suppress("DEPRECATION")
 const val FULLSCREEN_FLAGS = View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
     View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
     View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+
+fun Activity.setStableLayoutFlags() {
+    window.decorView.systemUiVisibility = STABLE_LAYOUT_FLAGS
+}
 
 @Suppress("DEPRECATION")
 fun Activity.isFullscreen() = window.decorView.systemUiVisibility.hasFlag(FULLSCREEN_FLAGS)
@@ -24,16 +32,16 @@ fun Activity.isFullscreen() = window.decorView.systemUiVisibility.hasFlag(FULLSC
 @Suppress("DEPRECATION")
 fun Activity.enableFullscreen() {
     window.apply {
-        decorView.systemUiVisibility = decorView.systemUiVisibility.withFlag(FULLSCREEN_FLAGS)
+        decorView.systemUiVisibility = FULLSCREEN_FLAGS
         addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
     }
 }
 
 @Suppress("DEPRECATION")
-fun Activity.disableFullscreen() {
+fun Activity.disableFullscreen(keepStableLayout: Boolean = false) {
     window.apply {
-        decorView.systemUiVisibility = decorView.systemUiVisibility.withoutFlag(FULLSCREEN_FLAGS)
+        decorView.systemUiVisibility = if (keepStableLayout) STABLE_LAYOUT_FLAGS else 0
         clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
     }
 }

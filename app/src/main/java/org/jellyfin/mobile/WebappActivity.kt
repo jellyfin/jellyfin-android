@@ -12,6 +12,8 @@ import android.webkit.*
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.updatePadding
 import okhttp3.OkHttpClient
 import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
 import org.jellyfin.mobile.bridge.NativeInterface
@@ -50,12 +52,19 @@ class WebappActivity : AppCompatActivity(), WebViewController {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_webapp)
 
         // Bind player service
         bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
 
+        // Handle window insets
+        setStableLayoutFlags()
+        ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
+            v.updatePadding(top = insets.systemWindowInsets.top)
+            insets
+        }
+
         // Setup WebView
-        setContentView(R.layout.activity_webapp)
         webView.initialize()
 
         // Load content
