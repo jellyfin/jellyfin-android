@@ -10,7 +10,7 @@
     <string name="battery_optimizations_title">Vypnout systémovou správu baterie</string>
     <string name="toast_error_cannot_connect_host">Připojení k %s se nezdařilo.
 \nZkontrolujte název hostitele a připojení k síti.</string>
-    <string name="toast_error_invalid_format">Formát hostitele je neplatný</string>
+    <string name="connection_error_invalid_format">Formát hostitele je neplatný</string>
     <string name="toast_error_missing_scheme">Chybí protokol (https nebo http)</string>
     <string name="connect_button_text">Připojit</string>
     <string name="host_input_hint">Hostitel</string>

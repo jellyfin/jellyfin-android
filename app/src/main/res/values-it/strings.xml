@@ -16,7 +16,7 @@
     <string name="activity_name_settings">Impostazioni Jellyfin</string>
     <string name="toast_error_cannot_connect_host">La connessione verso %s non può essere stabilita.
 \nControllare il nome Host e la connessione di rete.</string>
-    <string name="toast_error_invalid_format">L\'Host non ha un formato valido</string>
+    <string name="connection_error_invalid_format">L\'Host non ha un formato valido</string>
     <string name="toast_error_missing_scheme">Schema mancante (https o http)</string>
     <string name="connect_button_text">Connetti</string>
     <string name="host_input_hint">Host</string>

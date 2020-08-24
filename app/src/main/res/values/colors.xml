@@ -11,6 +11,7 @@
     <!-- App colors -->
     <color name="theme_background">#101010</color>
     <color name="logo_text_color">#fafafa</color>
+    <color name="error_text_color">#b00020</color>
     <color name="playback_controls_background">#60000000</color>
     <color name="playback_info_background">#cc000000</color>
 </resources>

@@ -10,7 +10,7 @@
     <string name="battery_optimizations_message">Відключіть оптимізацію акумулятора для відтворення медіа, коли екран вимкнено.</string>
     <string name="toast_error_cannot_connect_host">Підключення до %s неможливо встановити.
 \nПеревірте ім\'я сервера та мережеве з\'єднання.</string>
-    <string name="toast_error_invalid_format">Невірний формат сервера</string>
+    <string name="connection_error_invalid_format">Невірний формат сервера</string>
     <string name="toast_error_missing_scheme">Відсутня схема (https або http)</string>
     <string name="connect_button_text">Підключитись</string>
     <string name="host_input_hint">Сервер</string>

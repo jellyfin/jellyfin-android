@@ -16,7 +16,7 @@
     <string name="menu_item_none">Нет</string>
     <string name="toast_error_cannot_connect_host">Соединение с %s не установлено.
 \nПроверьте имя сервера и ваше подключение к сети.</string>
-    <string name="toast_error_invalid_format">Неправильный формат имени сервера</string>
+    <string name="connection_error_invalid_format">Неправильный формат имени сервера</string>
     <string name="connect_button_text">Соединение</string>
     <string name="host_input_hint">Сервер</string>
 </resources>
