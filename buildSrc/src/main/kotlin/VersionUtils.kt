@@ -1,3 +1,10 @@
+import org.gradle.api.Project
+
+fun Project.getVersionName(): String? =
+    findProperty("jellyfin.version")?.toString()
+        ?: System.getenv("JELLYFIN_VERSION")
+        ?: "0.0.0-dev.1"
+
 /**
  * Get the version code for a given semantic version.
  * Does not validate the input and thus will throw an exception when parts are missing.

@@ -15,7 +15,7 @@ android {
         applicationId = "org.jellyfin.mobile"
         minSdkVersion(21)
         targetSdkVersion(30)
-        versionName = "2.0.0-rc.2"
+        versionName = project.getVersionName()
         versionCode = getVersionCode(versionName)
         setProperty("archivesBaseName", "jellyfin-android-v$versionName")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
