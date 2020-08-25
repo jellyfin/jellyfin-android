@@ -8,14 +8,10 @@
     <string name="wifi_only">Wi-Fi uniquement</string>
     <string name="network_title">Types de réseaux autorisés</string>
     <string name="battery_optimizations_title">Désactiver les optimisations de la batterie</string>
-    <string name="toast_error_cannot_connect_host">La connexion à %s ne peut être établie.
-\nVeuillez vérifier le nom d\'hôte et votre connexion au réseau.</string>
     <string name="connection_error_invalid_format">L\'hôte a un format invalide</string>
-    <string name="toast_error_missing_scheme">Schéma manquant (https ou http)</string>
     <string name="connect_button_text">Se connecter</string>
     <string name="host_input_hint">Hôte</string>
     <string name="connect_to_server_title">Se connecter au serveur</string>
-    <string name="app_name">Jellyfin</string>
     <string name="pref_enable_exoplayer_summary">Activer le lecteur vidéo expérimental ExoPlayer qui supporte plus de formats vidéos et de codecs et est mieux intégré au système d\'exploitation</string>
     <string name="pref_enable_exoplayer_title">Activer l\'intégration avec le lecteur vidéo</string>
     <string name="pref_category_video_player">Lecteur vidéo natif</string>

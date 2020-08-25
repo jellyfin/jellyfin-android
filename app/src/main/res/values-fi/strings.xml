@@ -14,9 +14,6 @@
     <string name="activity_name_settings">Jellyfin asetukset</string>
     <string name="connection_error_invalid_format">Isäntäpalvelimen muoto on virheellinen</string>
     <string name="host_input_hint">Isäntäpalvelin</string>
-    <string name="toast_error_cannot_connect_host">Yhteyttä %s ei pystytä muodostamaan.
-\nTarkista isäntäpalvelimen nimi ja verkkoyhteytesi.</string>
     <string name="connect_button_text">Yhdistä</string>
     <string name="connect_to_server_title">Yhdistä palvelimeen</string>
-    <string name="app_name">Jellyfin</string>
 </resources>

@@ -9,11 +9,7 @@
     <string name="battery_optimizations_message">Vă rugăm să dezactivați optimizările bateriei pentru redarea media cu ecranul stins.</string>
     <string name="battery_optimizations_title">Dezactivați optimizările bateriei</string>
     <string name="connection_error_invalid_format">Gazda are un format invalid</string>
-    <string name="toast_error_missing_scheme">Lipsește protocolul (https sau http)</string>
     <string name="connect_button_text">Conectare</string>
     <string name="host_input_hint">Gazdă</string>
     <string name="connect_to_server_title">Conectați-vă la server</string>
-    <string name="app_name">Jellyfin</string>
-    <string name="toast_error_cannot_connect_host">Conectarea la %s nu poate realizată.
-\nVerificați numele gazdei și conexiunea de rețea.</string>
 </resources>

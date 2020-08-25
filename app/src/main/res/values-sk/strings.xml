@@ -8,14 +8,10 @@
     <string name="network_title">Povoliť sieťové typy</string>
     <string name="battery_optimizations_message">Prosím, zakážte optimalizáciu batérie pre prehrávanie medií počas vypnutej obrazovky.</string>
     <string name="battery_optimizations_title">Zakázať optimalizáciu batérie</string>
-    <string name="toast_error_cannot_connect_host">Pripojenie k %s sa nepodarilo.
-\nSkontrolujte názov hostiteľa a pripojenie k sieti.</string>
     <string name="connection_error_invalid_format">Formát hostiteľa je neplatný</string>
-    <string name="toast_error_missing_scheme">Chýba protokol (https alebo http)</string>
     <string name="connect_button_text">Pripojiť</string>
     <string name="host_input_hint">Hostiteľ</string>
     <string name="connect_to_server_title">Pripojiť k serveru</string>
-    <string name="app_name">Jellyfin</string>
     <string name="pref_enable_exoplayer_summary">Povoliť experimentálny prehrávač videa ExoPlayer, ktorý podporuje viac formátov a kodekov, a je lepšie integrovaný do operačného systému</string>
     <string name="pref_enable_exoplayer_title">Povoliť integráciu prehrávača videa</string>
     <string name="pref_category_video_player">Natívny prehrávač videa</string>

@@ -9,13 +9,9 @@
     <string name="battery_optimizations_message">Ahhoz, hogy a lejátszás kikapcsolt képernyő mellett is működhessen, kapcsold ki az akkumulátor optimalizálást.</string>
     <string name="battery_optimizations_title">Akkumulátor optimalizálás letiltása</string>
     <string name="connection_error_invalid_format">A hoszt formátuma helytelen</string>
-    <string name="toast_error_missing_scheme">Hiányzó séma (https vagy http)</string>
     <string name="connect_button_text">Kapcsolódás</string>
     <string name="host_input_hint">Hoszt</string>
     <string name="connect_to_server_title">Kapcsolódás a szerverhez</string>
-    <string name="app_name">Jellyfin</string>
-    <string name="toast_error_cannot_connect_host">Nem sikerült kapcsolódni a következőhöz: %s
-\nKérlek ellenőrizd a doménnevet és a hálózati kapcsolatod.</string>
     <string name="pref_enable_exoplayer_summary">A kísérleti ExoPlayer engedélyezése, amely több formátumot és kodeket támogat, és jobban integrálva van az Androidba</string>
     <string name="pref_enable_exoplayer_title">Videólejátszó integrációjának engedélyezése</string>
     <string name="pref_category_video_player">Natív videólejátszó</string>

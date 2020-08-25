@@ -15,14 +15,10 @@
     <string name="network_title">அனுமதிக்கப்பட்ட பிணைய வகைகள்</string>
     <string name="battery_optimizations_message">திரை முடக்கத்தில் இருக்கும்போது மீடியா பிளேபேக்கிற்கான பேட்டரி மேம்படுத்தல்களை முடக்கவும்.</string>
     <string name="battery_optimizations_title">பேட்டரி உகப்பாக்கங்களை முடக்கு</string>
-    <string name="toast_error_cannot_connect_host">%s உடன் இணைப்பை நிறுவ முடியாது.
-\nஹோஸ்ட்பெயர் மற்றும் உங்கள் பிணைய இணைப்பை சரிபார்க்கவும்.</string>
     <string name="connection_error_invalid_format">ஹோஸ்ட் தவறான வடிவத்தைக் கொண்டுள்ளது</string>
-    <string name="toast_error_missing_scheme">விடுபட்ட திட்டம் (https அல்லது http)</string>
     <string name="connect_button_text">இணை</string>
     <string name="host_input_hint">ஹோஸ்ட்</string>
     <string name="connect_to_server_title">சேவையகத்துடன் இணைக்கவும்</string>
-    <string name="app_name">ஜெல்லிஃபின்</string>
     <string name="playback_info_and_x_more">… மேலும் %d மேலும்</string>
     <string name="playback_info_audio_streams">ஆடியோ ஸ்ட்ரீம்கள்</string>
     <string name="playback_info_video_streams">வீடியோ ஸ்ட்ரீம்கள்</string>

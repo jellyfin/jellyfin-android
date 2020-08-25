@@ -8,14 +8,10 @@
     <string name="network_title">Dovoljene vrste omrežja</string>
     <string name="battery_optimizations_message">Prosimo onemogočite optimizacijo akumulatorja za predvajanje predstavnosti pri izklopljenem zaslonu.</string>
     <string name="battery_optimizations_title">Onemogoči optimizacijo akumulatorja</string>
-    <string name="toast_error_cannot_connect_host">Povezave s %s ni mogoče vzpostaviti.
-\nPreverite naslov in internetno povezavo.</string>
     <string name="connection_error_invalid_format">Napačen format naslova</string>
-    <string name="toast_error_missing_scheme">Manjka protokol (https ali http)</string>
     <string name="connect_button_text">Poveži</string>
     <string name="host_input_hint">Naslov</string>
     <string name="connect_to_server_title">Poveži s strežnikom</string>
-    <string name="app_name">Jellyfin</string>
     <string name="pref_enable_exoplayer_summary">Omogoči poskusni ExoPlayer video predvajalnik, ki podpira več formatov in kodekov in je bolj integriran v operacijski sistem</string>
     <string name="pref_enable_exoplayer_title">Omogoči integracijo video predvajalnika</string>
     <string name="pref_category_video_player">Vdelani video predvajalnik</string>
