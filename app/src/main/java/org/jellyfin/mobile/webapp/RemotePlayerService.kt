@@ -54,6 +54,7 @@ import org.jellyfin.mobile.utils.Constants.MUSIC_NOTIFICATION_CHANNEL_ID
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS
 import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
 import org.jellyfin.mobile.utils.setPlaybackState
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
@@ -63,7 +64,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
-    private val appPreferences: AppPreferences by lazy { AppPreferences(this) }
+    private val appPreferences: AppPreferences by inject()
 
     private val binder = ServiceBinder(this)
 
