@@ -23,9 +23,9 @@ fun Context.loadPatchedIndex(httpClient: OkHttpClient, url: String): WebResource
                             val patch = assets.open(Constants.INDEX_PATCH_PATH).bufferedReader().use { reader ->
                                 reader.readText()
                             }
-                            result.append(patch).appendln()
+                            result.append(patch).appendLine()
                         }
-                        result.append(line).appendln()
+                        result.append(line).appendLine()
                     }
                 }
             }
