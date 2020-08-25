@@ -32,25 +32,23 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
     val eventLogger = EventLogger(trackSelector)
 
     fun handleIntent(intent: Intent, replace: Boolean = false): Boolean {
-        return if (_jellyfinMediaSource.value == null || replace) {
-            val newSource = createFromIntent(intent)
-            if (newSource != null) {
-                val oldSource = _jellyfinMediaSource.value
-                _jellyfinMediaSource.value = newSource
+        val oldSource = _jellyfinMediaSource.value
+        if (oldSource == null || replace) {
+            val newSource = createFromIntent(intent) ?: return false
+            _jellyfinMediaSource.value = newSource
 
-                // Keep current selections in the new item
-                if (oldSource != null) {
-                    newSource.subtitleTracksGroup.selectedTrack = oldSource.subtitleTracksGroup.selectedTrack
-                    newSource.audioTracksGroup.selectedTrack = oldSource.audioTracksGroup.selectedTrack
-                }
-                val mediaSource = prepareStreams(newSource)
-                if (mediaSource != null) {
-                    viewModel.playMedia(mediaSource, startPosition = newSource.mediaStartMs)
-                    viewModel.updateMediaMetadata(newSource)
-                }
-                true
-            } else false
-        } else true
+            // Keep current selections in the new item
+            if (oldSource != null) {
+                newSource.subtitleTracksGroup.selectedTrack = oldSource.subtitleTracksGroup.selectedTrack
+                newSource.audioTracksGroup.selectedTrack = oldSource.audioTracksGroup.selectedTrack
+            }
+
+            // Create ExoPlayer MediaSource
+            val mediaSource = prepareStreams(newSource) ?: return false
+            viewModel.playMedia(mediaSource, startPosition = newSource.mediaStartMs)
+            viewModel.updateMediaMetadata(newSource)
+        }
+        return true
     }
 
     /**
@@ -78,11 +76,10 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
 
         @CheckResult
         private fun createVideoMediaSource(item: JellyfinMediaSource, dataSourceFactory: DataSource.Factory): MediaSource {
-            val uri: Uri = Uri.parse(item.url)
             return if (item.isTranscoding) {
-                HlsMediaSource.Factory(dataSourceFactory).setAllowChunklessPreparation(true).createMediaSource(uri)
+                HlsMediaSource.Factory(dataSourceFactory).setAllowChunklessPreparation(true).createMediaSource(item.uri)
             } else {
-                ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
+                ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(item.uri)
             }
         }
 

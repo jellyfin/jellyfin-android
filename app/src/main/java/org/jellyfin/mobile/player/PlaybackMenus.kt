@@ -45,6 +45,7 @@ class PlaybackMenus(private val activity: PlayerActivity) : PopupMenu.OnDismissL
         buildMenuItems(subtitlesMenu.menu, SUBTITLES_MENU_GROUP, item.subtitleTracksGroup, true)
         buildMenuItems(audioStreamsMenu.menu, AUDIO_MENU_GROUP, item.audioTracksGroup)
 
+        val playMethod = activity.getString(R.string.playback_info_play_method, item.playMethod)
         val transcodingInfo = activity.getString(R.string.playback_info_transcoding, item.isTranscoding)
         val videoTracksInfo = item.videoTracksGroup.tracks.run {
             joinToString(
@@ -62,8 +63,12 @@ class PlaybackMenus(private val activity: PlayerActivity) : PopupMenu.OnDismissL
                 truncated = activity.getString(R.string.playback_info_and_x_more, size - 3)
             ) { "- ${it.title} (${it.language})" }
         }
-        val info = "$transcodingInfo\n\n$videoTracksInfo\n\n$audioTracksInfo"
-        playbackInfo.text = info
+        playbackInfo.text = listOf(
+            playMethod,
+            transcodingInfo,
+            videoTracksInfo,
+            audioTracksInfo,
+        ).joinToString("\n\n")
     }
 
     private fun createSubtitlesMenu() = PopupMenu(activity, subtitlesButton).apply {
