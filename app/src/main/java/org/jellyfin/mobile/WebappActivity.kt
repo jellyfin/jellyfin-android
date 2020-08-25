@@ -5,6 +5,8 @@ import android.app.Service
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
+import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.view.OrientationEventListener
@@ -12,6 +14,9 @@ import android.webkit.*
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.doOnNextLayout
+import androidx.core.view.updatePadding
 import okhttp3.OkHttpClient
 import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
 import org.jellyfin.mobile.bridge.NativeInterface
@@ -50,12 +55,33 @@ class WebappActivity : AppCompatActivity(), WebViewController {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_webapp)
 
         // Bind player service
         bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
 
+        // Handle window insets
+        setStableLayoutFlags()
+        ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
+            v.updatePadding(top = insets.systemWindowInsets.top)
+            insets
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            webView.doOnNextLayout { webView ->
+                // Maximum allowed exclusion rect height is 200dp,
+                // offsetting 100dp from the center in both directions
+                // uses the maximum available space
+                val verticalCenter = webView.measuredHeight / 2
+                val offset = dip(100)
+
+                // Arbitrary, currently 2x minimum touch target size
+                val exclusionWidth = dip(96)
+
+                webView.systemGestureExclusionRects = listOf(Rect(0, verticalCenter - offset, exclusionWidth, verticalCenter + offset))
+            }
+        }
+
         // Setup WebView
-        setContentView(R.layout.activity_webapp)
         webView.initialize()
 
         // Load content

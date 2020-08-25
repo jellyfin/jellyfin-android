@@ -66,7 +66,7 @@ class NativeInterface(private val activity: WebappActivity) {
     fun disableFullscreen(): Boolean {
         activity.runOnUiThread {
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-            activity.disableFullscreen()
+            activity.disableFullscreen(true)
         }
         return true
     }
