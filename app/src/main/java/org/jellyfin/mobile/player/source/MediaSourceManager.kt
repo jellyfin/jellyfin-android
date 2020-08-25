@@ -78,11 +78,10 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
 
         @CheckResult
         private fun createVideoMediaSource(item: JellyfinMediaSource, dataSourceFactory: DataSource.Factory): MediaSource {
-            val uri: Uri = Uri.parse(item.url)
             return if (item.isTranscoding) {
-                HlsMediaSource.Factory(dataSourceFactory).setAllowChunklessPreparation(true).createMediaSource(uri)
+                HlsMediaSource.Factory(dataSourceFactory).setAllowChunklessPreparation(true).createMediaSource(item.uri)
             } else {
-                ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
+                ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(item.uri)
             }
         }
 

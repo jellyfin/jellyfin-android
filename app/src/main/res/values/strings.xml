@@ -17,6 +17,7 @@
     <string name="downloading">Downloading</string>
 
     <string name="menu_item_none">None</string>
+    <string name="playback_info_play_method">Play method: %s</string>
     <string name="playback_info_transcoding">Transcoding: %b</string>
     <string name="playback_info_video_streams">Video streams</string>
     <string name="playback_info_audio_streams">Audio streams</string>

@@ -25,7 +25,7 @@ inline fun MediaSession.applyDefaultLocalAudioAttributes(contentType: Int) {
 }
 
 fun JellyfinMediaSource.toMediaMetadata(): MediaMetadata = MediaMetadata.Builder().apply {
-    putString(MediaMetadata.METADATA_KEY_MEDIA_ID, url)
+    putString(MediaMetadata.METADATA_KEY_MEDIA_ID, id)
     putString(MediaMetadata.METADATA_KEY_TITLE, title)
     putLong(MediaMetadata.METADATA_KEY_DURATION, mediaDurationMs)
 }.build()
