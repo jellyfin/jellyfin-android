@@ -59,6 +59,9 @@ dependencies {
     implementation(Dependencies.Core.activityKtx)
     implementation(Dependencies.Core.exoPlayer)
 
+    // Koin
+    implementation(Dependencies.Koin.koinAndroid)
+
     // Lifecycle
     implementation(Dependencies.Lifecycle.viewModel)
     implementation(Dependencies.Lifecycle.liveData)

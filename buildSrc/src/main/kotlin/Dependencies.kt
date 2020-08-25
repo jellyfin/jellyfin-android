@@ -16,6 +16,9 @@ object Dependencies {
         const val okHttp = "4.8.0"
         const val exoPlayer = "2.11.7"
 
+        // Koin
+        const val koin = "2.1.6"
+
         // Lifecycle
         const val lifecycleExtensions = "2.2.0"
 
@@ -55,6 +58,10 @@ object Dependencies {
         const val coreKtx = "androidx.core:core-ktx:${Versions.coreKtx}"
         const val activityKtx = "androidx.activity:activity-ktx:${Versions.activityKtx}"
         val exoPlayer = exoPlayer("core")
+    }
+
+    object Koin {
+        const val koinAndroid = "org.koin:koin-android:${Versions.koin}"
     }
 
     object Lifecycle {
