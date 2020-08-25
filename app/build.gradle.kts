@@ -108,8 +108,7 @@ tasks.withType<Test> {
 tasks.withType<DependencyUpdatesTask> {
     gradleReleaseChannel = GradleReleaseChannel.CURRENT.id
     rejectVersionIf {
-        !Dependencies.Versions.isStable(candidate.version) && Dependencies.Versions.isStable(
-            currentVersion
-        )
+        !Dependencies.Versions.isStable(candidate.version) &&
+            Dependencies.Versions.isStable(currentVersion)
     }
 }

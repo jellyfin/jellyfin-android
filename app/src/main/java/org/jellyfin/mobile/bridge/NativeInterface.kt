@@ -3,12 +3,12 @@ package org.jellyfin.mobile.bridge
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.media.session.PlaybackState
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings.Secure
 import android.webkit.JavascriptInterface
 import org.jellyfin.mobile.BuildConfig
-import org.jellyfin.mobile.RemotePlayerService
 import org.jellyfin.mobile.WebappActivity
 import org.jellyfin.mobile.settings.SettingsActivity
 import org.jellyfin.mobile.utils.Constants
@@ -26,6 +26,7 @@ import org.jellyfin.mobile.utils.Constants.EXTRA_TITLE
 import org.jellyfin.mobile.utils.disableFullscreen
 import org.jellyfin.mobile.utils.enableFullscreen
 import org.jellyfin.mobile.utils.requestDownload
+import org.jellyfin.mobile.webapp.RemotePlayerService
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -97,8 +98,8 @@ class NativeInterface(private val activity: WebappActivity) {
             putExtra(EXTRA_ARTIST, options.optString(EXTRA_ARTIST))
             putExtra(EXTRA_ALBUM, options.optString(EXTRA_ALBUM))
             putExtra(EXTRA_IMAGE_URL, options.optString(EXTRA_IMAGE_URL))
-            putExtra(EXTRA_POSITION, options.optString(EXTRA_POSITION))
-            putExtra(EXTRA_DURATION, options.optString(EXTRA_DURATION))
+            putExtra(EXTRA_POSITION, options.optLong(EXTRA_POSITION, PlaybackState.PLAYBACK_POSITION_UNKNOWN))
+            putExtra(EXTRA_DURATION, options.optLong(EXTRA_DURATION))
             putExtra(EXTRA_CAN_SEEK, options.optBoolean(EXTRA_CAN_SEEK))
             putExtra(EXTRA_IS_LOCAL_PLAYER, options.optBoolean(EXTRA_IS_LOCAL_PLAYER, true))
             putExtra(EXTRA_IS_PAUSED, options.optBoolean(EXTRA_IS_PAUSED, true))
