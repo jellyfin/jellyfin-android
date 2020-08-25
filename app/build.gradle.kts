@@ -55,6 +55,7 @@ dependencies {
     implementation(Dependencies.Kotlin.coroutinesAndroid)
 
     // Core
+    implementation(Dependencies.Core.apiClient)
     implementation(Dependencies.Core.appCompat)
     implementation(Dependencies.Core.coreKtx)
     implementation(Dependencies.Core.activityKtx)
