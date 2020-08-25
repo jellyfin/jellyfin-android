@@ -44,7 +44,7 @@
             android:label="@string/activity_name_settings"
             android:theme="@style/AppTheme.Settings" />
 
-        <service android:name=".RemotePlayerService" />
+        <service android:name=".webapp.RemotePlayerService" />
 
         <meta-data
             android:name="com.google.android.gms.version"

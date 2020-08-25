@@ -1,6 +1,6 @@
 package org.jellyfin.mobile.bridge
 
-import org.jellyfin.mobile.WebViewController
+import org.jellyfin.mobile.webapp.WebViewController
 
 object Commands {
     private fun buildBaseCommand(component: String, cmd: String) =

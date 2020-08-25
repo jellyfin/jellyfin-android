@@ -8,7 +8,6 @@ import android.os.Build
 import android.provider.Settings.Secure
 import android.webkit.JavascriptInterface
 import org.jellyfin.mobile.BuildConfig
-import org.jellyfin.mobile.RemotePlayerService
 import org.jellyfin.mobile.WebappActivity
 import org.jellyfin.mobile.settings.SettingsActivity
 import org.jellyfin.mobile.utils.Constants
@@ -26,6 +25,7 @@ import org.jellyfin.mobile.utils.Constants.EXTRA_TITLE
 import org.jellyfin.mobile.utils.disableFullscreen
 import org.jellyfin.mobile.utils.enableFullscreen
 import org.jellyfin.mobile.utils.requestDownload
+import org.jellyfin.mobile.webapp.RemotePlayerService
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject

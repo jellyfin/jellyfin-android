@@ -1,4 +1,4 @@
-package org.jellyfin.mobile
+package org.jellyfin.mobile.webapp
 
 import android.app.*
 import android.bluetooth.BluetoothA2dp
@@ -24,6 +24,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.jellyfin.mobile.AppPreferences
+import org.jellyfin.mobile.R
+import org.jellyfin.mobile.WebappActivity
 import org.jellyfin.mobile.bridge.Commands
 import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
 import org.jellyfin.mobile.utils.Constants
