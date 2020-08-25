@@ -68,9 +68,16 @@ class WebappActivity : AppCompatActivity(), WebViewController {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             webView.doOnNextLayout { webView ->
+                // Maximum allowed exclusion rect height is 200dp,
+                // offsetting 100dp from the center in both directions
+                // uses the maximum available space
                 val verticalCenter = webView.measuredHeight / 2
                 val offset = dip(100)
-                webView.systemGestureExclusionRects = listOf(Rect(0, verticalCenter - offset, dip(96), verticalCenter + offset))
+
+                // Arbitrary, currently 2x minimum touch target size
+                val exclusionWidth = dip(96)
+
+                webView.systemGestureExclusionRects = listOf(Rect(0, verticalCenter - offset, exclusionWidth, verticalCenter + offset))
             }
         }
 
