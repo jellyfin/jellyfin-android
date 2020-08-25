@@ -5,13 +5,13 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.media.session.PlaybackState
 import android.net.Uri
-import android.os.Build
-import android.provider.Settings.Secure
 import android.webkit.JavascriptInterface
-import org.jellyfin.mobile.BuildConfig
+import org.jellyfin.apiclient.interaction.AndroidDevice
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.settings.SettingsActivity
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.Constants.APP_INFO_NAME
+import org.jellyfin.mobile.utils.Constants.APP_INFO_VERSION
 import org.jellyfin.mobile.utils.Constants.EXTRA_ALBUM
 import org.jellyfin.mobile.utils.Constants.EXTRA_ARTIST
 import org.jellyfin.mobile.utils.Constants.EXTRA_CAN_SEEK
@@ -37,12 +37,12 @@ class NativeInterface(private val activity: MainActivity) {
     @SuppressLint("HardwareIds")
     @JavascriptInterface
     fun getDeviceInformation(): String? = try {
+        val device = AndroidDevice.fromContext(activity)
         JSONObject().apply {
-            // TODO: replace this later with a randomly generated persistent string stored in local settings
-            put("deviceId", Secure.getString(activity.contentResolver, Secure.ANDROID_ID))
-            put("deviceName", Build.MODEL)
-            put("appName", "Jellyfin Android")
-            put("appVersion", BuildConfig.VERSION_CODE.toString())
+            put("deviceId", device.deviceId)
+            put("deviceName", device.deviceName)
+            put("appName", APP_INFO_NAME)
+            put("appVersion", APP_INFO_VERSION)
         }.toString()
     } catch (e: JSONException) {
         null

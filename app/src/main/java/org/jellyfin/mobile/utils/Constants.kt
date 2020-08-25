@@ -1,8 +1,13 @@
 package org.jellyfin.mobile.utils
 
 import android.media.session.PlaybackState
+import org.jellyfin.mobile.BuildConfig
 
 object Constants {
+    // App Info
+    const val APP_INFO_NAME = "Jellyfin Android"
+    const val APP_INFO_VERSION: String = BuildConfig.VERSION_NAME
+
     // Webapp constants
     const val INDEX_PATCH_PATH = "index_patch.html"
     const val INDEX_PATH = "web/index.html"
