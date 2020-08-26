@@ -26,7 +26,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.WebappActivity
+import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.bridge.Commands
 import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
 import org.jellyfin.mobile.utils.Constants
@@ -336,7 +336,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     private fun createContentIntent(): PendingIntent {
-        val intent = Intent(this, WebappActivity::class.java).apply {
+        val intent = Intent(this, MainActivity::class.java).apply {
             action = Constants.ACTION_SHOW_PLAYER
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         }

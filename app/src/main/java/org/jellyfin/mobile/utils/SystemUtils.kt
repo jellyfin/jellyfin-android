@@ -15,9 +15,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.WebappActivity
+import org.jellyfin.mobile.MainActivity
 
-fun WebappActivity.requestNoBatteryOptimizations() {
+fun MainActivity.requestNoBatteryOptimizations() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         val powerManager: PowerManager = getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
         if (!appPreferences.ignoreBatteryOptimizations && !powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) {
@@ -40,7 +40,7 @@ fun WebappActivity.requestNoBatteryOptimizations() {
     }
 }
 
-fun WebappActivity.requestDownload(uri: Uri, title: String, filename: String) {
+fun MainActivity.requestDownload(uri: Uri, title: String, filename: String) {
     val request = DownloadManager.Request(uri)
         .setTitle(title)
         .setDescription(getString(R.string.downloading))
