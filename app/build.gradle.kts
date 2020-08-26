@@ -27,6 +27,7 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         getByName("debug") {
+            applicationIdSuffix = ".debug"
             isDebuggable = true
             aaptOptions.cruncherEnabled = false // Disable png crunching
         }
