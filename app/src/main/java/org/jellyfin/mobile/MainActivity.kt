@@ -31,7 +31,7 @@ import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.io.Reader
 
-class WebappActivity : AppCompatActivity(), WebViewController {
+class MainActivity : AppCompatActivity(), WebViewController {
 
     val appPreferences: AppPreferences by inject()
     val httpClient: OkHttpClient by inject()
@@ -46,7 +46,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
     private val serviceConnection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
             serviceBinder = binder as? RemotePlayerService.ServiceBinder
-            serviceBinder?.run { webViewController = this@WebappActivity }
+            serviceBinder?.run { webViewController = this@MainActivity }
         }
 
         override fun onServiceDisconnected(componentName: ComponentName) {
@@ -100,7 +100,7 @@ class WebappActivity : AppCompatActivity(), WebViewController {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun WebView.initialize() {
-        setBackgroundColor(ContextCompat.getColor(this@WebappActivity, R.color.theme_background))
+        setBackgroundColor(ContextCompat.getColor(this@MainActivity, R.color.theme_background))
         webViewClient = object : WebViewClient() {
             override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
                 val url = request.url
@@ -141,8 +141,8 @@ class WebappActivity : AppCompatActivity(), WebViewController {
             javaScriptEnabled = true
             domStorageEnabled = true
         }
-        addJavascriptInterface(NativeInterface(this@WebappActivity), "NativeInterface")
-        addJavascriptInterface(NativePlayer(this@WebappActivity), "NativePlayer")
+        addJavascriptInterface(NativeInterface(this@MainActivity), "NativeInterface")
+        addJavascriptInterface(NativePlayer(this@MainActivity), "NativePlayer")
     }
 
     override fun loadUrl(url: String) {

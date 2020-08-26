@@ -24,7 +24,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.WebappActivity
+import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.databinding.ConnectServerBinding
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SERVER_INFO_PATH
@@ -34,7 +34,7 @@ import org.json.JSONObject
 import timber.log.Timber
 import java.io.IOException
 
-class ConnectionHelper(private val activity: WebappActivity) {
+class ConnectionHelper(private val activity: MainActivity) {
     private val appPreferences: AppPreferences get() = activity.appPreferences
     private val rootView: FrameLayout get() = activity.rootView
     private val webView: WebView get() = activity.webView

@@ -3,13 +3,13 @@ package org.jellyfin.mobile.bridge
 import android.content.Intent
 import android.os.Messenger
 import android.webkit.JavascriptInterface
-import org.jellyfin.mobile.WebappActivity
+import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.player.ExoPlayerFormats
 import org.jellyfin.mobile.player.PlayerActivity
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.LifecycleAwareHandler
 
-class NativePlayer(private val activity: WebappActivity) {
+class NativePlayer(private val activity: MainActivity) {
 
     private val playerMessageHandler = LifecycleAwareHandler(activity.lifecycle) { message ->
         val function = message.obj as? String

@@ -24,7 +24,7 @@
         tools:ignore="UnusedAttribute">
 
         <activity
-            android:name=".WebappActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

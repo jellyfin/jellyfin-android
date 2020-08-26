@@ -9,7 +9,7 @@ import android.os.Build
 import android.provider.Settings.Secure
 import android.webkit.JavascriptInterface
 import org.jellyfin.mobile.BuildConfig
-import org.jellyfin.mobile.WebappActivity
+import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.settings.SettingsActivity
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.EXTRA_ALBUM
@@ -32,7 +32,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
 
-class NativeInterface(private val activity: WebappActivity) {
+class NativeInterface(private val activity: MainActivity) {
 
     @SuppressLint("HardwareIds")
     @JavascriptInterface
