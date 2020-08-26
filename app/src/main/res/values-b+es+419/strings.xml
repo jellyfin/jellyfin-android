@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="mobile_data_and_roaming">Datos móviles e itinerancia</string>
-    <string name="battery_optimizations_title">Desactivar Optimizaciones de Batería</string>
+    <string name="battery_optimizations_title">Desactivar la optimización de la batería</string>
     <string name="downloading">Descargando</string>
     <string name="mobile_data">Datos móviles</string>
     <string name="wifi_only">Solo WiFi</string>
@@ -10,6 +10,17 @@
     <string name="battery_optimizations_message">Por favor desactiva las optimizaciones de batería para la reproducción de medios mientras la pantalla este apagada.</string>
     <string name="connection_error_invalid_format">Host tiene un formato inválido</string>
     <string name="connect_button_text">Conectar</string>
-    <string name="host_input_hint">Host</string>
-    <string name="connect_to_server_title">Conectar a un Servidor</string>
+    <string name="host_input_hint">Servidor</string>
+    <string name="connect_to_server_title">Conectar al servidor</string>
+    <string name="pref_category_music_player">Reproductor de música</string>
+    <string name="activity_name_settings">Configuración de Jellyfin</string>
+    <string name="playback_info_and_x_more">...y %d más</string>
+    <string name="playback_info_audio_streams">Flujos de audio</string>
+    <string name="playback_info_video_streams">Flujos de video</string>
+    <string name="playback_info_transcoding">Transcodificando: %b</string>
+    <string name="menu_item_none">Ninguno</string>
+    <string name="pref_category_video_player">Reproductor de video nativo</string>
+    <string name="pref_music_notification_always_dismissible_title">Hacer que la notificación del reproductor de música pueda ser siempre descartada</string>
+    <string name="pref_enable_exoplayer_summary">Habilita el reproductor de video experimental ExoPlayer que soporta más formatos de video y códecs, y está más integrado en el sistema operativo</string>
+    <string name="pref_enable_exoplayer_title">Habilitar integración del reproductor de video</string>
 </resources>

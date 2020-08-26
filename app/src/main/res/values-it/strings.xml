@@ -18,4 +18,7 @@
     <string name="connect_button_text">Connetti</string>
     <string name="host_input_hint">Host</string>
     <string name="connect_to_server_title">Connetti al Server</string>
+    <string name="playback_info_audio_streams">Flusso audio</string>
+    <string name="playback_info_video_streams">Flusso video</string>
+    <string name="menu_item_none">Niente</string>
 </resources>

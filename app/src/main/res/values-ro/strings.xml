@@ -12,4 +12,15 @@
     <string name="connect_button_text">Conectare</string>
     <string name="host_input_hint">Gazdă</string>
     <string name="connect_to_server_title">Conectați-vă la server</string>
+    <string name="pref_enable_exoplayer_summary">Activează redarea video ExoPlayer experimentală care acceptă mai multe formate video și codecuri și este mai integrat în sistemul de operare</string>
+    <string name="pref_enable_exoplayer_title">Activează integrarea cu redarea video</string>
+    <string name="pref_category_video_player">Redare video nativă</string>
+    <string name="pref_music_notification_always_dismissible_title">Face ca notificările redării muzicale să se poată întotdeauna închide</string>
+    <string name="pref_category_music_player">Redare muzică</string>
+    <string name="activity_name_settings">Setări Jellyfin</string>
+    <string name="playback_info_and_x_more">...și %d mai mult</string>
+    <string name="playback_info_audio_streams">Flux audio</string>
+    <string name="playback_info_video_streams">Flux video</string>
+    <string name="playback_info_transcoding">Transcodare: %b</string>
+    <string name="menu_item_none">Nici unul</string>
 </resources>
