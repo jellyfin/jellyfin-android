@@ -10,6 +10,7 @@ object Dependencies {
         const val coroutinesAndroid = "1.3.0"
 
         // Core
+        const val apiClient = "0.7.2"
         const val appCompat = "1.1.0"
         const val coreKtx = "1.3.0"
         const val activityKtx = "1.1.0"
@@ -54,6 +55,7 @@ object Dependencies {
     }
 
     object Core {
+        const val apiClient = "org.jellyfin.apiclient:android:${Versions.apiClient}"
         val appCompat = androidx("appcompat", Versions.appCompat)
         const val coreKtx = "androidx.core:core-ktx:${Versions.coreKtx}"
         const val activityKtx = "androidx.activity:activity-ktx:${Versions.activityKtx}"
