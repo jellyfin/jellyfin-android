@@ -11,4 +11,9 @@
     <string name="connection_error_invalid_format">El host tiene un formato no válido</string>
     <string name="connect_button_text">Conectado</string>
     <string name="connect_to_server_title">Conectarse al Servidor</string>
+    <string name="playback_info_transcoding">Transcodificación: %b</string>
+    <string name="playback_info_play_method">Método de reproducción: %s</string>
+    <string name="menu_item_none">Ninguno</string>
+    <string name="connection_error_cannot_connect">La conexión no pudo ser establecida.
+\nPorfavor, comprueba el nombre de host y tu conexión a la red.</string>
 </resources>
