@@ -23,4 +23,6 @@
     <string name="playback_info_audio_streams">Audio proudy</string>
     <string name="playback_info_video_streams">Video proudy</string>
     <string name="playback_info_transcoding">Překódování: %b</string>
+    <string name="connection_error_cannot_connect">Připojení se nezdařilo.
+\nZkontrolujte název hostitele a síťové připojení.</string>
 </resources>
