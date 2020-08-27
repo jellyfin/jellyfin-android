@@ -15,4 +15,15 @@
     <string name="menu_item_none">Nenhum</string>
     <string name="connect_button_text">Conectar</string>
     <string name="connect_to_server_title">Conectar ao Servidor</string>
+    <string name="connection_error_cannot_connect">Conexão não pode ser estabelecida.
+\nPor favor confira o hostname e sua conexão com a internet.</string>
+    <string name="connection_error_invalid_format">Host possui formato invalido</string>
+    <string name="host_input_hint">Host</string>
+    <string name="pref_music_notification_always_dismissible_title">Faz o reprodutor de música sempre dispensar notificações</string>
+    <string name="pref_enable_exoplayer_summary">Habilita o reprodutor de vídeo experimental que suporta mais formatos de vídeo e codecs, e é mais integrado ao SO</string>
+    <string name="pref_enable_exoplayer_title">Habilita integração do reprodutor de vídeo</string>
+    <string name="pref_category_video_player">Reprodutor de vídeo nativo</string>
+    <string name="pref_category_music_player">Reprodutor de música</string>
+    <string name="playback_info_audio_streams">Streams de áudio</string>
+    <string name="playback_info_video_streams">Streams de vídeo</string>
 </resources>
