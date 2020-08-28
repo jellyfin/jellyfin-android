@@ -16,4 +16,6 @@
     <string name="menu_item_none">Ninguno</string>
     <string name="connection_error_cannot_connect">La conexión no pudo ser establecida.
 \nPorfavor, comprueba el nombre de host y tu conexión a la red.</string>
+    <string name="pref_category_video_player">Reproductor de vídeo nativo</string>
+    <string name="pref_category_music_player">Reproductor de música</string>
 </resources>
