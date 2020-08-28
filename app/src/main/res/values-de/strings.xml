@@ -3,7 +3,7 @@
     <string name="battery_optimizations_title">Batterieoptimierungen deaktivieren</string>
     <string name="battery_optimizations_message">Bitte deaktiviere die Batterieoptimierungen damit Medien bei ausgeschaltetem Bildschirm abgespielt werden können.</string>
     <string name="network_title">Erlaubte Verbindungsmöglichkeiten</string>
-    <string name="network_message">Wollen Sie den Download über Mobile Daten oder Roaming elauben?</string>
+    <string name="network_message">Download über Mobile Daten oder Roaming erlauben\?</string>
     <string name="wifi_only">Nur WLAN</string>
     <string name="mobile_data">Mobile Daten</string>
     <string name="mobile_data_and_roaming">Mobile Daten &amp; Roaming</string>
@@ -23,6 +23,7 @@
     <string name="playback_info_video_streams">Video-Streams</string>
     <string name="playback_info_and_x_more">…und %d weitere</string>
     <string name="playback_info_transcoding">Transkodiert: %b</string>
-    <string name="connection_error_cannot_connect">Die Verbindung kann nicht hergestellt werden.
-\nBitte überprüfen Sie den Hostnamen und Ihre Netzwerkverbindung.</string>
+    <string name="connection_error_cannot_connect">Es konnte keine Verbindung hergestellt werden.
+\nBitte überprüfe den Hostnamen und die Netzwerkverbindung.</string>
+    <string name="playback_info_play_method">Wiedergabemethode: %s</string>
 </resources>
