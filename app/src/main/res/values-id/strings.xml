@@ -23,4 +23,7 @@
     <string name="playback_info_audio_streams">Aliran audio</string>
     <string name="playback_info_video_streams">Aliran video</string>
     <string name="playback_info_transcoding">Transcoding : %b</string>
+    <string name="playback_info_play_method">Metode pemutar: %s</string>
+    <string name="connection_error_cannot_connect">Koneksi tidak dapat dibuat.
+\nSilakan periksa nama host dan koneksi jaringan Anda.</string>
 </resources>
