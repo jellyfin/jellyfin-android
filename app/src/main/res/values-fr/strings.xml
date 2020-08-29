@@ -18,9 +18,12 @@
     <string name="activity_name_settings">Paramètres Jellyfin</string>
     <string name="menu_item_none">Aucun</string>
     <string name="pref_category_music_player">Lecteur de musique</string>
-    <string name="pref_music_notification_always_dismissible_title">Rendre rejetable la notification du lecteur audio</string>
+    <string name="pref_music_notification_always_dismissible_title">Faire en sorte que la notification du lecteur de musique soit toujours ignorée</string>
     <string name="playback_info_and_x_more">... et %d autres</string>
     <string name="playback_info_audio_streams">Flux audio</string>
     <string name="playback_info_video_streams">Flux vidéo</string>
     <string name="playback_info_transcoding">Transcodage : %b</string>
+    <string name="playback_info_play_method">Méthode de lecture : %s</string>
+    <string name="connection_error_cannot_connect">La connexion n\'a pas pu être établie
+\nMerci de vérifier le nom de la machine et votre connexion réseau</string>
 </resources>
