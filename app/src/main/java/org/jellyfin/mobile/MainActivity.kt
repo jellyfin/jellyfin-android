@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), WebViewController {
         // Handle window insets
         setStableLayoutFlags()
         ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
-            v.updatePadding(top = insets.systemWindowInsets.top)
+            v.updatePadding(top = insets.systemWindowInsetTop, bottom = insets.systemWindowInsetBottom)
             insets
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
