@@ -19,4 +19,8 @@
     <string name="pref_category_music_player">Predvajalnik glasbe</string>
     <string name="activity_name_settings">Nastavitve Jellyfin</string>
     <string name="menu_item_none">Nič</string>
+    <string name="playback_info_transcoding">Prekodiranje: %b</string>
+    <string name="playback_info_play_method">Način predvajanja: %s</string>
+    <string name="connection_error_cannot_connect">Povezave ni mogoče vzpostaviti.
+\nPreverite naslov in vašo internetno povezavo.</string>
 </resources>
