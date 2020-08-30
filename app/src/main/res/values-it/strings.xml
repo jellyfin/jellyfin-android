@@ -21,4 +21,9 @@
     <string name="playback_info_audio_streams">Flusso audio</string>
     <string name="playback_info_video_streams">Flusso video</string>
     <string name="menu_item_none">Niente</string>
+    <string name="playback_info_and_x_more">... e più di %d</string>
+    <string name="playback_info_transcoding">Transcodifica: %b</string>
+    <string name="playback_info_play_method">Metodo di riproduzione: %s</string>
+    <string name="connection_error_cannot_connect">La connessione non può essere stabilita.
+\nControlla l\'hostname e la tua connessione di rete.</string>
 </resources>
