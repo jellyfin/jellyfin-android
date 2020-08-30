@@ -1,14 +1,17 @@
 package org.jellyfin.mobile.settings
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import de.Maxr1998.modernpreferences.PreferencesAdapter
 import de.Maxr1998.modernpreferences.helpers.categoryHeader
 import de.Maxr1998.modernpreferences.helpers.checkBox
 import de.Maxr1998.modernpreferences.helpers.screen
+import de.Maxr1998.modernpreferences.preferences.TwoStatePreference
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.toast
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -43,6 +46,10 @@ class SettingsActivity : AppCompatActivity() {
         checkBox(Constants.PREF_ENABLE_EXOPLAYER) {
             titleRes = R.string.pref_enable_exoplayer_title
             summaryRes = R.string.pref_enable_exoplayer_summary
+            checkedChangeListener = TwoStatePreference.OnCheckedChangeListener { _, _, _ ->
+                toast(R.string.toast_exo_player_restart_app, Toast.LENGTH_LONG)
+                true
+            }
         }
     }
 
