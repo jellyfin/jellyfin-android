@@ -22,7 +22,6 @@ object Constants {
 
     // Intent extras
     const val EXTRA_MEDIA_SOURCE_ITEM = "org.jellyfin.mobile.MEDIA_SOURCE_ITEM"
-    const val EXTRA_WEBAPP_MESSENGER = "org.jellyfin.mobile.WEBAPP_MESSENGER"
 
     // InputManager commands
     const val INPUT_MANAGER_COMMAND_PLAY_PAUSE = "playpause"
