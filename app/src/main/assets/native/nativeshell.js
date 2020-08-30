@@ -32,7 +32,7 @@ window.NativeShell = {
     },
 
     getPlugins() {
-        return JSON.parse(window.NativeInterface.getPlugins());
+        return ["native/exoplayer"];
     },
 
     execCast(action, args, callback) {
