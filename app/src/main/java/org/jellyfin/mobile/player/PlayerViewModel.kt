@@ -21,18 +21,17 @@ import org.jellyfin.mobile.WEBAPP_FUNCTION_CHANNEL
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceManager
 import org.jellyfin.mobile.utils.*
-import org.jellyfin.mobile.utils.Constants.DEFAULT_SEEK_TIME_MS
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.qualifier.named
 
-class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, LifecycleObserver, Player.EventListener {
+class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.EventListener {
     val mediaSourceManager = MediaSourceManager(this)
+    private val playerLifecycleObserver = PlayerLifecycleObserver(this)
 
     private val _player = MutableLiveData<ExoPlayer?>()
     private val _playerState = MutableLiveData<Int>()
-    private var shouldPlayOnStart = false
 
     /**
      * Returns the current ExoPlayer instance or null
@@ -58,9 +57,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             applyDefaultLocalAudioAttributes(AudioAttributes.CONTENT_TYPE_MOVIE)
         }
     }
+    private val mediaSessionCallback = PlayerMediaSessionCallback(this)
 
     init {
-        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
+        ProcessLifecycleOwner.get().lifecycle.addObserver(playerLifecycleObserver)
 
         // Subscribe to player events from webapp
         viewModelScope.launch {
@@ -77,7 +77,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     /**
      * Setup a new [SimpleExoPlayer] for video playback, register callbacks and set attributes
      */
-    private fun setupPlayer() {
+    fun setupPlayer() {
         _player.value = SimpleExoPlayer.Builder(getApplication()).apply {
             setTrackSelector(mediaSourceManager.trackSelector)
             if (BuildConfig.DEBUG) {
@@ -94,7 +94,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     /**
      * Release the current ExoPlayer and stop/release the current MediaSession
      */
-    private fun releasePlayer() {
+    fun releasePlayer() {
         mediaSession.isActive = false
         mediaSession.release()
         playerOrNull?.let { player ->
@@ -145,15 +145,28 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
     }
 
+    // Player controls
+
+    fun play() {
+        playerOrNull?.playWhenReady = true
+    }
+
+    fun pause() {
+        playerOrNull?.playWhenReady = false
+    }
+
     fun seekToOffset(offsetMs: Long) {
         playerOrNull?.seekToOffset(offsetMs)
+    }
+
+    fun stop() {
+        pause()
+        releasePlayer()
     }
 
     fun getPlayerRendererIndex(type: Int): Int {
         return playerOrNull?.getRendererIndexByType(type) ?: -1
     }
-
-    // (Lifecycle) Callbacks
 
     @SuppressLint("SwitchIntDef")
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
@@ -184,57 +197,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         _playerState.value = playbackState
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun onCreate() {
-        setupPlayer()
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun onStart() {
-        if (shouldPlayOnStart) playerOrNull?.playWhenReady = true
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onStop() {
-        shouldPlayOnStart = playerOrNull?.isPlaying ?: false
-        playerOrNull?.playWhenReady = false
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun onDestroy() {
-        releasePlayer()
-    }
-
     override fun onCleared() {
         super.onCleared()
         releasePlayer()
-        ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
-    }
-
-    private val mediaSessionCallback: MediaSession.Callback = object : MediaSession.Callback() {
-        override fun onPlay() {
-            playerOrNull?.playWhenReady = true
-        }
-
-        override fun onPause() {
-            playerOrNull?.playWhenReady = false
-        }
-
-        override fun onSeekTo(pos: Long) {
-            playerOrNull?.seekTo(pos)
-        }
-
-        override fun onRewind() {
-            seekToOffset(DEFAULT_SEEK_TIME_MS.unaryMinus())
-        }
-
-        override fun onFastForward() {
-            seekToOffset(DEFAULT_SEEK_TIME_MS)
-        }
-
-        override fun onStop() {
-            onPause()
-            releasePlayer()
-        }
+        ProcessLifecycleOwner.get().lifecycle.removeObserver(playerLifecycleObserver)
     }
 }
