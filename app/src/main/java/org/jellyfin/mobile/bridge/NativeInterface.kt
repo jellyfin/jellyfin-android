@@ -49,12 +49,6 @@ class NativeInterface(private val activity: MainActivity) {
     }
 
     @JavascriptInterface
-    fun getPlugins(): String = JSONArray().apply {
-        if (activity.appPreferences.enableExoPlayer)
-            put("native/exoplayer")
-    }.toString()
-
-    @JavascriptInterface
     fun enableFullscreen(): Boolean {
         activity.runOnUiThread {
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE

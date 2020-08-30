@@ -19,6 +19,9 @@ class NativePlayer(private val activity: MainActivity) {
     private val webappMessenger = Messenger(playerMessageHandler)
 
     @JavascriptInterface
+    fun isEnabled() = activity.appPreferences.enableExoPlayer
+
+    @JavascriptInterface
     fun getSupportedFormats() = ExoPlayerFormats.supportedCodecs.toJSONString()
 
     @JavascriptInterface

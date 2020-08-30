@@ -47,7 +47,7 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
         };
 
         self.canPlayItem = function (item, playOptions) {
-            return true;
+            return window.NativePlayer.isEnabled();
         };
 
         self.currentSrc = function () {
