@@ -35,8 +35,10 @@ object Constants {
     const val INPUT_MANAGER_COMMAND_VOL_DOWN = "volumedown"
     const val INPUT_MANAGER_COMMAND_BACK = "back"
 
+    // Notification
+    const val MEDIA_NOTIFICATION_CHANNEL_ID = "JellyfinChannelId"
+
     // Music player constants
-    const val MUSIC_NOTIFICATION_CHANNEL_ID = "JellyfinChannelId"
     const val SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS: Long = PlaybackState.ACTION_PLAY_PAUSE or
         PlaybackState.ACTION_PLAY or
         PlaybackState.ACTION_PAUSE or
@@ -44,6 +46,7 @@ object Constants {
         PlaybackState.ACTION_SKIP_TO_NEXT or
         PlaybackState.ACTION_SKIP_TO_PREVIOUS or
         PlaybackState.ACTION_SET_RATING
+    const val MUSIC_PLAYER_NOTIFICATION_ID = 84
 
     // Music player intent actions
     const val ACTION_SHOW_PLAYER = "org.jellyfin.mobile.intent.action.SHOW_PLAYER"

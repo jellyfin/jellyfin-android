@@ -1,6 +1,9 @@
 package org.jellyfin.mobile.webapp
 
-import android.app.*
+import android.app.Notification
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Service
 import android.bluetooth.BluetoothA2dp
 import android.bluetooth.BluetoothHeadset
 import android.content.BroadcastReceiver
@@ -17,6 +20,7 @@ import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
 import coil.Coil
 import coil.request.GetRequest
@@ -25,8 +29,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.AppPreferences
-import org.jellyfin.mobile.R
 import org.jellyfin.mobile.MainActivity
+import org.jellyfin.mobile.R
 import org.jellyfin.mobile.bridge.Commands
 import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
 import org.jellyfin.mobile.utils.Constants
@@ -50,12 +54,13 @@ import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_REWIND
 import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_STOP
 import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_VOL_DOWN
 import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_VOL_UP
-import org.jellyfin.mobile.utils.Constants.MUSIC_NOTIFICATION_CHANNEL_ID
+import org.jellyfin.mobile.utils.Constants.MEDIA_NOTIFICATION_CHANNEL_ID
+import org.jellyfin.mobile.utils.Constants.MUSIC_PLAYER_NOTIFICATION_ID
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS
 import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
+import org.jellyfin.mobile.utils.createMediaNotificationChannel
 import org.jellyfin.mobile.utils.setPlaybackState
 import org.koin.android.ext.android.inject
-import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 class RemotePlayerService : Service(), CoroutineScope {
@@ -70,11 +75,11 @@ class RemotePlayerService : Service(), CoroutineScope {
 
     private lateinit var wakeLock: PowerManager.WakeLock
 
+    private val notificationManager: NotificationManager by lazy { getSystemService()!! }
     private var mediaSession: MediaSession? = null
     private var mediaController: MediaController? = null
     private var largeItemIcon: Bitmap? = null
     private var currentItemId: String? = null
-    private val notifyId = 84
 
     val playbackState: PlaybackState? get() = mediaSession?.controller?.playbackState
 
@@ -135,13 +140,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         registerReceiver(receiver, filter)
 
         // Create notification channel
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            val notificationChannel = NotificationChannel(MUSIC_NOTIFICATION_CHANNEL_ID, getString(R.string.app_name), NotificationManager.IMPORTANCE_LOW).apply {
-                description = "Media notifications"
-            }
-            nm.createNotificationChannel(notificationChannel)
-        }
+        createMediaNotificationChannel(notificationManager)
     }
 
     override fun onBind(intent: Intent): IBinder? {
@@ -264,7 +263,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         @Suppress("DEPRECATION")
         val notification = Notification.Builder(this).apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                setChannelId(MUSIC_NOTIFICATION_CHANNEL_ID) // Set Notification Channel on Android O and above
+                setChannelId(MEDIA_NOTIFICATION_CHANNEL_ID) // Set Notification Channel on Android O and above
                 setColorized(true) // Color notification based on cover art
             } else {
                 setPriority(Notification.PRIORITY_LOW)
@@ -310,12 +309,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         }.build()
 
         // Post notification
-        try {
-            val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            nm.notify(notifyId, notification)
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to post notification")
-        }
+        notificationManager.notify(MUSIC_PLAYER_NOTIFICATION_ID, notification)
 
         // Activate MediaSession
         mediaSession.isActive = true
@@ -347,7 +341,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         val intent = Intent(applicationContext, RemotePlayerService::class.java).apply {
             action = intentAction
         }
-        val pendingIntent = PendingIntent.getService(applicationContext, notifyId, intent, 0)
+        val pendingIntent = PendingIntent.getService(applicationContext, MUSIC_PLAYER_NOTIFICATION_ID, intent, 0)
         @Suppress("DEPRECATION")
         return Notification.Action.Builder(icon, title, pendingIntent).build()
     }
@@ -401,8 +395,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     private fun onStopped() {
-        val nm = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        nm.cancel(notifyId)
+        notificationManager.cancel(MUSIC_PLAYER_NOTIFICATION_ID)
         mediaSession?.isActive = false
         headphoneFlag = false
         stopWakelock()
