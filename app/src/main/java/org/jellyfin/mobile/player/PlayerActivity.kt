@@ -103,7 +103,9 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        viewModel.mediaSourceManager.handleIntent(intent, true)
+        when (intent.action) {
+            Constants.ACTION_PLAY_MEDIA -> viewModel.mediaSourceManager.handleIntent(intent, true)
+        }
     }
 
     override fun onStart() {

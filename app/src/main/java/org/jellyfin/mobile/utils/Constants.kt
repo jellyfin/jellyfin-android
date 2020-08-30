@@ -20,9 +20,6 @@ object Constants {
     const val PREF_MUSIC_NOTIFICATION_ALWAYS_DISMISSIBLE = "pref_music_notification_always_dismissible"
     const val PREF_ENABLE_EXOPLAYER = "pref_enable_exoplayer"
 
-    // Intent extras
-    const val EXTRA_MEDIA_SOURCE_ITEM = "org.jellyfin.mobile.MEDIA_SOURCE_ITEM"
-
     // InputManager commands
     const val INPUT_MANAGER_COMMAND_PLAY_PAUSE = "playpause"
     const val INPUT_MANAGER_COMMAND_PAUSE = "pause"
@@ -86,7 +83,13 @@ object Constants {
         PlaybackState.ACTION_FAST_FORWARD or
         PlaybackState.ACTION_STOP
 
-    // Video player events
+    // Video player intent actions
+    const val ACTION_PLAY_MEDIA = "org.jellyfin.mobile.intent.action.PLAY_MEDIA"
+
+    // Video player intent extras
+    const val EXTRA_MEDIA_SOURCE_ITEM = "org.jellyfin.mobile.MEDIA_SOURCE_ITEM"
+
+    // Video player webapp events
     const val EVENT_PLAYING = "Playing"
     const val EVENT_PAUSE = "Pause"
     const val EVENT_ENDED = "Ended"

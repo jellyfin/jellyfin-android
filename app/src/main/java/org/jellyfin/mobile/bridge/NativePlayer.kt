@@ -26,6 +26,7 @@ class NativePlayer(private val activity: MainActivity) : KoinComponent {
     @JavascriptInterface
     fun loadPlayer(args: String) {
         val playerIntent = Intent(activity, PlayerActivity::class.java).apply {
+            action = Constants.ACTION_PLAY_MEDIA
             putExtra(Constants.EXTRA_MEDIA_SOURCE_ITEM, args)
         }
         activity.startActivity(playerIntent)
