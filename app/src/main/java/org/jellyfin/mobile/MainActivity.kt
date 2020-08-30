@@ -17,6 +17,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
 import androidx.core.view.updatePadding
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
 import org.jellyfin.mobile.bridge.NativeInterface
@@ -28,6 +31,7 @@ import org.jellyfin.mobile.webapp.ConnectionHelper
 import org.jellyfin.mobile.webapp.RemotePlayerService
 import org.jellyfin.mobile.webapp.WebViewController
 import org.koin.android.ext.android.inject
+import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.io.Reader
 
@@ -37,6 +41,7 @@ class MainActivity : AppCompatActivity(), WebViewController {
     val httpClient: OkHttpClient by inject()
     val chromecast = Chromecast()
     private val connectionHelper = ConnectionHelper(this)
+    private val webappFunctionChannel: Channel<String> by inject(named(WEBAPP_FUNCTION_CHANNEL))
 
     val rootView: FrameLayout by lazyView(R.id.root_view)
     val webView: WebView by lazyView(R.id.web_view)
@@ -91,6 +96,13 @@ class MainActivity : AppCompatActivity(), WebViewController {
         connectionHelper.initialize()
 
         chromecast.initializePlugin(this)
+
+        // Process JS functions called from other components (e.g. the PlayerActivity)
+        lifecycleScope.launch {
+            for (function in webappFunctionChannel) {
+                loadUrl("javascript:$function")
+            }
+        }
     }
 
     override fun onStart() {

@@ -5,7 +5,8 @@ import android.app.PictureInPictureParams
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import android.os.*
+import android.os.Build
+import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
 import android.widget.TextView
@@ -15,20 +16,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
-import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerView
-import kotlinx.coroutines.delay
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.utils.*
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_SEEK_TIME_MS
-import org.jellyfin.mobile.utils.Constants.EVENT_ENDED
-import org.jellyfin.mobile.utils.Constants.EVENT_PAUSE
-import org.jellyfin.mobile.utils.Constants.EVENT_PLAYING
-import org.jellyfin.mobile.utils.Constants.EVENT_TIME_UPDATE
-import org.jellyfin.mobile.utils.Constants.PLAYER_TIME_UPDATE_RATE
-import timber.log.Timber
 
 
 class PlayerActivity : AppCompatActivity() {
@@ -41,8 +34,6 @@ class PlayerActivity : AppCompatActivity() {
     private val titleTextView: TextView by lazyView(R.id.track_title)
     private val fullscreenSwitcher: ImageButton by lazyView(R.id.fullscreen_switcher)
     private lateinit var playbackMenus: PlaybackMenus
-    private var webappMessenger: Messenger? = null
-    private var lastReportedPosition = -1L
 
     /**
      * Listener that watches the current device orientation.
@@ -77,18 +68,10 @@ class PlayerActivity : AppCompatActivity() {
             } else {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             }
-            when (playerState) {
-                Player.STATE_READY -> {
-                    setupTimeUpdates()
-                }
-                Player.STATE_ENDED -> {
-                    notifyEvent(EVENT_ENDED)
-                    finish()
-                    return@observe
-                }
+            if (playerState == Player.STATE_ENDED) {
+                finish()
+                return@observe
             }
-            notifyEvent(if (isPlaying) EVENT_PLAYING else EVENT_PAUSE)
-            updatePlaybackPosition()
             loadingIndicator.isVisible = playerState == Player.STATE_BUFFERING
         }
         viewModel.mediaSourceManager.jellyfinMediaSource.observe(this) { jellyfinMediaSource ->
@@ -116,7 +99,6 @@ class PlayerActivity : AppCompatActivity() {
 
         // Handle intent
         viewModel.mediaSourceManager.handleIntent(intent)
-        webappMessenger = intent.extras?.getParcelable(Constants.EXTRA_WEBAPP_MESSENGER)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -199,40 +181,6 @@ class PlayerActivity : AppCompatActivity() {
         playerView.setOnTouchListener { _, event ->
             gestureDetector.onTouchEvent(event)
             true
-        }
-    }
-
-    private fun setupTimeUpdates() {
-        lifecycleScope.launchWhenStarted {
-            while (true) {
-                updatePlaybackPosition()
-                delay(PLAYER_TIME_UPDATE_RATE)
-            }
-        }
-    }
-
-    private fun callWebAppFunction(function: String) {
-        with(Message.obtain()) {
-            obj = function
-            try {
-                webappMessenger?.send(this)
-            } catch (e: RemoteException) {
-                Timber.e(e, "Could not send message to webapp")
-                recycle()
-            }
-        }
-    }
-
-    private fun notifyEvent(event: String, parameters: String = "") {
-        callWebAppFunction("window.ExoPlayer.notify$event($parameters)")
-    }
-
-    private fun updatePlaybackPosition() {
-        val player = viewModel.playerOrNull ?: return
-        val playbackPositionMillis = player.currentPosition
-        if (player.playbackState == Player.STATE_READY && playbackPositionMillis > 0 && playbackPositionMillis != lastReportedPosition) {
-            notifyEvent(EVENT_TIME_UPDATE, playbackPositionMillis.toString())
-            lastReportedPosition = playbackPositionMillis
         }
     }
 
