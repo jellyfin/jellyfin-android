@@ -2,12 +2,20 @@ package org.jellyfin.mobile.bridge
 
 import android.content.Intent
 import android.webkit.JavascriptInterface
+import kotlinx.coroutines.channels.Channel
 import org.jellyfin.mobile.MainActivity
+import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
 import org.jellyfin.mobile.player.ExoPlayerFormats
 import org.jellyfin.mobile.player.PlayerActivity
+import org.jellyfin.mobile.player.PlayerEvent
 import org.jellyfin.mobile.utils.Constants
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.koin.core.qualifier.named
 
-class NativePlayer(private val activity: MainActivity) {
+class NativePlayer(private val activity: MainActivity) : KoinComponent {
+
+    private val playerEventChannel: Channel<PlayerEvent> by inject(named(PLAYER_EVENT_CHANNEL))
 
     @JavascriptInterface
     fun isEnabled() = activity.appPreferences.enableExoPlayer
@@ -25,18 +33,22 @@ class NativePlayer(private val activity: MainActivity) {
 
     @JavascriptInterface
     fun pausePlayer() {
+        playerEventChannel.offer(PlayerEvent.PAUSE)
     }
 
     @JavascriptInterface
     fun resumePlayer() {
+        playerEventChannel.offer(PlayerEvent.RESUME)
     }
 
     @JavascriptInterface
     fun stopPlayer() {
+        playerEventChannel.offer(PlayerEvent.STOP)
     }
 
     @JavascriptInterface
     fun destroyPlayer() {
+        playerEventChannel.offer(PlayerEvent.DESTROY)
     }
 
     @JavascriptInterface

@@ -16,6 +16,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.BuildConfig
+import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
 import org.jellyfin.mobile.WEBAPP_FUNCTION_CHANNEL
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceManager
@@ -46,6 +47,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
      * Allows to call functions within the webapp
      */
     private val webappFunctionChannel: Channel<String> by inject(named(WEBAPP_FUNCTION_CHANNEL))
+    private val playerEventChannel: Channel<PlayerEvent> by inject(named(PLAYER_EVENT_CHANNEL))
     private var lastReportedPosition = -1L
 
     private val mediaSession: MediaSession by lazy {
@@ -59,6 +61,17 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
     init {
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
+
+        // Subscribe to player events from webapp
+        viewModelScope.launch {
+            for (event in playerEventChannel) {
+                when (event) {
+                    PlayerEvent.PAUSE -> mediaSessionCallback.onPause()
+                    PlayerEvent.RESUME -> mediaSessionCallback.onPlay()
+                    PlayerEvent.STOP, PlayerEvent.DESTROY -> mediaSessionCallback.onStop()
+                }
+            }
+        }
     }
 
     /**
