@@ -24,6 +24,6 @@
     <string name="playback_info_video_streams">Flux vidéo</string>
     <string name="playback_info_transcoding">Transcodage : %b</string>
     <string name="playback_info_play_method">Méthode de lecture : %s</string>
-    <string name="connection_error_cannot_connect">La connexion n\'a pas pu être établie
-\nMerci de vérifier le nom de la machine et votre connexion réseau</string>
+    <string name="connection_error_cannot_connect">La connexion n\'a pas pu être établie.
+\nMerci de vérifier le nom de la machine et votre connexion réseau.</string>
 </resources>
