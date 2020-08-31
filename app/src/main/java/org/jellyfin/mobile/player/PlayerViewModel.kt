@@ -28,7 +28,8 @@ import org.koin.core.qualifier.named
 
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.EventListener {
     val mediaSourceManager = MediaSourceManager(this)
-    private val playerLifecycleObserver = PlayerLifecycleObserver(this)
+    val notificationHelper: PlayerNotificationHelper by lazy { PlayerNotificationHelper(this) }
+    private val lifecycleObserver = PlayerLifecycleObserver(this)
 
     private val _player = MutableLiveData<ExoPlayer?>()
     private val _playerState = MutableLiveData<Int>()
@@ -49,7 +50,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private val playerEventChannel: Channel<PlayerEvent> by inject(named(PLAYER_EVENT_CHANNEL))
     private var lastReportedPosition = -1L
 
-    private val mediaSession: MediaSession by lazy {
+    val mediaSession: MediaSession by lazy {
         MediaSession(getApplication<Application>().applicationContext, javaClass.simpleName.removePrefix(BuildConfig.APPLICATION_ID)).apply {
             @Suppress("DEPRECATION")
             setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS or MediaSession.FLAG_HANDLES_MEDIA_BUTTONS)
@@ -60,7 +61,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private val mediaSessionCallback = PlayerMediaSessionCallback(this)
 
     init {
-        ProcessLifecycleOwner.get().lifecycle.addObserver(playerLifecycleObserver)
+        ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
 
         // Subscribe to player events from webapp
         viewModelScope.launch {
@@ -159,6 +160,14 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         playerOrNull?.seekToOffset(offsetMs)
     }
 
+    fun rewind() {
+        seekToOffset(Constants.DEFAULT_SEEK_TIME_MS.unaryMinus())
+    }
+
+    fun fastForward() {
+        seekToOffset(Constants.DEFAULT_SEEK_TIME_MS)
+    }
+
     fun stop() {
         pause()
         releasePlayer()
@@ -193,6 +202,18 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             }
         }
 
+        // Update notification if necessary
+        when (playbackState) {
+            Player.STATE_READY, Player.STATE_BUFFERING -> {
+                // Only in not-started state (aka in background)
+                if (!ProcessLifecycleOwner.get().lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED))
+                    notificationHelper.postNotification()
+            }
+            Player.STATE_ENDED -> {
+                notificationHelper.dismissNotification()
+            }
+        }
+
         // Notify activity of current state
         _playerState.value = playbackState
     }
@@ -200,6 +221,6 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     override fun onCleared() {
         super.onCleared()
         releasePlayer()
-        ProcessLifecycleOwner.get().lifecycle.removeObserver(playerLifecycleObserver)
+        ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
     }
 }
