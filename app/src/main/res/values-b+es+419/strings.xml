@@ -16,7 +16,7 @@
     <string name="activity_name_settings">Configuración de Jellyfin</string>
     <string name="playback_info_and_x_more">...y %d más</string>
     <string name="playback_info_audio_streams">Flujos de audio</string>
-    <string name="playback_info_video_streams">Flujos de video</string>
+    <string name="playback_info_video_streams">Flujos de vídeo</string>
     <string name="playback_info_transcoding">Transcodificando: %b</string>
     <string name="menu_item_none">Ninguno</string>
     <string name="pref_category_video_player">Reproductor de video nativo</string>
