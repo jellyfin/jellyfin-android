@@ -23,4 +23,7 @@
     <string name="playback_info_audio_streams">ஆடியோ ஸ்ட்ரீம்கள்</string>
     <string name="playback_info_video_streams">வீடியோ ஸ்ட்ரீம்கள்</string>
     <string name="playback_info_transcoding">டிரான்ஸ்கோடிங்: %b</string>
+    <string name="playback_info_play_method">வாசிக்கும் முறை: %s</string>
+    <string name="connection_error_cannot_connect">இணைப்பை நிறுவ முடியாது.
+\nஹோஸ்ட்பெயர் மற்றும் உங்கள் பிணைய இணைப்பை சரிபார்க்கவும்.</string>
 </resources>
