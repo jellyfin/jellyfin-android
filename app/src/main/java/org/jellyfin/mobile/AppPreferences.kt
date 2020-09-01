@@ -36,7 +36,7 @@ class AppPreferences(context: Context) {
     val musicNotificationAlwaysDismissible: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_MUSIC_NOTIFICATION_ALWAYS_DISMISSIBLE, false)
 
-    val enableExoPlayer: Boolean
+    val exoPlayerEnabled: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_ENABLE_EXOPLAYER, false)
 
     val exoPlayerAllowBackgroundAudio: Boolean

@@ -18,7 +18,7 @@ class NativePlayer(private val activity: MainActivity) : KoinComponent {
     private val playerEventChannel: Channel<PlayerEvent> by inject(named(PLAYER_EVENT_CHANNEL))
 
     @JavascriptInterface
-    fun isEnabled() = activity.appPreferences.enableExoPlayer
+    fun isEnabled() = activity.appPreferences.exoPlayerEnabled
 
     @JavascriptInterface
     fun getSupportedFormats() = ExoPlayerFormats.supportedCodecs.toJSONString()

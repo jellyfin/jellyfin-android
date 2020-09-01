@@ -19,6 +19,7 @@ import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
@@ -292,20 +293,20 @@ class RemotePlayerService : Service(), CoroutineScope {
             setSmallIcon(R.drawable.ic_notification)
 
             // Setup actions
-            addAction(generateAction(R.drawable.ic_skip_previous_black_32dp, "Previous", Constants.ACTION_PREVIOUS))
+            addAction(generateAction(R.drawable.ic_skip_previous_black_32dp, R.string.notification_action_previous, Constants.ACTION_PREVIOUS))
             if (!supportsNativeSeek) {
-                addAction(generateAction(R.drawable.ic_fast_rewind_black_32dp, "Rewind", Constants.ACTION_REWIND))
+                addAction(generateAction(R.drawable.ic_rewind_black_32dp, R.string.notification_action_rewind, Constants.ACTION_REWIND))
             }
             val playbackAction = when {
-                isPaused -> generateAction(R.drawable.ic_play_black_42dp, "Play", Constants.ACTION_PLAY)
-                else -> generateAction(R.drawable.ic_pause_black_42dp, "Pause", Constants.ACTION_PAUSE)
+                isPaused -> generateAction(R.drawable.ic_play_black_42dp, R.string.notification_action_play, Constants.ACTION_PLAY)
+                else -> generateAction(R.drawable.ic_pause_black_42dp, R.string.notification_action_pause, Constants.ACTION_PAUSE)
             }
             addAction(playbackAction)
             if (!supportsNativeSeek) {
-                addAction(generateAction(R.drawable.ic_fast_forward_black_32dp, "Fast Forward", Constants.ACTION_FAST_FORWARD))
+                addAction(generateAction(R.drawable.ic_fast_forward_black_32dp, R.string.notification_action_fast_forward, Constants.ACTION_FAST_FORWARD))
             }
-            addAction(generateAction(R.drawable.ic_skip_next_black_32dp, "Next", Constants.ACTION_NEXT))
-            addAction(generateAction(R.drawable.ic_stop_black_32dp, "Stop", Constants.ACTION_STOP))
+            addAction(generateAction(R.drawable.ic_skip_next_black_32dp, R.string.notification_action_next, Constants.ACTION_NEXT))
+            addAction(generateAction(R.drawable.ic_stop_black_32dp, R.string.notification_action_stop, Constants.ACTION_STOP))
         }.build()
 
         // Post notification
@@ -337,13 +338,13 @@ class RemotePlayerService : Service(), CoroutineScope {
         return PendingIntent.getActivity(this, 100, intent, PendingIntent.FLAG_CANCEL_CURRENT)
     }
 
-    private fun generateAction(icon: Int, title: String, intentAction: String): Notification.Action {
+    private fun generateAction(icon: Int, @StringRes title: Int, intentAction: String): Notification.Action {
         val intent = Intent(applicationContext, RemotePlayerService::class.java).apply {
             action = intentAction
         }
         val pendingIntent = PendingIntent.getService(applicationContext, MUSIC_PLAYER_NOTIFICATION_ID, intent, 0)
         @Suppress("DEPRECATION")
-        return Notification.Action.Builder(icon, title, pendingIntent).build()
+        return Notification.Action.Builder(icon, getString(title), pendingIntent).build()
     }
 
     private fun initMediaSession() {

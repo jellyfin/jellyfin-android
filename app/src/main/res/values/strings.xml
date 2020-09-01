@@ -14,6 +14,14 @@
     <string name="mobile_data_and_roaming">Mobile Data &amp; Roaming</string>
     <string name="downloading">Downloading</string>
 
+    <string name="notification_action_previous">Previous</string>
+    <string name="notification_action_rewind">Rewind</string>
+    <string name="notification_action_play">Play</string>
+    <string name="notification_action_pause">Pause</string>
+    <string name="notification_action_fast_forward">Fast-forward</string>
+    <string name="notification_action_next">Next</string>
+    <string name="notification_action_stop">Stop</string>
+
     <string name="menu_item_none">None</string>
     <string name="playback_info_play_method">Play method: %s</string>
     <string name="playback_info_transcoding">Transcoding: %b</string>
@@ -27,5 +35,5 @@
     <string name="pref_category_video_player">Native video player</string>
     <string name="pref_enable_exoplayer_title">Enable video player integration</string>
     <string name="pref_enable_exoplayer_summary">Enable the experimental ExoPlayer video player which supports more video formats and codecs, and is more integrated into the OS</string>
-    <string name="pref_exoplayer_allow_background_audio">Allow background audio playback</string>
+    <string name="pref_exoplayer_allow_background_audio">Allow playing audio in the background</string>
 </resources>
