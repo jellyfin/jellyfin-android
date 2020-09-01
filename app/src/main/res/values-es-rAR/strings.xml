@@ -12,7 +12,7 @@
     <string name="connection_error_invalid_format">El host tiene un formato no válido</string>
     <string name="connect_button_text">Conectar</string>
     <string name="host_input_hint">Host</string>
-    <string name="pref_enable_exoplayer_summary">Habilite el reproductor de video experimental ExoPlayer que admite más formatos de video y códecs y está más integrado en el sistema operativo</string>
+    <string name="pref_enable_exoplayer_summary">"Habilite el reproductor de video experimental ExoPlayer que admite más formatos de vídeo y códecs,  y está más integrado en el sistema operativo"</string>
     <string name="pref_enable_exoplayer_title">Habilitar la integración del reproductor de video</string>
     <string name="pref_category_video_player">Reproductor de video nativo</string>
     <string name="pref_music_notification_always_dismissible_title">Hacer que la notificación del reproductor de música sea siempre descartable</string>
@@ -24,4 +24,5 @@
     <string name="playback_info_transcoding">Transcodificación</string>
     <string name="connection_error_cannot_connect">No se puede establecer la conexión.
 \nCompruebe el nombre de host y la conexión de red.</string>
+    <string name="playback_info_and_x_more">…y %d más</string>
 </resources>
