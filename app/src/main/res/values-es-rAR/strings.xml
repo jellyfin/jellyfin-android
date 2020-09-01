@@ -19,4 +19,9 @@
     <string name="pref_category_music_player">Reproductor de Música</string>
     <string name="activity_name_settings">Configuración de Jellyfin</string>
     <string name="menu_item_none">Ninguno</string>
+    <string name="playback_info_audio_streams">Transmisiones de audio</string>
+    <string name="playback_info_video_streams">Transmisiones de vídeo</string>
+    <string name="playback_info_transcoding">Transcodificación</string>
+    <string name="connection_error_cannot_connect">No se puede establecer la conexión.
+\nCompruebe el nombre de host y la conexión de red.</string>
 </resources>
