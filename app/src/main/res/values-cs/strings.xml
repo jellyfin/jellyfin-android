@@ -26,4 +26,12 @@
     <string name="connection_error_cannot_connect">Připojení se nezdařilo.
 \nZkontrolujte název hostitele a síťové připojení.</string>
     <string name="playback_info_play_method">Způsob přehrávání: %s</string>
+    <string name="pref_exoplayer_allow_background_audio">Povolit přehrávání zvuku na pozadí</string>
+    <string name="notification_action_stop">Zastavit</string>
+    <string name="notification_action_next">Další</string>
+    <string name="notification_action_fast_forward">Přetočit vpřed</string>
+    <string name="notification_action_pause">Pauza</string>
+    <string name="notification_action_play">Přehrát</string>
+    <string name="notification_action_rewind">Přetočit zpět</string>
+    <string name="notification_action_previous">Předchozí</string>
 </resources>
