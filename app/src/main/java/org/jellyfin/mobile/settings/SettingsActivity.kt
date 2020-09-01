@@ -44,6 +44,9 @@ class SettingsActivity : AppCompatActivity() {
             titleRes = R.string.pref_enable_exoplayer_title
             summaryRes = R.string.pref_enable_exoplayer_summary
         }
+        checkBox(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO) {
+            titleRes = R.string.pref_exoplayer_allow_background_audio
+        }
     }
 
     companion object {

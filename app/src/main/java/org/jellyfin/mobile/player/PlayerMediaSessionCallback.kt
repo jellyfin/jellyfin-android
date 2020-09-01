@@ -1,7 +1,6 @@
 package org.jellyfin.mobile.player
 
 import android.media.session.MediaSession
-import org.jellyfin.mobile.utils.Constants
 
 class PlayerMediaSessionCallback(private val viewModel: PlayerViewModel) : MediaSession.Callback() {
     override fun onPlay() {
@@ -17,11 +16,11 @@ class PlayerMediaSessionCallback(private val viewModel: PlayerViewModel) : Media
     }
 
     override fun onRewind() {
-        viewModel.seekToOffset(Constants.DEFAULT_SEEK_TIME_MS.unaryMinus())
+        viewModel.rewind()
     }
 
     override fun onFastForward() {
-        viewModel.seekToOffset(Constants.DEFAULT_SEEK_TIME_MS)
+        viewModel.fastForward()
     }
 
     override fun onStop() {

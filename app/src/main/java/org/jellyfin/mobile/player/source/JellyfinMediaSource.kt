@@ -3,12 +3,14 @@ package org.jellyfin.mobile.player.source
 import android.net.Uri
 import com.google.android.exoplayer2.util.MimeTypes
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.asIterable
 import org.json.JSONArray
 import org.json.JSONObject
 
 class JellyfinMediaSource(item: JSONObject) {
     val id: String = item.optJSONObject("item")?.optString("Id") ?: ""
     val title: String = item.optString("title")
+    val artists: String? = item.optJSONObject("item")?.optJSONArray("Artists")?.asIterable()?.joinToString()
     val uri: Uri = Uri.parse(item.optString("url"))
     val playMethod: String = item.optString("playMethod")
     val mediaDurationMs: Long

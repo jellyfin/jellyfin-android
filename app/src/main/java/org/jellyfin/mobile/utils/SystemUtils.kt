@@ -1,8 +1,6 @@
 package org.jellyfin.mobile.utils
 
-import android.app.Activity
-import android.app.AlertDialog
-import android.app.DownloadManager
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -14,8 +12,8 @@ import android.provider.Settings.System.ACCELEROMETER_ROTATION
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import org.jellyfin.mobile.BuildConfig
-import org.jellyfin.mobile.R
 import org.jellyfin.mobile.MainActivity
+import org.jellyfin.mobile.R
 
 fun MainActivity.requestNoBatteryOptimizations() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -83,3 +81,12 @@ private fun Context.downloadFile(request: DownloadManager.Request, @DownloadMeth
 }
 
 fun Activity.isAutoRotateOn() = Settings.System.getInt(contentResolver, ACCELEROMETER_ROTATION, 0) == 1
+
+fun Context.createMediaNotificationChannel(notificationManager: NotificationManager) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val notificationChannel = NotificationChannel(Constants.MEDIA_NOTIFICATION_CHANNEL_ID, getString(R.string.app_name), NotificationManager.IMPORTANCE_LOW).apply {
+            description = "Media notifications"
+        }
+        notificationManager.createNotificationChannel(notificationChannel)
+    }
+}

@@ -19,9 +19,7 @@ object Constants {
     const val PREF_DOWNLOAD_METHOD = "pref_download_method"
     const val PREF_MUSIC_NOTIFICATION_ALWAYS_DISMISSIBLE = "pref_music_notification_always_dismissible"
     const val PREF_ENABLE_EXOPLAYER = "pref_enable_exoplayer"
-
-    // Intent extras
-    const val EXTRA_MEDIA_SOURCE_ITEM = "org.jellyfin.mobile.MEDIA_SOURCE_ITEM"
+    const val PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO = "pref_exoplayer_allow_background_audio"
 
     // InputManager commands
     const val INPUT_MANAGER_COMMAND_PLAY_PAUSE = "playpause"
@@ -35,8 +33,10 @@ object Constants {
     const val INPUT_MANAGER_COMMAND_VOL_DOWN = "volumedown"
     const val INPUT_MANAGER_COMMAND_BACK = "back"
 
+    // Notification
+    const val MEDIA_NOTIFICATION_CHANNEL_ID = "JellyfinChannelId"
+
     // Music player constants
-    const val MUSIC_NOTIFICATION_CHANNEL_ID = "JellyfinChannelId"
     const val SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS: Long = PlaybackState.ACTION_PLAY_PAUSE or
         PlaybackState.ACTION_PLAY or
         PlaybackState.ACTION_PAUSE or
@@ -44,6 +44,7 @@ object Constants {
         PlaybackState.ACTION_SKIP_TO_NEXT or
         PlaybackState.ACTION_SKIP_TO_PREVIOUS or
         PlaybackState.ACTION_SET_RATING
+    const val MUSIC_PLAYER_NOTIFICATION_ID = 84
 
     // Music player intent actions
     const val ACTION_SHOW_PLAYER = "org.jellyfin.mobile.intent.action.SHOW_PLAYER"
@@ -82,8 +83,15 @@ object Constants {
         PlaybackState.ACTION_REWIND or
         PlaybackState.ACTION_FAST_FORWARD or
         PlaybackState.ACTION_STOP
+    const val VIDEO_PLAYER_NOTIFICATION_ID = 99
 
-    // Video player events
+    // Video player intent actions
+    const val ACTION_PLAY_MEDIA = "org.jellyfin.mobile.intent.action.PLAY_MEDIA"
+
+    // Video player intent extras
+    const val EXTRA_MEDIA_SOURCE_ITEM = "org.jellyfin.mobile.MEDIA_SOURCE_ITEM"
+
+    // Video player webapp events
     const val EVENT_PLAYING = "Playing"
     const val EVENT_PAUSE = "Pause"
     const val EVENT_ENDED = "Ended"
