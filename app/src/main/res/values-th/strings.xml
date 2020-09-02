@@ -1,2 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pref_exoplayer_allow_background_audio">อนุญาตให้เล่นเสียงในพื้นหลัง</string>
+    <string name="pref_enable_exoplayer_summary">เปิดใช้งานเครื่องเล่นวิดีโอ ExoPlayer รุ่นทดลองซึ่งรองรับรูปแบบวิดีโอและโคเด็คเพิ่มเติมและเข้ากันกับระบบปฏิบัติการมากขึ้น</string>
+    <string name="pref_enable_exoplayer_title">เปิดใช้งานการเข้ากันของเครื่องเล่นวิดีโอ</string>
+    <string name="pref_category_video_player">เครื่องเล่นวิดีโอท้องถิ่น</string>
+    <string name="pref_music_notification_always_dismissible_title">ทำให้การแจ้งเตือนเครื่องเล่นเพลงปิดได้เสมอ</string>
+    <string name="pref_category_music_player">เครื่องเล่นเพลง</string>
+    <string name="activity_name_settings">การตั้งค่า Jellyfin</string>
+    <string name="playback_info_and_x_more">…และ %d อีก</string>
+    <string name="playback_info_audio_streams">สตรีมเสียง</string>
+    <string name="playback_info_video_streams">สตรีมวิดีโอ</string>
+    <string name="playback_info_transcoding">ทรานส์โค้ด: %b</string>
+    <string name="playback_info_play_method">วิธีการเล่น: %s</string>
+    <string name="menu_item_none">ไม่มี</string>
+    <string name="notification_action_stop">หยุด</string>
+    <string name="notification_action_next">ถัดไป</string>
+    <string name="notification_action_fast_forward">กรอไปข้างหน้า</string>
+    <string name="notification_action_pause">หยุดเล่นชั่วคราว</string>
+    <string name="notification_action_play">เล่น</string>
+    <string name="notification_action_rewind">กรอกลับ</string>
+    <string name="notification_action_previous">ก่อนหน้า</string>
+    <string name="downloading">กำลังดาวน์โหลด</string>
+    <string name="mobile_data_and_roaming">ข้อมูลมือถือและเครือข่ายโรมมิ่ง</string>
+    <string name="mobile_data">ข้อมูลมือถือ</string>
+    <string name="wifi_only">WiFi เท่านั้น</string>
+    <string name="network_message">คุณต้องการอนุญาตให้ดาวน์โหลดผ่านข้อมูลมือถือหรือเครือข่ายโรมมิ่งหรือไม่\?</string>
+    <string name="network_title">ประเภทเครือข่ายที่อนุญาต</string>
+    <string name="battery_optimizations_message">โปรดปิดการใช้งานการเพิ่มประสิทธิภาพแบตเตอรี่เพื่อเล่นสื่อในขณะที่หน้าจอปิดอยู่</string>
+    <string name="battery_optimizations_title">ปิดการใช้งานการเพิ่มประสิทธิภาพแบตเตอรี่</string>
+    <string name="connect_button_text">เชื่อมต่อ</string>
+    <string name="connection_error_cannot_connect">ไม่สามารถสร้างการเชื่อมต่อได้
+\nโปรดตรวจสอบชื่อโฮสต์และการเชื่อมต่อเครือข่ายของคุณ</string>
+    <string name="connection_error_invalid_format">โฮสต์มีรูปแบบที่ไม่ถูกต้อง</string>
+    <string name="host_input_hint">โฮสต์</string>
+    <string name="connect_to_server_title">เชื่อมต่อกับเซิร์ฟเวอร์</string>
+</resources>
