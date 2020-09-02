@@ -15,4 +15,23 @@
     <string name="playback_info_audio_streams">Lyd strømninh</string>
     <string name="playback_info_video_streams">Video strømning</string>
     <string name="menu_item_none">Ingen</string>
+    <string name="pref_music_notification_always_dismissible_title">Gjør at musikkspillervarslingen alltid kan avvises</string>
+    <string name="pref_enable_exoplayer_summary">Aktiver den eksperimentelle ExoPlayer-videoavspilleren som støtter flere videoformater og kodeker, og er bedre integrert med operativsystemet</string>
+    <string name="pref_category_video_player">Innebygd videoavspiller</string>
+    <string name="playback_info_transcoding">Transkoder: %b</string>
+    <string name="connection_error_cannot_connect">Tilkoblingen kunne ikke bli etablert.
+\nVennligst sjekk tjenernavnet og nettverkstilkoblingen.</string>
+    <string name="pref_exoplayer_allow_background_audio">Tillat avspilling i bakgrunnen</string>
+    <string name="pref_enable_exoplayer_title">Aktiver videospillerintegrasjon</string>
+    <string name="pref_category_music_player">Musikkspiller</string>
+    <string name="activity_name_settings">Jellyfin-instillinger</string>
+    <string name="playback_info_and_x_more">…og %d mer</string>
+    <string name="playback_info_play_method">Avspillingsmetode: %s</string>
+    <string name="notification_action_stop">Stopp</string>
+    <string name="notification_action_next">Neste</string>
+    <string name="notification_action_fast_forward">Framoverspoling</string>
+    <string name="notification_action_pause">Pause</string>
+    <string name="notification_action_play">Spill av</string>
+    <string name="notification_action_rewind">Spol tilbake</string>
+    <string name="notification_action_previous">Forrige</string>
 </resources>
