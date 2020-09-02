@@ -26,4 +26,12 @@
     <string name="playback_info_play_method">Méthode de lecture : %s</string>
     <string name="connection_error_cannot_connect">La connexion n\'a pas pu être établie.
 \nMerci de vérifier le nom de la machine et votre connexion réseau.</string>
+    <string name="pref_exoplayer_allow_background_audio">Autoriser la lecture audio en arrière-plan</string>
+    <string name="notification_action_stop">Arrêter</string>
+    <string name="notification_action_next">Prochain</string>
+    <string name="notification_action_fast_forward">Avance rapide</string>
+    <string name="notification_action_pause">Pause</string>
+    <string name="notification_action_play">Lire</string>
+    <string name="notification_action_rewind">Rembobiner</string>
+    <string name="notification_action_previous">Précédent</string>
 </resources>
