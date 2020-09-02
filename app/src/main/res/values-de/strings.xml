@@ -26,4 +26,12 @@
     <string name="connection_error_cannot_connect">Es konnte keine Verbindung hergestellt werden.
 \nBitte überprüfe den Hostnamen und die Netzwerkverbindung.</string>
     <string name="playback_info_play_method">Wiedergabemethode: %s</string>
+    <string name="pref_exoplayer_allow_background_audio">Wiedergabe von Audio im Hintergrund erlauben</string>
+    <string name="notification_action_stop">Stopp</string>
+    <string name="notification_action_next">Nächstes</string>
+    <string name="notification_action_fast_forward">Vorwärts spulen</string>
+    <string name="notification_action_pause">Pause</string>
+    <string name="notification_action_play">Abspielen</string>
+    <string name="notification_action_rewind">Zurückspulen</string>
+    <string name="notification_action_previous">Vorheriges</string>
 </resources>
