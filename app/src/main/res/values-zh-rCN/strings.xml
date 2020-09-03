@@ -12,4 +12,9 @@
     <string name="connect_button_text">连接</string>
     <string name="host_input_hint">主机</string>
     <string name="connect_to_server_title">连接到服务器</string>
+    <string name="notification_action_play">播放</string>
+    <string name="notification_action_pause">暂停</string>
+    <string name="notification_action_fast_forward">快进</string>
+    <string name="connection_error_cannot_connect">连接无法建立。
+\n请检查主机名和你的网络连接。</string>
 </resources>
