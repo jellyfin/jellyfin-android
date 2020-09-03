@@ -92,8 +92,8 @@ dependencies {
     debugImplementation(Dependencies.Health.leakCanary)
 
     // Testing
-    testImplementation(Dependencies.Health.junit5)
-    testRuntimeOnly(Dependencies.Health.junit5Engine)
+    testImplementation(Dependencies.Health.junit)
+    testRuntimeOnly(Dependencies.Health.junitEngine)
     testImplementation(Dependencies.Health.kotestAssertions)
     testImplementation(Dependencies.Health.kotestProperty)
     testImplementation(Dependencies.Health.kotestRunner)
