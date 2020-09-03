@@ -36,8 +36,8 @@ object Dependencies {
         // Health
         const val timber = "4.7.1"
         const val leakCanary = "2.4"
-        const val junit5 = "5.6.1"
-        const val kotest = "4.0.5"
+        const val junit = "5.6.2"
+        const val kotest = "4.2.2"
         const val mockk = "1.10.0"
         const val androidXRunner = "1.2.0"
         const val androidXEspresso = "3.2.0"
@@ -99,8 +99,8 @@ object Dependencies {
     object Health {
         const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
         const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${Versions.leakCanary}"
-        const val junit5 = "org.junit.jupiter:junit-jupiter-api:${Versions.junit5}"
-        const val junit5Engine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junit5}"
+        const val junit = "org.junit.jupiter:junit-jupiter-api:${Versions.junit}"
+        const val junitEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junit}"
         const val kotestAssertions = "io.kotest:kotest-assertions-core-jvm:${Versions.kotest}"
         const val kotestProperty = "io.kotest:kotest-property-jvm:${Versions.kotest}"
         const val kotestRunner = "io.kotest:kotest-runner-junit5-jvm:${Versions.kotest}"
