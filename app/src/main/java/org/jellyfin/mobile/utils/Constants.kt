@@ -12,6 +12,7 @@ object Constants {
     const val INDEX_PATCH_PATH = "index_patch.html"
     const val INDEX_PATH = "web/index.html"
     const val SERVER_INFO_PATH = "system/info/public"
+    const val SESSION_CAPABILITIES_PATH = "sessions/capabilities/full"
 
     // Preference keys
     const val PREF_INSTANCE_URL = "pref_instance_url"
