@@ -26,4 +26,12 @@
     <string name="playback_info_play_method">வாசிக்கும் முறை: %s</string>
     <string name="connection_error_cannot_connect">இணைப்பை நிறுவ முடியாது.
 \nஹோஸ்ட்பெயர் மற்றும் உங்கள் பிணைய இணைப்பை சரிபார்க்கவும்.</string>
+    <string name="pref_exoplayer_allow_background_audio">பின்னணியில் ஆடியோ இயக்க அனுமதிக்கவும்</string>
+    <string name="notification_action_stop">நிறுத்து</string>
+    <string name="notification_action_next">அடுத்து</string>
+    <string name="notification_action_fast_forward">வேகமாக முன்னோக்கி</string>
+    <string name="notification_action_pause">இடைநிறுத்தம்</string>
+    <string name="notification_action_play">இயக்கு</string>
+    <string name="notification_action_rewind">முன்னாடி</string>
+    <string name="notification_action_previous">முந்தையது</string>
 </resources>
