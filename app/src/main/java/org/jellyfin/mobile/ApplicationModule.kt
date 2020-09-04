@@ -1,5 +1,6 @@
 package org.jellyfin.mobile
 
+import coil.ImageLoader
 import kotlinx.coroutines.channels.Channel
 import okhttp3.OkHttpClient
 import org.jellyfin.apiclient.AppInfo
@@ -21,6 +22,7 @@ const val WEBAPP_FUNCTION_CHANNEL = "WebAppFunctionChannel"
 val applicationModule: Module = module {
     single { AppPreferences(androidApplication()) }
     single { OkHttpClient() }
+    single { ImageLoader(androidApplication()) }
     single(named(PLAYER_EVENT_CHANNEL)) { Channel<PlayerEvent>() }
     single(named(WEBAPP_FUNCTION_CHANNEL)) { Channel<String>() }
     single {

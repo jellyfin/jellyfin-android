@@ -23,7 +23,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
-import coil.Coil
+import coil.ImageLoader
 import coil.request.GetRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -71,12 +71,12 @@ class RemotePlayerService : Service(), CoroutineScope {
         get() = job + Dispatchers.Main
 
     private val appPreferences: AppPreferences by inject()
+    private val notificationManager: NotificationManager by lazy { getSystemService()!! }
+    private val imageLoader: ImageLoader by inject()
 
     private val binder = ServiceBinder(this)
-
     private lateinit var wakeLock: PowerManager.WakeLock
 
-    private val notificationManager: NotificationManager by lazy { getSystemService()!! }
     private var mediaSession: MediaSession? = null
     private var mediaController: MediaController? = null
     private var largeItemIcon: Bitmap? = null
@@ -208,7 +208,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         if (imageUrl != null && imageUrl.isNotEmpty()) {
             launch {
                 val request = GetRequest.Builder(this@RemotePlayerService).data(imageUrl).build()
-                val bitmap = Coil.imageLoader(this@RemotePlayerService).execute(request).drawable?.toBitmap()
+                val bitmap = imageLoader.execute(request).drawable?.toBitmap()
                 largeItemIcon = bitmap
                 notifyWithBitmap(handledIntent, bitmap)
             }

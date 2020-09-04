@@ -83,7 +83,7 @@ object Dependencies {
 
     object Network {
         const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
-        const val coil = "io.coil-kt:coil:${Versions.coil}"
+        const val coil = "io.coil-kt:coil-base:${Versions.coil}"
         val exoPlayerHLS = exoPlayer("hls")
     }
 

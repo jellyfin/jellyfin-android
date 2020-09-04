@@ -15,6 +15,7 @@ import com.google.android.exoplayer2.util.Clock
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
 import org.jellyfin.mobile.WEBAPP_FUNCTION_CHANNEL
@@ -27,6 +28,7 @@ import org.koin.core.inject
 import org.koin.core.qualifier.named
 
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.EventListener {
+    val apiClient: ApiClient by inject()
     val mediaSourceManager = MediaSourceManager(this)
     val notificationHelper: PlayerNotificationHelper by lazy { PlayerNotificationHelper(this) }
     private val lifecycleObserver = PlayerLifecycleObserver(this)
