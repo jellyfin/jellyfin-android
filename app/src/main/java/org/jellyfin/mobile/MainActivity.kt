@@ -18,6 +18,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
 import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
+import androidx.webkit.WebResourceErrorCompat
+import androidx.webkit.WebViewClientCompat
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
@@ -118,7 +120,7 @@ class MainActivity : AppCompatActivity(), WebViewController {
     @SuppressLint("SetJavaScriptEnabled")
     private fun WebView.initialize() {
         setBackgroundColor(ContextCompat.getColor(this@MainActivity, R.color.theme_background))
-        webViewClient = object : WebViewClient() {
+        webViewClient = object : WebViewClientCompat() {
             override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
                 val url = request.url
                 val path = url.path?.toLowerCase(Locale.ROOT) ?: return null
@@ -167,8 +169,8 @@ class MainActivity : AppCompatActivity(), WebViewController {
                     runOnUiThread { connectionHelper.onErrorReceived() }
             }
 
-            override fun onReceivedError(view: WebView, request: WebResourceRequest, errorResponse: WebResourceError) {
-                Timber.e("Received WebView error at %s: %s", request.url.toString(), errorResponse.descriptionOrNull)
+            override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceErrorCompat) {
+                Timber.e("Received WebView error at %s: %s", request.url.toString(), error.description)
             }
         }
         webChromeClient = WebChromeClient()
