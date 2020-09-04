@@ -201,10 +201,21 @@ class RemotePlayerService : Service(), CoroutineScope {
         }
 
         launch {
-            val itemId = handledIntent.getStringExtra(EXTRA_ITEM_ID)
-            val imageUrl = handledIntent.getStringExtra(EXTRA_IMAGE_URL)
+            val mediaSession = mediaSession!!
 
-            val cachedBitmap = largeItemIcon?.takeIf { currentItemId == itemId }
+            val itemId = handledIntent.getStringExtra(EXTRA_ITEM_ID) ?: return@launch
+            val title = handledIntent.getStringExtra(EXTRA_TITLE)
+            val artist = handledIntent.getStringExtra(EXTRA_ARTIST)
+            val album = handledIntent.getStringExtra(EXTRA_ALBUM)
+            val imageUrl = handledIntent.getStringExtra(EXTRA_IMAGE_URL)
+            val position = handledIntent.getLongExtra(EXTRA_POSITION, PlaybackState.PLAYBACK_POSITION_UNKNOWN)
+            val duration = handledIntent.getLongExtra(EXTRA_DURATION, 0)
+            val canSeek = handledIntent.getBooleanExtra(EXTRA_CAN_SEEK, false)
+            val isLocalPlayer = handledIntent.getBooleanExtra(EXTRA_IS_LOCAL_PLAYER, true)
+            val isPaused = handledIntent.getBooleanExtra(EXTRA_IS_PAUSED, false)
+
+            // Resolve notification bitmap
+            val cachedBitmap = largeItemIcon?.takeIf { itemId == currentItemId }
             val bitmap = cachedBitmap ?: if (!imageUrl.isNullOrEmpty()) {
                 val request = GetRequestBuilder(this@RemotePlayerService).data(imageUrl).build()
                 imageLoader.execute(request).drawable?.toBitmap()?.also { bitmap ->
@@ -212,107 +223,88 @@ class RemotePlayerService : Service(), CoroutineScope {
                 }
             } else null
 
-            notifyWithBitmap(handledIntent, bitmap)
-        }
-    }
+            // Set/update media metadata if item changed
+            if (itemId != currentItemId) {
+                val metadata = MediaMetadata.Builder().apply {
+                    putString(MediaMetadata.METADATA_KEY_MEDIA_ID, itemId)
+                    putString(MediaMetadata.METADATA_KEY_ARTIST, artist)
+                    putString(MediaMetadata.METADATA_KEY_ALBUM, album)
+                    putString(MediaMetadata.METADATA_KEY_TITLE, title)
+                    putLong(MediaMetadata.METADATA_KEY_DURATION, duration)
+                    if (bitmap != null) putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, bitmap)
+                }.build()
+                mediaSession.setMetadata(metadata)
+                currentItemId = itemId
+            }
 
-    private fun notifyWithBitmap(handledIntent: Intent, largeIcon: Bitmap?) {
-        val mediaSession = mediaSession!!
+            setPlaybackState(!isPaused, position, canSeek)
 
-        val itemId = handledIntent.getStringExtra(EXTRA_ITEM_ID)
-        val title = handledIntent.getStringExtra(EXTRA_TITLE)
-        val artist = handledIntent.getStringExtra(EXTRA_ARTIST)
-        val album = handledIntent.getStringExtra(EXTRA_ALBUM)
-        val position = handledIntent.getLongExtra(EXTRA_POSITION, PlaybackState.PLAYBACK_POSITION_UNKNOWN)
-        val duration = handledIntent.getLongExtra(EXTRA_DURATION, 0)
-        val canSeek = handledIntent.getBooleanExtra(EXTRA_CAN_SEEK, false)
-        val isLocalPlayer = handledIntent.getBooleanExtra(EXTRA_IS_LOCAL_PLAYER, true)
-        val isPaused = handledIntent.getBooleanExtra(EXTRA_IS_PAUSED, false)
-
-        // system will recognize notification as media playback
-        // show cover art and controls on lock screen
-        if (currentItemId == null || currentItemId != itemId) {
-            val metadata = MediaMetadata.Builder().apply {
-                putString(MediaMetadata.METADATA_KEY_MEDIA_ID, itemId)
-                putString(MediaMetadata.METADATA_KEY_ARTIST, artist)
-                putString(MediaMetadata.METADATA_KEY_ALBUM, album)
-                putString(MediaMetadata.METADATA_KEY_TITLE, title)
-                putLong(MediaMetadata.METADATA_KEY_DURATION, duration)
-                if (largeIcon != null) putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, largeIcon)
-            }.build()
-            mediaSession.setMetadata(metadata)
-            currentItemId = itemId
-        }
-
-        setPlaybackState(!isPaused, position, canSeek)
-
-        if (isLocalPlayer) {
-            mediaSession.applyDefaultLocalAudioAttributes(AudioAttributes.CONTENT_TYPE_MUSIC)
-        } else {
-            mediaSession.setPlaybackToRemote(binder.remoteVolumeProvider)
-        }
-
-        val supportsNativeSeek = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-
-        val compactActions = if (supportsNativeSeek) intArrayOf(0, 1, 2) else intArrayOf(0, 2, 4)
-        val style = Notification.MediaStyle().apply {
-            setMediaSession(mediaSession.sessionToken)
-            setShowActionsInCompactView(*compactActions)
-        }
-
-        @Suppress("DEPRECATION")
-        val notification = Notification.Builder(this).apply {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                setChannelId(MEDIA_NOTIFICATION_CHANNEL_ID) // Set Notification Channel on Android O and above
-                setColorized(true) // Color notification based on cover art
+            if (isLocalPlayer) {
+                mediaSession.applyDefaultLocalAudioAttributes(AudioAttributes.CONTENT_TYPE_MUSIC)
             } else {
-                setPriority(Notification.PRIORITY_LOW)
+                mediaSession.setPlaybackToRemote(binder.remoteVolumeProvider)
             }
-            setContentTitle(title)
-            setContentText(artist)
-            setSubText(album)
-            if (position != PlaybackState.PLAYBACK_POSITION_UNKNOWN) {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                    // Show current position in "when" field pre-N
-                    setShowWhen(!isPaused)
-                    setUsesChronometer(!isPaused)
-                    setWhen(System.currentTimeMillis() - position)
+
+            val supportsNativeSeek = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+
+            val style = Notification.MediaStyle().apply {
+                setMediaSession(mediaSession.sessionToken)
+                val compactActions = if (supportsNativeSeek) intArrayOf(0, 1, 2) else intArrayOf(0, 2, 4)
+                setShowActionsInCompactView(*compactActions)
+            }
+
+            @Suppress("DEPRECATION")
+            val notification = Notification.Builder(this@RemotePlayerService).apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    setChannelId(MEDIA_NOTIFICATION_CHANNEL_ID) // Set Notification Channel on Android O and above
+                    setColorized(true) // Color notification based on cover art
+                } else {
+                    setPriority(Notification.PRIORITY_LOW)
                 }
-            }
-            setStyle(style)
-            setVisibility(Notification.VISIBILITY_PUBLIC) // Privacy value for lock screen
-            setOngoing(!isPaused && !appPreferences.musicNotificationAlwaysDismissible) // Swipe to dismiss if paused
-            setDeleteIntent(createDeleteIntent())
-            setContentIntent(createContentIntent())
+                setContentTitle(title)
+                setContentText(artist)
+                setSubText(album)
+                if (position != PlaybackState.PLAYBACK_POSITION_UNKNOWN) {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                        // Show current position in "when" field pre-N
+                        setShowWhen(!isPaused)
+                        setUsesChronometer(!isPaused)
+                        setWhen(System.currentTimeMillis() - position)
+                    }
+                }
+                setStyle(style)
+                setVisibility(Notification.VISIBILITY_PUBLIC) // Privacy value for lock screen
+                setOngoing(!isPaused && !appPreferences.musicNotificationAlwaysDismissible) // Swipe to dismiss if paused
+                setDeleteIntent(createDeleteIntent())
+                setContentIntent(createContentIntent())
 
-            // Set icons
-            if (largeIcon != null) {
-                setLargeIcon(largeIcon)
-            }
-            setSmallIcon(R.drawable.ic_notification)
+                // Set icons
+                setSmallIcon(R.drawable.ic_notification)
+                if (bitmap != null) setLargeIcon(bitmap)
 
-            // Setup actions
-            addAction(generateAction(R.drawable.ic_skip_previous_black_32dp, R.string.notification_action_previous, Constants.ACTION_PREVIOUS))
-            if (!supportsNativeSeek) {
-                addAction(generateAction(R.drawable.ic_rewind_black_32dp, R.string.notification_action_rewind, Constants.ACTION_REWIND))
-            }
-            val playbackAction = when {
-                isPaused -> generateAction(R.drawable.ic_play_black_42dp, R.string.notification_action_play, Constants.ACTION_PLAY)
-                else -> generateAction(R.drawable.ic_pause_black_42dp, R.string.notification_action_pause, Constants.ACTION_PAUSE)
-            }
-            addAction(playbackAction)
-            if (!supportsNativeSeek) {
-                addAction(generateAction(R.drawable.ic_fast_forward_black_32dp, R.string.notification_action_fast_forward, Constants.ACTION_FAST_FORWARD))
-            }
-            addAction(generateAction(R.drawable.ic_skip_next_black_32dp, R.string.notification_action_next, Constants.ACTION_NEXT))
-            addAction(generateAction(R.drawable.ic_stop_black_32dp, R.string.notification_action_stop, Constants.ACTION_STOP))
-        }.build()
+                // Setup actions
+                addAction(generateAction(R.drawable.ic_skip_previous_black_32dp, R.string.notification_action_previous, Constants.ACTION_PREVIOUS))
+                if (!supportsNativeSeek) {
+                    addAction(generateAction(R.drawable.ic_rewind_black_32dp, R.string.notification_action_rewind, Constants.ACTION_REWIND))
+                }
+                val playbackAction = when {
+                    isPaused -> generateAction(R.drawable.ic_play_black_42dp, R.string.notification_action_play, Constants.ACTION_PLAY)
+                    else -> generateAction(R.drawable.ic_pause_black_42dp, R.string.notification_action_pause, Constants.ACTION_PAUSE)
+                }
+                addAction(playbackAction)
+                if (!supportsNativeSeek) {
+                    addAction(generateAction(R.drawable.ic_fast_forward_black_32dp, R.string.notification_action_fast_forward, Constants.ACTION_FAST_FORWARD))
+                }
+                addAction(generateAction(R.drawable.ic_skip_next_black_32dp, R.string.notification_action_next, Constants.ACTION_NEXT))
+                addAction(generateAction(R.drawable.ic_stop_black_32dp, R.string.notification_action_stop, Constants.ACTION_STOP))
+            }.build()
 
-        // Post notification
-        notificationManager.notify(MUSIC_PLAYER_NOTIFICATION_ID, notification)
+            // Post notification
+            notificationManager.notify(MUSIC_PLAYER_NOTIFICATION_ID, notification)
 
-        // Activate MediaSession
-        mediaSession.isActive = true
+            // Activate MediaSession
+            mediaSession.isActive = true
+        }
     }
 
     private fun setPlaybackState(isPlaying: Boolean, position: Long, canSeek: Boolean) {
