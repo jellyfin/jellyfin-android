@@ -4,7 +4,7 @@ import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager.PERMISSION_DENIED
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -16,6 +16,8 @@ import androidx.core.content.getSystemService
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 fun MainActivity.requestNoBatteryOptimizations() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -40,53 +42,57 @@ fun MainActivity.requestNoBatteryOptimizations() {
     }
 }
 
-fun MainActivity.requestDownload(uri: Uri, title: String, filename: String) {
+suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: String) {
     val requestWritePermissions = Build.VERSION.SDK_INT <= 28
 
-    fun initializeDownload() {
-        val request = DownloadManager.Request(uri)
-            .setTitle(title)
-            .setDescription(getString(R.string.downloading))
-            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+    if (requestWritePermissions) {
+        val granted = suspendCoroutine<Boolean> { continuation ->
+            requestPermission(WRITE_EXTERNAL_STORAGE) { requestPermissionsResult ->
+                continuation.resume(requestPermissionsResult[WRITE_EXTERNAL_STORAGE] == PERMISSION_GRANTED)
+            }
+        }
+
+        if (!granted) {
+            toast(R.string.download_no_storage_permission)
+            return
+        }
+    }
+
+    val downloadMethod = suspendCoroutine<Int> { continuation ->
         val downloadMethod = appPreferences.downloadMethod
-        if (downloadMethod >= 0) {
-            downloadFile(request, downloadMethod)
-        } else runOnUiThread {
+
+        if (downloadMethod >= 0) continuation.resume(downloadMethod)
+        else runOnUiThread {
             AlertDialog.Builder(this)
                 .setTitle(R.string.network_title)
                 .setMessage(R.string.network_message)
                 .setNegativeButton(R.string.wifi_only) { _, _ ->
                     val selectedDownloadMethod = DownloadMethod.WIFI_ONLY
                     appPreferences.downloadMethod = selectedDownloadMethod
-                    downloadFile(request, selectedDownloadMethod)
+                    continuation.resume(selectedDownloadMethod)
                 }
                 .setPositiveButton(R.string.mobile_data) { _, _ ->
                     val selectedDownloadMethod = DownloadMethod.MOBILE_DATA
                     appPreferences.downloadMethod = selectedDownloadMethod
-                    downloadFile(request, selectedDownloadMethod)
+                    continuation.resume(selectedDownloadMethod)
                 }
                 .setPositiveButton(R.string.mobile_data_and_roaming) { _, _ ->
                     val selectedDownloadMethod = DownloadMethod.MOBILE_AND_ROAMING
                     appPreferences.downloadMethod = selectedDownloadMethod
-                    downloadFile(request, selectedDownloadMethod)
+                    continuation.resume(selectedDownloadMethod)
                 }
                 .setCancelable(false)
                 .show()
         }
     }
 
-    if (requestWritePermissions) {
-        requestPermission(WRITE_EXTERNAL_STORAGE) { requestPermissionsResult ->
-            if (requestPermissionsResult[WRITE_EXTERNAL_STORAGE] == PERMISSION_DENIED) {
-                toast(R.string.download_no_permission)
-            } else {
-                initializeDownload()
-            }
-        }
-    } else {
-        initializeDownload()
-    }
+    val downloadRequest = DownloadManager.Request(uri)
+        .setTitle(title)
+        .setDescription(getString(R.string.downloading))
+        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
+        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+
+    downloadFile(downloadRequest, downloadMethod)
 }
 
 private fun Context.downloadFile(request: DownloadManager.Request, @DownloadMethod downloadMethod: Int) {

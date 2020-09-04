@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo
 import android.media.session.PlaybackState
 import android.net.Uri
 import android.webkit.JavascriptInterface
+import kotlinx.coroutines.runBlocking
 import org.jellyfin.apiclient.interaction.AndroidDevice
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.settings.SettingsActivity
@@ -131,7 +132,9 @@ class NativeInterface(private val activity: MainActivity) {
             Timber.e("Download failed: %s", e.message)
             return false
         }
-        activity.requestDownload(Uri.parse(url), title, filename)
+        runBlocking {
+            activity.requestDownload(Uri.parse(url), title, filename)
+        }
         return true
     }
 

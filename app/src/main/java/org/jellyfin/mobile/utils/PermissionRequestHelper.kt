@@ -33,13 +33,7 @@ class PermissionRequestHelper {
     }
 }
 
-fun Activity.requestPermission(permission: String, callback: (Map<String, Int>) -> Unit) =
-    requestPermissions(setOf(permission), callback)
-
-fun Activity.requestPermissions(
-    permissions: Collection<String>,
-    callback: (Map<String, Int>) -> Unit
-) {
+fun Activity.requestPermission(vararg permissions: String, callback: (Map<String, Int>) -> Unit) {
     val skipRequest = permissions.all {
         ActivityCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
     }
@@ -50,7 +44,7 @@ fun Activity.requestPermissions(
         val helper = getKoin().get<PermissionRequestHelper>()
         val code = helper.getRequestCode()
         helper.addCallback(code, callback)
-        requestPermissions(this, permissions.toTypedArray(), code)
+        requestPermissions(this, permissions, code)
     }
 }
 

@@ -115,12 +115,6 @@ class MainActivity : AppCompatActivity(), WebViewController {
         orientationListener.enable()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) = permissionRequestHelper.handleRequestPermissionsResult(requestCode, permissions, grantResults)
-
     @SuppressLint("SetJavaScriptEnabled")
     private fun WebView.initialize() {
         setBackgroundColor(ContextCompat.getColor(this@MainActivity, R.color.theme_background))
@@ -193,6 +187,12 @@ class MainActivity : AppCompatActivity(), WebViewController {
     fun updateRemoteVolumeLevel(value: Int) {
         serviceBinder?.run { remoteVolumeProvider.currentVolume = value }
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) = permissionRequestHelper.handleRequestPermissionsResult(requestCode, permissions, grantResults)
 
     override fun onBackPressed() {
         when {
