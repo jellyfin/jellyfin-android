@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity(), WebViewController {
     val appPreferences: AppPreferences by inject()
     val httpClient: OkHttpClient by inject()
     val apiClient: ApiClient by inject()
+    val permissionRequestHelper: PermissionRequestHelper by inject()
     val chromecast = Chromecast()
     private val connectionHelper = ConnectionHelper(this)
     private val webappFunctionChannel: Channel<String> by inject(named(WEBAPP_FUNCTION_CHANNEL))
@@ -186,6 +187,12 @@ class MainActivity : AppCompatActivity(), WebViewController {
     fun updateRemoteVolumeLevel(value: Int) {
         serviceBinder?.run { remoteVolumeProvider.currentVolume = value }
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) = permissionRequestHelper.handleRequestPermissionsResult(requestCode, permissions, grantResults)
 
     override fun onBackPressed() {
         when {

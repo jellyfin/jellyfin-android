@@ -9,6 +9,8 @@ import org.jellyfin.apiclient.interaction.AndroidDevice
 import org.jellyfin.mobile.api.TimberLogger
 import org.jellyfin.mobile.player.PlayerEvent
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.PermissionRequestHelper
+import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -17,7 +19,7 @@ const val PLAYER_EVENT_CHANNEL = "PlayerEventChannel"
 const val WEBAPP_FUNCTION_CHANNEL = "WebAppFunctionChannel"
 
 val applicationModule: Module = module {
-    single { AppPreferences(get()) }
+    single { AppPreferences(androidApplication()) }
     single { OkHttpClient() }
     single(named(PLAYER_EVENT_CHANNEL)) { Channel<PlayerEvent>() }
     single(named(WEBAPP_FUNCTION_CHANNEL)) { Channel<String>() }
@@ -25,10 +27,11 @@ val applicationModule: Module = module {
         Jellyfin {
             appInfo = AppInfo(Constants.APP_INFO_NAME, Constants.APP_INFO_VERSION)
             logger = TimberLogger()
-            android(get())
+            android(androidApplication())
         }
     }
     single {
-        get<Jellyfin>().createApi(device = AndroidDevice.fromContext(get()))
+        get<Jellyfin>().createApi(device = AndroidDevice.fromContext(androidApplication()))
     }
+    single { PermissionRequestHelper() }
 }
