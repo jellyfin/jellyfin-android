@@ -12,8 +12,8 @@ object Dependencies {
         // Core
         const val apiClient = "0.7.2"
         const val appCompat = "1.1.0"
-        const val coreKtx = "1.3.0"
-        const val activityKtx = "1.1.0"
+        const val core = "1.3.0"
+        const val activity = "1.1.0"
         const val okHttp = "4.8.0"
         const val exoPlayer = "2.11.7"
 
@@ -57,8 +57,8 @@ object Dependencies {
     object Core {
         const val apiClient = "org.jellyfin.apiclient:android:${Versions.apiClient}"
         val appCompat = androidx("appcompat", Versions.appCompat)
-        const val coreKtx = "androidx.core:core-ktx:${Versions.coreKtx}"
-        const val activityKtx = "androidx.activity:activity-ktx:${Versions.activityKtx}"
+        val coreKtx = androidxKtx("core", Versions.core)
+        val activityKtx = androidxKtx("activity", Versions.activity)
         val exoPlayer = exoPlayer("core")
     }
 
@@ -111,6 +111,7 @@ object Dependencies {
 
     // Helpers
     private fun androidx(module: String, version: String) = "androidx.$module:$module:$version"
+    private fun androidxKtx(module: String, version: String) = "androidx.$module:$module-ktx:$version"
     private fun kotlinx(module: String, version: String) = "org.jetbrains.kotlinx:kotlinx-$module:$version"
     private fun exoPlayer(module: String) = "com.google.android.exoplayer:exoplayer-$module:${Versions.exoPlayer}"
     private fun lifecycle(module: String) = "androidx.lifecycle:lifecycle-$module:${Versions.lifecycleExtensions}"
