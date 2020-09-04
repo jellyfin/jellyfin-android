@@ -25,10 +25,10 @@ class AppPreferences(context: Context) {
             }
         }
 
-    var downloadMethod: Int
-        get() = sharedPreferences.getInt(Constants.PREF_DOWNLOAD_METHOD, -1)
+    var downloadMethod: Int?
+        get() = sharedPreferences.getInt(Constants.PREF_DOWNLOAD_METHOD, -1).takeIf { it >= 0 }
         set(value) {
-            sharedPreferences.edit {
+            if (value != null) sharedPreferences.edit {
                 putInt(Constants.PREF_DOWNLOAD_METHOD, value)
             }
         }

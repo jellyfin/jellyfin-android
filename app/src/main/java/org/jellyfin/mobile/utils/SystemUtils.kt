@@ -13,6 +13,8 @@ import android.provider.Settings
 import android.provider.Settings.System.ACCELEROMETER_ROTATION
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withTimeout
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
@@ -43,12 +45,13 @@ fun MainActivity.requestNoBatteryOptimizations() {
 }
 
 suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: String) {
-    val requestWritePermissions = Build.VERSION.SDK_INT <= 28
-
-    if (requestWritePermissions) {
-        val granted = suspendCoroutine<Boolean> { continuation ->
-            requestPermission(WRITE_EXTERNAL_STORAGE) { requestPermissionsResult ->
-                continuation.resume(requestPermissionsResult[WRITE_EXTERNAL_STORAGE] == PERMISSION_GRANTED)
+    // Storage permission for downloads isn't necessary from Android 10 onwards
+    if (Build.VERSION.SDK_INT <= 28) {
+        val granted = withTimeout(2 * 60 * 1000 /* 2 minutes */) {
+            suspendCoroutine<Boolean> { continuation ->
+                requestPermission(WRITE_EXTERNAL_STORAGE) { requestPermissionsResult ->
+                    continuation.resume(requestPermissionsResult[WRITE_EXTERNAL_STORAGE] == PERMISSION_GRANTED)
+                }
             }
         }
 
@@ -58,11 +61,8 @@ suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: Stri
         }
     }
 
-    val downloadMethod = suspendCoroutine<Int> { continuation ->
-        val downloadMethod = appPreferences.downloadMethod
-
-        if (downloadMethod >= 0) continuation.resume(downloadMethod)
-        else runOnUiThread {
+    val downloadMethod = appPreferences.downloadMethod ?: suspendCancellableCoroutine { continuation ->
+        runOnUiThread {
             AlertDialog.Builder(this)
                 .setTitle(R.string.network_title)
                 .setMessage(R.string.network_message)
@@ -80,6 +80,9 @@ suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: Stri
                     val selectedDownloadMethod = DownloadMethod.MOBILE_AND_ROAMING
                     appPreferences.downloadMethod = selectedDownloadMethod
                     continuation.resume(selectedDownloadMethod)
+                }
+                .setOnDismissListener {
+                    continuation.cancel(null)
                 }
                 .setCancelable(false)
                 .show()
