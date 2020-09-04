@@ -24,7 +24,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
 import coil.ImageLoader
-import coil.request.GetRequest
+import coil.request.GetRequestBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -199,21 +199,20 @@ class RemotePlayerService : Service(), CoroutineScope {
             onStopped()
             return
         }
-        val itemId = handledIntent.getStringExtra(EXTRA_ITEM_ID)
-        val imageUrl = handledIntent.getStringExtra(EXTRA_IMAGE_URL)
-        if (largeItemIcon != null && currentItemId == itemId) {
-            notifyWithBitmap(handledIntent, largeItemIcon)
-            return
-        }
-        if (imageUrl != null && imageUrl.isNotEmpty()) {
-            launch {
-                val request = GetRequest.Builder(this@RemotePlayerService).data(imageUrl).build()
-                val bitmap = imageLoader.execute(request).drawable?.toBitmap()
-                largeItemIcon = bitmap
-                notifyWithBitmap(handledIntent, bitmap)
-            }
-        } else {
-            notifyWithBitmap(handledIntent, null)
+
+        launch {
+            val itemId = handledIntent.getStringExtra(EXTRA_ITEM_ID)
+            val imageUrl = handledIntent.getStringExtra(EXTRA_IMAGE_URL)
+
+            val cachedBitmap = largeItemIcon?.takeIf { currentItemId == itemId }
+            val bitmap = cachedBitmap ?: if (!imageUrl.isNullOrEmpty()) {
+                val request = GetRequestBuilder(this@RemotePlayerService).data(imageUrl).build()
+                imageLoader.execute(request).drawable?.toBitmap()?.also { bitmap ->
+                    largeItemIcon = bitmap // Cache bitmap for later use
+                }
+            } else null
+
+            notifyWithBitmap(handledIntent, bitmap)
         }
     }
 
