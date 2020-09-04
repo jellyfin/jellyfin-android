@@ -1,8 +1,10 @@
 package org.jellyfin.mobile.utils
 
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -39,35 +41,51 @@ fun MainActivity.requestNoBatteryOptimizations() {
 }
 
 fun MainActivity.requestDownload(uri: Uri, title: String, filename: String) {
-    val request = DownloadManager.Request(uri)
-        .setTitle(title)
-        .setDescription(getString(R.string.downloading))
-        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
-        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-    val downloadMethod = appPreferences.downloadMethod
-    if (downloadMethod >= 0) {
-        downloadFile(request, downloadMethod)
-    } else runOnUiThread {
-        AlertDialog.Builder(this)
-            .setTitle(R.string.network_title)
-            .setMessage(R.string.network_message)
-            .setNegativeButton(R.string.wifi_only) { _, _ ->
-                val selectedDownloadMethod = DownloadMethod.WIFI_ONLY
-                appPreferences.downloadMethod = selectedDownloadMethod
-                downloadFile(request, selectedDownloadMethod)
+    val requestWritePermissions = Build.VERSION.SDK_INT <= 28
+
+    fun initializeDownload() {
+        val request = DownloadManager.Request(uri)
+            .setTitle(title)
+            .setDescription(getString(R.string.downloading))
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        val downloadMethod = appPreferences.downloadMethod
+        if (downloadMethod >= 0) {
+            downloadFile(request, downloadMethod)
+        } else runOnUiThread {
+            AlertDialog.Builder(this)
+                .setTitle(R.string.network_title)
+                .setMessage(R.string.network_message)
+                .setNegativeButton(R.string.wifi_only) { _, _ ->
+                    val selectedDownloadMethod = DownloadMethod.WIFI_ONLY
+                    appPreferences.downloadMethod = selectedDownloadMethod
+                    downloadFile(request, selectedDownloadMethod)
+                }
+                .setPositiveButton(R.string.mobile_data) { _, _ ->
+                    val selectedDownloadMethod = DownloadMethod.MOBILE_DATA
+                    appPreferences.downloadMethod = selectedDownloadMethod
+                    downloadFile(request, selectedDownloadMethod)
+                }
+                .setPositiveButton(R.string.mobile_data_and_roaming) { _, _ ->
+                    val selectedDownloadMethod = DownloadMethod.MOBILE_AND_ROAMING
+                    appPreferences.downloadMethod = selectedDownloadMethod
+                    downloadFile(request, selectedDownloadMethod)
+                }
+                .setCancelable(false)
+                .show()
+        }
+    }
+
+    if (requestWritePermissions) {
+        requestPermission(WRITE_EXTERNAL_STORAGE) { requestPermissionsResult ->
+            if (requestPermissionsResult[WRITE_EXTERNAL_STORAGE] == PERMISSION_DENIED) {
+                toast(R.string.download_no_permission)
+            } else {
+                initializeDownload()
             }
-            .setPositiveButton(R.string.mobile_data) { _, _ ->
-                val selectedDownloadMethod = DownloadMethod.MOBILE_DATA
-                appPreferences.downloadMethod = selectedDownloadMethod
-                downloadFile(request, selectedDownloadMethod)
-            }
-            .setPositiveButton(R.string.mobile_data_and_roaming) { _, _ ->
-                val selectedDownloadMethod = DownloadMethod.MOBILE_AND_ROAMING
-                appPreferences.downloadMethod = selectedDownloadMethod
-                downloadFile(request, selectedDownloadMethod)
-            }
-            .setCancelable(false)
-            .show()
+        }
+    } else {
+        initializeDownload()
     }
 }
 

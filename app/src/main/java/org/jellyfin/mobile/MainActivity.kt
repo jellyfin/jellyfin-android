@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity(), WebViewController {
     val appPreferences: AppPreferences by inject()
     val httpClient: OkHttpClient by inject()
     val apiClient: ApiClient by inject()
+    val permissionRequestHelper: PermissionRequestHelper by inject()
     val chromecast = Chromecast()
     private val connectionHelper = ConnectionHelper(this)
     private val webappFunctionChannel: Channel<String> by inject(named(WEBAPP_FUNCTION_CHANNEL))
@@ -113,6 +114,12 @@ class MainActivity : AppCompatActivity(), WebViewController {
         super.onStart()
         orientationListener.enable()
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) = permissionRequestHelper.handleRequestPermissionsResult(requestCode, permissions, grantResults)
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun WebView.initialize() {
