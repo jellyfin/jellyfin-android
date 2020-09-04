@@ -22,20 +22,26 @@ import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.jellyfin.apiclient.Jellyfin
+import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.mobile.AppPreferences
-import org.jellyfin.mobile.R
 import org.jellyfin.mobile.MainActivity
+import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ConnectServerBinding
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SERVER_INFO_PATH
 import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
 import org.json.JSONException
 import org.json.JSONObject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import timber.log.Timber
 import java.io.IOException
 
-class ConnectionHelper(private val activity: MainActivity) {
+class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
     private val appPreferences: AppPreferences get() = activity.appPreferences
+    private val jellyfin: Jellyfin by inject()
+    private val apiClient: ApiClient get() = activity.apiClient
     private val rootView: FrameLayout get() = activity.rootView
     private val webView: WebView get() = activity.webView
 
@@ -151,11 +157,7 @@ class ConnectionHelper(private val activity: MainActivity) {
             if (lastOrNull() == '/') this
             else "$this/"
         }
-
-        val urls = when {
-            normalizedUrl.startsWith("http") -> listOf(normalizedUrl)
-            else -> listOf("https://$normalizedUrl", "http://$normalizedUrl")
-        }
+        val urls = jellyfin.discovery.addressCandidates(normalizedUrl)
 
         var httpUrl: HttpUrl? = null
         var serverInfoResponse: String? = null
@@ -167,6 +169,10 @@ class ConnectionHelper(private val activity: MainActivity) {
                 return null // Format is invalid, don't try any other variants
             }
 
+            // Set API client address
+            apiClient.ChangeServerLocation(httpUrl.toString())
+
+            // TODO: resolve system info via API client
             serverInfoResponse = fetchServerInfo(activity.httpClient, httpUrl)
             if (serverInfoResponse != null)
                 break@loop

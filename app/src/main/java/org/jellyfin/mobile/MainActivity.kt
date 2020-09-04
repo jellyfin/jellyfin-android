@@ -21,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
+import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
 import org.jellyfin.mobile.bridge.NativeInterface
 import org.jellyfin.mobile.bridge.NativePlayer
@@ -30,15 +31,18 @@ import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_BACK
 import org.jellyfin.mobile.webapp.ConnectionHelper
 import org.jellyfin.mobile.webapp.RemotePlayerService
 import org.jellyfin.mobile.webapp.WebViewController
+import org.json.JSONException
+import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.io.Reader
+import java.util.*
 
 class MainActivity : AppCompatActivity(), WebViewController {
-
     val appPreferences: AppPreferences by inject()
     val httpClient: OkHttpClient by inject()
+    val apiClient: ApiClient by inject()
     val chromecast = Chromecast()
     private val connectionHelper = ConnectionHelper(this)
     private val webappFunctionChannel: Channel<String> by inject(named(WEBAPP_FUNCTION_CHANNEL))
@@ -116,7 +120,7 @@ class MainActivity : AppCompatActivity(), WebViewController {
         webViewClient = object : WebViewClient() {
             override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
                 val url = request.url
-                val path = url.path ?: return null
+                val path = url.path?.toLowerCase(Locale.ROOT) ?: return null
                 return when {
                     path.endsWith(Constants.INDEX_PATH) -> {
                         val patchedIndex = loadPatchedIndex(httpClient, url.toString())
@@ -132,6 +136,24 @@ class MainActivity : AppCompatActivity(), WebViewController {
                     path.endsWith("web/selectserver.html") -> {
                         runOnUiThread { connectionHelper.onSelectServer() }
                         emptyResponse
+                    }
+                    path.endsWith(Constants.SESSION_CAPABILITIES_PATH) -> {
+                        runOnUiThread {
+                            webView.evaluateJavascript("window.localStorage.getItem('jellyfin_credentials')") { result ->
+                                try {
+                                    val credentials = JSONObject(result.unescapeJson())
+                                    val server = credentials.getJSONArray("Servers").getJSONObject(0)
+                                    val address = server.getString("ManualAddress")
+                                    val user = server.getString("UserId")
+                                    val token = server.getString("AccessToken")
+                                    apiClient.ChangeServerLocation(address)
+                                    apiClient.SetAuthenticationInfo(token, user)
+                                } catch (e: JSONException) {
+                                    Timber.e(e, "Failed to extract apiclient credentials")
+                                }
+                            }
+                        }
+                        null
                     }
                     else -> null
                 }
