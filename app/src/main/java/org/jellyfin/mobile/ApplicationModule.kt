@@ -23,9 +23,9 @@ val applicationModule: Module = module {
     single(named(WEBAPP_FUNCTION_CHANNEL)) { Channel<String>() }
     single {
         Jellyfin {
-            android(get())
             appInfo = AppInfo(Constants.APP_INFO_NAME, Constants.APP_INFO_VERSION)
             logger = TimberLogger()
+            android(get())
         }
     }
     single {
