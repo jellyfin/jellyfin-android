@@ -2,17 +2,20 @@ package org.jellyfin.mobile.utils
 
 import android.app.Activity
 import android.content.pm.PackageManager
+import android.util.SparseArray
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.core.util.set
 import org.koin.android.ext.android.getKoin
+import java.util.concurrent.atomic.AtomicInteger
 
 class PermissionRequestHelper {
-    private val permissionRequests = mutableMapOf<Int, (Map<String, Int>) -> Unit>()
-    private var requestCode = 50000 // start at a high number to prevent collisions
+    private val permissionRequests: SparseArray<PermissionRequestCallback> = SparseArray<PermissionRequestCallback>()
+    private var requestCode = AtomicInteger(50000) // start at a high number to prevent collisions
 
-    fun getRequestCode() = requestCode++
+    fun getRequestCode() = requestCode.getAndIncrement()
 
-    fun addCallback(requestCode: Int, callback: (Map<String, Int>) -> Unit) {
+    fun addCallback(requestCode: Int, callback: PermissionRequestCallback) {
         permissionRequests[requestCode] = callback
     }
 
@@ -29,11 +32,14 @@ class PermissionRequestHelper {
             .toMap()
 
         // Execute and remove if it exists
-        permissionRequests.remove(requestCode)?.invoke(permissionsMap)
+        permissionRequests[requestCode]?.invoke(permissionsMap)
+        permissionRequests.delete(requestCode)
     }
 }
 
-fun Activity.requestPermission(vararg permissions: String, callback: (Map<String, Int>) -> Unit) {
+typealias PermissionRequestCallback = (Map<String, Int>) -> Unit
+
+fun Activity.requestPermission(vararg permissions: String, callback: PermissionRequestCallback) {
     val skipRequest = permissions.all {
         ActivityCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
     }
@@ -47,4 +53,3 @@ fun Activity.requestPermission(vararg permissions: String, callback: (Map<String
         requestPermissions(this, permissions, code)
     }
 }
-
