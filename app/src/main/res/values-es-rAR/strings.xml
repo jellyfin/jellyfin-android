@@ -7,7 +7,6 @@
     <string name="network_message">¿Desea permitir que la descarga se ejecute a través de datos móviles o redes de itinerancia\?</string>
     <string name="network_title">Tipos de red permitidos</string>
     <string name="battery_optimizations_message">Deshabilite las optimizaciones de batería para la reproducción de medios mientras la pantalla está apagada.</string>
-    <string name="battery_optimizations_title">Deshabilitar optimizaciones de batería</string>
     <string name="connect_to_server_title">Conectar al servidor</string>
     <string name="connection_error_invalid_format">El host tiene un formato no válido</string>
     <string name="connect_button_text">Conectar</string>

@@ -13,11 +13,13 @@ import android.provider.Settings
 import android.provider.Settings.System.ACCELEROMETER_ROTATION
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
+import timber.log.Timber
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -25,21 +27,22 @@ fun MainActivity.requestNoBatteryOptimizations() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         val powerManager: PowerManager = getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
         if (!appPreferences.ignoreBatteryOptimizations && !powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) {
-            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-            builder.setTitle(getString(R.string.battery_optimizations_title))
-            builder.setMessage(getString(R.string.battery_optimizations_message))
-            builder.setNegativeButton(android.R.string.cancel) { _, _ ->
-                appPreferences.ignoreBatteryOptimizations = true
-            }
-            builder.setPositiveButton(android.R.string.ok) { _, _ ->
-                try {
-                    val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
-                    startActivity(intent)
-                } catch (e: Exception) {
-                    e.printStackTrace()
+            Snackbar.make(rootView, R.string.battery_optimizations_message, Snackbar.LENGTH_INDEFINITE).apply {
+                // Add action
+                setAction(android.R.string.ok) {
+                    try {
+                        val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        Timber.e(e)
+                    }
+
+                    // Ignore after the user interacted with the snackbar at least once
+                    appPreferences.ignoreBatteryOptimizations = true
                 }
+
+                show()
             }
-            builder.show()
         }
     }
 }

@@ -7,5 +7,4 @@
     <string name="network_message">Vai tu vēlies atļaut lejupielādēt izmantojot mobilos vai viesabonēšanas tīklus\?</string>
     <string name="network_title">Atļautie Tīkla Veidi</string>
     <string name="battery_optimizations_message">Lūdzu atspējo baterijas optimizāciju lai atskaņotu saturu kamēr ekrāns ir izslēgts.</string>
-    <string name="battery_optimizations_title">Atspējo Baterijas Optimizāciju</string>
 </resources>

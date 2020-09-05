@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="battery_optimizations_title">Вимкнути оптимізацію акумулятора</string>
     <string name="downloading">Завантаження</string>
     <string name="mobile_data_and_roaming">Мобільні дані та роумінг</string>
     <string name="mobile_data">Мобільні дані</string>

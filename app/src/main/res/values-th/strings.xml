@@ -27,7 +27,6 @@
     <string name="network_message">คุณต้องการอนุญาตให้ดาวน์โหลดผ่านข้อมูลมือถือหรือเครือข่ายโรมมิ่งหรือไม่\?</string>
     <string name="network_title">ประเภทเครือข่ายที่อนุญาต</string>
     <string name="battery_optimizations_message">โปรดปิดการใช้งานการเพิ่มประสิทธิภาพแบตเตอรี่เพื่อเล่นสื่อในขณะที่หน้าจอปิดอยู่</string>
-    <string name="battery_optimizations_title">ปิดการใช้งานการเพิ่มประสิทธิภาพแบตเตอรี่</string>
     <string name="connect_button_text">เชื่อมต่อ</string>
     <string name="connection_error_cannot_connect">ไม่สามารถสร้างการเชื่อมต่อได้
 \nโปรดตรวจสอบชื่อโฮสต์และการเชื่อมต่อเครือข่ายของคุณ</string>

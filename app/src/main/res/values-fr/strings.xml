@@ -7,7 +7,6 @@
     <string name="mobile_data">Données mobile</string>
     <string name="wifi_only">Wi-Fi uniquement</string>
     <string name="network_title">Types de réseaux autorisés</string>
-    <string name="battery_optimizations_title">Désactiver les optimisations de la batterie</string>
     <string name="connection_error_invalid_format">L\'hôte a un format invalide</string>
     <string name="connect_button_text">Se connecter</string>
     <string name="host_input_hint">Hôte</string>

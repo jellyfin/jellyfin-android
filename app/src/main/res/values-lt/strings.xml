@@ -7,5 +7,4 @@
     <string name="network_message">Ar norite leisti duomenų siuntimą per mobilius arba tarptinklinius tinklus\?</string>
     <string name="network_title">Leidžiamos Tinklo Rūšys</string>
     <string name="battery_optimizations_message">Prašome išjungti baterijos optimizavimą, tam kad medijos atkūrimas veiktų išjungus ekraną.</string>
-    <string name="battery_optimizations_title">Išjungti Batterijos Optimizavimą</string>
 </resources>
