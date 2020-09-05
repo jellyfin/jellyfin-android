@@ -17,4 +17,21 @@
     <string name="notification_action_fast_forward">快进</string>
     <string name="connection_error_cannot_connect">连接无法建立。
 \n请检查主机名和你的网络连接。</string>
+    <string name="pref_exoplayer_allow_background_audio">允许在后台播放音频</string>
+    <string name="pref_enable_exoplayer_summary">启用实验性的ExoPlayer视频播放器，该播放器支持更多视频格式和编解码器，并且已集成到操作系统中</string>
+    <string name="pref_enable_exoplayer_title">开启集成的视频播放器</string>
+    <string name="pref_category_video_player">本机视频播放器</string>
+    <string name="pref_music_notification_always_dismissible_title">始终忽略音乐播放器通知</string>
+    <string name="pref_category_music_player">音乐播放器</string>
+    <string name="activity_name_settings">Jellyfin设置</string>
+    <string name="playback_info_and_x_more">....还有 %d 个</string>
+    <string name="playback_info_audio_streams">音频流</string>
+    <string name="playback_info_video_streams">视频流</string>
+    <string name="playback_info_transcoding">转码： %b</string>
+    <string name="playback_info_play_method">播放方式： %s</string>
+    <string name="menu_item_none">无</string>
+    <string name="notification_action_stop">停止</string>
+    <string name="notification_action_next">下一个</string>
+    <string name="notification_action_rewind">倒放</string>
+    <string name="notification_action_previous">上一个</string>
 </resources>
