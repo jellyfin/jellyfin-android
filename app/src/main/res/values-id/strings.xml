@@ -26,4 +26,12 @@
     <string name="playback_info_play_method">Metode pemutar: %s</string>
     <string name="connection_error_cannot_connect">Koneksi tidak dapat dibuat.
 \nSilakan periksa nama host dan koneksi jaringan Anda.</string>
+    <string name="pref_exoplayer_allow_background_audio">Izinkan memutar audio di latar belakang</string>
+    <string name="notification_action_fast_forward">Maju cepat</string>
+    <string name="notification_action_pause">Berhenti sebentar</string>
+    <string name="notification_action_stop">Berhenti</string>
+    <string name="notification_action_next">Lanjut</string>
+    <string name="notification_action_play">Mulai</string>
+    <string name="notification_action_rewind">Mundur</string>
+    <string name="notification_action_previous">Sebelumnya</string>
 </resources>
