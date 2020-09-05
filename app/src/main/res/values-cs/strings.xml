@@ -33,4 +33,5 @@
     <string name="notification_action_play">Přehrát</string>
     <string name="notification_action_rewind">Přetočit zpět</string>
     <string name="notification_action_previous">Předchozí</string>
+    <string name="download_no_storage_permission">Stažení souborů není možné bez přístupu k úložišti</string>
 </resources>
