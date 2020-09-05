@@ -33,4 +33,5 @@
     <string name="notification_action_play">இயக்கு</string>
     <string name="notification_action_rewind">முன்னாடி</string>
     <string name="notification_action_previous">முந்தையது</string>
+    <string name="download_no_storage_permission">சேமிப்பக அனுமதி இல்லாமல் கோப்புகளைப் பதிவிறக்க முடியாது</string>
 </resources>
