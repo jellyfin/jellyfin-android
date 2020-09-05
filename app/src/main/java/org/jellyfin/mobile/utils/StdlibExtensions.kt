@@ -12,3 +12,12 @@ inline fun Int.withFlag(flag: Int) = this or flag
 
 @CheckResult
 inline fun Int.withoutFlag(flag: Int) = this and flag.inv()
+
+@get:CheckResult
+val IntRange.width: Int
+    get() = endInclusive - start
+
+@CheckResult
+fun IntRange.scaleInRange(percent: Int): Int {
+    return start + width * percent / 100
+}

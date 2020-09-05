@@ -3,6 +3,7 @@
 package org.jellyfin.mobile.utils
 
 import android.media.AudioAttributes
+import android.media.AudioManager
 import android.media.MediaMetadata
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
@@ -27,7 +28,7 @@ inline fun MediaSession.applyDefaultLocalAudioAttributes(contentType: Int) {
 fun JellyfinMediaSource.toMediaMetadata(): MediaMetadata = MediaMetadata.Builder().apply {
     putString(MediaMetadata.METADATA_KEY_MEDIA_ID, id)
     putString(MediaMetadata.METADATA_KEY_TITLE, title)
-    putLong(MediaMetadata.METADATA_KEY_DURATION, mediaDurationMs)
+    putLong(MediaMetadata.METADATA_KEY_DURATION, mediaDurationTicks / Constants.TICKS_PER_MILLISECOND)
 }.build()
 
 fun MediaSession.setPlaybackState(playbackState: Int, position: Long, playbackActions: Long) {
@@ -50,6 +51,12 @@ fun MediaSession.setPlaybackState(player: Player, playbackActions: Long) {
         else -> throw RuntimeException("Invalid Player playbackState $playerState")
     }
     setPlaybackState(playbackState, player.currentPosition, playbackActions)
+}
+
+fun AudioManager.getVolumeRange(streamType: Int): IntRange {
+    val minVolume = (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) getStreamMinVolume(streamType) else 0)
+    val maxVolume = getStreamMaxVolume(streamType)
+    return minVolume..maxVolume
 }
 
 /**

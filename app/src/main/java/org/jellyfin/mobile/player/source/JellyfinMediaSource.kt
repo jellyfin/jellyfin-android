@@ -13,8 +13,8 @@ class JellyfinMediaSource(item: JSONObject) {
     val artists: String? = item.optJSONObject("item")?.optJSONArray("Artists")?.asIterable()?.joinToString()
     val uri: Uri = Uri.parse(item.optString("url"))
     val playMethod: String = item.optString("playMethod")
-    val mediaDurationMs: Long
     val mediaStartMs: Long = item.optLong("playerStartPositionTicks") / Constants.TICKS_PER_MILLISECOND
+    val mediaDurationTicks: Long
     val videoTracksGroup: ExoPlayerTracksGroup<ExoPlayerTrack.Video>
     val audioTracksGroup: ExoPlayerTracksGroup<ExoPlayerTrack.Audio>
     val subtitleTracksGroup: ExoPlayerTracksGroup<ExoPlayerTrack.Text>
@@ -26,7 +26,7 @@ class JellyfinMediaSource(item: JSONObject) {
     init {
         val mediaSource = item.optJSONObject("mediaSource")
         if (mediaSource != null) {
-            mediaDurationMs = mediaSource.optLong("RunTimeTicks") / Constants.TICKS_PER_MILLISECOND
+            mediaDurationTicks = mediaSource.optLong("RunTimeTicks")
             val textTrackUrls = HashMap<Int, String>().apply {
                 item.optJSONArray("textTracks")?.let { textTracks ->
                     for (i in 0 until textTracks.length()) {
@@ -54,7 +54,7 @@ class JellyfinMediaSource(item: JSONObject) {
             audioTracksGroup = loadAudioTracks(mediaSource, audioTracks)
             subtitleTracksGroup = loadSubtitleTracks(mediaSource, subtitleTracks, textTrackUrls)
         } else {
-            mediaDurationMs = 0
+            mediaDurationTicks = 0
             videoTracksGroup = ExoPlayerTracksGroup(-1, emptyList())
             audioTracksGroup = ExoPlayerTracksGroup(-1, emptyList())
             subtitleTracksGroup = ExoPlayerTracksGroup(-1, emptyList())

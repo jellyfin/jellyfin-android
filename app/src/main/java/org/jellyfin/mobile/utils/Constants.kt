@@ -92,12 +92,6 @@ object Constants {
     // Video player intent extras
     const val EXTRA_MEDIA_SOURCE_ITEM = "org.jellyfin.mobile.MEDIA_SOURCE_ITEM"
 
-    // Video player webapp events
-    const val EVENT_PLAYING = "Playing"
-    const val EVENT_PAUSE = "Pause"
-    const val EVENT_ENDED = "Ended"
-    const val EVENT_TIME_UPDATE = "TimeUpdate"
-
     // Orientation constants
     val ORIENTATION_PORTRAIT_RANGE = CombinedIntRange(340..360, 0..20)
     val ORIENTATION_LANDSCAPE_RANGE = CombinedIntRange(70..110, 250..290)
