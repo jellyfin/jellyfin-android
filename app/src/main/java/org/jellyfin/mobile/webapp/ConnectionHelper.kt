@@ -25,7 +25,6 @@ import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ConnectServerBinding
-import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PRODUCT_NAME_SUPPORTED_SINCE
 import org.jellyfin.mobile.utils.getPublicSystemInfo
 import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
@@ -39,7 +38,6 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
     private val rootView: CoordinatorLayout get() = activity.rootView
     private val webView: WebView get() = activity.webView
 
-    private var cachedInstanceUrl: HttpUrl? = null
     var connected = false
         private set
 
@@ -52,8 +50,13 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
     private val connectButton: Button get() = connectServerBinding.connectButton
 
     fun initialize() {
-        cachedInstanceUrl = appPreferences.instanceUrl?.toHttpUrlOrNull()
-        loadOrShowSetup()
+        appPreferences.instanceUrl?.toHttpUrlOrNull().also { url ->
+            if (url != null) {
+                webView.loadUrl(url.toString())
+            } else {
+                showServerSetup()
+            }
+        }
     }
 
     fun onConnectedToWebapp() {
@@ -62,8 +65,7 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
     }
 
     fun onSelectServer() {
-        cachedInstanceUrl = null
-        loadOrShowSetup()
+        showServerSetup()
     }
 
     fun onErrorReceived() {
@@ -75,26 +77,14 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
     fun onBackPressed(): Boolean {
         if (serverSetupLayout.isAttachedToWindow) {
             rootView.removeView(serverSetupLayout)
-            cachedInstanceUrl = appPreferences.instanceUrl?.toHttpUrlOrNull()
             webView.isVisible = true
             return true
         }
         return false
     }
 
-    private fun loadOrShowSetup() {
-        cachedInstanceUrl.let { url ->
-            if (url != null) {
-                webView.isVisible = true
-                webView.loadUrl(url.resolve(Constants.INDEX_PATH).toString())
-            } else {
-                webView.isVisible = false
-                showServerSetup()
-            }
-        }
-    }
-
     private fun showServerSetup() {
+        webView.isVisible = false
         rootView.addView(serverSetupLayout)
         hostInput.setText(appPreferences.instanceUrl)
         hostInput.setSelection(hostInput.length())
@@ -128,9 +118,11 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
             val httpUrl = checkServerUrlAndConnection(hostInput.text.toString())
             if (httpUrl != null) {
                 appPreferences.instanceUrl = httpUrl.toString()
-                cachedInstanceUrl = httpUrl
+                webView.clearHistory()
+                webView.loadUrl("about:blank")
                 rootView.removeView(serverSetupLayout)
-                loadOrShowSetup()
+                webView.isVisible = true
+                webView.loadUrl(httpUrl.toString())
             }
             hostInput.isEnabled = true
             connectButton.isEnabled = true

@@ -9,8 +9,9 @@ object Constants {
     const val APP_INFO_VERSION: String = BuildConfig.VERSION_NAME
 
     // Webapp constants
-    const val INDEX_PATCH_PATH = "index_patch.html"
-    const val INDEX_PATH = "web/index.html"
+    const val APPLOADER_PATH = "scripts/apploader.js"
+    const val INDEX_PATH = "index.html"
+    const val SELECT_SERVER_PATH = "selectserver.html"
     const val SESSION_CAPABILITIES_PATH = "sessions/capabilities/full"
 
     // Preference keys
