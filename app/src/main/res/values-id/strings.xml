@@ -33,4 +33,5 @@
     <string name="notification_action_play">Mulai</string>
     <string name="notification_action_rewind">Mundur</string>
     <string name="notification_action_previous">Sebelumnya</string>
+    <string name="download_no_storage_permission">Tidak dapat mengunduh file tanpa izin penyimpanan</string>
 </resources>
