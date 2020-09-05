@@ -182,7 +182,7 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
 
         val isValidInstance = when {
             version.size != 3 -> false
-            version[0] == PRODUCT_NAME_SUPPORTED_SINCE[0] && version[1] < PRODUCT_NAME_SUPPORTED_SINCE[1] -> true // Valid old version
+            version[0] == PRODUCT_NAME_SUPPORTED_SINCE.first && version[1] < PRODUCT_NAME_SUPPORTED_SINCE.second -> true // Valid old version
             else -> true // FIXME: check ProductName once API client supports it
         }
 

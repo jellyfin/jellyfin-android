@@ -8,7 +8,7 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-val PRODUCT_NAME_SUPPORTED_SINCE: IntArray = intArrayOf(10, 3)
+val PRODUCT_NAME_SUPPORTED_SINCE: Pair<Int, Int> = 10 to 3
 
 // Can be removed/replaced once the api client supports coroutines natively
 suspend fun ApiClient.getPublicSystemInfo(): PublicSystemInfo? = suspendCoroutine { continuation ->
