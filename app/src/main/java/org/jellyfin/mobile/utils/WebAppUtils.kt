@@ -2,39 +2,27 @@ package org.jellyfin.mobile.utils
 
 import android.content.Context
 import android.webkit.WebResourceResponse
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import timber.log.Timber
 import java.io.IOException
 
-fun Context.loadPatchedIndex(httpClient: OkHttpClient, url: String): WebResourceResponse? = try {
-    val result = StringBuilder()
-    httpClient.newCall(Request.Builder().url(url).build()).execute().use { response ->
-        if (response.code >= 400)
-            return@use
-        response.body?.run {
-            val responseReader = byteStream().bufferedReader()
-            loop@ while (true) {
-                when (val line = responseReader.readLine()) {
-                    null -> break@loop
-                    else -> {
-                        if (line == "</body>") {
-                            val patch = assets.open(Constants.INDEX_PATCH_PATH).bufferedReader().use { reader ->
-                                reader.readText()
-                            }
-                            result.append(patch).appendLine()
-                        }
-                        result.append(line).appendLine()
-                    }
-                }
-            }
-        }
-    }
-    val data = result.toString()
-    if (data.isNotEmpty()) WebResourceResponse("text/html", Charsets.UTF_8.name(), data.byteInputStream()) else null
-} catch (e: IOException) {
-    null
-}
+const val JS_INJECTION_CODE = """
+!function() {
+    var scripts = [
+        '/native/nativeshell.js',
+        '/native/apphost.js',
+        '/native/EventEmitter.js',
+        '/native/chrome.cast.js',
+    ];
+    scripts.forEach(function(src) {
+        var scriptElement = document.createElement('script');
+        scriptElement.type = 'text/javascript';
+        scriptElement.src = src;
+        scriptElement.charset = 'utf-8';
+        scriptElement.setAttribute('defer', '');
+        document.body.appendChild(scriptElement);
+    });
+}();
+"""
 
 fun Context.loadAsset(url: String, mimeType: String = "application/javascript"): WebResourceResponse {
     val data = try {

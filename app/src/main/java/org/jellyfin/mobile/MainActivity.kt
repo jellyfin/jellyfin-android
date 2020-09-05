@@ -10,17 +10,21 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.view.OrientationEventListener
-import android.webkit.*
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
+import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.*
+import androidx.core.view.ViewCompat
+import androidx.core.view.doOnNextLayout
+import androidx.core.view.updateMargins
 import androidx.lifecycle.lifecycleScope
 import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebViewClientCompat
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
 import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
 import org.jellyfin.mobile.bridge.NativeInterface
@@ -41,7 +45,6 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), WebViewController {
     val appPreferences: AppPreferences by inject()
-    val httpClient: OkHttpClient by inject()
     val apiClient: ApiClient by inject()
     val permissionRequestHelper: PermissionRequestHelper by inject()
     val chromecast = Chromecast()
@@ -125,18 +128,16 @@ class MainActivity : AppCompatActivity(), WebViewController {
                 val url = request.url
                 val path = url.path?.toLowerCase(Locale.ROOT) ?: return null
                 return when {
-                    path.endsWith(Constants.INDEX_PATH) -> {
-                        val patchedIndex = loadPatchedIndex(httpClient, url.toString())
-                        if (patchedIndex != null) {
-                            runOnUiThread { connectionHelper.onConnectedToWebapp() }
-                            patchedIndex
-                        } else {
-                            runOnUiThread { connectionHelper.onErrorReceived() }
-                            emptyResponse
+                    path.endsWith(Constants.APPLOADER_PATH) -> {
+                        runOnUiThread {
+                            webView.evaluateJavascript(JS_INJECTION_CODE) {
+                                connectionHelper.onConnectedToWebapp()
+                            }
                         }
+                        null // continue loading normally
                     }
                     path.contains("native") -> loadAsset("native/${url.lastPathSegment}")
-                    path.endsWith("web/selectserver.html") -> {
+                    path.endsWith(Constants.SELECT_SERVER_PATH) -> {
                         runOnUiThread { connectionHelper.onSelectServer() }
                         emptyResponse
                     }
