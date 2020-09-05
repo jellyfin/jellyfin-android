@@ -1,11 +1,10 @@
 package org.jellyfin.mobile.utils
 
 import android.content.Context
-import android.os.Build
-import android.webkit.WebResourceError
 import android.webkit.WebResourceResponse
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import timber.log.Timber
 import java.io.IOException
 
 fun Context.loadPatchedIndex(httpClient: OkHttpClient, url: String): WebResourceResponse? = try {
@@ -37,8 +36,14 @@ fun Context.loadPatchedIndex(httpClient: OkHttpClient, url: String): WebResource
     null
 }
 
-fun Context.loadAsset(url: String): WebResourceResponse {
-    return WebResourceResponse("text/html", Charsets.UTF_8.name(), assets.open(url))
+fun Context.loadAsset(url: String, mimeType: String = "application/javascript"): WebResourceResponse {
+    val data = try {
+        assets.open(url)
+    } catch (e: IOException) {
+        Timber.e(e, "Could not load asset %s", url)
+        null // A null InputStream resolves into a 404 response
+    }
+    return WebResourceResponse(mimeType, Charsets.UTF_8.name(), data)
 }
 
 val emptyResponse = WebResourceResponse("text/html", Charsets.UTF_8.toString(), "".byteInputStream())
