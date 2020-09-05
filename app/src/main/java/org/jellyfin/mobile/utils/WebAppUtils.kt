@@ -14,11 +14,11 @@ const val JS_INJECTION_CODE = """
         '/native/chrome.cast.js',
     ];
     scripts.forEach(function(src) {
-        var scriptElement = document.createElement("script");
-        scriptElement.type = "text/javascript";
+        var scriptElement = document.createElement('script');
+        scriptElement.type = 'text/javascript';
         scriptElement.src = src;
-        scriptElement.charset = "utf-8";
-        scriptElement.setAttribute("defer", "");
+        scriptElement.charset = 'utf-8';
+        scriptElement.setAttribute('defer', '');
         document.body.appendChild(scriptElement);
     });
 }();
