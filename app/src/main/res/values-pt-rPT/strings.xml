@@ -7,5 +7,4 @@
     <string name="network_message">Desejas permitir que o download seja executado em dados móveis ou redes de roaming\?</string>
     <string name="network_title">Tipos de rede permitidos</string>
     <string name="battery_optimizations_message">Por favor, desativa as otimizações de bateria para reprodução de media enquanto o ecrã está desligado.</string>
-    <string name="battery_optimizations_title">Desativar as otimizações de bateria</string>
 </resources>

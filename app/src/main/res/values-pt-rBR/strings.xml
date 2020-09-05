@@ -7,7 +7,6 @@
     <string name="network_message">Gostaria de habilitar o download através de dados móveis ou roaming\?</string>
     <string name="network_title">Tipos de Rede Permitidos</string>
     <string name="battery_optimizations_message">Por favor desative otimizações da bateria para possibilitar a reprodução de mídia com a tela desligada.</string>
-    <string name="battery_optimizations_title">Desativar Otimizações da Bateria</string>
     <string name="activity_name_settings">Configurações do Jellyfin</string>
     <string name="playback_info_and_x_more">…e %d mais</string>
     <string name="playback_info_transcoding">Transcodificação: %b</string>

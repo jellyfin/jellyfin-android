@@ -5,7 +5,6 @@
     <string name="connection_error_cannot_connect">Connection cannot be established.\nPlease check the hostname and your network connection.</string>
     <string name="connect_button_text">Connect</string>
 
-    <string name="battery_optimizations_title">Disable Battery Optimizations</string>
     <string name="battery_optimizations_message">Please disable battery optimizations for media playback while the screen is off.</string>
     <string name="network_title">Allowed Network Types</string>
     <string name="network_message">Do you want to allow the download to run over mobile data or roaming networks?</string>

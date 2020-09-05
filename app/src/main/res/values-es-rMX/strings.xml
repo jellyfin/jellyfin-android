@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="battery_optimizations_title">Desactivar la optimización de la batería</string>
     <string name="downloading">Descargando</string>
     <string name="mobile_data_and_roaming">Datos móviles e itinerancia</string>
     <string name="mobile_data">Datos móviles</string>

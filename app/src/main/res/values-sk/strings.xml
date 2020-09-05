@@ -7,7 +7,6 @@
     <string name="network_message">Chcete povoliť sťahovanie pomocou mobilných dát alebo roamingových sietí\?</string>
     <string name="network_title">Povoliť sieťové typy</string>
     <string name="battery_optimizations_message">Prosím, zakážte optimalizáciu batérie pre prehrávanie medií počas vypnutej obrazovky.</string>
-    <string name="battery_optimizations_title">Zakázať optimalizáciu batérie</string>
     <string name="connection_error_invalid_format">Formát hostiteľa je neplatný</string>
     <string name="connect_button_text">Pripojiť</string>
     <string name="host_input_hint">Hostiteľ</string>

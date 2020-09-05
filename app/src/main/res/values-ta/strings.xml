@@ -14,7 +14,6 @@
     <string name="network_message">மொபைல் தரவு அல்லது ரோமிங் நெட்வொர்க்குகள் மூலம் பதிவிறக்கத்தை இயக்க அனுமதிக்க விரும்புகிறீர்களா\?</string>
     <string name="network_title">அனுமதிக்கப்பட்ட பிணைய வகைகள்</string>
     <string name="battery_optimizations_message">திரை முடக்கத்தில் இருக்கும்போது மீடியா பிளேபேக்கிற்கான பேட்டரி மேம்படுத்தல்களை முடக்கவும்.</string>
-    <string name="battery_optimizations_title">பேட்டரி உகப்பாக்கங்களை முடக்கு</string>
     <string name="connection_error_invalid_format">ஹோஸ்ட் தவறான வடிவத்தைக் கொண்டுள்ளது</string>
     <string name="connect_button_text">இணை</string>
     <string name="host_input_hint">ஹோஸ்ட்</string>

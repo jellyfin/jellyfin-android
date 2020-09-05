@@ -18,7 +18,6 @@
     <string name="network_message">האם אתה מאשר לבצע הורדה על גבי רשת הסלולר או נדידה \?</string>
     <string name="network_title">אפשרויות תקשורת מורשות</string>
     <string name="battery_optimizations_message">אנא כבה את מצב החסכון בסוללה להפעלה בזמן שהמסך כבוי.</string>
-    <string name="battery_optimizations_title">בטל חסכון בסוללה</string>
     <string name="connect_button_text">התחבר</string>
     <string name="connection_error_cannot_connect">החיבור לא הצליח.
 \nאנא בדוק את כתובת השרת ואת החיבור לרשת.</string>

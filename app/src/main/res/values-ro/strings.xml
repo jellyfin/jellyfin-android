@@ -7,7 +7,6 @@
     <string name="network_message">Doriți să permiteți descărcarea să ruleze pe date mobile sau rețele de roaming\?</string>
     <string name="network_title">Tipuri de rețea permise</string>
     <string name="battery_optimizations_message">Vă rugăm să dezactivați optimizările bateriei pentru redarea media cu ecranul stins.</string>
-    <string name="battery_optimizations_title">Dezactivați optimizările bateriei</string>
     <string name="connection_error_invalid_format">Gazda are un format invalid</string>
     <string name="connect_button_text">Conectare</string>
     <string name="host_input_hint">Gazdă</string>
