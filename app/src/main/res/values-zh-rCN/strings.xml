@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="battery_optimizations_message">为了在屏幕关闭时播放媒体，请禁用电池优化。</string>
+    <string name="battery_optimizations_message">要在屏幕关闭时播放媒体，请禁用电池优化。</string>
     <string name="battery_optimizations_title">禁用电池优化</string>
     <string name="mobile_data_and_roaming">移动数据和漫游</string>
     <string name="mobile_data">移动数据</string>
@@ -15,7 +15,7 @@
     <string name="notification_action_play">播放</string>
     <string name="notification_action_pause">暂停</string>
     <string name="notification_action_fast_forward">快进</string>
-    <string name="connection_error_cannot_connect">连接无法建立。
+    <string name="connection_error_cannot_connect">无法建立连接。 
 \n请检查主机名和你的网络连接。</string>
     <string name="pref_exoplayer_allow_background_audio">允许在后台播放音频</string>
     <string name="pref_enable_exoplayer_summary">启用实验性的ExoPlayer视频播放器，该播放器支持更多视频格式和编解码器，并且已集成到操作系统中</string>
@@ -34,4 +34,5 @@
     <string name="notification_action_next">下一个</string>
     <string name="notification_action_rewind">倒放</string>
     <string name="notification_action_previous">上一个</string>
+    <string name="download_no_storage_permission">不能在没有储存权限的情况下下载文件</string>
 </resources>
