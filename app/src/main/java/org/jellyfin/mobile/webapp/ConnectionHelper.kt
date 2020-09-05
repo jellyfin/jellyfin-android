@@ -15,28 +15,22 @@ import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.jellyfin.apiclient.Jellyfin
 import org.jellyfin.apiclient.interaction.ApiClient
+import org.jellyfin.apiclient.model.system.PublicSystemInfo
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ConnectServerBinding
 import org.jellyfin.mobile.utils.Constants
-import org.jellyfin.mobile.utils.Constants.SERVER_INFO_PATH
+import org.jellyfin.mobile.utils.PRODUCT_NAME_SUPPORTED_SINCE
+import org.jellyfin.mobile.utils.getPublicSystemInfo
 import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
-import org.json.JSONException
-import org.json.JSONObject
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import timber.log.Timber
-import java.io.IOException
 
 class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
     private val appPreferences: AppPreferences get() = activity.appPreferences
@@ -160,7 +154,7 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
         val urls = jellyfin.discovery.addressCandidates(normalizedUrl)
 
         var httpUrl: HttpUrl? = null
-        var serverInfoResponse: String? = null
+        var serverInfo: PublicSystemInfo? = null
         loop@ for (url in urls) {
             httpUrl = url.toHttpUrlOrNull()
 
@@ -172,45 +166,26 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
             // Set API client address
             apiClient.ChangeServerLocation(httpUrl.toString())
 
-            // TODO: resolve system info via API client
-            serverInfoResponse = fetchServerInfo(activity.httpClient, httpUrl)
-            if (serverInfoResponse != null)
+            serverInfo = apiClient.getPublicSystemInfo()
+            if (serverInfo != null)
                 break@loop
         }
 
-        if (httpUrl == null || serverInfoResponse == null) {
+        if (httpUrl == null || serverInfo == null) {
             showConnectionError()
             return null
         }
 
-        val isValidInstance = try {
-            val serverInfo = JSONObject(serverInfoResponse)
-            val version = serverInfo.getString("Version")
-                .split('.')
-                .mapNotNull(String::toIntOrNull)
-            when {
-                version.size != 3 -> false
-                version[0] == 10 && version[1] < 3 -> true // Valid old version
-                else -> serverInfo.getString("ProductName") == "Jellyfin Server"
-            }
-        } catch (e: JSONException) {
-            Timber.e(e, "Cannot get server info")
-            false
+        val version = serverInfo.version
+            .split('.')
+            .mapNotNull(String::toIntOrNull)
+
+        val isValidInstance = when {
+            version.size != 3 -> false
+            version[0] == PRODUCT_NAME_SUPPORTED_SINCE.first && version[1] < PRODUCT_NAME_SUPPORTED_SINCE.second -> true // Valid old version
+            else -> true // FIXME: check ProductName once API client supports it
         }
 
         return if (isValidInstance) httpUrl else null
-    }
-
-    private suspend fun fetchServerInfo(httpClient: OkHttpClient, url: HttpUrl): String? {
-        val serverInfoUrl = url.resolve(SERVER_INFO_PATH) ?: return null
-        val request = httpClient.newCall(Request.Builder().url(serverInfoUrl).build())
-        return withContext(Dispatchers.IO) {
-            try {
-                request.execute().use { it.body?.string() }
-            } catch (e: IOException) {
-                Timber.e(e, "Cannot connect to server")
-                null
-            }
-        }
     }
 }
