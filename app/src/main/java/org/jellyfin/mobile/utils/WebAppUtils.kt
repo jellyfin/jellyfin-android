@@ -9,7 +9,6 @@ const val JS_INJECTION_CODE = """
 !function() {
     var scripts = [
         '/native/nativeshell.js',
-        '/native/apphost.js',
         '/native/EventEmitter.js',
         '/native/chrome.cast.js',
     ];
