@@ -11,12 +11,10 @@ import android.os.Bundle
 import android.os.IBinder
 import android.view.OrientationEventListener
 import android.webkit.*
-import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.doOnNextLayout
-import androidx.core.view.updatePadding
+import androidx.core.view.*
 import androidx.lifecycle.lifecycleScope
 import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebViewClientCompat
@@ -50,7 +48,7 @@ class MainActivity : AppCompatActivity(), WebViewController {
     private val connectionHelper = ConnectionHelper(this)
     private val webappFunctionChannel: Channel<String> by inject(named(WEBAPP_FUNCTION_CHANNEL))
 
-    val rootView: FrameLayout by lazyView(R.id.root_view)
+    val rootView: CoordinatorLayout by lazyView(R.id.root_view)
     val webView: WebView by lazyView(R.id.web_view)
 
     var serviceBinder: RemotePlayerService.ServiceBinder? = null
@@ -70,7 +68,7 @@ class MainActivity : AppCompatActivity(), WebViewController {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_webapp)
+        setContentView(R.layout.activity_main)
 
         // Bind player service
         bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
@@ -78,7 +76,9 @@ class MainActivity : AppCompatActivity(), WebViewController {
         // Handle window insets
         setStableLayoutFlags()
         ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
-            v.updatePadding(top = insets.systemWindowInsetTop, bottom = insets.systemWindowInsetBottom)
+            val layoutParams = webView.layoutParams as CoordinatorLayout.LayoutParams
+            layoutParams.updateMargins(top = insets.systemWindowInsetTop, bottom = insets.systemWindowInsetBottom)
+
             insets
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

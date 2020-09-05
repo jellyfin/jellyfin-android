@@ -76,6 +76,7 @@ dependencies {
     implementation(Dependencies.UI.webkitX)
     implementation(Dependencies.UI.exoPlayer)
     implementation(Dependencies.UI.modernAndroidPreferences)
+    implementation(Dependencies.UI.material)
 
     // Network
     implementation(Dependencies.Network.okHttp)

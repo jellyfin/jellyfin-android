@@ -7,9 +7,9 @@ import android.view.inputmethod.InputMethodManager
 import android.webkit.WebView
 import android.widget.Button
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.getSystemService
 import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
@@ -42,7 +42,7 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
     private val appPreferences: AppPreferences get() = activity.appPreferences
     private val jellyfin: Jellyfin by inject()
     private val apiClient: ApiClient get() = activity.apiClient
-    private val rootView: FrameLayout get() = activity.rootView
+    private val rootView: CoordinatorLayout get() = activity.rootView
     private val webView: WebView get() = activity.webView
 
     private var cachedInstanceUrl: HttpUrl? = null

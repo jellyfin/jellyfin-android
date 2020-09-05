@@ -28,6 +28,7 @@ object Dependencies {
         const val webkitX = "1.2.0"
         const val coil = "0.11.0"
         const val modernAndroidPreferences = "1.0-RC2"
+        const val material = "1.2.1"
 
         // Cast
         const val mediaRouter = "1.1.0"
@@ -79,6 +80,7 @@ object Dependencies {
         val webkitX = androidx("webkit", Versions.webkitX)
         val exoPlayer = exoPlayer("ui")
         const val modernAndroidPreferences = "de.Maxr1998.android:modernpreferences:${Versions.modernAndroidPreferences}"
+        const val material = "com.google.android.material:material:${Versions.material}"
     }
 
     object Network {
