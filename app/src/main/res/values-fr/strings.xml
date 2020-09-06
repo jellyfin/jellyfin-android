@@ -33,4 +33,5 @@
     <string name="notification_action_play">Lire</string>
     <string name="notification_action_rewind">Rembobiner</string>
     <string name="notification_action_previous">Précédent</string>
+    <string name="download_no_storage_permission">Impossible de télécharger des fichiers sans l\'autorisation de stockage.</string>
 </resources>
