@@ -19,7 +19,7 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
         self.isLocalPlayer = true;
         self._currentTime = 0;
         self._paused = true;
-        self.volume = 0;
+        self._volume = 0;
         self._currentSrc = null;
 
         var currentSrc;
@@ -103,11 +103,6 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
         self.setAudioStreamIndex = function (index) {
         };
 
-        // Save this for when playback stops, because querying the time at that point might return 0
-        self.currentTime = function (val) {
-            return null;
-        };
-
         self.duration = function (val) {
             return null;
         };
@@ -142,72 +137,42 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
             });
         };
 
-        self.volume = function (val) {
-            return self._volume;
-            // should not be necessary to implement
+        /**
+         * Get or set volume percentage as as string
+         */
+        self.volume = function (volume) {
+            if (volume !== undefined) {
+                let volumeInt = parseInt(volume);
+                window.NativePlayer.setVolume(volumeInt);
+                self._volume = volumeInt;
+            }
+            return String(self._volume);
         };
 
         self.setMute = function (mute) {
-            // if volume is set to zero, then assume half as default when unmuting
-            let unmuted = Number(self._volume) ? self._volume : '0.5';
-            window.NativePlayer.setVolume(mute ? '0' : unmuted);
+            // If volume is set to zero, then assume 30% as default when unmuting
+            let unmuted = self._volume ? self._volume : 30;
+            window.NativePlayer.setVolume(mute ? 0 : unmuted);
         };
 
         self.isMuted = function () {
-            return Number(self._volume) == 0;
+            return self._volume == 0;
         };
 
-        self.notifyVolumeChange = function (volume) {
-            new Promise(function () {
-                if (self._volume != volume) {
-                    self._volume = volume;
-                    events.trigger(self, 'volumechange');
-                }
-            });
+        self.seekable = function () {
+            return true;
         };
 
-        self.notifyPlay = function () {
-            new Promise(function () {
-                events.trigger(self, 'unpause');
-            });
+        self.seek = function (ticks) {
+            window.NativePlayer.seek(ticks);
         };
 
-        self.notifyPlaying = function () {
-            new Promise(function () {
-                self._paused = false;
-                events.trigger(self, 'playing');
-            });
-        };
-
-        self.notifyEnded = function () {
-            new Promise(function () {
-                let stopInfo = {
-                    src: self._currentSrc
-                };
-
-                events.trigger(self, 'stopped', [stopInfo]);
-                self._currentSrc = self._currentTime = null;
-            });
-        };
-
-        self.notifyPause = function () {
-            new Promise(function () {
-                self._paused = true;
-                events.trigger(self, 'pause');
-            });
-        };
-
-        self.notifyTimeUpdate = function (currentTime) {
-            new Promise(function () {
-                currentTime = currentTime / 1000;
-                self._timeUpdated = self._currentTime != currentTime;
-                self._currentTime = currentTime;
-                events.trigger(self, 'timeupdate');
-            });
-        }
-
-        self.currentTime = function () {
-            return (self._currentTime || 0) * 1000;
+        self.currentTime = function (ms) {
+            if (ms !== undefined) {
+                window.NativePlayer.seekMs(ms);
+                self._currentTime = ms;
+            }
+            return self._currentTime || 0;
         };
 
         self.changeSubtitleStream = function (index) {

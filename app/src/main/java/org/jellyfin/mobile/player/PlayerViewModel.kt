@@ -3,7 +3,9 @@ package org.jellyfin.mobile.player
 import android.annotation.SuppressLint
 import android.app.Application
 import android.media.AudioAttributes
+import android.media.AudioManager
 import android.media.session.MediaSession
+import androidx.core.content.getSystemService
 import androidx.lifecycle.*
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
@@ -16,9 +18,9 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.apiclient.interaction.ApiClient
+import org.jellyfin.apiclient.model.session.PlaybackProgressInfo
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
-import org.jellyfin.mobile.WEBAPP_FUNCTION_CHANNEL
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceManager
 import org.jellyfin.mobile.utils.*
@@ -26,10 +28,12 @@ import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIO
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.qualifier.named
+import org.jellyfin.apiclient.model.session.RepeatMode as ApiRepeatMode
 
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.EventListener {
     val apiClient: ApiClient by inject()
     val mediaSourceManager = MediaSourceManager(this)
+    private val audioManager: AudioManager by lazy { getApplication<Application>().getSystemService()!! }
     val notificationHelper: PlayerNotificationHelper by lazy { PlayerNotificationHelper(this) }
     private val lifecycleObserver = PlayerLifecycleObserver(this)
 
@@ -48,9 +52,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     /**
      * Allows to call functions within the webapp
      */
-    private val webappFunctionChannel: Channel<String> by inject(named(WEBAPP_FUNCTION_CHANNEL))
     private val playerEventChannel: Channel<PlayerEvent> by inject(named(PLAYER_EVENT_CHANNEL))
-    private var lastReportedPosition = -1L
 
     val mediaSession: MediaSession by lazy {
         MediaSession(getApplication<Application>().applicationContext, javaClass.simpleName.removePrefix(BuildConfig.APPLICATION_ID)).apply {
@@ -69,9 +71,14 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         viewModelScope.launch {
             for (event in playerEventChannel) {
                 when (event) {
-                    PlayerEvent.PAUSE -> mediaSessionCallback.onPause()
-                    PlayerEvent.RESUME -> mediaSessionCallback.onPlay()
-                    PlayerEvent.STOP, PlayerEvent.DESTROY -> mediaSessionCallback.onStop()
+                    PlayerEvent.Pause -> mediaSessionCallback.onPause()
+                    PlayerEvent.Resume -> mediaSessionCallback.onPlay()
+                    PlayerEvent.Stop, PlayerEvent.Destroy -> mediaSessionCallback.onStop()
+                    is PlayerEvent.Seek -> playerOrNull?.seekTo(event.ms)
+                    is PlayerEvent.SetVolume -> {
+                        setVolume(event.volume)
+                        reportPlaybackState()
+                    }
                 }
             }
         }
@@ -120,32 +127,34 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         mediaSession.setMetadata(mediaSource.toMediaMetadata())
     }
 
-    // Webapp interaction
-
-    private fun callWebAppFunction(function: String) {
-        webappFunctionChannel.offer(function)
-    }
-
-    private fun notifyEvent(event: String, parameters: String = "") {
-        callWebAppFunction("window.ExoPlayer.notify$event($parameters)")
-    }
-
     private fun setupTimeUpdates() {
         viewModelScope.launch {
             while (true) {
-                updatePlaybackPosition()
+                reportPlaybackState()
                 delay(Constants.PLAYER_TIME_UPDATE_RATE)
             }
         }
     }
 
-    private fun updatePlaybackPosition() {
+    private suspend fun reportPlaybackState() {
         val player = playerOrNull ?: return
+        val mediaSource = mediaSourceManager.jellyfinMediaSource.value ?: return
         val playbackPositionMillis = player.currentPosition
-        if (player.playbackState == Player.STATE_READY && playbackPositionMillis > 0 && playbackPositionMillis != lastReportedPosition) {
-            notifyEvent(Constants.EVENT_TIME_UPDATE, playbackPositionMillis.toString())
-            lastReportedPosition = playbackPositionMillis
-        }
+        apiClient.reportPlaybackProgress(PlaybackProgressInfo().apply {
+            itemId = mediaSource.id
+            canSeek = true
+            isPaused = !player.isPlaying
+            isMuted = false
+            positionTicks = when (player.playbackState) {
+                Player.STATE_ENDED -> mediaSource.mediaDurationTicks
+                else -> playbackPositionMillis * Constants.TICKS_PER_MILLISECOND
+            }
+            val stream = AudioManager.STREAM_MUSIC
+            val volumeRange = audioManager.getVolumeRange(stream)
+            val currentVolume = audioManager.getStreamVolume(stream)
+            volumeLevel = (currentVolume - volumeRange.first) * 100 / volumeRange.width
+            repeatMode = ApiRepeatMode.RepeatNone
+        })
     }
 
     // Player controls
@@ -175,6 +184,14 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         releasePlayer()
     }
 
+    private fun setVolume(percent: Int) {
+        if (audioManager.isVolumeFixed) return
+        val stream = AudioManager.STREAM_MUSIC
+        val volumeRange = audioManager.getVolumeRange(stream)
+        val scaled = volumeRange.scaleInRange(percent)
+        audioManager.setStreamVolume(stream, scaled, 0)
+    }
+
     fun getPlayerRendererIndex(type: Int): Int {
         return playerOrNull?.getRendererIndexByType(type) ?: -1
     }
@@ -193,15 +210,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         // Update media session
         mediaSession.setPlaybackState(player, SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS)
 
-        // Update webapp state and position
-        when (playbackState) {
-            Player.STATE_ENDED -> {
-                notifyEvent(Constants.EVENT_ENDED)
-            }
-            else -> {
-                notifyEvent(if (player.isPlaying) Constants.EVENT_PLAYING else Constants.EVENT_PAUSE)
-                updatePlaybackPosition()
-            }
+        // Update playback state and position
+        viewModelScope.launch {
+            reportPlaybackState()
         }
 
         // Update notification if necessary

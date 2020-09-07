@@ -34,26 +34,36 @@ class NativePlayer(private val activity: MainActivity) : KoinComponent {
 
     @JavascriptInterface
     fun pausePlayer() {
-        playerEventChannel.offer(PlayerEvent.PAUSE)
+        playerEventChannel.offer(PlayerEvent.Pause)
     }
 
     @JavascriptInterface
     fun resumePlayer() {
-        playerEventChannel.offer(PlayerEvent.RESUME)
+        playerEventChannel.offer(PlayerEvent.Resume)
     }
 
     @JavascriptInterface
     fun stopPlayer() {
-        playerEventChannel.offer(PlayerEvent.STOP)
+        playerEventChannel.offer(PlayerEvent.Stop)
     }
 
     @JavascriptInterface
     fun destroyPlayer() {
-        playerEventChannel.offer(PlayerEvent.DESTROY)
+        playerEventChannel.offer(PlayerEvent.Destroy)
     }
 
     @JavascriptInterface
-    fun setVolume(value: String) {
-        @Suppress("UNUSED_VARIABLE") val volume = value.toDouble()
+    fun seek(ticks: Long) {
+        playerEventChannel.offer(PlayerEvent.Seek(ticks / Constants.TICKS_PER_MILLISECOND))
+    }
+
+    @JavascriptInterface
+    fun seekMs(ms: Long) {
+        playerEventChannel.offer(PlayerEvent.Seek(ms))
+    }
+
+    @JavascriptInterface
+    fun setVolume(volume: Int) {
+        playerEventChannel.offer(PlayerEvent.SetVolume(volume))
     }
 }
