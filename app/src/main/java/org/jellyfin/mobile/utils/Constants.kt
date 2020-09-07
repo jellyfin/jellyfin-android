@@ -92,6 +92,18 @@ object Constants {
     // Video player intent extras
     const val EXTRA_MEDIA_SOURCE_ITEM = "org.jellyfin.mobile.MEDIA_SOURCE_ITEM"
 
+    // External player result code
+    const val HANDLE_EXTERNAL_PLAYER = 1
+
+    // External player result actions
+    const val MX_PLAYER_RESULT_ACTION = "com.mxtech.intent.result.VIEW"
+    const val VLC_PLAYER_RESULT_ACTION = "org.videolan.vlc.player.result"
+
+    // External player webapp events
+    const val EVENT_ENDED = "Ended"
+    const val EVENT_TIME_UPDATE = "TimeUpdate"
+    const val EVENT_CANCELED = "Canceled"
+
     // Orientation constants
     val ORIENTATION_PORTRAIT_RANGE = CombinedIntRange(340..360, 0..20)
     val ORIENTATION_LANDSCAPE_RANGE = CombinedIntRange(70..110, 250..290)

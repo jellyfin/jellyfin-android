@@ -27,6 +27,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
+import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.bridge.NativeInterface
 import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.cast.Chromecast
@@ -49,6 +50,7 @@ class MainActivity : AppCompatActivity(), WebViewController {
     val permissionRequestHelper: PermissionRequestHelper by inject()
     val chromecast = Chromecast()
     private val connectionHelper = ConnectionHelper(this)
+    private val externalPlayer = ExternalPlayer(this@MainActivity)
     private val webappFunctionChannel: Channel<String> by inject(named(WEBAPP_FUNCTION_CHANNEL))
 
     val rootView: CoordinatorLayout by lazyView(R.id.root_view)
@@ -181,6 +183,7 @@ class MainActivity : AppCompatActivity(), WebViewController {
         }
         addJavascriptInterface(NativeInterface(this@MainActivity), "NativeInterface")
         addJavascriptInterface(NativePlayer(this@MainActivity), "NativePlayer")
+        addJavascriptInterface(externalPlayer, "ExternalPlayer")
     }
 
     override fun loadUrl(url: String) {
@@ -189,6 +192,13 @@ class MainActivity : AppCompatActivity(), WebViewController {
 
     fun updateRemoteVolumeLevel(value: Int) {
         serviceBinder?.run { remoteVolumeProvider.currentVolume = value }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constants.HANDLE_EXTERNAL_PLAYER) {
+            externalPlayer.handleActivityResult(resultCode, data)
+        }
     }
 
     override fun onRequestPermissionsResult(

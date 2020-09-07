@@ -12,6 +12,7 @@ class JellyfinMediaSource(item: JSONObject) {
     val title: String = item.optString("title")
     val artists: String? = item.optJSONObject("item")?.optJSONArray("Artists")?.asIterable()?.joinToString()
     val uri: Uri = Uri.parse(item.optString("url"))
+    val mimeType: String = item.optString("mimeType")
     val playMethod: String = item.optString("playMethod")
     val mediaStartMs: Long = item.optLong("playerStartPositionTicks") / Constants.TICKS_PER_MILLISECOND
     val mediaDurationTicks: Long
