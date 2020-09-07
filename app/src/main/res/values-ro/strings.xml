@@ -22,4 +22,16 @@
     <string name="playback_info_video_streams">Flux video</string>
     <string name="playback_info_transcoding">Transcodare: %b</string>
     <string name="menu_item_none">Nici unul</string>
+    <string name="pref_exoplayer_allow_background_audio">Permiteți redarea audio în fundal</string>
+    <string name="playback_info_play_method">Metoda de redare: %s</string>
+    <string name="notification_action_stop">Stop</string>
+    <string name="notification_action_next">Următorul</string>
+    <string name="notification_action_fast_forward">Repede inainte</string>
+    <string name="notification_action_pause">Pauză</string>
+    <string name="notification_action_play">Rulează</string>
+    <string name="notification_action_rewind">Derulează</string>
+    <string name="notification_action_previous">Anteriorul</string>
+    <string name="download_no_storage_permission">Nu se pot descărca fișiere fără permisiuni de stocare</string>
+    <string name="connection_error_cannot_connect">Conexiunea nu poate fi stabilită.
+\nVă rugăm să verificați numele gazdei și conexiunea la rețea.</string>
 </resources>
