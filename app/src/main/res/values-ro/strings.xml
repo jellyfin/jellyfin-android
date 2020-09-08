@@ -34,4 +34,8 @@
     <string name="download_no_storage_permission">Nu se pot descărca fișiere fără permisiuni de stocare</string>
     <string name="connection_error_cannot_connect">Conexiunea nu poate fi stabilită.
 \nVă rugăm să verificați numele gazdei și conexiunea la rețea.</string>
+    <string name="external_player_unknown_error">Eroare necunoscută în playerul extern. Urmărirea redării este dezactivată.</string>
+    <string name="external_player_invalid_player">Nu a fost selectat niciun player extern valid. Urmărirea redării este dezactivată.</string>
+    <string name="external_player_not_supported_yet">Urmărirea redării nu este acceptată încă în playerul extern selectat. Contactați dezvoltatorii pentru a încerca să adăugați suport pentru aceasta.</string>
+    <string name="external_player_invalid_play_method">Metodă de redare invalidă.</string>
 </resources>
