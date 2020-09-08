@@ -34,4 +34,5 @@
     <string name="notification_action_rewind">Zurückspulen</string>
     <string name="notification_action_previous">Vorheriges</string>
     <string name="download_no_storage_permission">Herunterladen von Dateien ohne Speicherberechtigung nicht möglich</string>
+    <string name="external_player_invalid_play_method">Ungültige Abspielmethode.</string>
 </resources>
