@@ -34,4 +34,8 @@
     <string name="notification_action_rewind">முன்னாடி</string>
     <string name="notification_action_previous">முந்தையது</string>
     <string name="download_no_storage_permission">சேமிப்பக அனுமதி இல்லாமல் கோப்புகளைப் பதிவிறக்க முடியாது</string>
+    <string name="external_player_unknown_error">வெளிப்புற பிளேயரில் தெரியாத பிழை. பின்னணி கண்காணிப்பு முடக்கப்பட்டது.</string>
+    <string name="external_player_invalid_player">செல்லுபடியாகும் வெளிப்புற பிளேயர் எதுவும் தேர்ந்தெடுக்கப்படவில்லை. பின்னணி கண்காணிப்பு முடக்கப்பட்டது.</string>
+    <string name="external_player_not_supported_yet">தேர்ந்தெடுக்கப்பட்ட வெளிப்புற பிளேயரில் பிளேபேக் கண்காணிப்பு இன்னும் ஆதரிக்கப்படவில்லை. அதற்கான ஆதரவைச் சேர்க்க முயற்சிக்க டெவலப்பர்களைத் தொடர்பு கொள்ளுங்கள்.</string>
+    <string name="external_player_invalid_play_method">தவறான இயக்க முறை.</string>
 </resources>
