@@ -25,4 +25,7 @@
     <string name="pref_category_music_player">Reprodutor de música</string>
     <string name="playback_info_audio_streams">Streams de áudio</string>
     <string name="playback_info_video_streams">Streams de vídeo</string>
+    <string name="notification_action_rewind">Retroceder</string>
+    <string name="notification_action_previous">Anterior</string>
+    <string name="download_no_storage_permission">Não é possível baixar arquivos sem permissões de armazenamento</string>
 </resources>
