@@ -34,4 +34,8 @@
     <string name="notification_action_rewind">Přetočit zpět</string>
     <string name="notification_action_previous">Předchozí</string>
     <string name="download_no_storage_permission">Stažení souborů není možné bez přístupu k úložišti</string>
+    <string name="external_player_unknown_error">Neznámá chyba externího přehrávače. Sledování přehrávání vypnuto.</string>
+    <string name="external_player_invalid_player">Nebyl vybrán platný externí přehrávač. Sledování přehrávání vypnuto.</string>
+    <string name="external_player_not_supported_yet">Sledování přehrávání v externím přehrávači zatím není podporováno. Kontaktujte vývojáře a požádejte je, aby podporu přidali.</string>
+    <string name="external_player_invalid_play_method">Neplatný způsob přehrávání.</string>
 </resources>
