@@ -35,4 +35,7 @@
     <string name="notification_action_previous">Vorheriges</string>
     <string name="download_no_storage_permission">Herunterladen von Dateien ohne Speicherberechtigung nicht möglich</string>
     <string name="external_player_invalid_play_method">Ungültige Abspielmethode.</string>
+    <string name="external_player_unknown_error">Unbekannter Fehler in externem Player. Wiedergabe-Verfolgung deaktiviert.</string>
+    <string name="external_player_invalid_player">Kein gültiger externer Player ausgewählt. Wiedergabe-Verfolgung deaktiviert.</string>
+    <string name="external_player_not_supported_yet">Wiedergabe-Verfolgung wird von ausgewähltem externen Player noch nicht unterstützt. Kontaktiere die Entwickler um Unterstützung des Players anzufragen.</string>
 </resources>
