@@ -8,6 +8,7 @@ import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
 import org.jellyfin.mobile.player.ExoPlayerFormats
 import org.jellyfin.mobile.player.PlayerActivity
 import org.jellyfin.mobile.player.PlayerEvent
+import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -18,7 +19,7 @@ class NativePlayer(private val activity: MainActivity) : KoinComponent {
     private val playerEventChannel: Channel<PlayerEvent> by inject(named(PLAYER_EVENT_CHANNEL))
 
     @JavascriptInterface
-    fun isEnabled() = activity.appPreferences.exoPlayerEnabled
+    fun isEnabled() = activity.appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
 
     @JavascriptInterface
     fun getSupportedFormats() = ExoPlayerFormats.supportedCodecs.toJSONString()

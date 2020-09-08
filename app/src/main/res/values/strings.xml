@@ -29,16 +29,21 @@
     <string name="playback_info_audio_streams">Audio streams</string>
     <string name="playback_info_and_x_more">…and %d more</string>
 
-    <string name="activity_name_settings">Jellyfin Settings</string>
-    <string name="pref_category_music_player">Music player</string>
-    <string name="pref_music_notification_always_dismissible_title">Make music player notification always dismissible</string>
-    <string name="pref_category_video_player">Native video player</string>
-    <string name="pref_enable_exoplayer_title">Enable video player integration</string>
-    <string name="pref_enable_exoplayer_summary">Enable the experimental ExoPlayer video player which supports more video formats and codecs, and is more integrated into the OS</string>
-    <string name="pref_exoplayer_allow_background_audio">Allow playing audio in the background</string>
-
     <string name="external_player_invalid_play_method">Invalid play method.</string>
     <string name="external_player_not_supported_yet">Playback tracking not supported in selected external player yet. Contact developers to try to add support for it.</string>
     <string name="external_player_invalid_player">No valid external player selected. Playback tracking disabled.</string>
     <string name="external_player_unknown_error">Unknown error in external player. Playback tracking disabled.</string>
+
+    <string name="activity_name_settings">Jellyfin Settings</string>
+    <string name="pref_category_music_player">Music player</string>
+    <string name="pref_music_notification_always_dismissible_title">Make music player notification always dismissible</string>
+    <string name="pref_category_video_player">Video player</string>
+    <string name="pref_video_player_type_title">Video player type</string>
+    <string name="video_player_web">Web player</string>
+    <string name="video_player_native">Native player</string>
+    <string name="video_player_external">External player</string>
+    <string name="video_player_web_description">The default HTML video player from the Web UI</string>
+    <string name="video_player_native_description">Based on ExoPlayer, supports more video formats and codecs, and is more integrated into the OS</string>
+    <string name="video_player_external_description">External video playback apps like MX Player and VLC</string>
+    <string name="pref_exoplayer_allow_background_audio">Allow playing audio in the background in native player</string>
 </resources>

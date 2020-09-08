@@ -1,4 +1,4 @@
-define(['events', 'appSettings', 'playbackManager', 'toast'], function (events, appSettings, playbackManager, toast) {
+define(['events', 'playbackManager', 'toast'], function (events, playbackManager, toast) {
     "use strict";
 
     return function () {
@@ -30,7 +30,7 @@ define(['events', 'appSettings', 'playbackManager', 'toast'], function (events, 
 
         self.canPlayItem = function (item, playOptions) {
             var mediaSource = item.MediaSources[0] || false;
-            return appSettings.enableSystemExternalPlayers() && mediaSource && mediaSource.SupportsDirectStream;
+            return window.ExternalPlayer.isEnabled() && mediaSource && mediaSource.SupportsDirectStream;
         };
 
         self.supportsPlayMethod = function (playMethod, item) {

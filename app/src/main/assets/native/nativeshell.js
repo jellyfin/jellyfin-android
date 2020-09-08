@@ -1,7 +1,6 @@
 const features = [
     "filedownload",
     "displaylanguage",
-    //'externalplayerintent',
     "subtitleappearancesettings",
     //'sharing',
     "exit",

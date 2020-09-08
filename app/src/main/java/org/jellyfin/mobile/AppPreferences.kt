@@ -3,6 +3,7 @@ package org.jellyfin.mobile
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 
 class AppPreferences(context: Context) {
@@ -36,8 +37,9 @@ class AppPreferences(context: Context) {
     val musicNotificationAlwaysDismissible: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_MUSIC_NOTIFICATION_ALWAYS_DISMISSIBLE, false)
 
-    val exoPlayerEnabled: Boolean
-        get() = sharedPreferences.getBoolean(Constants.PREF_ENABLE_EXOPLAYER, false)
+    @VideoPlayerType
+    val videoPlayerType: String
+        get() = sharedPreferences.getString(Constants.PREF_VIDEO_PLAYER_TYPE, VideoPlayerType.WEB_PLAYER)!!
 
     val exoPlayerAllowBackgroundAudio: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO, false)
