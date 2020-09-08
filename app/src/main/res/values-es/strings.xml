@@ -30,9 +30,10 @@
     <string name="notification_action_stop">Detener</string>
     <string name="notification_action_next">Siguiente</string>
     <string name="notification_action_fast_forward">Avanzar</string>
-    <string name="notification_action_pause">Pausar</string>
+    <string name="notification_action_pause">Pausa</string>
     <string name="notification_action_play">Reproducir</string>
     <string name="notification_action_previous">Anterior</string>
     <string name="download_no_storage_permission">No se puede descargar archivos sin permisos de almacenamiento</string>
     <string name="external_player_invalid_play_method">Método de reproducción inválido.</string>
+    <string name="external_player_unknown_error">Error desconocido en el reproductor externo.</string>
 </resources>
