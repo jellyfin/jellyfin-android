@@ -17,33 +17,10 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
         self.priority = -1;
         self.supportsProgress = false;
         self.isLocalPlayer = true;
-        self._currentTime = 0;
         self._paused = true;
-        self._volume = 0;
-        self._currentSrc = null;
-
-        var currentSrc;
 
         self.canPlayMediaType = function (mediaType) {
             return mediaType === 'Video';
-        };
-
-        self.checkTracksSupport = function (videoTracks, audioTracks, subtitleTracks) {
-            return new Promise(function (resolve) {
-                let successCallback = function (result) {
-                    resolve({
-                        videoTracks: result.videoTracks,
-                        audioTracks: result.audioTracks,
-                        subtitleTracks: result.subtitleTracks
-                    });
-                };
-
-                let errorCallback = function () {
-                    resolve(false);
-                };
-
-                invokeMethod('checkTracksSupport', [videoTracks, audioTracks, subtitleTracks], successCallback, errorCallback);
-            });
         };
 
         self.canPlayItem = function (item, playOptions) {
@@ -51,56 +28,18 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
         };
 
         self.currentSrc = function () {
-            return self._currentSrc;
+            return null;
         };
-
-        function modifyStreamUrl(options) {
-            var url = options.url;
-            var mediaSource = options.mediaSource;
-
-            if (!mediaSource || mediaSource.Protocol !== 'File' || url === mediaSource.Path) {
-                return Promise.resolve(url);
-            }
-
-            return Promise.resolve(url);
-
-            /*var method = mediaSource.VideoType === 'BluRay' || mediaSource.VideoType === 'Dvd' || mediaSource.VideoType === 'HdDvd' ?
-                'directoryExists' :
-                'fileExists';
-
-            return fileSystem[method](mediaSource.Path).then(function () {
-                return mediaSource.Path;
-            }, function () {
-                return url;
-            });*/
-        }
 
         self.play = function (options) {
             self.prepareAudioTracksCapabilities(options);
 
             return new Promise(function (resolve) {
-                self._currentTime = 0;
                 self._paused = false;
-                self._currentSrc = options.url;
                 window.NativePlayer.loadPlayer(JSON.stringify(options));
                 loading.hide();
                 resolve();
             });
-        };
-
-        self.setSubtitleStreamIndex = function (index) {
-            self.subtitleStreamIndex = index;
-        };
-
-        self.setAudioStreamIndex = function (index) {
-            self.audioStreamIndex = index;
-        };
-
-        self.canSetAudioStreamIndex = function () {
-            return false;
-        };
-
-        self.setAudioStreamIndex = function (index) {
         };
 
         self.duration = function (val) {
@@ -144,19 +83,17 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
             if (volume !== undefined) {
                 let volumeInt = parseInt(volume);
                 window.NativePlayer.setVolume(volumeInt);
-                self._volume = volumeInt;
             }
-            return String(self._volume);
+            return null;
         };
 
         self.setMute = function (mute) {
-            // If volume is set to zero, then assume 30% as default when unmuting
-            let unmuted = self._volume ? self._volume : 30;
-            window.NativePlayer.setVolume(mute ? 0 : unmuted);
+            // Assume 30% as default when unmuting
+            window.NativePlayer.setVolume(mute ? 0 : 30);
         };
 
         self.isMuted = function () {
-            return self._volume == 0;
+            return false;
         };
 
         self.seekable = function () {
@@ -170,9 +107,20 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
         self.currentTime = function (ms) {
             if (ms !== undefined) {
                 window.NativePlayer.seekMs(ms);
-                self._currentTime = ms;
             }
-            return self._currentTime || 0;
+            return undefined;
+        };
+
+        self.setSubtitleStreamIndex = function (index) {
+            self.subtitleStreamIndex = index;
+        };
+
+        self.canSetAudioStreamIndex = function () {
+            return false;
+        };
+
+        self.setAudioStreamIndex = function (index) {
+            self.audioStreamIndex = index;
         };
 
         self.changeSubtitleStream = function (index) {

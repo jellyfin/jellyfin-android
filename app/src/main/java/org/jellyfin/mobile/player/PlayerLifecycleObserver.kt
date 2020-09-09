@@ -22,10 +22,4 @@ class PlayerLifecycleObserver(private val viewModel: PlayerViewModel) : Lifecycl
             viewModel.notificationHelper.postNotification()
         } else viewModel.pause()
     }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun onDestroy() {
-        viewModel.notificationHelper.dismissNotification()
-        viewModel.releasePlayer()
-    }
 }

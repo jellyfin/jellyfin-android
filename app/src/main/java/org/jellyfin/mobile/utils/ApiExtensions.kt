@@ -3,9 +3,12 @@ package org.jellyfin.mobile.utils
 import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.apiclient.interaction.EmptyResponse
 import org.jellyfin.apiclient.interaction.Response
+import org.jellyfin.apiclient.model.dto.UserItemDataDto
 import org.jellyfin.apiclient.model.session.PlaybackProgressInfo
+import org.jellyfin.apiclient.model.session.PlaybackStopInfo
 import org.jellyfin.apiclient.model.system.PublicSystemInfo
 import timber.log.Timber
+import java.util.*
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -20,6 +23,14 @@ suspend fun ApiClient.getPublicSystemInfo(): PublicSystemInfo? = suspendCoroutin
 
 suspend fun ApiClient.reportPlaybackProgress(progressInfo: PlaybackProgressInfo) = suspendCoroutine<Unit> { continuation ->
     ReportPlaybackProgressAsync(progressInfo, ContinuationEmptyResponse(continuation))
+}
+
+suspend fun ApiClient.reportPlaybackStopped(stopInfo: PlaybackStopInfo) = suspendCoroutine<Unit> { continuation ->
+    ReportPlaybackStoppedAsync(stopInfo, ContinuationEmptyResponse(continuation))
+}
+
+suspend fun ApiClient.markPlayed(itemId: String, userId: String): UserItemDataDto? = suspendCoroutine { continuation ->
+    MarkPlayedAsync(itemId, userId, Date(), ContinuationResponse(continuation))
 }
 
 class ContinuationResponse<T>(private val continuation: Continuation<T?>) : Response<T>() {
