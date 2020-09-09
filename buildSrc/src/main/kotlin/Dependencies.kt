@@ -27,7 +27,7 @@ object Dependencies {
         const val constraintLayout = "1.1.3"
         const val webkitX = "1.2.0"
         const val coil = "0.11.0"
-        const val modernAndroidPreferences = "1.0-RC2"
+        const val modernAndroidPreferences = "1.1.0-alpha2"
         const val material = "1.2.1"
 
         // Cast

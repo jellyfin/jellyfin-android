@@ -6,6 +6,7 @@ import android.webkit.JavascriptInterface
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 import org.json.JSONException
 import org.json.JSONObject
@@ -16,6 +17,9 @@ class ExternalPlayer(private val activity: MainActivity) : KoinComponent {
 
     private var mediaSource: JellyfinMediaSource? = null
     private var playerIntent: Intent? = null
+
+    @JavascriptInterface
+    fun isEnabled() = activity.appPreferences.videoPlayerType == VideoPlayerType.EXTERNAL_PLAYER
 
     @JavascriptInterface
     fun initPlayer(args: String) {
