@@ -18,4 +18,24 @@
     <string name="pref_category_music_player">Muziek speler</string>
     <string name="activity_name_settings">Jellyfin Instellingen</string>
     <string name="menu_item_none">Geen</string>
+    <string name="external_player_unknown_error">Onbekende fout in externe speler. Tracking afspelen uitgeschakeld.</string>
+    <string name="external_player_invalid_player">Geen geldige externe speler geselecteerd. Tracking afspelen uitgeschakeld.</string>
+    <string name="external_player_not_supported_yet">Het volgen van afspelen wordt nog niet ondersteund in de geselecteerde externe speler. Neem contact op met de ontwikkelaars om er ondersteuning voor toe te voegen.</string>
+    <string name="external_player_invalid_play_method">Ongeldige afspeelmethode.</string>
+    <string name="pref_exoplayer_allow_background_audio">Sta het afspelen van audio op de achtergrond toe</string>
+    <string name="playback_info_and_x_more">...en nog %d more</string>
+    <string name="playback_info_audio_streams">Audiostreams</string>
+    <string name="playback_info_video_streams">Videostreams</string>
+    <string name="playback_info_transcoding">Transcodering: %b</string>
+    <string name="playback_info_play_method">Afspeelmethode: %s</string>
+    <string name="notification_action_stop">Stop</string>
+    <string name="notification_action_next">Volgende</string>
+    <string name="notification_action_fast_forward">Doorspoelen</string>
+    <string name="notification_action_pause">Pauze</string>
+    <string name="notification_action_play">Speel</string>
+    <string name="notification_action_rewind">Terugspoelen</string>
+    <string name="notification_action_previous">Vorige</string>
+    <string name="download_no_storage_permission">Kan geen bestanden downloaden zonder machtigingen</string>
+    <string name="connection_error_cannot_connect">Er kan geen verbinding worden gemaakt.
+\nControleer de hostnaam en uw netwerkverbinding.</string>
 </resources>
