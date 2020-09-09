@@ -14,11 +14,14 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.analytics.AnalyticsCollector
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.util.Clock
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.apiclient.model.session.PlaybackProgressInfo
+import org.jellyfin.apiclient.model.session.PlaybackStopInfo
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
@@ -107,11 +110,33 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     fun releasePlayer() {
         mediaSession.isActive = false
         mediaSession.release()
-        playerOrNull?.let { player ->
+        val playerState = playerOrNull?.let { player ->
+            val state = player.playbackState to player.currentPosition
             player.removeListener(this)
             player.release()
+            state
         }
         _player.value = null
+
+        val mediaSource = mediaSourceManager.jellyfinMediaSource.value
+        if (playerState != null && mediaSource != null) {
+            // viewModelScope is already cancelled at this point, so we need a fallback
+            GlobalScope.launch {
+                withTimeoutOrNull(200) {
+                    val (playbackState, currentPosition) = playerState
+                    apiClient.reportPlaybackStopped(PlaybackStopInfo().apply {
+                        itemId = mediaSource.id
+                        positionTicks = when (playbackState) {
+                            Player.STATE_ENDED -> mediaSource.mediaDurationTicks
+                            else -> currentPosition * Constants.TICKS_PER_MILLISECOND
+                        }
+                    })
+                    if (playbackState == Player.STATE_ENDED) {
+                        apiClient.markPlayed(mediaSource.id, apiClient.currentUserId)
+                    }
+                }
+            }
+        }
     }
 
     fun playMedia(source: MediaSource, replace: Boolean = false, startPosition: Long = 0) {
@@ -140,21 +165,20 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val player = playerOrNull ?: return
         val mediaSource = mediaSourceManager.jellyfinMediaSource.value ?: return
         val playbackPositionMillis = player.currentPosition
-        apiClient.reportPlaybackProgress(PlaybackProgressInfo().apply {
-            itemId = mediaSource.id
-            canSeek = true
-            isPaused = !player.isPlaying
-            isMuted = false
-            positionTicks = when (player.playbackState) {
-                Player.STATE_ENDED -> mediaSource.mediaDurationTicks
-                else -> playbackPositionMillis * Constants.TICKS_PER_MILLISECOND
-            }
-            val stream = AudioManager.STREAM_MUSIC
-            val volumeRange = audioManager.getVolumeRange(stream)
-            val currentVolume = audioManager.getStreamVolume(stream)
-            volumeLevel = (currentVolume - volumeRange.first) * 100 / volumeRange.width
-            repeatMode = ApiRepeatMode.RepeatNone
-        })
+        if (player.playbackState != Player.STATE_ENDED) {
+            apiClient.reportPlaybackProgress(PlaybackProgressInfo().apply {
+                itemId = mediaSource.id
+                canSeek = true
+                isPaused = !player.isPlaying
+                isMuted = false
+                positionTicks = playbackPositionMillis * Constants.TICKS_PER_MILLISECOND
+                val stream = AudioManager.STREAM_MUSIC
+                val volumeRange = audioManager.getVolumeRange(stream)
+                val currentVolume = audioManager.getStreamVolume(stream)
+                volumeLevel = (currentVolume - volumeRange.first) * 100 / volumeRange.width
+                repeatMode = ApiRepeatMode.RepeatNone
+            })
+        }
     }
 
     // Player controls
