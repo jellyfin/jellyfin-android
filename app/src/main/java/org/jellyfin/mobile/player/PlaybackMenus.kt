@@ -14,24 +14,28 @@ import org.jellyfin.mobile.player.source.ExoPlayerTracksGroup
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 
 /**
- *  Provides a menu UI for subtitle, audio and video stream selection
+ *  Provides a menu UI for audio, subtitle and video stream selection
  */
 class PlaybackMenus(private val activity: PlayerActivity) : PopupMenu.OnDismissListener {
-    private val subtitlesButton: View = activity.findViewById(R.id.subtitles_button)
+    private val lockScreenButton: View = activity.findViewById(R.id.lock_screen_button)
     private val audioStreamsButton: View = activity.findViewById(R.id.audio_streams_button)
+    private val subtitlesButton: View = activity.findViewById(R.id.subtitles_button)
     private val infoButton: View = activity.findViewById(R.id.info_button)
-    private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
+    private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
     private val playbackInfo: TextView = activity.findViewById(R.id.playback_info)
 
     init {
-        subtitlesButton.setOnClickListener {
-            activity.suppressControllerAutoHide(true)
-            subtitlesMenu.show()
+        lockScreenButton.setOnClickListener {
+            activity.lockScreen()
         }
         audioStreamsButton.setOnClickListener {
             activity.suppressControllerAutoHide(true)
             audioStreamsMenu.show()
+        }
+        subtitlesButton.setOnClickListener {
+            activity.suppressControllerAutoHide(true)
+            subtitlesMenu.show()
         }
         infoButton.setOnClickListener {
             playbackInfo.isVisible = !playbackInfo.isVisible

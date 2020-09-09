@@ -4,6 +4,9 @@ package org.jellyfin.mobile.utils
 
 import android.app.Activity
 import android.content.Context
+import android.content.pm.ActivityInfo
+import android.graphics.Point
+import android.view.Surface
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -43,6 +46,20 @@ fun Activity.disableFullscreen(keepStableLayout: Boolean = false) {
     window.apply {
         decorView.systemUiVisibility = if (keepStableLayout) STABLE_LAYOUT_FLAGS else 0
         clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+    }
+}
+
+@Suppress("DEPRECATION")
+fun Activity.lockOrientation() {
+    val display = windowManager.defaultDisplay
+    val size = Point().also(display::getSize)
+    val height = size.y
+    val width = size.x
+    requestedOrientation = when (display.rotation) {
+        Surface.ROTATION_90 -> if (width > height) ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE else ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT
+        Surface.ROTATION_180 -> if (height > width) ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT else ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
+        Surface.ROTATION_270 -> if (width > height) ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE else ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        else -> if (height > width) ActivityInfo.SCREEN_ORIENTATION_PORTRAIT else ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
     }
 }
 

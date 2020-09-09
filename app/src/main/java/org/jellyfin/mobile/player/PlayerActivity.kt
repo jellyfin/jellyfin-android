@@ -33,6 +33,7 @@ class PlayerActivity : AppCompatActivity() {
     private val loadingIndicator: View by lazyView(R.id.loading_indicator)
     private val titleTextView: TextView by lazyView(R.id.track_title)
     private val fullscreenSwitcher: ImageButton by lazyView(R.id.fullscreen_switcher)
+    private val unlockScreenButton: ImageButton by lazyView(R.id.unlock_screen_button)
     private lateinit var playbackMenus: PlaybackMenus
 
     /**
@@ -97,6 +98,12 @@ class PlayerActivity : AppCompatActivity() {
         // Setup gesture handling
         setupGestureDetector()
 
+        // Handle unlock action
+        unlockScreenButton.setOnClickListener {
+            unlockScreenButton.isVisible = false
+            unlockScreen()
+        }
+
         // Handle intent
         viewModel.mediaSourceManager.handleIntent(intent)
     }
@@ -111,6 +118,23 @@ class PlayerActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         orientationListener.enable()
+    }
+
+    fun lockScreen() {
+        orientationListener.disable()
+        lockOrientation()
+        playerView.useController = false
+    }
+
+    private fun unlockScreen() {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        orientationListener.enable()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !isInPictureInPictureMode)) {
+            playerView.useController = true
+            playerView.apply {
+                if (!isControllerVisible) showController()
+            }
+        }
     }
 
     fun restoreFullscreenState() {
@@ -142,6 +166,16 @@ class PlayerActivity : AppCompatActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupGestureDetector() {
+        val hideScreenButton = Runnable { unlockScreenButton.isVisible = false }
+        // Handle tap event when screen is locked
+        val unlockDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+                unlockScreenButton.isVisible = true
+                playerView.removeCallbacks(hideScreenButton)
+                playerView.postDelayed(hideScreenButton, DEFAULT_CONTROLS_TIMEOUT_MS.toLong())
+                return true
+            }
+        })
         // Handle double tap gesture on controls
         val gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onDoubleTap(e: MotionEvent): Boolean {
@@ -181,7 +215,7 @@ class PlayerActivity : AppCompatActivity() {
             }
         })
         playerView.setOnTouchListener { _, event ->
-            gestureDetector.onTouchEvent(event)
+            if(playerView.useController) gestureDetector.onTouchEvent(event) else unlockDetector.onTouchEvent(event)
             true
         }
     }
