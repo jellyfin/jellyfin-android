@@ -29,7 +29,7 @@ define(['events', 'playbackManager', 'toast'], function (events, playbackManager
         };
 
         self.canPlayItem = function (item, playOptions) {
-            var mediaSource = item.MediaSources && item.MediaSources[0] || false;
+            var mediaSource = item.MediaSources && item.MediaSources[0];
             return window.ExternalPlayer.isEnabled() && mediaSource && mediaSource.SupportsDirectStream;
         };
 
