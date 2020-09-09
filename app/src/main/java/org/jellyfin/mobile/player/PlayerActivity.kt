@@ -46,6 +46,11 @@ class PlayerActivity : AppCompatActivity() {
      */
     private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(this) }
 
+    /**
+     * Runnable that hides the unlock screen button, used by [peekUnlockButton]
+     */
+    private val hideUnlockButtonAction = Runnable { unlockScreenButton.isVisible = false }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -121,13 +126,16 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     fun lockScreen() {
+        playerView.useController = false
         orientationListener.disable()
         lockOrientation()
-        playerView.useController = false
+        peekUnlockButton()
     }
 
     private fun unlockScreen() {
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        if (isAutoRotateOn()) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        }
         orientationListener.enable()
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !isInPictureInPictureMode)) {
             playerView.useController = true
@@ -164,15 +172,18 @@ class PlayerActivity : AppCompatActivity() {
         playerView.controllerShowTimeoutMs = if (suppress) -1 else DEFAULT_CONTROLS_TIMEOUT_MS
     }
 
+    private fun peekUnlockButton() {
+        playerView.removeCallbacks(hideUnlockButtonAction)
+        unlockScreenButton.isVisible = true
+        playerView.postDelayed(hideUnlockButtonAction, DEFAULT_CONTROLS_TIMEOUT_MS.toLong())
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private fun setupGestureDetector() {
-        val hideScreenButton = Runnable { unlockScreenButton.isVisible = false }
-        // Handle tap event when screen is locked
+        // Handle tap when controls are locked
         val unlockDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
-                unlockScreenButton.isVisible = true
-                playerView.removeCallbacks(hideScreenButton)
-                playerView.postDelayed(hideScreenButton, DEFAULT_CONTROLS_TIMEOUT_MS.toLong())
+                peekUnlockButton()
                 return true
             }
         })
@@ -215,7 +226,7 @@ class PlayerActivity : AppCompatActivity() {
             }
         })
         playerView.setOnTouchListener { _, event ->
-            if(playerView.useController) gestureDetector.onTouchEvent(event) else unlockDetector.onTouchEvent(event)
+            if (playerView.useController) gestureDetector.onTouchEvent(event) else unlockDetector.onTouchEvent(event)
             true
         }
     }

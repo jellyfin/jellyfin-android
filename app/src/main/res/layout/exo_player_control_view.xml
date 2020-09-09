@@ -138,7 +138,6 @@
         android:id="@+id/audio_streams_button"
         android:layout_width="@dimen/exo_bottom_controls_size"
         android:layout_height="@dimen/exo_bottom_controls_size"
-        android:layout_marginStart="@dimen/exo_bottom_controls_margin"
         android:layout_marginBottom="@dimen/exo_bottom_controls_margin"
         android:background="@drawable/ripple_background_circular"
         android:padding="@dimen/exo_bottom_controls_padding"
