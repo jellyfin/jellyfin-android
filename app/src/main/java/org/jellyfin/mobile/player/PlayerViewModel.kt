@@ -24,6 +24,7 @@ import org.jellyfin.apiclient.model.session.PlaybackProgressInfo
 import org.jellyfin.apiclient.model.session.PlaybackStopInfo
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
+import org.jellyfin.mobile.WEBAPP_FUNCTION_CHANNEL
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceManager
 import org.jellyfin.mobile.utils.*
@@ -55,6 +56,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     /**
      * Allows to call functions within the webapp
      */
+    private val webappFunctionChannel: Channel<String> by inject(named(WEBAPP_FUNCTION_CHANNEL))
     private val playerEventChannel: Channel<PlayerEvent> by inject(named(PLAYER_EVENT_CHANNEL))
 
     val mediaSession: MediaSession by lazy {
@@ -122,6 +124,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         if (playerState != null && mediaSource != null) {
             // viewModelScope is already cancelled at this point, so we need a fallback
             GlobalScope.launch {
+                // Report playback stop to webapp - necessary for playlists to work
+                webappFunctionChannel.send("window.ExoPlayer.notifyStopped()")
+
+                // Report playback stop via API
                 withTimeoutOrNull(200) {
                     val (playbackState, currentPosition) = playerState
                     apiClient.reportPlaybackStopped(PlaybackStopInfo().apply {
@@ -132,6 +138,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         }
                     })
                     if (playbackState == Player.STATE_ENDED) {
+                        // Mark video as watched
                         apiClient.markPlayed(mediaSource.id, apiClient.currentUserId)
                     }
                 }
@@ -166,6 +173,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val mediaSource = mediaSourceManager.jellyfinMediaSource.value ?: return
         val playbackPositionMillis = player.currentPosition
         if (player.playbackState != Player.STATE_ENDED) {
+            webappFunctionChannel.send("window.ExoPlayer._currentTime = $playbackPositionMillis")
             apiClient.reportPlaybackProgress(PlaybackProgressInfo().apply {
                 itemId = mediaSource.id
                 canSeek = true

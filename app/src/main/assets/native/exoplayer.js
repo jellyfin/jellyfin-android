@@ -17,7 +17,11 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
         self.priority = -1;
         self.supportsProgress = false;
         self.isLocalPlayer = true;
+
+        // Current playback position in milliseconds
+        self._currentTime = 0;
         self._paused = true;
+        self._currentSrc = null;
 
         self.canPlayMediaType = function (mediaType) {
             return mediaType === 'Video';
@@ -28,7 +32,7 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
         };
 
         self.currentSrc = function () {
-            return null;
+            return self._currentSrc;
         };
 
         self.play = function (options) {
@@ -36,6 +40,7 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
 
             return new Promise(function (resolve) {
                 self._paused = false;
+                self._currentSrc = options.url;
                 window.NativePlayer.loadPlayer(JSON.stringify(options));
                 loading.hide();
                 resolve();
@@ -108,7 +113,7 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
             if (ms !== undefined) {
                 window.NativePlayer.seekMs(ms);
             }
-            return undefined;
+            return self._currentTime;
         };
 
         self.setSubtitleStreamIndex = function (index) {
@@ -153,6 +158,17 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
                         return profile.Container === container && profile.Type === 'Video' && profile.AudioCodec.indexOf(codec) !== -1;
                     }).length > 0;
                 }
+            });
+        };
+
+        self.notifyStopped = function () {
+            new Promise(function () {
+                let stopInfo = {
+                    src: self._currentSrc
+                };
+
+                events.trigger(self, 'stopped', [stopInfo]);
+                self._currentSrc = self._currentTime = null;
             });
         };
 
