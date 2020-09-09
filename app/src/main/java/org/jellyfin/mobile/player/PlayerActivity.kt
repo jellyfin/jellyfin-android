@@ -33,6 +33,7 @@ class PlayerActivity : AppCompatActivity() {
     private val loadingIndicator: View by lazyView(R.id.loading_indicator)
     private val titleTextView: TextView by lazyView(R.id.track_title)
     private val fullscreenSwitcher: ImageButton by lazyView(R.id.fullscreen_switcher)
+    private val unlockScreenButton: ImageButton by lazyView(R.id.unlock_screen_button)
     private lateinit var playbackMenus: PlaybackMenus
 
     /**
@@ -44,6 +45,11 @@ class PlayerActivity : AppCompatActivity() {
      * the orientation would get reverted before the user had any chance to rotate the device to the desired position.
      */
     private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(this) }
+
+    /**
+     * Runnable that hides the unlock screen button, used by [peekUnlockButton]
+     */
+    private val hideUnlockButtonAction = Runnable { unlockScreenButton.isVisible = false }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,6 +103,12 @@ class PlayerActivity : AppCompatActivity() {
         // Setup gesture handling
         setupGestureDetector()
 
+        // Handle unlock action
+        unlockScreenButton.setOnClickListener {
+            unlockScreenButton.isVisible = false
+            unlockScreen()
+        }
+
         // Handle intent
         viewModel.mediaSourceManager.handleIntent(intent)
     }
@@ -111,6 +123,26 @@ class PlayerActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         orientationListener.enable()
+    }
+
+    fun lockScreen() {
+        playerView.useController = false
+        orientationListener.disable()
+        lockOrientation()
+        peekUnlockButton()
+    }
+
+    private fun unlockScreen() {
+        if (isAutoRotateOn()) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        }
+        orientationListener.enable()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !isInPictureInPictureMode)) {
+            playerView.useController = true
+            playerView.apply {
+                if (!isControllerVisible) showController()
+            }
+        }
     }
 
     fun restoreFullscreenState() {
@@ -140,8 +172,21 @@ class PlayerActivity : AppCompatActivity() {
         playerView.controllerShowTimeoutMs = if (suppress) -1 else DEFAULT_CONTROLS_TIMEOUT_MS
     }
 
+    private fun peekUnlockButton() {
+        playerView.removeCallbacks(hideUnlockButtonAction)
+        unlockScreenButton.isVisible = true
+        playerView.postDelayed(hideUnlockButtonAction, DEFAULT_CONTROLS_TIMEOUT_MS.toLong())
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private fun setupGestureDetector() {
+        // Handle tap when controls are locked
+        val unlockDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+                peekUnlockButton()
+                return true
+            }
+        })
         // Handle double tap gesture on controls
         val gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onDoubleTap(e: MotionEvent): Boolean {
@@ -181,7 +226,7 @@ class PlayerActivity : AppCompatActivity() {
             }
         })
         playerView.setOnTouchListener { _, event ->
-            gestureDetector.onTouchEvent(event)
+            if (playerView.useController) gestureDetector.onTouchEvent(event) else unlockDetector.onTouchEvent(event)
             true
         }
     }

@@ -38,5 +38,21 @@
             android:visibility="gone"
             tools:ignore="KeyboardInaccessibleWidget"
             tools:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/unlock_screen_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:layout_marginStart="@dimen/exo_player_controls_display_padding"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="@dimen/exo_player_controls_display_padding"
+            android:background="@drawable/playback_unlock_background"
+            android:clickable="true"
+            android:padding="16dp"
+            android:src="@drawable/ic_screen_unlock_white_24dp"
+            android:visibility="gone"
+            tools:ignore="KeyboardInaccessibleWidget"
+            tools:visibility="visible" />
     </FrameLayout>
 </FrameLayout>
