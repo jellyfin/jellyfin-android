@@ -34,4 +34,8 @@
     <string name="notification_action_rewind">倒放</string>
     <string name="notification_action_previous">上一个</string>
     <string name="download_no_storage_permission">不能在没有储存权限的情况下下载文件</string>
+    <string name="external_player_not_supported_yet">所选外部播放器尚不支持播放跟踪。 与开发人员联系以尝试添加对此的支持。</string>
+    <string name="external_player_unknown_error">外部播放器中发生未知错误。 播放跟踪已禁用。</string>
+    <string name="external_player_invalid_player">未选择有效的外部播放器。 播放跟踪已禁用。</string>
+    <string name="external_player_invalid_play_method">无效的播放方法。</string>
 </resources>
