@@ -107,7 +107,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     /**
      * Release the current ExoPlayer and stop/release the current MediaSession
      */
-    fun releasePlayer() {
+    private fun releasePlayer() {
         mediaSession.isActive = false
         mediaSession.release()
         val playerState = playerOrNull?.let { player ->
@@ -256,8 +256,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     override fun onCleared() {
-        super.onCleared()
-        releasePlayer()
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
+        notificationHelper.dismissNotification()
+        releasePlayer()
     }
 }
