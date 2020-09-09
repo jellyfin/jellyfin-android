@@ -10,25 +10,25 @@ object Dependencies {
         const val coroutinesAndroid = "1.3.0"
 
         // Core
-        const val apiClient = "0.7.2"
-        const val appCompat = "1.1.0"
-        const val core = "1.3.0"
-        const val activity = "1.1.0"
-        const val okHttp = "4.8.0"
-        const val exoPlayer = "2.11.7"
-
-        // Koin
         const val koin = "2.1.6"
+        const val appCompat = "1.1.0"
+        const val androidxCore = "1.3.0"
+        const val activity = "1.1.0"
+        const val exoPlayer = "2.11.7"
 
         // Lifecycle
         const val lifecycleExtensions = "2.2.0"
 
         // UI
         const val constraintLayout = "1.1.3"
-        const val webkitX = "1.2.0"
-        const val coil = "0.11.0"
-        const val modernAndroidPreferences = "1.1.0-alpha2"
         const val material = "1.2.1"
+        const val webkitX = "1.2.0"
+        const val modernAndroidPreferences = "1.1.0-alpha2"
+
+        // Network
+        const val apiClient = "0.7.2"
+        const val okHttp = "4.8.0"
+        const val coil = "0.11.0"
 
         // Cast
         const val mediaRouter = "1.1.0"
@@ -56,15 +56,11 @@ object Dependencies {
     }
 
     object Core {
-        const val apiClient = "org.jellyfin.apiclient:android:${Versions.apiClient}"
+        const val koin = "org.koin:koin-android:${Versions.koin}"
         val appCompat = androidx("appcompat", Versions.appCompat)
-        val coreKtx = androidxKtx("core", Versions.core)
-        val activityKtx = androidxKtx("activity", Versions.activity)
+        val androidx = androidxKtx("core", Versions.androidxCore)
+        val activity = androidxKtx("activity", Versions.activity)
         val exoPlayer = exoPlayer("core")
-    }
-
-    object Koin {
-        const val koinAndroid = "org.koin:koin-android:${Versions.koin}"
     }
 
     object Lifecycle {
@@ -77,13 +73,14 @@ object Dependencies {
 
     object UI {
         val constraintLayout = androidx("constraintlayout", Versions.constraintLayout)
+        const val material = "com.google.android.material:material:${Versions.material}"
         val webkitX = androidx("webkit", Versions.webkitX)
         val exoPlayer = exoPlayer("ui")
         const val modernAndroidPreferences = "de.Maxr1998.android:modernpreferences:${Versions.modernAndroidPreferences}"
-        const val material = "com.google.android.material:material:${Versions.material}"
     }
 
     object Network {
+        const val apiClient = "org.jellyfin.apiclient:android:${Versions.apiClient}"
         const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
         const val coil = "io.coil-kt:coil-base:${Versions.coil}"
         val exoPlayerHLS = exoPlayer("hls")

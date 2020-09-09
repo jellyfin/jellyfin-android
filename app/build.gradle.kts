@@ -55,14 +55,11 @@ dependencies {
     implementation(Dependencies.Kotlin.coroutinesAndroid)
 
     // Core
-    implementation(Dependencies.Core.apiClient)
+    implementation(Dependencies.Core.koin)
     implementation(Dependencies.Core.appCompat)
-    implementation(Dependencies.Core.coreKtx)
-    implementation(Dependencies.Core.activityKtx)
+    implementation(Dependencies.Core.androidx)
+    implementation(Dependencies.Core.activity)
     implementation(Dependencies.Core.exoPlayer)
-
-    // Koin
-    implementation(Dependencies.Koin.koinAndroid)
 
     // Lifecycle
     implementation(Dependencies.Lifecycle.viewModel)
@@ -73,12 +70,13 @@ dependencies {
 
     // UI
     implementation(Dependencies.UI.constraintLayout)
+    implementation(Dependencies.UI.material)
     implementation(Dependencies.UI.webkitX)
     implementation(Dependencies.UI.exoPlayer)
     implementation(Dependencies.UI.modernAndroidPreferences)
-    implementation(Dependencies.UI.material)
 
     // Network
+    implementation(Dependencies.Network.apiClient)
     implementation(Dependencies.Network.okHttp)
     implementation(Dependencies.Network.coil)
     implementation(Dependencies.Network.exoPlayerHLS)
