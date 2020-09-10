@@ -14,8 +14,8 @@
     <string name="pref_music_notification_always_dismissible_title">Musik Player Benachrichtigung immer verwerfbar</string>
     <string name="pref_enable_exoplayer_summary">Aktiviere den experimentellen ExoPlayer Video Player, welcher mehr Videoformate und -Codecs unterstützt und besser ins Betriebssystem integriert ist</string>
     <string name="pref_enable_exoplayer_title">Aktiviere Video Player Integration</string>
-    <string name="pref_category_video_player">Integrierter Video Player</string>
-    <string name="pref_category_music_player">Musik Player</string>
+    <string name="pref_category_video_player">Videoplayer</string>
+    <string name="pref_category_music_player">Musikplayer</string>
     <string name="activity_name_settings">Jellyfin Einstellungen</string>
     <string name="menu_item_none">Keiner</string>
     <string name="playback_info_audio_streams">Audio-Streams</string>
@@ -25,7 +25,7 @@
     <string name="connection_error_cannot_connect">Es konnte keine Verbindung hergestellt werden.
 \nBitte überprüfe den Hostnamen und die Netzwerkverbindung.</string>
     <string name="playback_info_play_method">Wiedergabemethode: %s</string>
-    <string name="pref_exoplayer_allow_background_audio">Wiedergabe von Audio im Hintergrund erlauben</string>
+    <string name="pref_exoplayer_allow_background_audio">Wiedergabe von Audio im Hintergrund im nativen Player erlauben</string>
     <string name="notification_action_stop">Stopp</string>
     <string name="notification_action_next">Nächstes</string>
     <string name="notification_action_fast_forward">Vorwärts spulen</string>
@@ -38,4 +38,11 @@
     <string name="external_player_unknown_error">Unbekannter Fehler in externem Player. Wiedergabe-Verfolgung deaktiviert.</string>
     <string name="external_player_invalid_player">Kein gültiger externer Player ausgewählt. Wiedergabe-Verfolgung deaktiviert.</string>
     <string name="external_player_not_supported_yet">Wiedergabe-Verfolgung wird von ausgewähltem externen Player noch nicht unterstützt. Kontaktiere die Entwickler um Unterstützung des Players anzufragen.</string>
+    <string name="video_player_external_description">Externe Anwendungen zur Videowiedergabe wie MX Player und VLC</string>
+    <string name="video_player_native_description">Basiert auf ExoPlayer, unterstützt mehr Videoformate und Codecs und ist besser in das Betriebssystem integriert</string>
+    <string name="video_player_web_description">Der Standard-HTML-Videoplayer aus der Web-Benutzeroberfläche</string>
+    <string name="video_player_external">Externer Player</string>
+    <string name="video_player_native">Nativer Player</string>
+    <string name="video_player_web">Webplayer</string>
+    <string name="pref_video_player_type_title">Typ des Videoplayers</string>
 </resources>
