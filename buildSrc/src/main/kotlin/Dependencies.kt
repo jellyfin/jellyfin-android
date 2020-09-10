@@ -23,7 +23,7 @@ object Dependencies {
         const val constraintLayout = "1.1.3"
         const val material = "1.2.1"
         const val webkitX = "1.2.0"
-        const val modernAndroidPreferences = "1.1.0-alpha2"
+        const val modernAndroidPreferences = "1.1.0-alpha3"
 
         // Network
         const val apiClient = "0.7.2"
