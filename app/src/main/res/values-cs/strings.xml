@@ -13,7 +13,7 @@
     <string name="connect_to_server_title">Připojit k serveru</string>
     <string name="pref_enable_exoplayer_summary">Povolit experimentální přehrávač videa ExoPlayer, který podporuje více formátů a kodeků, a je lépe integrovaný do systému</string>
     <string name="pref_enable_exoplayer_title">Povolit integraci přehrávače videa</string>
-    <string name="pref_category_video_player">Nativní přehrávač videa</string>
+    <string name="pref_category_video_player">Přehrávač videa</string>
     <string name="pref_music_notification_always_dismissible_title">Umožnit odstranění oznámení hudebního přehrávače</string>
     <string name="pref_category_music_player">Přehrávač hudby</string>
     <string name="activity_name_settings">Nastavení Jellyfin</string>
@@ -25,7 +25,7 @@
     <string name="connection_error_cannot_connect">Připojení se nezdařilo.
 \nZkontrolujte název hostitele a síťové připojení.</string>
     <string name="playback_info_play_method">Způsob přehrávání: %s</string>
-    <string name="pref_exoplayer_allow_background_audio">Povolit přehrávání zvuku na pozadí</string>
+    <string name="pref_exoplayer_allow_background_audio">Povolit přehrávání zvuku na pozadí v nativním přehrávači</string>
     <string name="notification_action_stop">Zastavit</string>
     <string name="notification_action_next">Další</string>
     <string name="notification_action_fast_forward">Přetočit vpřed</string>
@@ -38,4 +38,11 @@
     <string name="external_player_invalid_player">Nebyl vybrán platný externí přehrávač. Sledování přehrávání vypnuto.</string>
     <string name="external_player_not_supported_yet">Sledování přehrávání v externím přehrávači zatím není podporováno. Kontaktujte vývojáře a požádejte je, aby podporu přidali.</string>
     <string name="external_player_invalid_play_method">Neplatný způsob přehrávání.</string>
+    <string name="video_player_external_description">Externí přehrávač videa, např. MX Player nebo VLC</string>
+    <string name="video_player_native_description">Postaven na přehrávači ExoPlayer, podporuje více formátů a kodeků videa, a je lépe integrován do systému</string>
+    <string name="video_player_web_description">Výchozí HTML přehrávač videa z webového rozhraní</string>
+    <string name="video_player_external">Externí přehrávač</string>
+    <string name="video_player_native">Nativní přehrávač</string>
+    <string name="video_player_web">Webový přehrávač</string>
+    <string name="pref_video_player_type_title">Typ přehrávače videa</string>
 </resources>
