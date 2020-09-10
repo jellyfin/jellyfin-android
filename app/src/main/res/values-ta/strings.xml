@@ -25,7 +25,7 @@
     <string name="playback_info_play_method">வாசிக்கும் முறை: %s</string>
     <string name="connection_error_cannot_connect">இணைப்பை நிறுவ முடியாது.
 \nஹோஸ்ட்பெயர் மற்றும் உங்கள் பிணைய இணைப்பை சரிபார்க்கவும்.</string>
-    <string name="pref_exoplayer_allow_background_audio">பின்னணியில் ஆடியோ இயக்க அனுமதிக்கவும்</string>
+    <string name="pref_exoplayer_allow_background_audio">சொந்த பிளேயரில் பின்னணியில் ஆடியோவை இயக்க அனுமதிக்கவும்</string>
     <string name="notification_action_stop">நிறுத்து</string>
     <string name="notification_action_next">அடுத்து</string>
     <string name="notification_action_fast_forward">வேகமாக முன்னோக்கி</string>
@@ -38,4 +38,11 @@
     <string name="external_player_invalid_player">செல்லுபடியாகும் வெளிப்புற பிளேயர் எதுவும் தேர்ந்தெடுக்கப்படவில்லை. பின்னணி கண்காணிப்பு முடக்கப்பட்டது.</string>
     <string name="external_player_not_supported_yet">தேர்ந்தெடுக்கப்பட்ட வெளிப்புற பிளேயரில் பிளேபேக் கண்காணிப்பு இன்னும் ஆதரிக்கப்படவில்லை. அதற்கான ஆதரவைச் சேர்க்க முயற்சிக்க டெவலப்பர்களைத் தொடர்பு கொள்ளுங்கள்.</string>
     <string name="external_player_invalid_play_method">தவறான இயக்க முறை.</string>
+    <string name="video_player_external_description">MX பிளேயர் மற்றும் வி.எல்.சி போன்ற வெளிப்புற வீடியோ பின்னணி பயன்பாடுகள்</string>
+    <string name="video_player_native_description">ExoPlayer ஐ அடிப்படையாகக் கொண்டு, மேலும் வீடியோ வடிவங்கள் மற்றும் கோடெக்குகளை ஆதரிக்கிறது, மேலும் இது OS உடன் ஒருங்கிணைக்கப்படுகிறது</string>
+    <string name="video_player_web_description">வலை UI இலிருந்து இயல்புநிலை HTML வீடியோ பிளேயர்</string>
+    <string name="video_player_external">வெளிப்புற பிளேயர்</string>
+    <string name="video_player_native">சொந்த பிளேயர்</string>
+    <string name="video_player_web">வலை பிளேயர்</string>
+    <string name="pref_video_player_type_title">வீடியோ பிளேயர் வகை</string>
 </resources>
