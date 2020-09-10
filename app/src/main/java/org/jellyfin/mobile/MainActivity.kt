@@ -80,10 +80,14 @@ class MainActivity : AppCompatActivity(), WebViewController {
 
         // Handle window insets
         setStableLayoutFlags()
-        ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(rootView) { _, insets ->
             val layoutParams = webView.layoutParams as CoordinatorLayout.LayoutParams
-            layoutParams.updateMargins(top = insets.systemWindowInsetTop, bottom = insets.systemWindowInsetBottom)
-
+            layoutParams.updateMargins(
+                left = insets.systemWindowInsetLeft,
+                top = insets.systemWindowInsetTop,
+                right = insets.systemWindowInsetRight,
+                bottom = insets.systemWindowInsetBottom
+            )
             insets
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
