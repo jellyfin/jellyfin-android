@@ -10,7 +10,7 @@
     <string name="host_input_hint">Host</string>
     <string name="pref_enable_exoplayer_summary">Aktifkan pemutar video ExoPlayer eksperimental yang mendukung lebih banyak format video dan codec, dan lebih terintegrasi ke dalam OS</string>
     <string name="pref_enable_exoplayer_title">Aktifkan integrasi pemutar video</string>
-    <string name="pref_category_video_player">Pemutar video asli</string>
+    <string name="pref_category_video_player">Pemutar video</string>
     <string name="network_title">Jenis Jaringan yang Diizinkan</string>
     <string name="mobile_data_and_roaming">Data Seluler dan Roaming</string>
     <string name="mobile_data">Data Seluler</string>
@@ -25,7 +25,7 @@
     <string name="playback_info_play_method">Metode pemutar: %s</string>
     <string name="connection_error_cannot_connect">Koneksi tidak dapat dibuat.
 \nSilakan periksa nama host dan koneksi jaringan Anda.</string>
-    <string name="pref_exoplayer_allow_background_audio">Izinkan memutar audio di latar belakang</string>
+    <string name="pref_exoplayer_allow_background_audio">Izinkan memutar audio di latar belakang di pemutar asli</string>
     <string name="notification_action_fast_forward">Maju cepat</string>
     <string name="notification_action_pause">Berhenti sebentar</string>
     <string name="notification_action_stop">Berhenti</string>
@@ -34,4 +34,15 @@
     <string name="notification_action_rewind">Mundur</string>
     <string name="notification_action_previous">Sebelumnya</string>
     <string name="download_no_storage_permission">Tidak dapat mengunduh file tanpa izin penyimpanan</string>
+    <string name="video_player_external_description">Aplikasi pemutaran video eksternal seperti MX Player dan VLC</string>
+    <string name="video_player_native_description">Berdasarkan ExoPlayer, mendukung lebih banyak format video dan codec, dan lebih terintegrasi ke dalam OS</string>
+    <string name="video_player_web_description">Pemutar asli video HTML dari UI Web</string>
+    <string name="video_player_external">Pemutar eksternal</string>
+    <string name="video_player_native">Pemutar asli</string>
+    <string name="video_player_web">Pemutar web</string>
+    <string name="pref_video_player_type_title">Jenis pemutar video</string>
+    <string name="external_player_unknown_error">Kesalahan tidak diketahui di pemutar eksternal. Pelacakan pemutaran dinonaktifkan.</string>
+    <string name="external_player_invalid_player">Tidak ada pemutar eksternal valid yang dipilih. Pelacakan pemutaran dinonaktifkan.</string>
+    <string name="external_player_not_supported_yet">Pelacakan pemutaran belum didukung di pemutar eksternal yang dipilih. Hubungi pengembang untuk mencoba menambahkan dukungan untuknya.</string>
+    <string name="external_player_invalid_play_method">Metode putar tidak valid.</string>
 </resources>
