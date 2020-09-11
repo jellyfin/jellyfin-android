@@ -3,18 +3,20 @@ package org.jellyfin.mobile.settings
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import de.Maxr1998.modernpreferences.Preference
 import de.Maxr1998.modernpreferences.PreferencesAdapter
-import de.Maxr1998.modernpreferences.helpers.categoryHeader
-import de.Maxr1998.modernpreferences.helpers.checkBox
-import de.Maxr1998.modernpreferences.helpers.screen
-import de.Maxr1998.modernpreferences.helpers.singleChoice
+import de.Maxr1998.modernpreferences.helpers.*
 import de.Maxr1998.modernpreferences.preferences.choice.SelectionItem
+import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.utils.Constants
+import org.koin.android.ext.android.inject
 
 class SettingsActivity : AppCompatActivity() {
 
+    private val appPreferences: AppPreferences by inject()
     private val settingsAdapter: PreferencesAdapter by lazy { PreferencesAdapter(buildSettingsScreen()) }
+    private lateinit var backgroundAudioPreference: Preference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,9 +52,13 @@ class SettingsActivity : AppCompatActivity() {
         singleChoice(Constants.PREF_VIDEO_PLAYER_TYPE, videoPlayerOptions) {
             titleRes = R.string.pref_video_player_type_title
             initialSelection = VideoPlayerType.WEB_PLAYER
+            defaultOnSelectionChange { selection ->
+                backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+            }
         }
-        checkBox(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO) {
+        backgroundAudioPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO) {
             titleRes = R.string.pref_exoplayer_allow_background_audio
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
         }
     }
 
