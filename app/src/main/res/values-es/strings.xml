@@ -15,7 +15,7 @@
     <string name="menu_item_none">Ninguno</string>
     <string name="connection_error_cannot_connect">La conexión no pudo ser establecida.
 \nPor favor, comprueba el nombre de host y tu conexión a la red.</string>
-    <string name="pref_category_video_player">Reproductor de vídeo nativo</string>
+    <string name="pref_category_video_player">Reproductor de vídeo</string>
     <string name="pref_category_music_player">Reproductor de música</string>
     <string name="pref_enable_exoplayer_summary">Habilitar el reproductor de video experimental ExoPlayer que soporta más formatos y códecs de video, y está más integrado en el SO</string>
     <string name="pref_enable_exoplayer_title">Habilitar la integración del reproductor de video</string>
@@ -26,7 +26,7 @@
     <string name="playback_info_video_streams">Streaming de video</string>
     <string name="host_input_hint">Host</string>
     <string name="notification_action_rewind">Retroceder</string>
-    <string name="pref_exoplayer_allow_background_audio">Permitir reproducción de audio en el fondo</string>
+    <string name="pref_exoplayer_allow_background_audio">Permitir reproducción de audio en el fondo con el reproductor nativo</string>
     <string name="notification_action_stop">Detener</string>
     <string name="notification_action_next">Siguiente</string>
     <string name="notification_action_fast_forward">Avanzar</string>
@@ -39,4 +39,10 @@
     <string name="external_player_invalid_player">Ningún reproductor externo válido seleccionado. Seguimiento de reproducción deshabilitado.</string>
     <string name="external_player_not_supported_yet">El reproductor externo no soporta el seguimiento de reproducción aún. Ponte en contacto con del desarrolladores para intentar añandirlo.</string>
     <string name="pref_video_player_type_title">Tipo de reproductor de video</string>
+    <string name="video_player_external_description">Aplicaciones externas de reproducción de video como MX Player y VLC</string>
+    <string name="video_player_native_description">Basado en ExoPlayer, soporta más formatos de video y códecs, y está más integrado en el SO</string>
+    <string name="video_player_web_description">El reproductor de video HTML predeterminado de la interfaz de usuario web</string>
+    <string name="video_player_external">Reproductor externo</string>
+    <string name="video_player_native">Reproductor nativo</string>
+    <string name="video_player_web">Reproductor web</string>
 </resources>
