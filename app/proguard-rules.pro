@@ -19,6 +19,9 @@
     public *;
 }
 
+# Keep ApiClient models enumerations members
+-keepclassmembers enum org.jellyfin.apiclient.model.**.* { *; }
+
 # Keep file names/line numbers
 -keepattributes SourceFile,LineNumberTable
 
