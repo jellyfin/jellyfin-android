@@ -25,7 +25,7 @@
     <string name="playback_info_play_method">Méthode de lecture : %s</string>
     <string name="connection_error_cannot_connect">La connexion n\'a pas pu être établie.
 \nMerci de vérifier le nom de la machine et votre connexion réseau.</string>
-    <string name="pref_exoplayer_allow_background_audio">Autoriser la lecture audio en arrière-plan</string>
+    <string name="pref_exoplayer_allow_background_audio">Autoriser la lecture audio en arrière-plan dans le lecteur natif</string>
     <string name="notification_action_stop">Arrêter</string>
     <string name="notification_action_next">Prochain</string>
     <string name="notification_action_fast_forward">Avance rapide</string>
@@ -34,4 +34,15 @@
     <string name="notification_action_rewind">Rembobiner</string>
     <string name="notification_action_previous">Précédent</string>
     <string name="download_no_storage_permission">Impossible de télécharger des fichiers sans l\'autorisation de stockage</string>
+    <string name="video_player_external_description">Applications externes de lecture vidéo, telles que MX Player et VLC</string>
+    <string name="video_player_native_description">Basé sur ExoPlayer, supporte plus de formats et codecs vidéos et est mieux intégré au système d\'exploitation</string>
+    <string name="video_player_web_description">Le lecteur vidéo HTML par défaut de l\'interface Web</string>
+    <string name="video_player_external">Lecteur externe</string>
+    <string name="video_player_native">Lecteur natif</string>
+    <string name="video_player_web">Lecteur web</string>
+    <string name="pref_video_player_type_title">Type de lecteur vidéo</string>
+    <string name="external_player_not_supported_yet">Suivi de lecture non supporté actuellement dans le lecteur externe. Contactez les développeurs afin de demander de l\'aide pour ajouter le support.</string>
+    <string name="external_player_unknown_error">Erreur inconnue dans le lecteur externe. Suivi de lecture désactivé.</string>
+    <string name="external_player_invalid_player">Aucun lecteur externe valide n\'est sélectionné. Suivi de lecture désactivé.</string>
+    <string name="external_player_invalid_play_method">Méthode de lecture invalide.</string>
 </resources>
