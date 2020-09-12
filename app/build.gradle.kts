@@ -76,7 +76,7 @@ dependencies {
     implementation(Dependencies.UI.modernAndroidPreferences)
 
     // Network
-    implementation(Dependencies.Network.apiClient)
+    implementation(Dependencies.Network.apiclient)
     implementation(Dependencies.Network.okHttp)
     implementation(Dependencies.Network.coil)
     implementation(Dependencies.Network.exoPlayerHLS)
