@@ -26,7 +26,7 @@ object Dependencies {
         const val modernAndroidPreferences = "1.1.0-alpha3"
 
         // Network
-        const val apiClient = "0.7.2"
+        const val apiclient = "0.7.4"
         const val okHttp = "4.8.0"
         const val coil = "0.11.0"
 
@@ -80,7 +80,7 @@ object Dependencies {
     }
 
     object Network {
-        const val apiClient = "org.jellyfin.apiclient:android:${Versions.apiClient}"
+        const val apiclient = "org.jellyfin.apiclient:android:${Versions.apiclient}"
         const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
         const val coil = "io.coil-kt:coil-base:${Versions.coil}"
         val exoPlayerHLS = exoPlayer("hls")
