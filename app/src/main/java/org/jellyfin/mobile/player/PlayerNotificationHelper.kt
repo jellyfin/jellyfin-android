@@ -15,7 +15,7 @@ import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
-import coil.request.GetRequestBuilder
+import coil.request.ImageRequest
 import com.google.android.exoplayer2.Player
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -62,7 +62,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                     maxWidth = size
                     maxHeight = size
                 })
-                imageLoader.execute(GetRequestBuilder(context).data(imageUrl).build()).drawable?.toBitmap()
+                imageLoader.execute(ImageRequest.Builder(context).data(imageUrl).build()).drawable?.toBitmap()
             }
 
             val style = Notification.MediaStyle().apply {

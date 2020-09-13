@@ -28,7 +28,7 @@ object Dependencies {
         // Network
         const val apiclient = "0.7.4"
         const val okHttp = "4.8.0"
-        const val coil = "0.11.0"
+        const val coil = "1.0.0-rc2"
 
         // Cast
         const val mediaRouter = "1.1.0"
