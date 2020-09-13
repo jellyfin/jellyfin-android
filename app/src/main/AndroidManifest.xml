@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.jellyfin.mobile">
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
