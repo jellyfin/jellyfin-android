@@ -23,6 +23,18 @@
     <string name="choose_server_button_text">Choose server</string>
     <string name="available_servers_title">Available servers</string>
 
+    <string name="authenticate_title">Authenticate with Server</string>
+    <string name="username_input_hint">Username</string>
+    <string name="password_input_hint">Password</string>
+    <string name="error_text_wrong_login">Wrong username or password</string>
+    <string name="login_button_text">Login</string>
+    <string name="profile_button_text">Profile</string>
+    <string name="logout_button_text">Logout</string>
+
+    <string name="library_music_tab_albums">Albums</string>
+    <string name="library_music_tab_artists">Artists</string>
+    <string name="library_music_tab_songs">Songs</string>
+
     <string name="battery_optimizations_message">Please disable battery optimizations for media playback while the screen is off.</string>
     <string name="network_title">Allowed Network Types</string>
     <string name="network_message">Do you want to allow the download to run over mobile data or roaming networks? Charges from your provider may apply.</string>

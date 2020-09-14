@@ -13,6 +13,7 @@ import org.jellyfin.sdk.api.operations.PlayStateApi
 import org.jellyfin.sdk.api.operations.PlaylistsApi
 import org.jellyfin.sdk.api.operations.SystemApi
 import org.jellyfin.sdk.api.operations.UniversalAudioApi
+import org.jellyfin.sdk.api.operations.UserApi
 import org.jellyfin.sdk.api.operations.UserViewsApi
 import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.discovery.AndroidBroadcastAddressesProvider
@@ -41,6 +42,7 @@ val apiModule = module {
     single { SystemApi(get()) }
     single { ItemsApi(get()) }
     single { ImageApi(get()) }
+    single { UserApi(get()) }
     single { UserViewsApi(get()) }
     single { ArtistsApi(get()) }
     single { GenresApi(get()) }

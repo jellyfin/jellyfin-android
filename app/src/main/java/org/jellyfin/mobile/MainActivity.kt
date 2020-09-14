@@ -14,12 +14,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import org.jellyfin.mobile.cast.Chromecast
 import org.jellyfin.mobile.cast.IChromecast
 import org.jellyfin.mobile.fragment.ConnectFragment
 import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.player.PlayerFragment
+import org.jellyfin.mobile.ui.MainFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
 import org.jellyfin.mobile.utils.SmartOrientationListener
@@ -82,20 +82,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Load UI
-        lifecycleScope.launchWhenStarted {
-            mainViewModel.serverState.collect { state ->
-                with(supportFragmentManager) {
-                    when (state) {
-                        ServerState.Pending -> {
-                            // TODO add loading indicator
-                        }
-                        is ServerState.Unset -> replaceFragment<ConnectFragment>()
-                        is ServerState.Available -> {
-                            val currentFragment = findFragmentById(R.id.fragment_container)
-                            if (currentFragment !is WebViewFragment || currentFragment.server != state.server) {
-                                replaceFragment<WebViewFragment>(Bundle().apply {
-                                    putParcelable(Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER, state.server)
-                                })
+        if (true) {
+            with(supportFragmentManager) {
+                replaceFragment<MainFragment>()
+            }
+        } else {
+            lifecycleScope.launchWhenStarted {
+                mainViewModel.serverState.collect { state ->
+                    with(supportFragmentManager) {
+                        when (state) {
+                            ServerState.Pending -> {
+                                // TODO add loading indicator
+                            }
+                            is ServerState.Unset -> replaceFragment<ConnectFragment>()
+                            is ServerState.Available -> {
+                                val currentFragment = findFragmentById(R.id.fragment_container)
+                                if (currentFragment !is WebViewFragment || currentFragment.server != state.server) {
+                                    replaceFragment<WebViewFragment>(Bundle().apply {
+                                        putParcelable(Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER, state.server)
+                                    })
+                                }
                             }
                         }
                     }
