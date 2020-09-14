@@ -1,2 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="playback_info_video_streams"></string>
+    <string name="pref_category_music_player"></string>
+    <string name="pref_category_video_player"></string>
+    <string name="activity_name_settings">Cilësimet e Jellyfin</string>
+    <string name="external_player_unknown_error">Një gabim i panjohur në player-in e jashtëm. Gjurmimi i luajtjes është çaktivizuar.</string>
+    <string name="external_player_invalid_player">Nuk është zgjedhur asnjë player i jashtëm. Gjurmimi i luajtjes është çaktivizuar.</string>
+    <string name="external_player_not_supported_yet">Gjurmimi i luajtjes nuk suportohet ende për player-in e jashtëm të zgjedhur. Kontaktoni zhvilluesit që të përpiqen ta suportojnë atë.</string>
+    <string name="external_player_invalid_play_method">Metodë luajtje e pavlefshme.</string>
+    <string name="playback_info_and_x_more">…dhe %d të tjera</string>
+    <string name="playback_info_transcoding">Duke transkoduar: %b</string>
+    <string name="playback_info_play_method">Metoda e luajtjes: %s</string>
+    <string name="menu_item_none">Asnjë</string>
+    <string name="notification_action_stop">Ndal</string>
+    <string name="notification_action_next">Tjetra</string>
+    <string name="notification_action_fast_forward">Shpejt përpara</string>
+    <string name="notification_action_pause">Pauzë</string>
+    <string name="notification_action_play">Luaj</string>
+    <string name="notification_action_rewind">Kthe mbrapa</string>
+    <string name="notification_action_previous">E mëparshme</string>
+    <string name="download_no_storage_permission">Nuk mund të shkarkoj pa leje për të ruajtur në memorje</string>
+    <string name="downloading">Po shkarkohet</string>
+    <string name="mobile_data_and_roaming">Të dhëna celulare &amp; Roaming</string>
+    <string name="mobile_data">Të dhëna Celulare</string>
+    <string name="wifi_only">Vetem Wi-Fi</string>
+    <string name="network_message">Dëshironi të lejoni të shkarkoni me të dhenat celulare (mobile data) ose kur keni rrjet roaming\?</string>
+    <string name="network_title">Llojet e lejuara të rrjetit</string>
+    <string name="battery_optimizations_message">Ju lutemi çaktivizoni optimizimet e baterisë për luajtjen e medias ndërsa ekrani është i fikur.</string>
+    <string name="connect_button_text">Lidhu</string>
+    <string name="connection_error_cannot_connect">Lidhja nuk mund te kryhet.
+\nJu lutemi të kontrolloni emrin e hostit si dhe lidhjen tuaj të internetit.</string>
+    <string name="connection_error_invalid_format">Host ka një format të pavlefshëm</string>
+    <string name="host_input_hint">Host</string>
+    <string name="connect_to_server_title">Lidhu me serverin</string>
+</resources>
