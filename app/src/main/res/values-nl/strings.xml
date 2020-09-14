@@ -13,7 +13,7 @@
     <string name="connect_to_server_title">Verbind met server</string>
     <string name="pref_enable_exoplayer_summary">Gebruik de experimentele video speler voor betere integratie met het besturingssysteem</string>
     <string name="pref_enable_exoplayer_title">Gebruik ingebouwde video speler</string>
-    <string name="pref_category_video_player">Ingebouwde video speler</string>
+    <string name="pref_category_video_player">Videospeler</string>
     <string name="pref_music_notification_always_dismissible_title">Muziek notificatie kan weggeveegd worden</string>
     <string name="pref_category_music_player">Muziek speler</string>
     <string name="activity_name_settings">Jellyfin Instellingen</string>
@@ -22,7 +22,7 @@
     <string name="external_player_invalid_player">Geen geldige externe speler geselecteerd. Tracking afspelen uitgeschakeld.</string>
     <string name="external_player_not_supported_yet">Het volgen van afspelen wordt nog niet ondersteund in de geselecteerde externe speler. Neem contact op met de ontwikkelaars om er ondersteuning voor toe te voegen.</string>
     <string name="external_player_invalid_play_method">Ongeldige afspeelmethode.</string>
-    <string name="pref_exoplayer_allow_background_audio">Sta het afspelen van audio op de achtergrond toe</string>
+    <string name="pref_exoplayer_allow_background_audio">Sta het afspelen van audio op de achtergrond toe op de standaard speler</string>
     <string name="playback_info_and_x_more">...en nog %d more</string>
     <string name="playback_info_audio_streams">Audiostreams</string>
     <string name="playback_info_video_streams">Videostreams</string>
@@ -38,4 +38,11 @@
     <string name="download_no_storage_permission">Kan geen bestanden downloaden zonder machtigingen</string>
     <string name="connection_error_cannot_connect">Er kan geen verbinding worden gemaakt.
 \nControleer de hostnaam en uw netwerkverbinding.</string>
+    <string name="video_player_native">Standaard speler</string>
+    <string name="video_player_external_description">Externe video-afspeelapps zoals MX Player en VLC</string>
+    <string name="video_player_native_description">Gebaseerd op ExoPlayer, ondersteunt meer videoformaten en codecs, en is meer geïntegreerd in het besturingssysteem</string>
+    <string name="video_player_web_description">De standaard HTML-videospeler van de webinterface</string>
+    <string name="video_player_external">Externe speler</string>
+    <string name="video_player_web">Webplayer</string>
+    <string name="pref_video_player_type_title">Videospeler type</string>
 </resources>
