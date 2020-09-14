@@ -158,6 +158,7 @@ class MainActivity : AppCompatActivity(), WebViewController {
                                     val token = server.getString("AccessToken")
                                     apiClient.ChangeServerLocation(address)
                                     apiClient.SetAuthenticationInfo(token, user)
+                                    initLocale()
                                 } catch (e: JSONException) {
                                     Timber.e(e, "Failed to extract apiclient credentials")
                                 }
