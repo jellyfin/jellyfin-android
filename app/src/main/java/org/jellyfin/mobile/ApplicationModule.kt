@@ -17,13 +17,12 @@ import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.fragment.dsl.fragment
-import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 const val PLAYER_EVENT_CHANNEL = "PlayerEventChannel"
 
-val applicationModule: Module = module {
+val applicationModule = module {
     single { AppPreferences(androidApplication()) }
     single { OkHttpClient() }
     single { ImageLoader(androidApplication()) }

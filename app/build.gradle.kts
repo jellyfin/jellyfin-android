@@ -5,6 +5,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
+    kotlin("kapt")
     id("de.mannodermaus.android-junit5")
     id("com.github.ben-manes.versions") version Dependencies.Versions.dependencyUpdates
 }
@@ -19,6 +20,12 @@ android {
         versionCode = getVersionCode(versionName)
         setProperty("archivesBaseName", "jellyfin-android-v$versionName")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["room.schemaLocation"] = "$projectDir/schemas"
+                arguments["room.incremental"] = "true"
+            }
+        }
     }
     buildTypes {
         getByName("release") {
@@ -77,6 +84,10 @@ dependencies {
     implementation(Dependencies.UI.webkitX)
     implementation(Dependencies.UI.exoPlayer)
     implementation(Dependencies.UI.modernAndroidPreferences)
+
+    // Room
+    implementation(Dependencies.Room.runtime)
+    kapt(Dependencies.Room.compiler)
 
     // Network
     implementation(Dependencies.Network.apiclient)
