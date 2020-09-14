@@ -1,4 +1,4 @@
-define(['events', 'playbackManager', 'toast'], function (events, playbackManager, toast) {
+define(['appSettings', 'events', 'playbackManager'], function (appSettings, events, playbackManager) {
     "use strict";
 
     return function () {
@@ -43,7 +43,7 @@ define(['events', 'playbackManager', 'toast'], function (events, playbackManager
 
         self.play = function (options) {
             return new Promise(function (resolve) {
-                self._currentTime = 0;
+                self._currentTime = (options.playerStartPositionTicks || 0) / 10000;
                 self._paused = false;
                 self._currentSrc = options.url;
                 window.ExternalPlayer.initPlayer(JSON.stringify(options));
@@ -128,15 +128,14 @@ define(['events', 'playbackManager', 'toast'], function (events, playbackManager
             });
         };
 
-        self.notifyCanceled = function (message) {
+        self.notifyCanceled = function () {
             // required to not mark an item as seen / completed without time changes
-            var currentTime = self._currentTime || 0;
-            self.notifyTimeUpdate(currentTime + 1);
+            let currentTime = self._currentTime || 0;
             self.notifyTimeUpdate(currentTime - 1);
-            self.notifyEnded();
-            if (message) {
-                toast(message);
+            if (currentTime > 0) {
+                self.notifyTimeUpdate(currentTime);
             }
+            self.notifyEnded();
         };
 
         self.currentTime = function () {
@@ -160,8 +159,67 @@ define(['events', 'playbackManager', 'toast'], function (events, playbackManager
         }
 
         self.getDeviceProfile = function () {
-            // using exoplayer implementation for now
-            return window.ExoPlayer.getDeviceProfile();
+            return new Promise(function (resolve) {
+
+                if (self.cachedDeviceProfile) {
+                    resolve(self.cachedDeviceProfile);
+                }
+
+                require(['browserdeviceprofile'], function (profileBuilder) {
+                    var bitrateSetting = appSettings.maxStreamingBitrate();
+
+                    var profile = {};
+                    profile.Name = "Android External Player"
+                    profile.MaxStreamingBitrate = bitrateSetting;
+                    profile.MaxStaticBitrate = 100000000;
+                    profile.MusicStreamingTranscodingBitrate = 192000;
+
+                    profile.DirectPlayProfiles = [];
+
+                    // leave container null for all
+                    profile.DirectPlayProfiles.push({
+                        Type: 'Video'
+                    });
+
+                    // leave container null for all
+                    profile.DirectPlayProfiles.push({
+                        Type: 'Audio'
+                    });
+
+                    profile.CodecProfiles = [];
+
+                    profile.SubtitleProfiles = [];
+
+                    var subtitleProfiles = ['ass', 'idx', 'pgs', 'pgssub', 'smi', 'srt', 'ssa', 'subrip'];
+
+                    subtitleProfiles.forEach(function (format) {
+                        profile.SubtitleProfiles.push({
+                            Format: format,
+                            Method: 'Embed'
+                        });
+                    });
+
+                    var externalSubtitleProfiles = ['srt', 'sub', 'subrip', 'vtt'];
+
+                    externalSubtitleProfiles.forEach(function (format) {
+                        profile.SubtitleProfiles.push({
+                            Format: format,
+                            Method: 'External'
+                        });
+                    });
+
+                    profile.SubtitleProfiles.push({
+                        Format: 'dvdsub',
+                        Method: 'Encode'
+                    });
+
+                    profile.TranscodingProfiles = [];
+
+                    self.cachedDeviceProfile = profile;
+
+                    resolve(profile);
+                });
+            });
         };
     };
 });

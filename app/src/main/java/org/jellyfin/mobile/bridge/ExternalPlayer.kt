@@ -3,11 +3,13 @@ package org.jellyfin.mobile.bridge
 import android.app.Activity
 import android.content.Intent
 import android.webkit.JavascriptInterface
+import android.widget.Toast
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.toast
 import org.json.JSONException
 import org.json.JSONObject
 import org.koin.core.KoinComponent
@@ -37,10 +39,8 @@ class ExternalPlayer(private val activity: MainActivity) : KoinComponent {
                 Timber.d("Starting playback [id: ${mediaSource?.id}, title: ${mediaSource?.title}, playMethod: ${mediaSource?.playMethod}, mediaStartMs: ${mediaSource?.mediaStartMs}]")
             } else {
                 Timber.d("Play Method '${mediaSource?.playMethod}' not tested, ignoring...")
-                notifyEvent(
-                    Constants.EVENT_CANCELED,
-                    "'${activity.getString(R.string.external_player_invalid_play_method)}'"
-                )
+                notifyEvent(Constants.EVENT_CANCELED)
+                activity.toast(R.string.external_player_invalid_play_method, Toast.LENGTH_LONG)
             }
         } catch (e: JSONException) {
             Timber.e(e)
@@ -48,7 +48,11 @@ class ExternalPlayer(private val activity: MainActivity) : KoinComponent {
     }
 
     private fun notifyEvent(event: String, parameters: String = "") {
-        activity.loadUrl("javascript:window.ExtPlayer.notify$event($parameters)")
+        if (event in arrayOf(Constants.EVENT_CANCELED, Constants.EVENT_ENDED, Constants.EVENT_TIME_UPDATE) && parameters == parameters.filter { it.isDigit() }) {
+            activity.runOnUiThread {
+                activity.loadUrl("javascript:window.ExtPlayer.notify$event($parameters)")
+            }
+        }
     }
 
     fun handleActivityResult(resultCode: Int, data: Intent?) {
@@ -58,16 +62,12 @@ class ExternalPlayer(private val activity: MainActivity) : KoinComponent {
             else -> {
                 if (data?.action != null && resultCode != Activity.RESULT_CANCELED) {
                     Timber.d("Unknown action [resultCode: $resultCode, action: ${data.action}]")
-                    notifyEvent(
-                        Constants.EVENT_CANCELED,
-                        "'${activity.getString(R.string.external_player_not_supported_yet)}'"
-                    )
+                    notifyEvent(Constants.EVENT_CANCELED)
+                    activity.toast(R.string.external_player_not_supported_yet, Toast.LENGTH_LONG)
                 } else {
                     Timber.d("Playback canceled [no player selected or player without action result]")
-                    notifyEvent(
-                        Constants.EVENT_CANCELED,
-                        "'${activity.getString(R.string.external_player_invalid_player)}'"
-                    )
+                    notifyEvent(Constants.EVENT_CANCELED)
+                    activity.toast(R.string.external_player_invalid_player, Toast.LENGTH_LONG)
                 }
             }
         }
@@ -96,18 +96,14 @@ class ExternalPlayer(private val activity: MainActivity) : KoinComponent {
                             notifyEvent(Constants.EVENT_ENDED)
                         } else {
                             Timber.d("Invalid state [player: $player, position: $position, duration: $duration]")
-                            notifyEvent(
-                                Constants.EVENT_CANCELED,
-                                "'${activity.getString(R.string.external_player_unknown_error)}'"
-                            )
+                            notifyEvent(Constants.EVENT_CANCELED)
+                            activity.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
                         }
                     }
                     else -> {
                         Timber.d("Invalid state [player: $player, end_by: $endBy]")
-                        notifyEvent(
-                            Constants.EVENT_CANCELED,
-                            "'${activity.getString(R.string.external_player_unknown_error)}'"
-                        )
+                        notifyEvent(Constants.EVENT_CANCELED)
+                        activity.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
                     }
                 }
             }
@@ -117,17 +113,13 @@ class ExternalPlayer(private val activity: MainActivity) : KoinComponent {
             }
             Activity.RESULT_FIRST_USER -> {
                 Timber.d("Playback stopped by unknown error [player: $player]")
-                notifyEvent(
-                    Constants.EVENT_CANCELED,
-                    "'${activity.getString(R.string.external_player_unknown_error)}'"
-                )
+                notifyEvent(Constants.EVENT_CANCELED)
+                activity.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
             }
             else -> {
                 Timber.d("Invalid state [player: $player, resultCode: $resultCode]")
-                notifyEvent(
-                    Constants.EVENT_CANCELED,
-                    "'${activity.getString(R.string.external_player_unknown_error)}'"
-                )
+                notifyEvent(Constants.EVENT_CANCELED)
+                activity.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
             }
         }
     }
@@ -150,19 +142,15 @@ class ExternalPlayer(private val activity: MainActivity) : KoinComponent {
                         notifyEvent(Constants.EVENT_ENDED)
                     } else {
                         Timber.d("Invalid state [player: $player, extra_position: $extraPosition, extra_duration: $extraDuration]")
-                        notifyEvent(
-                            Constants.EVENT_CANCELED,
-                            "'${activity.getString(R.string.external_player_unknown_error)}'"
-                        )
+                        notifyEvent(Constants.EVENT_CANCELED)
+                        activity.toast(R.string.external_player_unknown_error)
                     }
                 }
             }
             else -> {
                 Timber.d("Playback failed [player: $player, resultCode: $resultCode]")
-                notifyEvent(
-                    Constants.EVENT_CANCELED,
-                    "'${activity.getString(R.string.external_player_unknown_error)}'"
-                )
+                notifyEvent(Constants.EVENT_CANCELED)
+                activity.toast(R.string.external_player_unknown_error)
             }
         }
     }
