@@ -31,4 +31,8 @@
     <string name="notification_action_pause">Pausa</string>
     <string name="notification_action_play">Riproduci</string>
     <string name="notification_action_previous">Precedente</string>
+    <string name="external_player_invalid_play_method">Metodo di riproduzione non valido.</string>
+    <string name="notification_action_fast_forward">Avanza</string>
+    <string name="notification_action_rewind">Riavvolgi</string>
+    <string name="download_no_storage_permission">Impossibile scaricare file senza i permessi di archiviazione</string>
 </resources>
