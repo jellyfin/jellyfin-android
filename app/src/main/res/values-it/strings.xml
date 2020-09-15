@@ -25,7 +25,7 @@
     <string name="playback_info_play_method">Metodo di riproduzione: %s</string>
     <string name="connection_error_cannot_connect">La connessione non può essere stabilita.
 \nControlla l\'hostname e la tua connessione di rete.</string>
-    <string name="pref_exoplayer_allow_background_audio">Permetti la riproduzione dell\'audio in sottofondo</string>
+    <string name="pref_exoplayer_allow_background_audio">Permetti la riproduzione dell\'audio in sottofondo utilizzando il player nativo</string>
     <string name="notification_action_stop">Interrompi</string>
     <string name="notification_action_next">Prossimo</string>
     <string name="notification_action_pause">Pausa</string>
@@ -35,4 +35,14 @@
     <string name="notification_action_fast_forward">Avanza</string>
     <string name="notification_action_rewind">Riavvolgi</string>
     <string name="download_no_storage_permission">Impossibile scaricare file senza i permessi di archiviazione</string>
+    <string name="video_player_web">Web player</string>
+    <string name="video_player_web_description">Il video player HTML di default nella Web UI</string>
+    <string name="video_player_external_description">App video player esterne come MX Player e VLC</string>
+    <string name="video_player_native_description">Derivato da ExoPlayer, supporta più formati e codec video ed è integrato meglio con l\'OS</string>
+    <string name="video_player_external">Player esterno</string>
+    <string name="video_player_native">Player nativo</string>
+    <string name="pref_video_player_type_title">Tipo di video player</string>
+    <string name="external_player_unknown_error">Errore sconosciuto nel player usato. Tracciamento del minuto corrente disabilitato.</string>
+    <string name="external_player_invalid_player">Nessun video player selezionato. Il tracciamento del minuto corrente è stato disabilitato.</string>
+    <string name="external_player_not_supported_yet">Il salvataggio del minuto corrente non è ancora supportato per il video player selezionato. Contatta gli sviluppatori per chiedere di implementare questa funzionalità.</string>
 </resources>
