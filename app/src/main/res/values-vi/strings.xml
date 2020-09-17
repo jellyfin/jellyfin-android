@@ -1,2 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="video_player_native">Trình phát gốc</string>
+    <string name="host_input_hint">Máy chủ</string>
+    <string name="pref_exoplayer_allow_background_audio">Cho phép phát âm thanh trong nền trong trình phát gốc</string>
+    <string name="video_player_external_description">Các ứng dụng phát lại video bên ngoài như MX Player và VLC</string>
+    <string name="video_player_native_description">Dựa trên ExoPlayer, hỗ trợ nhiều định dạng video và codec hơn, đồng thời được tích hợp nhiều hơn vào hệ điều hành</string>
+    <string name="video_player_web_description">Trình phát video HTML mặc định từ giao diện người dùng Web</string>
+    <string name="video_player_external">Trình phát bên ngoài</string>
+    <string name="video_player_web">Trình phát web</string>
+    <string name="pref_video_player_type_title">Loại trình phát video</string>
+    <string name="pref_category_video_player">Trình phát video</string>
+    <string name="pref_music_notification_always_dismissible_title">Đặt thông báo của trình phát nhạc luôn ở chế độ có thể bỏ qua</string>
+    <string name="pref_category_music_player">Trình phát nhạc</string>
+    <string name="activity_name_settings">Cài đặt Jellyfin</string>
+    <string name="external_player_unknown_error">Lỗi không xác định trong trình phát bên ngoài. Đã tắt theo dõi phát lại.</string>
+    <string name="external_player_invalid_player">Không có trình phát bên ngoài hợp lệ nào được chọn. Đã tắt theo dõi phát lại.</string>
+    <string name="external_player_not_supported_yet">Theo dõi phát lại chưa được hỗ trợ trong trình phát bên ngoài đã chọn. Liên hệ với các nhà phát triển để cố gắng thêm hỗ trợ cho nó.</string>
+    <string name="external_player_invalid_play_method">Phương thức chơi không hợp lệ.</string>
+    <string name="playback_info_and_x_more">... và %d nữa</string>
+    <string name="playback_info_audio_streams">Luồng âm thanh</string>
+    <string name="playback_info_video_streams">Luồng video</string>
+    <string name="playback_info_transcoding">Chuyển mã: %b</string>
+    <string name="playback_info_play_method">Phương pháp chơi: %s</string>
+    <string name="menu_item_none">Không</string>
+    <string name="notification_action_stop">Dừng</string>
+    <string name="notification_action_next">Kế tiếp</string>
+    <string name="notification_action_fast_forward">Nhanh về phía trước</string>
+    <string name="notification_action_pause">Tạm ngừng</string>
+    <string name="notification_action_play">Phát</string>
+    <string name="notification_action_rewind">Tua lại</string>
+    <string name="notification_action_previous">Trước</string>
+    <string name="download_no_storage_permission">Không thể tải xuống tệp nếu không có quyền lưu trữ</string>
+    <string name="downloading">Đang tải xuống</string>
+    <string name="mobile_data_and_roaming">Dữ liệu di động &amp; Chuyển vùng</string>
+    <string name="mobile_data">Dữ liệu di động</string>
+    <string name="wifi_only">Chỉ wifi</string>
+    <string name="network_message">Bạn có muốn cho phép tải xuống qua mạng dữ liệu di động hoặc chuyển vùng không\?</string>
+    <string name="network_title">Các loại mạng được phép</string>
+    <string name="battery_optimizations_message">Vui lòng tắt tối ưu hóa pin để phát lại phương tiện khi màn hình tắt.</string>
+    <string name="connect_button_text">Kết nối</string>
+    <string name="connection_error_cannot_connect">Không thể thiết lập kết nối.
+\nVui lòng kiểm tra tên máy chủ và kết nối mạng của bạn.</string>
+    <string name="connection_error_invalid_format">Máy chủ có định dạng không hợp lệ</string>
+    <string name="connect_to_server_title">Kết nối đến Máy chủ</string>
+</resources>
