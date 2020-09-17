@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="downloading">Downloading</string>
-    <string name="mobile_data_and_roaming">Dados Móveis e em Roaming</string>
+    <string name="downloading">A Transferir</string>
+    <string name="mobile_data_and_roaming">Dados Móveis e Roaming</string>
     <string name="mobile_data">Dados Móveis</string>
     <string name="wifi_only">Apenas WiFi</string>
-    <string name="network_message">Desejas permitir que o download seja executado em dados móveis ou redes de roaming\?</string>
-    <string name="network_title">Tipos de rede permitidos</string>
-    <string name="battery_optimizations_message">Por favor, desativa as otimizações de bateria para reprodução de media enquanto o ecrã está desligado.</string>
+    <string name="network_message">Deseja permitir que a transferência seja executada utilizando dados móveis ou redes de roaming\?</string>
+    <string name="network_title">Tipos de Rede Permitidos</string>
+    <string name="battery_optimizations_message">Por favor, desative as otimizações de bateria para reprodução de multimédia com o ecrã desligado.</string>
     <string name="pref_exoplayer_allow_background_audio">Permitir a reprodução de áudio em segundo plano no reprodutor nativo</string>
     <string name="video_player_external_description">Aplicações externas de reprodução de vídeo, tais como MX Player e VLC</string>
     <string name="video_player_native_description">Baseado no ExoPlayer, suporta mais formatos e codecs de vídeo, e está melhor integrado com o sistema operativo</string>
@@ -34,6 +34,10 @@
     <string name="notification_action_previous">Anterior</string>
     <string name="download_no_storage_permission">Não é possível transferir ficheiros sem permissões para armazenamento</string>
     <string name="connect_button_text">Ligar</string>
-    <string name="connection_error_invalid_format">O nome tem um formato inválido</string>
+    <string name="connection_error_invalid_format">O nome do servidor tem um formato inválido</string>
     <string name="connect_to_server_title">Ligar ao Servidor</string>
+    <string name="notification_action_rewind">Recuar</string>
+    <string name="connection_error_cannot_connect">A ligação não pôde ser estabelecida.
+\nPor favor, verifique o nome do servidor e a sua ligação de rede.</string>
+    <string name="host_input_hint">Nome do servidor</string>
 </resources>
