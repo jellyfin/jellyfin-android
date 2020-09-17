@@ -51,6 +51,13 @@ class PlayerActivity : AppCompatActivity() {
      */
     private val hideUnlockButtonAction = Runnable { unlockScreenButton.isVisible = false }
 
+    /**
+     * Runnable that hides [playerView] controller
+     */
+    private val hidePlayerViewControllerAction = Runnable {
+        playerView.hideController()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -211,10 +218,11 @@ class PlayerActivity : AppCompatActivity() {
                 // Fast-forward/rewind
                 viewModel.seekToOffset(if (fastForward) DEFAULT_SEEK_TIME_MS else DEFAULT_SEEK_TIME_MS.unaryMinus())
 
+                // Cancel previous runnable to not hide controller while seeking
+                playerView.removeCallbacks(hidePlayerViewControllerAction)
+
                 // Ensure controller gets hidden after seeking
-                playerView.postDelayed(DEFAULT_CONTROLS_TIMEOUT_MS.toLong()) {
-                    playerView.hideController()
-                }
+                playerView.postDelayed(hidePlayerViewControllerAction, DEFAULT_CONTROLS_TIMEOUT_MS.toLong())
                 return true
             }
 
