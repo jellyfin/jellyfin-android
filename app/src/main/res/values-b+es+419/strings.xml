@@ -25,4 +25,24 @@
     <string name="playback_info_play_method">Método de reproducción: %s</string>
     <string name="connection_error_cannot_connect">La conexión no puede ser establecida.
 \nPor favor, revisa el nombre del servidor y tu conexión de red.</string>
+    <string name="pref_exoplayer_allow_background_audio">Permitir reproducir audio en segundo plano con el reproductor nativo</string>
+    <string name="video_player_external_description">Aplicaciones de reproducción de video como MX Player y VLC</string>
+    <string name="video_player_native_description">Basado en ExoPlayer, soporta mas codecs y formatos de video, esta mas integrado en el SO</string>
+    <string name="video_player_web_description">Reproductor de video HTML por defecto desde el Web UI</string>
+    <string name="video_player_external">Reproductor externo</string>
+    <string name="video_player_native">Reproductor nativo</string>
+    <string name="video_player_web">Reproductor Web</string>
+    <string name="pref_video_player_type_title">Tipo de reproductor de video</string>
+    <string name="external_player_unknown_error">Error desconocido en reproductor externo. Seguimiento de reproducción deshabilitado.</string>
+    <string name="external_player_invalid_player">Selección invalida de reproductor externo. Seguimiento de reproducción deshabilitado.</string>
+    <string name="external_player_not_supported_yet">Seguimiento de reproducción no soportado en el reproductor externo seleccionado. Contacte a los desarrolladores para que agreguen el soporte.</string>
+    <string name="external_player_invalid_play_method">Método de reproducción inválido.</string>
+    <string name="notification_action_stop">Detener</string>
+    <string name="notification_action_next">Siguiente</string>
+    <string name="notification_action_fast_forward">Adelantar</string>
+    <string name="notification_action_pause">Pausa</string>
+    <string name="notification_action_play">Reproducir</string>
+    <string name="notification_action_rewind">Retroceder</string>
+    <string name="notification_action_previous">Anterior</string>
+    <string name="download_no_storage_permission">No se puede descargar archivos sin permisos de almacenamiento</string>
 </resources>
