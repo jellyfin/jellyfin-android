@@ -22,4 +22,23 @@
     <string name="playback_info_play_method">Način predvajanja: %s</string>
     <string name="connection_error_cannot_connect">Povezave ni mogoče vzpostaviti.
 \nPreverite naslov in vašo internetno povezavo.</string>
+    <string name="pref_exoplayer_allow_background_audio">Omogoči predvajanje zvoka v ozadju z native predvajalnikom</string>
+    <string name="video_player_external_description">Zunanji predvajalniki, na premer aplikacije MX Player in VLC</string>
+    <string name="video_player_native_description">Temelji na ExoPlayer, podpira več video formatov in kodekov ter je bolj integriran z operacijskim sistemom</string>
+    <string name="video_player_web_description">Privzeti HTML video predvajalnik iz spletnega vmesnika</string>
+    <string name="video_player_external">Zunanji predvajalnik</string>
+    <string name="video_player_web">Spletni predvajalnik</string>
+    <string name="pref_video_player_type_title">Vrsta video predvajalnika</string>
+    <string name="external_player_unknown_error">Neznana napaka z zunanjim predvajalnikom. Sledenje predvajanja je onemogočeno.</string>
+    <string name="external_player_invalid_player">Noben veljaven zunanji predvajalnik ni izbran. Sledenje predvajanja je onemogočeno.</string>
+    <string name="external_player_not_supported_yet">Sledenje predvajanja v zunanjem predvajalniku trenutno ni podprto. Kontaktirajte razvijalce za dodajanje te možnosti.</string>
+    <string name="external_player_invalid_play_method">Napačen način predvajanja.</string>
+    <string name="notification_action_stop">Stop</string>
+    <string name="notification_action_next">Naslednja</string>
+    <string name="notification_action_fast_forward">Hitro naprej</string>
+    <string name="notification_action_pause">Premor</string>
+    <string name="notification_action_play">Predvajaj</string>
+    <string name="notification_action_rewind">Previj nazaj</string>
+    <string name="notification_action_previous">Prejšnja</string>
+    <string name="download_no_storage_permission">Brez dovoljenja za dostop do shrambe ni mogoče prenesti datotek</string>
 </resources>
