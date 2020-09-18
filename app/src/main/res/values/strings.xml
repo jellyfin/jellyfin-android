@@ -48,4 +48,5 @@
     <string name="video_player_native_description">Based on ExoPlayer, supports more video formats and codecs, and is more integrated into the OS</string>
     <string name="video_player_external_description">External video playback apps like MX Player and VLC</string>
     <string name="pref_exoplayer_allow_background_audio">Allow playing audio in the background in native player</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Allow brightness and volume gestures in native player</string>
 </resources>

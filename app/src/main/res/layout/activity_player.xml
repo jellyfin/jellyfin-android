@@ -16,6 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <include
+            layout="@layout/overlay_brightness_volume"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
         <ProgressBar
             android:id="@+id/loading_indicator"
             android:layout_width="64dp"
