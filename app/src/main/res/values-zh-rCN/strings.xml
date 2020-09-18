@@ -16,10 +16,10 @@
     <string name="notification_action_fast_forward">快进</string>
     <string name="connection_error_cannot_connect">无法建立连接。 
 \n请检查主机名和你的网络连接。</string>
-    <string name="pref_exoplayer_allow_background_audio">允许在后台播放音频</string>
+    <string name="pref_exoplayer_allow_background_audio">允许在原生播放器中后台播放音频</string>
     <string name="pref_enable_exoplayer_summary">启用实验性的ExoPlayer视频播放器，该播放器支持更多视频格式和编解码器，并且已集成到操作系统中</string>
     <string name="pref_enable_exoplayer_title">开启集成的视频播放器</string>
-    <string name="pref_category_video_player">本机视频播放器</string>
+    <string name="pref_category_video_player">视频播放器</string>
     <string name="pref_music_notification_always_dismissible_title">始终忽略音乐播放器通知</string>
     <string name="pref_category_music_player">音乐播放器</string>
     <string name="activity_name_settings">Jellyfin设置</string>
@@ -38,4 +38,11 @@
     <string name="external_player_unknown_error">外部播放器中发生未知错误。 播放跟踪已禁用。</string>
     <string name="external_player_invalid_player">未选择有效的外部播放器。 播放跟踪已禁用。</string>
     <string name="external_player_invalid_play_method">无效的播放方法。</string>
+    <string name="video_player_external_description">外部视频播放器例如 MX Player 和 VLC</string>
+    <string name="video_player_native_description">基于 ExoPlayer 的支持更多视频格式和编码，并且更集成于系统的播放器</string>
+    <string name="video_player_web_description">网页界面中的默认 HTML 视频播放器</string>
+    <string name="video_player_external">外部播放器</string>
+    <string name="video_player_native">原生播放器</string>
+    <string name="video_player_web">网页播放器</string>
+    <string name="pref_video_player_type_title">视频播放器类型</string>
 </resources>
