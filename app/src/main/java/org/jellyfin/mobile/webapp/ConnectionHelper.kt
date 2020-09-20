@@ -18,9 +18,8 @@ import androidx.core.view.postDelayed
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.jellyfin.apiclient.Jellyfin
@@ -147,12 +146,10 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
 
     private fun discoverServers() {
         activity.lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                jellyfin.discovery.discover().onEach {
-                    serverList.add(it)
-                }.collect()
+            jellyfin.discovery.discover().flowOn(Dispatchers.IO).collect { serverInfo ->
+                serverList.add(serverInfo)
+                chooseServerButton.isVisible = true
             }
-            chooseServerButton.isVisible = serverList.isNotEmpty()
         }
     }
 
