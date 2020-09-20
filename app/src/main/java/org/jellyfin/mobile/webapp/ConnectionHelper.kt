@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.webapp
 
+import android.app.AlertDialog
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -15,10 +16,15 @@ import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.jellyfin.apiclient.Jellyfin
+import org.jellyfin.apiclient.discovery.DiscoveryServerInfo
+import org.jellyfin.apiclient.discovery.ServerDiscovery
 import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.apiclient.model.system.PublicSystemInfo
 import org.jellyfin.mobile.AppPreferences
@@ -48,6 +54,9 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
     private val hostInput: EditText get() = connectServerBinding.hostInput
     private val connectionErrorText: TextView get() = connectServerBinding.connectionErrorText
     private val connectButton: Button get() = connectServerBinding.connectButton
+    private val chooseServerButton: Button get() = connectServerBinding.chooseServerButton
+
+    private val serverList = ArrayList<DiscoveryServerInfo>(ServerDiscovery.DISCOVERY_MAX_SERVERS)
 
     fun initialize() {
         appPreferences.instanceUrl?.toHttpUrlOrNull().also { url ->
@@ -100,6 +109,9 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
         connectButton.setOnClickListener {
             connect()
         }
+        chooseServerButton.setOnClickListener {
+            chooseServer()
+        }
 
         // Show keyboard
         serverSetupLayout.doOnNextLayout {
@@ -108,14 +120,16 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
                 activity.getSystemService<InputMethodManager>()?.showSoftInput(hostInput, InputMethodManager.SHOW_IMPLICIT)
             }
         }
+
+        discoverServers()
     }
 
-    private fun connect() {
+    private fun connect(enteredUrl: String = hostInput.text.toString()) {
         hostInput.isEnabled = false
         connectButton.isEnabled = false
         clearConnectionError()
         activity.lifecycleScope.launch {
-            val httpUrl = checkServerUrlAndConnection(hostInput.text.toString())
+            val httpUrl = checkServerUrlAndConnection(enteredUrl)
             if (httpUrl != null) {
                 appPreferences.instanceUrl = httpUrl.toString()
                 webView.clearHistory()
@@ -123,19 +137,45 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
                 rootView.removeView(serverSetupLayout)
                 webView.isVisible = true
                 webView.loadUrl(httpUrl.toString())
+                clearServerList()
             }
             hostInput.isEnabled = true
             connectButton.isEnabled = true
         }
     }
 
+    private fun discoverServers() {
+        activity.lifecycleScope.launch {
+            jellyfin.discovery.discover().flowOn(Dispatchers.IO).collect { serverInfo ->
+                serverList.add(serverInfo)
+                chooseServerButton.isVisible = true
+            }
+        }
+    }
+
+    private fun chooseServer() {
+        AlertDialog.Builder(activity).apply {
+            setTitle(R.string.available_servers_title)
+            setItems(serverList.map { "${it.name}\n${it.address}" }.toTypedArray()) { _, index ->
+                connect(serverList[index].address)
+            }
+        }.show()
+    }
+
     private fun showConnectionError(@StringRes errorString: Int = R.string.connection_error_cannot_connect) {
         connectionErrorText.setText(errorString)
         connectionErrorText.isVisible = true
+        clearServerList()
+        discoverServers()
     }
 
     private fun clearConnectionError() {
         connectionErrorText.isVisible = false
+    }
+
+    private fun clearServerList() {
+        serverList.clear()
+        chooseServerButton.isVisible = false
     }
 
     private suspend fun checkServerUrlAndConnection(enteredUrl: String): HttpUrl? {
