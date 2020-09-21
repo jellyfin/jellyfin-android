@@ -45,4 +45,6 @@
     <string name="video_player_external">Reproductor externo</string>
     <string name="video_player_native">Reproductor nativo</string>
     <string name="video_player_web">Reproductor web</string>
+    <string name="available_servers_title">Servidores disponibles</string>
+    <string name="choose_server_button_text">Seleccionar servidor</string>
 </resources>
