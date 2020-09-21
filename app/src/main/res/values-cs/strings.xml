@@ -45,4 +45,6 @@
     <string name="video_player_native">Nativní přehrávač</string>
     <string name="video_player_web">Webový přehrávač</string>
     <string name="pref_video_player_type_title">Typ přehrávače videa</string>
+    <string name="available_servers_title">Dostupné servery</string>
+    <string name="choose_server_button_text">Vybrat server</string>
 </resources>
