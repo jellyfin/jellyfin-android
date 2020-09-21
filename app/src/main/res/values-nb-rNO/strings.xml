@@ -16,11 +16,11 @@
     <string name="menu_item_none">Ingen</string>
     <string name="pref_music_notification_always_dismissible_title">Gjør at musikkspillervarslingen alltid kan avvises</string>
     <string name="pref_enable_exoplayer_summary">Aktiver den eksperimentelle ExoPlayer-videoavspilleren som støtter flere videoformater og kodeker, og er bedre integrert med operativsystemet</string>
-    <string name="pref_category_video_player">Innebygd videoavspiller</string>
+    <string name="pref_category_video_player">Videospiller</string>
     <string name="playback_info_transcoding">Transkoder: %b</string>
     <string name="connection_error_cannot_connect">Tilkoblingen kunne ikke bli etablert.
 \nVennligst sjekk tjenernavnet og nettverkstilkoblingen.</string>
-    <string name="pref_exoplayer_allow_background_audio">Tillat avspilling i bakgrunnen</string>
+    <string name="pref_exoplayer_allow_background_audio">Tillat avspilling av lyd i bakgrunnen, i innebygget avspiller</string>
     <string name="pref_enable_exoplayer_title">Aktiver videospillerintegrasjon</string>
     <string name="pref_category_music_player">Musikkspiller</string>
     <string name="activity_name_settings">Jellyfin-instillinger</string>
@@ -35,4 +35,13 @@
     <string name="notification_action_previous">Forrige</string>
     <string name="download_no_storage_permission">Kan ikke laste ned filer uten lagringstillatelse</string>
     <string name="external_player_invalid_play_method">Ugyldig avspillingsmetode.</string>
+    <string name="video_player_external_description">Eksterne videoavspillingsapper, som MX Player og VLC</string>
+    <string name="video_player_native_description">Basert på ExoPlayer, støtter flere videoformat og kodeker, og er mer integrert i operativsystemet</string>
+    <string name="video_player_web_description">Standard HTML-videospiller fra nettleser-grensesnittet</string>
+    <string name="video_player_external">Ekstern avspiller</string>
+    <string name="video_player_native">Innebygd avspiller</string>
+    <string name="video_player_web">Web-spiller</string>
+    <string name="pref_video_player_type_title">Videospiller type</string>
+    <string name="available_servers_title">Tilgjengelige tjenere</string>
+    <string name="choose_server_button_text">Velg tjener</string>
 </resources>
