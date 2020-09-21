@@ -23,7 +23,7 @@
     <string name="playback_info_video_streams">비디오 스트림</string>
     <string name="playback_info_transcoding">트랜스코딩: %b</string>
     <string name="playback_info_play_method">재생 방법: %s</string>
-    <string name="menu_item_none">없다</string>
+    <string name="menu_item_none">없음</string>
     <string name="notification_action_stop">정지</string>
     <string name="notification_action_next">다음</string>
     <string name="notification_action_fast_forward">앞으로 빨리감기</string>
@@ -31,6 +31,7 @@
     <string name="notification_action_play">재생</string>
     <string name="notification_action_rewind">되감기</string>
     <string name="notification_action_previous">이전</string>
-    <string name="connection_error_cannot_connect">연결이 성립되지 못했습니다.
-\nhostname과 네트워크 연결을 다시 확인해주세요.</string>
+    <string name="connection_error_cannot_connect">연결할 수 없습니다. 
+\n호스트명과 네트워크 연결을 다시 확인해주세요.</string>
+    <string name="video_player_external">외부 플레이어</string>
 </resources>
