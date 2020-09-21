@@ -45,4 +45,6 @@
     <string name="video_player_native">சொந்த பிளேயர்</string>
     <string name="video_player_web">வலை பிளேயர்</string>
     <string name="pref_video_player_type_title">வீடியோ பிளேயர் வகை</string>
+    <string name="available_servers_title">பெறக்கூடிய சேவையகங்கள்</string>
+    <string name="choose_server_button_text">சேவையகத்தைத் தேர்வுசெய்க</string>
 </resources>
