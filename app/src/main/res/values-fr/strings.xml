@@ -45,4 +45,6 @@
     <string name="external_player_unknown_error">Erreur inconnue dans le lecteur externe. Suivi de lecture désactivé.</string>
     <string name="external_player_invalid_player">Aucun lecteur externe valide n\'est sélectionné. Suivi de lecture désactivé.</string>
     <string name="external_player_invalid_play_method">Méthode de lecture invalide.</string>
+    <string name="available_servers_title">Serveurs disponibles</string>
+    <string name="choose_server_button_text">Choisir un serveur</string>
 </resources>
