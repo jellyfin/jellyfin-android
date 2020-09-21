@@ -41,4 +41,6 @@
     <string name="notification_action_rewind">Previj nazaj</string>
     <string name="notification_action_previous">Prejšnja</string>
     <string name="download_no_storage_permission">Brez dovoljenja za dostop do shrambe ni mogoče prenesti datotek</string>
+    <string name="available_servers_title">Razpoložljivi strežniki</string>
+    <string name="choose_server_button_text">Izberi strežnik</string>
 </resources>
