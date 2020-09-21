@@ -13,11 +13,11 @@
     <string name="connect_to_server_title">Poveži s strežnikom</string>
     <string name="pref_enable_exoplayer_summary">Omogoči poskusni ExoPlayer video predvajalnik, ki podpira več formatov in kodekov in je bolj integriran v operacijski sistem</string>
     <string name="pref_enable_exoplayer_title">Omogoči integracijo video predvajalnika</string>
-    <string name="pref_category_video_player">Vdelani video predvajalnik</string>
+    <string name="pref_category_video_player">Video predvajalnik</string>
     <string name="pref_music_notification_always_dismissible_title">Omogoči skrivanje obvestila predvajalnika glasbe</string>
     <string name="pref_category_music_player">Predvajalnik glasbe</string>
     <string name="activity_name_settings">Nastavitve Jellyfin</string>
-    <string name="menu_item_none">Nič</string>
+    <string name="menu_item_none">Brez</string>
     <string name="playback_info_transcoding">Prekodiranje: %b</string>
     <string name="playback_info_play_method">Način predvajanja: %s</string>
     <string name="connection_error_cannot_connect">Povezave ni mogoče vzpostaviti.
@@ -43,4 +43,7 @@
     <string name="download_no_storage_permission">Brez dovoljenja za dostop do shrambe ni mogoče prenesti datotek</string>
     <string name="available_servers_title">Razpoložljivi strežniki</string>
     <string name="choose_server_button_text">Izberi strežnik</string>
+    <string name="playback_info_and_x_more">...in %d več</string>
+    <string name="playback_info_audio_streams">Zvočne sledi</string>
+    <string name="playback_info_video_streams">Video sledi</string>
 </resources>
