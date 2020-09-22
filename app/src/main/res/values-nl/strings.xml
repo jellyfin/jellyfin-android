@@ -45,4 +45,6 @@
     <string name="video_player_external">Externe speler</string>
     <string name="video_player_web">Webplayer</string>
     <string name="pref_video_player_type_title">Videospeler type</string>
+    <string name="available_servers_title">Beschikbare servers</string>
+    <string name="choose_server_button_text">Kies server</string>
 </resources>
