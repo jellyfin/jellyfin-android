@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="battery_optimizations_message">要在屏幕关闭时播放媒体，请禁用电池优化。</string>
-    <string name="mobile_data_and_roaming">移动数据和漫游</string>
+    <string name="mobile_data_and_roaming">移动数据或漫游</string>
     <string name="mobile_data">移动数据</string>
     <string name="wifi_only">仅使用WiFi</string>
     <string name="network_message">您是否允许使用移动数据或漫游网络下载？</string>
@@ -45,4 +45,6 @@
     <string name="video_player_native">原生播放器</string>
     <string name="video_player_web">网页播放器</string>
     <string name="pref_video_player_type_title">视频播放器类型</string>
+    <string name="available_servers_title">现存服务器</string>
+    <string name="choose_server_button_text">选择服务器</string>
 </resources>
