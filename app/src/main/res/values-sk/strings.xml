@@ -13,7 +13,7 @@
     <string name="connect_to_server_title">Pripojiť k serveru</string>
     <string name="pref_enable_exoplayer_summary">Povoliť experimentálny prehrávač videa ExoPlayer, ktorý podporuje viac formátov a kodekov, a je lepšie integrovaný do operačného systému</string>
     <string name="pref_enable_exoplayer_title">Povoliť integráciu prehrávača videa</string>
-    <string name="pref_category_video_player">Natívny prehrávač videa</string>
+    <string name="pref_category_video_player">Prehrávač videa</string>
     <string name="pref_music_notification_always_dismissible_title">Umožniť odstránenie oznámení hudobného prehrávača</string>
     <string name="pref_category_music_player">Prehrávač hudby</string>
     <string name="activity_name_settings">Nastavenia Jellyfinu</string>
@@ -22,4 +22,26 @@
     <string name="playback_info_audio_streams">Audio streamy</string>
     <string name="playback_info_video_streams">Video streamy</string>
     <string name="playback_info_transcoding">Transkódovanie: %b</string>
+    <string name="pref_exoplayer_allow_background_audio">Povoliť prehrávanie audia na pozadí v natívnom prehrávači</string>
+    <string name="video_player_external_description">Externý prehrávač videa, napr. MX Player alebo VLC</string>
+    <string name="video_player_native_description">Založený na prehrávači ExoPlayer, podporuje viac video formátov a kodekov, a je lepšie integrovaný do systému</string>
+    <string name="video_player_web_description">Predvolený HTML prehrávač videa z webového rozhrania</string>
+    <string name="video_player_external">Externý prehrávač</string>
+    <string name="video_player_native">Natívny prehrávač</string>
+    <string name="video_player_web">Webový prehrávač</string>
+    <string name="pref_video_player_type_title">Typ prehrávača videa</string>
+    <string name="external_player_invalid_play_method">Neplatný spôsob prehrávania.</string>
+    <string name="playback_info_play_method">Spôsob prehrávania: %s</string>
+    <string name="notification_action_stop">Zastaviť</string>
+    <string name="notification_action_next">Ďalšia</string>
+    <string name="notification_action_fast_forward">Pretočiť dopredu</string>
+    <string name="notification_action_pause">Pauza</string>
+    <string name="notification_action_play">Prehrať</string>
+    <string name="notification_action_rewind">Pretočiť späť</string>
+    <string name="notification_action_previous">Predchádzajúca</string>
+    <string name="download_no_storage_permission">Stiahnutie súborov nie je možné bez prístupu k úložisku</string>
+    <string name="available_servers_title">Dostupné servery</string>
+    <string name="choose_server_button_text">Vyberte server</string>
+    <string name="connection_error_cannot_connect">Pripojenie nemohlo byť nadviazané.
+\nSkontrolujte názov hostiteľa a sieťové pripojenie.</string>
 </resources>
