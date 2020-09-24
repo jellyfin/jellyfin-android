@@ -141,6 +141,8 @@ class WebViewFragment : Fragment() {
                                     val address = server.getString("ManualAddress")
                                     val user = server.getString("UserId")
                                     val token = server.getString("AccessToken")
+                                    appPreferences.instanceUserId = user
+                                    appPreferences.instanceAccessToken = token
                                     apiClient.ChangeServerLocation(address.trimEnd('/'))
                                     apiClient.SetAuthenticationInfo(token, user)
                                     initLocale()

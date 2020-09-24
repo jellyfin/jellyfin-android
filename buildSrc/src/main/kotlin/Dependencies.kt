@@ -38,6 +38,9 @@ object Dependencies {
         const val mediaRouter = "1.1.0"
         const val playServicesCast = "18.1.0"
 
+        // Media
+        const val media = "1.1.0"
+
         // Health
         const val timber = "4.7.1"
         const val leakCanary = "2.4"
@@ -101,6 +104,11 @@ object Dependencies {
         val mediaRouter = androidx("mediarouter", Versions.mediaRouter)
         const val playServicesCast = "com.google.android.gms:play-services-cast:${Versions.playServicesCast}"
         const val playServicesCastFramework = "com.google.android.gms:play-services-cast-framework:${Versions.playServicesCast}"
+    }
+
+    object Media {
+        val media = androidx("media", Versions.media)
+        var exoPlayerMediaSession = "com.google.android.exoplayer:extension-mediasession:${Versions.exoPlayer}"
     }
 
     /**
