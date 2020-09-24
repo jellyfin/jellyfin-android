@@ -45,4 +45,6 @@
     <string name="video_player_native">Nativer Player</string>
     <string name="video_player_web">Webplayer</string>
     <string name="pref_video_player_type_title">Typ des Videoplayers</string>
+    <string name="available_servers_title">Verfügbare Server</string>
+    <string name="choose_server_button_text">Server auswählen</string>
 </resources>
