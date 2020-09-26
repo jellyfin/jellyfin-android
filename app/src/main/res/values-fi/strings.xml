@@ -15,4 +15,23 @@
     <string name="host_input_hint">Isäntäpalvelin</string>
     <string name="connect_button_text">Yhdistä</string>
     <string name="connect_to_server_title">Yhdistä palvelimeen</string>
+    <string name="external_player_invalid_play_method">Virheellinen toistotapa.</string>
+    <string name="playback_info_and_x_more">…ja %d lisää</string>
+    <string name="playback_info_audio_streams">Audioiden suoratoistot</string>
+    <string name="playback_info_video_streams">Videoiden suoratoistot</string>
+    <string name="playback_info_transcoding">Transkoodaus: %b</string>
+    <string name="playback_info_play_method">Toistotapa: %s</string>
+    <string name="menu_item_none">ei mitään</string>
+    <string name="notification_action_stop">Pysäytä</string>
+    <string name="notification_action_fast_forward">Nopeasti eteenpäin</string>
+    <string name="notification_action_rewind">Kelaa taaksepäin</string>
+    <string name="notification_action_previous">Edellinen</string>
+    <string name="download_no_storage_permission">Tiedostoja ei voida ladata ilman tallennusoikeuksia</string>
+    <string name="available_servers_title">Käytettävät palvelimet</string>
+    <string name="connection_error_cannot_connect">Yhteyttä ei voida muodostaa.
+\nTarkista isäntänimi ja verkkoyhteytesi.</string>
+    <string name="notification_action_next">Seuraava</string>
+    <string name="notification_action_play">Toista</string>
+    <string name="notification_action_pause">Pysäytä</string>
+    <string name="choose_server_button_text">Valitse palvelin</string>
 </resources>
