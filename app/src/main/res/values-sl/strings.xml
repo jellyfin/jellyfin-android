@@ -46,4 +46,5 @@
     <string name="playback_info_and_x_more">...in %d več</string>
     <string name="playback_info_audio_streams">Zvočne sledi</string>
     <string name="playback_info_video_streams">Video sledi</string>
+    <string name="video_player_native">Vgrajeni predvajalnik</string>
 </resources>
