@@ -7,4 +7,10 @@
     <string name="network_message">¿Quieres permitir que la descarga se realice a través de redes de datos móviles o de itinerancia\?</string>
     <string name="network_title">Tipos de red permitidos</string>
     <string name="battery_optimizations_message">Por favor, desactiva la optimización de la batería para la reproducción de medios mientras la pantalla está apagada.</string>
+    <string name="connect_button_text">Conectar</string>
+    <string name="connection_error_cannot_connect">No se puede establecer una conexión con el servidor.
+\nFavor de revisar la dirección de este y la conexión de red.</string>
+    <string name="connection_error_invalid_format">La dirección tiene un formato inválido</string>
+    <string name="host_input_hint">Dirección del Servidor</string>
+    <string name="connect_to_server_title">Conectar al Servidor</string>
 </resources>
