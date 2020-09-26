@@ -34,4 +34,16 @@
     <string name="notification_action_play">Toista</string>
     <string name="notification_action_pause">Pysäytä</string>
     <string name="choose_server_button_text">Valitse palvelin</string>
+    <string name="pref_exoplayer_allow_background_audio">Salli äänen toisto taustalla vakiosoittimessa</string>
+    <string name="video_player_external_description">Ulkoiset videotoistosovellukset, kuten MX Player ja VLC</string>
+    <string name="video_player_native_description">Perustuu ExoPlayeriin, tukee useampia videoformaatteja ja koodekkeja ja on paremmin integroitu käyttöjärjestelmään</string>
+    <string name="video_player_web_description">Oletus HTML-videosoitin web-käyttöliittymästä</string>
+    <string name="external_player_not_supported_yet">Toiston seurantaa ei vielä tueta valitussa ulkoisessa soittimessa. Ota yhteyttä kehittäjiin lisätäksesi tuki sille.</string>
+    <string name="video_player_external">Ulkoinen soitin</string>
+    <string name="video_player_native">Vakiosoitin</string>
+    <string name="video_player_web">Web-soitin</string>
+    <string name="pref_video_player_type_title">Videosoittimen tyyppi</string>
+    <string name="pref_category_video_player">Videosoitin</string>
+    <string name="external_player_unknown_error">Tuntematon virhe ulkoisessa soittimessa. Toiston seuranta on poistettu käytöstä.</string>
+    <string name="external_player_invalid_player">Ei kelvollista ulkoista soitinta valittu. Toiston seuranta poistettu käytöstä.</string>
 </resources>
