@@ -13,7 +13,7 @@
     <string name="connect_to_server_title">Conectați-vă la server</string>
     <string name="pref_enable_exoplayer_summary">Activează redarea video ExoPlayer experimentală care acceptă mai multe formate video și codecuri și este mai integrat în sistemul de operare</string>
     <string name="pref_enable_exoplayer_title">Activează integrarea cu redarea video</string>
-    <string name="pref_category_video_player">Redare video nativă</string>
+    <string name="pref_category_video_player">Redare Video</string>
     <string name="pref_music_notification_always_dismissible_title">Face ca notificările redării muzicale să se poată întotdeauna închide</string>
     <string name="pref_category_music_player">Redare muzică</string>
     <string name="activity_name_settings">Setări Jellyfin</string>
@@ -22,7 +22,7 @@
     <string name="playback_info_video_streams">Flux video</string>
     <string name="playback_info_transcoding">Transcodare: %b</string>
     <string name="menu_item_none">Nici unul</string>
-    <string name="pref_exoplayer_allow_background_audio">Permiteți redarea audio în fundal</string>
+    <string name="pref_exoplayer_allow_background_audio">Permiteți redarea audio în fundal în playerul nativ</string>
     <string name="playback_info_play_method">Metoda de redare: %s</string>
     <string name="notification_action_stop">Stop</string>
     <string name="notification_action_next">Următorul</string>
@@ -38,4 +38,13 @@
     <string name="external_player_invalid_player">Nu a fost selectat niciun player extern valid. Urmărirea redării este dezactivată.</string>
     <string name="external_player_not_supported_yet">Urmărirea redării nu este acceptată încă în playerul extern selectat. Contactați dezvoltatorii pentru a încerca să adăugați suport pentru aceasta.</string>
     <string name="external_player_invalid_play_method">Metodă de redare invalidă.</string>
+    <string name="video_player_external_description">Aplicații de redare video externe precum MX Player și VLC</string>
+    <string name="video_player_native_description">Bazat pe ExoPlayer, acceptă mai multe formate video și codecuri și este mai integrat în sistemul de operare</string>
+    <string name="video_player_web_description">Redare video HTML implicită din Web UI</string>
+    <string name="video_player_external">Redare externă</string>
+    <string name="video_player_native">Redare nativă</string>
+    <string name="video_player_web">Redare web</string>
+    <string name="pref_video_player_type_title">Tipul de redare video</string>
+    <string name="available_servers_title">Servere disponibile</string>
+    <string name="choose_server_button_text">Alege server</string>
 </resources>
