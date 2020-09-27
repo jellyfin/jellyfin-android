@@ -18,7 +18,7 @@
     <string name="playback_info_video_streams">Flujos de vídeo</string>
     <string name="playback_info_transcoding">Transcodificando: %b</string>
     <string name="menu_item_none">Ninguno</string>
-    <string name="pref_category_video_player">Reproductor de video nativo</string>
+    <string name="pref_category_video_player">Reproductor de Video</string>
     <string name="pref_music_notification_always_dismissible_title">Hacer que la notificación del reproductor de música pueda ser siempre descartada</string>
     <string name="pref_enable_exoplayer_summary">Habilita el reproductor de video experimental ExoPlayer que soporta más formatos de video y códecs, y está más integrado en el sistema operativo</string>
     <string name="pref_enable_exoplayer_title">Habilitar integración del reproductor de video</string>
@@ -45,4 +45,6 @@
     <string name="notification_action_rewind">Retroceder</string>
     <string name="notification_action_previous">Anterior</string>
     <string name="download_no_storage_permission">No se puede descargar archivos sin permisos de almacenamiento</string>
+    <string name="available_servers_title">Servidores disponibles</string>
+    <string name="choose_server_button_text">Seleccionar servidor</string>
 </resources>
