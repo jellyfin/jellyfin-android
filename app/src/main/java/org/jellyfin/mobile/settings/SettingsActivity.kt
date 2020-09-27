@@ -17,6 +17,7 @@ class SettingsActivity : AppCompatActivity() {
     private val appPreferences: AppPreferences by inject()
     private val settingsAdapter: PreferencesAdapter by lazy { PreferencesAdapter(buildSettingsScreen()) }
     private lateinit var backgroundAudioPreference: Preference
+    private lateinit var swipeGesturesPreference: Preference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,8 +55,14 @@ class SettingsActivity : AppCompatActivity() {
             titleRes = R.string.pref_video_player_type_title
             initialSelection = VideoPlayerType.WEB_PLAYER
             defaultOnSelectionChange { selection ->
+                swipeGesturesPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
             }
+        }
+        swipeGesturesPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_SWIPE_GESTURES) {
+            titleRes = R.string.pref_exoplayer_allow_brightness_volume_gesture
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+            defaultValue = true
         }
         backgroundAudioPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO) {
             titleRes = R.string.pref_exoplayer_allow_background_audio

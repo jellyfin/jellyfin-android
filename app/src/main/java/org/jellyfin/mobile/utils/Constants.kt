@@ -20,6 +20,7 @@ object Constants {
     const val PREF_DOWNLOAD_METHOD = "pref_download_method"
     const val PREF_MUSIC_NOTIFICATION_ALWAYS_DISMISSIBLE = "pref_music_notification_always_dismissible"
     const val PREF_VIDEO_PLAYER_TYPE = "pref_video_player_type"
+    const val PREF_EXOPLAYER_ALLOW_SWIPE_GESTURES = "pref_exoplayer_allow_swipe_gestures"
     const val PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO = "pref_exoplayer_allow_background_audio"
 
     // InputManager commands
@@ -76,6 +77,7 @@ object Constants {
     const val TICKS_PER_MILLISECOND = 10000
     const val PLAYER_TIME_UPDATE_RATE = 3000L
     const val DEFAULT_CONTROLS_TIMEOUT_MS = 2500
+    const val DEFAULT_CENTER_OVERLAY_TIMEOUT_MS = 250
     const val DEFAULT_SEEK_TIME_MS = 5000L
     const val SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS: Long = PlaybackState.ACTION_PLAY_PAUSE or
         PlaybackState.ACTION_PLAY or

@@ -2,14 +2,16 @@ package org.jellyfin.mobile.player
 
 import android.annotation.SuppressLint
 import android.app.PictureInPictureParams
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings.System
 import android.view.*
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -18,14 +20,19 @@ import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerView
+import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.utils.*
+import org.jellyfin.mobile.utils.Constants.DEFAULT_CENTER_OVERLAY_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_SEEK_TIME_MS
+import org.koin.android.ext.android.inject
+import kotlin.math.abs
 
 
 class PlayerActivity : AppCompatActivity() {
 
+    private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
     private val playerView: PlayerView by lazyView(R.id.player_view)
     private val playerControlsView: View by lazyView(R.id.player_controls)
@@ -34,7 +41,21 @@ class PlayerActivity : AppCompatActivity() {
     private val titleTextView: TextView by lazyView(R.id.track_title)
     private val fullscreenSwitcher: ImageButton by lazyView(R.id.fullscreen_switcher)
     private val unlockScreenButton: ImageButton by lazyView(R.id.unlock_screen_button)
+    private val gestureIndicatorOverlayLayout: LinearLayout by lazyView(R.id.gesture_overlay_layout)
+    private val gestureIndicatorOverlayImage: ImageView by lazyView(R.id.gesture_overlay_image)
+    private val gestureIndicatorOverlayProgress: ProgressBar by lazyView(R.id.gesture_overlay_progress)
     private lateinit var playbackMenus: PlaybackMenus
+    private val audioManager: AudioManager by lazy { (getSystemService(Context.AUDIO_SERVICE) as AudioManager) }
+
+    private val swipeGesturesEnabled
+        get() = appPreferences.exoPlayerAllowSwipeGestures
+
+    /**
+     * Tracks a value during a swipe gesture (between multiple onScroll calls).
+     * When the gesture starts it's reset to an initial value and gets increased or decreased
+     * (depending on the direction) as the gesture progresses.
+     */
+    private var swipeGestureValueTracker = -1f
 
     /**
      * Listener that watches the current device orientation.
@@ -56,6 +77,13 @@ class PlayerActivity : AppCompatActivity() {
      */
     private val hidePlayerViewControllerAction = Runnable {
         playerView.hideController()
+    }
+
+    /**
+     * Runnable that hides [gestureIndicatorOverlayLayout]
+     */
+    private val hideGestureIndicatorOverlayAction = Runnable {
+        gestureIndicatorOverlayLayout.isVisible = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -232,9 +260,76 @@ class PlayerActivity : AppCompatActivity() {
                 }
                 return true
             }
+
+            override fun onScroll(firstEvent: MotionEvent, currentEvent: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+                if (!swipeGesturesEnabled)
+                    return false
+
+                // Check whether swipe was oriented vertically
+                if (abs(distanceY / distanceX) < 2)
+                    return false
+
+                val viewCenterX = playerView.measuredWidth / 2
+
+                // Distance to swipe to go from min to max
+                val distanceFull = playerView.measuredHeight * 0.66f
+                val ratioChange = distanceY / distanceFull
+
+                if (firstEvent.x.toInt() > viewCenterX) {
+                    // Swiping on the right, change volume
+                    val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+                    if (swipeGestureValueTracker == -1f) swipeGestureValueTracker = currentVolume.toFloat()
+
+                    val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+                    val change = ratioChange * maxVolume
+                    swipeGestureValueTracker += change
+
+                    val toSet = swipeGestureValueTracker.toInt().coerceIn(0, maxVolume)
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, toSet, 0)
+
+                    gestureIndicatorOverlayImage.setImageResource(R.drawable.ic_volume_white_24dp)
+                    gestureIndicatorOverlayProgress.max = maxVolume
+                    gestureIndicatorOverlayProgress.progress = toSet
+                } else {
+                    // Swiping on the left, change brightness
+                    val windowLayoutParams = window.attributes
+                    if (swipeGestureValueTracker == -1f) {
+                        swipeGestureValueTracker = windowLayoutParams.screenBrightness
+                        if (swipeGestureValueTracker < 0f)
+                            swipeGestureValueTracker = System.getFloat(contentResolver, System.SCREEN_BRIGHTNESS) / 255
+                    }
+
+                    swipeGestureValueTracker += ratioChange
+
+                    val toSet = swipeGestureValueTracker.coerceIn(0f, 1f)
+                    window.attributes = windowLayoutParams.apply {
+                        screenBrightness = toSet
+                    }
+
+                    gestureIndicatorOverlayImage.setImageResource(R.drawable.ic_brightness_white_24dp)
+                    gestureIndicatorOverlayProgress.max = 100
+                    gestureIndicatorOverlayProgress.progress = (toSet * 100).toInt()
+                }
+
+                // Show gesture indicator
+                gestureIndicatorOverlayLayout.isVisible = true
+
+                return true
+            }
         })
+
         playerView.setOnTouchListener { _, event ->
             if (playerView.useController) gestureDetector.onTouchEvent(event) else unlockDetector.onTouchEvent(event)
+            if (event.action == MotionEvent.ACTION_UP) {
+                // Hide gesture indicator after timeout, if shown
+                gestureIndicatorOverlayLayout.apply {
+                    if (isVisible) {
+                        removeCallbacks(hideGestureIndicatorOverlayAction)
+                        postDelayed(hideGestureIndicatorOverlayAction, DEFAULT_CENTER_OVERLAY_TIMEOUT_MS.toLong())
+                    }
+                }
+                swipeGestureValueTracker = -1f
+            }
             true
         }
     }
