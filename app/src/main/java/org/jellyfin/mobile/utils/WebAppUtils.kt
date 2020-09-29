@@ -7,11 +7,14 @@ import java.io.IOException
 
 const val JS_INJECTION_CODE = """
 !function() {
+    window['appMode'] = 'android';
+    
     var scripts = [
         '/native/nativeshell.js',
         '/native/EventEmitter.js',
         '/native/chrome.cast.js',
     ];
+    
     scripts.forEach(function(src) {
         var scriptElement = document.createElement('script');
         scriptElement.type = 'text/javascript';
