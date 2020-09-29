@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="playback_info_video_streams"></string>
-    <string name="pref_category_music_player"></string>
-    <string name="pref_category_video_player"></string>
+    <string name="playback_info_video_streams"/>
+    <string name="pref_category_music_player">Luajtësi i Muzikës</string>
+    <string name="pref_category_video_player"/>
     <string name="activity_name_settings">Cilësimet e Jellyfin</string>
     <string name="external_player_unknown_error">Një gabim i panjohur në player-in e jashtëm. Gjurmimi i luajtjes është çaktivizuar.</string>
     <string name="external_player_invalid_player">Nuk është zgjedhur asnjë player i jashtëm. Gjurmimi i luajtjes është çaktivizuar.</string>
@@ -33,4 +33,9 @@
     <string name="connection_error_invalid_format">Host ka një format të pavlefshëm</string>
     <string name="host_input_hint">Host</string>
     <string name="connect_to_server_title">Lidhu me serverin</string>
+    <string name="pref_exoplayer_allow_background_audio">Lejo të luhet audio në sfond tek luajtësi mëmë</string>
+    <string name="video_player_native_description">I bazuar në ExoPlayer, mbështet më shumë video formate dhe kodues, dhe është më i integruar në SO</string>
+    <string name="video_player_external">Luajtës i jashtëm</string>
+    <string name="available_servers_title">Server të disponueshem</string>
+    <string name="choose_server_button_text">Zgjidh server</string>
 </resources>
