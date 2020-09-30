@@ -44,4 +44,6 @@
     <string name="choose_server_button_text">Выбрать сервер</string>
     <string name="connection_error_cannot_connect">Невозможно установить соединение.
 \nПроверьте имя узла и сетевое соединение.</string>
+    <string name="external_player_not_supported_yet">Отслеживание воспроизведения пока не поддерживается выбранным внешним проигрывателем. Свяжитесь с разработчиками, чтобы попытаться добавить поддержку для него.</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Управление жестами яркостью и громкостью во встроенном проигрывателе</string>
 </resources>
