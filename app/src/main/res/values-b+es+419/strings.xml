@@ -47,4 +47,5 @@
     <string name="download_no_storage_permission">No se puede descargar archivos sin permisos de almacenamiento</string>
     <string name="available_servers_title">Servidores disponibles</string>
     <string name="choose_server_button_text">Seleccionar servidor</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Permitir gestos para control de brillo y volumen en reproductor nativo</string>
 </resources>
