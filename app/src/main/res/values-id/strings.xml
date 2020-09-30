@@ -45,4 +45,7 @@
     <string name="external_player_invalid_player">Tidak ada pemutar eksternal valid yang dipilih. Pelacakan pemutaran dinonaktifkan.</string>
     <string name="external_player_not_supported_yet">Pelacakan pemutaran belum didukung di pemutar eksternal yang dipilih. Hubungi pengembang untuk mencoba menambahkan dukungan untuknya.</string>
     <string name="external_player_invalid_play_method">Metode putar tidak valid.</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Izinkan kecerahan dan gerakan volume di pemutar asli</string>
+    <string name="available_servers_title">Server yang tersedia</string>
+    <string name="choose_server_button_text">Pilih server</string>
 </resources>
