@@ -39,4 +39,12 @@
     <string name="video_player_native">Reprodutor Nativo</string>
     <string name="video_player_web">Reprodutor Web</string>
     <string name="pref_video_player_type_title">Tipo de reprodutor de Vídeo</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Habilitar controle de brilho e volume através de gestos no reprodutor de video padrão</string>
+    <string name="video_player_external_description">Reprodutores de vídeo externos, como MX Player e VLC</string>
+    <string name="video_player_native_description">Baseado no ExoPlayer, suporta mais formatos de vídeo e codecs, e é mais integrado ao sistema operacional</string>
+    <string name="video_player_web_description">O vídeo player HTML padrão da interface web</string>
+    <string name="external_player_unknown_error">Erro desconhecido no player externo. O rastreamento da reprodução foi desabilitado.</string>
+    <string name="external_player_invalid_player">Nenhum player externo válido foi selecionado. O rastreamento da reprodução foi desabilitado.</string>
+    <string name="available_servers_title">Servidores disponíveis</string>
+    <string name="choose_server_button_text">Selecionar servidor</string>
 </resources>
