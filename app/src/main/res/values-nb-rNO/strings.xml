@@ -44,4 +44,8 @@
     <string name="pref_video_player_type_title">Videospiller type</string>
     <string name="available_servers_title">Tilgjengelige tjenere</string>
     <string name="choose_server_button_text">Velg tjener</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Tillat lysstyrke- og volumbevegelser i den opprinnelige spilleren</string>
+    <string name="external_player_unknown_error">Ukjent feil i ekstern spiller. Avspillingssporing er deaktivert.</string>
+    <string name="external_player_invalid_player">Ingen gyldig ekstern spiller valgt. Avspillingssporing er deaktivert.</string>
+    <string name="external_player_not_supported_yet">Avspillingssporing støttes ikke i valgt ekstern spiller ennå. Kontakt utviklere for å prøve å legge til støtte for det.</string>
 </resources>
