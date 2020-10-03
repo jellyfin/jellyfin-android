@@ -47,4 +47,5 @@
     <string name="pref_video_player_type_title">视频播放器类型</string>
     <string name="available_servers_title">现存服务器</string>
     <string name="choose_server_button_text">选择服务器</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">允许在原生播放器中使用手势以调节亮度和音量</string>
 </resources>
