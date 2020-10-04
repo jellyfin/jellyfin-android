@@ -11,7 +11,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
-import android.media.*
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.media.MediaMetadata
+import android.media.Rating
 import android.media.session.MediaController
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
@@ -32,8 +35,6 @@ import kotlinx.coroutines.launch
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.bridge.Commands
-import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.EXTRA_ALBUM
 import org.jellyfin.mobile.utils.Constants.EXTRA_ARTIST
@@ -53,8 +54,6 @@ import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_PLAY_PAUSE
 import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_PREVIOUS
 import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_REWIND
 import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_STOP
-import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_VOL_DOWN
-import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_VOL_UP
 import org.jellyfin.mobile.utils.Constants.MEDIA_NOTIFICATION_CHANNEL_ID
 import org.jellyfin.mobile.utils.Constants.MUSIC_PLAYER_NOTIFICATION_ID
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS
@@ -75,6 +74,8 @@ class RemotePlayerService : Service(), CoroutineScope {
     private val imageLoader: ImageLoader by inject()
 
     private val binder = ServiceBinder(this)
+    private val webappFunctionChannel: WebappFunctionChannel by inject()
+    private val remoteVolumeProvider: RemoteVolumeProvider by inject()
     private lateinit var wakeLock: PowerManager.WakeLock
 
     private var mediaSession: MediaSession? = null
@@ -95,10 +96,10 @@ class RemotePlayerService : Service(), CoroutineScope {
                 AudioManager.ACTION_HEADSET_PLUG -> {
                     val state = intent.getIntExtra("state", 2)
                     if (state == 0) {
-                        binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
+                        webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
                         headphoneFlag = true
                     } else if (headphoneFlag) {
-                        binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
+                        webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
                     }
                 }
                 BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED -> {
@@ -106,7 +107,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                     val state = extras.getInt(BluetoothA2dp.EXTRA_STATE)
                     val previousState = extras.getInt(BluetoothA2dp.EXTRA_PREVIOUS_STATE)
                     if ((state == BluetoothA2dp.STATE_DISCONNECTED || state == BluetoothA2dp.STATE_DISCONNECTING) && previousState == BluetoothA2dp.STATE_CONNECTED) {
-                        binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PAUSE)
+                        webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_PAUSE)
                     }
                 }
                 BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED -> {
@@ -114,7 +115,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                     val state = extras.getInt(BluetoothHeadset.EXTRA_STATE)
                     val previousState = extras.getInt(BluetoothHeadset.EXTRA_PREVIOUS_STATE)
                     if (state == BluetoothHeadset.STATE_AUDIO_DISCONNECTED && previousState == BluetoothHeadset.STATE_AUDIO_CONNECTED) {
-                        binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PAUSE)
+                        webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_PAUSE)
                     }
                 }
             }
@@ -242,7 +243,7 @@ class RemotePlayerService : Service(), CoroutineScope {
             if (isLocalPlayer) {
                 mediaSession.applyDefaultLocalAudioAttributes(AudioAttributes.CONTENT_TYPE_MUSIC)
             } else {
-                mediaSession.setPlaybackToRemote(binder.remoteVolumeProvider)
+                mediaSession.setPlaybackToRemote(remoteVolumeProvider)
             }
 
             val supportsNativeSeek = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
@@ -345,36 +346,36 @@ class RemotePlayerService : Service(), CoroutineScope {
             setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS or MediaSession.FLAG_HANDLES_MEDIA_BUTTONS)
             setCallback(object : MediaSession.Callback() {
                 override fun onPlay() {
-                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
+                    webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
                 }
 
                 override fun onPause() {
-                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
+                    webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
                 }
 
                 override fun onSkipToPrevious() {
-                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_PREVIOUS)
+                    webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_PREVIOUS)
                 }
 
                 override fun onSkipToNext() {
-                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_NEXT)
+                    webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_NEXT)
                 }
 
                 override fun onRewind() {
-                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_REWIND)
+                    webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_REWIND)
                 }
 
                 override fun onFastForward() {
-                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_FAST_FORWARD)
+                    webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_FAST_FORWARD)
                 }
 
                 override fun onStop() {
-                    binder.sendInputManagerCommand(INPUT_MANAGER_COMMAND_STOP)
+                    webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_STOP)
                     onStopped()
                 }
 
                 override fun onSeekTo(pos: Long) {
-                    binder.sendSeekCommand(pos)
+                    webappFunctionChannel.seekTo(pos)
                     val currentState = playbackState ?: return
                     val isPlaying = currentState.state == PlaybackState.STATE_PLAYING
                     val canSeek = (currentState.actions and PlaybackState.ACTION_SEEK_TO) != 0L
@@ -403,41 +404,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     class ServiceBinder(private val service: RemotePlayerService) : Binder() {
-        var webViewController: WebViewController? = null
-
         val isPlaying: Boolean
             get() = service.playbackState?.state == PlaybackState.STATE_PLAYING
-
-        val remoteVolumeProvider = object : VolumeProvider(VOLUME_CONTROL_ABSOLUTE, 100, 0) {
-            override fun onAdjustVolume(direction: Int) {
-                when (direction) {
-                    AudioManager.ADJUST_RAISE -> {
-                        sendInputManagerCommand(INPUT_MANAGER_COMMAND_VOL_UP)
-                        currentVolume += 2 // TODO: have web notify app with new volume instead
-                    }
-                    AudioManager.ADJUST_LOWER -> {
-                        sendInputManagerCommand(INPUT_MANAGER_COMMAND_VOL_DOWN)
-                        currentVolume -= 2 // TODO: have web notify app with new volume instead
-                    }
-                }
-            }
-
-            override fun onSetVolumeTo(volume: Int) {
-                sendSetVolumeCommand(volume)
-                currentVolume = volume // TODO: have web notify app with new volume instead
-            }
-        }
-
-        fun sendInputManagerCommand(action: String) {
-            webViewController?.triggerInputManagerAction(action)
-        }
-
-        fun sendSeekCommand(pos: Long) {
-            webViewController?.loadUrl(Commands.buildInputManagerCommand("trigger('seek', $pos)"))
-        }
-
-        fun sendSetVolumeCommand(value: Int) {
-            webViewController?.loadUrl(Commands.buildPlaybackManagerCommand("sendCommand({Name:'SetVolume', Arguments:{Volume:$value}})"))
-        }
     }
 }

@@ -4,24 +4,29 @@ import android.app.Activity
 import android.content.Intent
 import android.webkit.JavascriptInterface
 import android.widget.Toast
-import org.jellyfin.mobile.MainActivity
+import androidx.appcompat.app.AppCompatActivity
+import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.toast
+import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.json.JSONException
 import org.json.JSONObject
 import org.koin.core.KoinComponent
+import org.koin.core.inject
 import timber.log.Timber
 
-class ExternalPlayer(private val activity: MainActivity) : KoinComponent {
+class ExternalPlayer(private val activity: AppCompatActivity) : KoinComponent {
+    private val appPreferences: AppPreferences by inject()
+    private val webappFunctionChannel: WebappFunctionChannel by inject()
 
     private var mediaSource: JellyfinMediaSource? = null
     private var playerIntent: Intent? = null
 
     @JavascriptInterface
-    fun isEnabled() = activity.appPreferences.videoPlayerType == VideoPlayerType.EXTERNAL_PLAYER
+    fun isEnabled() = appPreferences.videoPlayerType == VideoPlayerType.EXTERNAL_PLAYER
 
     @JavascriptInterface
     fun initPlayer(args: String) {
@@ -50,7 +55,7 @@ class ExternalPlayer(private val activity: MainActivity) : KoinComponent {
     private fun notifyEvent(event: String, parameters: String = "") {
         if (event in arrayOf(Constants.EVENT_CANCELED, Constants.EVENT_ENDED, Constants.EVENT_TIME_UPDATE) && parameters == parameters.filter { it.isDigit() }) {
             activity.runOnUiThread {
-                activity.loadUrl("javascript:window.ExtPlayer.notify$event($parameters)")
+                webappFunctionChannel.call("window.ExtPlayer.notify$event($parameters)")
             }
         }
     }

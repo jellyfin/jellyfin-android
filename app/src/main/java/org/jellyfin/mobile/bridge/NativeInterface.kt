@@ -28,12 +28,16 @@ import org.jellyfin.mobile.utils.disableFullscreen
 import org.jellyfin.mobile.utils.enableFullscreen
 import org.jellyfin.mobile.utils.requestDownload
 import org.jellyfin.mobile.webapp.RemotePlayerService
+import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import timber.log.Timber
 
-class NativeInterface(private val activity: MainActivity) {
+class NativeInterface(private val activity: MainActivity) : KoinComponent {
+    private val webappFunctionChannel: WebappFunctionChannel by inject()
 
     @SuppressLint("HardwareIds")
     @JavascriptInterface
@@ -157,7 +161,7 @@ class NativeInterface(private val activity: MainActivity) {
         activity.chromecast.execute(action, JSONArray(args), object : JavascriptCallback() {
             override fun callback(keep: Boolean, err: String?, result: String?) {
                 activity.runOnUiThread {
-                    activity.loadUrl("""javascript:window.NativeShell.castCallback("$action", $keep, $err, $result);""")
+                    webappFunctionChannel.call("""window.NativeShell.castCallback("$action", $keep, $err, $result);""")
                 }
             }
         })

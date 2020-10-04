@@ -23,10 +23,8 @@ import androidx.core.view.updateMargins
 import androidx.lifecycle.lifecycleScope
 import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebViewClientCompat
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import org.jellyfin.apiclient.interaction.ApiClient
-import org.jellyfin.mobile.bridge.Commands.triggerInputManagerAction
 import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.bridge.NativeInterface
 import org.jellyfin.mobile.bridge.NativePlayer
@@ -35,23 +33,24 @@ import org.jellyfin.mobile.utils.*
 import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_BACK
 import org.jellyfin.mobile.webapp.ConnectionHelper
 import org.jellyfin.mobile.webapp.RemotePlayerService
-import org.jellyfin.mobile.webapp.WebViewController
+import org.jellyfin.mobile.webapp.RemoteVolumeProvider
+import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.json.JSONException
 import org.json.JSONObject
 import org.koin.android.ext.android.inject
-import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.io.Reader
 import java.util.*
 
-class MainActivity : AppCompatActivity(), WebViewController {
-    val appPreferences: AppPreferences by inject()
+class MainActivity : AppCompatActivity() {
     val apiClient: ApiClient by inject()
-    val permissionRequestHelper: PermissionRequestHelper by inject()
+    val appPreferences: AppPreferences by inject()
     val chromecast = Chromecast()
     private val connectionHelper = ConnectionHelper(this)
+    private val permissionRequestHelper: PermissionRequestHelper by inject()
     private val externalPlayer = ExternalPlayer(this@MainActivity)
-    private val webappFunctionChannel: Channel<String> by inject(named(WEBAPP_FUNCTION_CHANNEL))
+    private val webappFunctionChannel: WebappFunctionChannel by inject()
+    private val remoteVolumeProvider: RemoteVolumeProvider by inject()
 
     val rootView: CoordinatorLayout by lazyView(R.id.root_view)
     val webView: WebView by lazyView(R.id.web_view)
@@ -61,12 +60,9 @@ class MainActivity : AppCompatActivity(), WebViewController {
     private val serviceConnection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
             serviceBinder = binder as? RemotePlayerService.ServiceBinder
-            serviceBinder?.run { webViewController = this@MainActivity }
         }
 
-        override fun onServiceDisconnected(componentName: ComponentName) {
-            serviceBinder?.run { webViewController = null }
-        }
+        override fun onServiceDisconnected(componentName: ComponentName) {}
     }
 
     private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(this) }
@@ -191,12 +187,12 @@ class MainActivity : AppCompatActivity(), WebViewController {
         addJavascriptInterface(externalPlayer, "ExternalPlayer")
     }
 
-    override fun loadUrl(url: String) {
+    fun loadUrl(url: String) {
         if (connectionHelper.connected) webView.loadUrl(url)
     }
 
     fun updateRemoteVolumeLevel(value: Int) {
-        serviceBinder?.run { remoteVolumeProvider.currentVolume = value }
+        remoteVolumeProvider.currentVolume = value
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -215,7 +211,7 @@ class MainActivity : AppCompatActivity(), WebViewController {
     override fun onBackPressed() {
         when {
             !connectionHelper.connected -> super.onBackPressed()
-            !connectionHelper.onBackPressed() -> triggerInputManagerAction(INPUT_MANAGER_COMMAND_BACK)
+            !connectionHelper.onBackPressed() -> webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_BACK)
         }
     }
 
@@ -226,7 +222,6 @@ class MainActivity : AppCompatActivity(), WebViewController {
 
     override fun onDestroy() {
         unbindService(serviceConnection)
-        serviceBinder?.webViewController = null
         chromecast.destroy()
         webView.destroy()
         super.onDestroy()

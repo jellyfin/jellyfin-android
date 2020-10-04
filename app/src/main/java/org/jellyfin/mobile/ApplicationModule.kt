@@ -11,20 +11,19 @@ import org.jellyfin.mobile.api.TimberLogger
 import org.jellyfin.mobile.player.PlayerEvent
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
+import org.jellyfin.mobile.webapp.RemoteVolumeProvider
+import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 const val PLAYER_EVENT_CHANNEL = "PlayerEventChannel"
-const val WEBAPP_FUNCTION_CHANNEL = "WebAppFunctionChannel"
 
 val applicationModule: Module = module {
     single { AppPreferences(androidApplication()) }
     single { OkHttpClient() }
     single { ImageLoader(androidApplication()) }
-    single(named(PLAYER_EVENT_CHANNEL)) { Channel<PlayerEvent>() }
-    single(named(WEBAPP_FUNCTION_CHANNEL)) { Channel<String>() }
     single {
         Jellyfin {
             appInfo = AppInfo(Constants.APP_INFO_NAME, Constants.APP_INFO_VERSION)
@@ -36,4 +35,7 @@ val applicationModule: Module = module {
         get<Jellyfin>().createApi(device = AndroidDevice.fromContext(androidApplication()))
     }
     single { PermissionRequestHelper() }
+    single { WebappFunctionChannel() }
+    single { RemoteVolumeProvider(get()) }
+    single(named(PLAYER_EVENT_CHANNEL)) { Channel<PlayerEvent>() }
 }
