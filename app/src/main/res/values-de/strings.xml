@@ -47,4 +47,5 @@
     <string name="pref_video_player_type_title">Typ des Videoplayers</string>
     <string name="available_servers_title">Verfügbare Server</string>
     <string name="choose_server_button_text">Server auswählen</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Helligkeits- und Lautstärkegesten im nativen Player zulassen</string>
 </resources>
