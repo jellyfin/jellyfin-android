@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="wifi_only">WiFi 전용</string>
-    <string name="downloading">다운로드</string>
+    <string name="downloading">다운로드 중</string>
     <string name="mobile_data_and_roaming">모바일 데이터 &amp; 로밍</string>
     <string name="mobile_data">모바일 데이터</string>
     <string name="network_message">모바일 데이터 혹은 로밍 네트워크를 사용하여 다운로드하는 것을 허용하겠습니까\?</string>
@@ -11,10 +11,10 @@
     <string name="host_input_hint">호스트</string>
     <string name="connect_to_server_title">서버에 연결</string>
     <string name="battery_optimizations_message">화면이 꺼졌을 때의 미디어 재생을 위해 배터리 최적화 비활성화 해주십시오.</string>
-    <string name="pref_exoplayer_allow_background_audio">백그라운드에서 오디오 재생을 허용</string>
+    <string name="pref_exoplayer_allow_background_audio">자체 플레이어에서 백그라운드에서 오디오 재생을 허용</string>
     <string name="pref_enable_exoplayer_summary">더 많은 비디오 포맷과 코덱을 지원하고 OS에 더욱 integrated되어 있는 아직 실험적인 ExoPlayer 비디오 플레이어를 활성화합니다</string>
     <string name="pref_enable_exoplayer_title">비디오 플레이어 통합 활성화</string>
-    <string name="pref_category_video_player">네이티브 비디오 플레이어</string>
+    <string name="pref_category_video_player">비디오 재생기</string>
     <string name="pref_music_notification_always_dismissible_title">음악 플레이어 알림을 언제나 지울 수 있도록 만듭니다</string>
     <string name="pref_category_music_player">음악 플레이어</string>
     <string name="activity_name_settings">젤리핀 설정</string>
@@ -34,4 +34,18 @@
     <string name="connection_error_cannot_connect">연결할 수 없습니다. 
 \n호스트명과 네트워크 연결을 다시 확인해주세요.</string>
     <string name="video_player_external">외부 플레이어</string>
+    <string name="external_player_unknown_error">외부 플레이어에서 알 수 없는 에러가 발생했습니다. 재생 구간 추적이 비활성화되었습니다.</string>
+    <string name="external_player_invalid_player">적절한 외부 플레이어가 선택되지 않았습니다. 재생 구간 추적이 비활성화되었습니다.</string>
+    <string name="external_player_not_supported_yet">선택한 외부 플레이어에서 재생 구간 추적이 지원되지 않습니다. 해당 앱 개발자에게 문의해보세요.</string>
+    <string name="external_player_invalid_play_method">잘못된 재생 방법입니다.</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">자체 플레이어에서 밝기와 볼륨 제스처를 허용</string>
+    <string name="video_player_external_description">MX Player나 VLC와 같은 외부 비디오 재생 앱</string>
+    <string name="video_player_native_description">ExoPlayer 기반의 OS와 더 잘 통합된 플레이어. 더 많은 비디오 포맷과 코덱을 지원합니다</string>
+    <string name="video_player_web_description">웹 UI에서 제공하는 기본 HTML 비디오 플레이어</string>
+    <string name="video_player_native">자체 플레이어</string>
+    <string name="video_player_web">웹 플레이어</string>
+    <string name="pref_video_player_type_title">비디오 재생기 종류</string>
+    <string name="download_no_storage_permission">저장소 권한 없이 파일을 다운로드할 수 없습니다</string>
+    <string name="available_servers_title">접속 가능한 서버</string>
+    <string name="choose_server_button_text">서버 선택</string>
 </resources>
