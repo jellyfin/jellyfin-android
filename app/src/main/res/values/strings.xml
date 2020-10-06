@@ -9,7 +9,7 @@
 
     <string name="battery_optimizations_message">Please disable battery optimizations for media playback while the screen is off.</string>
     <string name="network_title">Allowed Network Types</string>
-    <string name="network_message">Do you want to allow the download to run over mobile data or roaming networks?</string>
+    <string name="network_message">Do you want to allow the download to run over mobile data or roaming networks? Charges from your provider may apply.</string>
     <string name="wifi_only">WiFi Only</string>
     <string name="mobile_data">Mobile Data</string>
     <string name="mobile_data_and_roaming">Mobile Data &amp; Roaming</string>
