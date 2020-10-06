@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="downloading">Descargando</string>
-    <string name="mobile_data_and_roaming">Datos móviles y roaming</string>
-    <string name="mobile_data">Datos Móviles</string>
+    <string name="mobile_data_and_roaming">Datos móviles e itinerancia</string>
+    <string name="mobile_data">Datos móviles</string>
     <string name="wifi_only">Solo WiFi</string>
-    <string name="network_message">¿Desea permitir que la descarga se ejecute a través de datos móviles o redes móviles\?</string>
+    <string name="network_message">¿Deseas permitir la descarga a través de datos móviles o itinerancia\? Tu operador puede realizar cargos adicionales</string>
     <string name="network_title">Tipo de redes permitidas</string>
-    <string name="battery_optimizations_message">Por favor deshabilita la optimización de la batería para la reproducción de medios mientras la pantalla está apagada.</string>
+    <string name="battery_optimizations_message">Desactiva el ahorro de energía para Jellyfin en los ajustes del sistema a fin de poder reproducir contenido mientras la pantalla está apagada.</string>
     <string name="connection_error_invalid_format">El host tiene un formato inválido</string>
-    <string name="connect_button_text">Conectado</string>
-    <string name="connect_to_server_title">Conectarse al Servidor</string>
+    <string name="connect_button_text">Conectar</string>
+    <string name="connect_to_server_title">Conectarse al servidor</string>
     <string name="playback_info_transcoding">Transcodificación: %b</string>
     <string name="playback_info_play_method">Método de reproducción: %s</string>
     <string name="menu_item_none">Ninguno</string>
