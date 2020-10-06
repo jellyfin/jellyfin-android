@@ -26,7 +26,7 @@ object Dependencies {
         const val modernAndroidPreferences = "1.1.0-alpha3"
 
         // Network
-        const val apiclient = "0.7.5"
+        const val apiclient = "0.7.6"
         const val okHttp = "4.8.0"
         const val coil = "1.0.0-rc2"
 
