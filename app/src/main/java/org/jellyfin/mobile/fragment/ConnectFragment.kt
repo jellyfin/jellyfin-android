@@ -1,20 +1,23 @@
-package org.jellyfin.mobile.webapp
+package org.jellyfin.mobile.fragment
 
 import android.app.AlertDialog
+import android.os.Bundle
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.webkit.WebView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.StringRes
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.getSystemService
+import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -28,28 +31,18 @@ import org.jellyfin.apiclient.discovery.ServerDiscovery
 import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.apiclient.model.system.PublicSystemInfo
 import org.jellyfin.mobile.AppPreferences
-import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.databinding.ConnectServerBinding
-import org.jellyfin.mobile.utils.PRODUCT_NAME_SUPPORTED_SINCE
-import org.jellyfin.mobile.utils.getPublicSystemInfo
-import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.jellyfin.mobile.databinding.FragmentConnectBinding
+import org.jellyfin.mobile.utils.*
+import org.koin.android.ext.android.inject
 
-class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
-    private val appPreferences: AppPreferences get() = activity.appPreferences
+class ConnectFragment : Fragment() {
     private val jellyfin: Jellyfin by inject()
-    private val apiClient: ApiClient get() = activity.apiClient
-    private val rootView: CoordinatorLayout get() = activity.rootView
-    private val webView: WebView get() = activity.webView
+    private val apiClient: ApiClient by inject()
+    private val appPreferences: AppPreferences by inject()
 
-    var connected = false
-        private set
-
-    private val connectServerBinding: ConnectServerBinding by lazy {
-        ConnectServerBinding.inflate(activity.layoutInflater, rootView, false)
-    }
+    // UI
+    private lateinit var connectServerBinding: FragmentConnectBinding
     private val serverSetupLayout: View get() = connectServerBinding.root
     private val hostInput: EditText get() = connectServerBinding.hostInput
     private val connectionErrorText: TextView get() = connectServerBinding.connectionErrorText
@@ -58,43 +51,17 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
 
     private val serverList = ArrayList<DiscoveryServerInfo>(ServerDiscovery.DISCOVERY_MAX_SERVERS)
 
-    fun initialize() {
-        appPreferences.instanceUrl?.toHttpUrlOrNull().also { url ->
-            if (url != null) {
-                webView.loadUrl(url.toString())
-            } else {
-                showServerSetup()
-            }
-        }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        connectServerBinding = FragmentConnectBinding.inflate(inflater, container, false)
+        return serverSetupLayout.apply { applyWindowInsetsAsMargins() }
     }
 
-    fun onConnectedToWebapp() {
-        connected = true
-        activity.requestNoBatteryOptimizations()
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    fun onSelectServer() {
-        showServerSetup()
-    }
+        // Apply window insets
+        ViewCompat.requestApplyInsets(serverSetupLayout)
 
-    fun onErrorReceived() {
-        connected = false
-        showConnectionError()
-        onSelectServer()
-    }
-
-    fun onBackPressed(): Boolean {
-        if (serverSetupLayout.isAttachedToWindow) {
-            rootView.removeView(serverSetupLayout)
-            webView.isVisible = true
-            return true
-        }
-        return false
-    }
-
-    private fun showServerSetup() {
-        webView.isVisible = false
-        rootView.addView(serverSetupLayout)
         hostInput.setText(appPreferences.instanceUrl)
         hostInput.setSelection(hostInput.length())
         hostInput.setOnEditorActionListener { _, action, event ->
@@ -113,11 +80,15 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
             chooseServer()
         }
 
+        if (arguments?.getBoolean(Constants.FRAGMENT_CONNECT_EXTRA_ERROR) == true)
+            showConnectionError()
+
         // Show keyboard
         serverSetupLayout.doOnNextLayout {
             hostInput.postDelayed(25) {
                 hostInput.requestFocus()
-                activity.getSystemService<InputMethodManager>()?.showSoftInput(hostInput, InputMethodManager.SHOW_IMPLICIT)
+
+                requireContext().getSystemService<InputMethodManager>()?.showSoftInput(hostInput, InputMethodManager.SHOW_IMPLICIT)
             }
         }
 
@@ -128,16 +99,17 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
         hostInput.isEnabled = false
         connectButton.isEnabled = false
         clearConnectionError()
-        activity.lifecycleScope.launch {
+
+        lifecycleScope.launch {
             val httpUrl = checkServerUrlAndConnection(enteredUrl)
             if (httpUrl != null) {
                 appPreferences.instanceUrl = httpUrl.toString()
-                webView.clearHistory()
-                webView.loadUrl("about:blank")
-                rootView.removeView(serverSetupLayout)
-                webView.isVisible = true
-                webView.loadUrl(httpUrl.toString())
                 clearServerList()
+                with(requireActivity()) {
+                    if (supportFragmentManager.backStackEntryCount > 0)
+                        supportFragmentManager.popBackStack()
+                    replaceFragment<WebViewFragment>()
+                }
             }
             hostInput.isEnabled = true
             connectButton.isEnabled = true
@@ -145,7 +117,7 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
     }
 
     private fun discoverServers() {
-        activity.lifecycleScope.launch {
+        lifecycleScope.launch {
             jellyfin.discovery.discover().flowOn(Dispatchers.IO).collect { serverInfo ->
                 serverList.add(serverInfo)
                 chooseServerButton.isVisible = true
@@ -162,20 +134,18 @@ class ConnectionHelper(private val activity: MainActivity) : KoinComponent {
         }.show()
     }
 
+    private fun clearServerList() {
+        serverList.clear()
+        chooseServerButton.isVisible = false
+    }
+
     private fun showConnectionError(@StringRes errorString: Int = R.string.connection_error_cannot_connect) {
         connectionErrorText.setText(errorString)
         connectionErrorText.isVisible = true
-        clearServerList()
-        discoverServers()
     }
 
     private fun clearConnectionError() {
         connectionErrorText.isVisible = false
-    }
-
-    private fun clearServerList() {
-        serverList.clear()
-        chooseServerButton.isVisible = false
     }
 
     private suspend fun checkServerUrlAndConnection(enteredUrl: String): HttpUrl? {

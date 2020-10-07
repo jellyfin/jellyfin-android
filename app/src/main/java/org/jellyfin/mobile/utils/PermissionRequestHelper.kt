@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.util.SparseArray
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.util.set
 import org.koin.android.ext.android.getKoin
 import java.util.concurrent.atomic.AtomicInteger
@@ -40,8 +39,8 @@ class PermissionRequestHelper {
 typealias PermissionRequestCallback = (Map<String, Int>) -> Unit
 
 fun Activity.requestPermission(vararg permissions: String, callback: PermissionRequestCallback) {
-    val skipRequest = permissions.all {
-        ActivityCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
+    val skipRequest = permissions.all { permission ->
+        ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
     }
 
     if (skipRequest) {
@@ -50,6 +49,6 @@ fun Activity.requestPermission(vararg permissions: String, callback: PermissionR
         val helper = getKoin().get<PermissionRequestHelper>()
         val code = helper.getRequestCode()
         helper.addCallback(code, callback)
-        requestPermissions(this, permissions, code)
+        ActivityCompat.requestPermissions(this, permissions, code)
     }
 }

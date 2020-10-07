@@ -14,6 +14,7 @@ object Dependencies {
         const val appCompat = "1.1.0"
         const val androidxCore = "1.3.0"
         const val activity = "1.1.0"
+        const val fragment = "1.2.5"
         const val exoPlayer = "2.11.7"
 
         // Lifecycle
@@ -60,6 +61,8 @@ object Dependencies {
         val appCompat = androidx("appcompat", Versions.appCompat)
         val androidx = androidxKtx("core", Versions.androidxCore)
         val activity = androidxKtx("activity", Versions.activity)
+        val fragment = androidxKtx("fragment", Versions.fragment)
+        const val koinFragment = "org.koin:koin-androidx-fragment:${Versions.koin}"
         val exoPlayer = exoPlayer("core")
     }
 

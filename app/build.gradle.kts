@@ -60,6 +60,8 @@ dependencies {
     implementation(Dependencies.Core.appCompat)
     implementation(Dependencies.Core.androidx)
     implementation(Dependencies.Core.activity)
+    implementation(Dependencies.Core.fragment)
+    implementation(Dependencies.Core.koinFragment)
     implementation(Dependencies.Core.exoPlayer)
 
     // Lifecycle
