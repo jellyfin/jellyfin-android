@@ -192,7 +192,4 @@ class WebViewFragment : Fragment() {
             externalPlayer.handleActivityResult(resultCode, data)
         }
     }
-
-    @Suppress("NOTHING_TO_INLINE")
-    inline fun requireMainActivity(): MainActivity = requireActivity() as MainActivity
 }

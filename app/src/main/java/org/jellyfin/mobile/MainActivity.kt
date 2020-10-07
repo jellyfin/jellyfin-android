@@ -74,9 +74,20 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) = permissionRequestHelper.handleRequestPermissionsResult(requestCode, permissions, grantResults)
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     override fun onStop() {
         super.onStop()
         orientationListener.disable()
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else super.onBackPressed()
     }
 
     override fun onDestroy() {

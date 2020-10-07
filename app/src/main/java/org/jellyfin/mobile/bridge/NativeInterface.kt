@@ -11,8 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.jellyfin.apiclient.interaction.AndroidDevice
 import org.jellyfin.mobile.fragment.WebViewFragment
-import org.jellyfin.mobile.settings.SettingsActivity
-import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.settings.SettingsFragment
+import org.jellyfin.mobile.utils.*
 import org.jellyfin.mobile.utils.Constants.APP_INFO_NAME
 import org.jellyfin.mobile.utils.Constants.APP_INFO_VERSION
 import org.jellyfin.mobile.utils.Constants.EXTRA_ALBUM
@@ -26,9 +26,6 @@ import org.jellyfin.mobile.utils.Constants.EXTRA_ITEM_ID
 import org.jellyfin.mobile.utils.Constants.EXTRA_PLAYER_ACTION
 import org.jellyfin.mobile.utils.Constants.EXTRA_POSITION
 import org.jellyfin.mobile.utils.Constants.EXTRA_TITLE
-import org.jellyfin.mobile.utils.disableFullscreen
-import org.jellyfin.mobile.utils.requestDownload
-import org.jellyfin.mobile.utils.runOnUiThread
 import org.jellyfin.mobile.webapp.RemotePlayerService
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
@@ -153,7 +150,7 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
 
     @JavascriptInterface
     fun openClientSettings() {
-        context.startActivity(Intent(context, SettingsActivity::class.java))
+        fragment.requireActivity().addFragment<SettingsFragment>()
     }
 
     @JavascriptInterface

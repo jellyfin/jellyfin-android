@@ -1,41 +1,49 @@
 package org.jellyfin.mobile.settings
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import de.Maxr1998.modernpreferences.Preference
 import de.Maxr1998.modernpreferences.PreferencesAdapter
 import de.Maxr1998.modernpreferences.helpers.*
 import de.Maxr1998.modernpreferences.preferences.choice.SelectionItem
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.databinding.FragmentSettingsBinding
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
+import org.jellyfin.mobile.utils.requireMainActivity
+import org.jellyfin.mobile.utils.withThemedContext
 import org.koin.android.ext.android.inject
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsFragment : Fragment() {
 
     private val appPreferences: AppPreferences by inject()
     private val settingsAdapter: PreferencesAdapter by lazy { PreferencesAdapter(buildSettingsScreen()) }
     private lateinit var backgroundAudioPreference: Preference
     private lateinit var swipeGesturesPreference: Preference
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setTitle(R.string.activity_name_settings)
-        setContentView(R.layout.activity_settings)
-        setSupportActionBar(findViewById(R.id.toolbar))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
-        recyclerView.adapter = settingsAdapter
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val localInflater = inflater.withThemedContext(requireContext(), R.style.AppTheme_Settings)
+        val binding = FragmentSettingsBinding.inflate(localInflater, container, false)
+        binding.root.applyWindowInsetsAsMargins()
+        binding.toolbar.setTitle(R.string.activity_name_settings)
+        requireMainActivity().apply {
+            setSupportActionBar(binding.toolbar)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+        binding.recyclerView.adapter = settingsAdapter
+        return binding.root
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
+    override fun onDestroyView() {
+        super.onDestroyView()
+        requireMainActivity().setSupportActionBar(null)
     }
 
-    private fun buildSettingsScreen() = screen(this) {
+    private fun buildSettingsScreen() = screen(requireContext()) {
         collapseIcon = true
         categoryHeader(PREF_CATEGORY_MUSIC_PLAYER) {
             titleRes = R.string.pref_category_music_player
