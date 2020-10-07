@@ -3,6 +3,7 @@ package org.jellyfin.mobile
 import android.app.Application
 import android.webkit.WebView
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.fragment.koin.fragmentFactory
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
@@ -19,6 +20,7 @@ class JellyfinApplication : Application() {
 
         startKoin {
             androidContext(this@JellyfinApplication)
+            fragmentFactory()
             modules(applicationModule)
         }
     }

@@ -6,12 +6,25 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.graphics.Point
+import android.os.Bundle
 import android.view.Surface
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
+import androidx.core.view.ViewCompat
+import androidx.core.view.updateMargins
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.replace
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.jellyfin.mobile.R
 
 inline fun <T : View> Activity.lazyView(@IdRes id: Int) =
     lazy(LazyThreadSafetyMode.NONE) { findViewById<T>(id) }
@@ -25,6 +38,7 @@ const val FULLSCREEN_FLAGS = View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
     View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
     View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 
+@Suppress("DEPRECATION")
 fun Activity.setStableLayoutFlags() {
     window.decorView.systemUiVisibility = STABLE_LAYOUT_FLAGS
 }
@@ -70,3 +84,24 @@ inline fun Context.toast(@StringRes text: Int, duration: Int = Toast.LENGTH_SHOR
 
 inline fun Context.toast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) =
     Toast.makeText(this, text, duration).show()
+
+inline fun LifecycleOwner.runOnUiThread(noinline block: suspend CoroutineScope.() -> Unit) {
+    lifecycleScope.launch(Dispatchers.Main, block = block)
+}
+
+inline fun <reified T : Fragment> FragmentActivity.replaceFragment(args: Bundle? = null) {
+    supportFragmentManager.beginTransaction().replace<T>(R.id.fragment_container, args = args).commit()
+}
+
+fun View.applyWindowInsetsAsMargins() {
+    ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets ->
+        val layoutParams = layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.updateMargins(
+            left = insets.systemWindowInsetLeft,
+            top = insets.systemWindowInsetTop,
+            right = insets.systemWindowInsetRight,
+            bottom = insets.systemWindowInsetBottom
+        )
+        insets
+    }
+}

@@ -14,6 +14,8 @@ object Constants {
     const val SELECT_SERVER_PATH = "selectserver.html"
     const val SESSION_CAPABILITIES_PATH = "sessions/capabilities/full"
 
+    const val FRAGMENT_CONNECT_EXTRA_ERROR = "error"
+
     // Preference keys
     const val PREF_INSTANCE_URL = "pref_instance_url"
     const val PREF_IGNORE_BATTERY_OPTIMIZATIONS = "pref_ignore_battery_optimizations"

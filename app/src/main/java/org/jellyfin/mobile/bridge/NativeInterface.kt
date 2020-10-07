@@ -1,14 +1,16 @@
 package org.jellyfin.mobile.bridge
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.media.session.PlaybackState
 import android.net.Uri
 import android.webkit.JavascriptInterface
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.jellyfin.apiclient.interaction.AndroidDevice
-import org.jellyfin.mobile.MainActivity
+import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.settings.SettingsActivity
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.APP_INFO_NAME
@@ -25,9 +27,10 @@ import org.jellyfin.mobile.utils.Constants.EXTRA_PLAYER_ACTION
 import org.jellyfin.mobile.utils.Constants.EXTRA_POSITION
 import org.jellyfin.mobile.utils.Constants.EXTRA_TITLE
 import org.jellyfin.mobile.utils.disableFullscreen
-import org.jellyfin.mobile.utils.enableFullscreen
 import org.jellyfin.mobile.utils.requestDownload
+import org.jellyfin.mobile.utils.runOnUiThread
 import org.jellyfin.mobile.webapp.RemotePlayerService
+import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.json.JSONArray
 import org.json.JSONException
@@ -36,13 +39,15 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 import timber.log.Timber
 
-class NativeInterface(private val activity: MainActivity) : KoinComponent {
+class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
+    private val context: Context = fragment.requireContext()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
+    private val remoteVolumeProvider: RemoteVolumeProvider by inject()
 
     @SuppressLint("HardwareIds")
     @JavascriptInterface
     fun getDeviceInformation(): String? = try {
-        val device = AndroidDevice.fromContext(activity)
+        val device = AndroidDevice.fromContext(context)
         JSONObject().apply {
             put("deviceId", device.deviceId)
             put("deviceName", device.deviceName)
@@ -55,18 +60,22 @@ class NativeInterface(private val activity: MainActivity) : KoinComponent {
 
     @JavascriptInterface
     fun enableFullscreen(): Boolean {
-        activity.runOnUiThread {
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-            activity.enableFullscreen()
+        fragment.runOnUiThread {
+            fragment.activity?.apply {
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                enableFullscreen()
+            }
         }
         return true
     }
 
     @JavascriptInterface
     fun disableFullscreen(): Boolean {
-        activity.runOnUiThread {
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-            activity.disableFullscreen(true)
+        fragment.runOnUiThread {
+            fragment.activity?.apply {
+                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+                this.disableFullscreen(true)
+            }
         }
         return true
     }
@@ -74,7 +83,7 @@ class NativeInterface(private val activity: MainActivity) : KoinComponent {
     @JavascriptInterface
     fun openUrl(uri: String, target: String): Boolean = try {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        activity.startActivity(intent)
+        context.startActivity(intent)
         true
     } catch (e: Exception) {
         Timber.e("openIntent: %s", e.message)
@@ -89,7 +98,7 @@ class NativeInterface(private val activity: MainActivity) : KoinComponent {
             Timber.e("updateMediaSession: %s", e.message)
             return false
         }
-        val intent = Intent(activity, RemotePlayerService::class.java).apply {
+        val intent = Intent(context, RemotePlayerService::class.java).apply {
             action = Constants.ACTION_REPORT
             putExtra(EXTRA_PLAYER_ACTION, options.optString(EXTRA_PLAYER_ACTION))
             putExtra(EXTRA_ITEM_ID, options.optString(EXTRA_ITEM_ID))
@@ -103,23 +112,23 @@ class NativeInterface(private val activity: MainActivity) : KoinComponent {
             putExtra(EXTRA_IS_LOCAL_PLAYER, options.optBoolean(EXTRA_IS_LOCAL_PLAYER, true))
             putExtra(EXTRA_IS_PAUSED, options.optBoolean(EXTRA_IS_PAUSED, true))
         }
-        activity.startService(intent)
+        context.startService(intent)
         return true
     }
 
     @JavascriptInterface
     fun hideMediaSession(): Boolean {
-        val intent = Intent(activity, RemotePlayerService::class.java).apply {
+        val intent = Intent(context, RemotePlayerService::class.java).apply {
             action = Constants.ACTION_REPORT
             putExtra(EXTRA_PLAYER_ACTION, "playbackstop")
         }
-        activity.startService(intent)
+        context.startService(intent)
         return true
     }
 
     @JavascriptInterface
     fun updateVolumeLevel(value: Int) {
-        activity.updateRemoteVolumeLevel(value)
+        remoteVolumeProvider.currentVolume = value
     }
 
     @JavascriptInterface
@@ -136,19 +145,20 @@ class NativeInterface(private val activity: MainActivity) : KoinComponent {
             Timber.e("Download failed: %s", e.message)
             return false
         }
-        runBlocking {
-            activity.requestDownload(Uri.parse(url), title, filename)
+        runBlocking(Dispatchers.Main) {
+            fragment.requestDownload(Uri.parse(url), title, filename)
         }
         return true
     }
 
     @JavascriptInterface
     fun openClientSettings() {
-        activity.startActivity(Intent(activity, SettingsActivity::class.java))
+        context.startActivity(Intent(context, SettingsActivity::class.java))
     }
 
     @JavascriptInterface
     fun exitApp() {
+        val activity = fragment.requireMainActivity()
         if (activity.serviceBinder?.isPlaying == true) {
             activity.moveTaskToBack(false)
         } else {
@@ -158,11 +168,9 @@ class NativeInterface(private val activity: MainActivity) : KoinComponent {
 
     @JavascriptInterface
     fun execCast(action: String, args: String) {
-        activity.chromecast.execute(action, JSONArray(args), object : JavascriptCallback() {
+        fragment.requireMainActivity().chromecast.execute(action, JSONArray(args), object : JavascriptCallback() {
             override fun callback(keep: Boolean, err: String?, result: String?) {
-                activity.runOnUiThread {
-                    webappFunctionChannel.call("""window.NativeShell.castCallback("$action", $keep, $err, $result);""")
-                }
+                webappFunctionChannel.call("""window.NativeShell.castCallback("$action", $keep, $err, $result);""")
             }
         })
     }

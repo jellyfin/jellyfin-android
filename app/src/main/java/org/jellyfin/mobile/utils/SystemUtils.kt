@@ -16,9 +16,12 @@ import androidx.core.content.getSystemService
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
+import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.fragment.WebViewFragment
+import org.koin.android.ext.android.get
 import timber.log.Timber
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -47,49 +50,49 @@ fun MainActivity.requestNoBatteryOptimizations() {
     }
 }
 
-suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: String) {
+suspend fun WebViewFragment.requestDownload(uri: Uri, title: String, filename: String) {
+    val appPreferences: AppPreferences = get()
+
     // Storage permission for downloads isn't necessary from Android 10 onwards
     if (Build.VERSION.SDK_INT <= 28) {
         val granted = withTimeout(2 * 60 * 1000 /* 2 minutes */) {
             suspendCoroutine<Boolean> { continuation ->
-                requestPermission(WRITE_EXTERNAL_STORAGE) { requestPermissionsResult ->
+                requireActivity().requestPermission(WRITE_EXTERNAL_STORAGE) { requestPermissionsResult ->
                     continuation.resume(requestPermissionsResult[WRITE_EXTERNAL_STORAGE] == PERMISSION_GRANTED)
                 }
             }
         }
 
         if (!granted) {
-            toast(R.string.download_no_storage_permission)
+            requireContext().toast(R.string.download_no_storage_permission)
             return
         }
     }
 
     val downloadMethod = appPreferences.downloadMethod ?: suspendCancellableCoroutine { continuation ->
-        runOnUiThread {
-            AlertDialog.Builder(this)
-                .setTitle(R.string.network_title)
-                .setMessage(R.string.network_message)
-                .setNegativeButton(R.string.wifi_only) { _, _ ->
-                    val selectedDownloadMethod = DownloadMethod.WIFI_ONLY
-                    appPreferences.downloadMethod = selectedDownloadMethod
-                    continuation.resume(selectedDownloadMethod)
-                }
-                .setPositiveButton(R.string.mobile_data) { _, _ ->
-                    val selectedDownloadMethod = DownloadMethod.MOBILE_DATA
-                    appPreferences.downloadMethod = selectedDownloadMethod
-                    continuation.resume(selectedDownloadMethod)
-                }
-                .setPositiveButton(R.string.mobile_data_and_roaming) { _, _ ->
-                    val selectedDownloadMethod = DownloadMethod.MOBILE_AND_ROAMING
-                    appPreferences.downloadMethod = selectedDownloadMethod
-                    continuation.resume(selectedDownloadMethod)
-                }
-                .setOnDismissListener {
-                    continuation.cancel(null)
-                }
-                .setCancelable(false)
-                .show()
-        }
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.network_title)
+            .setMessage(R.string.network_message)
+            .setNegativeButton(R.string.wifi_only) { _, _ ->
+                val selectedDownloadMethod = DownloadMethod.WIFI_ONLY
+                appPreferences.downloadMethod = selectedDownloadMethod
+                continuation.resume(selectedDownloadMethod)
+            }
+            .setPositiveButton(R.string.mobile_data) { _, _ ->
+                val selectedDownloadMethod = DownloadMethod.MOBILE_DATA
+                appPreferences.downloadMethod = selectedDownloadMethod
+                continuation.resume(selectedDownloadMethod)
+            }
+            .setPositiveButton(R.string.mobile_data_and_roaming) { _, _ ->
+                val selectedDownloadMethod = DownloadMethod.MOBILE_AND_ROAMING
+                appPreferences.downloadMethod = selectedDownloadMethod
+                continuation.resume(selectedDownloadMethod)
+            }
+            .setOnDismissListener {
+                continuation.cancel(null)
+            }
+            .setCancelable(false)
+            .show()
     }
 
     val downloadRequest = DownloadManager.Request(uri)
@@ -98,7 +101,7 @@ suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: Stri
         .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
         .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
 
-    downloadFile(downloadRequest, downloadMethod)
+    requireContext().downloadFile(downloadRequest, downloadMethod)
 }
 
 private fun Context.downloadFile(request: DownloadManager.Request, @DownloadMethod downloadMethod: Int) {
