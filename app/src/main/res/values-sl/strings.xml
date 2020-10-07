@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">Mobilni podatki in gostovanje</string>
     <string name="mobile_data">Mobilni podatki</string>
     <string name="wifi_only">Samo WiFi</string>
-    <string name="network_message">Ali želite omogočiti prenos prek mobilnih podatkov ali v gostovanju\?</string>
+    <string name="network_message">Ali želite omogočiti prenos prek mobilnih podatkov ali v gostovanju\? Stroški utegnejo biti veliki.</string>
     <string name="network_title">Dovoljene vrste omrežja</string>
     <string name="battery_optimizations_message">Prosimo onemogočite optimizacijo akumulatorja za predvajanje predstavnosti pri izklopljenem zaslonu.</string>
     <string name="connection_error_invalid_format">Napačen format naslova</string>
@@ -22,7 +22,7 @@
     <string name="playback_info_play_method">Način predvajanja: %s</string>
     <string name="connection_error_cannot_connect">Povezave ni mogoče vzpostaviti.
 \nPreverite naslov in vašo internetno povezavo.</string>
-    <string name="pref_exoplayer_allow_background_audio">Omogoči predvajanje zvoka v ozadju z native predvajalnikom</string>
+    <string name="pref_exoplayer_allow_background_audio">Omogoči predvajanje zvoka v ozadju z vgrajenim predvajalnikom</string>
     <string name="video_player_external_description">Zunanji predvajalniki, na premer aplikacije MX Player in VLC</string>
     <string name="video_player_native_description">Temelji na ExoPlayer, podpira več video formatov in kodekov ter je bolj integriran z operacijskim sistemom</string>
     <string name="video_player_web_description">Privzeti HTML video predvajalnik iz spletnega vmesnika</string>
@@ -47,4 +47,5 @@
     <string name="playback_info_audio_streams">Zvočne sledi</string>
     <string name="playback_info_video_streams">Video sledi</string>
     <string name="video_player_native">Vgrajeni predvajalnik</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Dovoli poteze za svetlost in glasnost v vgrajenem predvajalniku</string>
 </resources>
