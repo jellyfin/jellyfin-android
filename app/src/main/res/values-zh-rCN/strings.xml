@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">移动数据或漫游</string>
     <string name="mobile_data">移动数据</string>
     <string name="wifi_only">仅使用WiFi</string>
-    <string name="network_message">您是否允许使用移动数据或漫游网络下载？</string>
+    <string name="network_message">您是否允许使用移动数据或漫游网络下载？您的运营商可能会收取费用。</string>
     <string name="network_title">允许的网络连接类型</string>
     <string name="downloading">下载中</string>
     <string name="connection_error_invalid_format">主机格式无效</string>
