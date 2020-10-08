@@ -1,2 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="download_no_storage_permission">Kan inte ladda ner filer utan lagringsrättigheter</string>
+    <string name="video_player_external">Extern spelare</string>
+    <string name="video_player_native">Inbyggd spelare</string>
+    <string name="video_player_web">Webbspelare</string>
+    <string name="pref_category_video_player">Videospelare</string>
+    <string name="pref_category_music_player">Musikspelare</string>
+    <string name="activity_name_settings">Jellyfin inställningar</string>
+    <string name="playback_info_audio_streams">Ljudströmmar</string>
+    <string name="playback_info_video_streams">Videoströmmar</string>
+    <string name="playback_info_transcoding">Omkodning: %b</string>
+    <string name="playback_info_play_method">Spel metod: %s</string>
+    <string name="menu_item_none">Inga</string>
+    <string name="notification_action_stop">Stopp</string>
+    <string name="notification_action_next">Nästa</string>
+    <string name="notification_action_fast_forward">Snabbspola</string>
+    <string name="notification_action_pause">Pausa</string>
+    <string name="notification_action_play">Spela</string>
+    <string name="notification_action_rewind">Spola tillbaka</string>
+    <string name="notification_action_previous">Föregående</string>
+    <string name="downloading">Laddar ner</string>
+    <string name="mobile_data_and_roaming">Mobildata och roaming</string>
+    <string name="mobile_data">Mobildata</string>
+    <string name="wifi_only">Bara WiFi</string>
+    <string name="network_title">Tillåtna nätverkstyper</string>
+    <string name="available_servers_title">Tillgänliga servrar</string>
+    <string name="choose_server_button_text">Välj server</string>
+    <string name="connect_button_text">Anslut</string>
+    <string name="connection_error_invalid_format">Fel format på host</string>
+    <string name="host_input_hint">Host</string>
+    <string name="connect_to_server_title">Anslut till server</string>
+</resources>
