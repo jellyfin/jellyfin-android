@@ -30,4 +30,11 @@
     <string name="connection_error_invalid_format">Fel format på host</string>
     <string name="host_input_hint">Host</string>
     <string name="connect_to_server_title">Anslut till server</string>
+    <string name="external_player_unknown_error">Okänt fel i extern uppspelare. Uppspelningsspårning är inaktiverad.</string>
+    <string name="external_player_invalid_player">Ingen giltig extern uppspelare har valts. Uppspelningsspårning är inaktiverad.</string>
+    <string name="external_player_invalid_play_method">Felaktig uppspelningsmetod.</string>
+    <string name="network_message">Vill du tillåta nedladdningen att använda mobildata eller roamingnätverk\? Avgifter från din leverantör kan tillkomma.</string>
+    <string name="battery_optimizations_message">Var god och inaktivera batterioptimeringar för att kunna spela upp media medans skärmen är avslagen.</string>
+    <string name="connection_error_cannot_connect">Anslutningen kan inte upprättas.
+\nVar god kontrollera servernamnet och din nätverksanslutning.</string>
 </resources>
