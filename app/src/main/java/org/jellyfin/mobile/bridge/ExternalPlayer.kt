@@ -3,6 +3,7 @@ package org.jellyfin.mobile.bridge
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.webkit.JavascriptInterface
 import android.widget.Toast
 import org.jellyfin.mobile.AppPreferences
@@ -25,8 +26,6 @@ class ExternalPlayer(private val fragment: WebViewFragment) : KoinComponent {
 
     private val appPreferences: AppPreferences by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
-    private var mediaSource: JellyfinMediaSource? = null
-    private var playerIntent: Intent? = null
 
     @JavascriptInterface
     fun isEnabled() = appPreferences.videoPlayerType == VideoPlayerType.EXTERNAL_PLAYER
@@ -34,19 +33,27 @@ class ExternalPlayer(private val fragment: WebViewFragment) : KoinComponent {
     @JavascriptInterface
     fun initPlayer(args: String) {
         try {
-            mediaSource = JellyfinMediaSource(JSONObject(args))
-            if (mediaSource?.playMethod.equals("DirectStream")) {
-                playerIntent = Intent(Intent.ACTION_VIEW).apply {
-                    setDataAndType(mediaSource?.uri, mediaSource?.mimeType)
-                    putExtra("title", mediaSource?.title)
-                    putExtra("position", mediaSource?.mediaStartMs)
+            val mediaSource = JellyfinMediaSource(JSONObject(args))
+            if (mediaSource.playMethod == "DirectStream") {
+                val playerIntent = Intent(Intent.ACTION_VIEW).apply {
+                    setDataAndType(mediaSource.uri, mediaSource.mimeType)
+                    putExtra("title", mediaSource.title)
+                    putExtra("position", mediaSource.mediaStartMs)
                     putExtra("return_result", true)
                     putExtra("secure_uri", true)
+                    val selectedTrack = mediaSource.subtitleTracksGroup.tracks.getOrNull(mediaSource.subtitleTracksGroup.selectedTrack)?.url
+                    if (selectedTrack != null) {
+                        val externalTracks = mediaSource.subtitleTracksGroup.tracks.filter { !it.embedded && it.url != null }
+                        putExtra("subs", externalTracks.map { Uri.parse(it.url) }.toTypedArray())
+                        putExtra("subs.name", externalTracks.map { it.language }.toTypedArray())
+                        putExtra("subs.filename", externalTracks.map { it.title }.toTypedArray())
+                        putExtra("subs.enable", arrayOf(Uri.parse(selectedTrack)))
+                    }
                 }
                 fragment.startActivityForResult(playerIntent, Constants.HANDLE_EXTERNAL_PLAYER)
-                Timber.d("Starting playback [id: ${mediaSource?.id}, title: ${mediaSource?.title}, playMethod: ${mediaSource?.playMethod}, mediaStartMs: ${mediaSource?.mediaStartMs}]")
+                Timber.d("Starting playback [id: ${mediaSource.id}, title: ${mediaSource.title}, playMethod: ${mediaSource.playMethod}, mediaStartMs: ${mediaSource.mediaStartMs}]")
             } else {
-                Timber.d("Play Method '${mediaSource?.playMethod}' not tested, ignoring...")
+                Timber.d("Play Method '${mediaSource.playMethod}' not tested, ignoring...")
                 notifyEvent(Constants.EVENT_CANCELED)
                 context.toast(R.string.external_player_invalid_play_method, Toast.LENGTH_LONG)
             }
