@@ -6,11 +6,11 @@
     <string name="video_player_web">Webbspelare</string>
     <string name="pref_category_video_player">Videospelare</string>
     <string name="pref_category_music_player">Musikspelare</string>
-    <string name="activity_name_settings">Jellyfin inställningar</string>
+    <string name="activity_name_settings">Jellyfin-inställningar</string>
     <string name="playback_info_audio_streams">Ljudströmmar</string>
     <string name="playback_info_video_streams">Videoströmmar</string>
     <string name="playback_info_transcoding">Omkodning: %b</string>
-    <string name="playback_info_play_method">Spel metod: %s</string>
+    <string name="playback_info_play_method">Uppspelningsmetod: %s</string>
     <string name="menu_item_none">Inga</string>
     <string name="notification_action_stop">Stopp</string>
     <string name="notification_action_next">Nästa</string>
@@ -24,17 +24,24 @@
     <string name="mobile_data">Mobildata</string>
     <string name="wifi_only">Bara WiFi</string>
     <string name="network_title">Tillåtna nätverkstyper</string>
-    <string name="available_servers_title">Tillgänliga servrar</string>
+    <string name="available_servers_title">Tillgängliga servrar</string>
     <string name="choose_server_button_text">Välj server</string>
     <string name="connect_button_text">Anslut</string>
     <string name="connection_error_invalid_format">Fel format på host</string>
     <string name="host_input_hint">Host</string>
     <string name="connect_to_server_title">Anslut till server</string>
-    <string name="external_player_unknown_error">Okänt fel i extern uppspelare. Uppspelningsspårning är inaktiverad.</string>
-    <string name="external_player_invalid_player">Ingen giltig extern uppspelare har valts. Uppspelningsspårning är inaktiverad.</string>
+    <string name="external_player_unknown_error">Okänt fel i extern spelare. Uppspelningsspårning är inaktiverad.</string>
+    <string name="external_player_invalid_player">Ingen giltig extern spelare har valts. Uppspelningsspårning är inaktiverad.</string>
     <string name="external_player_invalid_play_method">Felaktig uppspelningsmetod.</string>
     <string name="network_message">Vill du tillåta nedladdningen att använda mobildata eller roamingnätverk\? Avgifter från din leverantör kan tillkomma.</string>
     <string name="battery_optimizations_message">Var god och inaktivera batterioptimeringar för att kunna spela upp media medans skärmen är avslagen.</string>
     <string name="connection_error_cannot_connect">Anslutningen kan inte upprättas.
 \nVar god kontrollera servernamnet och din nätverksanslutning.</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Tillåt gester för ljusstyrka och volym i den inbyggda spelaren</string>
+    <string name="pref_exoplayer_allow_background_audio">Tillåt uppspelning av ljud i bakgrunden i den inbyggda spelaren</string>
+    <string name="video_player_external_description">Externa videospelare som MX Player och VLC</string>
+    <string name="video_player_native_description">Baserad på ExoPlayer, har stöd för fler videoformat och codecs, och är mer integrerad i operativsystemet</string>
+    <string name="video_player_web_description">HTML-videospelaren som är standard i webb-gränssnittet</string>
+    <string name="pref_video_player_type_title">Videospelar-typ</string>
+    <string name="external_player_not_supported_yet">Stöd för uppspelningsspårning saknas i den valda spelaren. Kontakta utvecklarna för att försöka lägga till stöd för det.</string>
 </resources>
