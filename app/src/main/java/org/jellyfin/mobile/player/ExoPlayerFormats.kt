@@ -271,6 +271,23 @@ object ExoPlayerFormats {
             else -> null
         }
     }
+
+    fun getAudioProfile(codec: String, profile: Int): String? =  when(codec) {
+        "aac" -> getAACProfile(profile)
+        else -> null
+    }
+
+    private fun getAACProfile(profile: Int): String? = when(profile) {
+        MediaCodecInfo.CodecProfileLevel.AACObjectELD -> "ELD"
+        MediaCodecInfo.CodecProfileLevel.AACObjectHE -> "HE-AAC"
+        MediaCodecInfo.CodecProfileLevel.AACObjectHE_PS -> "HE-AACv2"
+        MediaCodecInfo.CodecProfileLevel.AACObjectLC -> "LC"
+        MediaCodecInfo.CodecProfileLevel.AACObjectLD -> "LD"
+        MediaCodecInfo.CodecProfileLevel.AACObjectLTP -> "LTP"
+        MediaCodecInfo.CodecProfileLevel.AACObjectMain -> "Main"
+        MediaCodecInfo.CodecProfileLevel.AACObjectSSR -> "SSR"
+        else -> null
+    }
 }
 
 class SupportedCodecs(
