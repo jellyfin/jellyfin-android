@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="network_message">Wil je downloads toestaan over mobiele data of tijdens roaming\?</string>
+    <string name="network_message">Wil je downloads toestaan over mobiele data of tijdens roaming\? Je provider kan kosten in rekening brengen.</string>
     <string name="network_title">Toegestane netwerk types</string>
     <string name="downloading">Downloaden</string>
     <string name="mobile_data_and_roaming">Mobiele data &amp; roaming</string>
@@ -47,4 +47,5 @@
     <string name="pref_video_player_type_title">Videospeler type</string>
     <string name="available_servers_title">Beschikbare servers</string>
     <string name="choose_server_button_text">Kies server</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Helderheid en volume gebaren toestaan in standaard speler</string>
 </resources>
