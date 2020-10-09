@@ -19,14 +19,14 @@
     <string name="pref_category_music_player">Reproductor de música</string>
     <string name="pref_enable_exoplayer_summary">Habilitar el reproductor de video experimental ExoPlayer que soporta más formatos y códecs de video, y está más integrado en el SO</string>
     <string name="pref_enable_exoplayer_title">Habilitar la integración del reproductor de video</string>
-    <string name="pref_music_notification_always_dismissible_title">Haz que la notificación del reproductor de música sea siempre descartable</string>
+    <string name="pref_music_notification_always_dismissible_title">Permitir que los controles de la reproducción en las notificaciones se puedan deslizar para descartarlos en todo momento</string>
     <string name="activity_name_settings">Ajustes de Jellyfin</string>
     <string name="playback_info_and_x_more">... y %d más</string>
     <string name="playback_info_audio_streams">Streaming de audio</string>
     <string name="playback_info_video_streams">Streaming de vídeo</string>
     <string name="host_input_hint">Host</string>
     <string name="notification_action_rewind">Retroceder</string>
-    <string name="pref_exoplayer_allow_background_audio">Permitir reproducción de audio en el fondo con el reproductor nativo</string>
+    <string name="pref_exoplayer_allow_background_audio">Permitir la reproducción de audio en segundo plano con el reproductor nativo</string>
     <string name="notification_action_stop">Detener</string>
     <string name="notification_action_next">Siguiente</string>
     <string name="notification_action_fast_forward">Avanzar</string>
@@ -38,14 +38,14 @@
     <string name="external_player_unknown_error">Error desconocido en el reproductor externo. El seguimiento de la reproducción está desactivado.</string>
     <string name="external_player_invalid_player">No se ha seleccionado ningún reproductor externo válido. Se ha desactivado el seguimiento de la reproducción.</string>
     <string name="external_player_not_supported_yet">El reproductor externo seleccionado no soporta el seguimiento de la reproducción. Ponte en contacto con los desarrolladores para intentar añadirlo.</string>
-    <string name="pref_video_player_type_title">Tipo de reproductor de video</string>
+    <string name="pref_video_player_type_title">Tipo de reproductor de vídeo</string>
     <string name="video_player_external_description">Aplicaciones externas de reproducción de video como MX Player y VLC</string>
-    <string name="video_player_native_description">Basado en ExoPlayer, soporta más formatos de video y códecs, y está más integrado en el SO</string>
-    <string name="video_player_web_description">El reproductor de video HTML predeterminado de la interfaz de usuario web</string>
+    <string name="video_player_native_description">Basado en ExoPlayer, este reproductor soporta más formatos y códecs, además de estar más integrado en el sistema operativo</string>
+    <string name="video_player_web_description">El reproductor de vídeo HTML usado en el cliente web</string>
     <string name="video_player_external">Reproductor externo</string>
     <string name="video_player_native">Reproductor nativo</string>
     <string name="video_player_web">Reproductor web</string>
     <string name="available_servers_title">Servidores disponibles</string>
     <string name="choose_server_button_text">Seleccionar servidor</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Permitir gestos para control de brillo y volumen en reproductor nativo</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Permitir gestos para controlar el brillo y el volumen en el reproductor nativo</string>
 </resources>
