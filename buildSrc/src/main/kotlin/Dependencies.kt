@@ -15,7 +15,7 @@ object Dependencies {
         const val androidxCore = "1.3.0"
         const val activity = "1.1.0"
         const val fragment = "1.2.5"
-        const val exoPlayer = "2.11.7"
+        const val exoPlayer = "2.12.0"
 
         // Lifecycle
         const val lifecycleExtensions = "2.2.0"
