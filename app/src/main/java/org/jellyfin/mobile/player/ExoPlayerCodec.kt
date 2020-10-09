@@ -93,7 +93,7 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
             put("levels", JSONArray(levels))
             put("maxBitrate", maxBitrate)
             put("maxChannels", maxChannels)
-            put("sampleRates", maxSampleRate)
+            put("maxSampleRate", maxSampleRate)
         }
     } catch (e: JSONException) {
         null
