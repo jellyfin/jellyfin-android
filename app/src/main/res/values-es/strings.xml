@@ -10,7 +10,7 @@
     <string name="connection_error_invalid_format">El host tiene un formato inválido</string>
     <string name="connect_button_text">Conectar</string>
     <string name="connect_to_server_title">Conectarse al servidor</string>
-    <string name="playback_info_transcoding">Transcodificación: %b</string>
+    <string name="playback_info_transcoding">Conversión: %b</string>
     <string name="playback_info_play_method">Método de reproducción: %s</string>
     <string name="menu_item_none">Ninguno</string>
     <string name="connection_error_cannot_connect">La conexión no pudo ser establecida.
@@ -23,7 +23,7 @@
     <string name="activity_name_settings">Ajustes de Jellyfin</string>
     <string name="playback_info_and_x_more">... y %d más</string>
     <string name="playback_info_audio_streams">Streaming de audio</string>
-    <string name="playback_info_video_streams">Streaming de video</string>
+    <string name="playback_info_video_streams">Streaming de vídeo</string>
     <string name="host_input_hint">Host</string>
     <string name="notification_action_rewind">Retroceder</string>
     <string name="pref_exoplayer_allow_background_audio">Permitir reproducción de audio en el fondo con el reproductor nativo</string>
@@ -33,11 +33,11 @@
     <string name="notification_action_pause">Pausa</string>
     <string name="notification_action_play">Reproducir</string>
     <string name="notification_action_previous">Anterior</string>
-    <string name="download_no_storage_permission">No se puede descargar archivos sin permisos de almacenamiento</string>
-    <string name="external_player_invalid_play_method">Método de reproducción inválido.</string>
-    <string name="external_player_unknown_error">Error desconocido en el reproductor externo. Seguimiento de reproducción deshabilitado.</string>
-    <string name="external_player_invalid_player">Ningún reproductor externo válido seleccionado. Seguimiento de reproducción deshabilitado.</string>
-    <string name="external_player_not_supported_yet">El reproductor externo no soporta el seguimiento de reproducción aún. Ponte en contacto con del desarrolladores para intentar añandirlo.</string>
+    <string name="download_no_storage_permission">No se puede descargar si no se ha permitido el acceso al almacenamiento</string>
+    <string name="external_player_invalid_play_method">Método de reproducción no válido.</string>
+    <string name="external_player_unknown_error">Error desconocido en el reproductor externo. El seguimiento de la reproducción está desactivado.</string>
+    <string name="external_player_invalid_player">No se ha seleccionado ningún reproductor externo válido. Se ha desactivado el seguimiento de la reproducción.</string>
+    <string name="external_player_not_supported_yet">El reproductor externo seleccionado no soporta el seguimiento de la reproducción. Ponte en contacto con los desarrolladores para intentar añadirlo.</string>
     <string name="pref_video_player_type_title">Tipo de reproductor de video</string>
     <string name="video_player_external_description">Aplicaciones externas de reproducción de video como MX Player y VLC</string>
     <string name="video_player_native_description">Basado en ExoPlayer, soporta más formatos de video y códecs, y está más integrado en el SO</string>
