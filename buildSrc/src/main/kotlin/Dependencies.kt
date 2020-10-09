@@ -26,6 +26,9 @@ object Dependencies {
         const val webkitX = "1.2.0"
         const val modernAndroidPreferences = "1.1.0-alpha3"
 
+        // Room
+        const val room = "2.2.5"
+
         // Network
         const val apiclient = "0.7.6"
         const val okHttp = "4.8.0"
@@ -82,6 +85,11 @@ object Dependencies {
         const val modernAndroidPreferences = "de.Maxr1998.android:modernpreferences:${Versions.modernAndroidPreferences}"
     }
 
+    object Room {
+        val runtime = room("runtime")
+        val compiler = room("compiler")
+    }
+
     object Network {
         const val apiclient = "org.jellyfin.apiclient:android:${Versions.apiclient}"
         const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
@@ -115,6 +123,7 @@ object Dependencies {
     private fun androidx(module: String, version: String) = "androidx.$module:$module:$version"
     private fun androidxKtx(module: String, version: String) = "androidx.$module:$module-ktx:$version"
     private fun kotlinx(module: String, version: String) = "org.jetbrains.kotlinx:kotlinx-$module:$version"
-    private fun exoPlayer(module: String) = "com.google.android.exoplayer:exoplayer-$module:${Versions.exoPlayer}"
     private fun lifecycle(module: String) = "androidx.lifecycle:lifecycle-$module:${Versions.lifecycleExtensions}"
+    private fun room(module: String) = "androidx.room:room-$module:${Versions.room}"
+    private fun exoPlayer(module: String) = "com.google.android.exoplayer:exoplayer-$module:${Versions.exoPlayer}"
 }
