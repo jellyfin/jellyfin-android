@@ -166,7 +166,7 @@ class ConnectFragment : Fragment() {
             }
 
             // Set API client address
-            apiClient.ChangeServerLocation(httpUrl.toString())
+            apiClient.ChangeServerLocation(httpUrl.toString().trimEnd('/'))
 
             serverInfo = apiClient.getPublicSystemInfo()
             if (serverInfo != null)

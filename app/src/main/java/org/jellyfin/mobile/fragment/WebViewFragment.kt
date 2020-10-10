@@ -133,7 +133,7 @@ class WebViewFragment : Fragment() {
                                     val address = server.getString("ManualAddress")
                                     val user = server.getString("UserId")
                                     val token = server.getString("AccessToken")
-                                    apiClient.ChangeServerLocation(address)
+                                    apiClient.ChangeServerLocation(address.trimEnd('/'))
                                     apiClient.SetAuthenticationInfo(token, user)
                                     initLocale()
                                 } catch (e: JSONException) {
