@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.Format
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.MergingMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -76,10 +77,12 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
 
         @CheckResult
         private fun createVideoMediaSource(item: JellyfinMediaSource, dataSourceFactory: DataSource.Factory): MediaSource {
+            val mediaItem = MediaItem.Builder().setUri(item.uri).build()
+
             return if (item.isTranscoding) {
-                HlsMediaSource.Factory(dataSourceFactory).setAllowChunklessPreparation(true).createMediaSource(item.uri)
+                HlsMediaSource.Factory(dataSourceFactory).setAllowChunklessPreparation(true).createMediaSource(mediaItem)
             } else {
-                ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(item.uri)
+                ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)
             }
         }
 
@@ -96,8 +99,8 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
             dataSourceFactory: DataSource.Factory
         ): Array<MediaSource> = subtitleTracks.tracks.mapNotNull { track ->
             if (!track.embedded && track.url != null && track.format != null) {
-                val format = Format.createTextSampleFormat(track.index.toString(), track.format, C.SELECTION_FLAG_AUTOSELECT, track.language)
-                SingleSampleMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(track.url), format, C.TIME_UNSET)
+                val mediaItem = MediaItem.Subtitle(Uri.parse(track.url), track.format, track.language, C.SELECTION_FLAG_AUTOSELECT)
+                SingleSampleMediaSource.Factory(dataSourceFactory).setTrackId(track.index.toString()).createMediaSource(mediaItem, C.TIME_UNSET)
             } else null
         }.toTypedArray()
     }

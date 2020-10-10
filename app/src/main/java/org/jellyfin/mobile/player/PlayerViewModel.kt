@@ -146,7 +146,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     fun playMedia(source: MediaSource, replace: Boolean = false, startPosition: Long = 0) {
         val player = playerOrNull ?: return
         if (replace || player.contentDuration == C.TIME_UNSET /* no content loaded yet */) {
-            player.prepare(source, false, false)
+            player.setMediaSource(source)
+            player.prepare()
             if (startPosition > 0) player.seekTo(startPosition)
             player.playWhenReady = true
         }
