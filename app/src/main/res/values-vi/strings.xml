@@ -4,13 +4,13 @@
     <string name="host_input_hint">Máy chủ</string>
     <string name="pref_exoplayer_allow_background_audio">Cho phép phát âm thanh trong nền trong trình phát gốc</string>
     <string name="video_player_external_description">Các ứng dụng phát lại video bên ngoài như MX Player và VLC</string>
-    <string name="video_player_native_description">Dựa trên ExoPlayer, hỗ trợ nhiều định dạng video và codec hơn, đồng thời được tích hợp nhiều hơn vào hệ điều hành</string>
+    <string name="video_player_native_description">Dựa trên ExoPlayer, hỗ trợ nhiều định dạng video và mã hóa hơn, đồng thời được tích hợp nhiều hơn vào hệ điều hành</string>
     <string name="video_player_web_description">Trình phát video HTML mặc định từ giao diện người dùng Web</string>
     <string name="video_player_external">Trình phát bên ngoài</string>
     <string name="video_player_web">Trình phát web</string>
     <string name="pref_video_player_type_title">Loại trình phát video</string>
     <string name="pref_category_video_player">Trình phát video</string>
-    <string name="pref_music_notification_always_dismissible_title">Đặt thông báo của trình phát nhạc luôn ở chế độ có thể bỏ qua</string>
+    <string name="pref_music_notification_always_dismissible_title">Đặt thông báo của trình phát nhạc luôn có thể bỏ qua</string>
     <string name="pref_category_music_player">Trình phát nhạc</string>
     <string name="activity_name_settings">Cài đặt Jellyfin</string>
     <string name="external_player_unknown_error">Lỗi không xác định trong trình phát bên ngoài. Đã tắt theo dõi phát lại.</string>
@@ -37,7 +37,7 @@
     <string name="wifi_only">Chỉ wifi</string>
     <string name="network_message">Bạn có muốn cho phép tải xuống qua mạng dữ liệu di động hoặc mạng chuyển vùng không\? Phí dịch vụ từ nhà mạng của bạn có thể được áp dụng</string>
     <string name="network_title">Các loại mạng được phép</string>
-    <string name="battery_optimizations_message">Vui lòng tắt tối ưu hóa pin để phát lại phương tiện khi màn hình tắt.</string>
+    <string name="battery_optimizations_message">Vui lòng tắt tính năng tiết kiệm pin để trình phát hoạt động khi màn hình tắt.</string>
     <string name="connect_button_text">Kết nối</string>
     <string name="connection_error_cannot_connect">Không thể thiết lập kết nối.
 \nVui lòng kiểm tra tên máy chủ và kết nối mạng của bạn.</string>
