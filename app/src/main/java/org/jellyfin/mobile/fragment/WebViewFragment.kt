@@ -163,6 +163,8 @@ class WebViewFragment : Fragment() {
             override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceErrorCompat) {
                 val description = if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_RESOURCE_ERROR_GET_DESCRIPTION)) error.description else null
                 Timber.e("Received WebView error at %s: %s", request.url.toString(), description)
+                if (request.url.toString() == appPreferences.instanceUrl)
+                    runOnUiThread { onErrorReceived() }
             }
         }
         webChromeClient = WebChromeClient()
