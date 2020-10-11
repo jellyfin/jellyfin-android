@@ -42,7 +42,8 @@ class ConnectFragment : Fragment() {
     private val appPreferences: AppPreferences by inject()
 
     // UI
-    private lateinit var connectServerBinding: FragmentConnectBinding
+    private var _connectServerBinding: FragmentConnectBinding? = null
+    private val connectServerBinding get() = _connectServerBinding!!
     private val serverSetupLayout: View get() = connectServerBinding.root
     private val hostInput: EditText get() = connectServerBinding.hostInput
     private val connectionErrorText: TextView get() = connectServerBinding.connectionErrorText
@@ -52,7 +53,7 @@ class ConnectFragment : Fragment() {
     private val serverList = ArrayList<DiscoveryServerInfo>(ServerDiscovery.DISCOVERY_MAX_SERVERS)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        connectServerBinding = FragmentConnectBinding.inflate(inflater, container, false)
+        _connectServerBinding = FragmentConnectBinding.inflate(inflater, container, false)
         return serverSetupLayout.apply { applyWindowInsetsAsMargins() }
     }
 
@@ -93,6 +94,11 @@ class ConnectFragment : Fragment() {
         }
 
         discoverServers()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _connectServerBinding = null
     }
 
     private fun connect(enteredUrl: String = hostInput.text.toString()) {
