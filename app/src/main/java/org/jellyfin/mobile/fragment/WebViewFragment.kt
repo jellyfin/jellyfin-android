@@ -46,8 +46,9 @@ class WebViewFragment : Fragment() {
     private var connected = false
 
     // UI
-    lateinit var webView: WebView
-        private set
+    private var _webViewBinding: FragmentWebviewBinding? = null
+    private val webViewBinding get() = _webViewBinding!!
+    val webView: WebView get() = webViewBinding.root
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +61,7 @@ class WebViewFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        webView = FragmentWebviewBinding.inflate(inflater, container, false).root
+        _webViewBinding = FragmentWebviewBinding.inflate(inflater, container, false)
         return webView.apply { applyWindowInsetsAsMargins() }
     }
 
@@ -102,6 +103,11 @@ class WebViewFragment : Fragment() {
                 webView.loadUrl("javascript:$function")
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _webViewBinding = null
     }
 
     @SuppressLint("SetJavaScriptEnabled")
