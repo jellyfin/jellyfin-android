@@ -272,7 +272,7 @@ object ExoPlayerFormats {
         }
     }
 
-    fun getAudioProfile(codec: String, profile: Int): String? =  when(codec) {
+    fun getAudioProfile(codec: String, profile: Int): String? = when(codec) {
         "aac" -> getAACProfile(profile)
         else -> null
     }
