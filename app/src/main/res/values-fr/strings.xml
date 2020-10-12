@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="network_message">Voulez-vous autoriser le téléchargement via les données mobiles et l\'itinérance \? Des frais de votre fournisseur peuvent s\'appliquer.</string>
+    <string name="network_message">Autoriser le téléchargement via les données mobiles et l\'itinérance \? Des frais de votre fournisseur peuvent s\'appliquer.</string>
     <string name="battery_optimizations_message">Veuillez désactiver les optimisations de la batterie pour permettre la lecture avec écran éteint.</string>
     <string name="downloading">Téléchargement en cours</string>
     <string name="mobile_data_and_roaming">Données mobiles et itinérance</string>
-    <string name="mobile_data">Données mobile</string>
+    <string name="mobile_data">Données mobiles</string>
     <string name="wifi_only">Wi-Fi uniquement</string>
     <string name="network_title">Types de réseaux autorisés</string>
     <string name="connection_error_invalid_format">L\'hôte a un format invalide</string>
@@ -13,21 +13,21 @@
     <string name="connect_to_server_title">Se connecter au serveur</string>
     <string name="pref_enable_exoplayer_summary">Activer le lecteur vidéo expérimental ExoPlayer qui supporte plus de formats vidéos et de codecs et est mieux intégré au système d\'exploitation</string>
     <string name="pref_enable_exoplayer_title">Activer l\'intégration avec le lecteur vidéo</string>
-    <string name="pref_category_video_player">Lecteur vidéo natif</string>
+    <string name="pref_category_video_player">Lecteur vidéo</string>
     <string name="activity_name_settings">Paramètres Jellyfin</string>
     <string name="menu_item_none">Aucun</string>
     <string name="pref_category_music_player">Lecteur de musique</string>
-    <string name="pref_music_notification_always_dismissible_title">Faire en sorte que la notification du lecteur de musique soit toujours rejetable</string>
+    <string name="pref_music_notification_always_dismissible_title">Notification rejetable</string>
     <string name="playback_info_and_x_more">... et %d autres</string>
     <string name="playback_info_audio_streams">Flux audio</string>
     <string name="playback_info_video_streams">Flux vidéo</string>
     <string name="playback_info_transcoding">Transcodage : %b</string>
     <string name="playback_info_play_method">Méthode de lecture : %s</string>
-    <string name="connection_error_cannot_connect">La connexion n\'a pas pu être établie.
-\nMerci de vérifier le nom de la machine et votre connexion réseau.</string>
+    <string name="connection_error_cannot_connect">La connexion n\'a pas pu être établie. 
+\nVérifiez le nom de l\'hôte et votre connexion réseau.</string>
     <string name="pref_exoplayer_allow_background_audio">Autoriser la lecture audio en arrière-plan dans le lecteur natif</string>
     <string name="notification_action_stop">Arrêter</string>
-    <string name="notification_action_next">Prochain</string>
+    <string name="notification_action_next">Suivant</string>
     <string name="notification_action_fast_forward">Avance rapide</string>
     <string name="notification_action_pause">Pause</string>
     <string name="notification_action_play">Lire</string>
@@ -47,4 +47,5 @@
     <string name="external_player_invalid_play_method">Méthode de lecture invalide.</string>
     <string name="available_servers_title">Serveurs disponibles</string>
     <string name="choose_server_button_text">Choisir un serveur</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Autoriser le contrôle de la luminosité et du volume à l\'aide de gestes dans le lecteur natif</string>
 </resources>
