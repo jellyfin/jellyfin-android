@@ -38,10 +38,7 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
                 maxChannels = codecCapabilities.audioCapabilities.maxInputChannelCount
 
                 val sampleRates = codecCapabilities.audioCapabilities.supportedSampleRateRanges
-
-                if (sampleRates.isNotEmpty()) {
-                    maxSampleRate = sampleRates.last().upper
-                }
+                maxSampleRate = if (sampleRates.isNotEmpty()) sampleRates.last().upper else null
             } else {
                 // mimeType is neither, abort
                 codec = null
