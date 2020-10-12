@@ -19,7 +19,7 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
     private val levels: MutableList<Int> = ArrayList()
     private val maxBitrate: Int
     private var maxChannels: Int = 0
-    private var maxSampleRate: Int? = null
+    private val maxSampleRate: Int?
 
     init {
         // Check if this mimeType represents a video codec
