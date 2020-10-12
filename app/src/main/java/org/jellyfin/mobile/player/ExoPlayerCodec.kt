@@ -18,7 +18,7 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
     private val profiles: MutableList<String> = ArrayList()
     private val levels: MutableList<Int> = ArrayList()
     private val maxBitrate: Int
-    private var maxChannels: Int = 0
+    private val maxChannels: Int
     private val maxSampleRate: Int?
 
     init {
