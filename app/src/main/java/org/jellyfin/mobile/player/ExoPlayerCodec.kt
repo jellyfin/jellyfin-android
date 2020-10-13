@@ -18,7 +18,7 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
     private val profiles: MutableList<String> = ArrayList()
     private val levels: MutableList<Int> = ArrayList()
     private val maxBitrate: Int
-    private val maxChannels: Int
+    private val maxChannels: Int?
     private val maxSampleRate: Int?
 
     init {
@@ -28,6 +28,8 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
             codec = videoCodec
             isAudio = false
             maxBitrate = codecCapabilities.videoCapabilities.bitrateRange.upper
+            maxChannels = null
+            maxSampleRate = null
         } else {
             // If not, check audio codecs
             val audioCodec = getAudioCodec(mimeType)
@@ -36,7 +38,6 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
                 codec = audioCodec
                 maxBitrate = codecCapabilities.audioCapabilities.bitrateRange.upper
                 maxChannels = codecCapabilities.audioCapabilities.maxInputChannelCount
-
                 val sampleRates = codecCapabilities.audioCapabilities.supportedSampleRateRanges
                 maxSampleRate = if (sampleRates.isNotEmpty()) sampleRates.last().upper else null
             } else {
@@ -44,6 +45,8 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
                 codec = null
                 isAudio = false
                 maxBitrate = 0
+                maxChannels = null
+                maxSampleRate = null
             }
         }
         if (codec != null) {
