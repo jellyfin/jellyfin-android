@@ -2,6 +2,7 @@ package org.jellyfin.mobile.player
 
 import android.media.MediaCodecInfo.CodecCapabilities
 import org.jellyfin.mobile.player.ExoPlayerFormats.getAudioCodec
+import org.jellyfin.mobile.player.ExoPlayerFormats.getAudioProfile
 import org.jellyfin.mobile.player.ExoPlayerFormats.getVideoCodec
 import org.jellyfin.mobile.player.ExoPlayerFormats.getVideoLevel
 import org.jellyfin.mobile.player.ExoPlayerFormats.getVideoProfile
@@ -17,6 +18,8 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
     private val profiles: MutableList<String> = ArrayList()
     private val levels: MutableList<Int> = ArrayList()
     private val maxBitrate: Int
+    private val maxChannels: Int?
+    private val maxSampleRate: Int?
 
     init {
         // Check if this mimeType represents a video codec
@@ -25,6 +28,8 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
             codec = videoCodec
             isAudio = false
             maxBitrate = codecCapabilities.videoCapabilities.bitrateRange.upper
+            maxChannels = null
+            maxSampleRate = null
         } else {
             // If not, check audio codecs
             val audioCodec = getAudioCodec(mimeType)
@@ -32,11 +37,16 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
                 isAudio = true
                 codec = audioCodec
                 maxBitrate = codecCapabilities.audioCapabilities.bitrateRange.upper
+                maxChannels = codecCapabilities.audioCapabilities.maxInputChannelCount
+                val sampleRates = codecCapabilities.audioCapabilities.supportedSampleRateRanges
+                maxSampleRate = if (sampleRates.isNotEmpty()) sampleRates.last().upper else null
             } else {
                 // mimeType is neither, abort
                 codec = null
                 isAudio = false
                 maxBitrate = 0
+                maxChannels = null
+                maxSampleRate = null
             }
         }
         if (codec != null) {
@@ -45,8 +55,7 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
                 val profile: String?
                 val level: Int?
                 if (isAudio) {
-                    // TODO: determine audio profiles and levels
-                    profile = null
+                    profile = getAudioProfile(codec, profileLevel.profile)
                     level = null
                 } else {
                     profile = getVideoProfile(codec, profileLevel.profile)
@@ -83,6 +92,8 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
             put("profiles", JSONArray(profiles))
             put("levels", JSONArray(levels))
             put("maxBitrate", maxBitrate)
+            put("maxChannels", maxChannels)
+            put("maxSampleRate", maxSampleRate)
         }
     } catch (e: JSONException) {
         null

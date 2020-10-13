@@ -1,6 +1,6 @@
 package org.jellyfin.mobile.player
 
-import android.media.MediaCodecInfo
+import android.media.MediaCodecInfo.CodecProfileLevel
 import android.media.MediaCodecList
 import android.media.MediaFormat
 import com.google.android.exoplayer2.util.MimeTypes
@@ -68,81 +68,81 @@ object ExoPlayerFormats {
     }
 
     private fun getMPEG2VideoProfile(profile: Int): String? = when (profile) {
-        MediaCodecInfo.CodecProfileLevel.MPEG2ProfileSimple -> "simple profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG2ProfileMain -> "main profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG2Profile422 -> "422 profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG2ProfileSNR -> "snr profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG2ProfileSpatial -> "spatial profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG2ProfileHigh -> "high profile"
+        CodecProfileLevel.MPEG2ProfileSimple -> "simple profile"
+        CodecProfileLevel.MPEG2ProfileMain -> "main profile"
+        CodecProfileLevel.MPEG2Profile422 -> "422 profile"
+        CodecProfileLevel.MPEG2ProfileSNR -> "snr profile"
+        CodecProfileLevel.MPEG2ProfileSpatial -> "spatial profile"
+        CodecProfileLevel.MPEG2ProfileHigh -> "high profile"
         else -> null
     }
 
     private fun getH263Profile(profile: Int): String? = when (profile) {
-        MediaCodecInfo.CodecProfileLevel.H263ProfileBaseline -> "baseline"
-        MediaCodecInfo.CodecProfileLevel.H263ProfileH320Coding -> "h320 coding"
-        MediaCodecInfo.CodecProfileLevel.H263ProfileBackwardCompatible -> "backward compatible"
-        MediaCodecInfo.CodecProfileLevel.H263ProfileISWV2 -> "isw v2"
-        MediaCodecInfo.CodecProfileLevel.H263ProfileISWV3 -> "isw v3"
-        MediaCodecInfo.CodecProfileLevel.H263ProfileHighCompression -> "high compression"
-        MediaCodecInfo.CodecProfileLevel.H263ProfileInternet -> "internet"
-        MediaCodecInfo.CodecProfileLevel.H263ProfileInterlace -> "interlace"
-        MediaCodecInfo.CodecProfileLevel.H263ProfileHighLatency -> "high latency"
+        CodecProfileLevel.H263ProfileBaseline -> "baseline"
+        CodecProfileLevel.H263ProfileH320Coding -> "h320 coding"
+        CodecProfileLevel.H263ProfileBackwardCompatible -> "backward compatible"
+        CodecProfileLevel.H263ProfileISWV2 -> "isw v2"
+        CodecProfileLevel.H263ProfileISWV3 -> "isw v3"
+        CodecProfileLevel.H263ProfileHighCompression -> "high compression"
+        CodecProfileLevel.H263ProfileInternet -> "internet"
+        CodecProfileLevel.H263ProfileInterlace -> "interlace"
+        CodecProfileLevel.H263ProfileHighLatency -> "high latency"
         else -> null
     }
 
     private fun getMPEG4Profile(profile: Int): String? = when (profile) {
-        MediaCodecInfo.CodecProfileLevel.MPEG4ProfileAdvancedCoding -> "advanced coding profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG4ProfileAdvancedCore -> "advanced core profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG4ProfileAdvancedRealTime -> "advanced realtime profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG4ProfileAdvancedSimple -> "advanced simple profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG4ProfileBasicAnimated -> "basic animated profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG4ProfileCore -> "core profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG4ProfileCoreScalable -> "core scalable profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG4ProfileHybrid -> "hybrid profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG4ProfileNbit -> "nbit profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG4ProfileScalableTexture -> "scalable texture profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG4ProfileSimple -> "simple profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG4ProfileSimpleFBA -> "simple fba profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG4ProfileSimpleFace -> "simple face profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG4ProfileSimpleScalable -> "simple scalable profile"
-        MediaCodecInfo.CodecProfileLevel.MPEG4ProfileMain -> "main profile"
+        CodecProfileLevel.MPEG4ProfileAdvancedCoding -> "advanced coding profile"
+        CodecProfileLevel.MPEG4ProfileAdvancedCore -> "advanced core profile"
+        CodecProfileLevel.MPEG4ProfileAdvancedRealTime -> "advanced realtime profile"
+        CodecProfileLevel.MPEG4ProfileAdvancedSimple -> "advanced simple profile"
+        CodecProfileLevel.MPEG4ProfileBasicAnimated -> "basic animated profile"
+        CodecProfileLevel.MPEG4ProfileCore -> "core profile"
+        CodecProfileLevel.MPEG4ProfileCoreScalable -> "core scalable profile"
+        CodecProfileLevel.MPEG4ProfileHybrid -> "hybrid profile"
+        CodecProfileLevel.MPEG4ProfileNbit -> "nbit profile"
+        CodecProfileLevel.MPEG4ProfileScalableTexture -> "scalable texture profile"
+        CodecProfileLevel.MPEG4ProfileSimple -> "simple profile"
+        CodecProfileLevel.MPEG4ProfileSimpleFBA -> "simple fba profile"
+        CodecProfileLevel.MPEG4ProfileSimpleFace -> "simple face profile"
+        CodecProfileLevel.MPEG4ProfileSimpleScalable -> "simple scalable profile"
+        CodecProfileLevel.MPEG4ProfileMain -> "main profile"
         else -> null
     }
 
     private fun getAVCProfile(profile: Int): String? = when (profile) {
-        MediaCodecInfo.CodecProfileLevel.AVCProfileBaseline -> "baseline"
-        MediaCodecInfo.CodecProfileLevel.AVCProfileMain -> "main"
-        MediaCodecInfo.CodecProfileLevel.AVCProfileExtended -> "extended"
-        MediaCodecInfo.CodecProfileLevel.AVCProfileHigh -> "high"
-        MediaCodecInfo.CodecProfileLevel.AVCProfileHigh10 -> "high 10"
-        MediaCodecInfo.CodecProfileLevel.AVCProfileHigh422 -> "high 422"
-        MediaCodecInfo.CodecProfileLevel.AVCProfileHigh444 -> "high 444"
-        MediaCodecInfo.CodecProfileLevel.AVCProfileConstrainedBaseline -> "constrained baseline"
-        MediaCodecInfo.CodecProfileLevel.AVCProfileConstrainedHigh -> "constrained high"
+        CodecProfileLevel.AVCProfileBaseline -> "baseline"
+        CodecProfileLevel.AVCProfileMain -> "main"
+        CodecProfileLevel.AVCProfileExtended -> "extended"
+        CodecProfileLevel.AVCProfileHigh -> "high"
+        CodecProfileLevel.AVCProfileHigh10 -> "high 10"
+        CodecProfileLevel.AVCProfileHigh422 -> "high 422"
+        CodecProfileLevel.AVCProfileHigh444 -> "high 444"
+        CodecProfileLevel.AVCProfileConstrainedBaseline -> "constrained baseline"
+        CodecProfileLevel.AVCProfileConstrainedHigh -> "constrained high"
         else -> null
     }
 
     private fun getHEVCProfile(profile: Int): String? = when (profile) {
-        MediaCodecInfo.CodecProfileLevel.HEVCProfileMain -> "Main"
-        MediaCodecInfo.CodecProfileLevel.HEVCProfileMain10 -> "Main 10"
-        MediaCodecInfo.CodecProfileLevel.HEVCProfileMain10HDR10 -> "Main 10 HDR 10"
-        MediaCodecInfo.CodecProfileLevel.HEVCProfileMain10HDR10Plus -> "Main 10 HDR 10 Plus"
-        MediaCodecInfo.CodecProfileLevel.HEVCProfileMainStill -> "Main Still"
+        CodecProfileLevel.HEVCProfileMain -> "Main"
+        CodecProfileLevel.HEVCProfileMain10 -> "Main 10"
+        CodecProfileLevel.HEVCProfileMain10HDR10 -> "Main 10 HDR 10"
+        CodecProfileLevel.HEVCProfileMain10HDR10Plus -> "Main 10 HDR 10 Plus"
+        CodecProfileLevel.HEVCProfileMainStill -> "Main Still"
         else -> null
     }
 
     private fun getVP8Profile(profile: Int): String? = when (profile) {
-        MediaCodecInfo.CodecProfileLevel.VP8ProfileMain -> "main"
+        CodecProfileLevel.VP8ProfileMain -> "main"
         else -> null
     }
 
     private fun getVP9Profile(profile: Int): String? = when (profile) {
-        MediaCodecInfo.CodecProfileLevel.VP9Profile0 -> "Profile 0"
-        MediaCodecInfo.CodecProfileLevel.VP9Profile1 -> "Profile 1"
-        MediaCodecInfo.CodecProfileLevel.VP9Profile2,
-        MediaCodecInfo.CodecProfileLevel.VP9Profile2HDR -> "Profile 2"
-        MediaCodecInfo.CodecProfileLevel.VP9Profile3,
-        MediaCodecInfo.CodecProfileLevel.VP9Profile3HDR -> "Profile 3"
+        CodecProfileLevel.VP9Profile0 -> "Profile 0"
+        CodecProfileLevel.VP9Profile1 -> "Profile 1"
+        CodecProfileLevel.VP9Profile2,
+        CodecProfileLevel.VP9Profile2HDR -> "Profile 2"
+        CodecProfileLevel.VP9Profile3,
+        CodecProfileLevel.VP9Profile3HDR -> "Profile 3"
         else -> null
     }
 
@@ -159,100 +159,100 @@ object ExoPlayerFormats {
 
     // FIXME: server only handles numeric levels
     private fun getMPEG2VideoLevel(@Suppress("UNUSED_PARAMETER") level: Int): String? = null /*when (level) {
-        MediaCodecInfo.CodecProfileLevel.MPEG2LevelLL -> "ll"
-        MediaCodecInfo.CodecProfileLevel.MPEG2LevelML -> "ml"
-        MediaCodecInfo.CodecProfileLevel.MPEG2LevelH14 -> "h14"
-        MediaCodecInfo.CodecProfileLevel.MPEG2LevelHL -> "hl"
-        MediaCodecInfo.CodecProfileLevel.MPEG2LevelHP -> "hp"
+        CodecProfileLevel.MPEG2LevelLL -> "ll"
+        CodecProfileLevel.MPEG2LevelML -> "ml"
+        CodecProfileLevel.MPEG2LevelH14 -> "h14"
+        CodecProfileLevel.MPEG2LevelHL -> "hl"
+        CodecProfileLevel.MPEG2LevelHP -> "hp"
         else -> null
     }*/
 
     private fun getH263Level(level: Int): String? = when (level) {
-        MediaCodecInfo.CodecProfileLevel.H263Level10 -> "10"
-        MediaCodecInfo.CodecProfileLevel.H263Level20 -> "20"
-        MediaCodecInfo.CodecProfileLevel.H263Level30 -> "30"
-        MediaCodecInfo.CodecProfileLevel.H263Level40 -> "40"
-        MediaCodecInfo.CodecProfileLevel.H263Level45 -> "45"
-        MediaCodecInfo.CodecProfileLevel.H263Level50 -> "50"
-        MediaCodecInfo.CodecProfileLevel.H263Level60 -> "60"
-        MediaCodecInfo.CodecProfileLevel.H263Level70 -> "70"
+        CodecProfileLevel.H263Level10 -> "10"
+        CodecProfileLevel.H263Level20 -> "20"
+        CodecProfileLevel.H263Level30 -> "30"
+        CodecProfileLevel.H263Level40 -> "40"
+        CodecProfileLevel.H263Level45 -> "45"
+        CodecProfileLevel.H263Level50 -> "50"
+        CodecProfileLevel.H263Level60 -> "60"
+        CodecProfileLevel.H263Level70 -> "70"
         else -> null
     }
 
     private fun getMPEG4Level(level: Int): String? = when (level) {
-        MediaCodecInfo.CodecProfileLevel.MPEG4Level0 -> "0"
-        MediaCodecInfo.CodecProfileLevel.MPEG4Level1 -> "1"
-        MediaCodecInfo.CodecProfileLevel.MPEG4Level2 -> "2"
-        MediaCodecInfo.CodecProfileLevel.MPEG4Level3 -> "3"
-        MediaCodecInfo.CodecProfileLevel.MPEG4Level4 -> "4"
-        MediaCodecInfo.CodecProfileLevel.MPEG4Level5 -> "5"
-        MediaCodecInfo.CodecProfileLevel.MPEG4Level6 -> "6"
-        MediaCodecInfo.CodecProfileLevel.MPEG4Level0b, MediaCodecInfo.CodecProfileLevel.MPEG4Level3b, MediaCodecInfo.CodecProfileLevel.MPEG4Level4a -> null
+        CodecProfileLevel.MPEG4Level0 -> "0"
+        CodecProfileLevel.MPEG4Level1 -> "1"
+        CodecProfileLevel.MPEG4Level2 -> "2"
+        CodecProfileLevel.MPEG4Level3 -> "3"
+        CodecProfileLevel.MPEG4Level4 -> "4"
+        CodecProfileLevel.MPEG4Level5 -> "5"
+        CodecProfileLevel.MPEG4Level6 -> "6"
+        CodecProfileLevel.MPEG4Level0b, CodecProfileLevel.MPEG4Level3b, CodecProfileLevel.MPEG4Level4a -> null
         else -> null
     }
 
 
     private fun getAVCLevel(level: Int): String? = when (level) {
-        MediaCodecInfo.CodecProfileLevel.AVCLevel1 -> "1"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel11 -> "11"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel12 -> "12"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel13 -> "13"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel2 -> "2"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel21 -> "21"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel22 -> "22"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel3 -> "3"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel31 -> "31"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel32 -> "32"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel4 -> "4"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel41 -> "41"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel42 -> "42"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel5 -> "5"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel51 -> "51"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel52 -> "52"
-        MediaCodecInfo.CodecProfileLevel.AVCLevel1b -> null
+        CodecProfileLevel.AVCLevel1 -> "1"
+        CodecProfileLevel.AVCLevel11 -> "11"
+        CodecProfileLevel.AVCLevel12 -> "12"
+        CodecProfileLevel.AVCLevel13 -> "13"
+        CodecProfileLevel.AVCLevel2 -> "2"
+        CodecProfileLevel.AVCLevel21 -> "21"
+        CodecProfileLevel.AVCLevel22 -> "22"
+        CodecProfileLevel.AVCLevel3 -> "3"
+        CodecProfileLevel.AVCLevel31 -> "31"
+        CodecProfileLevel.AVCLevel32 -> "32"
+        CodecProfileLevel.AVCLevel4 -> "4"
+        CodecProfileLevel.AVCLevel41 -> "41"
+        CodecProfileLevel.AVCLevel42 -> "42"
+        CodecProfileLevel.AVCLevel5 -> "5"
+        CodecProfileLevel.AVCLevel51 -> "51"
+        CodecProfileLevel.AVCLevel52 -> "52"
+        CodecProfileLevel.AVCLevel1b -> null
         else -> null
     }
 
     private fun getHEVCLevel(level: Int): String? = when (level) {
-        MediaCodecInfo.CodecProfileLevel.HEVCMainTierLevel1, MediaCodecInfo.CodecProfileLevel.HEVCHighTierLevel1 -> "30"
-        MediaCodecInfo.CodecProfileLevel.HEVCMainTierLevel2, MediaCodecInfo.CodecProfileLevel.HEVCHighTierLevel2 -> "60"
-        MediaCodecInfo.CodecProfileLevel.HEVCMainTierLevel21, MediaCodecInfo.CodecProfileLevel.HEVCHighTierLevel21 -> "63"
-        MediaCodecInfo.CodecProfileLevel.HEVCMainTierLevel3, MediaCodecInfo.CodecProfileLevel.HEVCHighTierLevel3 -> "90"
-        MediaCodecInfo.CodecProfileLevel.HEVCMainTierLevel31, MediaCodecInfo.CodecProfileLevel.HEVCHighTierLevel31 -> "93"
-        MediaCodecInfo.CodecProfileLevel.HEVCMainTierLevel4, MediaCodecInfo.CodecProfileLevel.HEVCHighTierLevel4 -> "120"
-        MediaCodecInfo.CodecProfileLevel.HEVCMainTierLevel41, MediaCodecInfo.CodecProfileLevel.HEVCHighTierLevel41 -> "123"
-        MediaCodecInfo.CodecProfileLevel.HEVCMainTierLevel5, MediaCodecInfo.CodecProfileLevel.HEVCHighTierLevel5 -> "150"
-        MediaCodecInfo.CodecProfileLevel.HEVCMainTierLevel51, MediaCodecInfo.CodecProfileLevel.HEVCHighTierLevel51 -> "153"
-        MediaCodecInfo.CodecProfileLevel.HEVCMainTierLevel52, MediaCodecInfo.CodecProfileLevel.HEVCHighTierLevel52 -> "156"
-        MediaCodecInfo.CodecProfileLevel.HEVCMainTierLevel6, MediaCodecInfo.CodecProfileLevel.HEVCHighTierLevel6 -> "180"
-        MediaCodecInfo.CodecProfileLevel.HEVCMainTierLevel61, MediaCodecInfo.CodecProfileLevel.HEVCHighTierLevel61 -> "183"
-        MediaCodecInfo.CodecProfileLevel.HEVCMainTierLevel62, MediaCodecInfo.CodecProfileLevel.HEVCHighTierLevel62 -> "186"
+        CodecProfileLevel.HEVCMainTierLevel1, CodecProfileLevel.HEVCHighTierLevel1 -> "30"
+        CodecProfileLevel.HEVCMainTierLevel2, CodecProfileLevel.HEVCHighTierLevel2 -> "60"
+        CodecProfileLevel.HEVCMainTierLevel21, CodecProfileLevel.HEVCHighTierLevel21 -> "63"
+        CodecProfileLevel.HEVCMainTierLevel3, CodecProfileLevel.HEVCHighTierLevel3 -> "90"
+        CodecProfileLevel.HEVCMainTierLevel31, CodecProfileLevel.HEVCHighTierLevel31 -> "93"
+        CodecProfileLevel.HEVCMainTierLevel4, CodecProfileLevel.HEVCHighTierLevel4 -> "120"
+        CodecProfileLevel.HEVCMainTierLevel41, CodecProfileLevel.HEVCHighTierLevel41 -> "123"
+        CodecProfileLevel.HEVCMainTierLevel5, CodecProfileLevel.HEVCHighTierLevel5 -> "150"
+        CodecProfileLevel.HEVCMainTierLevel51, CodecProfileLevel.HEVCHighTierLevel51 -> "153"
+        CodecProfileLevel.HEVCMainTierLevel52, CodecProfileLevel.HEVCHighTierLevel52 -> "156"
+        CodecProfileLevel.HEVCMainTierLevel6, CodecProfileLevel.HEVCHighTierLevel6 -> "180"
+        CodecProfileLevel.HEVCMainTierLevel61, CodecProfileLevel.HEVCHighTierLevel61 -> "183"
+        CodecProfileLevel.HEVCMainTierLevel62, CodecProfileLevel.HEVCHighTierLevel62 -> "186"
         else -> null
     }
 
     private fun getVP8Level(level: Int): String? = when (level) {
-        MediaCodecInfo.CodecProfileLevel.VP8Level_Version0 -> "0"
-        MediaCodecInfo.CodecProfileLevel.VP8Level_Version1 -> "1"
-        MediaCodecInfo.CodecProfileLevel.VP8Level_Version2 -> "2"
-        MediaCodecInfo.CodecProfileLevel.VP8Level_Version3 -> "3"
+        CodecProfileLevel.VP8Level_Version0 -> "0"
+        CodecProfileLevel.VP8Level_Version1 -> "1"
+        CodecProfileLevel.VP8Level_Version2 -> "2"
+        CodecProfileLevel.VP8Level_Version3 -> "3"
         else -> null
     }
 
     private fun getVP9Level(level: Int): String? = when (level) {
-        MediaCodecInfo.CodecProfileLevel.VP9Level1 -> "1"
-        MediaCodecInfo.CodecProfileLevel.VP9Level11 -> "11"
-        MediaCodecInfo.CodecProfileLevel.VP9Level2 -> "2"
-        MediaCodecInfo.CodecProfileLevel.VP9Level21 -> "21"
-        MediaCodecInfo.CodecProfileLevel.VP9Level3 -> "3"
-        MediaCodecInfo.CodecProfileLevel.VP9Level31 -> "31"
-        MediaCodecInfo.CodecProfileLevel.VP9Level4 -> "4"
-        MediaCodecInfo.CodecProfileLevel.VP9Level41 -> "41"
-        MediaCodecInfo.CodecProfileLevel.VP9Level5 -> "5"
-        MediaCodecInfo.CodecProfileLevel.VP9Level51 -> "51"
-        MediaCodecInfo.CodecProfileLevel.VP9Level52 -> "52"
-        MediaCodecInfo.CodecProfileLevel.VP9Level6 -> "6"
-        MediaCodecInfo.CodecProfileLevel.VP9Level61 -> "61"
-        MediaCodecInfo.CodecProfileLevel.VP9Level62 -> "62"
+        CodecProfileLevel.VP9Level1 -> "1"
+        CodecProfileLevel.VP9Level11 -> "11"
+        CodecProfileLevel.VP9Level2 -> "2"
+        CodecProfileLevel.VP9Level21 -> "21"
+        CodecProfileLevel.VP9Level3 -> "3"
+        CodecProfileLevel.VP9Level31 -> "31"
+        CodecProfileLevel.VP9Level4 -> "4"
+        CodecProfileLevel.VP9Level41 -> "41"
+        CodecProfileLevel.VP9Level5 -> "5"
+        CodecProfileLevel.VP9Level51 -> "51"
+        CodecProfileLevel.VP9Level52 -> "52"
+        CodecProfileLevel.VP9Level6 -> "6"
+        CodecProfileLevel.VP9Level61 -> "61"
+        CodecProfileLevel.VP9Level62 -> "62"
         else -> null
     }
 
@@ -270,6 +270,23 @@ object ExoPlayerFormats {
             "srt", "sub", "subrip" -> MimeTypes.APPLICATION_SUBRIP
             else -> null
         }
+    }
+
+    fun getAudioProfile(codec: String, profile: Int): String? = when (codec) {
+        "aac" -> getAACProfile(profile)
+        else -> null
+    }
+
+    private fun getAACProfile(profile: Int): String? = when (profile) {
+        CodecProfileLevel.AACObjectELD -> "ELD"
+        CodecProfileLevel.AACObjectHE -> "HE-AAC"
+        CodecProfileLevel.AACObjectHE_PS -> "HE-AACv2"
+        CodecProfileLevel.AACObjectLC -> "LC"
+        CodecProfileLevel.AACObjectLD -> "LD"
+        CodecProfileLevel.AACObjectLTP -> "LTP"
+        CodecProfileLevel.AACObjectMain -> "Main"
+        CodecProfileLevel.AACObjectSSR -> "SSR"
+        else -> null
     }
 }
 

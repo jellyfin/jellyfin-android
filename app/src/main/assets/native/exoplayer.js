@@ -256,14 +256,44 @@ define(['events', 'appSettings', 'loading', 'playbackManager'], function (events
                             var audioCodec = codecs.audioCodecs[index];
                             audioCodecs.push(audioCodec.codec);
 
+                            var profiles = audioCodec.profiles.join('|');
+                            var maxChannels = audioCodec.maxChannels;
+                            var maxSampleRate = audioCodec.maxSampleRate;
+
+                            var conditions = [{
+                                Condition: 'LessThanEqual',
+                                Property: 'AudioBitrate',
+                                Value: audioCodec.maxBitrate
+                            }];
+
+                            if (profiles) {
+                                conditions.push({
+                                    Condition: 'EqualsAny',
+                                    Property: 'AudioProfile',
+                                    Value: profiles
+                                });
+                            }
+
+                            if (maxChannels) {
+                                conditions.push({
+                                    Condition: 'LessThanEqual',
+                                    Property: 'AudioChannels',
+                                    Value: maxChannels
+                                });
+                            }
+
+                            if (maxSampleRate) {
+                                conditions.push({
+                                    Condition: 'LessThanEqual',
+                                    Property: 'AudioSampleRate',
+                                    Value: maxSampleRate
+                                });
+                            }
+
                             profile.CodecProfiles.push({
                                 Type: 'Audio',
                                 Codec: audioCodec.codec,
-                                Conditions: [{
-                                    Condition: 'LessThanEqual',
-                                    Property: 'AudioBitrate',
-                                    Value: audioCodec.maxBitrate
-                                }]
+                                Conditions: conditions
                             });
                         }
                     }
