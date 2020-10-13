@@ -19,6 +19,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
@@ -215,14 +216,14 @@ class PlayerActivity : AppCompatActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupGestureDetector() {
-        // Handle tap when controls are locked
+        // Handles taps when controls are locked
         val unlockDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
                 peekUnlockButton()
                 return true
             }
         })
-        // Handle double tap gesture on controls
+        // Handles double tap to seek and brightness/volume gestures
         val gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onDoubleTap(e: MotionEvent): Boolean {
                 val viewWidth = playerView.measuredWidth
@@ -317,9 +318,29 @@ class PlayerActivity : AppCompatActivity() {
                 return true
             }
         })
+        // Handles scale/zoom gesture
+        val zoomGestureDetector = ScaleGestureDetector(this, object : ScaleGestureDetector.OnScaleGestureListener {
+            override fun onScaleBegin(detector: ScaleGestureDetector): Boolean = true
+
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
+                val scaleFactor = detector.scaleFactor
+                if (abs(scaleFactor - 1f) > 0.01f) {
+                    playerView.resizeMode = if (scaleFactor > 1) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FIT
+                }
+                return true
+            }
+
+            override fun onScaleEnd(detector: ScaleGestureDetector) {}
+        })
+        zoomGestureDetector.isQuickScaleEnabled = false
 
         playerView.setOnTouchListener { _, event ->
-            if (playerView.useController) gestureDetector.onTouchEvent(event) else unlockDetector.onTouchEvent(event)
+            if (playerView.useController) {
+                when (event.pointerCount) {
+                    1 -> gestureDetector.onTouchEvent(event)
+                    2 -> zoomGestureDetector.onTouchEvent(event)
+                }
+            } else unlockDetector.onTouchEvent(event)
             if (event.action == MotionEvent.ACTION_UP) {
                 // Hide gesture indicator after timeout, if shown
                 gestureIndicatorOverlayLayout.apply {
