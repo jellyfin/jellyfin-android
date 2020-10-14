@@ -38,7 +38,7 @@ class ExternalPlayer(private val fragment: WebViewFragment) : KoinComponent {
                 val playerIntent = Intent(Intent.ACTION_VIEW).apply {
                     setDataAndType(mediaSource.uri, mediaSource.mimeType)
                     putExtra("title", mediaSource.title)
-                    putExtra("position", mediaSource.mediaStartMs)
+                    putExtra("position", mediaSource.mediaStartMs.toInt())
                     putExtra("return_result", true)
                     putExtra("secure_uri", true)
                     val selectedTrack = mediaSource.subtitleTracksGroup.tracks.getOrNull(mediaSource.subtitleTracksGroup.selectedTrack)?.url
@@ -72,6 +72,7 @@ class ExternalPlayer(private val fragment: WebViewFragment) : KoinComponent {
 
     fun handleActivityResult(resultCode: Int, data: Intent?) {
         when (data?.action) {
+            Constants.MPV_PLAYER_RESULT_ACTION -> handleMPVPlayer(resultCode, data)
             Constants.MX_PLAYER_RESULT_ACTION -> handleMXPlayer(resultCode, data)
             Constants.VLC_PLAYER_RESULT_ACTION -> handleVLCPlayer(resultCode, data)
             else -> {
@@ -84,6 +85,35 @@ class ExternalPlayer(private val fragment: WebViewFragment) : KoinComponent {
                     notifyEvent(Constants.EVENT_CANCELED)
                     context.toast(R.string.external_player_invalid_player, Toast.LENGTH_LONG)
                 }
+            }
+        }
+    }
+
+    // https://github.com/mpv-android/mpv-android/commit/f70298fe23c4872ea04fe4f2a8b378b986460d98
+    private fun handleMPVPlayer(resultCode: Int, data: Intent) {
+        val player = "MPV Player"
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                val position = data.getIntExtra("position", 0)
+                if (position > 0) {
+                    Timber.d("Playback stopped [player: $player, position: $position]")
+                    notifyEvent(Constants.EVENT_TIME_UPDATE, "$position")
+                    notifyEvent(Constants.EVENT_ENDED)
+                } else {
+                    Timber.d("Playback completed [player: $player]")
+                    notifyEvent(Constants.EVENT_TIME_UPDATE)
+                    notifyEvent(Constants.EVENT_ENDED)
+                }
+            }
+            Activity.RESULT_CANCELED -> {
+                Timber.d("Playback stopped by unknown error [player: $player]")
+                notifyEvent(Constants.EVENT_CANCELED)
+                context.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
+            }
+            else -> {
+                Timber.d("Invalid state [player: $player, resultCode: $resultCode]")
+                notifyEvent(Constants.EVENT_CANCELED)
+                context.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
             }
         }
     }
@@ -104,10 +134,7 @@ class ExternalPlayer(private val fragment: WebViewFragment) : KoinComponent {
                         val duration = data.getIntExtra("duration", 0)
                         if (position > 0) {
                             Timber.d("Playback stopped [player: $player, position: $position, duration: $duration]")
-                            notifyEvent(
-                                Constants.EVENT_TIME_UPDATE,
-                                position.toString()
-                            )
+                            notifyEvent(Constants.EVENT_TIME_UPDATE, "$position")
                             notifyEvent(Constants.EVENT_ENDED)
                         } else {
                             Timber.d("Invalid state [player: $player, position: $position, duration: $duration]")
@@ -148,7 +175,7 @@ class ExternalPlayer(private val fragment: WebViewFragment) : KoinComponent {
                 val extraDuration = data.getLongExtra("extra_duration", 0L)
                 if (extraPosition > 0L) {
                     Timber.d("Playback stopped [player: $player, extra_position: $extraPosition, extra_duration: $extraDuration]")
-                    notifyEvent(Constants.EVENT_TIME_UPDATE, extraPosition.toString())
+                    notifyEvent(Constants.EVENT_TIME_UPDATE, "$extraPosition")
                     notifyEvent(Constants.EVENT_ENDED)
                 } else {
                     if (extraDuration == 0L && extraPosition == 0L) {
@@ -158,14 +185,14 @@ class ExternalPlayer(private val fragment: WebViewFragment) : KoinComponent {
                     } else {
                         Timber.d("Invalid state [player: $player, extra_position: $extraPosition, extra_duration: $extraDuration]")
                         notifyEvent(Constants.EVENT_CANCELED)
-                        context.toast(R.string.external_player_unknown_error)
+                        context.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
                     }
                 }
             }
             else -> {
                 Timber.d("Playback failed [player: $player, resultCode: $resultCode]")
                 notifyEvent(Constants.EVENT_CANCELED)
-                context.toast(R.string.external_player_unknown_error)
+                context.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
             }
         }
     }
