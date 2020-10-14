@@ -100,6 +100,7 @@ object Constants {
     const val HANDLE_EXTERNAL_PLAYER = 1
 
     // External player result actions
+    const val MPV_PLAYER_RESULT_ACTION = "is.xyz.mpv.MPVActivity.result"
     const val MX_PLAYER_RESULT_ACTION = "com.mxtech.intent.result.VIEW"
     const val VLC_PLAYER_RESULT_ACTION = "org.videolan.vlc.player.result"
 
