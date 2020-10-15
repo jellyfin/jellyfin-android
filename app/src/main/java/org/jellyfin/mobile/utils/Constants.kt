@@ -24,6 +24,7 @@ object Constants {
     const val PREF_VIDEO_PLAYER_TYPE = "pref_video_player_type"
     const val PREF_EXOPLAYER_ALLOW_SWIPE_GESTURES = "pref_exoplayer_allow_swipe_gestures"
     const val PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO = "pref_exoplayer_allow_background_audio"
+    const val PREF_EXTERNAL_PLAYER_APP = "pref_external_player_app"
 
     // InputManager commands
     const val INPUT_MANAGER_COMMAND_PLAY_PAUSE = "playpause"

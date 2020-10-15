@@ -2,6 +2,7 @@ package org.jellyfin.mobile.bridge
 
 import android.app.Activity
 import android.content.Context
+import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.webkit.JavascriptInterface
@@ -10,9 +11,11 @@ import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.runOnUiThread
+import org.jellyfin.mobile.utils.isPackageInstalled
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.json.JSONException
@@ -36,6 +39,9 @@ class ExternalPlayer(private val fragment: WebViewFragment) : KoinComponent {
             val mediaSource = JellyfinMediaSource(JSONObject(args))
             if (mediaSource.playMethod == "DirectStream") {
                 val playerIntent = Intent(Intent.ACTION_VIEW).apply {
+                    if (fragment.isPackageInstalled(appPreferences.externalPlayerApp)) {
+                        component = getComponent(appPreferences.externalPlayerApp)
+                    }
                     setDataAndType(mediaSource.uri, mediaSource.mimeType)
                     putExtra("title", mediaSource.title)
                     putExtra("position", mediaSource.mediaStartMs.toInt())
@@ -194,6 +200,18 @@ class ExternalPlayer(private val fragment: WebViewFragment) : KoinComponent {
                 notifyEvent(Constants.EVENT_CANCELED)
                 context.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
             }
+        }
+    }
+
+    /**
+     * To ensure that the correct activity is called.
+     */
+    private fun getComponent(@ExternalPlayerPackage packageName: String): ComponentName? {
+        return when (packageName) {
+            ExternalPlayerPackage.MPV_PLAYER -> ComponentName(packageName, "$packageName.MPVActivity")
+            ExternalPlayerPackage.MX_PLAYER_FREE, ExternalPlayerPackage.MX_PLAYER_PRO -> ComponentName(packageName, "$packageName.ActivityScreen")
+            ExternalPlayerPackage.VLC_PLAYER -> ComponentName(packageName, "$packageName.gui.video.VideoPlayerActivity")
+            else -> null
         }
     }
 }

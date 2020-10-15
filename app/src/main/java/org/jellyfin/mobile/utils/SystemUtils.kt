@@ -4,6 +4,7 @@ import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Build
@@ -13,6 +14,7 @@ import android.provider.Settings
 import android.provider.Settings.System.ACCELEROMETER_ROTATION
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
@@ -21,6 +23,7 @@ import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.fragment.WebViewFragment
+import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.koin.android.ext.android.get
 import timber.log.Timber
 import kotlin.coroutines.resume
@@ -114,6 +117,12 @@ private fun Context.downloadFile(request: DownloadManager.Request, @DownloadMeth
 }
 
 fun Activity.isAutoRotateOn() = Settings.System.getInt(contentResolver, ACCELEROMETER_ROTATION, 0) == 1
+
+fun Fragment.isPackageInstalled(@ExternalPlayerPackage packageName: String) = try {
+    packageName.isNotEmpty() && requireContext().packageManager.getApplicationInfo(packageName, 0).enabled
+} catch (e: PackageManager.NameNotFoundException) {
+    false
+}
 
 fun Context.createMediaNotificationChannel(notificationManager: NotificationManager) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -3,6 +3,7 @@ package org.jellyfin.mobile
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 
@@ -46,4 +47,9 @@ class AppPreferences(context: Context) {
 
     val exoPlayerAllowBackgroundAudio: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO, false)
+
+    @ExternalPlayerPackage
+    var externalPlayerApp: String
+        get() = sharedPreferences.getString(Constants.PREF_EXTERNAL_PLAYER_APP, ExternalPlayerPackage.SYSTEM_DEFAULT)!!
+        set(value) = sharedPreferences.edit { putString(Constants.PREF_EXTERNAL_PLAYER_APP, value) }
 }
