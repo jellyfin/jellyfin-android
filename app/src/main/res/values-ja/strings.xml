@@ -30,4 +30,20 @@
     <string name="connection_error_invalid_format">ホストのフォーマットが無効です</string>
     <string name="host_input_hint">ホスト</string>
     <string name="connect_to_server_title">サーバーへ接続</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">内蔵のプレーヤーでジェスチャーによる明るさと音量の調整を許可</string>
+    <string name="pref_exoplayer_allow_background_audio">内蔵のプレーヤーでバックグラウンドのオーディオ再生を許可</string>
+    <string name="video_player_external_description">MX PlayerやVLCのような外部のビデオ再生アプリ</string>
+    <string name="video_player_native_description">ExoPlayerを元にし、より多くのビデオフォーマットとコーデックをサポートし、よりOSに統合</string>
+    <string name="video_player_web_description">Web UIによるデフォルトのHTMLビデオプレーヤー</string>
+    <string name="video_player_external">外部のプレーヤー</string>
+    <string name="video_player_native">内蔵のプレーヤー</string>
+    <string name="video_player_web">ウェブプレーヤー</string>
+    <string name="pref_video_player_type_title">ビデオプレーヤーの種類</string>
+    <string name="pref_category_video_player">ビデオプレーヤー</string>
+    <string name="pref_music_notification_always_dismissible_title">通知のミュージックプレーヤーをいつでも削除できるようにする</string>
+    <string name="pref_category_music_player">ミュージックプレーヤー</string>
+    <string name="activity_name_settings">Jellyfin の設定</string>
+    <string name="external_player_unknown_error">外部のプレーヤーに不明なエラーがあります。プレイバックトラッキングが無効になっています。</string>
+    <string name="external_player_invalid_player">有効な外部のプレーヤーが選択されていません。プレイバックトラッキングが無効になっています。</string>
+    <string name="external_player_not_supported_yet">選択された外部のプレーヤーではプレイバックトラッキングがまだサポートされていません。サポートを追加するよう開発者に連絡してみてください。</string>
 </resources>
