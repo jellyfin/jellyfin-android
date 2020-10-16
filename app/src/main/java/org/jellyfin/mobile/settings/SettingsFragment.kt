@@ -16,6 +16,7 @@ import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.requireMainActivity
 import org.jellyfin.mobile.utils.withThemedContext
+import org.jellyfin.mobile.utils.isPackageInstalled
 import org.koin.android.ext.android.inject
 
 class SettingsFragment : Fragment() {
@@ -24,6 +25,7 @@ class SettingsFragment : Fragment() {
     private val settingsAdapter: PreferencesAdapter by lazy { PreferencesAdapter(buildSettingsScreen()) }
     private lateinit var backgroundAudioPreference: Preference
     private lateinit var swipeGesturesPreference: Preference
+    private lateinit var externalPlayerChoicePreference: Preference
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val localInflater = inflater.withThemedContext(requireContext(), R.style.AppTheme_Settings)
@@ -65,6 +67,7 @@ class SettingsFragment : Fragment() {
             defaultOnSelectionChange { selection ->
                 swipeGesturesPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
         }
         swipeGesturesPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_SWIPE_GESTURES) {
@@ -75,6 +78,17 @@ class SettingsFragment : Fragment() {
         backgroundAudioPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO) {
             titleRes = R.string.pref_exoplayer_allow_background_audio
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+        }
+        val externalPlayerOptions = listOf(
+            SelectionItem(ExternalPlayerPackage.MPV_PLAYER, R.string.external_player_mpv, R.string.external_player_mpv_description),
+            SelectionItem(ExternalPlayerPackage.MX_PLAYER_FREE, R.string.external_player_mx_player_free, R.string.external_player_mx_player_free_description),
+            SelectionItem(ExternalPlayerPackage.MX_PLAYER_PRO, R.string.external_player_mx_player_pro, R.string.external_player_mx_player_pro_description),
+            SelectionItem(ExternalPlayerPackage.VLC_PLAYER, R.string.external_player_vlc_player, R.string.external_player_vlc_player_description),
+        ).filter { isPackageInstalled(it.key) }.plus(SelectionItem(ExternalPlayerPackage.SYSTEM_DEFAULT, R.string.external_player_system_default, R.string.external_player_system_default_description))
+        if (!isPackageInstalled(appPreferences.externalPlayerApp)) appPreferences.externalPlayerApp = ExternalPlayerPackage.SYSTEM_DEFAULT
+        externalPlayerChoicePreference = singleChoice(Constants.PREF_EXTERNAL_PLAYER_APP, externalPlayerOptions) {
+            titleRes = R.string.external_player_app
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXTERNAL_PLAYER
         }
     }
 

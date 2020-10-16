@@ -49,4 +49,16 @@
     <string name="video_player_external_description">External video playback apps like MX Player and VLC</string>
     <string name="pref_exoplayer_allow_background_audio">Allow playing audio in the background in native player</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Allow brightness and volume gestures in native player</string>
+    
+    <string name="external_player_app">External player app</string>
+    <string name="external_player_mpv">MPV Player</string>
+    <string name="external_player_mpv_description">A simple, small and light-weight free (as in freedom) video player. It supports a wide variety of media file formats.</string>
+    <string name="external_player_mx_player_free">MX Player Free</string>
+    <string name="external_player_mx_player_free_description">Powerful video player with advanced hardware acceleration and subtitle support.</string>
+    <string name="external_player_mx_player_pro">MX Player Pro</string>
+    <string name="external_player_mx_player_pro_description">The paid version of MX Player which provides an uninterrupted video experience.</string>
+    <string name="external_player_vlc_player">VLC Player</string>
+    <string name="external_player_vlc_player_description">Free and open source cross-platform multimedia player that plays most multimedia files.</string>
+    <string name="external_player_system_default">System default</string>
+    <string name="external_player_system_default_description">Let the system handle the player choice, some players may not be fully compatible.</string>
 </resources>
