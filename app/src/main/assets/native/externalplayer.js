@@ -190,18 +190,20 @@ define(['appSettings', 'events', 'playbackManager'], function (appSettings, even
 
                     profile.SubtitleProfiles = [];
 
-                    var subtitleProfiles = ['ass', 'idx', 'pgs', 'pgssub', 'smi', 'srt', 'ssa', 'subrip'];
+                    var subtitleProfiles = ['ass', 'idx', 'smi', 'srt', 'ssa', 'subrip'];
 
-                    subtitleProfiles.forEach(function (format) {
+                    var embedSubtitleProfiles = ['pgs', 'pgssub'];
+
+                    subtitleProfiles.concat(embedSubtitleProfiles).forEach(function (format) {
                         profile.SubtitleProfiles.push({
                             Format: format,
                             Method: 'Embed'
                         });
                     });
 
-                    var externalSubtitleProfiles = ['srt', 'sub', 'subrip', 'vtt'];
+                    var externalSubtitleProfiles = ['sub', 'vtt'];
 
-                    externalSubtitleProfiles.forEach(function (format) {
+                    subtitleProfiles.concat(externalSubtitleProfiles).forEach(function (format) {
                         profile.SubtitleProfiles.push({
                             Format: format,
                             Method: 'External'
