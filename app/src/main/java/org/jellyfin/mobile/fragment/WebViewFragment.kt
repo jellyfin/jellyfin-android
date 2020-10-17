@@ -16,6 +16,7 @@ import androidx.activity.addCallback
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebViewClientCompat
@@ -113,7 +114,7 @@ class WebViewFragment : Fragment() {
     @SuppressLint("SetJavaScriptEnabled")
     private fun WebView.initialize() {
         webViewClient = object : WebViewClientCompat() {
-            override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
+            override fun shouldInterceptRequest(webView: WebView, request: WebResourceRequest): WebResourceResponse? {
                 val url = request.url
                 val path = url.path?.toLowerCase(Locale.ROOT) ?: return null
                 return when {
@@ -185,8 +186,18 @@ class WebViewFragment : Fragment() {
     }
 
     fun onSelectServer(error: Boolean = false) {
-        if (error) activity?.replaceFragment<ConnectFragment>(Bundle().apply { putBoolean(Constants.FRAGMENT_CONNECT_EXTRA_ERROR, true) })
-        else activity?.addFragment<ConnectFragment>()
+        activity?.run {
+            if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                if (error) {
+                    val extras = Bundle().apply {
+                        putBoolean(Constants.FRAGMENT_CONNECT_EXTRA_ERROR, true)
+                    }
+                    replaceFragment<ConnectFragment>(extras)
+                } else {
+                    addFragment<ConnectFragment>()
+                }
+            }
+        }
     }
 
     fun onErrorReceived() {
