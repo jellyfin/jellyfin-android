@@ -32,12 +32,13 @@ android {
     productFlavors {
         create("libre") {
             dimension = "variant"
-            buildConfigField("Boolean", "IS_PROPRIETARY", "false")
+            buildConfigField("boolean", "IS_PROPRIETARY", "false")
         }
 
         create("proprietary") {
             dimension = "variant"
-            buildConfigField("Boolean", "IS_PROPRIETARY", "true")
+            buildConfigField("boolean", "IS_PROPRIETARY", "true")
+            isDefault = true
         }
     }
 
@@ -53,6 +54,7 @@ android {
             aaptOptions.cruncherEnabled = false // Disable png crunching
         }
     }
+
     @Suppress("UnstableApiUsage")
     buildFeatures {
         viewBinding = true
