@@ -23,6 +23,8 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.databinding.ActivityPlayerBinding
+import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.utils.*
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CENTER_OVERLAY_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
@@ -30,21 +32,22 @@ import org.jellyfin.mobile.utils.Constants.DEFAULT_SEEK_TIME_MS
 import org.koin.android.ext.android.inject
 import kotlin.math.abs
 
-
 class PlayerActivity : AppCompatActivity() {
 
     private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
-    private val playerView: PlayerView by lazyView(R.id.player_view)
-    private val playerControlsView: View by lazyView(R.id.player_controls)
-    private val playerOverlay: View by lazyView(R.id.player_overlay)
-    private val loadingIndicator: View by lazyView(R.id.loading_indicator)
-    private val titleTextView: TextView by lazyView(R.id.track_title)
-    private val fullscreenSwitcher: ImageButton by lazyView(R.id.fullscreen_switcher)
-    private val unlockScreenButton: ImageButton by lazyView(R.id.unlock_screen_button)
-    private val gestureIndicatorOverlayLayout: LinearLayout by lazyView(R.id.gesture_overlay_layout)
-    private val gestureIndicatorOverlayImage: ImageView by lazyView(R.id.gesture_overlay_image)
-    private val gestureIndicatorOverlayProgress: ProgressBar by lazyView(R.id.gesture_overlay_progress)
+    private lateinit var playerBinding: ActivityPlayerBinding
+    private val playerView: PlayerView get() = playerBinding.playerView
+    private val playerOverlay: View get() = playerBinding.playerOverlay
+    private val loadingIndicator: View get() = playerBinding.loadingIndicator
+    private val unlockScreenButton: ImageButton get() = playerBinding.unlockScreenButton
+    private val gestureIndicatorOverlayLayout: LinearLayout get() = playerBinding.gestureOverlayLayout
+    private val gestureIndicatorOverlayImage: ImageView get() = playerBinding.gestureOverlayImage
+    private val gestureIndicatorOverlayProgress: ProgressBar get() = playerBinding.gestureOverlayProgress
+    private lateinit var playerControlsBinding: ExoPlayerControlViewBinding
+    private val playerControlsView: View get() = playerControlsBinding.root
+    private val titleTextView: TextView get() = playerControlsBinding.trackTitle
+    private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
     private lateinit var playbackMenus: PlaybackMenus
     private val audioManager: AudioManager by lazy { (getSystemService(Context.AUDIO_SERVICE) as AudioManager) }
 
@@ -89,7 +92,9 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_player)
+        playerBinding = ActivityPlayerBinding.inflate(layoutInflater)
+        setContentView(playerBinding.root)
+        playerControlsBinding = ExoPlayerControlViewBinding.bind(findViewById(R.id.player_controls))
 
         // Handle system window insets
         ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { _, insets ->
@@ -131,7 +136,7 @@ class PlayerActivity : AppCompatActivity() {
         setupFullscreenSwitcher()
 
         // Create playback menus
-        playbackMenus = PlaybackMenus(this)
+        playbackMenus = PlaybackMenus(this, playerBinding, playerControlsBinding)
 
         // Set controller timeout
         suppressControllerAutoHide(false)
