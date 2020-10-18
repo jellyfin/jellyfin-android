@@ -72,7 +72,12 @@ android {
     }
 }
 
+
 dependencies {
+    // Add implementation functions for build flavors
+    val libreImplementation by configurations
+    val proprietaryImplementation by configurations
+
     // Kotlin
     implementation(kotlin("stdlib-jdk8"))
     implementation(Dependencies.Kotlin.coroutinesCore)
@@ -113,8 +118,8 @@ dependencies {
 
     // Cast
     implementation(Dependencies.Cast.mediaRouter)
-    add("proprietaryImplementation", Dependencies.Cast.playServicesCast)
-    add("proprietaryImplementation", Dependencies.Cast.playServicesCastFramework)
+    proprietaryImplementation(Dependencies.Cast.playServicesCast)
+    proprietaryImplementation(Dependencies.Cast.playServicesCastFramework)
 
     // Media
     implementation(Dependencies.Media.media)
