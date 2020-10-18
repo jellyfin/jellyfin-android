@@ -3,6 +3,7 @@ package org.jellyfin.mobile.fragment
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -157,7 +158,8 @@ class WebViewFragment : Fragment() {
             override fun onReceivedHttpError(view: WebView, request: WebResourceRequest, errorResponse: WebResourceResponse) {
                 val errorMessage = errorResponse.data?.run { bufferedReader().use(Reader::readText) }
                 Timber.e("Received WebView HTTP %d error: %s", errorResponse.statusCode, errorMessage)
-                if (request.url.path?.endsWith(Constants.INDEX_PATH) != false)
+
+                if (request.url == Uri.parse(appPreferences.instanceUrl))
                     runOnUiThread { onErrorReceived() }
             }
 
