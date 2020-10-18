@@ -1,1 +1,1 @@
-Client für den freien Media-Server
+Mobiler Client für den freien Media-Server
