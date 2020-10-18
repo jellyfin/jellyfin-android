@@ -2,7 +2,7 @@ Your media, on your terms.
 
 The Jellyfin project is an open source, free software media server. No fees, no tracking, no hidden agenda. Get our free server to collect all your audio, video, photos, and more in one place.
 
-To use the app, you must have a Jellyfin server set up and running. Find out more at <a href='https://jellyfin.org/' target='_blank'>jellyfin.org</a>.
+To use the app, you must have a Jellyfin server set up and running. Find out more at <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
 
 With a Jellyfin server, you can:
 
