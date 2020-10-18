@@ -17,7 +17,7 @@ android {
         minSdkVersion(21)
         targetSdkVersion(30)
         versionName = project.getVersionName()
-        versionCode = getVersionCode(versionName)
+        versionCode = getVersionCode(versionName!!)
         setProperty("archivesBaseName", "jellyfin-android-v$versionName")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
@@ -27,6 +27,20 @@ android {
             }
         }
     }
+
+    flavorDimensions("variant")
+    productFlavors {
+        create("libre") {
+            dimension = "variant"
+            buildConfigField("Boolean", "IS_PROPRIETARY", "false")
+        }
+
+        create("proprietary") {
+            dimension = "variant"
+            buildConfigField("Boolean", "IS_PROPRIETARY", "true")
+        }
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
@@ -97,8 +111,8 @@ dependencies {
 
     // Cast
     implementation(Dependencies.Cast.mediaRouter)
-    implementation(Dependencies.Cast.playServicesCast)
-    implementation(Dependencies.Cast.playServicesCastFramework)
+    add("proprietaryImplementation", Dependencies.Cast.playServicesCast)
+    add("proprietaryImplementation", Dependencies.Cast.playServicesCastFramework)
 
     // Media
     implementation(Dependencies.Media.media)
