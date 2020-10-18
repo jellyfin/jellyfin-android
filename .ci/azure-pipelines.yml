@@ -110,7 +110,7 @@ jobs:
         inputs:
           secureFile: 'keystore'
 
-      - script: '$(find / -name apksigner -print -quit) sign --ks ${KEYSTORE_SECUREFILEPATH} --ks-pass pass:${PASSWORD} --out ${SYSTEM_ARTIFACTSDIRECTORY}/jellyfin-android-${JELLYFIN_VERSION}-release.apk ${SYSTEM_ARTIFACTSDIRECTORY}/jellyfin-android-${JELLYFIN_VERSION}-release-unsigned.apk'
+      - script: '$(find / -name apksigner -print -quit) sign --ks ${KEYSTORE_SECUREFILEPATH} --ks-pass pass:${PASSWORD} --out ${SYSTEM_ARTIFACTSDIRECTORY}/jellyfin-android-${JELLYFIN_VERSION}-libre-release.apk ${SYSTEM_ARTIFACTSDIRECTORY}/jellyfin-android-${JELLYFIN_VERSION}-libre-release-unsigned.apk'
         displayName: 'Sign Release APK'
         env:
           PASSWORD: $(KeyStorePassword)
@@ -119,7 +119,7 @@ jobs:
         displayName: 'Remove Unsigned APK'
         inputs:
           sourceFolder: '$(System.ArtifactsDirectory)'
-          contents: 'jellyfin-android-${JELLYFIN_VERSION}-release-unsigned.apk'
+          contents: 'jellyfin-android-${JELLYFIN_VERSION}-libre-release-unsigned.apk'
 
       - task: GithubRelease@0
         displayName: 'GitHub Upload'
