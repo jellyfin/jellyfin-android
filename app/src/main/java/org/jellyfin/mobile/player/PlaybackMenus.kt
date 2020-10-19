@@ -10,20 +10,26 @@ import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.databinding.ActivityPlayerBinding
+import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.player.source.ExoPlayerTracksGroup
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 
 /**
  *  Provides a menu UI for audio, subtitle and video stream selection
  */
-class PlaybackMenus(private val activity: PlayerActivity) : PopupMenu.OnDismissListener {
-    private val lockScreenButton: View = activity.findViewById(R.id.lock_screen_button)
-    private val audioStreamsButton: View = activity.findViewById(R.id.audio_streams_button)
-    private val subtitlesButton: View = activity.findViewById(R.id.subtitles_button)
-    private val infoButton: View = activity.findViewById(R.id.info_button)
+class PlaybackMenus(
+    private val activity: PlayerActivity,
+    private val playerBinding: ActivityPlayerBinding,
+    private val playerControlsBinding: ExoPlayerControlViewBinding
+) : PopupMenu.OnDismissListener {
+    private val lockScreenButton: View by playerControlsBinding::lockScreenButton
+    private val audioStreamsButton: View by playerControlsBinding::audioStreamsButton
+    private val subtitlesButton: View by playerControlsBinding::subtitlesButton
+    private val infoButton: View by playerControlsBinding::infoButton
+    private val playbackInfo: TextView by playerBinding::playbackInfo
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
-    private val playbackInfo: TextView = activity.findViewById(R.id.playback_info)
 
     init {
         lockScreenButton.setOnClickListener {
