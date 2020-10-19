@@ -47,4 +47,5 @@
     <string name="external_player_invalid_player">Nenhum player externo válido foi selecionado. O rastreamento da reprodução foi desabilitado.</string>
     <string name="available_servers_title">Servidores disponíveis</string>
     <string name="choose_server_button_text">Selecionar servidor</string>
+    <string name="external_player_not_supported_yet">Rastreamento de reprodução não suportado pelo player externo selecionado. Contate os desenvolvedores para tentar adicionar suporte.</string>
 </resources>
