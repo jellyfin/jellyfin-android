@@ -48,4 +48,7 @@
     <string name="available_servers_title">Beschikbare servers</string>
     <string name="choose_server_button_text">Kies server</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Helderheid en volume gebaren toestaan in standaard speler</string>
+    <string name="external_player_mpv_description">Een simpele, kleine en vrije videospeler. Het ondersteunt een groot aantal media formaten.</string>
+    <string name="external_player_mpv">MPV Speler</string>
+    <string name="external_player_app">Externe speler applicatie</string>
 </resources>
