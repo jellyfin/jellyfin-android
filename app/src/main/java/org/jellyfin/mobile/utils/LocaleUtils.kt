@@ -11,7 +11,7 @@ import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-fun WebViewFragment.initLocale() = lifecycleScope.launch {
+fun WebViewFragment.initLocale() = lifecycleScope.launchWhenCreated {
     // Try to set locale via user settings
     val userSettings = suspendCoroutine<String> { continuation ->
         webView.evaluateJavascript("window.localStorage.getItem('${apiClient.currentUserId}-language')") { result ->
@@ -19,7 +19,7 @@ fun WebViewFragment.initLocale() = lifecycleScope.launch {
         }
     }
     if (requireContext().setLocale(userSettings.unescapeJson()))
-        return@launch
+        return@launchWhenCreated
 
     // Fallback to device locale
     Timber.i("Couldn't acquire locale from config, keeping current")

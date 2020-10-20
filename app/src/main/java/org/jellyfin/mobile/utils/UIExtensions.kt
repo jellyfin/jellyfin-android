@@ -7,22 +7,14 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Bundle
-import android.view.ContextThemeWrapper
-import android.view.LayoutInflater
-import android.view.Surface
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.core.view.ViewCompat
 import androidx.core.view.updateMargins
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.add
-import androidx.fragment.app.replace
+import androidx.fragment.app.*
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
@@ -42,11 +34,6 @@ const val STABLE_LAYOUT_FLAGS = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
 const val FULLSCREEN_FLAGS = View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
     View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
     View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-
-@Suppress("DEPRECATION")
-fun Activity.setStableLayoutFlags() {
-    window.decorView.systemUiVisibility = STABLE_LAYOUT_FLAGS
-}
 
 @Suppress("DEPRECATION")
 fun Activity.isFullscreen() = window.decorView.systemUiVisibility.hasFlag(FULLSCREEN_FLAGS)
@@ -94,15 +81,15 @@ inline fun LifecycleOwner.runOnUiThread(noinline block: suspend CoroutineScope.(
     lifecycleScope.launch(Dispatchers.Main, block = block)
 }
 
-inline fun <reified T : Fragment> FragmentActivity.addFragment() {
-    supportFragmentManager.beginTransaction().apply {
+inline fun <reified T : Fragment> FragmentManager.addFragment() {
+    beginTransaction().apply {
         add<T>(R.id.fragment_container)
         addToBackStack(null)
     }.commit()
 }
 
-inline fun <reified T : Fragment> FragmentActivity.replaceFragment(args: Bundle? = null) {
-    supportFragmentManager.beginTransaction().replace<T>(R.id.fragment_container, args = args).commit()
+inline fun <reified T : Fragment> FragmentManager.replaceFragment(args: Bundle? = null) {
+    beginTransaction().replace<T>(R.id.fragment_container, args = args).commit()
 }
 
 fun LayoutInflater.withThemedContext(context: Context, @StyleRes style: Int): LayoutInflater {

@@ -150,7 +150,7 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
 
     @JavascriptInterface
     fun openClientSettings() {
-        fragment.requireActivity().addFragment<SettingsFragment>()
+        fragment.parentFragmentManager.addFragment<SettingsFragment>()
     }
 
     @JavascriptInterface

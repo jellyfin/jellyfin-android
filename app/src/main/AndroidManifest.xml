@@ -19,6 +19,7 @@
             <action android:name="android.intent.action.VIEW" />
             <data android:mimeType="*/*" />
         </intent>
+
         <package android:name="com.mxtech.videoplayer.ad" />
         <package android:name="com.mxtech.videoplayer.pro" />
         <package android:name="is.xyz.mpv" />
@@ -39,19 +40,14 @@
 
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode">
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|uiMode"
+            android:launchMode="singleTask"
+            android:supportsPictureInPicture="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".player.PlayerFragment"
-            android:launchMode="singleTop"
-            android:screenOrientation="sensorLandscape"
-            android:supportsPictureInPicture="true"
-            android:theme="@style/AppTheme.Player" />
 
         <service android:name=".webapp.RemotePlayerService" />
 

@@ -24,6 +24,7 @@ import org.jellyfin.apiclient.model.dto.ImageOptions
 import org.jellyfin.apiclient.model.entities.ImageType.Primary
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.BuildConfig
+import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.VIDEO_PLAYER_NOTIFICATION_ID
@@ -124,7 +125,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     }
 
     private fun buildContentIntent(): PendingIntent {
-        val intent = Intent(context, PlayerFragment::class.java).apply {
+        val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         }
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)

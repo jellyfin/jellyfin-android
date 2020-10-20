@@ -2,22 +2,23 @@ package org.jellyfin.mobile.player
 
 import android.annotation.SuppressLint
 import android.app.PictureInPictureParams
-import android.content.Context
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.graphics.Color
 import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings.System
 import android.view.*
 import android.widget.*
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.getSystemService
+import androidx.core.content.withStyledAttributes
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
@@ -30,13 +31,15 @@ import org.jellyfin.mobile.utils.Constants.DEFAULT_CENTER_OVERLAY_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_SEEK_TIME_MS
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 import kotlin.math.abs
 
-class PlayerFragment : AppCompatActivity() {
+class PlayerFragment : Fragment() {
 
     private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
-    private lateinit var playerBinding: FragmentPlayerBinding
+    private var _playerBinding: FragmentPlayerBinding? = null
+    private val playerBinding: FragmentPlayerBinding get() = _playerBinding!!
     private val playerView: PlayerView get() = playerBinding.playerView
     private val playerOverlay: View get() = playerBinding.playerOverlay
     private val loadingIndicator: View get() = playerBinding.loadingIndicator
@@ -44,15 +47,17 @@ class PlayerFragment : AppCompatActivity() {
     private val gestureIndicatorOverlayLayout: LinearLayout get() = playerBinding.gestureOverlayLayout
     private val gestureIndicatorOverlayImage: ImageView get() = playerBinding.gestureOverlayImage
     private val gestureIndicatorOverlayProgress: ProgressBar get() = playerBinding.gestureOverlayProgress
-    private lateinit var playerControlsBinding: ExoPlayerControlViewBinding
+    private var _playerControlsBinding: ExoPlayerControlViewBinding? = null
+    private val playerControlsBinding: ExoPlayerControlViewBinding get() = _playerControlsBinding!!
     private val playerControlsView: View get() = playerControlsBinding.root
     private val titleTextView: TextView get() = playerControlsBinding.trackTitle
     private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
-    private lateinit var playbackMenus: PlaybackMenus
-    private val audioManager: AudioManager by lazy { (getSystemService(Context.AUDIO_SERVICE) as AudioManager) }
+    private var playbackMenus: PlaybackMenus? = null
+    private val audioManager: AudioManager by lazy { requireContext().getSystemService()!! }
 
-    private val swipeGesturesEnabled
-        get() = appPreferences.exoPlayerAllowSwipeGestures
+    private var isZoomEnabled = false
+
+    private val swipeGesturesEnabled by appPreferences::exoPlayerAllowSwipeGestures
 
     /**
      * Tracks a value during a swipe gesture (between multiple onScroll calls).
@@ -69,7 +74,7 @@ class PlayerFragment : AppCompatActivity() {
      * If the requestedOrientation was reset directly after setting it in the fullscreenSwitcher click handler,
      * the orientation would get reverted before the user had any chance to rotate the device to the desired position.
      */
-    private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(this) }
+    private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(requireActivity()) }
 
     /**
      * Runnable that hides the unlock screen button, used by [peekUnlockButton]
@@ -92,48 +97,57 @@ class PlayerFragment : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        playerBinding = FragmentPlayerBinding.inflate(layoutInflater)
-        setContentView(playerBinding.root)
-        playerControlsBinding = ExoPlayerControlViewBinding.bind(findViewById(R.id.player_controls))
 
-        // Handle system window insets
-        ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { _, insets ->
-            playerControlsView.updatePadding(left = insets.systemWindowInsetLeft, right = insets.systemWindowInsetRight)
-            playerOverlay.updatePadding(left = insets.systemWindowInsetLeft, right = insets.systemWindowInsetRight)
-            insets
+        // Set orientation to landscape and enable fullscreen initially, set status bar color
+        with(requireActivity()) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+            enableFullscreen()
+            window.statusBarColor = Color.BLACK
         }
 
         // Observe ViewModel
         viewModel.player.observe(this) { player ->
             playerView.player = player
-            if (player == null) finish()
+            if (player == null) parentFragmentManager.popBackStack()
         }
         viewModel.playerState.observe(this) { playerState ->
             val isPlaying = viewModel.playerOrNull?.isPlaying == true
+            val window = requireActivity().window
             if (isPlaying) {
                 window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             } else {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             }
             if (playerState == Player.STATE_ENDED) {
-                finish()
+                parentFragmentManager.popBackStack()
                 return@observe
             }
             loadingIndicator.isVisible = playerState == Player.STATE_BUFFERING
         }
         viewModel.mediaSourceManager.jellyfinMediaSource.observe(this) { jellyfinMediaSource ->
-            playbackMenus.onItemChanged(jellyfinMediaSource)
             titleTextView.text = jellyfinMediaSource.title
+            playbackMenus?.onItemChanged(jellyfinMediaSource)
         }
 
-        // Disable controller in PiP
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && isInPictureInPictureMode) {
-            playerView.useController = false
-        }
+        // Handle intent
+        viewModel.mediaSourceManager.handleArguments(requireArguments())
+    }
 
-        // Handle current orientation and update fullscreen state
-        restoreFullscreenState()
-        setupFullscreenSwitcher()
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _playerBinding = FragmentPlayerBinding.inflate(layoutInflater)
+        _playerControlsBinding = ExoPlayerControlViewBinding.bind(playerBinding.root.findViewById(R.id.player_controls))
+        return playerBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Handle system window insets
+        ViewCompat.setOnApplyWindowInsetsListener(playerBinding.root) { _, insets ->
+            playerControlsView.updatePadding(left = insets.systemWindowInsetLeft, right = insets.systemWindowInsetRight)
+            playerOverlay.updatePadding(left = insets.systemWindowInsetLeft, right = insets.systemWindowInsetRight)
+            insets
+        }
 
         // Create playback menus
         playbackMenus = PlaybackMenus(this, playerBinding, playerControlsBinding)
@@ -144,20 +158,19 @@ class PlayerFragment : AppCompatActivity() {
         // Setup gesture handling
         setupGestureDetector()
 
+        // Handle fullscreen switcher
+        fullscreenSwitcher.setOnClickListener {
+            val current = resources.configuration.orientation
+            requireActivity().requestedOrientation = when (current) {
+                Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            }
+        }
+
         // Handle unlock action
         unlockScreenButton.setOnClickListener {
             unlockScreenButton.isVisible = false
             unlockScreen()
-        }
-
-        // Handle intent
-        viewModel.mediaSourceManager.handleIntent(intent)
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        when (intent.action) {
-            Constants.ACTION_PLAY_MEDIA -> viewModel.mediaSourceManager.handleIntent(intent, true)
         }
     }
 
@@ -169,16 +182,16 @@ class PlayerFragment : AppCompatActivity() {
     fun lockScreen() {
         playerView.useController = false
         orientationListener.disable()
-        lockOrientation()
+        requireActivity().lockOrientation()
         peekUnlockButton()
     }
 
     private fun unlockScreen() {
-        if (isAutoRotateOn()) {
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        if (requireActivity().isAutoRotateOn()) {
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
         orientationListener.enable()
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !isInPictureInPictureMode)) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !requireActivity().isInPictureInPictureMode)) {
             playerView.useController = true
             playerView.apply {
                 if (!isControllerVisible) showController()
@@ -186,24 +199,20 @@ class PlayerFragment : AppCompatActivity() {
         }
     }
 
-    fun restoreFullscreenState() {
-        val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-        if (isLandscape) enableFullscreen() else disableFullscreen()
-    }
-
-    private fun setupFullscreenSwitcher() {
+    /**
+     * Handle current orientation and update fullscreen state and switcher icon
+     */
+    private fun updateFullscreenStateAndSwitcher(configuration: Configuration) {
+        if (isLandscape(configuration)) requireActivity().enableFullscreen() else requireActivity().disableFullscreen()
         val fullscreenDrawable = when {
-            !isFullscreen() -> R.drawable.ic_fullscreen_enter_white_32dp
+            !requireActivity().isFullscreen() -> R.drawable.ic_fullscreen_enter_white_32dp
             else -> R.drawable.ic_fullscreen_exit_white_32dp
         }
         fullscreenSwitcher.setImageResource(fullscreenDrawable)
-        fullscreenSwitcher.setOnClickListener {
-            val current = resources.configuration.orientation
-            requestedOrientation = when (current) {
-                Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            }
-        }
+    }
+
+    private fun updateZoomMode(enabled: Boolean) {
+        playerView.resizeMode = if (enabled) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FIT
     }
 
     /**
@@ -222,14 +231,14 @@ class PlayerFragment : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setupGestureDetector() {
         // Handles taps when controls are locked
-        val unlockDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
+        val unlockDetector = GestureDetector(requireContext(), object : GestureDetector.SimpleOnGestureListener() {
             override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
                 peekUnlockButton()
                 return true
             }
         })
         // Handles double tap to seek and brightness/volume gestures
-        val gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
+        val gestureDetector = GestureDetector(requireContext(), object : GestureDetector.SimpleOnGestureListener() {
             override fun onDoubleTap(e: MotionEvent): Boolean {
                 val viewWidth = playerView.measuredWidth
                 val viewHeight = playerView.measuredHeight
@@ -298,11 +307,12 @@ class PlayerFragment : AppCompatActivity() {
                     gestureIndicatorOverlayProgress.progress = toSet
                 } else {
                     // Swiping on the left, change brightness
+                    val window = requireActivity().window
                     val windowLayoutParams = window.attributes
                     if (swipeGestureValueTracker == -1f) {
                         swipeGestureValueTracker = windowLayoutParams.screenBrightness
                         if (swipeGestureValueTracker < 0f)
-                            swipeGestureValueTracker = System.getFloat(contentResolver, System.SCREEN_BRIGHTNESS) / 255
+                            swipeGestureValueTracker = System.getFloat(requireContext().contentResolver, System.SCREEN_BRIGHTNESS) / 255
                     }
 
                     swipeGestureValueTracker += ratioChange
@@ -324,13 +334,14 @@ class PlayerFragment : AppCompatActivity() {
             }
         })
         // Handles scale/zoom gesture
-        val zoomGestureDetector = ScaleGestureDetector(this, object : ScaleGestureDetector.OnScaleGestureListener {
-            override fun onScaleBegin(detector: ScaleGestureDetector): Boolean = true
+        val zoomGestureDetector = ScaleGestureDetector(requireContext(), object : ScaleGestureDetector.OnScaleGestureListener {
+            override fun onScaleBegin(detector: ScaleGestureDetector): Boolean = isLandscape()
 
             override fun onScale(detector: ScaleGestureDetector): Boolean {
                 val scaleFactor = detector.scaleFactor
                 if (abs(scaleFactor - 1f) > 0.01f) {
-                    playerView.resizeMode = if (scaleFactor > 1) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FIT
+                    isZoomEnabled = scaleFactor > 1
+                    updateZoomMode(isZoomEnabled)
                 }
                 return true
             }
@@ -340,6 +351,8 @@ class PlayerFragment : AppCompatActivity() {
         zoomGestureDetector.isQuickScaleEnabled = false
 
         playerView.setOnTouchListener { _, event ->
+            Timber.d("RW: ${playerBinding.root.width}, PW: ${(playerBinding.root.parent as? View)?.width}")
+
             if (playerView.useController) {
                 when (event.pointerCount) {
                     1 -> gestureDetector.onTouchEvent(event)
@@ -360,6 +373,9 @@ class PlayerFragment : AppCompatActivity() {
         }
     }
 
+    fun isLandscape(configuration: Configuration = resources.configuration) =
+        configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
     /**
      * @return true if the audio track was changed
      */
@@ -374,14 +390,24 @@ class PlayerFragment : AppCompatActivity() {
         return viewModel.mediaSourceManager.selectSubtitle(index)
     }
 
-    override fun onUserLeaveHint() {
+    fun onUserLeaveHint() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && viewModel.playerOrNull?.isPlaying == true) {
-            enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+            requireActivity().enterPictureInPictureMode(PictureInPictureParams.Builder().build())
         }
     }
 
-    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
         playerView.useController = !isInPictureInPictureMode
+        if (isInPictureInPictureMode) {
+            playbackMenus?.dismissPlaybackInfo()
+            hideUnlockButtonAction.run()
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        updateFullscreenStateAndSwitcher(newConfig)
+        updateZoomMode(isLandscape(newConfig) && isZoomEnabled)
     }
 
     override fun onStop() {
@@ -389,9 +415,26 @@ class PlayerFragment : AppCompatActivity() {
         orientationListener.disable()
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
+        super.onDestroyView()
         // Detach player from PlayerView
         playerView.player = null
+
+        // Set binding references to null
+        _playerBinding = null
+        _playerControlsBinding = null
+        playbackMenus = null
+    }
+
+    override fun onDestroy() {
         super.onDestroy()
+        // Reset screen orientation, disable fullscreen and reset status bar color
+        with(requireActivity()) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            disableFullscreen()
+            withStyledAttributes(0, intArrayOf(R.attr.colorPrimaryDark)) {
+                window.statusBarColor = getColor(0, Color.BLACK)
+            }
+        }
     }
 }
