@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">Mobil adat és Roaming</string>
     <string name="mobile_data">Mobil adat</string>
     <string name="wifi_only">Csak WiFi</string>
-    <string name="network_message">Engedélyezed a letöltést mobil adatforgalom és roaming esetén\?</string>
+    <string name="network_message">Engedélyezed a letöltést mobil adatforgalom és roaming esetén\? Lehetséges, hogy a szolgáltató felárat számol fel.</string>
     <string name="network_title">Engedélyezett hálózat típusok</string>
     <string name="battery_optimizations_message">Ahhoz, hogy a lejátszás kikapcsolt képernyő mellett is működhessen, kapcsold ki az akkumulátor optimalizálást.</string>
     <string name="connection_error_invalid_format">A hoszt formátuma helytelen</string>
@@ -31,4 +31,12 @@
     <string name="download_no_storage_permission">A fájlok letöltéséhez engedély kell a tárhelyhez</string>
     <string name="connection_error_cannot_connect">A kapcsolat nem hozható létre.
 \nKérjük ellenőrizd az ip-címet és az internet kapcsolatod.</string>
+    <string name="external_player_app">Külső lejátszó alkalmazás</string>
+    <string name="video_player_external_description">Külső videólejátszó alkalmazások, mint MX Player és VLC</string>
+    <string name="video_player_external">Külső lejátszó</string>
+    <string name="pref_video_player_type_title">Videólejátszó típusa</string>
+    <string name="external_player_invalid_play_method">Érvénytelen lejátszási mód.</string>
+    <string name="notification_action_stop">Állj</string>
+    <string name="available_servers_title">Elérhető szerverek</string>
+    <string name="choose_server_button_text">Válassz szervert</string>
 </resources>
