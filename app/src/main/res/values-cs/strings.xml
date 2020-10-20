@@ -48,4 +48,15 @@
     <string name="available_servers_title">Dostupné servery</string>
     <string name="choose_server_button_text">Vybrat server</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Povolit kontrolu jasu a hlasitosti v nativním přehrávači</string>
+    <string name="external_player_system_default_description">Nechat výběr přehrávače na systému. Některé přehrávače nemusí být plně kompatibilní.</string>
+    <string name="external_player_system_default">Systémový výchozí</string>
+    <string name="external_player_vlc_player_description">Svobodný open source přehrávač pro více platforem, který přehraje téměř cokoliv.</string>
+    <string name="external_player_vlc_player">VLC</string>
+    <string name="external_player_mx_player_pro_description">Placená verze přehrávače MX Player, která nabízí nepřerušovaný zážitek z videa.</string>
+    <string name="external_player_mx_player_pro">MX Player Pro</string>
+    <string name="external_player_mx_player_free_description">Výkonný přehrávač videa s pokročilou hardwarovou akcelerací a podporou pro titulky.</string>
+    <string name="external_player_mx_player_free">MX Player Free</string>
+    <string name="external_player_mpv_description">Jednoduchý, malý a svobodný přehrávač. Podporuje mnoho různých formátů.</string>
+    <string name="external_player_mpv">MPV</string>
+    <string name="external_player_app">Externí přehrávač</string>
 </resources>
