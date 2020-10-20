@@ -100,6 +100,10 @@ dependencies {
     implementation(Dependencies.Cast.playServicesCast)
     implementation(Dependencies.Cast.playServicesCastFramework)
 
+    // Media
+    implementation(Dependencies.Media.media)
+    implementation(Dependencies.Media.exoPlayerMediaSession)
+
     // Health
     implementation(Dependencies.Health.timber)
     debugImplementation(Dependencies.Health.leakCanary)

@@ -19,6 +19,22 @@ class AppPreferences(context: Context) {
             }
         }
 
+    var instanceAccessToken: String?
+        get() = sharedPreferences.getString(Constants.PREF_INSTANCE_ACCESS_TOKEN, null)
+        set(value) {
+            sharedPreferences.edit {
+                if (value != null) putString(Constants.PREF_INSTANCE_ACCESS_TOKEN, value) else remove(Constants.PREF_INSTANCE_ACCESS_TOKEN)
+            }
+        }
+
+    var instanceUserId: String?
+        get() = sharedPreferences.getString(Constants.PREF_INSTANCE_USER_ID, null)
+        set(value) {
+            sharedPreferences.edit {
+                if (value != null) putString(Constants.PREF_INSTANCE_USER_ID, value) else remove(Constants.PREF_INSTANCE_USER_ID)
+            }
+        }
+
     var ignoreBatteryOptimizations: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_IGNORE_BATTERY_OPTIMIZATIONS, false)
         set(value) {

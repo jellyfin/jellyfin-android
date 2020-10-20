@@ -4,7 +4,10 @@ import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.apiclient.interaction.EmptyResponse
 import org.jellyfin.apiclient.interaction.Response
 import org.jellyfin.apiclient.model.configuration.ServerConfiguration
+import org.jellyfin.apiclient.model.dto.BaseItemDto
 import org.jellyfin.apiclient.model.dto.UserItemDataDto
+import org.jellyfin.apiclient.model.playlists.PlaylistItemQuery
+import org.jellyfin.apiclient.model.querying.*
 import org.jellyfin.apiclient.model.session.PlaybackProgressInfo
 import org.jellyfin.apiclient.model.session.PlaybackStopInfo
 import org.jellyfin.apiclient.model.system.PublicSystemInfo
@@ -36,6 +39,30 @@ suspend fun ApiClient.reportPlaybackStopped(stopInfo: PlaybackStopInfo) = suspen
 
 suspend fun ApiClient.markPlayed(itemId: String, userId: String): UserItemDataDto? = suspendCoroutine { continuation ->
     MarkPlayedAsync(itemId, userId, Date(), ContinuationResponse(continuation))
+}
+
+suspend fun ApiClient.getUserViews(userId: String): ItemsResult? = suspendCoroutine { continuation ->
+    GetUserViews(userId, ContinuationResponse(continuation))
+}
+
+suspend fun ApiClient.getItems(query: ItemQuery): ItemsResult? = suspendCoroutine { continuation ->
+    GetItemsAsync(query, ContinuationResponse(continuation))
+}
+
+suspend fun ApiClient.getPlaylistItems(query: PlaylistItemQuery): ItemsResult? = suspendCoroutine { continuation ->
+    GetPlaylistItems(query, ContinuationResponse(continuation))
+}
+
+suspend fun ApiClient.getLatestItems(query: LatestItemsQuery): Array<BaseItemDto>? = suspendCoroutine { continuation ->
+    GetLatestItems(query, ContinuationResponse(continuation))
+}
+
+suspend fun ApiClient.getArtists(query: ArtistsQuery): ItemsResult? = suspendCoroutine { continuation ->
+    GetArtistsAsync(query, ContinuationResponse(continuation))
+}
+
+suspend fun ApiClient.getGenres(query: ItemsByNameQuery): ItemsResult? = suspendCoroutine { continuation ->
+    GetGenresAsync(query, ContinuationResponse(continuation))
 }
 
 class ContinuationResponse<T>(private val continuation: Continuation<T?>) : Response<T>() {
