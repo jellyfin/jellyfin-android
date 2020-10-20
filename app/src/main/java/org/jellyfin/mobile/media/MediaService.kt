@@ -17,6 +17,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import kotlinx.coroutines.*
+import org.jellyfin.apiclient.interaction.AndroidDevice
 import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.apiclient.model.dto.BaseItemDto
 import org.jellyfin.apiclient.model.dto.BaseItemType
@@ -30,6 +31,7 @@ import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.utils.*
 import org.koin.android.ext.android.inject
+import java.net.URLEncoder
 import java.util.*
 import com.google.android.exoplayer2.MediaItem as ExoPlayerMediaItem
 
@@ -40,6 +42,7 @@ class MediaService : MediaBrowserServiceCompat() {
 
     private val ioScope = CoroutineScope(Dispatchers.IO + Job())
 
+    private lateinit var device: AndroidDevice
     private lateinit var mediaController: MediaControllerCompat
     private lateinit var mediaSession: MediaSessionCompat
     private lateinit var mediaSessionConnector: MediaSessionConnector
@@ -71,6 +74,8 @@ class MediaService : MediaBrowserServiceCompat() {
 
     override fun onCreate() {
         super.onCreate()
+
+        device = AndroidDevice.fromContext(this)
 
         mediaSession = MediaSessionCompat(this, "MediaService").apply {
             isActive = true
@@ -542,7 +547,7 @@ class MediaService : MediaBrowserServiceCompat() {
         fun createMediaItem(mediaId: String): ExoPlayerMediaItem {
             val url = "${appPreferences.instanceUrl}/Audio/${mediaId}/universal?" +
                 "UserId=${appPreferences.instanceUserId}&" +
-                "DeviceId=${DEVICE_ID}&" +
+                "DeviceId=${URLEncoder.encode(device.deviceId, Charsets.UTF_8.name())}&" +
                 "MaxStreamingBitrate=140000000&" +
                 "Container=opus,mp3|mp3,aac,m4a,m4b|aac,flac,webma,webm,wav,ogg&" +
                 "TranscodingContainer=ts&" +
@@ -561,6 +566,5 @@ class MediaService : MediaBrowserServiceCompat() {
         private const val CONTENT_STYLE_PLAYABLE_HINT = "android.media.browse.CONTENT_STYLE_PLAYABLE_HINT"
         private const val CONTENT_STYLE_BROWSABLE_HINT = "android.media.browse.CONTENT_STYLE_BROWSABLE_HINT"
         private const val CONTENT_STYLE_LIST_ITEM_HINT_VALUE = 1
-        private const val DEVICE_ID = "Jellyfin%20Android"
     }
 }
