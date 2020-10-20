@@ -23,8 +23,8 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.databinding.ActivityPlayerBinding
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
+import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.utils.*
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CENTER_OVERLAY_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
@@ -32,11 +32,11 @@ import org.jellyfin.mobile.utils.Constants.DEFAULT_SEEK_TIME_MS
 import org.koin.android.ext.android.inject
 import kotlin.math.abs
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerFragment : AppCompatActivity() {
 
     private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
-    private lateinit var playerBinding: ActivityPlayerBinding
+    private lateinit var playerBinding: FragmentPlayerBinding
     private val playerView: PlayerView get() = playerBinding.playerView
     private val playerOverlay: View get() = playerBinding.playerOverlay
     private val loadingIndicator: View get() = playerBinding.loadingIndicator
@@ -92,7 +92,7 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        playerBinding = ActivityPlayerBinding.inflate(layoutInflater)
+        playerBinding = FragmentPlayerBinding.inflate(layoutInflater)
         setContentView(playerBinding.root)
         playerControlsBinding = ExoPlayerControlViewBinding.bind(findViewById(R.id.player_controls))
 

@@ -124,7 +124,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     }
 
     private fun buildContentIntent(): PendingIntent {
-        val intent = Intent(context, PlayerActivity::class.java).apply {
+        val intent = Intent(context, PlayerFragment::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         }
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)

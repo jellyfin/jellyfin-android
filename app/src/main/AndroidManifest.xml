@@ -47,7 +47,7 @@
         </activity>
 
         <activity
-            android:name=".player.PlayerActivity"
+            android:name=".player.PlayerFragment"
             android:launchMode="singleTop"
             android:screenOrientation="sensorLandscape"
             android:supportsPictureInPicture="true"

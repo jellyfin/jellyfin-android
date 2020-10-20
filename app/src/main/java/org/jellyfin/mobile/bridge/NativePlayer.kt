@@ -7,7 +7,7 @@ import kotlinx.coroutines.channels.Channel
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
 import org.jellyfin.mobile.player.ExoPlayerFormats
-import org.jellyfin.mobile.player.PlayerActivity
+import org.jellyfin.mobile.player.PlayerFragment
 import org.jellyfin.mobile.player.PlayerEvent
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
@@ -28,7 +28,7 @@ class NativePlayer(private val context: Context) : KoinComponent {
 
     @JavascriptInterface
     fun loadPlayer(args: String) {
-        val playerIntent = Intent(context, PlayerActivity::class.java).apply {
+        val playerIntent = Intent(context, PlayerFragment::class.java).apply {
             action = Constants.ACTION_PLAY_MEDIA
             putExtra(Constants.EXTRA_MEDIA_SOURCE_ITEM, args)
         }

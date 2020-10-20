@@ -10,7 +10,7 @@ import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.databinding.ActivityPlayerBinding
+import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.player.source.ExoPlayerTracksGroup
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
@@ -19,8 +19,8 @@ import org.jellyfin.mobile.player.source.JellyfinMediaSource
  *  Provides a menu UI for audio, subtitle and video stream selection
  */
 class PlaybackMenus(
-    private val activity: PlayerActivity,
-    private val playerBinding: ActivityPlayerBinding,
+    private val activity: PlayerFragment,
+    private val playerBinding: FragmentPlayerBinding,
     private val playerControlsBinding: ExoPlayerControlViewBinding
 ) : PopupMenu.OnDismissListener {
     private val lockScreenButton: View by playerControlsBinding::lockScreenButton
