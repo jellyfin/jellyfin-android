@@ -59,4 +59,11 @@
     <string name="external_player_mpv_description">Jednoduchý, malý a svobodný přehrávač. Podporuje mnoho různých formátů.</string>
     <string name="external_player_mpv">MPV</string>
     <string name="external_player_app">Externí přehrávač</string>
+    <string name="mediaservice_library_playlists">Seznamy</string>
+    <string name="mediaservice_library_genres">Žánry</string>
+    <string name="mediaservice_library_songs">Skladby</string>
+    <string name="mediaservice_library_artists">Umělci</string>
+    <string name="mediaservice_library_albums">Alba</string>
+    <string name="mediaservice_library_latest">Nejnovější</string>
+    <string name="mediaservice_shuffle">Náhodně</string>
 </resources>
