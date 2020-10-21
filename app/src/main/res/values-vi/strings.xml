@@ -57,4 +57,11 @@
     <string name="external_player_mpv_description">Một trình phát video nhỏ, nhẹ và đơn giản (tự do chọn lựa). Nó hỗ trợ nhiều định dạng tệp đa phương tiện.</string>
     <string name="external_player_mpv">Trình phát MPV</string>
     <string name="external_player_app">Ứng dụng trình phát bên ngoài</string>
+    <string name="mediaservice_library_playlists">Danh Sách Phát</string>
+    <string name="mediaservice_library_genres">Thể Loại</string>
+    <string name="mediaservice_library_songs">Bài Hát</string>
+    <string name="mediaservice_library_artists">Nghệ Sĩ</string>
+    <string name="mediaservice_library_albums">Albums</string>
+    <string name="mediaservice_library_latest">Mới Nhất</string>
+    <string name="mediaservice_shuffle">Ngẫu Nhiên</string>
 </resources>
