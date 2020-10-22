@@ -28,20 +28,6 @@ android {
         }
     }
 
-    flavorDimensions("variant")
-    productFlavors {
-        create("libre") {
-            dimension = "variant"
-            buildConfigField("boolean", "IS_PROPRIETARY", "false")
-        }
-
-        create("proprietary") {
-            dimension = "variant"
-            buildConfigField("boolean", "IS_PROPRIETARY", "true")
-            isDefault = true
-        }
-    }
-
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
@@ -52,6 +38,19 @@ android {
             applicationIdSuffix = ".debug"
             isDebuggable = true
             aaptOptions.cruncherEnabled = false // Disable png crunching
+        }
+    }
+
+    flavorDimensions("variant")
+    productFlavors {
+        register("libre") {
+            dimension = "variant"
+            buildConfigField("boolean", "IS_PROPRIETARY", "false")
+        }
+        register("proprietary") {
+            dimension = "variant"
+            buildConfigField("boolean", "IS_PROPRIETARY", "true")
+            isDefault = true
         }
     }
 
