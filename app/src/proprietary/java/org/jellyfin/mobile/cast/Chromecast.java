@@ -20,7 +20,7 @@ import java.util.List;
 import timber.log.Timber;
 
 @SuppressWarnings("unused")
-public final class Chromecast {
+public final class Chromecast implements IChromecast {
 
     /**
      * Tag for logging.

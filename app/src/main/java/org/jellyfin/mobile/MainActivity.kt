@@ -12,6 +12,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.mobile.cast.Chromecast
+import org.jellyfin.mobile.cast.IChromecast
 import org.jellyfin.mobile.fragment.ConnectFragment
 import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.utils.*
@@ -22,7 +23,7 @@ import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 class MainActivity : AppCompatActivity() {
     val apiClient: ApiClient by inject()
     val appPreferences: AppPreferences by inject()
-    val chromecast = Chromecast()
+    val chromecast: IChromecast = Chromecast()
     private val permissionRequestHelper: PermissionRequestHelper by inject()
 
     val rootView: CoordinatorLayout by lazyView(R.id.root_view)

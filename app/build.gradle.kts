@@ -17,7 +17,7 @@ android {
         minSdkVersion(21)
         targetSdkVersion(30)
         versionName = project.getVersionName()
-        versionCode = getVersionCode(versionName)
+        versionCode = getVersionCode(versionName!!)
         setProperty("archivesBaseName", "jellyfin-android-v$versionName")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
@@ -27,6 +27,7 @@ android {
             }
         }
     }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
@@ -39,6 +40,20 @@ android {
             aaptOptions.cruncherEnabled = false // Disable png crunching
         }
     }
+
+    flavorDimensions("variant")
+    productFlavors {
+        register("libre") {
+            dimension = "variant"
+            buildConfigField("boolean", "IS_PROPRIETARY", "false")
+        }
+        register("proprietary") {
+            dimension = "variant"
+            buildConfigField("boolean", "IS_PROPRIETARY", "true")
+            isDefault = true
+        }
+    }
+
     @Suppress("UnstableApiUsage")
     buildFeatures {
         viewBinding = true
@@ -56,7 +71,12 @@ android {
     }
 }
 
+
 dependencies {
+    // Add implementation functions for build flavors
+    val libreImplementation by configurations
+    val proprietaryImplementation by configurations
+
     // Kotlin
     implementation(kotlin("stdlib-jdk8"))
     implementation(Dependencies.Kotlin.coroutinesCore)
@@ -97,8 +117,8 @@ dependencies {
 
     // Cast
     implementation(Dependencies.Cast.mediaRouter)
-    implementation(Dependencies.Cast.playServicesCast)
-    implementation(Dependencies.Cast.playServicesCastFramework)
+    proprietaryImplementation(Dependencies.Cast.playServicesCast)
+    proprietaryImplementation(Dependencies.Cast.playServicesCastFramework)
 
     // Media
     implementation(Dependencies.Media.media)
