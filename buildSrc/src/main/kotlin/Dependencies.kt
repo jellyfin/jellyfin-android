@@ -13,7 +13,7 @@ object Dependencies {
         const val koin = "2.1.6"
         const val appCompat = "1.1.0"
         const val androidxCore = "1.4.0-alpha01"
-        const val activity = "1.1.0"
+        const val activity = "1.2.0-alpha01"
         const val fragment = "1.2.5"
         const val exoPlayer = "2.12.0"
 
