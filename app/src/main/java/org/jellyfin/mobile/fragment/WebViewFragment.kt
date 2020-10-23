@@ -178,7 +178,7 @@ class WebViewFragment : Fragment() {
             domStorageEnabled = true
         }
         addJavascriptInterface(NativeInterface(this@WebViewFragment), "NativeInterface")
-        addJavascriptInterface(NativePlayer(context), "NativePlayer")
+        addJavascriptInterface(NativePlayer(parentFragmentManager), "NativePlayer")
         addJavascriptInterface(externalPlayer, "ExternalPlayer")
 
         loadUrl(requireNotNull(appPreferences.instanceUrl) { "Server url has not been set!" })
@@ -190,16 +190,15 @@ class WebViewFragment : Fragment() {
     }
 
     fun onSelectServer(error: Boolean = false) {
-        activity?.run {
-            if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                if (error) {
-                    val extras = Bundle().apply {
-                        putBoolean(Constants.FRAGMENT_CONNECT_EXTRA_ERROR, true)
-                    }
-                    replaceFragment<ConnectFragment>(extras)
-                } else {
-                    addFragment<ConnectFragment>()
+        val activity = activity
+        if (activity != null && activity.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+            if (error) {
+                val extras = Bundle().apply {
+                    putBoolean(Constants.FRAGMENT_CONNECT_EXTRA_ERROR, true)
                 }
+                parentFragmentManager.replaceFragment<ConnectFragment>(extras)
+            } else {
+                parentFragmentManager.addFragment<ConnectFragment>()
             }
         }
     }

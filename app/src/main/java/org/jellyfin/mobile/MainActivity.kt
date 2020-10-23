@@ -15,7 +15,11 @@ import org.jellyfin.mobile.cast.Chromecast
 import org.jellyfin.mobile.cast.IChromecast
 import org.jellyfin.mobile.fragment.ConnectFragment
 import org.jellyfin.mobile.fragment.WebViewFragment
-import org.jellyfin.mobile.utils.*
+import org.jellyfin.mobile.player.PlayerFragment
+import org.jellyfin.mobile.utils.PermissionRequestHelper
+import org.jellyfin.mobile.utils.SmartOrientationListener
+import org.jellyfin.mobile.utils.lazyView
+import org.jellyfin.mobile.utils.replaceFragment
 import org.jellyfin.mobile.webapp.RemotePlayerService
 import org.koin.android.ext.android.inject
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
@@ -48,15 +52,14 @@ class MainActivity : AppCompatActivity() {
         // Bind player service
         bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
 
-        // Handle window insets
-        setStableLayoutFlags()
-
         // Load UI
         appPreferences.instanceUrl?.toHttpUrlOrNull().also { url ->
-            if (url != null) {
-                replaceFragment<WebViewFragment>()
-            } else {
-                replaceFragment<ConnectFragment>()
+            with(supportFragmentManager) {
+                if (url != null) {
+                    replaceFragment<WebViewFragment>()
+                } else {
+                    replaceFragment<ConnectFragment>()
+                }
             }
         }
 
@@ -78,6 +81,14 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onUserLeaveHint() {
+        for (fragment in supportFragmentManager.fragments) {
+            if (fragment is PlayerFragment && fragment.isVisible) {
+                fragment.onUserLeaveHint()
+            }
+        }
     }
 
     override fun onStop() {

@@ -1,24 +1,13 @@
 <resources>
-
-    <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
+    <!-- Application theme -->
+    <style name="AppTheme.V21" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/jellyfin_primary</item>
         <item name="colorPrimaryDark">@color/jellyfin_primary_dark</item>
         <item name="colorAccent">@color/jellyfin_accent</item>
-    </style>
-
-    <!-- Application theme -->
-    <style name="AppTheme.V21" parent="AppTheme.Base">
         <item name="android:windowBackground">@color/theme_background</item>
     </style>
 
     <style name="AppTheme" parent="AppTheme.V21" />
-
-    <!-- ExoPlayer theme -->
-    <style name="AppTheme.Player.V21" parent="AppTheme.Base">
-        <item name="android:windowBackground">@android:color/black</item>
-    </style>
-
-    <style name="AppTheme.Player" parent="AppTheme.Player.V21" />
 
     <!-- Settings theme -->
     <style name="AppTheme.Settings" />

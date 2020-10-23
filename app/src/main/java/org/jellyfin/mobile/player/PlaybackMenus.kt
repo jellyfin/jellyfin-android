@@ -10,8 +10,8 @@ import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.databinding.ActivityPlayerBinding
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
+import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.source.ExoPlayerTracksGroup
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 
@@ -19,10 +19,11 @@ import org.jellyfin.mobile.player.source.JellyfinMediaSource
  *  Provides a menu UI for audio, subtitle and video stream selection
  */
 class PlaybackMenus(
-    private val activity: PlayerActivity,
-    private val playerBinding: ActivityPlayerBinding,
+    private val fragment: PlayerFragment,
+    private val playerBinding: FragmentPlayerBinding,
     private val playerControlsBinding: ExoPlayerControlViewBinding
 ) : PopupMenu.OnDismissListener {
+    private val context = playerBinding.root.context
     private val lockScreenButton: View by playerControlsBinding::lockScreenButton
     private val audioStreamsButton: View by playerControlsBinding::audioStreamsButton
     private val subtitlesButton: View by playerControlsBinding::subtitlesButton
@@ -33,21 +34,21 @@ class PlaybackMenus(
 
     init {
         lockScreenButton.setOnClickListener {
-            activity.lockScreen()
+            fragment.lockScreen()
         }
         audioStreamsButton.setOnClickListener {
-            activity.suppressControllerAutoHide(true)
+            fragment.suppressControllerAutoHide(true)
             audioStreamsMenu.show()
         }
         subtitlesButton.setOnClickListener {
-            activity.suppressControllerAutoHide(true)
+            fragment.suppressControllerAutoHide(true)
             subtitlesMenu.show()
         }
         infoButton.setOnClickListener {
             playbackInfo.isVisible = !playbackInfo.isVisible
         }
         playbackInfo.setOnClickListener {
-            playbackInfo.isVisible = false
+            dismissPlaybackInfo()
         }
     }
 
@@ -55,22 +56,22 @@ class PlaybackMenus(
         buildMenuItems(subtitlesMenu.menu, SUBTITLES_MENU_GROUP, item.subtitleTracksGroup, true)
         buildMenuItems(audioStreamsMenu.menu, AUDIO_MENU_GROUP, item.audioTracksGroup)
 
-        val playMethod = activity.getString(R.string.playback_info_play_method, item.playMethod)
-        val transcodingInfo = activity.getString(R.string.playback_info_transcoding, item.isTranscoding)
+        val playMethod = context.getString(R.string.playback_info_play_method, item.playMethod)
+        val transcodingInfo = context.getString(R.string.playback_info_transcoding, item.isTranscoding)
         val videoTracksInfo = item.videoTracksGroup.tracks.run {
             joinToString(
                 "\n",
-                "${activity.getString(R.string.playback_info_video_streams)}:\n",
+                "${fragment.getString(R.string.playback_info_video_streams)}:\n",
                 limit = 3,
-                truncated = activity.getString(R.string.playback_info_and_x_more, size - 3)
+                truncated = fragment.getString(R.string.playback_info_and_x_more, size - 3)
             ) { "- ${it.title}" }
         }
         val audioTracksInfo = item.audioTracksGroup.tracks.run {
             joinToString(
                 "\n",
-                "${activity.getString(R.string.playback_info_audio_streams)}:\n",
+                "${fragment.getString(R.string.playback_info_audio_streams)}:\n",
                 limit = 5,
-                truncated = activity.getString(R.string.playback_info_and_x_more, size - 3)
+                truncated = fragment.getString(R.string.playback_info_and_x_more, size - 3)
             ) { "- ${it.title} (${it.language})" }
         }
         playbackInfo.text = listOf(
@@ -81,9 +82,9 @@ class PlaybackMenus(
         ).joinToString("\n\n")
     }
 
-    private fun createSubtitlesMenu() = PopupMenu(activity, subtitlesButton).apply {
+    private fun createSubtitlesMenu() = PopupMenu(context, subtitlesButton).apply {
         setOnMenuItemClickListener { clickedItem ->
-            activity.onSubtitleSelected(clickedItem.itemId).also { success ->
+            fragment.onSubtitleSelected(clickedItem.itemId).also { success ->
                 if (success) {
                     menu.forEach { it.isChecked = false }
                     clickedItem.isChecked = true
@@ -93,9 +94,9 @@ class PlaybackMenus(
         setOnDismissListener(this@PlaybackMenus)
     }
 
-    private fun createAudioStreamsMenu() = PopupMenu(activity, audioStreamsButton).apply {
+    private fun createAudioStreamsMenu() = PopupMenu(context, audioStreamsButton).apply {
         setOnMenuItemClickListener { clickedItem: MenuItem ->
-            activity.onAudioTrackSelected(clickedItem.itemId).also { success ->
+            fragment.onAudioTrackSelected(clickedItem.itemId).also { success ->
                 if (success) {
                     menu.forEach { it.isChecked = false }
                     clickedItem.isChecked = true
@@ -107,7 +108,7 @@ class PlaybackMenus(
 
     private fun buildMenuItems(menu: Menu, groupId: Int, tracksGroup: ExoPlayerTracksGroup<*>, showNone: Boolean = false) {
         menu.clear()
-        if (showNone) menu.add(groupId, -1, Menu.NONE, activity.getString(R.string.menu_item_none))
+        if (showNone) menu.add(groupId, -1, Menu.NONE, fragment.getString(R.string.menu_item_none))
         tracksGroup.tracks.forEachIndexed { index, track ->
             menu.add(groupId, index, Menu.NONE, track.title)
         }
@@ -127,9 +128,12 @@ class PlaybackMenus(
         }
     }
 
+    fun dismissPlaybackInfo() {
+        playbackInfo.isVisible = false
+    }
+
     override fun onDismiss(menu: PopupMenu) {
-        activity.restoreFullscreenState()
-        activity.suppressControllerAutoHide(false)
+        fragment.suppressControllerAutoHide(false)
     }
 
     companion object {

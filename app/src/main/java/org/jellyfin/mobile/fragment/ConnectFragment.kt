@@ -111,9 +111,9 @@ class ConnectFragment : Fragment() {
             if (httpUrl != null) {
                 appPreferences.instanceUrl = httpUrl.toString()
                 clearServerList()
-                with(requireActivity()) {
-                    if (supportFragmentManager.backStackEntryCount > 0)
-                        supportFragmentManager.popBackStack()
+                with(parentFragmentManager) {
+                    if (backStackEntryCount > 0)
+                        popBackStack()
                     replaceFragment<WebViewFragment>()
                 }
             }

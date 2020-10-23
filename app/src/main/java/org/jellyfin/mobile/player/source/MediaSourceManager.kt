@@ -2,13 +2,12 @@ package org.jellyfin.mobile.player.source
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import androidx.annotation.CheckResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.Format
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.MergingMediaSource
@@ -32,10 +31,10 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
     val trackSelector = DefaultTrackSelector(viewModel.getApplication<Application>())
     val eventLogger = EventLogger(trackSelector)
 
-    fun handleIntent(intent: Intent, replace: Boolean = false): Boolean {
+    fun handleArguments(bundle: Bundle, replace: Boolean = false): Boolean {
         val oldSource = _jellyfinMediaSource.value
         if (oldSource == null || replace) {
-            val newSource = createFromIntent(intent) ?: return false
+            val newSource = createFromBundle(bundle) ?: return false
             _jellyfinMediaSource.value = newSource
 
             // Keep current selections in the new item
@@ -66,8 +65,8 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
 
     companion object {
         @CheckResult
-        private fun createFromIntent(intent: Intent): JellyfinMediaSource? {
-            val mediaSourceItem = intent.extras?.getString(Constants.EXTRA_MEDIA_SOURCE_ITEM) ?: return null
+        private fun createFromBundle(bundle: Bundle): JellyfinMediaSource? {
+            val mediaSourceItem = bundle.getString(Constants.EXTRA_MEDIA_SOURCE_ITEM) ?: return null
             return try {
                 JellyfinMediaSource(JSONObject(mediaSourceItem))
             } catch (e: JSONException) {

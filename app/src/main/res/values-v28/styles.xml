@@ -1,8 +1,8 @@
 <resources>
     <!-- Draw into cutout areas while in fullscreen -->
-    <style name="AppTheme.Player.V28" parent="AppTheme.Player.V21">
+    <style name="AppTheme.V28" parent="AppTheme.V21">
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
-    <style name="AppTheme.Player" parent="AppTheme.Player.V28" />
+    <style name="AppTheme" parent="AppTheme.V28" />
 </resources>

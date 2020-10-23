@@ -11,6 +11,7 @@ import org.jellyfin.mobile.api.TimberLogger
 import org.jellyfin.mobile.fragment.ConnectFragment
 import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.player.PlayerEvent
+import org.jellyfin.mobile.player.PlayerFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
@@ -44,4 +45,5 @@ val applicationModule = module {
     // Fragments
     fragment { ConnectFragment() }
     fragment { WebViewFragment() }
+    fragment { PlayerFragment() }
 }
