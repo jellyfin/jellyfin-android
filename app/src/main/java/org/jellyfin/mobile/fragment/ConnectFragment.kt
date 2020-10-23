@@ -203,7 +203,7 @@ class ConnectFragment : Fragment() {
             else -> true // FIXME: check ProductName once API client supports it
         }
 
-        Timber.i("Server at $urls with version ${serverInfo.version} valid: $isValidInstance")
+        Timber.i("Server at $httpUrl with version ${serverInfo.version} valid: $isValidInstance")
 
         if (!isValidInstance) {
             showConnectionError(R.string.connection_error_invalid_version)
