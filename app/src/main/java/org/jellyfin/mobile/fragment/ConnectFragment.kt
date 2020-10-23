@@ -196,11 +196,20 @@ class ConnectFragment : Fragment() {
 
         val isValidInstance = when {
             version.size != 3 -> false
-            version[0] == PRODUCT_NAME_SUPPORTED_SINCE.first && version[1] < PRODUCT_NAME_SUPPORTED_SINCE.second -> true // Valid old version
+            // Major version is invalid
+            version[0] != PRODUCT_NAME_SUPPORTED_SINCE.first -> false
+            // Minor version is too old
+            version[1] < PRODUCT_NAME_SUPPORTED_SINCE.second -> false
             else -> true // FIXME: check ProductName once API client supports it
         }
+
         Timber.i("Server at $urls with version ${serverInfo.version} valid: $isValidInstance")
 
-        return if (isValidInstance) httpUrl else null
+        if (!isValidInstance) {
+            showConnectionError(R.string.connection_error_invalid_version)
+            return null
+        }
+
+        return httpUrl
     }
 }
