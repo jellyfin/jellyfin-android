@@ -3,6 +3,7 @@
     <string name="host_input_hint">Host</string>
     <string name="connection_error_invalid_format">Host has an invalid format</string>
     <string name="connection_error_cannot_connect">Connection cannot be established.\nPlease check the hostname and your network connection.</string>
+    <string name="connection_error_invalid_version">The server uses an unsupported version. Upgrade to the latest version available at jellyfin.org.</string>
     <string name="connect_button_text">Connect</string>
     <string name="choose_server_button_text">Choose server</string>
     <string name="available_servers_title">Available servers</string>

@@ -35,6 +35,7 @@ import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.FragmentConnectBinding
 import org.jellyfin.mobile.utils.*
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 
 class ConnectFragment : Fragment() {
     private val jellyfin: Jellyfin by inject()
@@ -155,11 +156,14 @@ class ConnectFragment : Fragment() {
     }
 
     private suspend fun checkServerUrlAndConnection(enteredUrl: String): HttpUrl? {
+        Timber.i("checkServerUrlAndConnection $enteredUrl")
+
         val normalizedUrl = enteredUrl.run {
             if (lastOrNull() == '/') this
             else "$this/"
         }
         val urls = jellyfin.discovery.addressCandidates(normalizedUrl)
+        Timber.i("Address candidates are $urls")
 
         var httpUrl: HttpUrl? = null
         var serverInfo: PublicSystemInfo? = null
@@ -180,6 +184,8 @@ class ConnectFragment : Fragment() {
         }
 
         if (httpUrl == null || serverInfo == null) {
+            Timber.w("Failed to find server info, url was $httpUrl")
+
             showConnectionError()
             return null
         }
@@ -190,10 +196,20 @@ class ConnectFragment : Fragment() {
 
         val isValidInstance = when {
             version.size != 3 -> false
-            version[0] == PRODUCT_NAME_SUPPORTED_SINCE.first && version[1] < PRODUCT_NAME_SUPPORTED_SINCE.second -> true // Valid old version
+            // Major version is invalid
+            version[0] != PRODUCT_NAME_SUPPORTED_SINCE.first -> false
+            // Minor version is too old
+            version[1] < PRODUCT_NAME_SUPPORTED_SINCE.second -> false
             else -> true // FIXME: check ProductName once API client supports it
         }
 
-        return if (isValidInstance) httpUrl else null
+        Timber.i("Server at $httpUrl with version ${serverInfo.version} valid: $isValidInstance")
+
+        if (!isValidInstance) {
+            showConnectionError(R.string.connection_error_invalid_version)
+            return null
+        }
+
+        return httpUrl
     }
 }
