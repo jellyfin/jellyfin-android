@@ -66,4 +66,5 @@
     <string name="external_player_mpv_description">Un lecteur vidéo simple, léger et libre. Il supporte une grande variété de formats de fichiers multimédias.</string>
     <string name="external_player_mpv">Lecteur MPV</string>
     <string name="external_player_app">App externe de lecture</string>
+    <string name="connection_error_invalid_version">Le serveur utilise une version non supportée. Migrez vers la dernière version disponible sur jellyfin.org.</string>
 </resources>
