@@ -66,4 +66,5 @@
     <string name="external_player_mpv_description">எளிமையான, சிறிய மற்றும் குறைந்த எடை இல்லாத (சுதந்திரத்தைப் போல) வீடியோ பிளேயர். இது பலவகையான மீடியா கோப்பு வடிவங்களை ஆதரிக்கிறது.</string>
     <string name="external_player_mpv">எம்.பி.வி பிளேயர்</string>
     <string name="external_player_app">வெளிப்புற பிளேயர் பயன்பாடு</string>
+    <string name="connection_error_invalid_version">சேவையகம் ஆதரிக்கப்படாத பதிப்பைப் பயன்படுத்துகிறது. Jellyfin.org இல் கிடைக்கும் சமீபத்திய பதிப்பிற்கு மேம்படுத்தவும்.</string>
 </resources>
