@@ -1,2 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pref_exoplayer_allow_background_audio">Omogući reprodukciju zvuka u pozadini u izvornom programu za reprodukciju</string>
+    <string name="video_player_external_description">Vanjski aplikacije za reproduciranje medija kao MXPlayer i VLC</string>
+    <string name="video_player_native_description">Zasnovan na ExoPlayeru, podržava više video formata i kodeka i više je integriran u OS</string>
+    <string name="video_player_web_description">Zadani HTML video player iz Web sučelja</string>
+    <string name="video_player_external">Vanjski player</string>
+    <string name="video_player_native">Izvorni player</string>
+    <string name="video_player_web">Web player</string>
+    <string name="pref_video_player_type_title">Tip video playera</string>
+    <string name="pref_category_video_player">Video player</string>
+    <string name="pref_music_notification_always_dismissible_title">Neka se obavijesti o glazbenom playeru uvijek mogu odbaciti</string>
+    <string name="pref_category_music_player">Glazbeni player</string>
+    <string name="activity_name_settings">Jellyfin Postavke</string>
+    <string name="external_player_unknown_error">Nepoznata greška u vanjskom programu za reprodukciju. Praćenje reprodukcije onemogućeno.</string>
+    <string name="external_player_invalid_player">Nije odabran važeći vanjski program za reprodukciju. Praćenje reprodukcije onemogućeno.</string>
+    <string name="external_player_not_supported_yet">Praćenje reprodukcije još nije podržano u odabranom vanjskom programu za reprodukciju. Obratite se programerima da biste pokušali dodati podršku za to.</string>
+    <string name="external_player_invalid_play_method">Nevažeća metoda pokretanja.</string>
+    <string name="playback_info_and_x_more">...i %d više</string>
+    <string name="playback_info_audio_streams">Audio tokovi</string>
+    <string name="playback_info_video_streams">Video tokovi</string>
+    <string name="playback_info_transcoding">Prekodiranje: %b</string>
+    <string name="playback_info_play_method">Metoda pokretanja: %s</string>
+    <string name="menu_item_none">Ništa</string>
+    <string name="notification_action_stop">Zaustavi</string>
+    <string name="notification_action_next">Slijedeći</string>
+    <string name="notification_action_fast_forward">Premotaj unaprijed</string>
+    <string name="notification_action_pause">Pauziraj</string>
+    <string name="notification_action_play">Pokreni</string>
+    <string name="notification_action_rewind">Premotaj</string>
+    <string name="notification_action_previous">Prethodni</string>
+    <string name="download_no_storage_permission">Nije moguće preuzeti datoteke bez dozvole za pohranu</string>
+    <string name="downloading">Preuzimanje</string>
+    <string name="mobile_data_and_roaming">Mobilni Podatci i Roaming</string>
+    <string name="mobile_data">Mobilni Podatci</string>
+    <string name="wifi_only">Samo WiFi</string>
+    <string name="network_message">Želite li dopustiti da se preuzimanje izvršava preko mobilne podatkovne veze ili roaming servisa\? Vaš davatelj mobilnih usluga to može dodatno naplatiti.</string>
+    <string name="network_title">Dopuštene Vrste Mreže</string>
+    <string name="battery_optimizations_message">Molimo onemogućite optimizaciju baterije za reprodukciju medija dok je zaslon isključen.</string>
+    <string name="available_servers_title">Dostupni poslužitelji</string>
+    <string name="choose_server_button_text">Odaberi poslužitelj</string>
+    <string name="connect_button_text">Spoji se</string>
+    <string name="connection_error_cannot_connect">Nije moguće ostvariti vezu.
+\nMolimo vas da provjerite ime poslužitelja i vaš internetski priključak.</string>
+    <string name="connection_error_invalid_version">Inačica poslužitelja nije podržana. Ažurirajte poslužitelj na najnoviju inačicu putem jellyfin.org.</string>
+    <string name="connection_error_invalid_format">Lokacija poslužitelja je neispravna</string>
+    <string name="host_input_hint">Poslužitelj</string>
+    <string name="connect_to_server_title">Spoji se na poslužitelj</string>
+</resources>
