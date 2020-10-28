@@ -66,4 +66,5 @@
     <string name="external_player_mpv_description">Un reproductor de video simple, pequeño, ligero y libre. Soporta una gran variedad de formatos multimedia.</string>
     <string name="external_player_mpv">Reproductor MPV</string>
     <string name="external_player_app">Reproductor externo de video</string>
+    <string name="connection_error_invalid_version">El servidor usa una versión no compatible. Actualice a la última versión disponible en jellyfin.org.</string>
 </resources>
