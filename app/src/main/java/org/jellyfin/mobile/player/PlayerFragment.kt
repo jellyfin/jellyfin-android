@@ -30,6 +30,7 @@ import org.jellyfin.mobile.utils.*
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CENTER_OVERLAY_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_SEEK_TIME_MS
+import org.jellyfin.mobile.utils.Constants.GESTURE_EXCLUSION_AREA_TOP
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import kotlin.math.abs
@@ -278,6 +279,10 @@ class PlayerFragment : Fragment() {
 
             override fun onScroll(firstEvent: MotionEvent, currentEvent: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
                 if (!swipeGesturesEnabled)
+                    return false
+
+                // Check whether swipe was started in excluded region
+                if (firstEvent.y < GESTURE_EXCLUSION_AREA_TOP * resources.displayMetrics.density)
                     return false
 
                 // Check whether swipe was oriented vertically
