@@ -127,6 +127,8 @@ dependencies {
     // Health
     implementation(Dependencies.Health.timber)
     debugImplementation(Dependencies.Health.leakCanary)
+    debugImplementation(Dependencies.Health.redScreenOfDeath)
+    releaseImplementation(Dependencies.Health.redScreenOfDeathNoOp)
 
     // Testing
     testImplementation(Dependencies.Health.junit)

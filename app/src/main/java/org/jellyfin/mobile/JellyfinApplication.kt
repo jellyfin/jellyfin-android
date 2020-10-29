@@ -2,6 +2,7 @@ package org.jellyfin.mobile
 
 import android.app.Application
 import android.webkit.WebView
+import com.melegy.redscreenofdeath.RedScreenOfDeath
 import org.jellyfin.mobile.model.databaseModule
 import org.jellyfin.mobile.utils.JellyTree
 import org.koin.android.ext.koin.androidContext
@@ -17,6 +18,9 @@ class JellyfinApplication : Application() {
         Timber.plant(JellyTree())
 
         if (BuildConfig.DEBUG) {
+            // Setup exception handler
+            RedScreenOfDeath.init(this)
+
             // Enable WebView debugging
             WebView.setWebContentsDebuggingEnabled(true)
         }

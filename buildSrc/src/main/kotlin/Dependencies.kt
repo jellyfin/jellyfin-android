@@ -44,6 +44,7 @@ object Dependencies {
         // Health
         const val timber = "4.7.1"
         const val leakCanary = "2.4"
+        const val redScreenOfDeath = "0.1.2"
         const val junit = "5.6.2"
         const val kotest = "4.2.2"
         const val mockk = "1.10.0"
@@ -117,6 +118,8 @@ object Dependencies {
     object Health {
         const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
         const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${Versions.leakCanary}"
+        const val redScreenOfDeath = "com.melegy.redscreenofdeath:red-screen-of-death:${Versions.redScreenOfDeath}"
+        const val redScreenOfDeathNoOp = "com.melegy.redscreenofdeath:red-screen-of-death-no-op:${Versions.redScreenOfDeath}"
         const val junit = "org.junit.jupiter:junit-jupiter-api:${Versions.junit}"
         const val junitEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junit}"
         const val kotestAssertions = "io.kotest:kotest-assertions-core-jvm:${Versions.kotest}"
