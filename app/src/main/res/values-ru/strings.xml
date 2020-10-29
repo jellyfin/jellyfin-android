@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="battery_optimizations_message">Выключите оптимизацию заряда батареи для воспроизведения при выключенном экране.</string>
+    <string name="battery_optimizations_message">Выключите оптимизацию заряда батареи при воспроизведения с отключенным экраном.</string>
     <string name="downloading">Загружается</string>
     <string name="mobile_data_and_roaming">Мобильный данные и роуминг</string>
     <string name="mobile_data">Мобильные данные</string>
