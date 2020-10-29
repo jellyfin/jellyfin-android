@@ -15,7 +15,7 @@
     <string name="connection_error_invalid_format">Имя узла в неверном формате</string>
     <string name="connect_button_text">Соединение</string>
     <string name="host_input_hint">Узел</string>
-    <string name="pref_exoplayer_allow_background_audio">Воспроизведение во встроенном проигрывателе звука в фоновом режиме</string>
+    <string name="pref_exoplayer_allow_background_audio">Разрешить воспроизведение звука в фоновом режиме во встроенном проигрывателе</string>
     <string name="video_player_external_description">Приложения внешнего воспроизведения видео, такие как MX Player и VLC</string>
     <string name="video_player_native_description">Основано на ExoPlayer, поддерживается больше видео форматов и кодеков и более интегрировано в ОС</string>
     <string name="pref_music_notification_always_dismissible_title">Уведомления музыкального проигрывателя всегда отключены</string>
@@ -61,7 +61,7 @@
     <string name="external_player_mx_player_pro">MX Player Pro</string>
     <string name="external_player_mx_player_free_description">Мощный видеопроигрыватель с продвинутым аппаратным ускорением и поддержкой субтитров.</string>
     <string name="external_player_mx_player_free">MX Player Free</string>
-    <string name="external_player_mpv_description">Простой, маленький и лёгкий бесплатный видеопроигрыватель. Поддерживает широкий спектр форматов мультимедийных файлов.</string>
+    <string name="external_player_mpv_description">Простой, компактный и лёгкий бесплатный видео проигрыватель. Поддерживает разнообразные форматы медиафайлов.</string>
     <string name="external_player_mpv">MPV-плейер</string>
     <string name="external_player_app">Приложение внешнего проигрывателя</string>
     <string name="connection_error_invalid_version">Сервер использует неподдерживаемую версию. Обновите до последней версии, доступной на jellyfin.org.</string>
