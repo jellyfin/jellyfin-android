@@ -10,7 +10,7 @@ object Dependencies {
 
         // Core
         const val koin = "2.1.6"
-        const val appCompat = "1.1.0"
+        const val appCompat = "1.2.0"
         const val androidxCore = "1.4.0-alpha01"
         const val activity = "1.2.0-alpha01"
         const val fragment = "1.2.5"
@@ -20,9 +20,9 @@ object Dependencies {
         const val lifecycleExtensions = "2.2.0"
 
         // UI
-        const val constraintLayout = "1.1.3"
+        const val constraintLayout = "2.0.4"
         const val material = "1.2.1"
-        const val webkitX = "1.2.0"
+        const val webkitX = "1.3.0"
         const val modernAndroidPreferences = "1.1.0-alpha3"
 
         // Room
@@ -34,11 +34,11 @@ object Dependencies {
         const val coil = "1.0.0-rc2"
 
         // Cast
-        const val mediaRouter = "1.1.0"
+        const val mediaRouter = "1.2.0"
         const val playServicesCast = "18.1.0"
 
         // Media
-        const val media = "1.1.0"
+        const val media = "1.2.0"
 
         // Health
         const val timber = "4.7.1"
@@ -47,8 +47,8 @@ object Dependencies {
         const val junit = "5.6.2"
         const val kotest = "4.2.2"
         const val mockk = "1.10.0"
-        const val androidXRunner = "1.2.0"
-        const val androidXEspresso = "3.2.0"
+        const val androidXRunner = "1.3.0"
+        const val androidXEspresso = "3.3.0"
 
         fun isStable(version: String): Boolean {
             return listOf("alpha", "beta", "dev", "rc", "m").none {
