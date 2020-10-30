@@ -23,7 +23,7 @@ object Dependencies {
         const val constraintLayout = "2.0.4"
         const val material = "1.2.1"
         const val webkitX = "1.3.0"
-        const val modernAndroidPreferences = "1.1.0-alpha3"
+        const val modernAndroidPreferences = "1.1.0-alpha5"
 
         // Room
         const val room = "2.2.5"
