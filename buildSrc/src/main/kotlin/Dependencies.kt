@@ -42,11 +42,11 @@ object Dependencies {
 
         // Health
         const val timber = "4.7.1"
-        const val leakCanary = "2.4"
+        const val leakCanary = "2.5"
         const val redScreenOfDeath = "0.1.2"
-        const val junit = "5.6.2"
-        const val kotest = "4.2.2"
-        const val mockk = "1.10.0"
+        const val junit = "5.7.0"
+        const val kotest = "4.3.0"
+        const val mockk = "1.10.2"
         const val androidXRunner = "1.3.0"
         const val androidXEspresso = "3.3.0"
 
