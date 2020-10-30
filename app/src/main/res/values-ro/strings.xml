@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">Date Mobile &amp; Roaming</string>
     <string name="mobile_data">Date mobile</string>
     <string name="wifi_only">Doar WiFi</string>
-    <string name="network_message">Doriți să permiteți descărcarea să ruleze pe date mobile sau rețele de roaming\?</string>
+    <string name="network_message">Doriți să permiteți descărcarea să ruleze pe date mobile sau rețele de roaming\? Se pot aplica taxe de la furnizorul dvs.</string>
     <string name="network_title">Tipuri de rețea permise</string>
     <string name="battery_optimizations_message">Vă rugăm să dezactivați optimizările bateriei pentru redarea media cu ecranul stins.</string>
     <string name="connection_error_invalid_format">Gazda are un format invalid</string>
@@ -47,4 +47,24 @@
     <string name="pref_video_player_type_title">Tipul de redare video</string>
     <string name="available_servers_title">Servere disponibile</string>
     <string name="choose_server_button_text">Alege server</string>
+    <string name="mediaservice_library_playlists">Liste redare</string>
+    <string name="mediaservice_library_genres">Genuri</string>
+    <string name="mediaservice_library_songs">Melodii</string>
+    <string name="mediaservice_library_artists">Artiști</string>
+    <string name="mediaservice_library_albums">Albume</string>
+    <string name="mediaservice_library_latest">Cel mai recent</string>
+    <string name="mediaservice_shuffle">Amestecă</string>
+    <string name="external_player_system_default_description">Lăsați sistemul să gestioneze alegerea softului de redare, este posibil ca unele softuri să nu fie pe deplin compatibile.</string>
+    <string name="external_player_system_default">Implicit al sistemului</string>
+    <string name="external_player_vlc_player_description">Player multimedia multiplataformă gratuită și open source care redă majoritatea fișierelor multimedia.</string>
+    <string name="external_player_vlc_player">VLC Player</string>
+    <string name="external_player_mx_player_pro_description">Versiunea cu plată a MX Player, care oferă o experiență video neîntreruptă.</string>
+    <string name="external_player_mx_player_pro">MX Player Pro</string>
+    <string name="external_player_mx_player_free_description">Redare video puternică cu accelerare hardware avansată și suport pentru subtitrări.</string>
+    <string name="external_player_mx_player_free">MX Player Free</string>
+    <string name="external_player_mpv_description">Un player video simplu, mic și ușor. Suportă o mare varietate de formate de fișiere media.</string>
+    <string name="external_player_mpv">MPV Player</string>
+    <string name="external_player_app">Aplicație pentru redare externă</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Permiteți luminozitatea și gesturile de volum în playerul nativ</string>
+    <string name="connection_error_invalid_version">Serverul utilizează o versiune neacceptată. Treceți la cea mai recentă versiune disponibilă la jellyfin.org.</string>
 </resources>
