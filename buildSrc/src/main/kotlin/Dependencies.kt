@@ -14,7 +14,7 @@ object Dependencies {
         const val androidxCore = "1.4.0-alpha01"
         const val activity = "1.2.0-alpha01"
         const val fragment = "1.2.5"
-        const val exoPlayer = "2.12.0"
+        const val exoPlayer = "2.12.1"
 
         // Lifecycle
         const val lifecycleExtensions = "2.2.0"
@@ -35,7 +35,7 @@ object Dependencies {
 
         // Cast
         const val mediaRouter = "1.2.0"
-        const val playServicesCast = "18.1.0"
+        const val playServicesCast = "19.0.0"
 
         // Media
         const val media = "1.2.0"
