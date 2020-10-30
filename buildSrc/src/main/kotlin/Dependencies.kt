@@ -3,7 +3,7 @@ import java.util.*
 object Dependencies {
     object Versions {
         // Gradle plugins
-        const val dependencyUpdates = "0.29.0"
+        const val dependencyUpdates = "0.33.0"
 
         // KotlinX
         const val coroutines = "1.4.0"
