@@ -6,8 +6,7 @@ object Dependencies {
         const val dependencyUpdates = "0.29.0"
 
         // KotlinX
-        const val coroutinesCore = "1.3.5"
-        const val coroutinesAndroid = "1.3.0"
+        const val coroutines = "1.4.0"
 
         // Core
         const val koin = "2.1.6"
@@ -59,8 +58,8 @@ object Dependencies {
     }
 
     object Kotlin {
-        val coroutinesCore = kotlinx("coroutines-core", Versions.coroutinesCore)
-        val coroutinesAndroid = kotlinx("coroutines-android", Versions.coroutinesAndroid)
+        val coroutinesCore = kotlinx("coroutines-core", Versions.coroutines)
+        val coroutinesAndroid = kotlinx("coroutines-android", Versions.coroutines)
     }
 
     object Core {
