@@ -3,53 +3,52 @@ import java.util.*
 object Dependencies {
     object Versions {
         // Gradle plugins
-        const val dependencyUpdates = "0.29.0"
+        const val dependencyUpdates = "0.33.0"
 
         // KotlinX
-        const val coroutinesCore = "1.3.5"
-        const val coroutinesAndroid = "1.3.0"
+        const val coroutines = "1.4.0"
 
         // Core
         const val koin = "2.1.6"
-        const val appCompat = "1.1.0"
+        const val appCompat = "1.2.0"
         const val androidxCore = "1.4.0-alpha01"
         const val activity = "1.2.0-alpha01"
         const val fragment = "1.2.5"
-        const val exoPlayer = "2.12.0"
+        const val exoPlayer = "2.12.1"
 
         // Lifecycle
         const val lifecycleExtensions = "2.2.0"
 
         // UI
-        const val constraintLayout = "1.1.3"
+        const val constraintLayout = "2.0.4"
         const val material = "1.2.1"
-        const val webkitX = "1.2.0"
-        const val modernAndroidPreferences = "1.1.0-alpha3"
+        const val webkitX = "1.3.0"
+        const val modernAndroidPreferences = "1.1.0-alpha5"
 
         // Room
         const val room = "2.2.5"
 
         // Network
         const val apiclient = "0.7.7"
-        const val okHttp = "4.8.0"
-        const val coil = "1.0.0-rc2"
+        const val okHttp = "4.9.0"
+        const val coil = "1.0.0"
 
         // Cast
-        const val mediaRouter = "1.1.0"
-        const val playServicesCast = "18.1.0"
+        const val mediaRouter = "1.2.0"
+        const val playServicesCast = "19.0.0"
 
         // Media
-        const val media = "1.1.0"
+        const val media = "1.2.0"
 
         // Health
         const val timber = "4.7.1"
-        const val leakCanary = "2.4"
+        const val leakCanary = "2.5"
         const val redScreenOfDeath = "0.1.2"
-        const val junit = "5.6.2"
-        const val kotest = "4.2.2"
-        const val mockk = "1.10.0"
-        const val androidXRunner = "1.2.0"
-        const val androidXEspresso = "3.2.0"
+        const val junit = "5.7.0"
+        const val kotest = "4.3.0"
+        const val mockk = "1.10.2"
+        const val androidXRunner = "1.3.0"
+        const val androidXEspresso = "3.3.0"
 
         fun isStable(version: String): Boolean {
             return listOf("alpha", "beta", "dev", "rc", "m").none {
@@ -59,8 +58,8 @@ object Dependencies {
     }
 
     object Kotlin {
-        val coroutinesCore = kotlinx("coroutines-core", Versions.coroutinesCore)
-        val coroutinesAndroid = kotlinx("coroutines-android", Versions.coroutinesAndroid)
+        val coroutinesCore = kotlinx("coroutines-core", Versions.coroutines)
+        val coroutinesAndroid = kotlinx("coroutines-android", Versions.coroutines)
     }
 
     object Core {
