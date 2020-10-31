@@ -24,13 +24,15 @@ import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewFeature
 import kotlinx.coroutines.launch
 import org.jellyfin.apiclient.interaction.ApiClient
-import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.bridge.NativeInterface
 import org.jellyfin.mobile.bridge.NativePlayer
+import org.jellyfin.mobile.controller.ServerController
 import org.jellyfin.mobile.databinding.FragmentWebviewBinding
 import org.jellyfin.mobile.utils.*
+import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER_ID
+import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_URL
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.json.JSONException
 import org.json.JSONObject
@@ -38,13 +40,18 @@ import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.io.Reader
 import java.util.*
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class WebViewFragment : Fragment() {
     val apiClient: ApiClient by inject()
-    private val appPreferences: AppPreferences by inject()
+    private val serverController: ServerController by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private val externalPlayer by lazy { ExternalPlayer(this) }
 
+    private var serverId: Long = 0
+    private lateinit var instanceUrl: String
     private var connected = false
 
     // UI
@@ -54,6 +61,9 @@ class WebViewFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val args = requireArguments()
+        serverId = requireNotNull(args.getLong(FRAGMENT_WEB_VIEW_EXTRA_SERVER_ID)) { "Server id has not been supplied!" }
+        instanceUrl = requireNotNull(args.getString(FRAGMENT_WEB_VIEW_EXTRA_URL)) { "Server url has not been supplied!" }
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (!connected || !webappFunctionChannel.triggerInputManagerAction(Constants.INPUT_MANAGER_COMMAND_BACK)) {
                 isEnabled = false
@@ -133,23 +143,23 @@ class WebViewFragment : Fragment() {
                         emptyResponse
                     }
                     path.endsWith(Constants.SESSION_CAPABILITIES_PATH) -> {
-                        runOnUiThread {
-                            webView.evaluateJavascript("window.localStorage.getItem('jellyfin_credentials')") { result ->
-                                try {
-                                    val credentials = JSONObject(result.unescapeJson())
-                                    val server = credentials.getJSONArray("Servers").getJSONObject(0)
-                                    val address = server.getString("ManualAddress")
-                                    val user = server.getString("UserId")
-                                    val token = server.getString("AccessToken")
-                                    appPreferences.instanceUserId = user
-                                    appPreferences.instanceAccessToken = token
-                                    apiClient.ChangeServerLocation(address.trimEnd('/'))
-                                    apiClient.SetAuthenticationInfo(token, user)
-                                    initLocale()
-                                } catch (e: JSONException) {
-                                    Timber.e(e, "Failed to extract apiclient credentials")
+                        lifecycleScope.launch {
+                            val credentials = suspendCoroutine<JSONObject> { continuation ->
+                                webView.evaluateJavascript("window.localStorage.getItem('jellyfin_credentials')") { result ->
+                                    try {
+                                        continuation.resume(JSONObject(result.unescapeJson()))
+                                    } catch (e: JSONException) {
+                                        val message = "Failed to extract credentials"
+                                        Timber.e(e, message)
+                                        continuation.resumeWithException(Exception(message, e))
+                                    }
                                 }
                             }
+                            val server = credentials.getJSONArray("Servers").getJSONObject(0)
+                            val user = server.getString("UserId")
+                            val token = server.getString("AccessToken")
+                            serverController.setupUser(serverId, user, token)
+                            initLocale()
                         }
                         null
                     }
@@ -161,14 +171,14 @@ class WebViewFragment : Fragment() {
                 val errorMessage = errorResponse.data?.run { bufferedReader().use(Reader::readText) }
                 Timber.e("Received WebView HTTP %d error: %s", errorResponse.statusCode, errorMessage)
 
-                if (request.url == Uri.parse(appPreferences.instanceUrl))
+                if (request.url == Uri.parse(instanceUrl))
                     runOnUiThread { onErrorReceived() }
             }
 
             override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceErrorCompat) {
                 val description = if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_RESOURCE_ERROR_GET_DESCRIPTION)) error.description else null
                 Timber.e("Received WebView error at %s: %s", request.url.toString(), description)
-                if (request.url.toString() == appPreferences.instanceUrl)
+                if (request.url.toString() == instanceUrl)
                     runOnUiThread { onErrorReceived() }
             }
         }
@@ -181,7 +191,7 @@ class WebViewFragment : Fragment() {
         addJavascriptInterface(NativePlayer(parentFragmentManager), "NativePlayer")
         addJavascriptInterface(externalPlayer, "ExternalPlayer")
 
-        loadUrl(requireNotNull(appPreferences.instanceUrl) { "Server url has not been set!" })
+        loadUrl(instanceUrl)
     }
 
     fun onConnectedToWebapp() {

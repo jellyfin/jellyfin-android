@@ -30,17 +30,23 @@ import org.jellyfin.apiclient.discovery.DiscoveryServerInfo
 import org.jellyfin.apiclient.discovery.ServerDiscovery
 import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.apiclient.model.system.PublicSystemInfo
-import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.controller.ServerController
 import org.jellyfin.mobile.databinding.FragmentConnectBinding
-import org.jellyfin.mobile.utils.*
+import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.PRODUCT_NAME_SUPPORTED_SINCE
+import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
+import org.jellyfin.mobile.utils.getPublicSystemInfo
+import org.jellyfin.mobile.viewmodel.MainViewModel
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 import timber.log.Timber
 
 class ConnectFragment : Fragment() {
+    private val mainViewModel: MainViewModel by sharedViewModel()
     private val jellyfin: Jellyfin by inject()
     private val apiClient: ApiClient by inject()
-    private val appPreferences: AppPreferences by inject()
+    private val serverController: ServerController by inject()
 
     // UI
     private var _connectServerBinding: FragmentConnectBinding? = null
@@ -64,7 +70,7 @@ class ConnectFragment : Fragment() {
         // Apply window insets
         ViewCompat.requestApplyInsets(serverSetupLayout)
 
-        hostInput.setText(appPreferences.instanceUrl)
+        hostInput.setText(mainViewModel.serverState.value.server?.hostname)
         hostInput.setSelection(hostInput.length())
         hostInput.setOnEditorActionListener { _, action, event ->
             when {
@@ -110,13 +116,9 @@ class ConnectFragment : Fragment() {
         lifecycleScope.launch {
             val httpUrl = checkServerUrlAndConnection(enteredUrl)
             if (httpUrl != null) {
-                appPreferences.instanceUrl = httpUrl.toString()
                 clearServerList()
-                with(parentFragmentManager) {
-                    if (backStackEntryCount > 0)
-                        popBackStack()
-                    replaceFragment<WebViewFragment>()
-                }
+                serverController.setupServer(httpUrl.toString())
+                mainViewModel.refreshServer()
             }
             hostInput.isEnabled = true
             connectButton.isEnabled = true

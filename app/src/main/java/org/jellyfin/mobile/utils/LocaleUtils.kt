@@ -3,15 +3,13 @@ package org.jellyfin.mobile.utils
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
 import org.jellyfin.mobile.fragment.WebViewFragment
 import timber.log.Timber
 import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-fun WebViewFragment.initLocale() = lifecycleScope.launchWhenCreated {
+suspend fun WebViewFragment.initLocale() {
     // Try to set locale via user settings
     val userSettings = suspendCoroutine<String> { continuation ->
         webView.evaluateJavascript("window.localStorage.getItem('${apiClient.currentUserId}-language')") { result ->
@@ -19,7 +17,7 @@ fun WebViewFragment.initLocale() = lifecycleScope.launchWhenCreated {
         }
     }
     if (requireContext().setLocale(userSettings.unescapeJson()))
-        return@launchWhenCreated
+        return
 
     // Fallback to device locale
     Timber.i("Couldn't acquire locale from config, keeping current")

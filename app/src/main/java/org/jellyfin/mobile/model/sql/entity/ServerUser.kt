@@ -7,7 +7,7 @@ data class ServerUser(
     @Embedded val user: UserEntity,
     @Relation(
         parentColumn = UserEntity.SERVER_ID,
-        entityColumn = ServerEntity.SERVER_ID
+        entityColumn = ServerEntity.ID
     )
     val server: ServerEntity
 )

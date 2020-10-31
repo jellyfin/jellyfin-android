@@ -9,23 +9,24 @@ import android.os.IBinder
 import android.view.OrientationEventListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import org.jellyfin.apiclient.interaction.ApiClient
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.jellyfin.mobile.cast.Chromecast
 import org.jellyfin.mobile.cast.IChromecast
 import org.jellyfin.mobile.fragment.ConnectFragment
 import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.player.PlayerFragment
-import org.jellyfin.mobile.utils.PermissionRequestHelper
-import org.jellyfin.mobile.utils.SmartOrientationListener
-import org.jellyfin.mobile.utils.lazyView
-import org.jellyfin.mobile.utils.replaceFragment
+import org.jellyfin.mobile.utils.*
+import org.jellyfin.mobile.viewmodel.MainViewModel
+import org.jellyfin.mobile.viewmodel.ServerState
 import org.jellyfin.mobile.webapp.RemotePlayerService
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 
 class MainActivity : AppCompatActivity() {
-    val apiClient: ApiClient by inject()
+    private val mainViewModel: MainViewModel by viewModel()
     val appPreferences: AppPreferences by inject()
     val chromecast: IChromecast = Chromecast()
     private val permissionRequestHelper: PermissionRequestHelper by inject()
@@ -53,12 +54,19 @@ class MainActivity : AppCompatActivity() {
         bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
 
         // Load UI
-        appPreferences.instanceUrl?.toHttpUrlOrNull().also { url ->
-            with(supportFragmentManager) {
-                if (url != null) {
-                    replaceFragment<WebViewFragment>()
-                } else {
-                    replaceFragment<ConnectFragment>()
+        lifecycleScope.launch {
+            mainViewModel.serverState.collect { state ->
+                with(supportFragmentManager) {
+                    when (state) {
+                        ServerState.Pending -> {
+                            // TODO add loading indicator
+                        }
+                        is ServerState.Unset -> replaceFragment<ConnectFragment>()
+                        is ServerState.Available -> replaceFragment<WebViewFragment>(Bundle().apply {
+                            putLong(Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER_ID, state.server.id)
+                            putString(Constants.FRAGMENT_WEB_VIEW_EXTRA_URL, state.server.hostname)
+                        })
+                    }
                 }
             }
         }
