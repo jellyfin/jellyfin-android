@@ -66,4 +66,5 @@
     <string name="mediaservice_library_albums">Albumes</string>
     <string name="mediaservice_library_latest">Más reciente</string>
     <string name="mediaservice_shuffle">Aleatorio</string>
+    <string name="connection_error_invalid_version">El servidor utiliza una versión no soportada. Actualiza a la última versión disponible en jellyfin.org.</string>
 </resources>
