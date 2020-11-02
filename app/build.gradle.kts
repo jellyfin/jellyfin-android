@@ -84,6 +84,7 @@ dependencies {
 
     // Core
     implementation(Dependencies.Core.koin)
+    implementation(Dependencies.Core.koinViewModel)
     implementation(Dependencies.Core.appCompat)
     implementation(Dependencies.Core.androidx)
     implementation(Dependencies.Core.activity)

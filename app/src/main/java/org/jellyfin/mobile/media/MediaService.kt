@@ -11,13 +11,11 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.media.MediaBrowserServiceCompat
 import com.google.android.exoplayer2.ControlDispatcher
-import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import kotlinx.coroutines.*
-import org.jellyfin.apiclient.interaction.AndroidDevice
 import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.apiclient.model.dto.BaseItemDto
 import org.jellyfin.apiclient.model.dto.BaseItemType
@@ -27,8 +25,9 @@ import org.jellyfin.apiclient.model.entities.ImageType
 import org.jellyfin.apiclient.model.entities.SortOrder
 import org.jellyfin.apiclient.model.playlists.PlaylistItemQuery
 import org.jellyfin.apiclient.model.querying.*
-import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.controller.ServerController
+import org.jellyfin.mobile.model.sql.entity.ServerUser
 import org.jellyfin.mobile.utils.*
 import org.koin.android.ext.android.inject
 import java.net.URLEncoder
@@ -37,12 +36,14 @@ import com.google.android.exoplayer2.MediaItem as ExoPlayerMediaItem
 
 class MediaService : MediaBrowserServiceCompat() {
 
-    private val appPreferences: AppPreferences by inject()
     private val apiClient: ApiClient by inject()
+    private val serverController: ServerController by inject()
 
-    private val ioScope = CoroutineScope(Dispatchers.IO + Job())
+    private val serviceJob = SupervisorJob()
+    private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
 
-    private lateinit var device: AndroidDevice
+    private lateinit var loadingJob: Job
+    private var serverUser: ServerUser? = null
     private lateinit var mediaController: MediaControllerCompat
     private lateinit var mediaSession: MediaSessionCompat
     private lateinit var mediaSessionConnector: MediaSessionConnector
@@ -75,7 +76,13 @@ class MediaService : MediaBrowserServiceCompat() {
     override fun onCreate() {
         super.onCreate()
 
-        device = AndroidDevice.fromContext(this)
+        loadingJob = serviceScope.launch {
+            serverUser = serverController.loadCurrentServerUser()
+            serverUser?.let { serverUser ->
+                apiClient.ChangeServerLocation(serverUser.server.hostname.trimEnd('/'))
+                apiClient.SetAuthenticationInfo(serverUser.user.accessToken, serverUser.user.userId)
+            }
+        }
 
         mediaSession = MediaSessionCompat(this, "MediaService").apply {
             isActive = true
@@ -87,7 +94,7 @@ class MediaService : MediaBrowserServiceCompat() {
 
         mediaSessionConnector = MediaSessionConnector(mediaSession).apply {
             setPlayer(exoPlayer)
-            setPlaybackPreparer(MediaPlaybackPreparer(exoPlayer, appPreferences))
+            setPlaybackPreparer(MediaPlaybackPreparer())
             setQueueNavigator(MediaQueueNavigator(mediaSession))
         }
     }
@@ -97,8 +104,11 @@ class MediaService : MediaBrowserServiceCompat() {
             isActive = false
             release()
         }
+
+        // Cancel coroutines when the service is going away
+        serviceJob.cancel()
+
         exoPlayer.release()
-        ioScope.cancel()
     }
 
     override fun onGetRoot(
@@ -121,35 +131,24 @@ class MediaService : MediaBrowserServiceCompat() {
      * LibraryAlbums|{id}
      * Album|{id}
      */
-    override fun onLoadChildren(parentId: String, result: Result<MutableList<MediaItem>>) {
-        if (appPreferences.instanceUrl == null || appPreferences.instanceAccessToken == null || appPreferences.instanceUserId == null) {
-            // the required properties for calling the api client are not available
-            // this should only occur if the user does not have a server connection in the app
-            result.sendError(null)
-            return
-        }
-
-        // ensure the api client is up to date
-        apiClient.ChangeServerLocation(appPreferences.instanceUrl)
-        apiClient.SetAuthenticationInfo(
-            appPreferences.instanceAccessToken,
-            appPreferences.instanceUserId
-        )
-
+    override fun onLoadChildren(parentId: String, result: Result<List<MediaItem>>) {
         result.detach()
 
-        ioScope.launch {
-            loadView(parentId, result)
+        serviceScope.launch(Dispatchers.IO) {
+            // Ensure credentials were loaded already
+            loadingJob.join()
+            if (serverUser == null) result.sendResult(emptyList())
+            else loadView(parentId, result)
         }
     }
 
-    private suspend fun loadView(parentId: String, result: Result<MutableList<MediaItem>>) {
+    private suspend fun loadView(parentId: String, result: Result<List<MediaItem>>) {
         when (parentId) {
             /**
              * View that shows all the music libraries
              */
             MediaItemType.Libraries.toString() -> {
-                val response = apiClient.getUserViews(appPreferences.instanceUserId!!)
+                val response = apiClient.getUserViews(apiClient.currentUserId)
                 if (response != null) {
                     val views = response.items
                         .filter { item -> item.collectionType == CollectionType.Music }
@@ -159,21 +158,17 @@ class MediaService : MediaBrowserServiceCompat() {
                                 maxWidth = 1080
                                 quality = 90
                             })
-
-                            val description: MediaDescriptionCompat =
-                                MediaDescriptionCompat.Builder().apply {
-                                    setMediaId(MediaItemType.Library.toString() + "|" + item.id)
-                                    setTitle(item.name)
-                                    setIconUri(Uri.parse(itemImageUrl))
-                                }.build()
-
+                            val description = MediaDescriptionCompat.Builder().apply {
+                                setMediaId(MediaItemType.Library.toString() + "|" + item.id)
+                                setTitle(item.name)
+                                setIconUri(Uri.parse(itemImageUrl))
+                            }.build()
                             MediaItem(description, MediaItem.FLAG_BROWSABLE)
                         }
 
-                    result.sendResult(views.toMutableList())
-
+                    result.sendResult(views)
                 } else {
-                    result.sendError(null)
+                    result.sendResult(emptyList())
                 }
             }
 
@@ -207,12 +202,10 @@ class MediaService : MediaBrowserServiceCompat() {
                     )
 
                     val views = libraryViews.map { item ->
-                        val description: MediaDescriptionCompat =
-                            MediaDescriptionCompat.Builder().apply {
-                                setMediaId(item.first.toString() + "|" + primaryItemId)
-                                setTitle(getString(item.second))
-                            }.build()
-
+                        val description = MediaDescriptionCompat.Builder().apply {
+                            setMediaId(item.first.toString() + "|" + primaryItemId)
+                            setTitle(getString(item.second))
+                        }.build()
                         MediaItem(description, MediaItem.FLAG_BROWSABLE)
                     }
 
@@ -235,12 +228,10 @@ class MediaService : MediaBrowserServiceCompat() {
                         .toMutableList()
 
                     if (currentPlaylistItems.count() > 1) {
-                        val description: MediaDescriptionCompat =
-                            MediaDescriptionCompat.Builder().apply {
-                                setMediaId(primaryType + "|" + primaryItemId + "|" + MediaItemType.Shuffle)
-                                setTitle(getString(R.string.mediaservice_shuffle))
-                            }.build()
-
+                        val description = MediaDescriptionCompat.Builder().apply {
+                            setMediaId(primaryType + "|" + primaryItemId + "|" + MediaItemType.Shuffle)
+                            setTitle(getString(R.string.mediaservice_shuffle))
+                        }.build()
                         mediaItems.add(0, MediaItem(description, MediaItem.FLAG_PLAYABLE))
                     }
 
@@ -251,7 +242,7 @@ class MediaService : MediaBrowserServiceCompat() {
                     if (response != null) {
                         processItems(response.items)
                     } else {
-                        result.sendError(null)
+                        result.sendResult(null)
                     }
                 }
 
@@ -262,7 +253,7 @@ class MediaService : MediaBrowserServiceCompat() {
                     MediaItemType.Album.toString() -> {
                         val query = ItemQuery()
                         query.parentId = primaryItemId
-                        query.userId = appPreferences.instanceUserId
+                        query.userId = apiClient.currentUserId
                         query.sortBy = arrayOf(ItemSortBy.SortName)
 
                         processItemsResponse(apiClient.getItems(query))
@@ -274,7 +265,7 @@ class MediaService : MediaBrowserServiceCompat() {
                     MediaItemType.Artist.toString() -> {
                         val query = ItemQuery()
                         query.artistIds = arrayOf(primaryItemId)
-                        query.userId = appPreferences.instanceUserId
+                        query.userId = apiClient.currentUserId
                         query.sortBy = arrayOf(ItemSortBy.SortName)
                         query.sortOrder = SortOrder.Ascending
                         query.recursive = true
@@ -292,7 +283,7 @@ class MediaService : MediaBrowserServiceCompat() {
                     MediaItemType.Playlist.toString() -> {
                         val query = PlaylistItemQuery()
                         query.id = primaryItemId
-                        query.userId = appPreferences.instanceUserId
+                        query.userId = apiClient.currentUserId
 
                         processItemsResponse(apiClient.getPlaylistItems(query))
                     }
@@ -305,7 +296,7 @@ class MediaService : MediaBrowserServiceCompat() {
                     MediaItemType.LibraryPlaylists.toString() -> {
                         val query = ItemQuery()
                         query.parentId = primaryItemId
-                        query.userId = appPreferences.instanceUserId
+                        query.userId = apiClient.currentUserId
                         query.sortBy = arrayOf(ItemSortBy.SortName)
                         query.sortOrder = SortOrder.Ascending
                         query.recursive = true
@@ -339,7 +330,7 @@ class MediaService : MediaBrowserServiceCompat() {
                     MediaItemType.LibraryLatest.toString() -> {
                         val query = LatestItemsQuery()
                         query.parentId = primaryItemId
-                        query.userId = appPreferences.instanceUserId
+                        query.userId = apiClient.currentUserId
                         query.includeItemTypes = arrayOf(BaseItemType.Audio.name)
                         query.limit = 100
 
@@ -347,7 +338,7 @@ class MediaService : MediaBrowserServiceCompat() {
                         if (response != null) {
                             processItems(response)
                         } else {
-                            result.sendError(null)
+                            result.sendResult(null)
                         }
                     }
 
@@ -357,7 +348,7 @@ class MediaService : MediaBrowserServiceCompat() {
                     MediaItemType.LibraryArtists.toString() -> {
                         val query = ArtistsQuery()
                         query.parentId = primaryItemId
-                        query.userId = appPreferences.instanceUserId
+                        query.userId = apiClient.currentUserId
                         query.sortBy = arrayOf(ItemSortBy.SortName)
                         query.sortOrder = SortOrder.Ascending
                         query.recursive = true
@@ -377,7 +368,7 @@ class MediaService : MediaBrowserServiceCompat() {
                              */
                             val query = ItemQuery()
                             query.parentId = primaryItemId
-                            query.userId = appPreferences.instanceUserId
+                            query.userId = apiClient.currentUserId
                             query.sortBy = arrayOf(ItemSortBy.IsFolder, ItemSortBy.SortName)
                             query.sortOrder = SortOrder.Ascending
                             query.recursive = true
@@ -394,7 +385,7 @@ class MediaService : MediaBrowserServiceCompat() {
                              */
                             val query = ItemsByNameQuery()
                             query.parentId = primaryItemId
-                            query.userId = appPreferences.instanceUserId
+                            query.userId = apiClient.currentUserId
                             query.sortBy = arrayOf(ItemSortBy.SortName)
                             query.sortOrder = SortOrder.Ascending
                             query.recursive = true
@@ -406,9 +397,7 @@ class MediaService : MediaBrowserServiceCompat() {
                     /**
                      * Unhandled view
                      */
-                    else -> {
-                        result.sendError(null)
-                    }
+                    else -> result.sendResult(null)
                 }
             }
         }
@@ -496,10 +485,7 @@ class MediaService : MediaBrowserServiceCompat() {
         }
     }
 
-    private inner class MediaPlaybackPreparer(
-        private val exoPlayer: ExoPlayer,
-        private val appPreferences: AppPreferences
-    ) : MediaSessionConnector.PlaybackPreparer {
+    private inner class MediaPlaybackPreparer : MediaSessionConnector.PlaybackPreparer {
 
         override fun getSupportedPrepareActions(): Long =
             PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID or
@@ -545,15 +531,15 @@ class MediaService : MediaBrowserServiceCompat() {
         ): Boolean = false
 
         fun createMediaItem(mediaId: String): ExoPlayerMediaItem {
-            val url = "${appPreferences.instanceUrl}/Audio/${mediaId}/universal?" +
-                "UserId=${appPreferences.instanceUserId}&" +
-                "DeviceId=${URLEncoder.encode(device.deviceId, Charsets.UTF_8.name())}&" +
+            val url = "${apiClient.serverAddress}/Audio/${mediaId}/universal?" +
+                "UserId=${apiClient.currentUserId}&" +
+                "DeviceId=${URLEncoder.encode(apiClient.deviceId, Charsets.UTF_8.name())}&" +
                 "MaxStreamingBitrate=140000000&" +
                 "Container=opus,mp3|mp3,aac,m4a,m4b|aac,flac,webma,webm,wav,ogg&" +
                 "TranscodingContainer=ts&" +
                 "TranscodingProtocol=hls&" +
                 "AudioCodec=aac&" +
-                "api_key=${appPreferences.instanceAccessToken}&" +
+                "api_key=${apiClient.accessToken}&" +
                 "PlaySessionId=${UUID.randomUUID()}&" +
                 "EnableRemoteMedia=true"
 

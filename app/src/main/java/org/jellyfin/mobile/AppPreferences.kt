@@ -11,27 +11,28 @@ class AppPreferences(context: Context) {
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
 
+    var currentServerId: Long?
+        get() = sharedPreferences.getLong(Constants.PREF_SERVER_ID, -1).takeIf { it >= 0 }
+        set(value) {
+            sharedPreferences.edit {
+                if (value != null) putLong(Constants.PREF_SERVER_ID, value) else remove(Constants.PREF_SERVER_ID)
+            }
+        }
+
+    var currentUserId: Long?
+        get() = sharedPreferences.getLong(Constants.PREF_USER_ID, -1).takeIf { it >= 0 }
+        set(value) {
+            sharedPreferences.edit {
+                if (value != null) putLong(Constants.PREF_USER_ID, value) else remove(Constants.PREF_USER_ID)
+            }
+        }
+
+    @Deprecated(message = "Deprecated in favor of SQLite database - only kept for migration reasons")
     var instanceUrl: String?
         get() = sharedPreferences.getString(Constants.PREF_INSTANCE_URL, null)
         set(value) {
             sharedPreferences.edit {
                 if (value != null) putString(Constants.PREF_INSTANCE_URL, value) else remove(Constants.PREF_INSTANCE_URL)
-            }
-        }
-
-    var instanceAccessToken: String?
-        get() = sharedPreferences.getString(Constants.PREF_INSTANCE_ACCESS_TOKEN, null)
-        set(value) {
-            sharedPreferences.edit {
-                if (value != null) putString(Constants.PREF_INSTANCE_ACCESS_TOKEN, value) else remove(Constants.PREF_INSTANCE_ACCESS_TOKEN)
-            }
-        }
-
-    var instanceUserId: String?
-        get() = sharedPreferences.getString(Constants.PREF_INSTANCE_USER_ID, null)
-        set(value) {
-            sharedPreferences.edit {
-                if (value != null) putString(Constants.PREF_INSTANCE_USER_ID, value) else remove(Constants.PREF_INSTANCE_USER_ID)
             }
         }
 

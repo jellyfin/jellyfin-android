@@ -9,6 +9,7 @@ val databaseModule = module {
     single {
         Room.databaseBuilder(androidApplication(), JellyfinDatabase::class.java, "jellyfin")
             .addMigrations()
+            .fallbackToDestructiveMigrationFrom(1)
             .fallbackToDestructiveMigrationOnDowngrade()
             .build()
     }

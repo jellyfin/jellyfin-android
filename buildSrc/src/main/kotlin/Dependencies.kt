@@ -64,6 +64,7 @@ object Dependencies {
 
     object Core {
         const val koin = "org.koin:koin-android:${Versions.koin}"
+        const val koinViewModel = "org.koin:koin-android-viewmodel:${Versions.koin}"
         val appCompat = androidx("appcompat", Versions.appCompat)
         val androidx = androidxKtx("core", Versions.androidxCore)
         val activity = androidxKtx("activity", Versions.activity)
