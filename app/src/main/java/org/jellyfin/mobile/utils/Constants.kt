@@ -10,7 +10,6 @@ object Constants {
 
     // Webapp constants
     const val APPLOADER_PATH = "scripts/apploader.js"
-    const val INDEX_PATH = "index.html"
     const val SELECT_SERVER_PATH = "selectserver.html"
     const val SESSION_CAPABILITIES_PATH = "sessions/capabilities/full"
 
@@ -95,9 +94,6 @@ object Constants {
         PlaybackState.ACTION_FAST_FORWARD or
         PlaybackState.ACTION_STOP
     const val VIDEO_PLAYER_NOTIFICATION_ID = 99
-
-    // Video player intent actions
-    const val ACTION_PLAY_MEDIA = "org.jellyfin.mobile.intent.action.PLAY_MEDIA"
 
     // Video player intent extras
     const val EXTRA_MEDIA_SOURCE_ITEM = "org.jellyfin.mobile.MEDIA_SOURCE_ITEM"
