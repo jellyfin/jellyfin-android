@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="network_message">Wil je downloads toestaan over mobiele data of tijdens roaming\? Je provider kan kosten in rekening brengen.</string>
+    <string name="network_message">Wil je downloads toestaan over mobiele data of tijdens roaming\? Je provider kan hiervoor kosten in rekening brengen.</string>
     <string name="network_title">Toegestane netwerk types</string>
     <string name="downloading">Downloaden</string>
     <string name="mobile_data_and_roaming">Mobiele data &amp; roaming</string>
     <string name="mobile_data">Mobiele data</string>
     <string name="wifi_only">Alleen op WiFi</string>
-    <string name="battery_optimizations_message">Zet batterijoptimalisatie uit om media te spelen wanneer het scherm uit is.</string>
+    <string name="battery_optimizations_message">Zet batterijoptimalisatie uit om media af te spelen wanneer het scherm uit is.</string>
     <string name="connection_error_invalid_format">Host heeft een ongeldig formaat</string>
     <string name="host_input_hint">Host</string>
     <string name="connect_button_text">Verbind</string>
@@ -18,12 +18,12 @@
     <string name="pref_category_music_player">Muziek speler</string>
     <string name="activity_name_settings">Jellyfin Instellingen</string>
     <string name="menu_item_none">Geen</string>
-    <string name="external_player_unknown_error">Onbekende fout in externe speler. Tracking afspelen uitgeschakeld.</string>
-    <string name="external_player_invalid_player">Geen geldige externe speler geselecteerd. Tracking afspelen uitgeschakeld.</string>
+    <string name="external_player_unknown_error">Onbekende fout in externe speler. Afspelen tracering uitgeschakeld.</string>
+    <string name="external_player_invalid_player">Geen geldige externe speler geselecteerd. Afspelen tracering uitgeschakeld.</string>
     <string name="external_player_not_supported_yet">Het volgen van afspelen wordt nog niet ondersteund in de geselecteerde externe speler. Neem contact op met de ontwikkelaars om er ondersteuning voor toe te voegen.</string>
     <string name="external_player_invalid_play_method">Ongeldige afspeelmethode.</string>
     <string name="pref_exoplayer_allow_background_audio">Sta het afspelen van audio op de achtergrond toe op de standaard speler</string>
-    <string name="playback_info_and_x_more">...en nog %d more</string>
+    <string name="playback_info_and_x_more">...en nog %d meer</string>
     <string name="playback_info_audio_streams">Audiostreams</string>
     <string name="playback_info_video_streams">Videostreams</string>
     <string name="playback_info_transcoding">Transcodering: %b</string>
@@ -39,7 +39,7 @@
     <string name="connection_error_cannot_connect">Er kan geen verbinding worden gemaakt.
 \nControleer de hostnaam en uw netwerkverbinding.</string>
     <string name="video_player_native">Standaard speler</string>
-    <string name="video_player_external_description">Externe video-afspeelapps zoals MX Player en VLC</string>
+    <string name="video_player_external_description">Externe video-afspeelapplicaties zoals MX Player en VLC</string>
     <string name="video_player_native_description">Gebaseerd op ExoPlayer, ondersteunt meer videoformaten en codecs, en is meer geïntegreerd in het besturingssysteem</string>
     <string name="video_player_web_description">De standaard HTML-videospeler van de webinterface</string>
     <string name="video_player_external">Externe speler</string>
@@ -51,4 +51,20 @@
     <string name="external_player_mpv_description">Een simpele, kleine en vrije videospeler. Het ondersteunt een groot aantal media formaten.</string>
     <string name="external_player_mpv">MPV Speler</string>
     <string name="external_player_app">Externe speler applicatie</string>
+    <string name="mediaservice_library_latest">Nieuwste</string>
+    <string name="external_player_mx_player_pro_description">De betaalde versie van de MX Speler die een ongestoorde video-ervaring aanbied.</string>
+    <string name="external_player_mx_player_pro">Pro MX Speler</string>
+    <string name="external_player_mx_player_free">Gratis MX Speler</string>
+    <string name="mediaservice_library_playlists">Afspeellijsten</string>
+    <string name="mediaservice_library_genres">Genres</string>
+    <string name="mediaservice_library_songs">Liedjes</string>
+    <string name="mediaservice_library_artists">Artiesten</string>
+    <string name="mediaservice_library_albums">Albums</string>
+    <string name="mediaservice_shuffle">Shuffle</string>
+    <string name="external_player_system_default_description">Laat het systeem kiezen welke speler te gebruiken, sommige spelers zijn niet helemaal compatibel.</string>
+    <string name="external_player_system_default">Standaardwaarde</string>
+    <string name="external_player_vlc_player_description">Vrije opensource cross-platform mediaspeler die meeste mediabestanden afspeelt.</string>
+    <string name="external_player_vlc_player">VLC Speler</string>
+    <string name="external_player_mx_player_free_description">Krachtige video spelen met geavanceerde hardware acceleratie en ondersteuning voor ondertitels.</string>
+    <string name="connection_error_invalid_version">De versie van de server wordt niet ondersteund. Upgrade naar de laatste versie beschikbaar op jellyfin.org.</string>
 </resources>
