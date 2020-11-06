@@ -1,5 +1,7 @@
 variables:
-  - group: 'jellyfin'
+  group: 'jellyfin'
+  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/tags/v') }}:
+    JELLYFIN_VERSION: $[replace(variables['Build.SourceBranch'], 'refs/tags/', '')]
 
 trigger:
   batch: true
@@ -42,10 +44,6 @@ jobs:
       vmImage: 'ubuntu-latest'
 
     steps:
-      - script: 'echo "##vso[task.setvariable variable=JELLYFIN_VERSION]$(git describe --tags)"'
-        condition: startsWith(variables['Build.SourceBranch'], 'refs/tags')
-        displayName: 'Set Version Variable'
-
       - task: Gradle@2
         displayName: 'Build Debug'
         inputs:
@@ -87,15 +85,12 @@ jobs:
     displayName: 'Publish'
 
     dependsOn: Build
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags')
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
 
     pool:
       vmImage: 'ubuntu-latest'
 
     steps:
-      - script: 'echo "##vso[task.setvariable variable=JELLYFIN_VERSION]$(git describe --tags)"'
-        displayName: 'Set Version Variable'
-
       - task: DownloadPipelineArtifact@2
         displayName: 'Download APKs'
         inputs:
