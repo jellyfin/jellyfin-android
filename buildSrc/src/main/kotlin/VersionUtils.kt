@@ -21,17 +21,18 @@ fun Project.getVersionName(fallback: String = "0.0.0-dev.1"): String? {
  * Get the version code for a given semantic version.
  * Does not validate the input and thus will throw an exception when parts are missing.
  *
- * The pre-release part ("-rc.1", "-beta.1" etc.) defaults to 99
+ * The pre-release part ("-rc.1", "-beta.1" etc.) defaults to 99 when not specified.
  *
  * Sample output:
- * MA.MI.PA-PR   -> MAMIPAPR
- * 0.0.0         ->       99
- * 1.1.1         ->  1010199
- * 0.7.0         ->    70099
- * 99.99.99      -> 99999999
- * 2.0.0-rc.3    ->  2000003
- * 2.0.0         ->  2000099
- * 99.99.99-rc.1 -> 99999901
+ * MA.MI.PA-PR   > MA MI PA PR
+ * 0.0.0-dev.1   >           1
+ * 0.0.0         >          99
+ * 1.1.1         >  1 01 01 99
+ * 0.7.0         >     7 00 99
+ * 99.99.99      > 99 99 99 99
+ * 2.0.0-rc.3    >  2 00 00 03
+ * 2.0.0         >  2 00 00 99
+ * 99.99.99-rc.1 > 99 99 99 01
  */
 fun getVersionCode(versionName: String): Int? {
     // Split to core and pre release parts with a default for pre release (null)
