@@ -10,7 +10,7 @@
     <string name="connect_button_text">연결</string>
     <string name="host_input_hint">호스트</string>
     <string name="connect_to_server_title">서버 연결</string>
-    <string name="battery_optimizations_message">화면이 꺼졌을 때의 미디어 재생을 위해 배터리 최적화를 비활성화 해주십시오.</string>
+    <string name="battery_optimizations_message">화면을 끈 상태로 미디어 재생하려면 배터리 최적화를 비활성화 해주십시오.</string>
     <string name="pref_exoplayer_allow_background_audio">자체 플레이어에서 백그라운드에서 오디오 재생을 허용</string>
     <string name="pref_enable_exoplayer_summary">더 많은 비디오 포맷과 코덱을 지원하고 OS에 더욱 integrated되어 있는 아직 실험적인 ExoPlayer 비디오 플레이어를 활성화합니다</string>
     <string name="pref_enable_exoplayer_title">비디오 플레이어 통합 활성화</string>
@@ -66,4 +66,5 @@
     <string name="external_player_mpv_description">간단한 경량 비디오 플레이어 (무료) . 다양한 미디어 파일 형식을 지원합니다.</string>
     <string name="external_player_mpv">MPV 플레이어</string>
     <string name="external_player_app">외부 플레이어 앱</string>
+    <string name="connection_error_invalid_version">서버가 지원되지 않는 버전을 사용함 jellyfin.org에서 최신 버전으로 업그레이드하십시오.</string>
 </resources>
