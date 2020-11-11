@@ -47,7 +47,14 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
         val device = AndroidDevice.fromContext(context)
         JSONObject().apply {
             put("deviceId", device.deviceId)
-            put("deviceName", device.deviceName)
+            // normalize the name by removing special characters
+            // and making sure it's at least 1 character long
+            // otherwise the webui will fail to send it to the server
+            val name = device.deviceName
+                .replace("[^\\x20-\\x7E]".toRegex(), "")
+                .trim()
+                .padStart(1)
+            put("deviceName", name)
             put("appName", APP_INFO_NAME)
             put("appVersion", APP_INFO_VERSION)
         }.toString()
