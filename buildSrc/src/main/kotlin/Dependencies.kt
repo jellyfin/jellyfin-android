@@ -103,6 +103,7 @@ object Dependencies {
 
     object Cast {
         val mediaRouter = androidx("mediarouter", Versions.mediaRouter)
+        const val exoPlayerCastExtension = "com.google.android.exoplayer:extension-cast:${Versions.exoPlayer}"
         const val playServicesCast = "com.google.android.gms:play-services-cast:${Versions.playServicesCast}"
         const val playServicesCastFramework = "com.google.android.gms:play-services-cast-framework:${Versions.playServicesCast}"
     }

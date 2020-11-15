@@ -55,7 +55,7 @@ import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_PREVIOUS
 import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_REWIND
 import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_STOP
 import org.jellyfin.mobile.utils.Constants.MEDIA_NOTIFICATION_CHANNEL_ID
-import org.jellyfin.mobile.utils.Constants.MUSIC_PLAYER_NOTIFICATION_ID
+import org.jellyfin.mobile.utils.Constants.MEDIA_PLAYER_NOTIFICATION_ID
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS
 import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
 import org.jellyfin.mobile.utils.createMediaNotificationChannel
@@ -301,7 +301,7 @@ class RemotePlayerService : Service(), CoroutineScope {
             }.build()
 
             // Post notification
-            notificationManager.notify(MUSIC_PLAYER_NOTIFICATION_ID, notification)
+            notificationManager.notify(MEDIA_PLAYER_NOTIFICATION_ID, notification)
 
             // Activate MediaSession
             mediaSession.isActive = true
@@ -334,7 +334,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         val intent = Intent(applicationContext, RemotePlayerService::class.java).apply {
             action = intentAction
         }
-        val pendingIntent = PendingIntent.getService(applicationContext, MUSIC_PLAYER_NOTIFICATION_ID, intent, 0)
+        val pendingIntent = PendingIntent.getService(applicationContext, MEDIA_PLAYER_NOTIFICATION_ID, intent, 0)
         @Suppress("DEPRECATION")
         return Notification.Action.Builder(icon, getString(title), pendingIntent).build()
     }
@@ -388,7 +388,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     private fun onStopped() {
-        notificationManager.cancel(MUSIC_PLAYER_NOTIFICATION_ID)
+        notificationManager.cancel(MEDIA_PLAYER_NOTIFICATION_ID)
         mediaSession?.isActive = false
         headphoneFlag = false
         stopWakelock()

@@ -17,6 +17,20 @@
     <string name="downloading">Downloading</string>
     <string name="download_no_storage_permission">Cannot download files without storage permissions</string>
 
+    <string name="media_service_generic_error">An error occurred</string>
+    <string name="media_service_item_not_found">Media item could not be found</string>
+
+    <!-- MediaService / Car-related strings -->
+    <string name="media_service_car_section_recents">Recently played</string>
+    <string name="media_service_car_section_albums">Albums</string>
+    <string name="media_service_car_section_artists">Artists</string>
+    <string name="media_service_car_section_songs">Songs</string>
+    <string name="media_service_car_section_genres">Genres</string>
+    <string name="media_service_car_section_playlists">Playlists</string>
+    <string name="media_service_car_item_no_title">No title</string>
+
+    <string name="music_notification_channel">Jellyfin Music Player</string>
+    <string name="music_notification_channel_description">Used for music playback controls</string>
     <string name="notification_action_previous">Previous</string>
     <string name="notification_action_rewind">Rewind</string>
     <string name="notification_action_play">Play</string>
@@ -62,13 +76,4 @@
     <string name="external_player_vlc_player_description">Free and open source cross-platform multimedia player that plays most multimedia files.</string>
     <string name="external_player_system_default">System default</string>
     <string name="external_player_system_default_description">Let the system handle the player choice, some players may not be fully compatible.</string>
-
-    <!-- MediaService strings, e.g. for Android Auto -->
-    <string name="mediaservice_shuffle">Shuffle</string>
-    <string name="mediaservice_library_latest">Latest</string>
-    <string name="mediaservice_library_albums">Albums</string>
-    <string name="mediaservice_library_artists">Artists</string>
-    <string name="mediaservice_library_songs">Songs</string>
-    <string name="mediaservice_library_genres">Genres</string>
-    <string name="mediaservice_library_playlists">Playlists</string>
 </resources>
