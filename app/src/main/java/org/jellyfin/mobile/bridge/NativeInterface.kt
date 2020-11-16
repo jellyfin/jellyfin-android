@@ -10,6 +10,7 @@ import android.webkit.JavascriptInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.jellyfin.apiclient.interaction.AndroidDevice
+import org.jellyfin.mobile.fragment.ConnectFragment
 import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.settings.SettingsFragment
 import org.jellyfin.mobile.utils.*
@@ -158,6 +159,11 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
     @JavascriptInterface
     fun openClientSettings() {
         fragment.parentFragmentManager.addFragment<SettingsFragment>()
+    }
+
+    @JavascriptInterface
+    fun openServerSelection() {
+        fragment.parentFragmentManager.addFragment<ConnectFragment>()
     }
 
     @JavascriptInterface

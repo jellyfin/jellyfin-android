@@ -52,6 +52,10 @@ window.NativeShell = {
         window.NativeInterface.openClientSettings();
     },
 
+    selectServer() {
+        window.NativeInterface.openServerSelection();
+    },
+
     getPlugins() {
         return ["native/exoplayer", "native/externalplayer"];
     },
