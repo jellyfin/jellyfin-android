@@ -101,8 +101,8 @@ function getDeviceProfile(profileBuilder, item) {
         Container: "avi",
         Conditions: [
             {
-                Condition: "NotEqual",
-                Property: "CodecTag",
+                Condition: "NotEquals",
+                Property: "VideoCodecTag",
                 Value: "xvid"
             }
         ]
