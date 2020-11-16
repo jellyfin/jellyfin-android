@@ -9,11 +9,14 @@ import org.jellyfin.mobile.model.sql.entity.ServerEntity.Key.TABLE_NAME
 
 @Dao
 interface ServerDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insert(entity: ServerEntity): Long
 
     fun insert(hostname: String) = insert(ServerEntity(hostname))
 
     @Query("SELECT * FROM $TABLE_NAME WHERE id = :id")
     fun getServer(id: Long): ServerEntity?
+
+    @Query("SELECT * FROM $TABLE_NAME WHERE hostname = :hostname")
+    fun getServerByHostname(hostname: String): ServerEntity?
 }
