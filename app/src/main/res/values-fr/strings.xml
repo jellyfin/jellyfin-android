@@ -67,4 +67,13 @@
     <string name="external_player_mpv">Lecteur MPV</string>
     <string name="external_player_app">App externe de lecture</string>
     <string name="connection_error_invalid_version">Le serveur utilise une version non supportée. Migrez vers la dernière version disponible sur jellyfin.org.</string>
+    <string name="music_notification_channel">Lecteur de musique Jellyfin</string>
+    <string name="media_service_car_item_no_title">Aucun titre</string>
+    <string name="media_service_car_section_playlists">Listes de lecture</string>
+    <string name="media_service_car_section_genres">Genres</string>
+    <string name="media_service_car_section_songs">Chansons</string>
+    <string name="media_service_car_section_artists">Artistes</string>
+    <string name="media_service_car_section_albums">Albums</string>
+    <string name="media_service_car_section_recents">Lus récemment</string>
+    <string name="media_service_generic_error">Une erreur est survenue</string>
 </resources>
