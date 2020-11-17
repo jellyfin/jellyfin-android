@@ -6,11 +6,11 @@
     <string name="wifi_only">Sólo Wi-Fi</string>
     <string name="network_message">¿Desea permitir que la descarga se ejecute a través de datos móviles o redes de itinerancia\? Podrían generarse costos por parte del proveedor.</string>
     <string name="network_title">Tipos de red permitidos</string>
-    <string name="battery_optimizations_message">Deshabilite las optimizaciones de batería para la reproducción de medios mientras la pantalla está apagada.</string>
+    <string name="battery_optimizations_message">Por favor deshabilite las optimizaciones de batería para la reproducción de medios mientras la pantalla está apagada.</string>
     <string name="connect_to_server_title">Conectar al servidor</string>
-    <string name="connection_error_invalid_format">El host tiene un formato no válido</string>
+    <string name="connection_error_invalid_format">El Servidor tiene un formato no válido</string>
     <string name="connect_button_text">Conectar</string>
-    <string name="host_input_hint">Host</string>
+    <string name="host_input_hint">Servidor</string>
     <string name="pref_enable_exoplayer_summary">"Habilite el reproductor de video experimental ExoPlayer que admite más formatos de vídeo y códecs,  y está más integrado en el sistema operativo"</string>
     <string name="pref_enable_exoplayer_title">Habilitar la integración del reproductor de video</string>
     <string name="pref_category_video_player">Reproductor de video</string>
@@ -21,8 +21,8 @@
     <string name="playback_info_audio_streams">Transmisiones de audio</string>
     <string name="playback_info_video_streams">Transmisiones de vídeo</string>
     <string name="playback_info_transcoding">Transcodificación</string>
-    <string name="connection_error_cannot_connect">No se puede establecer la conexión.
-\nCompruebe el nombre de host y la conexión de red.</string>
+    <string name="connection_error_cannot_connect">No se puede establecer la conexión. 
+\nCompruebe el nombre del Servidor y la conexión de red.</string>
     <string name="playback_info_and_x_more">…y %d más</string>
     <string name="pref_exoplayer_allow_background_audio">Permitir reproducción de audio en segundo plano en reproductor nativo</string>
     <string name="playback_info_play_method">Método de reproducción: %s</string>
@@ -46,7 +46,7 @@
     <string name="external_player_invalid_player">No se ha seleccionado un reproductor externo compatible. Se ha deshabilitado el seguimiento de reproducción.</string>
     <string name="external_player_invalid_play_method">Método de reproducción inválido.</string>
     <string name="available_servers_title">Servidores disponibles</string>
-    <string name="choose_server_button_text">Seleccionar servidor</string>
+    <string name="choose_server_button_text">Seleccione servidor</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Permitir gestos para control de brillo y volumen en reproductor nativo</string>
     <string name="mediaservice_library_playlists">Listas de reproducción</string>
     <string name="mediaservice_library_genres">Géneros</string>
@@ -67,4 +67,15 @@
     <string name="external_player_mpv">Reproductor MPV</string>
     <string name="external_player_app">Reproductor externo de video</string>
     <string name="connection_error_invalid_version">El servidor usa una versión no compatible. Actualice a la última versión disponible en jellyfin.org.</string>
+    <string name="music_notification_channel_description">Usado par control del reproductor musical</string>
+    <string name="music_notification_channel">Reproductor Musical Jellfyfin</string>
+    <string name="media_service_car_item_no_title">Sin Titulo</string>
+    <string name="media_service_car_section_playlists">Listas de Reproducción</string>
+    <string name="media_service_car_section_genres">Generos</string>
+    <string name="media_service_car_section_songs">Canciones</string>
+    <string name="media_service_car_section_artists">Artistas</string>
+    <string name="media_service_car_section_albums">Albumes</string>
+    <string name="media_service_car_section_recents">Recientemente reproducido</string>
+    <string name="media_service_item_not_found">No se encuentran los medios del item</string>
+    <string name="media_service_generic_error">Ha ocurrido un error</string>
 </resources>
