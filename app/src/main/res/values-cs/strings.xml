@@ -67,4 +67,15 @@
     <string name="mediaservice_library_latest">Nejnovější</string>
     <string name="mediaservice_shuffle">Náhodně</string>
     <string name="connection_error_invalid_version">Verze serveru není podporovaná. Aktualizujte na nejnovější verzi dostupnou z webu jellyfin.org.</string>
+    <string name="music_notification_channel_description">Používá se pro ovládání přehrávání hudby</string>
+    <string name="music_notification_channel">Přehrávač hudby Jellyfin</string>
+    <string name="media_service_car_item_no_title">Bez názvu</string>
+    <string name="media_service_car_section_playlists">Seznamy skladeb</string>
+    <string name="media_service_car_section_genres">Žánry</string>
+    <string name="media_service_car_section_songs">Skladby</string>
+    <string name="media_service_car_section_artists">Umělci</string>
+    <string name="media_service_car_section_albums">Alba</string>
+    <string name="media_service_car_section_recents">Naposledy přehrané</string>
+    <string name="media_service_item_not_found">Položka média nebyla nalezena</string>
+    <string name="media_service_generic_error">Došlo k chybě</string>
 </resources>
