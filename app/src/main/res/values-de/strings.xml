@@ -67,4 +67,5 @@
     <string name="external_player_mx_player_free_description">Leistungsstarker Videoplayer mit fortschrittlicher Hardwarebeschleunigung und Untertitelunterstützung.</string>
     <string name="external_player_mpv_description">Ein einfacher, kleiner und leichter freier (wie in Freiheit) Videoplayer. Er unterstützt eine Vielzahl von Mediendateiformaten.</string>
     <string name="connection_error_invalid_version">Der Server verwendet eine nicht unterstützte Version. Aktualisieren Sie auf die neueste Version, verfügbar auf jellyfin.org.</string>
+    <string name="media_service_generic_error">Ein Fehler ist aufgetreten</string>
 </resources>
