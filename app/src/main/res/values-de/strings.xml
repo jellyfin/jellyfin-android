@@ -68,4 +68,14 @@
     <string name="external_player_mpv_description">Ein einfacher, kleiner und leichter freier (wie in Freiheit) Videoplayer. Er unterstützt eine Vielzahl von Mediendateiformaten.</string>
     <string name="connection_error_invalid_version">Der Server verwendet eine nicht unterstützte Version. Aktualisieren Sie auf die neueste Version, verfügbar auf jellyfin.org.</string>
     <string name="media_service_generic_error">Ein Fehler ist aufgetreten</string>
+    <string name="music_notification_channel_description">Zur Steuerung der Musikwiedergabe verwendet</string>
+    <string name="music_notification_channel">Jellyfin Musik</string>
+    <string name="media_service_car_item_no_title">Kein Titel</string>
+    <string name="media_service_car_section_playlists">Wiedergabelisten</string>
+    <string name="media_service_car_section_genres">Genres</string>
+    <string name="media_service_car_section_songs">Lieder</string>
+    <string name="media_service_car_section_artists">Künstler</string>
+    <string name="media_service_car_section_albums">Alben</string>
+    <string name="media_service_car_section_recents">Zuletzt abgespielt</string>
+    <string name="media_service_item_not_found">Medium konnte nicht gefunden werden</string>
 </resources>
