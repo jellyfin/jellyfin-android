@@ -67,4 +67,15 @@
     <string name="mediaservice_library_latest">Más reciente</string>
     <string name="mediaservice_shuffle">Aleatorio</string>
     <string name="connection_error_invalid_version">El servidor utiliza una versión no soportada. Actualiza a la última versión disponible en jellyfin.org.</string>
+    <string name="music_notification_channel_description">Utilizado para el control de la reproducción de música</string>
+    <string name="music_notification_channel">Reproductor de Música Jellyfin</string>
+    <string name="media_service_car_item_no_title">Sin título</string>
+    <string name="media_service_car_section_playlists">Lista de reproducciones</string>
+    <string name="media_service_car_section_genres">Géneros</string>
+    <string name="media_service_car_section_songs">Canciones</string>
+    <string name="media_service_car_section_artists">Artistas</string>
+    <string name="media_service_car_section_albums">Álbumes</string>
+    <string name="media_service_car_section_recents">Reproducido reciéntemente</string>
+    <string name="media_service_item_not_found">No se puede entontrar ítem de multimedia</string>
+    <string name="media_service_generic_error">Ha habido un error</string>
 </resources>
