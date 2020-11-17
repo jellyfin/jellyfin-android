@@ -28,13 +28,13 @@ class ServerController(
 
     suspend fun setupServer(hostname: String) {
         appPreferences.currentServerId = withContext(Dispatchers.IO) {
-            serverDao.insert(hostname)
+            serverDao.getServerByHostname(hostname)?.id ?: serverDao.insert(hostname)
         }
     }
 
     suspend fun setupUser(serverId: Long, userId: String, accessToken: String) {
         appPreferences.currentUserId = withContext(Dispatchers.IO) {
-            userDao.insert(serverId, userId, accessToken)
+            userDao.upsert(serverId, userId, accessToken)
         }
         apiClient.SetAuthenticationInfo(accessToken, userId)
     }
