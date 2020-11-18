@@ -1,10 +1,13 @@
-define(['appSettings', 'events', 'playbackManager'], function (appSettings, events, playbackManager) {
-    "use strict";
 
-    return function () {
-        var self = this;
+class ExExternalPlayerPlugin {
+    constructor({appSettings, events, playbackManager}) {
+        this.self = this;
 
-        window.ExtPlayer = this;
+        self.appSettings = appSettings;
+        self.events = events;
+        self.playbackManager = playbackManager;
+
+        window.ExtPlayer = self;
 
         self.name = 'External Player';
         self.type = 'mediaplayer';
@@ -17,211 +20,206 @@ define(['appSettings', 'events', 'playbackManager'], function (appSettings, even
         self.priority = -2;
         self.supportsProgress = false;
         self.isLocalPlayer = true;
+
         // Disable orientation lock
         self.isExternalPlayer = true;
         self._currentTime = 0;
         self._paused = true;
         self._volume = 100;
         self._currentSrc = null;
+    }
 
-        self.canPlayMediaType = function (mediaType) {
-            return mediaType === 'Video';
-        };
+    canPlayMediaType(mediaType) {
+        return mediaType === 'Video';
+    }
 
-        self.canPlayItem = function (item, playOptions) {
-            var mediaSource = item.MediaSources && item.MediaSources[0];
-            return window.ExternalPlayer.isEnabled() && mediaSource && mediaSource.SupportsDirectStream;
-        };
+    canPlayItem(item, playOptions) {
+        var mediaSource = item.MediaSources && item.MediaSources[0];
+        return window.ExternalPlayer.isEnabled() && mediaSource && mediaSource.SupportsDirectStream;
+    }
 
-        self.supportsPlayMethod = function (playMethod, item) {
-            return playMethod === 'DirectStream';
-        };
+    supportsPlayMethod(playMethod, item) {
+        return playMethod === 'DirectStream';
+    }
 
-        self.currentSrc = function () {
-            return self._currentSrc;
-        };
+    currentSrc() {
+        return self._currentSrc;
+    }
 
-        self.play = function (options) {
-            return new Promise(function (resolve) {
-                self._currentTime = (options.playerStartPositionTicks || 0) / 10000;
-                self._paused = false;
-                self._currentSrc = options.url;
-                window.ExternalPlayer.initPlayer(JSON.stringify(options));
-                resolve();
-            });
-        };
+    play(options) {
+        return new Promise(function (resolve) {
+            self._currentTime = (options.playerStartPositionTicks || 0) / 10000;
+            self._paused = false;
+            self._currentSrc = options.url;
+            window.ExternalPlayer.initPlayer(JSON.stringify(options));
+            resolve();
+        });
+    }
 
-        self.setSubtitleStreamIndex = function (index) {
-        };
+    setSubtitleStreamIndex(index) {}
 
-        self.setAudioStreamIndex = function (index) {
-        };
+    setAudioStreamIndex(index) {}
 
-        self.canSetAudioStreamIndex = function () {
-            return false;
-        };
+    canSetAudioStreamIndex() {
+        return false;
+    }
 
-        self.setAudioStreamIndex = function (index) {
-        };
+    setAudioStreamIndex(index) {
+    }
 
-        // Save this for when playback stops, because querying the time at that point might return 0
-        self.currentTime = function (val) {
-            return null;
-        };
+    // Save this for when playback stops, because querying the time at that point might return 0
+    currentTime(val) {
+        return null;
+    }
 
-        self.duration = function (val) {
-            return null;
-        };
+    duration(val) {
+        return null;
+    }
 
-        self.destroy = function () {
-        };
+    destroy() {}
 
-        self.pause = function () {
-        };
+    pause() {}
 
-        self.unpause = function () {
-        };
+    unpause() {}
 
-        self.paused = function () {
-            return self._paused;
-        };
+    paused() {
+        return self._paused;
+    }
 
-        self.stop = function (destroyPlayer) {
-            return new Promise(function (resolve) {
-                if (destroyPlayer) {
-                    self.destroy();
-                }
-                resolve();
-            });
-        };
-
-        self.volume = function (val) {
-            return self._volume;
-        };
-
-        self.setMute = function (mute) {
-        };
-
-        self.isMuted = function () {
-            return self._volume == 0;
-        };
-
-        self.notifyEnded = function () {
-            new Promise(function () {
-                let stopInfo = {
-                    src: self._currentSrc
-                };
-
-                events.trigger(self, 'stopped', [stopInfo]);
-                self._currentSrc = self._currentTime = null;
-            });
-        };
-
-        self.notifyTimeUpdate = function (currentTime) {
-            // if no time provided handle like playback completed
-            currentTime = currentTime || playbackManager.duration(self);
-            new Promise(function () {
-                currentTime = currentTime / 1000;
-                self._timeUpdated = self._currentTime != currentTime;
-                self._currentTime = currentTime;
-                events.trigger(self, 'timeupdate');
-            });
-        };
-
-        self.notifyCanceled = function () {
-            // required to not mark an item as seen / completed without time changes
-            let currentTime = self._currentTime || 0;
-            self.notifyTimeUpdate(currentTime - 1);
-            if (currentTime > 0) {
-                self.notifyTimeUpdate(currentTime);
+    stop(destroyPlayer) {
+        return new Promise(function (resolve) {
+            if (destroyPlayer) {
+                self.destroy();
             }
-            self.notifyEnded();
-        };
+            resolve();
+        });
+    }
 
-        self.currentTime = function () {
-            return (self._currentTime || 0) * 1000;
-        };
+    volume(val) {
+        return self._volume;
+    }
 
-        self.changeSubtitleStream = function (index) {
-            // detach from the main ui thread
-            new Promise(function () {
-                var innerIndex = Number(index);
-                self.subtitleStreamIndex = innerIndex;
-            });
-        };
+    setMute(mute) {
+    }
 
-        self.changeAudioStream = function (index) {
-            // detach from the main ui thread
-            new Promise(function () {
-                var innerIndex = Number(index);
-                self.audioStreamIndex = innerIndex;
-            });
+    isMuted() {
+        return self._volume == 0;
+    }
+
+    notifyEnded() {
+        new Promise(function () {
+            let stopInfo = {
+                src: self._currentSrc
+            };
+
+            self.events.trigger(self, 'stopped', [stopInfo]);
+            self._currentSrc = self._currentTime = null;
+        });
+    }
+
+    notifyTimeUpdate(currentTime) {
+        // if no time provided handle like playback completed
+        currentTime = currentTime || self.playbackManager.duration(self);
+        new Promise(function () {
+            currentTime = currentTime / 1000;
+            self._timeUpdated = self._currentTime != currentTime;
+            self._currentTime = currentTime;
+            self.events.trigger(self, 'timeupdate');
+        });
+    }
+
+    notifyCanceled() {
+        // required to not mark an item as seen / completed without time changes
+        let currentTime = self._currentTime || 0;
+        self.notifyTimeUpdate(currentTime - 1);
+        if (currentTime > 0) {
+            self.notifyTimeUpdate(currentTime);
         }
+        self.notifyEnded();
+    }
 
-        self.getDeviceProfile = function () {
-            return new Promise(function (resolve) {
+    currentTime() {
+        return (self._currentTime || 0) * 1000;
+    }
 
-                if (self.cachedDeviceProfile) {
-                    resolve(self.cachedDeviceProfile);
-                }
+    changeSubtitleStream(index) {
+        // detach from the main ui thread
+        new Promise(function () {
+            var innerIndex = Number(index);
+            self.subtitleStreamIndex = innerIndex;
+        });
+    }
 
-                require(['browserdeviceprofile'], function (profileBuilder) {
-                    var bitrateSetting = appSettings.maxStreamingBitrate();
+    changeAudioStream(index) {
+        // detach from the main ui thread
+        new Promise(function () {
+            var innerIndex = Number(index);
+            self.audioStreamIndex = innerIndex;
+        });
+    }
 
-                    var profile = {};
-                    profile.Name = "Android External Player"
-                    profile.MaxStreamingBitrate = bitrateSetting;
-                    profile.MaxStaticBitrate = 100000000;
-                    profile.MusicStreamingTranscodingBitrate = 192000;
+    getDeviceProfile() {
+        return new Promise(function (resolve) {
+            if (self.cachedDeviceProfile) {
+                resolve(self.cachedDeviceProfile);
+            }
 
-                    profile.DirectPlayProfiles = [];
+            var bitrateSetting = self.appSettings.maxStreamingBitrate();
 
-                    // leave container null for all
-                    profile.DirectPlayProfiles.push({
-                        Type: 'Video'
-                    });
+            var profile = {};
+            profile.Name = "Android External Player"
+            profile.MaxStreamingBitrate = bitrateSetting;
+            profile.MaxStaticBitrate = 100000000;
+            profile.MusicStreamingTranscodingBitrate = 192000;
 
-                    // leave container null for all
-                    profile.DirectPlayProfiles.push({
-                        Type: 'Audio'
-                    });
+            profile.DirectPlayProfiles = [];
 
-                    profile.CodecProfiles = [];
+            // leave container null for all
+            profile.DirectPlayProfiles.push({
+                Type: 'Video'
+            });
 
-                    profile.SubtitleProfiles = [];
+            // leave container null for all
+            profile.DirectPlayProfiles.push({
+                Type: 'Audio'
+            });
 
-                    var subtitleProfiles = ['ass', 'idx', 'smi', 'srt', 'ssa', 'subrip'];
+            profile.CodecProfiles = [];
 
-                    var embedSubtitleProfiles = ['pgs', 'pgssub'];
+            profile.SubtitleProfiles = [];
 
-                    subtitleProfiles.concat(embedSubtitleProfiles).forEach(function (format) {
-                        profile.SubtitleProfiles.push({
-                            Format: format,
-                            Method: 'Embed'
-                        });
-                    });
+            var subtitleProfiles = ['ass', 'idx', 'smi', 'srt', 'ssa', 'subrip'];
 
-                    var externalSubtitleProfiles = ['sub', 'vtt'];
+            var embedSubtitleProfiles = ['pgs', 'pgssub'];
 
-                    subtitleProfiles.concat(externalSubtitleProfiles).forEach(function (format) {
-                        profile.SubtitleProfiles.push({
-                            Format: format,
-                            Method: 'External'
-                        });
-                    });
-
-                    profile.SubtitleProfiles.push({
-                        Format: 'dvdsub',
-                        Method: 'Encode'
-                    });
-
-                    profile.TranscodingProfiles = [];
-
-                    self.cachedDeviceProfile = profile;
-
-                    resolve(profile);
+            subtitleProfiles.concat(embedSubtitleProfiles).forEach(function (format) {
+                profile.SubtitleProfiles.push({
+                    Format: format,
+                    Method: 'Embed'
                 });
             });
-        };
-    };
-});
+
+            var externalSubtitleProfiles = ['sub', 'vtt'];
+
+            subtitleProfiles.concat(externalSubtitleProfiles).forEach(function (format) {
+                profile.SubtitleProfiles.push({
+                    Format: format,
+                    Method: 'External'
+                });
+            });
+
+            profile.SubtitleProfiles.push({
+                Format: 'dvdsub',
+                Method: 'Encode'
+            });
+
+            profile.TranscodingProfiles = [];
+
+            self.cachedDeviceProfile = profile;
+
+            resolve(profile);
+        });
+    }
+}
+
+window.ExternalPlayerPlugin = ExExternalPlayerPlugin;
