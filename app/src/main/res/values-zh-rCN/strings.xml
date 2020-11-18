@@ -67,4 +67,15 @@
     <string name="mediaservice_library_latest">最新</string>
     <string name="mediaservice_shuffle">随机播放</string>
     <string name="connection_error_invalid_version">服务器使用了不受支持的版本。升级到jellyfin.org上可用的最新版本。</string>
+    <string name="music_notification_channel_description">用于控制音乐播放</string>
+    <string name="music_notification_channel">Jellyfin 音乐播放器</string>
+    <string name="media_service_car_item_no_title">无标题</string>
+    <string name="media_service_car_section_playlists">播放列表</string>
+    <string name="media_service_car_section_genres">风格</string>
+    <string name="media_service_car_section_songs">歌曲</string>
+    <string name="media_service_car_section_artists">艺术家</string>
+    <string name="media_service_car_section_albums">专辑</string>
+    <string name="media_service_car_section_recents">最近播放</string>
+    <string name="media_service_item_not_found">未找到媒体项</string>
+    <string name="media_service_generic_error">发生了一个错误</string>
 </resources>
