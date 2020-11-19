@@ -35,7 +35,7 @@
     <string name="mobile_data_and_roaming">Dữ liệu di động &amp; Chuyển vùng</string>
     <string name="mobile_data">Dữ liệu di động</string>
     <string name="wifi_only">Chỉ wifi</string>
-    <string name="network_message">Bạn có muốn cho phép tải xuống qua mạng dữ liệu di động hoặc mạng chuyển vùng không\? Phí dịch vụ từ nhà mạng của bạn có thể được áp dụng</string>
+    <string name="network_message">Bạn có cho phép tải qua mạng dữ liệu di động hoặc chuyển vùng không\? Phí từ nhà mạng của bạn có thể được áp dụng</string>
     <string name="network_title">Các loại mạng được phép</string>
     <string name="battery_optimizations_message">Vui lòng tắt tính năng tiết kiệm pin để trình phát hoạt động khi màn hình tắt.</string>
     <string name="connect_button_text">Kết nối</string>
@@ -65,4 +65,15 @@
     <string name="mediaservice_library_latest">Mới Nhất</string>
     <string name="mediaservice_shuffle">Ngẫu Nhiên</string>
     <string name="connection_error_invalid_version">Máy chủ sử dụng phiên bản không được hỗ trợ. Nâng cấp lên phiên bản mới nhất có tại jellyfin.org.</string>
+    <string name="music_notification_channel_description">Được sử dụng để điều khiển phát nhạc</string>
+    <string name="music_notification_channel">Trình Phát Nhạc Jellyfin</string>
+    <string name="media_service_car_item_no_title">Không tiêu đề</string>
+    <string name="media_service_car_section_playlists">Danh Sách Phát</string>
+    <string name="media_service_car_section_genres">Thể Loại</string>
+    <string name="media_service_car_section_songs">Bài Hát</string>
+    <string name="media_service_car_section_artists">Nghệ Sĩ</string>
+    <string name="media_service_car_section_albums">Albums</string>
+    <string name="media_service_car_section_recents">Phát gần đây</string>
+    <string name="media_service_item_not_found">Không tìm thấy mục phương tiện</string>
+    <string name="media_service_generic_error">Đã xảy ra lỗi</string>
 </resources>
