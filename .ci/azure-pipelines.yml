@@ -1,5 +1,4 @@
 variables:
-  group: 'jellyfin'
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/tags/v') }}:
     JELLYFIN_VERSION: $[replace(variables['Build.SourceBranch'], 'refs/tags/', '')]
 
@@ -89,6 +88,9 @@ jobs:
 
     pool:
       vmImage: 'ubuntu-latest'
+
+    variables:
+      - group: 'jellyfin'
 
     steps:
       - task: DownloadPipelineArtifact@2
