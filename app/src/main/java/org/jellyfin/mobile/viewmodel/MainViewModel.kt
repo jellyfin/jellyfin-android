@@ -22,7 +22,9 @@ class MainViewModel(
     init {
         viewModelScope.launch {
             serverState.collect { state ->
-                apiClient.ChangeServerLocation(state.server?.hostname?.trimEnd('/'))
+                val serverAddress = state.server?.hostname?.trimEnd('/')
+                if (apiClient.serverAddress != serverAddress)
+                    apiClient.ChangeServerLocation(serverAddress)
             }
         }
 
