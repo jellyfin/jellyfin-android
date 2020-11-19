@@ -67,4 +67,15 @@
     <string name="external_player_mpv">எம்.பி.வி பிளேயர்</string>
     <string name="external_player_app">வெளிப்புற பிளேயர் பயன்பாடு</string>
     <string name="connection_error_invalid_version">சேவையகம் ஆதரிக்கப்படாத பதிப்பைப் பயன்படுத்துகிறது. Jellyfin.org இல் கிடைக்கும் சமீபத்திய பதிப்பிற்கு மேம்படுத்தவும்.</string>
+    <string name="music_notification_channel_description">இசை பின்னணி கட்டுப்பாடுகளுக்கு பயன்படுத்தப்படுகிறது</string>
+    <string name="music_notification_channel">ஜெல்லிஃபின் மியூசிக் பிளேயர்</string>
+    <string name="media_service_car_item_no_title">தலைப்பு இல்லை</string>
+    <string name="media_service_car_section_playlists">பிளேலிஸ்ட்கள்</string>
+    <string name="media_service_car_section_genres">வகைகள்</string>
+    <string name="media_service_car_section_songs">பாடல்கள்</string>
+    <string name="media_service_car_section_artists">கலைஞர்கள்</string>
+    <string name="media_service_car_section_albums">ஆல்பங்கள்</string>
+    <string name="media_service_car_section_recents">சமீபத்தில் இயக்கியது</string>
+    <string name="media_service_item_not_found">மீடியா உருப்படியைக் கண்டுபிடிக்க முடியவில்லை</string>
+    <string name="media_service_generic_error">பிழை ஏற்பட்டது</string>
 </resources>
