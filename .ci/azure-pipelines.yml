@@ -58,7 +58,7 @@ jobs:
         displayName: 'Build Release'
         inputs:
           gradleWrapperFile: 'gradlew'
-          tasks: 'assembleRelease'
+          tasks: 'assembleRelease versionTxt'
           publishJUnitResults: false
           testResultsFiles: '**/TEST-*.xml'
           javaHomeOption: 'JDKVersion'
@@ -72,6 +72,13 @@ jobs:
           Contents: '**/*.apk'
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
           flattenFolders: true
+
+      - task: CopyFiles@2
+        displayName: 'Copy version.txt'
+        inputs:
+          SourceFolder: 'app/build/'
+          Contents: 'version.txt'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
       - task: PublishBuildArtifacts@1
         displayName: 'Publish APKs'
@@ -138,4 +145,4 @@ jobs:
         inputs:
           sshEndpoint: repository
           runOptions: 'inline'
-          inline: 'cd /srv/repository/releases/client/android && rm -rf *.apk && ln -s versions/$(JELLYFIN_VERSION)/jellyfin-android-$(JELLYFIN_VERSION)-*.apk .'
+          inline: 'cd /srv/repository/releases/client/android && rm -rf *.apk version.txt && ln -s versions/$(JELLYFIN_VERSION)/jellyfin-android-$(JELLYFIN_VERSION)-*.apk . && ln -s versions/$(JELLYFIN_VERSION)/version.txt .'
