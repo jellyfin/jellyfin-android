@@ -118,7 +118,6 @@ dependencies {
 
     // Cast
     implementation(Dependencies.Cast.mediaRouter)
-    implementation(Dependencies.Cast.exoPlayerCastExtension)
     proprietaryImplementation(Dependencies.Cast.playServicesCast)
     proprietaryImplementation(Dependencies.Cast.playServicesCastFramework)
 

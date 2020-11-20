@@ -23,12 +23,9 @@ import androidx.mediarouter.media.MediaRouter
 import androidx.mediarouter.media.MediaRouterParams
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.ext.cast.CastPlayer
-import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
-import com.google.android.gms.cast.framework.CastContext
 import kotlinx.coroutines.*
 import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.mobile.R
@@ -82,14 +79,6 @@ class MediaService : MediaBrowserServiceCompat() {
             addListener(playerListener)
         }
     }
-
-    private val castPlayer: CastPlayer by lazy {
-        CastPlayer(CastContext.getSharedInstance(this)).apply {
-            setSessionAvailabilityListener(CastSessionAvailabilityListener())
-            addListener(playerListener)
-        }
-    }
-
     override fun onCreate() {
         super.onCreate()
 
@@ -138,7 +127,7 @@ class MediaService : MediaBrowserServiceCompat() {
 
         switchToPlayer(
             previousPlayer = null,
-            newPlayer = if (castPlayer.isCastSessionAvailable) castPlayer else exoPlayer
+            newPlayer = exoPlayer
         )
         notificationManager.showNotificationForPlayer(currentPlayer)
 
@@ -202,12 +191,6 @@ class MediaService : MediaBrowserServiceCompat() {
             exoPlayer.setMediaItems(mediaItems)
             exoPlayer.prepare()
             exoPlayer.seekTo(initialPlaybackIndex, playbackStartPositionMs)
-        } else /* currentPlayer == castPlayer */ {
-            castPlayer.setMediaItems(
-                mediaItems,
-                initialPlaybackIndex,
-                playbackStartPositionMs,
-            )
         }
     }
 
@@ -240,16 +223,6 @@ class MediaService : MediaBrowserServiceCompat() {
             setState(PlaybackStateCompat.STATE_ERROR, 0, 1f)
             setErrorMessage(PlaybackStateCompat.ERROR_CODE_NOT_SUPPORTED, getString(R.string.media_service_item_not_found))
         }.build())
-    }
-
-    private inner class CastSessionAvailabilityListener : SessionAvailabilityListener {
-        override fun onCastSessionAvailable() {
-            switchToPlayer(currentPlayer, castPlayer)
-        }
-
-        override fun onCastSessionUnavailable() {
-            switchToPlayer(currentPlayer, exoPlayer)
-        }
     }
 
     private inner class MediaQueueNavigator(mediaSession: MediaSessionCompat) : TimelineQueueNavigator(mediaSession) {
