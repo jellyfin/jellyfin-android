@@ -160,3 +160,13 @@ tasks.withType<DependencyUpdatesTask> {
             Dependencies.Versions.isStable(currentVersion)
     }
 }
+
+tasks.register("versionTxt") {
+    val path = buildDir.resolve("version.txt")
+
+    doLast {
+        val versionString = "v${android.defaultConfig.versionName}=${android.defaultConfig.versionCode}"
+        println("Writing [$versionString] to $path")
+        path.writeText("$versionString\n")
+    }
+}
