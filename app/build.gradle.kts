@@ -32,12 +32,14 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
+            aaptOptions.cruncherEnabled = false
+
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         getByName("debug") {
             applicationIdSuffix = ".debug"
             isDebuggable = true
-            aaptOptions.cruncherEnabled = false // Disable png crunching
+            aaptOptions.cruncherEnabled = false
         }
     }
 
