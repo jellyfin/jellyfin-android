@@ -23,15 +23,14 @@ import androidx.mediarouter.media.MediaRouter
 import androidx.mediarouter.media.MediaRouterParams
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.ext.cast.CastPlayer
-import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
-import com.google.android.gms.cast.framework.CastContext
 import kotlinx.coroutines.*
 import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.cast.CastPlayerProvider
+import org.jellyfin.mobile.cast.ICastPlayerProvider
 import org.jellyfin.mobile.controller.ServerController
 import org.jellyfin.mobile.media.car.LibraryBrowser
 import org.jellyfin.mobile.media.car.LibraryPage
@@ -73,7 +72,8 @@ class MediaService : MediaBrowserServiceCompat() {
         .setUsage(C.USAGE_MEDIA)
         .build()
 
-    private val playerListener = PlayerEventListener()
+    @Suppress("MemberVisibilityCanBePrivate")
+    val playerListener: Player.EventListener = PlayerEventListener()
 
     private val exoPlayer: SimpleExoPlayer by lazy {
         SimpleExoPlayer.Builder(this).build().apply {
@@ -83,11 +83,8 @@ class MediaService : MediaBrowserServiceCompat() {
         }
     }
 
-    private val castPlayer: CastPlayer by lazy {
-        CastPlayer(CastContext.getSharedInstance(this)).apply {
-            setSessionAvailabilityListener(CastSessionAvailabilityListener())
-            addListener(playerListener)
-        }
+    private val castPlayerProvider: ICastPlayerProvider by lazy {
+        CastPlayerProvider(this)
     }
 
     override fun onCreate() {
@@ -138,7 +135,7 @@ class MediaService : MediaBrowserServiceCompat() {
 
         switchToPlayer(
             previousPlayer = null,
-            newPlayer = if (castPlayer.isCastSessionAvailable) castPlayer else exoPlayer
+            newPlayer = if (castPlayerProvider.isCastSessionAvailable) castPlayerProvider.get() else exoPlayer
         )
         notificationManager.showNotificationForPlayer(currentPlayer)
 
@@ -203,7 +200,7 @@ class MediaService : MediaBrowserServiceCompat() {
             exoPlayer.prepare()
             exoPlayer.seekTo(initialPlaybackIndex, playbackStartPositionMs)
         } else /* currentPlayer == castPlayer */ {
-            castPlayer.setMediaItems(
+            castPlayerProvider.get().setMediaItems(
                 mediaItems,
                 initialPlaybackIndex,
                 playbackStartPositionMs,
@@ -242,14 +239,14 @@ class MediaService : MediaBrowserServiceCompat() {
         }.build())
     }
 
-    private inner class CastSessionAvailabilityListener : SessionAvailabilityListener {
-        override fun onCastSessionAvailable() {
-            switchToPlayer(currentPlayer, castPlayer)
-        }
+    @Suppress("unused")
+    fun onCastSessionAvailable() {
+        switchToPlayer(currentPlayer, castPlayerProvider.get())
+    }
 
-        override fun onCastSessionUnavailable() {
-            switchToPlayer(currentPlayer, exoPlayer)
-        }
+    @Suppress("unused")
+    fun onCastSessionUnavailable() {
+        switchToPlayer(currentPlayer, exoPlayer)
     }
 
     private inner class MediaQueueNavigator(mediaSession: MediaSessionCompat) : TimelineQueueNavigator(mediaSession) {
