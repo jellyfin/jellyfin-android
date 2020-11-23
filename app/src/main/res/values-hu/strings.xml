@@ -62,4 +62,20 @@
     <string name="mediaservice_library_artists">Előadók</string>
     <string name="external_player_system_default">Rendszer alapértelmezett</string>
     <string name="external_player_vlc_player_description">Ingyenes és nyílt forráskódú, platformfüggetlen multimédia lejátszó, amely képes a legtöbb multimédia fájl lejátszására.</string>
+    <string name="external_player_system_default_description">Hagyja, hogy a rendszer kezelje a lejátszó választását, de lehet hogy egyes lejátszók nem teljesen lesznek kompatibilisek.</string>
+    <string name="external_player_mpv_description">Egyszerű, kicsi és könnyű, ingyenes videolejátszó. Sokféle médiafájl formátumot támogat.</string>
+    <string name="video_player_native_description">Az ExoPlayer-en alapul, több videoformátumot és kodeket támogat, és jobban van integrálva az operációs rendszerbe</string>
+    <string name="video_player_web_description">Az alapértelmezett HTML-videolejátszó a webes felhasználói felületről</string>
+    <string name="video_player_web">Webes lejátszó</string>
+    <string name="music_notification_channel_description">A zenelejátszás vezérlésére szolgál</string>
+    <string name="music_notification_channel">Jellyfin Zenelejátszó</string>
+    <string name="media_service_car_item_no_title">Nincs cím</string>
+    <string name="media_service_car_section_playlists">Lejátszási listák</string>
+    <string name="media_service_car_section_genres">Műfajok</string>
+    <string name="media_service_car_section_songs">Dalok</string>
+    <string name="media_service_car_section_artists">Előadók</string>
+    <string name="media_service_car_section_albums">Albumok</string>
+    <string name="media_service_car_section_recents">Nemrég lejátszott</string>
+    <string name="media_service_item_not_found">A médiaelem nem található</string>
+    <string name="media_service_generic_error">Hiba történt</string>
 </resources>
