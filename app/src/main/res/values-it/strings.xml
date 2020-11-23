@@ -67,4 +67,15 @@
     <string name="mediaservice_library_latest">Recente</string>
     <string name="mediaservice_shuffle">Casuale</string>
     <string name="external_player_system_default_description">Delega la decisione del lettore al sistema, alcuni lettori possono essere non completamente compatibili.</string>
+    <string name="music_notification_channel_description">Utilizzato per i controlli di riproduzione musicale</string>
+    <string name="music_notification_channel">Lettore musicale Jellyfin</string>
+    <string name="media_service_car_item_no_title">Senza titolo</string>
+    <string name="media_service_car_section_playlists">Playlist</string>
+    <string name="media_service_car_section_genres">Generi</string>
+    <string name="media_service_car_section_songs">Canzoni</string>
+    <string name="media_service_car_section_artists">Artisti</string>
+    <string name="media_service_car_section_albums">Album</string>
+    <string name="media_service_car_section_recents">Riprodotto recentemente</string>
+    <string name="media_service_item_not_found">Impossibile trovare l\'elemento multimediale</string>
+    <string name="media_service_generic_error">Si è verificato un errore</string>
 </resources>
