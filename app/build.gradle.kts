@@ -26,6 +26,7 @@ android {
                 arguments["room.incremental"] = "true"
             }
         }
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
