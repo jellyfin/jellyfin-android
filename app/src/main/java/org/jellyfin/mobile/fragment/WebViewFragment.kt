@@ -129,7 +129,7 @@ class WebViewFragment : Fragment() {
                 val url = request.url
                 val path = url.path?.toLowerCase(Locale.ROOT) ?: return null
                 return when {
-                    path.endsWith(Constants.APPLOADER_PATH) -> {
+                    path.endsWith(Constants.APPLOADER_PATH) || path.endsWith(Constants.MAIN_BUNDLE_PATH) -> {
                         runOnUiThread {
                             webView.evaluateJavascript(JS_INJECTION_CODE) {
                                 onConnectedToWebapp()
