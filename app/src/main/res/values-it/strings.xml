@@ -5,7 +5,7 @@
     <string name="mobile_data">Dati Mobili</string>
     <string name="wifi_only">Solo WiFi</string>
     <string name="network_message">Consentire il download dei media quando utilizzi i dati mobili o sei in roaming\? Il tuo provider potrebbe addebbitarti il costo se previsto.</string>
-    <string name="battery_optimizations_message">Disabilita le ottimizzazioni della battera per consentire la riproduzione in background quando lo schermo è spento.</string>
+    <string name="battery_optimizations_message">Disabilita le ottimizzazioni della batteria per consentire la riproduzione in background quando lo schermo è spento.</string>
     <string name="network_title">Tipi di Rete Permessi</string>
     <string name="pref_enable_exoplayer_summary">Abilita il lettore ExoPlayer sperimentale che supporta numerosi formati video ed è più integrato nel Sistema Operativo</string>
     <string name="pref_enable_exoplayer_title">Abilita integrazione del video player</string>
