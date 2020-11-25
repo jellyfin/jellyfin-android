@@ -48,4 +48,18 @@
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Izinkan kecerahan dan gerakan volume di pemutar asli</string>
     <string name="available_servers_title">Server yang tersedia</string>
     <string name="choose_server_button_text">Pilih server</string>
+    <string name="external_player_mpv">Pemutar MPV</string>
+    <string name="external_player_app">Aplikasi pemutaran eksternal</string>
+    <string name="music_notification_channel_description">Untuk pengaturan pemutaran musik</string>
+    <string name="music_notification_channel">Pemutar Musik Jellyfin</string>
+    <string name="media_service_car_item_no_title">Tanpa judul</string>
+    <string name="media_service_car_section_playlists">Playlist</string>
+    <string name="media_service_car_section_genres">Genre</string>
+    <string name="media_service_car_section_songs">Lagu</string>
+    <string name="media_service_car_section_artists">Artis</string>
+    <string name="media_service_car_section_albums">Album</string>
+    <string name="media_service_car_section_recents">Terakhir diputar</string>
+    <string name="media_service_item_not_found">Media tidak dapat ditemukan</string>
+    <string name="media_service_generic_error">Terjadi kesalahan</string>
+    <string name="connection_error_invalid_version">Server menggunakan versi yang tidak didukung. Harap perbarui ke versi paling baru di jellyfin.org.</string>
 </resources>
