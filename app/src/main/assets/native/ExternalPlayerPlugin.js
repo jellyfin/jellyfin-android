@@ -1,5 +1,4 @@
-
-class ExExternalPlayerPlugin {
+export class ExternalPlayerPlugin {
     constructor({appSettings, events, playbackManager}) {
         this.self = this;
 
@@ -221,5 +220,3 @@ class ExExternalPlayerPlugin {
         });
     }
 }
-
-window.ExternalPlayerPlugin = ExExternalPlayerPlugin;

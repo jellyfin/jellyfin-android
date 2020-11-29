@@ -1,5 +1,4 @@
-
-class ExoPlayerPlugin {
+export class ExoPlayerPlugin {
     constructor({appSettings, events, playbackManager, loading}) {
         this.self = this;
 
@@ -404,5 +403,3 @@ class ExoPlayerPlugin {
         });
     }
 }
-
-window.ExoPlayerPlugin = ExoPlayerPlugin;

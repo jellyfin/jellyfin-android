@@ -14,6 +14,19 @@ const features = [
     "castmenuhashchange"
 ];
 
+const plugins = [
+    'ExoPlayerPlugin',
+    'ExternalPlayerPlugin'
+];
+
+// Add plugin loaders
+for (const plugin of plugins) {
+    window[plugin] = async() => {
+        const pluginDefinition = await import(`/native/${plugin}.js`);
+        return pluginDefinition[plugin];
+    };
+}
+
 let deviceId;
 let deviceName;
 let appName;
@@ -57,7 +70,7 @@ window.NativeShell = {
     },
 
     getPlugins() {
-        return ["ExoPlayerPlugin", "ExternalPlayerPlugin"];
+        return plugins;
     },
 
     execCast(action, args, callback) {
