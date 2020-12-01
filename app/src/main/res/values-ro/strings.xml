@@ -67,4 +67,15 @@
     <string name="external_player_app">Aplicație pentru redare externă</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Permiteți luminozitatea și gesturile de volum în playerul nativ</string>
     <string name="connection_error_invalid_version">Serverul utilizează o versiune neacceptată. Treceți la cea mai recentă versiune disponibilă la jellyfin.org.</string>
+    <string name="music_notification_channel_description">Folosit pentru comenzile de redare a muzicii</string>
+    <string name="music_notification_channel">Jellyfin Music Player</string>
+    <string name="media_service_car_item_no_title">Fără titlu</string>
+    <string name="media_service_car_section_playlists">Liste redare</string>
+    <string name="media_service_car_section_genres">Genuri</string>
+    <string name="media_service_car_section_songs">Melodii</string>
+    <string name="media_service_car_section_artists">Artiști</string>
+    <string name="media_service_car_section_albums">Albume</string>
+    <string name="media_service_car_section_recents">Rulate Recent</string>
+    <string name="media_service_item_not_found">Articolul media nu a putut fi găsit</string>
+    <string name="media_service_generic_error">A apărut o eroare</string>
 </resources>
