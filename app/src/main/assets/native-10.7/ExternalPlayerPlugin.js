@@ -95,17 +95,17 @@ export class ExternalPlayerPlugin {
             src: this._currentSrc
         };
 
-        this.events.trigger(self, 'stopped', [stopInfo]);
+        this.events.trigger(this, 'stopped', [stopInfo]);
         this._currentSrc = this._currentTime = null;
     }
 
     async notifyTimeUpdate(currentTime) {
         // if no time provided handle like playback completed
-        currentTime = currentTime || this.playbackManager.duration(self);
+        currentTime = currentTime || this.playbackManager.duration(this);
         currentTime = currentTime / 1000;
         this._timeUpdated = this._currentTime != currentTime;
         this._currentTime = currentTime;
-        this.events.trigger(self, 'timeupdate');
+        this.events.trigger(this, 'timeupdate');
     }
 
     notifyCanceled() {
