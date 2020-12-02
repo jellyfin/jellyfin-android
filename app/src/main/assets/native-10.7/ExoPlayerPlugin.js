@@ -126,7 +126,6 @@ export class ExoPlayerPlugin {
     }
 
     async changeSubtitleStream(index) {
-        // detach from the main ui thread
         var innerIndex = Number(index);
         this.playbackManager.setSubtitleStreamIndex(innerIndex);
         this.subtitleStreamIndex = innerIndex;
@@ -163,8 +162,6 @@ export class ExoPlayerPlugin {
     }
 
     async getDeviceProfile() {
-        // using native player implementations, check if item can be played
-        // also check if direct play is supported, as audio is supported
         if (this.cachedDeviceProfile) {
             return this.cachedDeviceProfile;
         }

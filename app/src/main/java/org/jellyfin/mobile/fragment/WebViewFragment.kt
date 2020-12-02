@@ -131,10 +131,12 @@ class WebViewFragment : Fragment() {
                 val path = url.path?.toLowerCase(Locale.ROOT) ?: return null
                 return when {
                     path.endsWith(Constants.APPLOADER_PATH) || path.endsWith(Constants.MAIN_BUNDLE_PATH) -> {
-                        if (path.endsWith(Constants.APPLOADER_PATH))
-                            assetsVersion = "10.6"
-                        else if (path.endsWith(Constants.MAIN_BUNDLE_PATH))
-                            assetsVersion = "10.7"
+                        assetsVersion = when {
+                            path.endsWith(Constants.APPLOADER_PATH) -> "10.6"
+                            path.endsWith(Constants.MAIN_BUNDLE_PATH) -> "10.7"
+                            // Unreachable path, add a sane value to be safe anyway
+                            else -> "10.7"
+                        }
 
                         runOnUiThread {
                             webView.evaluateJavascript(JS_INJECTION_CODE) {
