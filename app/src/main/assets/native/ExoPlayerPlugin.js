@@ -248,7 +248,7 @@ export class ExoPlayerPlugin {
                 var conditions = [{
                     Condition: 'LessThanEqual',
                     Property: 'AudioBitrate',
-                    Value: audioCodec.maxBitrate
+                    Value: audioCodec.maxBitrate.toString()
                 }];
 
                 if (profiles) {
@@ -263,7 +263,7 @@ export class ExoPlayerPlugin {
                     conditions.push({
                         Condition: 'LessThanEqual',
                         Property: 'AudioChannels',
-                        Value: maxChannels
+                        Value: maxChannels.toString()
                     });
                 }
 
@@ -271,7 +271,7 @@ export class ExoPlayerPlugin {
                     conditions.push({
                         Condition: 'LessThanEqual',
                         Property: 'AudioSampleRate',
-                        Value: maxSampleRate
+                        Value: maxSampleRate.toString()
                     });
                 }
 
@@ -293,7 +293,7 @@ export class ExoPlayerPlugin {
                 var conditions = [{
                     Condition: 'LessThanEqual',
                     Property: 'VideoBitrate',
-                    Value: videoCodec.maxBitrate
+                    Value: videoCodec.maxBitrate.toString()
                 }];
 
                 if (profiles) {
@@ -308,7 +308,7 @@ export class ExoPlayerPlugin {
                     conditions.push({
                         Condition: 'LessThanEqual',
                         Property: 'VideoLevel',
-                        Value: maxLevel
+                        Value: maxLevel.toString()
                     });
                 }
 
