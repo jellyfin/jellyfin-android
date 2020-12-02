@@ -1,5 +1,7 @@
 export class ExternalPlayerPlugin {
     constructor({ appSettings, events, playbackManager }) {
+        window['ExtPlayer'] = this;
+
         this.appSettings = appSettings;
         this.events = events;
         this.playbackManager = playbackManager;

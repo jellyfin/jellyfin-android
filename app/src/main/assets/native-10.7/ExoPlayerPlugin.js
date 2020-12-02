@@ -1,5 +1,7 @@
 export class ExoPlayerPlugin {
     constructor({ appSettings, events, playbackManager, loading }) {
+        window['ExoPlayer'] = this;
+
         this.appSettings = appSettings;
         this.events = events;
         this.playbackManager = playbackManager;
