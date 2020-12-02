@@ -53,6 +53,7 @@ class WebViewFragment : Fragment() {
     private var serverId: Long = 0
     private lateinit var instanceUrl: String
     private var connected = false
+    private var assetsVersion = "10.6"
 
     // UI
     private var _webViewBinding: FragmentWebviewBinding? = null
@@ -130,6 +131,11 @@ class WebViewFragment : Fragment() {
                 val path = url.path?.toLowerCase(Locale.ROOT) ?: return null
                 return when {
                     path.endsWith(Constants.APPLOADER_PATH) || path.endsWith(Constants.MAIN_BUNDLE_PATH) -> {
+                        if (path.endsWith(Constants.APPLOADER_PATH))
+                            assetsVersion = "10.6"
+                        else if (path.endsWith(Constants.MAIN_BUNDLE_PATH))
+                            assetsVersion = "10.7"
+
                         runOnUiThread {
                             webView.evaluateJavascript(JS_INJECTION_CODE) {
                                 onConnectedToWebapp()
@@ -137,7 +143,7 @@ class WebViewFragment : Fragment() {
                         }
                         null // continue loading normally
                     }
-                    path.contains("native") -> webView.context.loadAsset("native/${url.lastPathSegment}")
+                    path.contains("native") -> webView.context.loadAsset("native-${assetsVersion}/${url.lastPathSegment}")
                     path.endsWith(Constants.SELECT_SERVER_PATH) -> {
                         runOnUiThread { onSelectServer() }
                         emptyResponse
