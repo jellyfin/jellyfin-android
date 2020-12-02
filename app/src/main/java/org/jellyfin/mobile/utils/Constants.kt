@@ -9,7 +9,8 @@ object Constants {
     const val APP_INFO_VERSION: String = BuildConfig.VERSION_NAME
 
     // Webapp constants
-    const val APPLOADER_PATH = "scripts/apploader.js"
+    const val APPLOADER_PATH = "scripts/apploader.js" // 10.6.4 <=
+    const val MAIN_BUNDLE_PATH = "/main.bundle.js" // 10.7 >=
     const val SELECT_SERVER_PATH = "selectserver.html"
     const val SESSION_CAPABILITIES_PATH = "sessions/capabilities/full"
 
