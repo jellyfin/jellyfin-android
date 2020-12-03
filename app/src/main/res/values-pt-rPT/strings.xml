@@ -46,4 +46,15 @@
     <string name="external_player_unknown_error">Erro desconhecido no reprodutor externo. Monitorização de reprodução desativada.</string>
     <string name="external_player_invalid_player">Nenhum reprodutor externo válido selecionado. Monitorização de reprodução desativada.</string>
     <string name="external_player_not_supported_yet">A monitorização da reprodução ainda não é suportada no reprodutor externo selecionado. Contacte os programadores para tentar adicionar suporte ao reprodutor.</string>
+    <string name="music_notification_channel_description">Utilizado para controlo de reprodução de conteúdo</string>
+    <string name="music_notification_channel">Leitor de música Jellyfin</string>
+    <string name="media_service_car_item_no_title">Sem título</string>
+    <string name="media_service_car_section_playlists">Listas de reprodução</string>
+    <string name="media_service_car_section_genres">Géneros</string>
+    <string name="media_service_car_section_songs">Músicas</string>
+    <string name="media_service_car_section_artists">Artistas</string>
+    <string name="media_service_car_section_albums">Álbuns</string>
+    <string name="media_service_car_section_recents">Recentemente reproduzido</string>
+    <string name="media_service_generic_error">Ocurreu um erro</string>
+    <string name="connection_error_invalid_version">O servidor usa uma versão não suportada. Atualizar para a versão mais recente em jellyfin.org.</string>
 </resources>
