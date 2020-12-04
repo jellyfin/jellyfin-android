@@ -47,15 +47,15 @@ import org.jellyfin.mobile.utils.Constants.EXTRA_ITEM_ID
 import org.jellyfin.mobile.utils.Constants.EXTRA_PLAYER_ACTION
 import org.jellyfin.mobile.utils.Constants.EXTRA_POSITION
 import org.jellyfin.mobile.utils.Constants.EXTRA_TITLE
-import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_FAST_FORWARD
-import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_NEXT
-import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_PAUSE
-import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_PLAY_PAUSE
-import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_PREVIOUS
-import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_REWIND
-import org.jellyfin.mobile.utils.Constants.INPUT_MANAGER_COMMAND_STOP
 import org.jellyfin.mobile.utils.Constants.MEDIA_NOTIFICATION_CHANNEL_ID
 import org.jellyfin.mobile.utils.Constants.MEDIA_PLAYER_NOTIFICATION_ID
+import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_FAST_FORWARD
+import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_NEXT
+import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_PAUSE
+import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_PLAY
+import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_PREVIOUS
+import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_REWIND
+import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_STOP
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS
 import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
 import org.jellyfin.mobile.utils.createMediaNotificationChannel
@@ -85,29 +85,20 @@ class RemotePlayerService : Service(), CoroutineScope {
 
     val playbackState: PlaybackState? get() = mediaSession?.controller?.playbackState
 
-    /**
-     * only trip this flag if the user switches from headphones to speaker
-     * prevent stopping music when inserting headphones for the first time
-     */
-    private var headphoneFlag = false
     private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
                 AudioManager.ACTION_HEADSET_PLUG -> {
-                    val state = intent.getIntExtra("state", 2)
-                    if (state == 0) {
-                        webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
-                        headphoneFlag = true
-                    } else if (headphoneFlag) {
-                        webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
-                    }
+                    val state = intent.getIntExtra("state", 0)
+                    // Pause playback when unplugging headphones
+                    if (state == 0) webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PAUSE)
                 }
                 BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED -> {
                     val extras = intent.extras ?: return
                     val state = extras.getInt(BluetoothA2dp.EXTRA_STATE)
                     val previousState = extras.getInt(BluetoothA2dp.EXTRA_PREVIOUS_STATE)
                     if ((state == BluetoothA2dp.STATE_DISCONNECTED || state == BluetoothA2dp.STATE_DISCONNECTING) && previousState == BluetoothA2dp.STATE_CONNECTED) {
-                        webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_PAUSE)
+                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PAUSE)
                     }
                 }
                 BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED -> {
@@ -115,7 +106,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                     val state = extras.getInt(BluetoothHeadset.EXTRA_STATE)
                     val previousState = extras.getInt(BluetoothHeadset.EXTRA_PREVIOUS_STATE)
                     if (state == BluetoothHeadset.STATE_AUDIO_DISCONNECTED && previousState == BluetoothHeadset.STATE_AUDIO_CONNECTED) {
-                        webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_PAUSE)
+                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PAUSE)
                     }
                 }
             }
@@ -145,7 +136,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         createMediaNotificationChannel(notificationManager)
     }
 
-    override fun onBind(intent: Intent): IBinder? {
+    override fun onBind(intent: Intent): IBinder {
         return binder
     }
 
@@ -346,31 +337,31 @@ class RemotePlayerService : Service(), CoroutineScope {
             setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS or MediaSession.FLAG_HANDLES_MEDIA_BUTTONS)
             setCallback(object : MediaSession.Callback() {
                 override fun onPlay() {
-                    webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
+                    webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PLAY)
                 }
 
                 override fun onPause() {
-                    webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_PLAY_PAUSE)
+                    webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PAUSE)
                 }
 
                 override fun onSkipToPrevious() {
-                    webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_PREVIOUS)
+                    webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PREVIOUS)
                 }
 
                 override fun onSkipToNext() {
-                    webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_NEXT)
+                    webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_NEXT)
                 }
 
                 override fun onRewind() {
-                    webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_REWIND)
+                    webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_REWIND)
                 }
 
                 override fun onFastForward() {
-                    webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_FAST_FORWARD)
+                    webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_FAST_FORWARD)
                 }
 
                 override fun onStop() {
-                    webappFunctionChannel.triggerInputManagerAction(INPUT_MANAGER_COMMAND_STOP)
+                    webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_STOP)
                     onStopped()
                 }
 
@@ -390,7 +381,6 @@ class RemotePlayerService : Service(), CoroutineScope {
     private fun onStopped() {
         notificationManager.cancel(MEDIA_PLAYER_NOTIFICATION_ID)
         mediaSession?.isActive = false
-        headphoneFlag = false
         stopWakelock()
         stopSelf()
     }

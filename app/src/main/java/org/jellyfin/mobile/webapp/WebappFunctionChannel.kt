@@ -14,12 +14,18 @@ class WebappFunctionChannel {
     fun call(action: String) = internalChannel.offer(action)
 
     // Web component helpers
-    private fun callWebComponent(component: String, cmd: String) = call("require(['$component'], function($component){$component.$cmd;});")
-    fun triggerInputManagerAction(action: String) = callWebComponent("inputManager", "trigger('$action')")
-    fun seekTo(pos: Long) = callWebComponent("inputManager", "trigger('seek', $pos)")
-    fun setVolume(volume: Int) = callWebComponent("playbackManager", "sendCommand({Name: 'SetVolume', Arguments: {Volume: $volume}})")
+    fun callPlaybackManagerAction(action: String) = call("$PLAYBACK_MANAGER.$action();")
+    fun setVolume(volume: Int) = call("$PLAYBACK_MANAGER.sendCommand({ Name: 'SetVolume', Arguments: { Volume: $volume } });")
+    fun seekTo(pos: Long) = call("$PLAYBACK_MANAGER.seekMs($pos);")
+    fun goBack() = call("$NAVIGATION_HELPER.goBack();")
 
     // ExoPlayer helpers
-    fun exoPlayerNotifyStopped() = call("window.ExoPlayer.notifyStopped()")
-    fun exoPlayerUpdateProgress(position: Long) = call("window.ExoPlayer._currentTime = $position")
+    fun exoPlayerNotifyStopped() = call("$EXO_PLAYER.notifyStopped();")
+    fun exoPlayerUpdateProgress(position: Long) = call("$EXO_PLAYER._currentTime = $position;")
+
+    companion object {
+        private const val NAVIGATION_HELPER = "window.NavigationHelper"
+        private const val PLAYBACK_MANAGER = "$NAVIGATION_HELPER.playbackManager"
+        private const val EXO_PLAYER = "window.ExoPlayer"
+    }
 }

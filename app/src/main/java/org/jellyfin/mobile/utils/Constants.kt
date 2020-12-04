@@ -31,16 +31,15 @@ object Constants {
     const val PREF_EXTERNAL_PLAYER_APP = "pref_external_player_app"
 
     // InputManager commands
-    const val INPUT_MANAGER_COMMAND_PLAY_PAUSE = "playpause"
-    const val INPUT_MANAGER_COMMAND_PAUSE = "pause"
-    const val INPUT_MANAGER_COMMAND_PREVIOUS = "previous"
-    const val INPUT_MANAGER_COMMAND_NEXT = "next"
-    const val INPUT_MANAGER_COMMAND_REWIND = "rewind"
-    const val INPUT_MANAGER_COMMAND_FAST_FORWARD = "fastforward"
-    const val INPUT_MANAGER_COMMAND_STOP = "stop"
-    const val INPUT_MANAGER_COMMAND_VOL_UP = "volumeup"
-    const val INPUT_MANAGER_COMMAND_VOL_DOWN = "volumedown"
-    const val INPUT_MANAGER_COMMAND_BACK = "back"
+    const val PLAYBACK_MANAGER_COMMAND_PLAY = "unpause"
+    const val PLAYBACK_MANAGER_COMMAND_PAUSE = "pause"
+    const val PLAYBACK_MANAGER_COMMAND_PREVIOUS = "previousTrack"
+    const val PLAYBACK_MANAGER_COMMAND_NEXT = "nextTrack"
+    const val PLAYBACK_MANAGER_COMMAND_REWIND = "rewind"
+    const val PLAYBACK_MANAGER_COMMAND_FAST_FORWARD = "fastForward"
+    const val PLAYBACK_MANAGER_COMMAND_STOP = "stop"
+    const val PLAYBACK_MANAGER_COMMAND_VOL_UP = "volumeUp"
+    const val PLAYBACK_MANAGER_COMMAND_VOL_DOWN = "volumeDown"
 
     // Notification
     const val MEDIA_NOTIFICATION_CHANNEL_ID = "org.jellyfin.mobile.media.NOW_PLAYING"

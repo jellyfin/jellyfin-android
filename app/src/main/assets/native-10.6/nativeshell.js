@@ -57,7 +57,7 @@ window.NativeShell = {
     },
 
     getPlugins() {
-        return ["native/exoplayer", "native/externalplayer"];
+        return ["native/navigation", "native/exoplayer", "native/externalplayer"];
     },
 
     execCast(action, args, callback) {
