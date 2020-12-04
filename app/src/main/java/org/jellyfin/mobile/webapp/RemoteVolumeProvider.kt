@@ -11,11 +11,11 @@ class RemoteVolumeProvider(
     override fun onAdjustVolume(direction: Int) {
         when (direction) {
             AudioManager.ADJUST_RAISE -> {
-                webappFunctionChannel.callPlaybackManager(PLAYBACK_MANAGER_COMMAND_VOL_UP)
+                webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_VOL_UP)
                 currentVolume += 2 // TODO: have web notify app with new volume instead
             }
             AudioManager.ADJUST_LOWER -> {
-                webappFunctionChannel.callPlaybackManager(PLAYBACK_MANAGER_COMMAND_VOL_DOWN)
+                webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_VOL_DOWN)
                 currentVolume -= 2 // TODO: have web notify app with new volume instead
             }
         }

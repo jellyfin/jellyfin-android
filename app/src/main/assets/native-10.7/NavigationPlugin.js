@@ -6,11 +6,11 @@ export class NavigationPlugin {
     }
 
     goBack() {
-        var appRouter = window.Emby.Page;
+        var appRouter = window['Emby']['Page'];
         if (appRouter.canGoBack()) {
             appRouter.back();
         } else {
-            window.NativeInterface.exitApp();
+            window['NativeInterface'].exitApp();
         }
-    };
+    }
 }
