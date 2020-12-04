@@ -3,7 +3,7 @@
     <string name="wifi_only">Vain WiFi</string>
     <string name="network_message">Sallitaanko lataus mobiiliverkossa tai verkkovierailuverkon aikana\? Palveluntarjoaja saattaa veloittaa tiedonsiirrosta.</string>
     <string name="network_title">Sallitut verkkotyypit</string>
-    <string name="battery_optimizations_message">Ole hyvä ja poista akun käytön optimointi käytöstä median toistolle, kun näyttö on suljettuna.</string>
+    <string name="battery_optimizations_message">Poista akun käytön optimointi käytöstä toistettaessa mediaa kun näyttö on suljettuna.</string>
     <string name="downloading">Lataus</string>
     <string name="mobile_data_and_roaming">Mobiilidata &amp; Verkkovierailu</string>
     <string name="mobile_data">Mobiilidata</string>
@@ -66,4 +66,15 @@
     <string name="external_player_app">Ulkoinen toistosovellus</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Salli kirkkauden ja äänenvoimakkuuden säädön eleet alkuperäisessä soittimessa</string>
     <string name="connection_error_invalid_version">Palvelin käyttää versiota, jota ei tueta. Lataa uusin versio osoitteesta jellyfin.org.</string>
+    <string name="media_service_car_item_no_title">Nimetön</string>
+    <string name="music_notification_channel_description">Käytetään musiikkitoiston hallintaan</string>
+    <string name="music_notification_channel">Jellyfin-musiikkisoitin</string>
+    <string name="media_service_car_section_playlists">Soittolistat</string>
+    <string name="media_service_car_section_genres">Tyylilajit</string>
+    <string name="media_service_car_section_songs">Kappaleet</string>
+    <string name="media_service_car_section_artists">Artistit</string>
+    <string name="media_service_car_section_albums">Albumit</string>
+    <string name="media_service_car_section_recents">Äskettäin toistettu</string>
+    <string name="media_service_item_not_found">Mediatiedostoa ei löytynyt</string>
+    <string name="media_service_generic_error">Tapahtui virhe</string>
 </resources>
