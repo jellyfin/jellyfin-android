@@ -14,10 +14,10 @@ class WebappFunctionChannel {
     fun call(action: String) = internalChannel.offer(action)
 
     // Web component helpers
-    private fun callWebComponent(component: String, cmd: String) = call("require(['$component'], function($component){$component.$cmd;});")
-    fun triggerInputManagerAction(action: String) = callWebComponent("inputManager", "trigger('$action')")
-    fun seekTo(pos: Long) = callWebComponent("inputManager", "trigger('seek', $pos)")
-    fun setVolume(volume: Int) = callWebComponent("playbackManager", "sendCommand({Name: 'SetVolume', Arguments: {Volume: $volume}})")
+    fun callPlaybackManager(action: String) = call("window.NavigationHelper.playbackManager.$action();")
+    fun setVolume(volume: Int) = callPlaybackManager("sendCommand({Name: 'SetVolume', Arguments: {Volume: $volume}})")
+    fun seekTo(pos: Long) = callPlaybackManager("seekMs($pos)")
+    fun goBack() = call("window.NavigationHelper.goBack();")
 
     // ExoPlayer helpers
     fun exoPlayerNotifyStopped() = call("window.ExoPlayer.notifyStopped()")

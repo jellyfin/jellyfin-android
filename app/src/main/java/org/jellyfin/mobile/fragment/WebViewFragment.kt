@@ -66,14 +66,14 @@ class WebViewFragment : Fragment() {
         serverId = requireNotNull(args.getLong(FRAGMENT_WEB_VIEW_EXTRA_SERVER_ID)) { "Server id has not been supplied!" }
         instanceUrl = requireNotNull(args.getString(FRAGMENT_WEB_VIEW_EXTRA_URL)) { "Server url has not been supplied!" }
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            if (!connected || !webappFunctionChannel.triggerInputManagerAction(Constants.INPUT_MANAGER_COMMAND_BACK)) {
+            if (!connected || !webappFunctionChannel.goBack()) {
                 isEnabled = false
                 activity?.onBackPressed()
             }
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _webViewBinding = FragmentWebviewBinding.inflate(inflater, container, false)
         return webView.apply { applyWindowInsetsAsMargins() }
     }

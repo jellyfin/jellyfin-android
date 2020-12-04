@@ -15,13 +15,14 @@ const features = [
 ];
 
 const plugins = [
+    'NavigationPlugin',
     'ExoPlayerPlugin',
     'ExternalPlayerPlugin'
 ];
 
 // Add plugin loaders
 for (const plugin of plugins) {
-    window[plugin] = async() => {
+    window[plugin] = async () => {
         const pluginDefinition = await import(`/native/${plugin}.js`);
         return pluginDefinition[plugin];
     };
