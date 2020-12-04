@@ -130,10 +130,10 @@ class WebViewFragment : Fragment() {
                 val url = request.url
                 val path = url.path?.toLowerCase(Locale.ROOT) ?: return null
                 return when {
-                    path.endsWith(Constants.APPLOADER_PATH) || path.endsWith(Constants.MAIN_BUNDLE_PATH) -> {
+                    path.endsWith(Constants.APPLOADER_PATH) || path.endsWith(Constants.ANY_BUNDLE_PATH) -> {
                         assetsVersion = when {
                             path.endsWith(Constants.APPLOADER_PATH) -> "10.6"
-                            path.endsWith(Constants.MAIN_BUNDLE_PATH) -> "10.7"
+                            path.endsWith(Constants.ANY_BUNDLE_PATH) -> "10.7"
                             // Unreachable path, add a sane value to be safe anyway
                             else -> "10.7"
                         }
