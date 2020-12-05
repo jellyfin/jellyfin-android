@@ -15,7 +15,7 @@
     <string name="mobile_data_and_roaming">נתוני סלולר &amp; נדידה</string>
     <string name="mobile_data">נתונים סלולרים</string>
     <string name="wifi_only">WiFi בלבד</string>
-    <string name="network_message">האם אתה מאשר לבצע הורדה על גבי רשת הסלולר או נדידה \?</string>
+    <string name="network_message">האם ברצונך לאפשר הורדה עם שימוש ברשת הסלולרית או נדידה\? ייתכן ויחולו חיובים מחברת הסלולר.</string>
     <string name="network_title">אפשרויות תקשורת מורשות</string>
     <string name="battery_optimizations_message">אנא כבה את מצב החסכון בסוללה להפעלה בזמן שהמסך כבוי.</string>
     <string name="connect_button_text">התחבר</string>
@@ -24,4 +24,27 @@
     <string name="connection_error_invalid_format">כתובת שרת לא תקינה</string>
     <string name="host_input_hint">שרת</string>
     <string name="connect_to_server_title">חיבור לשרת</string>
+    <string name="external_player_invalid_play_method">שיטת הפעלה לא חוקית.</string>
+    <string name="notification_action_stop">עצור</string>
+    <string name="notification_action_next">הבא</string>
+    <string name="notification_action_fast_forward">הרץ קדימה</string>
+    <string name="notification_action_pause">הפסק</string>
+    <string name="notification_action_play">הפעל</string>
+    <string name="notification_action_rewind">אחורה</string>
+    <string name="notification_action_previous">קודם</string>
+    <string name="music_notification_channel_description">משמש לפקדי השמעת מוזיקה</string>
+    <string name="music_notification_channel">Jellyfin Music Player</string>
+    <string name="media_service_car_item_no_title">ללא כותרת</string>
+    <string name="media_service_car_section_playlists">רשימות השמעה</string>
+    <string name="media_service_car_section_genres">ז\'אנרים</string>
+    <string name="media_service_car_section_songs">שירים</string>
+    <string name="media_service_car_section_artists">אמנים</string>
+    <string name="media_service_car_section_albums">אלבומים</string>
+    <string name="media_service_car_section_recents">נוגן לאחרונה</string>
+    <string name="media_service_item_not_found">פריט מדיה לא נמצא</string>
+    <string name="media_service_generic_error">חלה שגיאה</string>
+    <string name="download_no_storage_permission">לא ניתן להוריד קבצים ללא הרשאות אחסון</string>
+    <string name="available_servers_title">שרתים זמינים</string>
+    <string name="choose_server_button_text">בחר שרת</string>
+    <string name="connection_error_invalid_version">השרת משתמש בגרסה שאינה נתמכת. שדרג לגרסה העדכנית ב-jellyfin.org.</string>
 </resources>
