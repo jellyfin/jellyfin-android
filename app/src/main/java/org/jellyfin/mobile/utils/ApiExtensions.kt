@@ -18,7 +18,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-val PRODUCT_NAME_SUPPORTED_SINCE: Pair<Int, Int> = 10 to 6
+val PRODUCT_NAME_SUPPORTED_SINCE: Pair<Int, Int> = 10 to 7
 
 // Can be removed/replaced once the api client supports coroutines natively
 suspend fun ApiClient.getPublicSystemInfo(): PublicSystemInfo? = suspendCoroutine { continuation ->
