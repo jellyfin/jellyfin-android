@@ -9,10 +9,8 @@ object Constants {
     const val APP_INFO_VERSION: String = BuildConfig.VERSION_NAME
 
     // Webapp constants
-    const val APPLOADER_PATH = "scripts/apploader.js" // 10.6.4 <=
-    const val ANY_BUNDLE_PATH = ".bundle.js" // 10.7 >=
+    const val WEB_CONFIG_PATH = "config.json"
     const val CAST_SDK_PATH = "cast_sender.js"
-    const val SELECT_SERVER_PATH = "selectserver.html"
     const val SESSION_CAPABILITIES_PATH = "sessions/capabilities/full"
 
     const val FRAGMENT_CONNECT_EXTRA_ERROR = "org.jellyfin.mobile.intent.extra.ERROR"
