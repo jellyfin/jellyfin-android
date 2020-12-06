@@ -7,6 +7,9 @@ import java.io.IOException
 
 const val JS_INJECTION_CODE = """
 !function() {
+    if (window.injectedAppJS) {
+        return;
+    }
     var scripts = [
         '/native/nativeshell.js',
         '/native/EventEmitter.js',
@@ -20,6 +23,7 @@ const val JS_INJECTION_CODE = """
         scriptElement.setAttribute('defer', '');
         document.body.appendChild(scriptElement);
     });
+    window.injectedAppJS = true;
 }();
 """
 
