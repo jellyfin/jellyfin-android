@@ -48,4 +48,6 @@
     <string name="external_player_unknown_error">Ukjent feil i ekstern spiller. Avspillingssporing er deaktivert.</string>
     <string name="external_player_invalid_player">Ingen gyldig ekstern spiller valgt. Avspillingssporing er deaktivert.</string>
     <string name="external_player_not_supported_yet">Avspillingssporing støttes ikke i valgt ekstern spiller ennå. Kontakt utviklere for å prøve å legge til støtte for det.</string>
+    <string name="media_service_generic_error">En feil har oppstått</string>
+    <string name="connection_error_invalid_version">Serveren bruker en utdatert versjon. Oppgrader til siste versjon på jellyfin.org.</string>
 </resources>
