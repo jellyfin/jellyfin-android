@@ -4,11 +4,32 @@
     <string name="mobile_data_and_roaming">Мобільні дані та роумінг</string>
     <string name="mobile_data">Мобільні дані</string>
     <string name="wifi_only">Лише WiFi</string>
-    <string name="network_message">Ви хочете дозволити завантаження через мобільні мережі передачі даних або в роумінгу\?</string>
+    <string name="network_message">Ви хочете дозволити завантаження через мобільні мережі передачі даних або в роумінгу\? Ваш оператор може стягувати плату.</string>
     <string name="network_title">Дозволені типи мереж</string>
     <string name="battery_optimizations_message">Відключіть оптимізацію акумулятора для відтворення медіа, коли екран вимкнено.</string>
     <string name="connection_error_invalid_format">Невірний формат сервера</string>
     <string name="connect_button_text">Підключитись</string>
     <string name="host_input_hint">Сервер</string>
     <string name="connect_to_server_title">Підключення до сервера</string>
+    <string name="playback_info_play_method">Метод програвання: %s</string>
+    <string name="menu_item_none">Нічого</string>
+    <string name="notification_action_stop">Зупинити</string>
+    <string name="notification_action_next">Наступний</string>
+    <string name="notification_action_fast_forward">Перемотка вперед</string>
+    <string name="notification_action_pause">Пауза</string>
+    <string name="notification_action_play">Відтворити</string>
+    <string name="notification_action_previous">Попередній</string>
+    <string name="music_notification_channel">Музичний програвач Jellyfin</string>
+    <string name="media_service_car_item_no_title">Без назви</string>
+    <string name="media_service_car_section_playlists">Список відтворення</string>
+    <string name="media_service_car_section_genres">Жанри</string>
+    <string name="media_service_car_section_songs">Пісні</string>
+    <string name="media_service_car_section_albums">Альбоми</string>
+    <string name="media_service_generic_error">Сталася помилка</string>
+    <string name="download_no_storage_permission">Неможливо завантажити файли без дозволу на зберігання</string>
+    <string name="available_servers_title">Доступні сервера</string>
+    <string name="choose_server_button_text">Виберіть сервер</string>
+    <string name="connection_error_invalid_version">Сервер використовує непідтримувану версію. Оновіться до останньої версії, яка доступна на jellyfin.org.</string>
+    <string name="connection_error_cannot_connect">Неможливо встановити з\'єднання.
+\nПеревірте, будь ласка, ім\'я сервера та ваше мережеве з\'єднання.</string>
 </resources>
