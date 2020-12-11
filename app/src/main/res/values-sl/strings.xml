@@ -48,4 +48,27 @@
     <string name="playback_info_video_streams">Video sledi</string>
     <string name="video_player_native">Vgrajeni predvajalnik</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Dovoli poteze za svetlost in glasnost v vgrajenem predvajalniku</string>
+    <string name="connection_error_invalid_version">Server uporablja nepodprto različico. Posodobite na najnovejšo različico na jellyfin.org.</string>
+    <string name="external_player_system_default_description">Sistem naj izbere predvajalnik. Nekateri predvajalniki morda niso polno podprti.</string>
+    <string name="external_player_system_default">Privzeta nastavitev sistema</string>
+    <string name="external_player_vlc_player_description">Prosti odprtokodni predvajalnik, ki podpira večino predstavnostnih datotek.</string>
+    <string name="external_player_vlc_player">Predvajalnik VLC</string>
+    <string name="external_player_mx_player_pro_description">Plačljiva različica MX Playerja, ki podpira nemoteno video izkušnjo.</string>
+    <string name="external_player_mx_player_pro">MX Player Pro</string>
+    <string name="external_player_mx_player_free_description">Močan video predvajalnik z naprednim strojnim pospeševanjem in podporo podnapisov.</string>
+    <string name="external_player_mx_player_free">MX Player Free</string>
+    <string name="external_player_mpv_description">Enostaven, majhen in lahek zastonjski (kot svoboda) video predvajalnik. Podpira širok izbor predstavnostnih datotek.</string>
+    <string name="external_player_mpv">Predvajalnik MPV</string>
+    <string name="external_player_app">Zunanji predvajalnik</string>
+    <string name="music_notification_channel_description">Namenjeno nadzoru predvajanja glasbe</string>
+    <string name="music_notification_channel">Predvajalnik glasbe Jellyfin</string>
+    <string name="media_service_car_item_no_title">Brez naslova</string>
+    <string name="media_service_car_section_playlists">Seznam predvajanja</string>
+    <string name="media_service_car_section_genres">Zvrsti</string>
+    <string name="media_service_car_section_songs">Pesmi</string>
+    <string name="media_service_car_section_artists">Avtorji</string>
+    <string name="media_service_car_section_albums">Albumi</string>
+    <string name="media_service_car_section_recents">Nedavno predvajano</string>
+    <string name="media_service_item_not_found">Medijskega elementa ni bilo mogoče najti</string>
+    <string name="media_service_generic_error">Prišlo je do napake</string>
 </resources>
