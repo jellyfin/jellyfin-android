@@ -91,10 +91,10 @@ class WebViewFragment : Fragment() {
                 // offsetting 100dp from the center in both directions
                 // uses the maximum available space
                 val verticalCenter = webView.measuredHeight / 2
-                val offset = webView.context.dip(100)
+                val offset = webView.resources.dip(100)
 
                 // Arbitrary, currently 2x minimum touch target size
-                val exclusionWidth = webView.context.dip(96)
+                val exclusionWidth = webView.resources.dip(96)
 
                 webView.systemGestureExclusionRects = listOf(
                     Rect(

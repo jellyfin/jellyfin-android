@@ -33,8 +33,7 @@ fun MainActivity.requestNoBatteryOptimizations() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         val powerManager: PowerManager = getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
         if (!appPreferences.ignoreBatteryOptimizations && !powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) {
-            Snackbar.make(rootView, R.string.battery_optimizations_message, Snackbar.LENGTH_INDEFINITE).apply {
-                // Add action
+            Snackbar.make(findViewById(R.id.root_view), R.string.battery_optimizations_message, Snackbar.LENGTH_INDEFINITE).apply {
                 setAction(android.R.string.ok) {
                     try {
                         val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
@@ -46,7 +45,6 @@ fun MainActivity.requestNoBatteryOptimizations() {
                     // Ignore after the user interacted with the snackbar at least once
                     appPreferences.ignoreBatteryOptimizations = true
                 }
-
                 show()
             }
         }
