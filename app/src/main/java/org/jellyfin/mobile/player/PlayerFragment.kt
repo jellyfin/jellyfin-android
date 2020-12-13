@@ -282,7 +282,7 @@ class PlayerFragment : Fragment() {
                     return false
 
                 // Check whether swipe was started in excluded region
-                if (firstEvent.y < GESTURE_EXCLUSION_AREA_TOP * resources.displayMetrics.density)
+                if (firstEvent.y < resources.dip(GESTURE_EXCLUSION_AREA_TOP))
                     return false
 
                 // Check whether swipe was oriented vertically

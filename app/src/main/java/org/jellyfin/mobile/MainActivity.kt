@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.os.IBinder
 import android.view.OrientationEventListener
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -17,7 +16,10 @@ import org.jellyfin.mobile.cast.IChromecast
 import org.jellyfin.mobile.fragment.ConnectFragment
 import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.player.PlayerFragment
-import org.jellyfin.mobile.utils.*
+import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.PermissionRequestHelper
+import org.jellyfin.mobile.utils.SmartOrientationListener
+import org.jellyfin.mobile.utils.replaceFragment
 import org.jellyfin.mobile.viewmodel.MainViewModel
 import org.jellyfin.mobile.viewmodel.ServerState
 import org.jellyfin.mobile.webapp.RemotePlayerService
@@ -30,8 +32,6 @@ class MainActivity : AppCompatActivity() {
     val appPreferences: AppPreferences by inject()
     val chromecast: IChromecast = Chromecast()
     private val permissionRequestHelper: PermissionRequestHelper by inject()
-
-    val rootView: CoordinatorLayout by lazyView(R.id.root_view)
 
     var serviceBinder: RemotePlayerService.ServiceBinder? = null
         private set
