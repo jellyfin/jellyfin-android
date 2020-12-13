@@ -10,6 +10,7 @@ import android.webkit.JavascriptInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.jellyfin.apiclient.interaction.AndroidDevice
+import org.jellyfin.mobile.R
 import org.jellyfin.mobile.fragment.ConnectFragment
 import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.settings.SettingsFragment
@@ -69,6 +70,7 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
             fragment.activity?.apply {
                 requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                 enableFullscreen()
+                window.setBackgroundDrawable(null)
             }
         }
         return true
@@ -78,8 +80,11 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
     fun disableFullscreen(): Boolean {
         fragment.runOnUiThread {
             fragment.activity?.apply {
+                // Reset screen orientation
                 requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-                this.disableFullscreen(true)
+                disableFullscreen(true)
+                // Reset window background color
+                window.setBackgroundDrawableResource(R.color.theme_background)
             }
         }
         return true
