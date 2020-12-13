@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings.System
 import android.view.*
+import android.view.WindowManager.LayoutParams.*
 import android.widget.*
 import androidx.core.content.getSystemService
 import androidx.core.content.withStyledAttributes
@@ -115,9 +116,9 @@ class PlayerFragment : Fragment() {
             val isPlaying = viewModel.playerOrNull?.isPlaying == true
             val window = requireActivity().window
             if (isPlaying) {
-                window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                window.addFlags(FLAG_KEEP_SCREEN_ON)
             } else {
-                window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                window.clearFlags(FLAG_KEEP_SCREEN_ON)
             }
             if (playerState == Player.STATE_ENDED) {
                 parentFragmentManager.popBackStack()
@@ -297,6 +298,7 @@ class PlayerFragment : Fragment() {
 
                 if (firstEvent.x.toInt() > viewCenterX) {
                     // Swiping on the right, change volume
+
                     val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
                     if (swipeGestureValueTracker == -1f) swipeGestureValueTracker = currentVolume.toFloat()
 
@@ -312,29 +314,28 @@ class PlayerFragment : Fragment() {
                     gestureIndicatorOverlayProgress.progress = toSet
                 } else {
                     // Swiping on the left, change brightness
+
                     val window = requireActivity().window
-                    val windowLayoutParams = window.attributes
+                    val brightnessRange = BRIGHTNESS_OVERRIDE_OFF..BRIGHTNESS_OVERRIDE_FULL
+
+                    // Initialize on first swipe
                     if (swipeGestureValueTracker == -1f) {
-                        swipeGestureValueTracker = windowLayoutParams.screenBrightness
-                        if (swipeGestureValueTracker < 0f)
-                            swipeGestureValueTracker = System.getFloat(requireContext().contentResolver, System.SCREEN_BRIGHTNESS) / 255
+                        val brightness = window.brightness
+                        swipeGestureValueTracker = when (brightness) {
+                            in brightnessRange -> brightness
+                            else -> System.getFloat(requireContext().contentResolver, System.SCREEN_BRIGHTNESS) / 255
+                        }
                     }
 
-                    swipeGestureValueTracker += ratioChange
-
-                    val toSet = swipeGestureValueTracker.coerceIn(0f, 1f)
-                    window.attributes = windowLayoutParams.apply {
-                        screenBrightness = toSet
-                    }
+                    swipeGestureValueTracker = (swipeGestureValueTracker + ratioChange).coerceIn(brightnessRange)
+                    window.brightness = swipeGestureValueTracker
 
                     gestureIndicatorOverlayImage.setImageResource(R.drawable.ic_brightness_white_24dp)
                     gestureIndicatorOverlayProgress.max = 100
-                    gestureIndicatorOverlayProgress.progress = (toSet * 100).toInt()
+                    gestureIndicatorOverlayProgress.progress = (swipeGestureValueTracker * 100).toInt()
                 }
 
-                // Show gesture indicator
                 gestureIndicatorOverlayLayout.isVisible = true
-
                 return true
             }
         })
@@ -433,13 +434,24 @@ class PlayerFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // Reset screen orientation, disable fullscreen and reset status bar color
         with(requireActivity()) {
+            // Reset screen orientation
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             disableFullscreen()
+            // Reset status bar color
             withStyledAttributes(0, intArrayOf(R.attr.colorPrimaryDark)) {
                 window.statusBarColor = getColor(0, Color.BLACK)
             }
+            // Reset screen brightness
+            window.brightness = BRIGHTNESS_OVERRIDE_NONE
         }
     }
+
+    private inline var Window.brightness: Float
+        get() = attributes.screenBrightness
+        set(value) {
+            attributes = attributes.apply {
+                screenBrightness = value
+            }
+        }
 }
