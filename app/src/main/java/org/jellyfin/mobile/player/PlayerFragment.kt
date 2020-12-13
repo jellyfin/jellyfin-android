@@ -104,7 +104,6 @@ class PlayerFragment : Fragment() {
         with(requireActivity()) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
             enableFullscreen()
-            window.statusBarColor = Color.BLACK
         }
 
         // Observe ViewModel
@@ -438,10 +437,6 @@ class PlayerFragment : Fragment() {
             // Reset screen orientation
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             disableFullscreen()
-            // Reset status bar color
-            withStyledAttributes(0, intArrayOf(R.attr.colorPrimaryDark)) {
-                window.statusBarColor = getColor(0, Color.BLACK)
-            }
             // Reset screen brightness
             window.brightness = BRIGHTNESS_OVERRIDE_NONE
         }
