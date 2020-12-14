@@ -67,4 +67,5 @@
     <string name="external_player_mpv">MPV 플레이어</string>
     <string name="external_player_app">외부 플레이어 앱</string>
     <string name="connection_error_invalid_version">서버가 지원되지 않는 버전을 사용함 jellyfin.org에서 최신 버전으로 업그레이드하십시오.</string>
+    <string name="media_service_generic_error">에러가 발생했습니다</string>
 </resources>
