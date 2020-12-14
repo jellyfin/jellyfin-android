@@ -62,4 +62,8 @@
     <string name="media_service_item_not_found">Media tidak dapat ditemukan</string>
     <string name="media_service_generic_error">Terjadi kesalahan</string>
     <string name="connection_error_invalid_version">Server menggunakan versi yang tidak didukung. Harap perbarui ke versi paling baru di jellyfin.org.</string>
+    <string name="external_player_mx_player_pro_description">Versi berbayar MX Player yang menyediakan pengalaman video tanpa jeda.</string>
+    <string name="external_player_mx_player_free_description">Pemutar video dengan akselerasi perangkat keras dan dukungan subtitle.</string>
+    <string name="external_player_mx_player_free">MX Player Gratis</string>
+    <string name="external_player_mpv_description">Pemutar video sederhana, kecil, dan ringan (dalam arti kebebasan). Pemutar video mendukung berbagai format file media.</string>
 </resources>
