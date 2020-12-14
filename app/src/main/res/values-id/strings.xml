@@ -66,4 +66,9 @@
     <string name="external_player_mx_player_free_description">Pemutar video dengan akselerasi perangkat keras dan dukungan subtitle.</string>
     <string name="external_player_mx_player_free">MX Player Gratis</string>
     <string name="external_player_mpv_description">Pemutar video sederhana, kecil, dan ringan (dalam arti kebebasan). Pemutar video mendukung berbagai format file media.</string>
+    <string name="external_player_mx_player_pro">Pemutar MX Pro</string>
+    <string name="external_player_system_default_description">Biarkan sistem mengatur pilihan pemutar, beberapa pemutar mungkin tidak kompatibel.</string>
+    <string name="external_player_system_default">Sistem default</string>
+    <string name="external_player_vlc_player_description">Pemutar multimedia gratis dan sumber terbuka yang memainkan hampir segala file multimedia.</string>
+    <string name="external_player_vlc_player">Pemutar VLC</string>
 </resources>
