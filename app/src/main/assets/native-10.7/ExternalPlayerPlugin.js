@@ -24,6 +24,7 @@ export class ExternalPlayerPlugin {
         this._paused = true;
         this._volume = 100;
         this._currentSrc = null;
+        this._isIntro = false;
 
         this._externalPlayer = window['ExternalPlayer'];
     }
@@ -33,8 +34,7 @@ export class ExternalPlayerPlugin {
     }
 
     canPlayItem(item, playOptions) {
-        var mediaSource = item.MediaSources && item.MediaSources[0];
-        return this._externalPlayer.isEnabled() && mediaSource && mediaSource.SupportsDirectStream;
+        return this._externalPlayer.isEnabled();
     }
 
     supportsPlayMethod(playMethod, item) {
@@ -49,6 +49,7 @@ export class ExternalPlayerPlugin {
         this._currentTime = (options.playerStartPositionTicks || 0) / 10000;
         this._paused = false;
         this._currentSrc = options.url;
+        this._isIntro = options.item && options.item.ProviderIds && options.item.ProviderIds.hasOwnProperty("prerolls.video");
         this._externalPlayer.initPlayer(JSON.stringify(options));
     }
 
@@ -97,6 +98,7 @@ export class ExternalPlayerPlugin {
             src: this._currentSrc
         };
 
+        this.playbackManager._playNextAfterEnded = this._isIntro;
         this.events.trigger(this, 'stopped', [stopInfo]);
         this._currentSrc = this._currentTime = null;
     }

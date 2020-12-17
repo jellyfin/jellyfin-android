@@ -23,14 +23,14 @@ define(['appSettings', 'events', 'playbackManager'], function (appSettings, even
         self._paused = true;
         self._volume = 100;
         self._currentSrc = null;
+        self._isIntro = false;
 
         self.canPlayMediaType = function (mediaType) {
             return mediaType === 'Video';
         };
 
         self.canPlayItem = function (item, playOptions) {
-            var mediaSource = item.MediaSources && item.MediaSources[0];
-            return window.ExternalPlayer.isEnabled() && mediaSource && mediaSource.SupportsDirectStream;
+            return window.ExternalPlayer.isEnabled();
         };
 
         self.supportsPlayMethod = function (playMethod, item) {
@@ -46,6 +46,7 @@ define(['appSettings', 'events', 'playbackManager'], function (appSettings, even
                 self._currentTime = (options.playerStartPositionTicks || 0) / 10000;
                 self._paused = false;
                 self._currentSrc = options.url;
+                self._isIntro = options.item && options.item.ProviderIds && options.item.ProviderIds.hasOwnProperty("prerolls.video");
                 window.ExternalPlayer.initPlayer(JSON.stringify(options));
                 resolve();
             });
@@ -112,6 +113,7 @@ define(['appSettings', 'events', 'playbackManager'], function (appSettings, even
                     src: self._currentSrc
                 };
 
+                playbackManager._playNextAfterEnded = self._isIntro;
                 events.trigger(self, 'stopped', [stopInfo]);
                 self._currentSrc = self._currentTime = null;
             });
