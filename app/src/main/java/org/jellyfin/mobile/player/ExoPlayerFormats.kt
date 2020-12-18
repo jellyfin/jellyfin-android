@@ -39,6 +39,7 @@ object ExoPlayerFormats {
         MediaFormat.MIMETYPE_VIDEO_HEVC, MediaFormat.MIMETYPE_VIDEO_DOLBY_VISION -> "hevc"
         MediaFormat.MIMETYPE_VIDEO_VP8 -> "vp8"
         MediaFormat.MIMETYPE_VIDEO_VP9 -> "vp9"
+        MediaFormat.MIMETYPE_VIDEO_AV1 -> "av1"
         else -> null
     }
 
