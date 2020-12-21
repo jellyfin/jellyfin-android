@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="media_service_car_section_albums">Álbomdar</string>
+    <string name="connect_button_text">Qosylý</string>
 </resources>
