@@ -15,6 +15,7 @@ import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.source.ExoPlayerTracksGroup
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.utils.toHumanBitRate
 
 /**
  *  Provides a menu UI for audio, subtitle and video stream selection
@@ -28,10 +29,12 @@ class PlaybackMenus(
     private val lockScreenButton: View by playerControlsBinding::lockScreenButton
     private val audioStreamsButton: View by playerControlsBinding::audioStreamsButton
     private val subtitlesButton: ImageButton by playerControlsBinding::subtitlesButton
+    private val qualityButton: View by playerControlsBinding::qualityButton
     private val infoButton: View by playerControlsBinding::infoButton
     private val playbackInfo: TextView by playerBinding::playbackInfo
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
+    private val qualityMenu: PopupMenu = createQualityMenu()
 
     private var subtitleCount = 0
     private var selectedSubtitle = -1
@@ -60,6 +63,10 @@ class PlaybackMenus(
                 }
             }
         }
+        qualityButton.setOnClickListener {
+            fragment.suppressControllerAutoHide(true)
+            qualityMenu.show()
+        }
         infoButton.setOnClickListener {
             playbackInfo.isVisible = !playbackInfo.isVisible
         }
@@ -71,12 +78,21 @@ class PlaybackMenus(
     fun onItemChanged(item: JellyfinMediaSource) {
         buildMenuItems(subtitlesMenu.menu, SUBTITLES_MENU_GROUP, item.subtitleTracksGroup, true)
         buildMenuItems(audioStreamsMenu.menu, AUDIO_MENU_GROUP, item.audioTracksGroup)
+        buildMenuItems(qualityMenu.menu, QUALITY_MENU_GROUP, item.qualityTracksGroup)
+
         subtitleCount = item.subtitleTracksCount
         selectedSubtitle = item.subtitleTracksGroup.selectedTrack
         updateSubtitlesButton()
 
+        qualityButton.isVisible = item.qualityTracksCount > 0
+
         val playMethod = context.getString(R.string.playback_info_play_method, item.playMethod)
         val transcodingInfo = context.getString(R.string.playback_info_transcoding, item.isTranscoding)
+        val maxBitrateInfo = context.getString(R.string.playback_info_max_bitrate, listOf(
+            item.currentMaxBitrate.toHumanBitRate(),
+            if (item.isAutomaticBitrateEnabled) "- Auto" else "",
+            "(${item.bitrate.toHumanBitRate()})"
+        ).joinToString(" "))
         val videoTracksInfo = item.videoTracksGroup.tracks.run {
             joinToString(
                 "\n",
@@ -99,11 +115,12 @@ class PlaybackMenus(
                 "${fragment.getString(R.string.playback_info_audio_streams)}:\n",
                 limit = 5,
                 truncated = fragment.getString(R.string.playback_info_and_x_more, size - 3)
-            ) { "- ${it.title} (${it.language})" }
+            ) { "- ${it.title} (${it.language}) @ ${it.bitrate.toHumanBitRate()}" }
         }
         playbackInfo.text = listOf(
             playMethod,
             transcodingInfo,
+            maxBitrateInfo,
             videoTracksInfo,
             audioTracksInfo,
         ).joinToString("\n\n")
@@ -127,6 +144,18 @@ class PlaybackMenus(
     private fun createAudioStreamsMenu() = PopupMenu(context, audioStreamsButton).apply {
         setOnMenuItemClickListener { clickedItem: MenuItem ->
             fragment.onAudioTrackSelected(clickedItem.itemId).also { success ->
+                if (success) {
+                    menu.forEach { it.isChecked = false }
+                    clickedItem.isChecked = true
+                }
+            }
+        }
+        setOnDismissListener(this@PlaybackMenus)
+    }
+
+    private fun createQualityMenu() = PopupMenu(context, qualityButton).apply {
+        setOnMenuItemClickListener { clickedItem ->
+            fragment.setMaxStreamingBitrate(clickedItem.itemId).also { success ->
                 if (success) {
                     menu.forEach { it.isChecked = false }
                     clickedItem.isChecked = true
@@ -175,5 +204,6 @@ class PlaybackMenus(
     companion object {
         private const val SUBTITLES_MENU_GROUP = 0
         private const val AUDIO_MENU_GROUP = 1
+        private const val QUALITY_MENU_GROUP = 2
     }
 }

@@ -457,6 +457,10 @@ class PlayerFragment : Fragment() {
         return viewModel.mediaSourceManager.selectSubtitle(index)
     }
 
+    fun setMaxStreamingBitrate(index: Int): Boolean {
+        return viewModel.setMaxStreamingBitrate(index)
+    }
+
     fun onUserLeaveHint() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && viewModel.playerOrNull?.isPlaying == true) {
             with(requireActivity()) {

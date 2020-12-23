@@ -223,6 +223,21 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         audioManager.setStreamVolume(stream, scaled, 0)
     }
 
+    fun setMaxStreamingBitrate(index: Int): Boolean {
+        val mediaSource = mediaSourceManager.jellyfinMediaSource.value
+        if (mediaSource != null && !mediaSource.qualityTracksGroup.tracks[index].selected) {
+            mediaSession.isActive = false
+            mediaSession.release()
+            playerOrNull?.apply {
+                removeListener(this@PlayerViewModel)
+                release()
+            }
+            _player.value = null
+            return webappFunctionChannel.exoPlayerChangeBitrate(mediaSource.qualityTracksGroup.tracks[index].bitrate)
+        }
+        return false
+    }
+
     fun getPlayerRendererIndex(type: Int): Int {
         return playerOrNull?.getRendererIndexByType(type) ?: -1
     }

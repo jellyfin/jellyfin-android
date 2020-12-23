@@ -135,10 +135,14 @@ class ConnectFragment : Fragment() {
     }
 
     private fun chooseServer() {
+        chooseServerButton.isEnabled = false
         AlertDialog.Builder(activity).apply {
             setTitle(R.string.available_servers_title)
             setItems(serverList.map { "${it.name}\n${it.address}" }.toTypedArray()) { _, index ->
                 connect(serverList[index].address)
+            }
+            setOnCancelListener {
+                chooseServerButton.isEnabled = true
             }
         }.show()
     }

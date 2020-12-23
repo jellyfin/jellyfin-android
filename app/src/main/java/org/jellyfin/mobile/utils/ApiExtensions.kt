@@ -6,6 +6,7 @@ import org.jellyfin.apiclient.interaction.Response
 import org.jellyfin.apiclient.model.configuration.ServerConfiguration
 import org.jellyfin.apiclient.model.dto.BaseItemDto
 import org.jellyfin.apiclient.model.dto.UserItemDataDto
+import org.jellyfin.apiclient.model.net.EndPointInfo
 import org.jellyfin.apiclient.model.playlists.PlaylistItemQuery
 import org.jellyfin.apiclient.model.querying.ArtistsQuery
 import org.jellyfin.apiclient.model.querying.ItemQuery
@@ -24,6 +25,10 @@ import kotlin.coroutines.suspendCoroutine
 val PRODUCT_NAME_SUPPORTED_SINCE: Pair<Int, Int> = 10 to 7
 
 // Can be removed/replaced once the api client supports coroutines natively
+suspend fun ApiClient.getEndpointInfo(): EndPointInfo? = suspendCoroutine { continuation ->
+    GetEndPointInfo(ContinuationResponse(continuation))
+}
+
 suspend fun ApiClient.getPublicSystemInfo(): PublicSystemInfo? = suspendCoroutine { continuation ->
     GetPublicSystemInfoAsync(ContinuationResponse(continuation))
 }

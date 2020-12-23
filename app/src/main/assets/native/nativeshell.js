@@ -32,6 +32,8 @@ let deviceId;
 let deviceName;
 let appName;
 let appVersion;
+let endpointInfo;
+let sessionId;
 
 window.NativeShell = {
     enableFullscreen() {
@@ -87,6 +89,25 @@ window.NativeShell = {
         if (!keep) {
             delete callbacks[action];
         }
+    },
+
+    getVideoQualityOptions(options) {
+        return JSON.parse(window.NativeInterface.getVideoQualityOptions(JSON.stringify(options)));
+    },
+
+    getSavedEndpointInfo() {
+        if (!endpointInfo) {
+            endpointInfo = JSON.parse(window.NativeInterface.getEndpointInfo());
+        }
+        return endpointInfo;
+    },
+
+    async getSavedSessionId() {
+        if (!sessionId) {
+            var sessions = await window.ApiClient.getSessions({ deviceId: window.ApiClient._deviceId });
+            sessionId = sessions[0].Id;
+        }
+        return sessionId;
     }
 };
 

@@ -44,7 +44,7 @@ export class ExoPlayerPlugin {
 
         this._paused = false;
         this._currentSrc = options.url;
-        this._nativePlayer.loadPlayer(JSON.stringify(options));
+        this._nativePlayer.loadPlayer(this.prepareMedia(options));
         this.loading.hide();
     }
 
@@ -137,6 +137,24 @@ export class ExoPlayerPlugin {
         this.audioStreamIndex = innerIndex;
     }
 
+    getMaxStreamingBitrate() {
+        const endpointInfo = window.NativeShell.getSavedEndpointInfo();
+        return this.appSettings.maxStreamingBitrate(endpointInfo.IsInNetwork, 'Video');
+    }
+
+    enableAutomaticBitrateDetection() {
+        const endpointInfo = window.NativeShell.getSavedEndpointInfo();
+        return this.appSettings.enableAutomaticBitrateDetection(endpointInfo.IsInNetwork, 'Video');
+    }
+
+    changeBitrate(bitrate) {
+        this.loading.show();
+        this.playbackManager.setMaxStreamingBitrate({
+            enableAutomaticBitrateDetection: bitrate ? false : true,
+            maxBitrate: bitrate
+        }, this);
+    }
+
     prepareAudioTracksCapabilities(options) {
         var directPlayProfiles = this.cachedDeviceProfile.DirectPlayProfiles;
         var container = options.mediaSource.Container;
@@ -152,6 +170,29 @@ export class ExoPlayerPlugin {
         });
     }
 
+    prepareMedia(options) {
+        options.currentMaxBitrate = this.getMaxStreamingBitrate();
+        options.isAutomaticBitrateEnabled = this.enableAutomaticBitrateDetection();
+        if (options.mediaType === "Video") {
+            options.qualityOptions = window.NativeShell.getVideoQualityOptions({
+                currentMaxBitrate: options.currentMaxBitrate,
+                isAutomaticBitrateEnabled: options.isAutomaticBitrateEnabled,
+                videoWidth: options.item.Width,
+                videoHeight: options.item.Height,
+                enableAuto: true
+            }).map(function (opt, index) {
+                return {
+                    Index: index,
+                    DisplayTitle: opt.name,
+                    maxHeight: opt.maxHeight,
+                    bitrate: opt.bitrate,
+                    selected: opt.selected || false
+                }
+            });
+        }
+        return JSON.stringify(options);
+    }
+
     async notifyStopped() {
         let stopInfo = {
             src: this._currentSrc
@@ -162,11 +203,12 @@ export class ExoPlayerPlugin {
     }
 
     async getDeviceProfile() {
+        var bitrateSetting = this.getMaxStreamingBitrate();
+
         if (this.cachedDeviceProfile) {
+            this.cachedDeviceProfile.MaxStreamingBitrate = bitrateSetting;
             return this.cachedDeviceProfile;
         }
-
-        var bitrateSetting = this.appSettings.maxStreamingBitrate();
 
         var profile = {};
         profile.Name = "Android ExoPlayer"
@@ -194,10 +236,10 @@ export class ExoPlayerPlugin {
         var audioProfiles = {
             '3gp': ['aac', '3gpp', 'flac'],
             'mp4': ['mp3', 'aac', 'mp1', 'mp2'],
-            'ts': ['mp3', 'aac', 'mp1', 'mp2', 'ac3', 'dts'],
+            'ts': ['aac', 'mp3', 'mp1', 'mp2', 'ac3', 'dts'],
             'flac': ['flac'],
             'aac': ['aac'],
-            'mkv': ['mp3', 'aac', 'dts', 'flac', 'vorbis', 'opus', 'ac3', 'wma', 'mp1', 'mp2'],
+            'mkv': ['aac', 'mp3', 'dts', 'flac', 'vorbis', 'opus', 'ac3', 'wma', 'mp1', 'mp2'],
             'mp3': ['mp3'],
             'ogg': ['ogg', 'opus', 'vorbis'],
             'webm': ['vorbis', 'opus'],
@@ -208,16 +250,7 @@ export class ExoPlayerPlugin {
             'mov': ['mp3', 'aac', 'ac3', 'dts-hd', 'pcm']
         };
 
-        var subtitleProfiles = ['ass', 'idx', 'pgs', 'pgssub', 'smi', 'srt', 'ssa', 'subrip'];
-
-        subtitleProfiles.forEach(function (format) {
-            profile.SubtitleProfiles.push({
-                Format: format,
-                Method: 'Embed'
-            });
-        });
-
-        var externalSubtitleProfiles = ['srt', 'sub', 'subrip', 'vtt'];
+        var externalSubtitleProfiles = ['srt', 'sub', 'ass', 'ssa', 'vtt', 'ttml']
 
         externalSubtitleProfiles.forEach(function (format) {
             profile.SubtitleProfiles.push({
@@ -226,9 +259,13 @@ export class ExoPlayerPlugin {
             });
         });
 
-        profile.SubtitleProfiles.push({
-            Format: 'dvdsub',
-            Method: 'Encode'
+        var subtitleProfiles = ['srt', 'ass', 'ssa', 'dvdsub', 'pgs', 'pgssub', 'sub', 'subrip'];
+
+        subtitleProfiles.forEach(function (format) {
+            profile.SubtitleProfiles.push({
+                Format: format,
+                Method: 'Embed'
+            });
         });
 
         var codecs = JSON.parse(this._nativePlayer.getSupportedFormats());
@@ -290,6 +327,16 @@ export class ExoPlayerPlugin {
                 var profiles = videoCodec.profiles.join('|');
                 var maxLevel = videoCodec.levels.length && Math.max.apply(null, videoCodec.levels);
                 var conditions = [{
+                    Condition: 'LessThanEqual',
+                    Property: 'Width',
+                    Value: videoCodec.maxWidth.toString()
+                },
+                {
+                    Condition: 'LessThanEqual',
+                    Property: 'Height',
+                    Value: videoCodec.maxHeight.toString()
+                },
+                {
                     Condition: 'LessThanEqual',
                     Property: 'VideoBitrate',
                     Value: videoCodec.maxBitrate.toString()
@@ -358,7 +405,7 @@ export class ExoPlayerPlugin {
                 VideoCodec: 'h264',
                 Context: 'Streaming',
                 Protocol: 'hls',
-                MinSegments: 1
+                MinSegments: '1'
             },
             {
                 Container: 'mkv',
@@ -375,8 +422,7 @@ export class ExoPlayerPlugin {
                 AudioCodec: 'mp3',
                 Context: 'Streaming',
                 Protocol: 'http'
-            },
-
+            }
         ];
 
         this.cachedDeviceProfile = profile;

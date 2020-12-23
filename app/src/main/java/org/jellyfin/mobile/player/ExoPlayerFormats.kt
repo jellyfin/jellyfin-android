@@ -269,6 +269,8 @@ object ExoPlayerFormats {
             "vtt", "webvtt" -> MimeTypes.TEXT_VTT
             "ttml" -> MimeTypes.APPLICATION_TTML
             "srt", "sub", "subrip" -> MimeTypes.APPLICATION_SUBRIP
+            "dvdsub" -> MimeTypes.APPLICATION_DVBSUBS
+            "pgs", "pgssub" -> MimeTypes.APPLICATION_PGS
             else -> null
         }
     }

@@ -20,6 +20,7 @@ sealed class ExoPlayerTrack(track: JSONObject) {
 
     class Audio(track: JSONObject) : ExoPlayerTrack(track) {
         val language: String = track.optString("Language", Constants.LANGUAGE_UNDEFINED)
+        val bitrate: Long = track.optLong("BitRate")
         val supportsDirectPlay: Boolean = track.optBoolean("supportsDirectPlay", false)
 
         override fun toString() = "ExoPlayerTrack.Audio#$index(title=$title, lang=$language)"
@@ -31,5 +32,13 @@ sealed class ExoPlayerTrack(track: JSONObject) {
         val embedded: Boolean = track.optString("DeliveryMethod", "") == "Embed"
 
         override fun toString() = "ExoPlayerTrack.Text#$index(title=$title, lang=$language, fmt=$format, url=$url)"
+    }
+
+    class Quality(track: JSONObject) : ExoPlayerTrack(track) {
+        val bitrate: Long = track.optLong("bitrate")
+        val maxHeight: Int = track.optInt("maxHeight")
+        val selected: Boolean = track.optString("selected", "") == "true"
+
+        override fun toString() = "ExoPlayerTrack.Quality#$index(title=$title, bitrate=$bitrate, selected=$selected)"
     }
 }

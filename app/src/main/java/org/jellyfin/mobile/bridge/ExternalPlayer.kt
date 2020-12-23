@@ -36,32 +36,28 @@ class ExternalPlayer(private val fragment: WebViewFragment) : KoinComponent {
     @JavascriptInterface
     fun initPlayer(args: String) {
         try {
-            val mediaSource = JellyfinMediaSource(JSONObject(args))
-            if (mediaSource.playMethod == "DirectStream") {
-                val playerIntent = Intent(Intent.ACTION_VIEW).apply {
+            with(JellyfinMediaSource(JSONObject(args))) {
+                Intent(Intent.ACTION_VIEW).apply {
                     if (fragment.isPackageInstalled(appPreferences.externalPlayerApp)) {
                         component = getComponent(appPreferences.externalPlayerApp)
                     }
-                    setDataAndType(mediaSource.uri, mediaSource.mimeType)
-                    putExtra("title", mediaSource.title)
-                    putExtra("position", mediaSource.mediaStartMs.toInt())
+                    setDataAndType(uri, mimeType)
+                    putExtra("title", title)
+                    putExtra("position", mediaStartMs.toInt())
                     putExtra("return_result", true)
                     putExtra("secure_uri", true)
-                    val selectedTrack = mediaSource.subtitleTracksGroup.tracks.getOrNull(mediaSource.subtitleTracksGroup.selectedTrack)?.url
-                    if (selectedTrack != null) {
-                        val externalTracks = mediaSource.subtitleTracksGroup.tracks.filter { !it.embedded && it.url != null }
-                        putExtra("subs", externalTracks.map { Uri.parse(it.url) }.toTypedArray())
-                        putExtra("subs.name", externalTracks.map { it.language }.toTypedArray())
-                        putExtra("subs.filename", externalTracks.map { it.title }.toTypedArray())
-                        putExtra("subs.enable", arrayOf(Uri.parse(selectedTrack)))
+                    subtitleTracksGroup.tracks.getOrNull(subtitleTracksGroup.selectedTrack)?.url?.run {
+                        subtitleTracksGroup.tracks.filter { !it.embedded && it.url != null }.run {
+                            putExtra("subs", map { Uri.parse(it.url) }.toTypedArray())
+                            putExtra("subs.name", map { it.language }.toTypedArray())
+                            putExtra("subs.filename", map { it.title }.toTypedArray())
+                        }
+                        putExtra("subs.enable", arrayOf(Uri.parse(this)))
                     }
+                }.run {
+                    fragment.startActivityForResult(this, Constants.HANDLE_EXTERNAL_PLAYER)
+                    Timber.d("Starting playback [id: ${id}, title: ${title}, playMethod: ${playMethod}, mediaStartMs: ${mediaStartMs}]")
                 }
-                fragment.startActivityForResult(playerIntent, Constants.HANDLE_EXTERNAL_PLAYER)
-                Timber.d("Starting playback [id: ${mediaSource.id}, title: ${mediaSource.title}, playMethod: ${mediaSource.playMethod}, mediaStartMs: ${mediaSource.mediaStartMs}]")
-            } else {
-                Timber.d("Play Method '${mediaSource.playMethod}' not tested, ignoring...")
-                notifyEvent(Constants.EVENT_CANCELED)
-                context.toast(R.string.external_player_invalid_play_method, Toast.LENGTH_LONG)
             }
         } catch (e: JSONException) {
             Timber.e(e)

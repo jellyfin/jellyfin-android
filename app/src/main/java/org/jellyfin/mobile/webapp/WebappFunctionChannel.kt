@@ -20,6 +20,7 @@ class WebappFunctionChannel {
     fun goBack() = call("$NAVIGATION_HELPER.goBack();")
 
     // ExoPlayer helpers
+    fun exoPlayerChangeBitrate(bitrate: Long) = call("$EXO_PLAYER.changeBitrate($bitrate);")
     fun exoPlayerNotifyStopped() = call("$EXO_PLAYER.notifyStopped();")
     fun exoPlayerUpdateProgress(position: Long) = call("$EXO_PLAYER._currentTime = $position;")
 

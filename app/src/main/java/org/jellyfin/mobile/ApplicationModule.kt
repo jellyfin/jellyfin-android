@@ -15,6 +15,7 @@ import org.jellyfin.mobile.player.PlayerEvent
 import org.jellyfin.mobile.player.PlayerFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
+import org.jellyfin.mobile.utils.QualityOptions
 import org.jellyfin.mobile.viewmodel.MainViewModel
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
@@ -44,6 +45,7 @@ val applicationModule = module {
     single { WebappFunctionChannel() }
     single { RemoteVolumeProvider(get()) }
     single(named(PLAYER_EVENT_CHANNEL)) { Channel<PlayerEvent>() }
+    single { QualityOptions() }
 
     // Controllers
     single { ServerController(get(), get(), get(), get()) }

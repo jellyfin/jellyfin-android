@@ -42,11 +42,11 @@
     <string name="menu_item_none">None</string>
     <string name="playback_info_play_method">Play method: %s</string>
     <string name="playback_info_transcoding">Transcoding: %b</string>
+    <string name="playback_info_max_bitrate">Max bitrate: %s</string>
     <string name="playback_info_video_streams">Video streams</string>
     <string name="playback_info_audio_streams">Audio streams</string>
     <string name="playback_info_and_x_more">…and %d more</string>
 
-    <string name="external_player_invalid_play_method">Invalid play method.</string>
     <string name="external_player_not_supported_yet">Playback tracking not supported in selected external player yet. Contact developers to try to add support for it.</string>
     <string name="external_player_invalid_player">No valid external player selected. Playback tracking disabled.</string>
     <string name="external_player_unknown_error">Unknown error in external player. Playback tracking disabled.</string>

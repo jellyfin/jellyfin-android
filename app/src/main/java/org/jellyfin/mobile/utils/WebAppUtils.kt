@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.utils
 
 import android.content.Context
+import android.net.Uri
 import android.webkit.WebResourceResponse
 import timber.log.Timber
 import java.io.IOException
@@ -37,3 +38,24 @@ fun Context.loadAsset(url: String, mimeType: String = "application/javascript"):
 }
 
 val emptyResponse = WebResourceResponse("text/html", Charsets.UTF_8.toString(), "".byteInputStream())
+
+fun Uri.appendQueryParameter(key: String, value: String): Uri {
+    return with(buildUpon()) {
+        appendQueryParameter(key, value)
+        build()
+    }
+}
+
+fun Uri.replaceQueryParameter(key: String, value: String): Uri {
+    return with(buildUpon()) {
+        clearQuery()
+        queryParameterNames.forEach {
+            if (it != key) {
+                appendQueryParameter(it, getQueryParameter(it))
+            } else {
+                appendQueryParameter(key, value)
+            }
+        }
+        build()
+    }
+}

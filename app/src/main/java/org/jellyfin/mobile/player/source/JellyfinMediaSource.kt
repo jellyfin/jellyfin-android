@@ -3,7 +3,9 @@ package org.jellyfin.mobile.player.source
 import android.net.Uri
 import com.google.android.exoplayer2.util.MimeTypes
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.appendQueryParameter
 import org.jellyfin.mobile.utils.asIterable
+import org.jellyfin.mobile.utils.replaceQueryParameter
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -11,7 +13,7 @@ class JellyfinMediaSource(item: JSONObject) {
     val id: String = item.optJSONObject("item")?.optString("Id") ?: ""
     val title: String = item.optString("title")
     val artists: String? = item.optJSONObject("item")?.optJSONArray("Artists")?.asIterable()?.joinToString()
-    val uri: Uri = Uri.parse(item.optString("url"))
+    val uri: Uri
     val mimeType: String = item.optString("mimeType")
     val playMethod: String = item.optString("playMethod")
     val mediaStartMs: Long = item.optLong("playerStartPositionTicks") / Constants.TICKS_PER_MILLISECOND
@@ -19,7 +21,11 @@ class JellyfinMediaSource(item: JSONObject) {
     val videoTracksGroup: ExoPlayerTracksGroup<ExoPlayerTrack.Video>
     val audioTracksGroup: ExoPlayerTracksGroup<ExoPlayerTrack.Audio>
     val subtitleTracksGroup: ExoPlayerTracksGroup<ExoPlayerTrack.Text>
+    val qualityTracksGroup: ExoPlayerTracksGroup<ExoPlayerTrack.Quality>
     val isTranscoding: Boolean
+    val bitrate: Long
+    val currentMaxBitrate: Long = item.optLong("currentMaxBitrate")
+    val isAutomaticBitrateEnabled: Boolean = item.optBoolean("isAutomaticBitrateEnabled")
 
     val selectedVideoTrack: ExoPlayerTrack.Video?
         get() = videoTracksGroup.tracks.getOrNull(videoTracksGroup.selectedTrack)
@@ -30,11 +36,13 @@ class JellyfinMediaSource(item: JSONObject) {
 
     val audioTracksCount: Int get() = audioTracksGroup.tracks.size
     val subtitleTracksCount: Int get() = subtitleTracksGroup.tracks.size
+    val qualityTracksCount: Int get() = qualityTracksGroup.tracks.size
 
     init {
         val mediaSource = item.optJSONObject("mediaSource")
         if (mediaSource != null) {
             mediaDurationTicks = mediaSource.optLong("RunTimeTicks")
+            bitrate = mediaSource.optLong("Bitrate")
             val textTrackUrls = HashMap<Int, String>().apply {
                 item.optJSONArray("textTracks")?.let { textTracks ->
                     for (i in 0 until textTracks.length()) {
@@ -63,11 +71,30 @@ class JellyfinMediaSource(item: JSONObject) {
             subtitleTracksGroup = loadSubtitleTracks(mediaSource, subtitleTracks, textTrackUrls)
         } else {
             mediaDurationTicks = 0
+            bitrate = 0
             videoTracksGroup = ExoPlayerTracksGroup(-1, emptyList())
             audioTracksGroup = ExoPlayerTracksGroup(-1, emptyList())
             subtitleTracksGroup = ExoPlayerTracksGroup(-1, emptyList())
         }
+        qualityTracksGroup = loadQualityTracks(item.optJSONArray("qualityOptions") ?: JSONArray())
         isTranscoding = mediaSource?.optString("TranscodingSubProtocol") == "hls"
+        uri = Uri.parse(item.optString("url")).run {
+            if (isTranscoding && qualityTracksGroup.selectedTrack != -1) {
+                val qualityMaxHeight = qualityTracksGroup.tracks[qualityTracksGroup.selectedTrack].maxHeight
+                if (qualityMaxHeight > 0) {
+                    val currentMaxHeight = getQueryParameter("MaxHeight")?.toInt()
+                    when {
+                        currentMaxHeight == null -> {
+                            appendQueryParameter("MaxHeight", "$qualityMaxHeight")
+                        }
+                        currentMaxHeight > qualityMaxHeight -> {
+                            replaceQueryParameter("MaxHeight", "$qualityMaxHeight")
+                        }
+                        else -> this /* Same max height in request */
+                    }
+                } else this /* No max height set in quality option */
+            } else this /* No transcoding or quality option selected */
+        }
     }
 
     private fun loadVideoTracks(tracks: List<JSONObject>): ExoPlayerTracksGroup<ExoPlayerTrack.Video> {
@@ -114,5 +141,20 @@ class JellyfinMediaSource(item: JSONObject) {
                 currentSelection = index
         }
         return ExoPlayerTracksGroup(currentSelection, subtitleTracks)
+    }
+
+    private fun loadQualityTracks(tracks: JSONArray): ExoPlayerTracksGroup<ExoPlayerTrack.Quality> {
+        val qualityTracks: MutableList<ExoPlayerTrack.Quality> = ArrayList()
+        for (index in 0 until tracks.length()) {
+            val track = tracks.getJSONObject(index)
+            qualityTracks += ExoPlayerTrack.Quality(track)
+        }
+        qualityTracks.sortBy(ExoPlayerTrack.Quality::index)
+        var currentSelection = -1
+        qualityTracks.forEachIndexed { index, track ->
+            if (track.selected)
+                currentSelection = index
+        }
+        return ExoPlayerTracksGroup(currentSelection, qualityTracks)
     }
 }

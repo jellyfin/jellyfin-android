@@ -5,12 +5,11 @@ export class NavigationPlugin {
         this.playbackManager = playbackManager;
     }
 
-    goBack() {
-        var appRouter = window['Emby']['Page'];
-        if (appRouter.canGoBack()) {
-            appRouter.back();
-        } else {
+    async goBack() {
+        if (!window.ApiClient._currentUser) {
             window['NativeInterface'].exitApp();
+        } else {
+            window.ApiClient.sendCommand(await window.NativeShell.getSavedSessionId(), { "Name": "Back" });
         }
     }
 }

@@ -17,6 +17,8 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
     val isAudio: Boolean
     private val profiles: MutableList<String> = ArrayList()
     private val levels: MutableList<Int> = ArrayList()
+    private val maxWidth: Int?
+    private val maxHeight: Int?
     private val maxBitrate: Int
     private val maxChannels: Int?
     private val maxSampleRate: Int?
@@ -27,6 +29,8 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
         if (videoCodec != null) {
             codec = videoCodec
             isAudio = false
+            maxWidth = codecCapabilities.videoCapabilities.supportedWidths.upper
+            maxHeight = codecCapabilities.videoCapabilities.supportedHeights.upper
             maxBitrate = codecCapabilities.videoCapabilities.bitrateRange.upper
             maxChannels = null
             maxSampleRate = null
@@ -36,6 +40,8 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
             if (audioCodec != null) {
                 isAudio = true
                 codec = audioCodec
+                maxWidth = null
+                maxHeight = null
                 maxBitrate = codecCapabilities.audioCapabilities.bitrateRange.upper
                 maxChannels = codecCapabilities.audioCapabilities.maxInputChannelCount
                 val sampleRates = codecCapabilities.audioCapabilities.supportedSampleRateRanges
@@ -44,6 +50,8 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
                 // mimeType is neither, abort
                 codec = null
                 isAudio = false
+                maxWidth = null
+                maxHeight = null
                 maxBitrate = 0
                 maxChannels = null
                 maxSampleRate = null
@@ -51,7 +59,7 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
         }
         if (codec != null) {
             val profileLevels = codecCapabilities.profileLevels
-            for (profileLevel in profileLevels) {
+            for (profileLevel in profileLevels.reversed()) {
                 val profile: String?
                 val level: Int?
                 if (isAudio) {
@@ -91,6 +99,8 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
             put("isAudio", isAudio)
             put("profiles", JSONArray(profiles))
             put("levels", JSONArray(levels))
+            put("maxWidth", maxWidth)
+            put("maxHeight", maxHeight)
             put("maxBitrate", maxBitrate)
             put("maxChannels", maxChannels)
             put("maxSampleRate", maxSampleRate)

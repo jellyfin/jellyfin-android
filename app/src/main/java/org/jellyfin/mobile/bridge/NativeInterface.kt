@@ -10,6 +10,7 @@ import android.webkit.JavascriptInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.jellyfin.apiclient.interaction.AndroidDevice
+import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.settings.SettingsFragment
@@ -27,9 +28,11 @@ import org.jellyfin.mobile.utils.Constants.EXTRA_ITEM_ID
 import org.jellyfin.mobile.utils.Constants.EXTRA_PLAYER_ACTION
 import org.jellyfin.mobile.utils.Constants.EXTRA_POSITION
 import org.jellyfin.mobile.utils.Constants.EXTRA_TITLE
+import org.jellyfin.mobile.utils.QualityOptions
 import org.jellyfin.mobile.utils.addFragment
 import org.jellyfin.mobile.utils.disableFullscreen
 import org.jellyfin.mobile.utils.enableFullscreen
+import org.jellyfin.mobile.utils.getEndpointInfo
 import org.jellyfin.mobile.utils.requestDownload
 import org.jellyfin.mobile.utils.requireMainActivity
 import org.jellyfin.mobile.utils.runOnUiThread
@@ -47,6 +50,8 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
     private val context: Context = fragment.requireContext()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private val remoteVolumeProvider: RemoteVolumeProvider by inject()
+    private val apiClient: ApiClient by inject()
+    private val qualityOptions: QualityOptions by inject()
 
     @SuppressLint("HardwareIds")
     @JavascriptInterface
@@ -195,5 +200,24 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
                 webappFunctionChannel.call("""window.NativeShell.castCallback("$action", $keep, $err, $result);""")
             }
         })
+    }
+
+    @JavascriptInterface
+    fun getVideoQualityOptions(options: String): String {
+        return qualityOptions.getVideoQualityOptions(options)
+    }
+
+    @JavascriptInterface
+    fun getEndpointInfo(): String {
+        return runBlocking(Dispatchers.Main) {
+            with(apiClient.getEndpointInfo()) {
+                if (this != null) {
+                    JSONObject().apply {
+                        put("IsLocal", isLocal)
+                        put("IsInNetwork", isInNetwork)
+                    }.toString()
+                } else "{}"
+            }
+        }
     }
 }
