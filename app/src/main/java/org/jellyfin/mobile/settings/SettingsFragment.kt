@@ -12,11 +12,7 @@ import de.Maxr1998.modernpreferences.preferences.choice.SelectionItem
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.FragmentSettingsBinding
-import org.jellyfin.mobile.utils.Constants
-import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
-import org.jellyfin.mobile.utils.requireMainActivity
-import org.jellyfin.mobile.utils.withThemedContext
-import org.jellyfin.mobile.utils.isPackageInstalled
+import org.jellyfin.mobile.utils.*
 import org.koin.android.ext.android.inject
 
 class SettingsFragment : Fragment() {
@@ -90,10 +86,21 @@ class SettingsFragment : Fragment() {
             titleRes = R.string.external_player_app
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXTERNAL_PLAYER
         }
+        categoryHeader(PREF_CATEGORY_DOWNLOADS) {
+            titleRes = R.string.pref_category_downloads
+        }
+        val downloadsDirs: List<SelectionItem> = requireContext().getDownloadsPaths().map { path ->
+            SelectionItem(path, path, null)
+        }
+        singleChoice(Constants.PREF_DOWNLOAD_LOCATION, downloadsDirs) {
+            titleRes = R.string.pref_download_location
+            initialSelection = appPreferences.downloadLocation
+        }
     }
 
     companion object {
         const val PREF_CATEGORY_MUSIC_PLAYER = "pref_category_music"
         const val PREF_CATEGORY_VIDEO_PLAYER = "pref_category_video"
+        const val PREF_CATEGORY_DOWNLOADS = "pref_category_downloads"
     }
 }

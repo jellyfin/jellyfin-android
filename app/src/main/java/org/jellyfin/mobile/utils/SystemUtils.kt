@@ -26,6 +26,7 @@ import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.koin.android.ext.android.get
 import timber.log.Timber
+import java.io.File
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -99,7 +100,7 @@ suspend fun WebViewFragment.requestDownload(uri: Uri, title: String, filename: S
     val downloadRequest = DownloadManager.Request(uri)
         .setTitle(title)
         .setDescription(getString(R.string.downloading))
-        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
+        .setDestinationUri(Uri.fromFile(File(appPreferences.downloadLocation, filename)))
         .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
 
     requireContext().downloadFile(downloadRequest, downloadMethod)
@@ -128,5 +129,25 @@ fun Context.createMediaNotificationChannel(notificationManager: NotificationMana
             description = "Media notifications"
         }
         notificationManager.createNotificationChannel(notificationChannel)
+    }
+}
+
+@Suppress("DEPRECATION")
+fun Context.getDownloadsPaths(): List<String> = ArrayList<String>().apply {
+    getExternalFilesDirs(null).forEach { directory ->
+        /* Ignore currently unavailable shared storage */
+        if (directory != null) {
+            val path = directory.absolutePath
+            val androidFolderIndex = path.indexOf("/Android")
+            if (androidFolderIndex != -1) {
+                val storageDirectory = File(path.substring(0, androidFolderIndex))
+                if (storageDirectory.isDirectory) {
+                    add(File(storageDirectory, Environment.DIRECTORY_DOWNLOADS).absolutePath)
+                }
+            }
+        }
+    }
+    if (isEmpty()) {
+        add(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath)
     }
 }

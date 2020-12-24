@@ -2,10 +2,12 @@ package org.jellyfin.mobile
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Environment
 import androidx.core.content.edit
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
+import java.io.File
 
 class AppPreferences(context: Context) {
     private val sharedPreferences: SharedPreferences =
@@ -49,6 +51,28 @@ class AppPreferences(context: Context) {
         set(value) {
             if (value != null) sharedPreferences.edit {
                 putInt(Constants.PREF_DOWNLOAD_METHOD, value)
+            }
+        }
+
+    var downloadLocation: String
+        get() {
+            @Suppress("DEPRECATION")
+            val defaultStorage = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
+            val savedStorage = sharedPreferences.getString(Constants.PREF_DOWNLOAD_LOCATION, null)
+            return if (savedStorage != null && File(savedStorage).parentFile?.isDirectory == true) {
+                // Saved location is still valid
+                savedStorage
+            } else {
+                // Reset download option if corrupt
+                sharedPreferences.edit { putString(Constants.PREF_DOWNLOAD_LOCATION, null) }
+                defaultStorage
+            }
+        }
+        set(value) {
+            sharedPreferences.edit {
+                if (File(value).parentFile?.isDirectory == true) {
+                    putString(Constants.PREF_DOWNLOAD_LOCATION, value)
+                }
             }
         }
 
