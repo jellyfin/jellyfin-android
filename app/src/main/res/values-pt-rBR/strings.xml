@@ -67,4 +67,7 @@
     <string name="mediaservice_library_latest">Recentes</string>
     <string name="mediaservice_shuffle">Aleatório</string>
     <string name="external_player_system_default">Padrão do sistema</string>
+    <string name="media_service_car_section_recents">Reproduzido Recentemente</string>
+    <string name="media_service_item_not_found">Não foi possível encontrar o item</string>
+    <string name="media_service_generic_error">Ocorreu um erro</string>
 </resources>
