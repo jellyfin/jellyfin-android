@@ -70,4 +70,11 @@
     <string name="media_service_car_section_recents">Reproduzido Recentemente</string>
     <string name="media_service_item_not_found">Não foi possível encontrar o item</string>
     <string name="media_service_generic_error">Ocorreu um erro</string>
+    <string name="music_notification_channel_description">Usado para controles de reprodução de música</string>
+    <string name="music_notification_channel">Jellyfin Player de Música</string>
+    <string name="media_service_car_item_no_title">Sem titulo</string>
+    <string name="media_service_car_section_playlists">Playlists</string>
+    <string name="media_service_car_section_genres">Gêneros</string>
+    <string name="media_service_car_section_artists">Artistas</string>
+    <string name="media_service_car_section_albums">Álbuns</string>
 </resources>
