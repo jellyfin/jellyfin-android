@@ -47,4 +47,7 @@
     <string name="choose_server_button_text">Serverdi tańdaý</string>
     <string name="host_input_hint">Túıin</string>
     <string name="connect_to_server_title">Serverge qosylý</string>
+    <string name="connection_error_cannot_connect">Baılanys ornatý múmkіn emes.
+\nTúıin ataýyn jáne jelі baılanysyn tekserіńіz.</string>
+    <string name="connection_error_invalid_format">Túıin pishimi jaramsyz</string>
 </resources>
