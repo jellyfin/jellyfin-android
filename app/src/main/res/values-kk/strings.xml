@@ -50,4 +50,9 @@
     <string name="connection_error_cannot_connect">Baılanys ornatý múmkіn emes.
 \nTúıin ataýyn jáne jelі baılanysyn tekserіńіz.</string>
     <string name="connection_error_invalid_format">Túıin pishimi jaramsyz</string>
+    <string name="video_player_external_description">MX Player jáne VLC sıaqty syrtqy beıne oınatqysh qoldanbalar</string>
+    <string name="media_service_item_not_found">Tasyǵyshderekter tarmaǵyn tabý múmkin bolmady</string>
+    <string name="external_player_unknown_error">Syrtqy oınatqyshta belgisiz qate . Oınatýdy qadaǵalaý óshirilgen.</string>
+    <string name="external_player_invalid_player">Jaramsyz syrtqy oınatqysh tańdalǵan. Oınatýdy qadaǵalaý óshirilgen.</string>
+    <string name="video_player_web_description">Ýeb-tildesýden ádepki HTML beıne oınatqysh</string>
 </resources>
