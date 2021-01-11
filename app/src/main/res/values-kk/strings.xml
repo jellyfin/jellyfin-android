@@ -55,4 +55,9 @@
     <string name="external_player_unknown_error">Syrtqy oınatqyshta belgisiz qate . Oınatýdy qadaǵalaý óshirilgen.</string>
     <string name="external_player_invalid_player">Jaramsyz syrtqy oınatqysh tańdalǵan. Oınatýdy qadaǵalaý óshirilgen.</string>
     <string name="video_player_web_description">Ýeb-tildesýden ádepki HTML beıne oınatqysh</string>
+    <string name="pref_music_notification_always_dismissible_title">Mýzyka oınatqyshy habarlandyrýn árqashan óshirilgen</string>
+    <string name="download_no_storage_permission">Jad ruqsattarysyz faıldardy júktep alý múmkin emes</string>
+    <string name="connection_error_invalid_version">Server qoldaý kórsetilmegen nusqany paıdalanady. Jellyfin.org saıtynda qoljetimdi eń keıingi nusqasyna deıin jańartyńyz.</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Tól oınatqyshta jaryqtyq pen dybys deńgeı qımyldaryna ruqsat etý</string>
+    <string name="pref_exoplayer_allow_background_audio">Tól oınatqyshta óndik rejiminde dybysty oınatýǵa ruqsat etý</string>
 </resources>
