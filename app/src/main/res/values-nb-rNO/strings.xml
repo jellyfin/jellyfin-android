@@ -67,4 +67,5 @@
     <string name="media_service_car_section_albums">Album</string>
     <string name="media_service_car_section_recents">Nylig avspilt</string>
     <string name="media_service_item_not_found">Finner ikke medieelementet</string>
+    <string name="external_player_mpv">MPV Player</string>
 </resources>
