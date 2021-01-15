@@ -61,7 +61,7 @@
     <string name="external_player_mx_player_pro">MX Player профессиональный</string>
     <string name="external_player_mx_player_free_description">Мощный видео проигрыватель с продвинутым аппаратным ускорением и поддержкой субтитров.</string>
     <string name="external_player_mx_player_free">MX Player бесплатный</string>
-    <string name="external_player_mpv_description">Простой, компактный и лёгкий бесплатный видео проигрыватель. Поддерживает разнообразные форматы медиафайлов.</string>
+    <string name="external_player_mpv_description">Простой, компактный и удобный бесплатный видео проигрыватель. Поддерживает разнообразные форматы медиафайлов.</string>
     <string name="external_player_mpv">MPV-плейер</string>
     <string name="external_player_app">Приложение внешнего проигрывателя</string>
     <string name="connection_error_invalid_version">Сервер использует неподдерживаемую версию. Обновите до последней версии, доступной на jellyfin.org.</string>
