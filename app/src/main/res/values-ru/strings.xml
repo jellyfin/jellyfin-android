@@ -5,7 +5,7 @@
     <string name="mobile_data_and_roaming">Мобильный данные и роуминг</string>
     <string name="mobile_data">Мобильные данные</string>
     <string name="wifi_only">Только WiFi</string>
-    <string name="network_message">Вы хотите, чтобы загрузка выполнялась через мобильные данные или роуминговые сети\? Ваш провайдер может взимать плату.</string>
+    <string name="network_message">Загрузку выполнять с помощью мобильные данных или через роуминговые сети\? Ваш провайдер может взимать плату.</string>
     <string name="network_title">Разрешённые типы сетей</string>
     <string name="connect_to_server_title">Соединение с сервером</string>
     <string name="pref_category_video_player">Видео проигрыватель</string>
@@ -17,7 +17,7 @@
     <string name="host_input_hint">Узел</string>
     <string name="pref_exoplayer_allow_background_audio">Разрешить воспроизведение звука в фоновом режиме во встроенном проигрывателе</string>
     <string name="video_player_external_description">Приложения внешнего воспроизведения видео, такие как MX Player и VLC</string>
-    <string name="video_player_native_description">Основано на ExoPlayer, поддерживается больше видео форматов и кодеков и более интегрировано в ОС</string>
+    <string name="video_player_native_description">Основано на ExoPlayer, поддерживается больше видео форматов и кодеков и теснее интегрировано с ОС</string>
     <string name="pref_music_notification_always_dismissible_title">Уведомления музыкального проигрывателя всегда отключены</string>
     <string name="external_player_unknown_error">Неизвестная ошибка внешнего проигрывателя. Отслеживание воспроизведения отключено.</string>
     <string name="external_player_invalid_player">Выбран недопустимый внешний проигрыватель. Отслеживание воспроизведения отключено.</string>
@@ -57,7 +57,7 @@
     <string name="external_player_system_default">Системное по умолчанию</string>
     <string name="external_player_vlc_player_description">Бесплатный кроссплатформенный мультимедийный проигрыватель с открытым исходным кодом, который воспроизводит большинство мультимедийных файлов.</string>
     <string name="external_player_vlc_player">VLC-плейер</string>
-    <string name="external_player_mx_player_pro_description">Платная версия MX Player, которая обеспечивает непрерывное воспроизведение видео.</string>
+    <string name="external_player_mx_player_pro_description">Платная версия MX Player, которая обеспечивает бесперебойное восприятие видео.</string>
     <string name="external_player_mx_player_pro">MX Player профессиональный</string>
     <string name="external_player_mx_player_free_description">Мощный видео проигрыватель с продвинутым аппаратным ускорением и поддержкой субтитров.</string>
     <string name="external_player_mx_player_free">MX Player бесплатный</string>
