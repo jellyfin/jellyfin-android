@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_exoplayer_allow_background_audio">Omogući reprodukciju zvuka u pozadini u izvornom programu za reprodukciju</string>
-    <string name="video_player_external_description">Vanjski aplikacije za reproduciranje medija kao MXPlayer i VLC</string>
+    <string name="pref_exoplayer_allow_background_audio">Omogući reprodukciju zvuka u pozadini u ugrađenom playeru</string>
+    <string name="video_player_external_description">Vanjske aplikacije za reproduciranje medija kao MXPlayer i VLC</string>
     <string name="video_player_native_description">Zasnovan na ExoPlayeru, podržava više video formata i kodeka i više je integriran u OS</string>
     <string name="video_player_web_description">Zadani HTML video player iz Web sučelja</string>
     <string name="video_player_external">Vanjski player</string>
-    <string name="video_player_native">Izvorni player</string>
+    <string name="video_player_native">Ugrađeni player</string>
     <string name="video_player_web">Web player</string>
     <string name="pref_video_player_type_title">Tip video playera</string>
     <string name="pref_category_video_player">Video player</string>
@@ -14,12 +14,12 @@
     <string name="activity_name_settings">Jellyfin Postavke</string>
     <string name="external_player_unknown_error">Nepoznata greška u vanjskom programu za reprodukciju. Praćenje reprodukcije onemogućeno.</string>
     <string name="external_player_invalid_player">Nije odabran važeći vanjski program za reprodukciju. Praćenje reprodukcije onemogućeno.</string>
-    <string name="external_player_not_supported_yet">Praćenje reprodukcije još nije podržano u odabranom vanjskom programu za reprodukciju. Obratite se programerima da biste pokušali dodati podršku za to.</string>
+    <string name="external_player_not_supported_yet">Praćenje reprodukcije još nije podržano u odabranom vanjskom programu za reprodukciju. Obratite se programerima da pokušaju dodati podršku za to.</string>
     <string name="external_player_invalid_play_method">Nevažeća metoda pokretanja.</string>
     <string name="playback_info_and_x_more">...i %d više</string>
-    <string name="playback_info_audio_streams">Audio tokovi</string>
-    <string name="playback_info_video_streams">Video tokovi</string>
-    <string name="playback_info_transcoding">Prekodiranje: %b</string>
+    <string name="playback_info_audio_streams">Audio zapisi</string>
+    <string name="playback_info_video_streams">Video zapisi</string>
+    <string name="playback_info_transcoding">Transkodiranje: %b</string>
     <string name="playback_info_play_method">Metoda pokretanja: %s</string>
     <string name="menu_item_none">Ništa</string>
     <string name="notification_action_stop">Zaustavi</string>
@@ -40,19 +40,19 @@
     <string name="available_servers_title">Dostupni poslužitelji</string>
     <string name="choose_server_button_text">Odaberi poslužitelj</string>
     <string name="connect_button_text">Spoji se</string>
-    <string name="connection_error_cannot_connect">Nije moguće ostvariti vezu.
-\nMolimo vas da provjerite ime poslužitelja i vaš internetski priključak.</string>
+    <string name="connection_error_cannot_connect">Nije moguće ostvariti vezu. 
+\nMolimo vas da provjerite ime poslužitelja i vašu internetsku vezu.</string>
     <string name="connection_error_invalid_version">Inačica poslužitelja nije podržana. Ažurirajte poslužitelj na najnoviju inačicu putem jellyfin.org.</string>
     <string name="connection_error_invalid_format">Lokacija poslužitelja je neispravna</string>
     <string name="host_input_hint">Poslužitelj</string>
     <string name="connect_to_server_title">Spoji se na poslužitelj</string>
     <string name="external_player_system_default_description">Neka sustav odabere player. Neki playeri nisu u potpunosti podržani.</string>
     <string name="external_player_vlc_player_description">Besplatan cross-platform izvođač multimedije otvorenog koda koji može pustiti većinu multimedijskih datoteka.</string>
-    <string name="external_player_vlc_player">Izvođač VLC</string>
-    <string name="external_player_mx_player_pro">Izvođač MX Player Pro</string>
-    <string name="external_player_mx_player_free">Izvođač MX Player Free</string>
+    <string name="external_player_vlc_player">VLC</string>
+    <string name="external_player_mx_player_pro">MX Player Pro</string>
+    <string name="external_player_mx_player_free">MX Player Free</string>
     <string name="external_player_mpv_description">Mali, lagani, jednostavni i slobodni video player. Podržava širok spektar formata medijskih datoteka.</string>
-    <string name="external_player_mpv">Izvođač MPV</string>
+    <string name="external_player_mpv">MPV Player</string>
     <string name="external_player_app">Vanjska aplikacija za izvođenje</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Dopusti geste za mijenjanje svjetline i glasnoće u ugrađenom playeru</string>
     <string name="music_notification_channel_description">Koristi se za kontrole reprodukcije glazbe</string>
