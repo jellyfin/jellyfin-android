@@ -74,13 +74,13 @@ window.NativeShell = {
         return plugins;
     },
 
-    execCast(action, args, callback) {
+    async execCast(action, args, callback) {
         this.castCallbacks = this.castCallbacks || {};
         this.castCallbacks[action] = callback;
         window.NativeInterface.execCast(action, JSON.stringify(args));
     },
 
-    castCallback(action, keep, err, result) {
+    async castCallback(action, keep, err, result) {
         const callbacks = this.castCallbacks || {};
         const callback = callbacks[action];
         callback && callback(err || null, result);
