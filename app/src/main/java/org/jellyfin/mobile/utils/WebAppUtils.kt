@@ -13,7 +13,6 @@ const val JS_INJECTION_CODE = """
     var scripts = [
         '/native/nativeshell.js',
         '/native/EventEmitter.js',
-        '/native/chrome.cast.js',
     ];
     scripts.forEach(function(src) {
         var scriptElement = document.createElement('script');
