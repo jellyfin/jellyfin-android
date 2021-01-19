@@ -11,6 +11,7 @@ object Constants {
     // Webapp constants
     const val APPLOADER_PATH = "scripts/apploader.js" // 10.6.4 <=
     const val ANY_BUNDLE_PATH = ".bundle.js" // 10.7 >=
+    const val CAST_SDK_PATH = "cast_sender.js"
     const val SELECT_SERVER_PATH = "selectserver.html"
     const val SESSION_CAPABILITIES_PATH = "sessions/capabilities/full"
 

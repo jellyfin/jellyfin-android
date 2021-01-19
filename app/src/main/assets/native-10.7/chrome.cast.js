@@ -1378,6 +1378,7 @@ execute('setup', function (err, args) {
 });
 
 window.chrome.cast = chrome.cast;
+console.info('Applied custom cast interface to window');
 
 /**
  * Updates the current session with the incoming javaSession
@@ -1404,6 +1405,7 @@ function execute (action) {
         throw new Error('Not initialized. Must call chrome.cast.initialize first.');
     }
 
+    console.debug('execCast', action);
     window.NativeShell.execCast(action, args, callback);
 }
 
@@ -1429,6 +1431,7 @@ function handleError (err, callback) {
     }
 
     var error = new chrome.cast.Error(err, desc, {});
+    console.error('Encountered cast error', error);
     if (callback) {
         callback(error);
     }

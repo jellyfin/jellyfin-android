@@ -146,6 +146,10 @@ class WebViewFragment : Fragment() {
                         null // continue loading normally
                     }
                     path.contains("native") -> webView.context.loadAsset("native-${assetsVersion}/${url.lastPathSegment}")
+                    path.endsWith(Constants.CAST_SDK_PATH) -> {
+                        // Load the chrome.cast.js library instead
+                        webView.context.loadAsset("native-${assetsVersion}/chrome.cast.js")
+                    }
                     path.endsWith(Constants.SELECT_SERVER_PATH) -> {
                         runOnUiThread { onSelectServer() }
                         emptyResponse
