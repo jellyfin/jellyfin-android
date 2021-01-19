@@ -7,6 +7,8 @@ import android.content.res.Configuration
 import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings.System
 import android.view.*
 import android.view.WindowManager.LayoutParams.*
@@ -427,8 +429,10 @@ class PlayerFragment : Fragment() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        updateFullscreenStateAndSwitcher(newConfig)
-        updateZoomMode(isLandscape(newConfig) && isZoomEnabled)
+        Handler(Looper.getMainLooper()).post {
+            updateFullscreenStateAndSwitcher(newConfig)
+            updateZoomMode(isLandscape(newConfig) && isZoomEnabled)
+        }
     }
 
     override fun onStop() {
