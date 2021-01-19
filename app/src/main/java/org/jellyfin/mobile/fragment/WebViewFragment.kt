@@ -130,10 +130,6 @@ class WebViewFragment : Fragment() {
                 val url = request.url
                 val path = url.path?.toLowerCase(Locale.ROOT) ?: return null
                 return when {
-                    path.endsWith(Constants.CAST_SDK_PATH) -> {
-                        // Load the chrome.cast.js library instead
-                        webView.context.loadAsset("native-${assetsVersion}/chrome.cast.js")
-                    }
                     path.endsWith(Constants.APPLOADER_PATH) || path.endsWith(Constants.ANY_BUNDLE_PATH) -> {
                         assetsVersion = when {
                             path.endsWith(Constants.APPLOADER_PATH) -> "10.6"
@@ -150,6 +146,10 @@ class WebViewFragment : Fragment() {
                         null // continue loading normally
                     }
                     path.contains("native") -> webView.context.loadAsset("native-${assetsVersion}/${url.lastPathSegment}")
+                    path.endsWith(Constants.CAST_SDK_PATH) -> {
+                        // Load the chrome.cast.js library instead
+                        webView.context.loadAsset("native-${assetsVersion}/chrome.cast.js")
+                    }
                     path.endsWith(Constants.SELECT_SERVER_PATH) -> {
                         runOnUiThread { onSelectServer() }
                         emptyResponse

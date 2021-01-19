@@ -11,9 +11,9 @@ object Constants {
     // Webapp constants
     const val APPLOADER_PATH = "scripts/apploader.js" // 10.6.4 <=
     const val ANY_BUNDLE_PATH = ".bundle.js" // 10.7 >=
+    const val CAST_SDK_PATH = "cast_sender.js"
     const val SELECT_SERVER_PATH = "selectserver.html"
     const val SESSION_CAPABILITIES_PATH = "sessions/capabilities/full"
-    const val CAST_SDK_PATH = "cast_sender.js"
 
     const val FRAGMENT_CONNECT_EXTRA_ERROR = "org.jellyfin.mobile.intent.extra.ERROR"
     const val FRAGMENT_WEB_VIEW_EXTRA_SERVER_ID = "org.jellyfin.mobile.intent.extra.SERVER_ID"
