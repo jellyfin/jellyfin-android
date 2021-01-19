@@ -4,16 +4,16 @@ import android.annotation.SuppressLint
 import android.app.PictureInPictureParams
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import android.graphics.Color
 import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings.System
 import android.view.*
 import android.view.WindowManager.LayoutParams.*
 import android.widget.*
 import androidx.core.content.getSystemService
-import androidx.core.content.withStyledAttributes
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
@@ -100,11 +100,8 @@ class PlayerFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Set orientation to landscape and enable fullscreen initially, set status bar color
-        with(requireActivity()) {
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-            enableFullscreen()
-        }
+        // Request landscape orientation for playback start
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
 
         // Observe ViewModel
         viewModel.player.observe(this) { player ->
@@ -180,6 +177,15 @@ class PlayerFragment : Fragment() {
         orientationListener.enable()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        // When returning from another app, the last active mode has to be set again
+        with(requireActivity()) {
+            if (isLandscape()) enableFullscreen() else disableFullscreen()
+        }
+    }
+
     fun lockScreen() {
         playerView.useController = false
         orientationListener.disable()
@@ -192,7 +198,7 @@ class PlayerFragment : Fragment() {
             requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
         orientationListener.enable()
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !requireActivity().isInPictureInPictureMode)) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || !requireActivity().isInPictureInPictureMode) {
             playerView.useController = true
             playerView.apply {
                 if (!isControllerVisible) showController()
@@ -204,12 +210,17 @@ class PlayerFragment : Fragment() {
      * Handle current orientation and update fullscreen state and switcher icon
      */
     private fun updateFullscreenStateAndSwitcher(configuration: Configuration) {
-        if (isLandscape(configuration)) requireActivity().enableFullscreen() else requireActivity().disableFullscreen()
-        val fullscreenDrawable = when {
-            !requireActivity().isFullscreen() -> R.drawable.ic_fullscreen_enter_white_32dp
-            else -> R.drawable.ic_fullscreen_exit_white_32dp
+        with(requireActivity()) {
+            // Do not handle any orientation changes while being in Picture-in-Picture mode
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInPictureInPictureMode)
+                return
+
+            if (isLandscape(configuration)) enableFullscreen() else disableFullscreen()
+            val fullscreenDrawable =
+                if (isFullscreen()) R.drawable.ic_fullscreen_exit_white_32dp
+                else R.drawable.ic_fullscreen_enter_white_32dp
+            fullscreenSwitcher.setImageResource(fullscreenDrawable)
         }
-        fullscreenSwitcher.setImageResource(fullscreenDrawable)
     }
 
     private fun updateZoomMode(enabled: Boolean) {
@@ -396,8 +407,15 @@ class PlayerFragment : Fragment() {
     }
 
     fun onUserLeaveHint() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && viewModel.playerOrNull?.isPlaying == true) {
-            requireActivity().enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && viewModel.playerOrNull?.isPlaying == true) {
+            with(requireActivity()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+                } else {
+                    @Suppress("DEPRECATION")
+                    enterPictureInPictureMode()
+                }
+            }
         }
     }
 
@@ -411,8 +429,10 @@ class PlayerFragment : Fragment() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        updateFullscreenStateAndSwitcher(newConfig)
-        updateZoomMode(isLandscape(newConfig) && isZoomEnabled)
+        Handler(Looper.getMainLooper()).post {
+            updateFullscreenStateAndSwitcher(newConfig)
+            updateZoomMode(isLandscape(newConfig) && isZoomEnabled)
+        }
     }
 
     override fun onStop() {
