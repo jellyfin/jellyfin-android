@@ -24,7 +24,7 @@
     <string name="mobile_data_and_roaming">Të dhëna celulare &amp; Roaming</string>
     <string name="mobile_data">Të dhëna Celulare</string>
     <string name="wifi_only">Vetem Wi-Fi</string>
-    <string name="network_message">Dëshironi të lejoni të shkarkoni me të dhenat celulare (mobile data) ose kur keni rrjet roaming\?</string>
+    <string name="network_message">Dëshironi të lejoni të shkarkoni me të dhenat celulare (mobile data) ose kur keni rrjet roaming\? Charges from your provider may apply.</string>
     <string name="network_title">Llojet e lejuara të rrjetit</string>
     <string name="battery_optimizations_message">Ju lutemi çaktivizoni optimizimet e baterisë për luajtjen e medias ndërsa ekrani është i fikur.</string>
     <string name="connect_button_text">Lidhu</string>
