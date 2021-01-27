@@ -65,7 +65,7 @@
     <string name="external_player_mpv">MPV-spelare</string>
     <string name="external_player_app">Extern uppspelningsapp</string>
     <string name="connection_error_invalid_version">Servern använder en version som ej stöds. Uppgradera till den senaste versionen på jellyfin.org.</string>
-    <string name="music_notification_channel">Jellyfin Music Player</string>
+    <string name="music_notification_channel">Jellyfin Musikspelare</string>
     <string name="media_service_car_item_no_title">Titel saknas</string>
     <string name="media_service_car_section_playlists">Spellistor</string>
     <string name="media_service_car_section_genres">Genrer</string>
@@ -74,4 +74,6 @@
     <string name="media_service_car_section_albums">Album</string>
     <string name="media_service_car_section_recents">Nyligen spelat</string>
     <string name="media_service_generic_error">Ett fel uppstod</string>
+    <string name="music_notification_channel_description">Används till uppspelningskontroller för musik</string>
+    <string name="media_service_item_not_found">Media objekt kunde inte hittas</string>
 </resources>
