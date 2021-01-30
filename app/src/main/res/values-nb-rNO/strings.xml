@@ -20,7 +20,7 @@
     <string name="playback_info_transcoding">Koder om: %b</string>
     <string name="connection_error_cannot_connect">Tilkoblingen kunne ikke bli etablert.
 \nVennligst sjekk tjenernavnet og nettverkstilkoblingen.</string>
-    <string name="pref_exoplayer_allow_background_audio">Tillat avspilling av lyd i bakgrunnen, i innebygget avspiller</string>
+    <string name="pref_exoplayer_allow_background_audio">Tillat avspilling av lyd i bakgrunnen i innebygget avspiller</string>
     <string name="pref_enable_exoplayer_title">Aktiver videospillerintegrasjon</string>
     <string name="pref_category_music_player">Musikkspiller</string>
     <string name="activity_name_settings">Jellyfin-innstillinger</string>
@@ -41,7 +41,7 @@
     <string name="video_player_external">Ekstern avspiller</string>
     <string name="video_player_native">Innebygd avspiller</string>
     <string name="video_player_web">Web-spiller</string>
-    <string name="pref_video_player_type_title">Videospiller type</string>
+    <string name="pref_video_player_type_title">Videospiller-type</string>
     <string name="available_servers_title">Tilgjengelige tjenere</string>
     <string name="choose_server_button_text">Velg tjener</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Tillat lysstyrke- og volumbevegelser i innebygget avspiller</string>
