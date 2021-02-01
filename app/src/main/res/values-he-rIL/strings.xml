@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_enable_exoplayer_title">הפעל אינטגרציה לנגן הוידיאו</string>
-    <string name="pref_category_video_player">נגן וידיאו מוטמע</string>
+    <string name="pref_category_video_player">נגן וידיאו</string>
     <string name="pref_music_notification_always_dismissible_title">הגדר את התראת נגן השמע כניתן לביטול</string>
     <string name="pref_category_music_player">נגן מוזיקה</string>
     <string name="activity_name_settings">הגדרות Jellyfin</string>
@@ -24,13 +24,13 @@
     <string name="connection_error_invalid_format">כתובת שרת לא תקינה</string>
     <string name="host_input_hint">שרת</string>
     <string name="connect_to_server_title">חיבור לשרת</string>
-    <string name="external_player_invalid_play_method">שיטת הפעלה לא חוקית.</string>
+    <string name="external_player_invalid_play_method">שיטת ניגון לא חוקית.</string>
     <string name="notification_action_stop">עצור</string>
     <string name="notification_action_next">הבא</string>
     <string name="notification_action_fast_forward">הרץ קדימה</string>
     <string name="notification_action_pause">הפסק</string>
     <string name="notification_action_play">הפעל</string>
-    <string name="notification_action_rewind">אחורה</string>
+    <string name="notification_action_rewind">הרץ אחורה</string>
     <string name="notification_action_previous">קודם</string>
     <string name="music_notification_channel_description">משמש לפקדי השמעת מוזיקה</string>
     <string name="music_notification_channel">Jellyfin Music Player</string>
@@ -47,4 +47,12 @@
     <string name="available_servers_title">שרתים זמינים</string>
     <string name="choose_server_button_text">בחר שרת</string>
     <string name="connection_error_invalid_version">השרת משתמש בגרסה שאינה נתמכת. שדרג לגרסה העדכנית ב-jellyfin.org.</string>
+    <string name="video_player_web_description">נגן ברירת מחדל בדפדפן</string>
+    <string name="video_player_external">נגן חיצוני</string>
+    <string name="video_player_native">נגן מקומי</string>
+    <string name="video_player_web">נגן ברשת</string>
+    <string name="pref_video_player_type_title">סוג נגן וידאו</string>
+    <string name="external_player_unknown_error">שגיאה לא ידועה בנגן חיצוני. מעקב ניגון מושבת.</string>
+    <string name="external_player_invalid_player">לא נבחר נגן חיצוני חוקי. מעקב אחר הפעלה מושבת.</string>
+    <string name="external_player_not_supported_yet">מעקב נגינה עדיין לא נתמך בנגן החיצוני שנבחר. פנה למפתחים כדי לנסות להוסיף תמיכה לכך.</string>
 </resources>
