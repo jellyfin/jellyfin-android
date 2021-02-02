@@ -60,4 +60,8 @@
     <string name="pref_exoplayer_allow_background_audio">אפשר ניגון מוזיקה ברקע בנגן מקומי</string>
     <string name="video_player_external_description">תוכנת ניגון וידאו חיצונית כמו VLC וגם MX Player</string>
     <string name="video_player_native_description">מבוסס על נגן אקסו (ExoPlayer), תומך ביותר סוגי וידאו וקידודים וגם יותר משולב במערכת ההפעלה</string>
+    <string name="external_player_mx_player_free_description">נגן וידיאו חזק עם האצת חומרה מתקדמת ותמיכה בכתוביות.</string>
+    <string name="external_player_mx_player_free">נגן MX חינמי</string>
+    <string name="external_player_mpv_description">נגן וידיאו פשוט, חופשי (כמו בחופש),קטן וקל משקל. הוא תומך במגוון רחב של פורמטים של קבצי מדיה.</string>
+    <string name="external_player_mpv">נגן MPV</string>
 </resources>
