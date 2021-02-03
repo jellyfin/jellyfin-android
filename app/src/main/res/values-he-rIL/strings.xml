@@ -64,4 +64,10 @@
     <string name="external_player_mx_player_free">נגן MX חינמי</string>
     <string name="external_player_mpv_description">נגן וידיאו פשוט, חופשי (כמו בחופש),קטן וקל משקל. הוא תומך במגוון רחב של פורמטים של קבצי מדיה.</string>
     <string name="external_player_mpv">נגן MPV</string>
+    <string name="external_player_system_default_description">תן למערכת להתמודד עם בחירת הנגן, יתכן שחלק מהנגנים אינם תואמים לחלוטין.</string>
+    <string name="external_player_system_default">ברירת המחדל של המערכת</string>
+    <string name="external_player_vlc_player_description">נגן מולטימדיה חוצה פלטפורמות עם קוד פתוח בחינם המנגן את מרבית קבצי המולטימדיה.</string>
+    <string name="external_player_vlc_player">נגן VLC</string>
+    <string name="external_player_mx_player_pro_description">הגרסה בתשלום של נגן MX המספקת חווית וידאו ללא הפרעה.</string>
+    <string name="external_player_mx_player_pro">נגן MX גרסה מלאה</string>
 </resources>
