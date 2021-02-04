@@ -4,7 +4,6 @@ import com.github.benmanes.gradle.versions.updates.gradle.GradleReleaseChannel
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("android.extensions")
     kotlin("kapt")
     id("de.mannodermaus.android-junit5")
     id("com.github.ben-manes.versions") version Dependencies.Versions.dependencyUpdates

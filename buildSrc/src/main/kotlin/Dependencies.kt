@@ -3,50 +3,50 @@ import java.util.*
 object Dependencies {
     object Versions {
         // Gradle plugins
-        const val dependencyUpdates = "0.33.0"
+        const val dependencyUpdates = "0.36.0"
 
         // KotlinX
-        const val coroutines = "1.4.0"
+        const val coroutines = "1.4.2"
 
         // Core
         const val koin = "2.1.6"
         const val appCompat = "1.2.0"
         const val androidxCore = "1.4.0-alpha01"
-        const val activity = "1.2.0-alpha01"
+        const val activity = "1.2.0-rc01"
         const val fragment = "1.2.5"
-        const val exoPlayer = "2.12.1"
+        const val exoPlayer = "2.12.3"
 
         // Lifecycle
         const val lifecycleExtensions = "2.2.0"
 
         // UI
         const val constraintLayout = "2.0.4"
-        const val material = "1.2.1"
-        const val webkitX = "1.3.0"
-        const val modernAndroidPreferences = "1.1.0-alpha5"
+        const val material = "1.3.0"
+        const val webkitX = "1.4.0"
+        const val modernAndroidPreferences = "1.1.0"
 
         // Room
-        const val room = "2.2.5"
+        const val room = "2.2.6"
 
         // Network
-        const val apiclient = "0.7.7"
-        const val okHttp = "4.9.0"
-        const val coil = "1.0.0"
+        const val apiclient = "0.7.9"
+        const val okHttp = "4.9.1"
+        const val coil = "1.1.1"
 
         // Cast
-        const val mediaRouter = "1.2.0"
+        const val mediaRouter = "1.2.1"
         const val playServicesCast = "19.0.0"
 
         // Media
-        const val media = "1.2.0"
+        const val media = "1.2.1"
 
         // Health
         const val timber = "4.7.1"
-        const val leakCanary = "2.5"
+        const val leakCanary = "2.6"
         const val redScreenOfDeath = "0.1.2"
         const val junit = "5.7.0"
-        const val kotest = "4.3.0"
-        const val mockk = "1.10.2"
+        const val kotest = "4.4.0"
+        const val mockk = "1.10.5"
         const val androidXRunner = "1.3.0"
         const val androidXEspresso = "3.3.0"
 
