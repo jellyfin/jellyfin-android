@@ -162,7 +162,9 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
 
     @JavascriptInterface
     fun openClientSettings() {
-        fragment.parentFragmentManager.addFragment<SettingsFragment>()
+        fragment.runOnUiThread {
+            fragment.parentFragmentManager.addFragment<SettingsFragment>()
+        }
     }
 
     @JavascriptInterface
