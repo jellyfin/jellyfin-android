@@ -21,6 +21,13 @@ class JellyfinMediaSource(item: JSONObject) {
     val subtitleTracksGroup: ExoPlayerTracksGroup<ExoPlayerTrack.Text>
     val isTranscoding: Boolean
 
+    val selectedVideoTrack: ExoPlayerTrack.Video?
+        get() = videoTracksGroup.tracks.getOrNull(videoTracksGroup.selectedTrack)
+    val selectedAudioTrack: ExoPlayerTrack.Audio?
+        get() = audioTracksGroup.tracks.getOrNull(audioTracksGroup.selectedTrack)
+    val selectedSubtitleTrack: ExoPlayerTrack.Text?
+        get() = subtitleTracksGroup.tracks.getOrNull(subtitleTracksGroup.selectedTrack)
+
     val audioTracksCount: Int get() = audioTracksGroup.tracks.size
     val subtitleTracksCount: Int get() = subtitleTracksGroup.tracks.size
 
@@ -64,7 +71,7 @@ class JellyfinMediaSource(item: JSONObject) {
     }
 
     private fun loadVideoTracks(tracks: List<JSONObject>): ExoPlayerTracksGroup<ExoPlayerTrack.Video> {
-        val defaultSelection = 1
+        val defaultSelection = 0
         val videoTracks: MutableList<ExoPlayerTrack.Video> = ArrayList()
         for (track in tracks) {
             videoTracks += ExoPlayerTrack.Video(track)
