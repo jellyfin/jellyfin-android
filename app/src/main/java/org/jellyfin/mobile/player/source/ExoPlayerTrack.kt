@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.player.source
 
+import android.util.Rational
 import org.jellyfin.mobile.player.ExoPlayerFormats
 import org.jellyfin.mobile.utils.Constants
 import org.json.JSONObject
@@ -9,6 +10,10 @@ sealed class ExoPlayerTrack(track: JSONObject) {
     val title: String = track.optString("DisplayTitle", "")
 
     class Video(track: JSONObject) : ExoPlayerTrack(track) {
+        val width: Int = track.optInt("Width", -1)
+        val height: Int = track.optInt("Height", -1)
+        val aspectRatio: Rational = Rational(width, height)
+
         override fun toString() = "ExoPlayerTrack.Video#$index(title=$title)"
     }
 
