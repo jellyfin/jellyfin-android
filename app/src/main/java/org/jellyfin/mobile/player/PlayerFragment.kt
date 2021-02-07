@@ -81,13 +81,19 @@ class PlayerFragment : Fragment() {
     /**
      * Runnable that hides the unlock screen button, used by [peekUnlockButton]
      */
-    private val hideUnlockButtonAction = Runnable { unlockScreenButton.isVisible = false }
+    private val hideUnlockButtonAction = Runnable {
+        if (_playerBinding != null) {
+            unlockScreenButton.isVisible = false
+        }
+    }
 
     /**
      * Runnable that hides [playerView] controller
      */
     private val hidePlayerViewControllerAction = Runnable {
-        playerView.hideController()
+        if (_playerBinding != null) {
+            playerView.hideController()
+        }
     }
 
     /**
