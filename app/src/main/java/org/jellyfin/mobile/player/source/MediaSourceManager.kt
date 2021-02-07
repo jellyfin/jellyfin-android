@@ -115,14 +115,20 @@ class MediaSourceManager(private val viewModel: PlayerViewModel) {
      */
     fun selectAudioTrack(selectedAudioIndex: Int, initial: Boolean = false): Boolean {
         val source = _jellyfinMediaSource.value ?: return false
+        check(selectedAudioIndex in 0 until source.audioTracksCount)
         val currentAudioIndex = source.audioTracksGroup.selectedTrack
-        if (source.audioTracksCount == 1 || (!initial && selectedAudioIndex == currentAudioIndex))
-            return true
-        val audio: ExoPlayerTrack.Audio = source.audioTracksGroup.tracks[selectedAudioIndex]
-        if (source.isTranscoding || !audio.supportsDirectPlay) {
-            //if (!initial) callWebMethod("changeAudioStream", selectedAudioIndex.toString())
-            return true
+        when {
+            // Check current audio index
+            currentAudioIndex !in 0 until source.audioTracksCount -> return false
+            // Fast-pass: Skip execution on subsequent calls with the correct selection or if only one track exists
+            source.audioTracksCount == 1 || !initial && selectedAudioIndex == currentAudioIndex -> return true
+            // For transcoding or if the selected stream doesn't support direct play, we need to call web
+            source.isTranscoding || !source.audioTracksGroup.tracks[selectedAudioIndex].supportsDirectPlay -> {
+                // TODO: call web component to change tracks
+                return true
+            }
         }
+        // Handle selection
         val parameters = trackSelector.buildUponParameters()
         val rendererIndex = viewModel.getPlayerRendererIndex(C.TRACK_TYPE_AUDIO)
         val trackInfo = trackSelector.currentMappedTrackInfo
