@@ -151,7 +151,7 @@
         android:layout_marginBottom="@dimen/exo_bottom_controls_margin"
         android:background="@drawable/ripple_background_circular"
         android:padding="@dimen/exo_bottom_controls_padding"
-        android:src="@drawable/ic_closed_caption_white_24dp"
+        android:src="@drawable/ic_subtitles_stateful_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/audio_streams_button" />
 
