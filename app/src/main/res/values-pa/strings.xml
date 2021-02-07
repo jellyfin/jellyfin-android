@@ -28,11 +28,11 @@
     <string name="external_player_invalid_player">ਕੋਈ ਵੈਧ ਬਾਹਰੀ ਖਿਡਾਰੀ ਨਹੀਂ ਚੁਣਿਆ ਗਿਆ. ਪਲੇਬੈਕ ਟਰੈਕਿੰਗ ਅਸਮਰਥਿਤ.</string>
     <string name="external_player_not_supported_yet">ਪਲੇਅਬੈਕ ਟਰੈਕਿੰਗ ਅਜੇ ਤੱਕ ਚੁਣੇ ਬਾਹਰੀ ਖਿਡਾਰੀ ਵਿੱਚ ਸਮਰਥਿਤ ਨਹੀਂ ਹੈ. ਇਸਦੇ ਲਈ ਸਮਰਥਨ ਜੋੜਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰਨ ਲਈ ਡਿਵੈਲਪਰਾਂ ਨਾਲ ਸੰਪਰਕ ਕਰੋ.</string>
     <string name="external_player_invalid_play_method">ਅਵੈਧ ਖੇਡ ਵਿਧੀ.</string>
-    <string name="playback_info_and_x_more">...ਅਤੇ %ਡੀ ਹੋਰ</string>
+    <string name="playback_info_and_x_more">…ਅਤੇ %d ਹੋਰ</string>
     <string name="playback_info_audio_streams">ਆਡੀਓ ਸਟ੍ਰੀਮ</string>
     <string name="playback_info_video_streams">ਵੀਡੀਓ ਸਟ੍ਰੀਮ</string>
-    <string name="playback_info_transcoding">ਟਰਾਂਸਕੋਡਿੰਗ:% ਬੀ</string>
-    <string name="playback_info_play_method">ਖੇਡਣ ਦਾ ਤਰੀਕਾ:% s</string>
+    <string name="playback_info_transcoding">ਟਰਾਂਸਕੋਡਿੰਗ: %b</string>
+    <string name="playback_info_play_method">ਖੇਡਣ ਦਾ ਤਰੀਕਾ: %s</string>
     <string name="menu_item_none">ਕੋਈ ਨਹੀਂ</string>
     <string name="notification_action_stop">ਰੂਕੋ</string>
     <string name="notification_action_next">ਅਗਲਾ</string>
