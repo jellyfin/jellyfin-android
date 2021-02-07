@@ -17,6 +17,7 @@ import androidx.activity.addCallback
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.add
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.webkit.WebResourceErrorCompat
@@ -25,11 +26,14 @@ import androidx.webkit.WebViewFeature
 import kotlinx.coroutines.launch
 import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.mobile.MainActivity
+import org.jellyfin.mobile.R
 import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.bridge.NativeInterface
 import org.jellyfin.mobile.bridge.NativePlayer
+import org.jellyfin.mobile.bridge.NativePlayerHost
 import org.jellyfin.mobile.controller.ServerController
 import org.jellyfin.mobile.databinding.FragmentWebviewBinding
+import org.jellyfin.mobile.player.PlayerFragment
 import org.jellyfin.mobile.utils.*
 import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER_ID
 import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_URL
@@ -44,7 +48,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class WebViewFragment : Fragment() {
+class WebViewFragment : Fragment(), NativePlayerHost {
     val apiClient: ApiClient by inject()
     private val serverController: ServerController by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
@@ -171,15 +175,14 @@ class WebViewFragment : Fragment() {
                 val errorMessage = errorResponse.data?.run { bufferedReader().use(Reader::readText) }
                 Timber.e("Received WebView HTTP %d error: %s", errorResponse.statusCode, errorMessage)
 
-                if (request.url == Uri.parse(instanceUrl))
-                    runOnUiThread { onErrorReceived() }
+                if (request.url == Uri.parse(instanceUrl)) onErrorReceived()
             }
 
             override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceErrorCompat) {
                 val description = if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_RESOURCE_ERROR_GET_DESCRIPTION)) error.description else null
                 Timber.e("Received WebView error at %s: %s", request.url.toString(), description)
-                if (request.url.toString() == instanceUrl)
-                    runOnUiThread { onErrorReceived() }
+
+                if (request.url.toString() == instanceUrl) onErrorReceived()
             }
         }
         webChromeClient = WebChromeClient()
@@ -188,7 +191,7 @@ class WebViewFragment : Fragment() {
             domStorageEnabled = true
         }
         addJavascriptInterface(NativeInterface(this@WebViewFragment), "NativeInterface")
-        addJavascriptInterface(NativePlayer(parentFragmentManager), "NativePlayer")
+        addJavascriptInterface(NativePlayer(this@WebViewFragment), "NativePlayer")
         addJavascriptInterface(externalPlayer, "ExternalPlayer")
 
         loadUrl(instanceUrl)
@@ -199,7 +202,7 @@ class WebViewFragment : Fragment() {
         (activity as? MainActivity)?.requestNoBatteryOptimizations()
     }
 
-    fun onSelectServer(error: Boolean = false) {
+    fun onSelectServer(error: Boolean = false) = runOnUiThread {
         val activity = activity
         if (activity != null && activity.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
             if (error) {
@@ -216,6 +219,13 @@ class WebViewFragment : Fragment() {
     fun onErrorReceived() {
         connected = false
         onSelectServer(error = true)
+    }
+
+    override fun loadNativePlayer(args: Bundle) = runOnUiThread {
+        parentFragmentManager.beginTransaction().apply {
+            add<PlayerFragment>(R.id.fragment_container, args = args)
+            addToBackStack(null)
+        }.commit()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
