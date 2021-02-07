@@ -110,9 +110,6 @@ class PlayerFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Request landscape orientation for playback start
-        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-
         // Observe ViewModel
         viewModel.player.observe(this) { player ->
             playerView.player = player
@@ -133,6 +130,16 @@ class PlayerFragment : Fragment() {
             loadingIndicator.isVisible = playerState == Player.STATE_BUFFERING
         }
         viewModel.mediaSourceManager.jellyfinMediaSource.observe(this) { jellyfinMediaSource ->
+            // On playback start, switch to landscape for landscape videos, and (only) enable fullscreen for portrait videos
+            with(requireActivity()) {
+                val videoTrack = jellyfinMediaSource.selectedVideoTrack
+                if (videoTrack == null || videoTrack.width >= videoTrack.height) {
+                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                } else {
+                    enableFullscreen()
+                }
+            }
+
             titleTextView.text = jellyfinMediaSource.title
             playbackMenus?.onItemChanged(jellyfinMediaSource)
         }
@@ -152,8 +159,18 @@ class PlayerFragment : Fragment() {
 
         // Handle system window insets
         ViewCompat.setOnApplyWindowInsetsListener(playerBinding.root) { _, insets ->
-            playerControlsView.updatePadding(left = insets.systemWindowInsetLeft, right = insets.systemWindowInsetRight)
-            playerOverlay.updatePadding(left = insets.systemWindowInsetLeft, right = insets.systemWindowInsetRight)
+            playerControlsView.updatePadding(
+                top = insets.systemWindowInsetTop,
+                left = insets.systemWindowInsetLeft,
+                right = insets.systemWindowInsetRight,
+                bottom = insets.systemWindowInsetBottom,
+            )
+            playerOverlay.updatePadding(
+                top = insets.systemWindowInsetTop,
+                left = insets.systemWindowInsetLeft,
+                right = insets.systemWindowInsetRight,
+                bottom = insets.systemWindowInsetBottom,
+            )
             insets
         }
 
@@ -168,10 +185,20 @@ class PlayerFragment : Fragment() {
 
         // Handle fullscreen switcher
         fullscreenSwitcher.setOnClickListener {
-            val current = resources.configuration.orientation
-            requireActivity().requestedOrientation = when (current) {
-                Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            val videoTrack = currentVideoTrack
+            if (videoTrack == null || videoTrack.width >= videoTrack.height) {
+                // Landscape video, change orientation (which affects the fullscreen state)
+                val current = resources.configuration.orientation
+                requireActivity().requestedOrientation = when (current) {
+                    Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                    else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
+            } else {
+                // Portrait video, only handle fullscreen state
+                with(requireActivity()) {
+                    if (isFullscreen()) disableFullscreen() else enableFullscreen()
+                    updateFullscreenSwitcher(isFullscreen())
+                }
             }
         }
 
@@ -190,9 +217,9 @@ class PlayerFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        // When returning from another app, the last active mode has to be set again
+        // When returning from another app, fullscreen mode for landscape orientation has to be set again
         with(requireActivity()) {
-            if (isLandscape()) enableFullscreen() else disableFullscreen()
+            if (isLandscape()) enableFullscreen()
         }
     }
 
@@ -219,18 +246,32 @@ class PlayerFragment : Fragment() {
     /**
      * Handle current orientation and update fullscreen state and switcher icon
      */
-    private fun updateFullscreenStateAndSwitcher(configuration: Configuration) {
+    private fun updateFullscreenState(configuration: Configuration) {
         with(requireActivity()) {
             // Do not handle any orientation changes while being in Picture-in-Picture mode
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInPictureInPictureMode)
                 return
 
-            if (isLandscape(configuration)) enableFullscreen() else disableFullscreen()
-            val fullscreenDrawable =
-                if (isFullscreen()) R.drawable.ic_fullscreen_exit_white_32dp
-                else R.drawable.ic_fullscreen_enter_white_32dp
-            fullscreenSwitcher.setImageResource(fullscreenDrawable)
+            if (isLandscape(configuration)) {
+                // Landscape orientation is always fullscreen
+                enableFullscreen()
+            } else {
+                // Disable fullscreen for landscape video in portrait orientation
+                val videoTrack = currentVideoTrack
+                if (videoTrack == null || videoTrack.width >= videoTrack.height) {
+                    disableFullscreen()
+                }
+            }
+            updateFullscreenSwitcher(isFullscreen())
         }
+    }
+
+    private fun updateFullscreenSwitcher(fullscreen: Boolean) {
+        val fullscreenDrawable = when {
+            fullscreen -> R.drawable.ic_fullscreen_exit_white_32dp
+            else -> R.drawable.ic_fullscreen_enter_white_32dp
+        }
+        fullscreenSwitcher.setImageResource(fullscreenDrawable)
     }
 
     private fun updateZoomMode(enabled: Boolean) {
@@ -443,7 +484,7 @@ class PlayerFragment : Fragment() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         Handler(Looper.getMainLooper()).post {
-            updateFullscreenStateAndSwitcher(newConfig)
+            updateFullscreenState(newConfig)
             updateZoomMode(isLandscape(newConfig) && isZoomEnabled)
         }
     }
