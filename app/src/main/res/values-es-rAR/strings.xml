@@ -20,7 +20,7 @@
     <string name="menu_item_none">Ninguno</string>
     <string name="playback_info_audio_streams">Transmisiones de audio</string>
     <string name="playback_info_video_streams">Transmisiones de vídeo</string>
-    <string name="playback_info_transcoding">Transcodificación</string>
+    <string name="playback_info_transcoding">Transcodificación: %b</string>
     <string name="connection_error_cannot_connect">No se puede establecer la conexión. 
 \nCompruebe el nombre del Servidor y la conexión de red.</string>
     <string name="playback_info_and_x_more">…y %d más</string>
