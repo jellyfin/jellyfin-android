@@ -27,6 +27,7 @@ import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
+import org.jellyfin.mobile.player.source.ExoPlayerTrack
 import org.jellyfin.mobile.utils.*
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CENTER_OVERLAY_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
@@ -56,6 +57,9 @@ class PlayerFragment : Fragment() {
     private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
     private var playbackMenus: PlaybackMenus? = null
     private val audioManager: AudioManager by lazy { requireContext().getSystemService()!! }
+
+    private val currentVideoTrack: ExoPlayerTrack.Video?
+        get() = viewModel.mediaSourceManager.jellyfinMediaSource.value?.selectedVideoTrack
 
     private var isZoomEnabled = false
 
@@ -416,7 +420,10 @@ class PlayerFragment : Fragment() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && viewModel.playerOrNull?.isPlaying == true) {
             with(requireActivity()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+                    val params = PictureInPictureParams.Builder().apply {
+                        setAspectRatio(currentVideoTrack?.aspectRatio)
+                    }.build()
+                    enterPictureInPictureMode(params)
                 } else {
                     @Suppress("DEPRECATION")
                     enterPictureInPictureMode()
