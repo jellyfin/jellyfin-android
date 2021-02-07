@@ -3,6 +3,7 @@ package org.jellyfin.mobile.player
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.core.view.forEach
@@ -26,11 +27,14 @@ class PlaybackMenus(
     private val context = playerBinding.root.context
     private val lockScreenButton: View by playerControlsBinding::lockScreenButton
     private val audioStreamsButton: View by playerControlsBinding::audioStreamsButton
-    private val subtitlesButton: View by playerControlsBinding::subtitlesButton
+    private val subtitlesButton: ImageButton by playerControlsBinding::subtitlesButton
     private val infoButton: View by playerControlsBinding::infoButton
     private val playbackInfo: TextView by playerBinding::playbackInfo
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
+
+    private var subtitleCount = 0
+    private var selectedSubtitle = -1
 
     init {
         lockScreenButton.setOnClickListener {
@@ -41,8 +45,20 @@ class PlaybackMenus(
             audioStreamsMenu.show()
         }
         subtitlesButton.setOnClickListener {
-            fragment.suppressControllerAutoHide(true)
-            subtitlesMenu.show()
+            when (subtitleCount) {
+                0 -> return@setOnClickListener
+                1 -> {
+                    val selected = -(selectedSubtitle + 1) // 0 -> -1, -1 -> 0
+                    if (fragment.onSubtitleSelected(selected)) {
+                        selectedSubtitle = selected
+                        updateSubtitlesButton()
+                    }
+                }
+                else -> {
+                    fragment.suppressControllerAutoHide(true)
+                    subtitlesMenu.show()
+                }
+            }
         }
         infoButton.setOnClickListener {
             playbackInfo.isVisible = !playbackInfo.isVisible
@@ -55,6 +71,9 @@ class PlaybackMenus(
     fun onItemChanged(item: JellyfinMediaSource) {
         buildMenuItems(subtitlesMenu.menu, SUBTITLES_MENU_GROUP, item.subtitleTracksGroup, true)
         buildMenuItems(audioStreamsMenu.menu, AUDIO_MENU_GROUP, item.audioTracksGroup)
+        subtitleCount = item.subtitleTracksCount
+        selectedSubtitle = item.subtitleTracksGroup.selectedTrack
+        updateSubtitlesButton()
 
         val playMethod = context.getString(R.string.playback_info_play_method, item.playMethod)
         val transcodingInfo = context.getString(R.string.playback_info_transcoding, item.isTranscoding)
@@ -84,10 +103,13 @@ class PlaybackMenus(
 
     private fun createSubtitlesMenu() = PopupMenu(context, subtitlesButton).apply {
         setOnMenuItemClickListener { clickedItem ->
-            fragment.onSubtitleSelected(clickedItem.itemId).also { success ->
+            val selected = clickedItem.itemId
+            fragment.onSubtitleSelected(selected).also { success ->
                 if (success) {
                     menu.forEach { it.isChecked = false }
                     clickedItem.isChecked = true
+                    selectedSubtitle = selected
+                    updateSubtitlesButton()
                 }
             }
         }
@@ -126,6 +148,12 @@ class PlaybackMenus(
             // No selection, check first item if possible
             if (menu.size > 0) menu[0].isChecked = true
         }
+    }
+
+    private fun updateSubtitlesButton() {
+        subtitlesButton.isVisible = subtitleCount > 0
+        val stateSet = intArrayOf(android.R.attr.state_checked * if (selectedSubtitle >= 0) 1 else -1)
+        subtitlesButton.setImageState(stateSet, true)
     }
 
     fun dismissPlaybackInfo() {
