@@ -78,4 +78,6 @@
     <string name="media_service_car_section_recents">Rulate Recent</string>
     <string name="media_service_item_not_found">Articolul media nu a putut fi găsit</string>
     <string name="media_service_generic_error">A apărut o eroare</string>
+    <string name="pref_download_location">Locație descărcări</string>
+    <string name="pref_category_downloads">Descărcări</string>
 </resources>
