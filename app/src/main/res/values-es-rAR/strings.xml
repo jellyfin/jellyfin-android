@@ -78,4 +78,6 @@
     <string name="media_service_car_section_recents">Recientemente reproducido</string>
     <string name="media_service_item_not_found">No se encuentran los medios del item</string>
     <string name="media_service_generic_error">Ha ocurrido un error</string>
+    <string name="pref_download_location">Ubicación de Descargas</string>
+    <string name="pref_category_downloads">Descargas</string>
 </resources>
