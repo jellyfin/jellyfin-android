@@ -69,4 +69,6 @@
     <string name="external_player_not_supported_yet">Taŋdağanyŋyz syrtqy oinatqyşta älі de oinatudy qadağalau üşın qoldau körsetіlmegen. Ony qoldauğa äreket jasau üşіn äzırleuşılerımen bailanysyŋyz.</string>
     <string name="network_message">Jüktep aludyі ūialy derekter nemese roumiŋ jelіlerі arqyly oryndaimyz ba\? Jetkızuşıge aqylar alynuy mümkіn.</string>
     <string name="battery_optimizations_message">Tasyğyşderekterdı oinatuğa arnalğan batareiany oŋtailandyrudy ekran öşіrulі bolğanda öşіrіŋіz.</string>
+    <string name="pref_download_location">Jükteu orny</string>
+    <string name="pref_category_downloads">Jükteuler</string>
 </resources>
