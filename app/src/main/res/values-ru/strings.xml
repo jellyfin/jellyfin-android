@@ -76,4 +76,6 @@
     <string name="media_service_car_section_recents">Недавно воспроизведённое</string>
     <string name="media_service_item_not_found">Элемент медиаданных не найден</string>
     <string name="media_service_generic_error">Произошла ошибка</string>
+    <string name="pref_download_location">Место загрузок</string>
+    <string name="pref_category_downloads">Загрузки</string>
 </resources>
