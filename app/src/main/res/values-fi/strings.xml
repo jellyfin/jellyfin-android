@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="wifi_only">Vain WiFi</string>
-    <string name="network_message">Sallitaanko lataus mobiiliverkossa tai verkkovierailuverkon aikana\? Palveluntarjoaja saattaa veloittaa tiedonsiirrosta.</string>
+    <string name="wifi_only">Vain Wi-Fi</string>
+    <string name="network_message">Sallitaanko lataus mobiiliverkossa tai verkkovierailun aikana\? Palveluntarjoaja saattaa veloittaa tiedonsiirrosta.</string>
     <string name="network_title">Sallitut verkkotyypit</string>
-    <string name="battery_optimizations_message">Poista akun käytön optimointi käytöstä toistettaessa mediaa kun näyttö on suljettuna.</string>
+    <string name="battery_optimizations_message">Kytke akun käytön optimointi käytöstä toistettaessa mediaa näytön ollessa suljettuna.</string>
     <string name="downloading">Lataus</string>
-    <string name="mobile_data_and_roaming">Mobiilidata &amp; Verkkovierailu</string>
+    <string name="mobile_data_and_roaming">Mobiilidata ja verkkovierailu</string>
     <string name="mobile_data">Mobiilidata</string>
     <string name="pref_enable_exoplayer_title">Ota videotoistimen integraatio käyttöön</string>
     <string name="pref_music_notification_always_dismissible_title">Aseta musiikkisoittimen ilmoitukset piilotetuiksi</string>
     <string name="pref_category_music_player">Musiikkisoitin</string>
     <string name="activity_name_settings">Jellyfin asetukset</string>
     <string name="connection_error_invalid_format">Isäntäpalvelimen muoto on virheellinen</string>
-    <string name="host_input_hint">Isäntäpalvelin</string>
+    <string name="host_input_hint">Isäntä</string>
     <string name="connect_button_text">Yhdistä</string>
     <string name="connect_to_server_title">Yhdistä palvelimeen</string>
     <string name="external_player_invalid_play_method">Virheellinen toistotapa.</string>
     <string name="playback_info_and_x_more">…ja %d lisää</string>
-    <string name="playback_info_audio_streams">Audioiden suoratoistot</string>
-    <string name="playback_info_video_streams">Videoiden suoratoistot</string>
+    <string name="playback_info_audio_streams">Äänen suoratoistovirrat</string>
+    <string name="playback_info_video_streams">Videon suoratoistovirrat</string>
     <string name="playback_info_transcoding">Transkoodaus: %b</string>
     <string name="playback_info_play_method">Toistotapa: %s</string>
-    <string name="menu_item_none">ei mitään</string>
-    <string name="notification_action_stop">Pysäytä</string>
-    <string name="notification_action_fast_forward">Nopeasti eteenpäin</string>
-    <string name="notification_action_rewind">Kelaa taaksepäin</string>
+    <string name="menu_item_none">Ei mitään</string>
+    <string name="notification_action_stop">Lopeta</string>
+    <string name="notification_action_fast_forward">Siirry eteenpäin</string>
+    <string name="notification_action_rewind">Siirry takaisinpäin</string>
     <string name="notification_action_previous">Edellinen</string>
-    <string name="download_no_storage_permission">Tiedostoja ei voida ladata ilman tallennusoikeuksia</string>
-    <string name="available_servers_title">Käytettävät palvelimet</string>
-    <string name="connection_error_cannot_connect">Yhteyttä ei voida muodostaa.
-\nTarkista isäntänimi ja verkkoyhteytesi.</string>
+    <string name="download_no_storage_permission">Tiedostojen lataus ei ole mahdollista ilman tallennustilan käyttöoikeutta</string>
+    <string name="available_servers_title">Käytettävissä olevat palvelimet</string>
+    <string name="connection_error_cannot_connect">Yhteyden muodostus ei onnistu. 
+\nTarkista isäntäpalvelimen osoite ja verkkoyhteytesi.</string>
     <string name="notification_action_next">Seuraava</string>
     <string name="notification_action_play">Toista</string>
     <string name="notification_action_pause">Pysäytä</string>
@@ -67,14 +67,14 @@
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Salli kirkkauden ja äänenvoimakkuuden säädön eleet alkuperäisessä soittimessa</string>
     <string name="connection_error_invalid_version">Palvelin käyttää versiota, jota ei tueta. Lataa uusin versio osoitteesta jellyfin.org.</string>
     <string name="media_service_car_item_no_title">Nimetön</string>
-    <string name="music_notification_channel_description">Käytetään musiikkitoiston hallintaan</string>
+    <string name="music_notification_channel_description">Käytetään musiikin toiston ohjaukseen</string>
     <string name="music_notification_channel">Jellyfin-musiikkisoitin</string>
     <string name="media_service_car_section_playlists">Soittolistat</string>
     <string name="media_service_car_section_genres">Tyylilajit</string>
     <string name="media_service_car_section_songs">Kappaleet</string>
-    <string name="media_service_car_section_artists">Artistit</string>
+    <string name="media_service_car_section_artists">Esittäjät</string>
     <string name="media_service_car_section_albums">Albumit</string>
-    <string name="media_service_car_section_recents">Äskettäin toistettu</string>
+    <string name="media_service_car_section_recents">Hiljattain toistettu</string>
     <string name="media_service_item_not_found">Mediatiedostoa ei löytynyt</string>
     <string name="media_service_generic_error">Tapahtui virhe</string>
 </resources>
