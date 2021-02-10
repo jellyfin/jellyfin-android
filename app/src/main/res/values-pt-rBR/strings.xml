@@ -78,4 +78,6 @@
     <string name="media_service_car_section_artists">Artistas</string>
     <string name="media_service_car_section_albums">Álbuns</string>
     <string name="media_service_car_section_songs">Músicas</string>
+    <string name="pref_download_location">Localização de download</string>
+    <string name="pref_category_downloads">Downloads</string>
 </resources>
