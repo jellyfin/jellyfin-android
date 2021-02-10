@@ -9,10 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
-import android.webkit.WebResourceRequest
-import android.webkit.WebResourceResponse
-import android.webkit.WebView
+import android.webkit.*
 import androidx.activity.addCallback
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
@@ -20,9 +17,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.webkit.WebResourceErrorCompat
-import androidx.webkit.WebViewClientCompat
-import androidx.webkit.WebViewFeature
 import kotlinx.coroutines.launch
 import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.mobile.MainActivity
@@ -128,7 +122,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun WebView.initialize() {
-        webViewClient = object : WebViewClientCompat() {
+        webViewClient = object : WebViewClient() {
             override fun shouldInterceptRequest(webView: WebView, request: WebResourceRequest): WebResourceResponse? {
                 val url = request.url
                 val path = url.path?.toLowerCase(Locale.ROOT) ?: return null
@@ -178,8 +172,8 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                 if (request.url == Uri.parse(instanceUrl)) onErrorReceived()
             }
 
-            override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceErrorCompat) {
-                val description = if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_RESOURCE_ERROR_GET_DESCRIPTION)) error.description else null
+            override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
+                val description = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) error.description else null
                 Timber.e("Received WebView error at %s: %s", request.url.toString(), description)
 
                 if (request.url.toString() == instanceUrl) onErrorReceived()
