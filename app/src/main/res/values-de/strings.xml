@@ -78,4 +78,6 @@
     <string name="media_service_car_section_albums">Alben</string>
     <string name="media_service_car_section_recents">Zuletzt abgespielt</string>
     <string name="media_service_item_not_found">Medium konnte nicht gefunden werden</string>
+    <string name="pref_download_location">Speicherort</string>
+    <string name="pref_category_downloads">Downloads</string>
 </resources>
