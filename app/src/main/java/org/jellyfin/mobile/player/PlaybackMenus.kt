@@ -83,7 +83,15 @@ class PlaybackMenus(
                 "${fragment.getString(R.string.playback_info_video_streams)}:\n",
                 limit = 3,
                 truncated = fragment.getString(R.string.playback_info_and_x_more, size - 3)
-            ) { "- ${it.title}" }
+            ) {
+                val bitrate = it.bitrate
+                val bitrateString = when {
+                    bitrate > 1_000_000 -> String.format("%.2f Mbps", bitrate.toDouble() / 1_000_000)
+                    bitrate > 1_000 -> String.format("%.2f kbps", bitrate.toDouble() / 1_000)
+                    else -> String.format("%d kbps", bitrate / 1000)
+                }
+                "- ${it.title} ($bitrateString)"
+            }
         }
         val audioTracksInfo = item.audioTracksGroup.tracks.run {
             joinToString(

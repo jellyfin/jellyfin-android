@@ -12,6 +12,7 @@ sealed class ExoPlayerTrack(track: JSONObject) {
     class Video(track: JSONObject) : ExoPlayerTrack(track) {
         val width: Int = track.optInt("Width", -1)
         val height: Int = track.optInt("Height", -1)
+        val bitrate: Long = track.optLong("BitRate", -1)
         val aspectRatio: Rational = Rational(width, height)
 
         override fun toString() = "ExoPlayerTrack.Video#$index(title=$title)"
