@@ -14,7 +14,8 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.analytics.AnalyticsCollector
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.util.Clock
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -120,7 +121,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val mediaSource = mediaSourceManager.jellyfinMediaSource.value
         if (playerState != null && mediaSource != null) {
             // viewModelScope is already cancelled at this point, so we need a fallback
-            GlobalScope.launch {
+            CoroutineScope(Dispatchers.Main).launch {
                 // Report playback stop to webapp - necessary for playlists to work
                 webappFunctionChannel.exoPlayerNotifyStopped()
 
