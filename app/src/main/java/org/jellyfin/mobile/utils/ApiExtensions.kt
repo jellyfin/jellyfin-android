@@ -7,7 +7,11 @@ import org.jellyfin.apiclient.model.configuration.ServerConfiguration
 import org.jellyfin.apiclient.model.dto.BaseItemDto
 import org.jellyfin.apiclient.model.dto.UserItemDataDto
 import org.jellyfin.apiclient.model.playlists.PlaylistItemQuery
-import org.jellyfin.apiclient.model.querying.*
+import org.jellyfin.apiclient.model.querying.ArtistsQuery
+import org.jellyfin.apiclient.model.querying.ItemQuery
+import org.jellyfin.apiclient.model.querying.ItemsByNameQuery
+import org.jellyfin.apiclient.model.querying.ItemsResult
+import org.jellyfin.apiclient.model.querying.LatestItemsQuery
 import org.jellyfin.apiclient.model.session.PlaybackProgressInfo
 import org.jellyfin.apiclient.model.session.PlaybackStopInfo
 import org.jellyfin.apiclient.model.system.PublicSystemInfo
@@ -15,7 +19,6 @@ import timber.log.Timber
 import java.util.*
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 val PRODUCT_NAME_SUPPORTED_SINCE: Pair<Int, Int> = 10 to 7
@@ -29,12 +32,12 @@ suspend fun ApiClient.getServerConfiguration(): ServerConfiguration? = suspendCo
     GetServerConfigurationAsync(ContinuationResponse(continuation))
 }
 
-suspend fun ApiClient.reportPlaybackProgress(progressInfo: PlaybackProgressInfo) = suspendCoroutine<Unit> { continuation ->
-    ReportPlaybackProgressAsync(progressInfo, ContinuationEmptyResponse(continuation))
+suspend fun ApiClient.reportPlaybackProgress(progressInfo: PlaybackProgressInfo) = suspendCoroutine<Boolean> { continuation ->
+    ReportPlaybackProgressAsync(progressInfo, ContinuationStatusResponse(continuation))
 }
 
-suspend fun ApiClient.reportPlaybackStopped(stopInfo: PlaybackStopInfo) = suspendCoroutine<Unit> { continuation ->
-    ReportPlaybackStoppedAsync(stopInfo, ContinuationEmptyResponse(continuation))
+suspend fun ApiClient.reportPlaybackStopped(stopInfo: PlaybackStopInfo) = suspendCoroutine<Boolean> { continuation ->
+    ReportPlaybackStoppedAsync(stopInfo, ContinuationStatusResponse(continuation))
 }
 
 suspend fun ApiClient.markPlayed(itemId: String, userId: String): UserItemDataDto? = suspendCoroutine { continuation ->
@@ -76,13 +79,13 @@ class ContinuationResponse<T>(private val continuation: Continuation<T?>) : Resp
     }
 }
 
-class ContinuationEmptyResponse(private val continuation: Continuation<Unit>) : EmptyResponse() {
+class ContinuationStatusResponse(private val continuation: Continuation<Boolean>) : EmptyResponse() {
     override fun onResponse() {
-        continuation.resume(Unit)
+        continuation.resume(true)
     }
 
     override fun onError(exception: Exception) {
         Timber.e(exception)
-        continuation.resumeWithException(exception)
+        continuation.resume(false)
     }
 }
