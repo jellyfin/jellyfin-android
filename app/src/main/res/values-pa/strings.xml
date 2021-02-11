@@ -69,4 +69,6 @@
     <string name="connection_error_invalid_format">ਹੋਸਟ ਦਾ ਇੱਕ ਅਵੈਧ ਫਾਰਮੈਟ ਹੈ</string>
     <string name="host_input_hint">ਹੋਸਟ</string>
     <string name="connect_to_server_title">ਸਰਵਰ ਨਾਲ ਜੁੜੋ</string>
+    <string name="pref_download_location">ਡਾਉਨਲੋਡ ਟਿਕਾਣਾ</string>
+    <string name="pref_category_downloads">ਡਾਉਨਲੋਡਸ</string>
 </resources>
