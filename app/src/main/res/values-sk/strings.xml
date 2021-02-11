@@ -71,4 +71,6 @@
     <string name="media_service_item_not_found">Položka média nebola nájdená</string>
     <string name="media_service_generic_error">Došlo k chybe</string>
     <string name="connection_error_invalid_version">Server používa nepodporovanú verziu. Aktualizujte ho na najnovšiu verziu dostupnú na webe jellyfin.org.</string>
+    <string name="pref_download_location">Umiestnenie sťahovania</string>
+    <string name="pref_category_downloads">Stiahnuté</string>
 </resources>
