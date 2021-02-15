@@ -78,4 +78,6 @@
     <string name="media_service_car_section_recents">最近播放</string>
     <string name="media_service_item_not_found">未找到媒体项</string>
     <string name="media_service_generic_error">发生了一个错误</string>
+    <string name="pref_download_location">下载位置</string>
+    <string name="pref_category_downloads">下载</string>
 </resources>
