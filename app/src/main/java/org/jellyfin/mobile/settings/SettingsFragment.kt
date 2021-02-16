@@ -7,12 +7,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import de.Maxr1998.modernpreferences.Preference
 import de.Maxr1998.modernpreferences.PreferencesAdapter
-import de.Maxr1998.modernpreferences.helpers.*
+import de.Maxr1998.modernpreferences.helpers.categoryHeader
+import de.Maxr1998.modernpreferences.helpers.checkBox
+import de.Maxr1998.modernpreferences.helpers.defaultOnSelectionChange
+import de.Maxr1998.modernpreferences.helpers.screen
+import de.Maxr1998.modernpreferences.helpers.singleChoice
 import de.Maxr1998.modernpreferences.preferences.choice.SelectionItem
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.FragmentSettingsBinding
-import org.jellyfin.mobile.utils.*
+import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
+import org.jellyfin.mobile.utils.getDownloadsPaths
+import org.jellyfin.mobile.utils.isPackageInstalled
+import org.jellyfin.mobile.utils.requireMainActivity
+import org.jellyfin.mobile.utils.withThemedContext
 import org.koin.android.ext.android.inject
 
 class SettingsFragment : Fragment() {

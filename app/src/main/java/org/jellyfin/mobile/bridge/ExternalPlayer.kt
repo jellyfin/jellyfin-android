@@ -1,8 +1,8 @@
 package org.jellyfin.mobile.bridge
 
 import android.app.Activity
-import android.content.Context
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.webkit.JavascriptInterface
@@ -14,8 +14,8 @@ import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
-import org.jellyfin.mobile.utils.runOnUiThread
 import org.jellyfin.mobile.utils.isPackageInstalled
+import org.jellyfin.mobile.utils.runOnUiThread
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.json.JSONException

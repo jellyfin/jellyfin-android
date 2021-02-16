@@ -1,6 +1,10 @@
 package org.jellyfin.mobile.model.sql.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
 import org.jellyfin.mobile.model.sql.entity.ServerUser
 import org.jellyfin.mobile.model.sql.entity.UserEntity
 import org.jellyfin.mobile.model.sql.entity.UserEntity.Key.ACCESS_TOKEN

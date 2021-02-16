@@ -1,7 +1,11 @@
 package org.jellyfin.mobile.utils
 
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-import android.app.*
+import android.app.Activity
+import android.app.AlertDialog
+import android.app.DownloadManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
