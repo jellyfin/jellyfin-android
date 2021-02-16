@@ -175,6 +175,7 @@ public final class Chromecast implements IChromecast {
     public boolean setup(JavascriptCallback javascriptCallback) {
         this.eventCallback = javascriptCallback;
         // Ensure any existing scan is stopped
+        if (connection == null) return false;
         connection.stopRouteScan(clientScan, () -> {
             if (scanCallback != null) {
                 scanCallback.error(ChromecastUtilities.createError("cancel", "Scan stopped because setup triggered."));
@@ -196,6 +197,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean initialize(final String appId, String autoJoinPolicy, String defaultActionPolicy, final JavascriptCallback javascriptCallback) {
+        if (connection == null) return false;
         connection.initialize(appId, javascriptCallback);
         return true;
     }
@@ -210,6 +212,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean requestSession(final JavascriptCallback javascriptCallback) {
+        if (connection == null) return false;
         connection.requestSession(new ChromecastConnection.RequestSessionCallback() {
             @Override
             public void onJoin(JSONObject jsonSession) {
@@ -238,6 +241,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean selectRoute(final String routeId, final JavascriptCallback javascriptCallback) {
+        if (connection == null) return false;
         connection.selectRoute(routeId, new ChromecastConnection.SelectRouteCallback() {
             @Override
             public void onJoin(JSONObject jsonSession) {
@@ -479,6 +483,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean sessionStop(JavascriptCallback javascriptCallback) {
+        if (connection == null) return false;
         connection.endSession(true, javascriptCallback);
         return true;
     }
@@ -490,6 +495,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean sessionLeave(JavascriptCallback javascriptCallback) {
+        if (connection == null) return false;
         connection.endSession(false, javascriptCallback);
         return true;
     }
@@ -503,6 +509,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean startRouteScan(JavascriptCallback javascriptCallback) {
+        if (connection == null) return false;
         if (scanCallback != null) {
             scanCallback.error(ChromecastUtilities.createError("cancel", "Started a new route scan before stopping previous one."));
         }
@@ -537,6 +544,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean stopRouteScan(JavascriptCallback javascriptCallback) {
+        if (connection == null) return false;
         // Stop any other existing clientScan
         connection.stopRouteScan(clientScan, () -> {
             if (scanCallback != null) {
@@ -573,7 +581,9 @@ public final class Chromecast implements IChromecast {
         sessionStop(callback);
         media.destroy();
         media = null;
-        connection.destroy();
+        if (connection != null) {
+            connection.destroy();
+        }
         connection = null;
         eventCallback = null;
     }
