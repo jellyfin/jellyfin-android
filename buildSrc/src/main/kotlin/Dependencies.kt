@@ -44,9 +44,9 @@ object Dependencies {
         const val timber = "4.7.1"
         const val leakCanary = "2.6"
         const val redScreenOfDeath = "0.1.2"
-        const val junit = "5.7.0"
-        const val kotest = "4.4.0"
-        const val mockk = "1.10.5"
+        const val junit = "5.7.1"
+        const val kotest = "4.4.1"
+        const val mockk = "1.10.6"
         const val androidXRunner = "1.3.0"
         const val androidXEspresso = "3.3.0"
 
