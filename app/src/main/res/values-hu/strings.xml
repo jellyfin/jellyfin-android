@@ -78,4 +78,6 @@
     <string name="media_service_car_section_recents">Nemrég lejátszott</string>
     <string name="media_service_item_not_found">A médiaelem nem található</string>
     <string name="media_service_generic_error">Hiba történt</string>
+    <string name="pref_download_location">Letöltés helye</string>
+    <string name="pref_category_downloads">Letöltések</string>
 </resources>
