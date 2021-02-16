@@ -5,5 +5,5 @@ import com.google.android.exoplayer2.Player
 interface ICastPlayerProvider {
     val isCastSessionAvailable: Boolean
 
-    fun get(): Player
+    fun get(): Player?
 }
