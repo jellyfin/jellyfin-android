@@ -23,7 +23,7 @@ object Dependencies {
         const val constraintLayout = "2.0.4"
         const val material = "1.3.0"
         const val webkitX = "1.4.0"
-        const val modernAndroidPreferences = "1.1.0"
+        const val modernAndroidPreferences = "2.0"
 
         // Room
         const val room = "2.2.6"
@@ -86,7 +86,7 @@ object Dependencies {
         const val material = "com.google.android.material:material:${Versions.material}"
         val webkitX = androidx("webkit", Versions.webkitX)
         val exoPlayer = exoPlayer("ui")
-        const val modernAndroidPreferences = "de.Maxr1998.android:modernpreferences:${Versions.modernAndroidPreferences}"
+        const val modernAndroidPreferences = "de.maxr1998:modernandroidpreferences:${Versions.modernAndroidPreferences}"
     }
 
     object Room {
