@@ -1,9 +1,20 @@
 root = true
 
 [*]
+end_of_line = lf
 insert_final_newline = true
+ij_visual_guides = 120, 180
+
+[*.bat]
+end_of_line = crlf
 
 [{*.kts, *.kt}]
 charset = utf-8
 indent_style = space
 indent_size = 4
+max_line_length = 200 # Prefer manual wrapping
+trim_trailing_whitespace = true
+
+ij_kotlin_code_style_defaults = KOTLIN_OFFICIAL
+ij_kotlin_name_count_to_use_star_import = 999
+ij_kotlin_name_count_to_use_star_import_for_members = 999
