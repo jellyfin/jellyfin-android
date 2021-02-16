@@ -78,4 +78,6 @@
     <string name="media_service_car_section_recents">Recentelijk afgespeeld</string>
     <string name="media_service_item_not_found">Media item kon niet worden gevonden</string>
     <string name="media_service_generic_error">Er is een fout opgetreden</string>
+    <string name="pref_download_location">Download locatie</string>
+    <string name="pref_category_downloads">Downloads</string>
 </resources>
