@@ -135,7 +135,7 @@ class MediaService : MediaBrowserServiceCompat() {
 
         switchToPlayer(
             previousPlayer = null,
-            newPlayer = if (castPlayerProvider.isCastSessionAvailable) castPlayerProvider.get() else exoPlayer
+            newPlayer = if (castPlayerProvider.isCastSessionAvailable) castPlayerProvider.get()!! else exoPlayer
         )
         notificationManager.showNotificationForPlayer(currentPlayer)
 
@@ -162,7 +162,7 @@ class MediaService : MediaBrowserServiceCompat() {
         clientPackageName: String,
         clientUid: Int,
         rootHints: Bundle?
-    ): BrowserRoot? = libraryBrowser.getRoot(rootHints)
+    ): BrowserRoot = libraryBrowser.getRoot(rootHints)
 
     override fun onLoadChildren(parentId: String, result: Result<List<MediaItem>>) {
         result.detach()
@@ -199,12 +199,15 @@ class MediaService : MediaBrowserServiceCompat() {
             exoPlayer.setMediaItems(mediaItems)
             exoPlayer.prepare()
             exoPlayer.seekTo(initialPlaybackIndex, playbackStartPositionMs)
-        } else /* currentPlayer == castPlayer */ {
-            castPlayerProvider.get().setMediaItems(
-                mediaItems,
-                initialPlaybackIndex,
-                playbackStartPositionMs,
-            )
+        } else {
+            val castPlayer = castPlayerProvider.get()
+            if (currentPlayer == castPlayer) {
+                castPlayer.setMediaItems(
+                    mediaItems,
+                    initialPlaybackIndex,
+                    playbackStartPositionMs,
+                )
+            }
         }
     }
 
@@ -241,7 +244,8 @@ class MediaService : MediaBrowserServiceCompat() {
 
     @Suppress("unused")
     fun onCastSessionAvailable() {
-        switchToPlayer(currentPlayer, castPlayerProvider.get())
+        val castPlayer = castPlayerProvider.get() ?: return
+        switchToPlayer(currentPlayer, castPlayer)
     }
 
     @Suppress("unused")
