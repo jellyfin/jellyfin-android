@@ -1,6 +1,10 @@
 package org.jellyfin.mobile.model.sql.entity
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
+import androidx.room.PrimaryKey
 import org.jellyfin.mobile.model.sql.entity.UserEntity.Key.SERVER_ID
 import org.jellyfin.mobile.model.sql.entity.UserEntity.Key.TABLE_NAME
 import org.jellyfin.mobile.model.sql.entity.UserEntity.Key.USER_ID

@@ -18,10 +18,29 @@ import org.jellyfin.apiclient.model.entities.CollectionType
 import org.jellyfin.apiclient.model.entities.ImageType
 import org.jellyfin.apiclient.model.entities.SortOrder
 import org.jellyfin.apiclient.model.playlists.PlaylistItemQuery
-import org.jellyfin.apiclient.model.querying.*
+import org.jellyfin.apiclient.model.querying.ArtistsQuery
+import org.jellyfin.apiclient.model.querying.ItemFilter
+import org.jellyfin.apiclient.model.querying.ItemQuery
+import org.jellyfin.apiclient.model.querying.ItemSortBy
+import org.jellyfin.apiclient.model.querying.ItemsByNameQuery
+import org.jellyfin.apiclient.model.querying.ItemsResult
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.media.*
-import org.jellyfin.mobile.utils.*
+import org.jellyfin.mobile.media.MediaService
+import org.jellyfin.mobile.media.mediaId
+import org.jellyfin.mobile.media.setAlbum
+import org.jellyfin.mobile.media.setAlbumArtUri
+import org.jellyfin.mobile.media.setAlbumArtist
+import org.jellyfin.mobile.media.setArtist
+import org.jellyfin.mobile.media.setDisplayIconUri
+import org.jellyfin.mobile.media.setMediaId
+import org.jellyfin.mobile.media.setMediaUri
+import org.jellyfin.mobile.media.setTitle
+import org.jellyfin.mobile.media.setTrackNumber
+import org.jellyfin.mobile.utils.getArtists
+import org.jellyfin.mobile.utils.getGenres
+import org.jellyfin.mobile.utils.getItems
+import org.jellyfin.mobile.utils.getPlaylistItems
+import org.jellyfin.mobile.utils.getUserViews
 import timber.log.Timber
 import java.net.URLEncoder
 import java.util.*
@@ -327,7 +346,7 @@ class LibraryBrowser(
         return apiClient.getPlaylistItems(query)?.extractItems("${LibraryPage.PLAYLIST}|$playlistId")
     }
 
-    private fun ItemsResult.extractItems(libraryId: String? = null): List<MediaMetadataCompat>? =
+    private fun ItemsResult.extractItems(libraryId: String? = null): List<MediaMetadataCompat> =
         items.map { item -> buildMediaMetadata(item, libraryId) }.toList()
 
     private fun buildMediaMetadata(item: BaseItemDto, libraryId: String?): MediaMetadataCompat {
