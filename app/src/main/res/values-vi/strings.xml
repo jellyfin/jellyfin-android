@@ -76,4 +76,6 @@
     <string name="media_service_car_section_recents">Phát gần đây</string>
     <string name="media_service_item_not_found">Không tìm thấy mục phương tiện</string>
     <string name="media_service_generic_error">Đã xảy ra lỗi</string>
+    <string name="pref_download_location">Nơi tải xuống</string>
+    <string name="pref_category_downloads">Tải xuống</string>
 </resources>
