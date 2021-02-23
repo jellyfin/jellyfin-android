@@ -1,0 +1,16 @@
+name: Merge conflicts labeler
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  push:
+
+jobs:
+  triage:
+    runs-on: ubuntu-20.04
+    if: github.repository == 'jellyfin/jellyfin-android'
+    steps:
+      - uses: mschilde/auto-label-merge-conflicts@v2.0
+        with:
+          CONFLICT_LABEL_NAME: merge conflict
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
