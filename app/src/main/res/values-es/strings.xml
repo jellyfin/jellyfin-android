@@ -78,4 +78,6 @@
     <string name="media_service_car_section_recents">Reproducido reciéntemente</string>
     <string name="media_service_item_not_found">No se puede entontrar ítem de multimedia</string>
     <string name="media_service_generic_error">Ha habido un error</string>
+    <string name="pref_download_location">Ubicación de la descarga</string>
+    <string name="pref_category_downloads">Descargas</string>
 </resources>
