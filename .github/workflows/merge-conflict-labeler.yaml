@@ -7,7 +7,7 @@ on:
 
 jobs:
   triage:
-    runs-on: ubuntu-ubuntu
+    runs-on: ubuntu-latest
     if: github.repository == 'jellyfin/jellyfin-android'
     steps:
       - uses: mschilde/auto-label-merge-conflicts@v2.0
