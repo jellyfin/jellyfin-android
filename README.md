@@ -23,15 +23,24 @@
 <a href="https://features.jellyfin.org">
 <img alt="Feature Requests" src="https://img.shields.io/badge/fider-vote%20on%20features-success.svg"/>
 </a>
-<a href="https://forum.jellyfin.org">
-<img alt="Discuss on our Forum" src="https://img.shields.io/discourse/https/forum.jellyfin.org/users.svg"/>
-</a>
 <a href="https://matrix.to/#/+jellyfin:matrix.org">
 <img alt="Chat on Matrix" src="https://img.shields.io/matrix/jellyfin:matrix.org.svg?logo=matrix"/>
 </a>
 <a href="https://www.reddit.com/r/jellyfin/">
 <img alt="Join our Subreddit" src="https://img.shields.io/badge/reddit-r%2Fjellyfin-%23FF5700.svg"/>
 </a>
+<br/>
+<a href="https://play.google.com/store/apps/details?id=org.jellyfin.mobile">
+<img width="153" src="https://jellyfin.org/images/store-icons/google-play.png" alt="Jellyfin on Google Play"/>
+</a>
+<a href="https://www.amazon.com/gp/aw/d/B081RFTTQ9">
+<img width="153" src="https://jellyfin.org/images/store-icons/amazon.png" alt="Jellyfin on Amazon Appstore"/>
+</a>
+<a href="https://f-droid.org/en/packages/org.jellyfin.mobile/">
+<img width="153" src="https://jellyfin.org/images/store-icons/fdroid.png" alt="Jellyfin on F-Droid"/>
+</a>
+<br/>
+<a href="https://repo.jellyfin.org/releases/client/android/">Download archive</a>
 </p>
 
 Jellyfin Mobile is an Android app that connects to Jellyfin instances and integrates with the [official web client](https://github.com/jellyfin/jellyfin-web).
