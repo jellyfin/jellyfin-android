@@ -72,7 +72,7 @@
     <string name="media_service_car_section_genres">Thể Loại</string>
     <string name="media_service_car_section_songs">Bài Hát</string>
     <string name="media_service_car_section_artists">Nghệ Sĩ</string>
-    <string name="media_service_car_section_albums">Albums</string>
+    <string name="media_service_car_section_albums">Tuyển Tập</string>
     <string name="media_service_car_section_recents">Phát gần đây</string>
     <string name="media_service_item_not_found">Không tìm thấy mục phương tiện</string>
     <string name="media_service_generic_error">Đã xảy ra lỗi</string>
