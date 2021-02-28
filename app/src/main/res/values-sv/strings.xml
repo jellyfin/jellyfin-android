@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="download_no_storage_permission">Kan inte ladda ner filer utan lagringsrättigheter</string>
+    <string name="download_no_storage_permission">Kan inte ladda ner filer utan lagringsbehörigheter</string>
     <string name="video_player_external">Extern spelare</string>
     <string name="video_player_native">Inbyggd spelare</string>
     <string name="video_player_web">Webbspelare</string>
@@ -20,23 +20,23 @@
     <string name="notification_action_rewind">Spola tillbaka</string>
     <string name="notification_action_previous">Föregående</string>
     <string name="downloading">Laddar ner</string>
-    <string name="mobile_data_and_roaming">Mobildata och roaming</string>
+    <string name="mobile_data_and_roaming">Mobildata &amp; roaming</string>
     <string name="mobile_data">Mobildata</string>
-    <string name="wifi_only">Bara WiFi</string>
+    <string name="wifi_only">Endast WiFi</string>
     <string name="network_title">Tillåtna nätverkstyper</string>
     <string name="available_servers_title">Tillgängliga servrar</string>
     <string name="choose_server_button_text">Välj server</string>
     <string name="connect_button_text">Anslut</string>
-    <string name="connection_error_invalid_format">Fel format på host</string>
-    <string name="host_input_hint">Host</string>
+    <string name="connection_error_invalid_format">Fel format för värd</string>
+    <string name="host_input_hint">Värd</string>
     <string name="connect_to_server_title">Anslut till server</string>
     <string name="external_player_unknown_error">Okänt fel i extern spelare. Uppspelningsspårning är inaktiverad.</string>
     <string name="external_player_invalid_player">Ingen giltig extern spelare har valts. Uppspelningsspårning är inaktiverad.</string>
     <string name="external_player_invalid_play_method">Felaktig uppspelningsmetod.</string>
-    <string name="network_message">Vill du tillåta nedladdningen att använda mobildata eller roamingnätverk\? Avgifter från din leverantör kan tillkomma.</string>
-    <string name="battery_optimizations_message">Var god och inaktivera batterioptimeringar för att kunna spela upp media medans skärmen är avslagen.</string>
-    <string name="connection_error_cannot_connect">Anslutningen kan inte upprättas.
-\nVar god kontrollera servernamnet och din nätverksanslutning.</string>
+    <string name="network_message">Vill du tillåta nedladdningen att använda mobildata eller roaming\? Avgifter från din leverantör kan tillkomma.</string>
+    <string name="battery_optimizations_message">Var god och inaktivera batterioptimeringar för att kunna spela upp media medan skärmen är avslagen.</string>
+    <string name="connection_error_cannot_connect">Anslutning kan inte upprättas. 
+\nVar god och kontrollera värdnamn och din nätverksanslutning.</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Tillåt gester för ljusstyrka och volym i den inbyggda spelaren</string>
     <string name="pref_exoplayer_allow_background_audio">Tillåt uppspelning av ljud i bakgrunden i den inbyggda spelaren</string>
     <string name="video_player_external_description">Externa videospelare som MX Player och VLC</string>
@@ -65,7 +65,7 @@
     <string name="external_player_mpv">MPV-spelare</string>
     <string name="external_player_app">Extern uppspelningsapp</string>
     <string name="connection_error_invalid_version">Servern använder en version som ej stöds. Uppgradera till den senaste versionen på jellyfin.org.</string>
-    <string name="music_notification_channel">Jellyfin Musikspelare</string>
+    <string name="music_notification_channel">Jellyfin musikspelare</string>
     <string name="media_service_car_item_no_title">Titel saknas</string>
     <string name="media_service_car_section_playlists">Spellistor</string>
     <string name="media_service_car_section_genres">Genrer</string>
@@ -75,5 +75,7 @@
     <string name="media_service_car_section_recents">Nyligen spelat</string>
     <string name="media_service_generic_error">Ett fel uppstod</string>
     <string name="music_notification_channel_description">Används till uppspelningskontroller för musik</string>
-    <string name="media_service_item_not_found">Media objekt kunde inte hittas</string>
+    <string name="media_service_item_not_found">Mediaobjekt kunde inte hittas</string>
+    <string name="pref_download_location">Nedladdningsplats</string>
+    <string name="pref_category_downloads">Nedladdningar</string>
 </resources>
