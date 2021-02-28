@@ -78,4 +78,6 @@
     <string name="media_service_generic_error">Une erreur est survenue</string>
     <string name="media_service_item_not_found">L\'élément multimédia est introuvable</string>
     <string name="music_notification_channel_description">Utilisé pour le contrôle de la lecture de musique</string>
+    <string name="pref_download_location">Emplacement de téléchargement</string>
+    <string name="pref_category_downloads">Téléchargements</string>
 </resources>
