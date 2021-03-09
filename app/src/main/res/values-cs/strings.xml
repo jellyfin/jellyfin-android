@@ -78,4 +78,6 @@
     <string name="media_service_car_section_recents">Naposledy přehrané</string>
     <string name="media_service_item_not_found">Položka média nebyla nalezena</string>
     <string name="media_service_generic_error">Došlo k chybě</string>
+    <string name="pref_download_location">Umístění stahování</string>
+    <string name="pref_category_downloads">Stažené</string>
 </resources>
