@@ -76,4 +76,6 @@
     <string name="media_service_car_section_recents">最近再生した項目</string>
     <string name="media_service_item_not_found">メディアの項目が見つかりませんでした</string>
     <string name="media_service_generic_error">エラーが発生しました</string>
+    <string name="pref_download_location">ダウンロード場所</string>
+    <string name="pref_category_downloads">ダウンロード</string>
 </resources>
