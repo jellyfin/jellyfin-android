@@ -1,13 +1,13 @@
 Sızdıŋ tasyğyşderekterıŋız, öz şarttaryŋyz boiynşa.
 
-Jellyfın jobasy - būl aşyq kodyndağy azat bağdarlamalyq jasaqtama negızındegı media-server. Eşqandai aqysyz, eşqandai qadağalausyz, eşqandai jasyryn josparsyz. Özıŋızdıŋ barlyq dybystardy, beinelerdi, fotosuretterdı jäne tağy basqalaryn bır jerde jinauğa mümkındık beretın tegin serverımızdı alyŋyz.
+Jellyfın jobasy - būl aşyq kodyndağy azat bağdarlamalyq jasaqtama negızındegı media-server. Eşqandai aqysyz, eşqandai qadağalausyz, eşqandai jasyryn josparsyz. Özıŋızdıŋ barlyq dybystardy, beinelerdı, fotosuretterdı jäne tağy basqalaryn bır jerde jinauğa mümkındık beretın tegın serverımızdı alyŋyz.
 
-Qoldanbany paidalanu üşın sızde Jellyfın-server ornatylğan jäne jūmys ıstep tūruy kerek. Ony <a href="https://jellyfın.org/" target="_blank">jellyfın.org</a> saitynda köbırek bılıŋız.
+Qoldanbany paidalanu üşın sızde Jellyfın-server ornatylyp jäne jūmys ıstep tūruy kerek. Ony <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a> saitynda köbırek bılıŋız.
 
 Jellyfın-serverımen sız:
 
-* Jellyfın-serverınen efirlik TD men jazylğan körsetımderdı qaraisyz (qosymşa jabdyq / qyzmetter qajet);
-* Jelıŋizdegı Chromecast-qūrylğysyna ağyn taratasyz;
+* Jellyfın-serverınen efirlık TD men jazylğan körsetımderdı qaraisyz (qosymşa jabdyq / qyzmetter qajet);
+* Jelıŋızdegı Chromecast-qūrylğysyna ağyn taratasyz;
 * Öz tasyğyşderekterıŋızdı Androıd-qūrylğysyna jıberesız;
 * Öz jiyntyqtaŋyzdy qoldanuğa yŋğaily interfeiste qarap şyğasyz.
 
