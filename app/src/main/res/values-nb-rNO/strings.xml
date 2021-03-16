@@ -10,7 +10,7 @@
     <string name="connection_error_invalid_format">Tjeneren har et ugyldig format</string>
     <string name="connect_button_text">Koble til</string>
     <string name="host_input_hint">Tjener</string>
-    <string name="connect_to_server_title">Koble til server</string>
+    <string name="connect_to_server_title">Koble til tjener</string>
     <string name="playback_info_audio_streams">Lyd-strømmer</string>
     <string name="playback_info_video_streams">Video-strømmer</string>
     <string name="menu_item_none">Ingen</string>
