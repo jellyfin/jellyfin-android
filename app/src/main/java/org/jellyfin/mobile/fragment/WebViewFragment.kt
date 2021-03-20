@@ -5,13 +5,11 @@ import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
-import android.webkit.WebResourceRequest
-import android.webkit.WebResourceResponse
-import android.webkit.WebView
+import android.webkit.*
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
@@ -219,7 +217,27 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                 if (request.url.toString() == instanceUrl) onErrorReceived()
             }
         }
-        webChromeClient = WebChromeClient()
+        webChromeClient = object : WebChromeClient() {
+            override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
+                val logLevel = when (consoleMessage.messageLevel()) {
+                    ConsoleMessage.MessageLevel.ERROR -> Log.ERROR
+                    ConsoleMessage.MessageLevel.WARNING -> Log.WARN
+                    ConsoleMessage.MessageLevel.DEBUG -> Log.DEBUG
+                    ConsoleMessage.MessageLevel.TIP -> Log.VERBOSE
+                    else -> Log.INFO
+                }
+
+                Timber.tag("WebView").log(
+                    logLevel,
+                    "%s, %s (%d)",
+                    consoleMessage.message(),
+                    consoleMessage.sourceId(),
+                    consoleMessage.lineNumber(),
+                )
+
+                return true
+            }
+        }
         settings.applyDefault()
         addJavascriptInterface(NativeInterface(this@WebViewFragment), "NativeInterface")
         addJavascriptInterface(NativePlayer(this@WebViewFragment), "NativePlayer")
