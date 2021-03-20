@@ -1431,7 +1431,12 @@ function handleError (err, callback) {
     }
 
     var error = new chrome.cast.Error(err, desc, {});
-    console.error('Encountered cast error', error);
+    try {
+        console.error('Encountered cast error', JSON.stringify(error));
+    } catch {
+        console.error('Encountered cast error', error);
+    }
+
     if (callback) {
         callback(error);
     }
