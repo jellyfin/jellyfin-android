@@ -55,4 +55,20 @@
 \nUndersøg venligst værtsnavnet og din internet forbindelse.</string>
     <string name="host_input_hint">Vært</string>
     <string name="connect_to_server_title">Forbind til server</string>
+    <string name="connection_error_invalid_format">Værten har et ugyldigt format</string>
+    <string name="pref_download_location">Overførelse placering</string>
+    <string name="pref_category_downloads">Overførelser</string>
+    <string name="external_player_system_default_description">Lad systemet håndtere afspillerens valgmuligheder, nogle afspillere er muligvis ikke fuldt kompatible.</string>
+    <string name="external_player_system_default">System standard</string>
+    <string name="external_player_vlc_player_description">Gratis og open source multimedieafspiller på tværs af platforme, der spiller de fleste multimediefiler.</string>
+    <string name="external_player_vlc_player">VLC Player</string>
+    <string name="external_player_mx_player_pro_description">Den betalte version af MX Player, som giver en uafbrudt videooplevelse.</string>
+    <string name="external_player_mx_player_pro">MX Player Pro</string>
+    <string name="external_player_mx_player_free_description">Kraftig videoafspiller med avanceret hardwareacceleration og understøttelse af undertekster.</string>
+    <string name="external_player_mx_player_free">MX Player Free</string>
+    <string name="external_player_mpv_description">En simpel, lille og letvægtig gratis (Som i frihed) video afspiller. Den understøtter en lang række mediefilformater.</string>
+    <string name="external_player_mpv">MPV Player</string>
+    <string name="external_player_app">Ekstern afspiller app</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Tillad lys- og lydbevægelser i den oprindelige afspiller</string>
+    <string name="pref_exoplayer_allow_background_audio">Tillad afspilning af musik i baggrunden i den oprindelige afspiller</string>
 </resources>
