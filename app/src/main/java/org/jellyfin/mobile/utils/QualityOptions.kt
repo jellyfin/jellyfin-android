@@ -42,6 +42,8 @@ class QualityOptions {
             qualityOptions.add(QualityOption(name = "Auto", selected = isAutomaticBitrateEnabled))
         }
 
+        qualityOptions.add(QualityOption(name = "Unlimited", maxHeight = 64000, bitrate = 1000000000))
+
         // Quality options are indexed by bitrate. If you must duplicate them, make sure each of them are unique (by making the last digit a 1)
         if (width >= 3800) {
             qualityOptions.add(QualityOption(name = "4K - 120 Mbps", maxHeight = 2160, bitrate = 120000000))

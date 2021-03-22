@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.player
 
 import android.media.MediaCodecInfo.CodecCapabilities
+import android.os.Build
 import org.jellyfin.mobile.player.ExoPlayerFormats.getAudioCodec
 import org.jellyfin.mobile.player.ExoPlayerFormats.getAudioProfile
 import org.jellyfin.mobile.player.ExoPlayerFormats.getVideoCodec
@@ -9,6 +10,7 @@ import org.jellyfin.mobile.player.ExoPlayerFormats.getVideoProfile
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import timber.log.Timber
 import java.util.*
 
 class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
@@ -27,10 +29,18 @@ class ExoPlayerCodec(codecCapabilities: CodecCapabilities) {
         // Check if this mimeType represents a video codec
         val videoCodec = getVideoCodec(mimeType)
         if (videoCodec != null) {
+            if (mimeType.endsWith("vp9")) {
+                Timber.d("Caps: ${codecCapabilities.videoCapabilities}")
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    codecCapabilities.videoCapabilities.supportedPerformancePoints?.forEach { performancePoint ->
+                        Timber.d("PP: $performancePoint")
+                    }
+                }
+            }
             codec = videoCodec
             isAudio = false
             maxWidth = codecCapabilities.videoCapabilities.supportedWidths.upper
-            maxHeight = codecCapabilities.videoCapabilities.supportedHeights.upper
+            maxHeight = 100000 //codecCapabilities.videoCapabilities.supportedHeights.upper
             maxBitrate = codecCapabilities.videoCapabilities.bitrateRange.upper
             maxChannels = null
             maxSampleRate = null
