@@ -4,18 +4,18 @@ object Dependencies {
         const val dependencyUpdates = "0.38.0"
 
         // KotlinX
-        const val coroutines = "1.4.2"
+        const val coroutines = "1.4.3"
 
         // Core
         const val koin = "2.1.6"
         const val appCompat = "1.2.0"
-        const val androidxCore = "1.4.0-alpha01"
-        const val activity = "1.2.0-rc01"
-        const val fragment = "1.2.5"
+        const val androidxCore = "1.5.0-beta03"
+        const val activity = "1.2.1"
+        const val fragment = "1.3.1"
         const val exoPlayer = "2.12.3"
 
         // Lifecycle
-        const val lifecycleExtensions = "2.2.0"
+        const val lifecycleExtensions = "2.3.0"
 
         // UI
         const val constraintLayout = "2.0.4"
@@ -32,7 +32,7 @@ object Dependencies {
         const val coil = "1.1.1"
 
         // Cast
-        const val mediaRouter = "1.2.1"
+        const val mediaRouter = "1.2.2"
         const val playServicesCast = "19.0.0"
 
         // Media
