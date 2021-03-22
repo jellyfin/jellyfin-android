@@ -1,5 +1,3 @@
-import java.util.*
-
 object Dependencies {
     object Versions {
         // Gradle plugins
@@ -49,12 +47,6 @@ object Dependencies {
         const val mockk = "1.10.6"
         const val androidXRunner = "1.3.0"
         const val androidXEspresso = "3.3.0"
-
-        fun isStable(version: String): Boolean {
-            return listOf("alpha", "beta", "dev", "rc", "m").none {
-                version.toLowerCase(Locale.ROOT).contains(it)
-            }
-        }
     }
 
     object Kotlin {

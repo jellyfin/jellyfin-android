@@ -1,4 +1,5 @@
 import org.gradle.api.Project
+import java.util.*
 
 /**
  * Get the version name from the current environment or use the fallback.
@@ -66,3 +67,18 @@ fun getVersionCode(versionName: String): Int {
 
     return code
 }
+
+enum class VersionType {
+    STABLE, MILESTONE, UNSTABLE
+}
+
+fun classifyVersion(version: String): VersionType {
+    val normalizedVersion = version.toLowerCase(Locale.ROOT)
+    return when {
+        normalizedVersion.containsAny(listOf("alpha", "beta", "dev")) -> VersionType.UNSTABLE
+        normalizedVersion.containsAny(listOf("rc", "m")) -> VersionType.MILESTONE
+        else -> VersionType.STABLE
+    }
+}
+
+fun String.containsAny(strings: Iterable<String>): Boolean = strings.any { contains(it) }
