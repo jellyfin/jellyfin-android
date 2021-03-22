@@ -80,7 +80,6 @@ dependencies {
     val proprietaryImplementation by configurations
 
     // Kotlin
-    implementation(kotlin("stdlib-jdk8"))
     implementation(Dependencies.Kotlin.coroutinesCore)
     implementation(Dependencies.Kotlin.coroutinesAndroid)
 
