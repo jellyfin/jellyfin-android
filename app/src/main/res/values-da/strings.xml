@@ -1,2 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="video_player_external_description">Ekstern videoafspiller apps som MX Player og VLC</string>
+    <string name="video_player_native_description">Baseret på ExoPlayer understøtter flere videoformater og codecs og er mere integreret i operativsystemet</string>
+    <string name="video_player_web_description">Standard HTML-videoafspiller fra webgrænsefladen</string>
+    <string name="video_player_external">Ekstern afspiller</string>
+    <string name="video_player_native">Indbyggede afspiller</string>
+    <string name="video_player_web">Web afspiller</string>
+    <string name="pref_video_player_type_title">Video afspiller type</string>
+    <string name="pref_category_video_player">Video afspiller</string>
+    <string name="pref_music_notification_always_dismissible_title">Lad musikafspillerunderretninger altid være afviselige</string>
+    <string name="pref_category_music_player">Musik afspiller</string>
+    <string name="activity_name_settings">Jellyfin Indstillinger</string>
+    <string name="external_player_unknown_error">Ukendt fejl i den eksterne afspiller. Afspilningssporing er deaktiveret.</string>
+    <string name="external_player_invalid_player">Den valgte eksterne afspiller er ikke understøttet. Afspilningssporing er deaktiveret.</string>
+    <string name="external_player_not_supported_yet">Afspilningsspring understøttes endnu ikke i den valgte eksterne afspiller. Kontakt udvikleren for at få understøttelse til den.</string>
+    <string name="external_player_invalid_play_method">Ugyldig afspilningsmetode.</string>
+    <string name="playback_info_and_x_more">…og %d mere</string>
+    <string name="playback_info_audio_streams">Lyd streams</string>
+    <string name="playback_info_video_streams">Video streams</string>
+    <string name="playback_info_transcoding">Omkodning: %b</string>
+    <string name="playback_info_play_method">Afspilningsmetode: %s</string>
+    <string name="menu_item_none">Ingen</string>
+    <string name="notification_action_stop">Stop</string>
+    <string name="notification_action_next">Næste</string>
+    <string name="notification_action_fast_forward">Spol frem</string>
+    <string name="notification_action_pause">Pause</string>
+    <string name="notification_action_play">Afspil</string>
+    <string name="notification_action_rewind">Spol tilbage</string>
+    <string name="notification_action_previous">Forrige</string>
+    <string name="music_notification_channel_description">Bruges til kontrol af musikafspilning</string>
+    <string name="music_notification_channel">Jellyfin Musik afspiller</string>
+    <string name="media_service_car_item_no_title">Ingen titel</string>
+    <string name="media_service_car_section_playlists">Afspilningslister</string>
+    <string name="media_service_car_section_genres">Genre</string>
+    <string name="media_service_car_section_songs">Sange</string>
+    <string name="media_service_car_section_artists">Kunstnere</string>
+    <string name="media_service_car_section_albums">Albummer</string>
+    <string name="media_service_car_section_recents">Seneste afspillede</string>
+    <string name="media_service_item_not_found">Mediet kunne ikke findes</string>
+    <string name="media_service_generic_error">Der opstod en fejl</string>
+    <string name="download_no_storage_permission">Kan ikke overføre filer uden tilladelse til at bruge lagring</string>
+    <string name="downloading">Overfører</string>
+    <string name="mobile_data_and_roaming">Mobil Netværk &amp; Roaming</string>
+    <string name="mobile_data">Mobil netværk</string>
+    <string name="wifi_only">Kun trådløs</string>
+    <string name="network_message">Vil du tillade overførelser fra mobilnetværk eller roaming på andre netværk\? Der kan blive pålagt gebyr fra dit teleselskab.</string>
+    <string name="network_title">Tilladte netværkstyper</string>
+    <string name="battery_optimizations_message">Deaktiver venligst batteri optimering for medieafspilning i baggrunden.</string>
+    <string name="available_servers_title">Tilgængelige servere</string>
+    <string name="choose_server_button_text">Vælg en server</string>
+    <string name="connect_button_text">Forbind</string>
+    <string name="connection_error_invalid_version">Serveren bruger en ikke understøttet version. Opgrader til den nyeste version på jellyfin.org.</string>
+    <string name="connection_error_cannot_connect">Der kunne ikke oprettes forbindelse.
+\nUndersøg venligst værtsnavnet og din internet forbindelse.</string>
+    <string name="host_input_hint">Vært</string>
+    <string name="connect_to_server_title">Forbind til server</string>
+</resources>
