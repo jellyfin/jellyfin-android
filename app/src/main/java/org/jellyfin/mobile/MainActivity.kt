@@ -7,6 +7,7 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import android.view.OrientationEventListener
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
@@ -19,6 +20,7 @@ import org.jellyfin.mobile.player.PlayerFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
 import org.jellyfin.mobile.utils.SmartOrientationListener
+import org.jellyfin.mobile.utils.isWebViewSupported
 import org.jellyfin.mobile.utils.replaceFragment
 import org.jellyfin.mobile.viewmodel.MainViewModel
 import org.jellyfin.mobile.viewmodel.ServerState
@@ -52,6 +54,19 @@ class MainActivity : AppCompatActivity() {
 
         // Bind player service
         bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
+
+        // Check WebView support
+        if (!isWebViewSupported()) {
+            AlertDialog.Builder(this).apply {
+                setTitle(R.string.dialog_web_view_not_supported)
+                setMessage(R.string.dialog_web_view_not_supported_message)
+                setCancelable(false)
+                setNegativeButton(R.string.dialog_button_close_app) { _, _ ->
+                    finish()
+                }
+            }.show()
+            return
+        }
 
         // Load UI
         lifecycleScope.launch {

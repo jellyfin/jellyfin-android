@@ -1,6 +1,5 @@
 package org.jellyfin.mobile.fragment
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
@@ -14,6 +13,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import androidx.activity.addCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
@@ -22,6 +22,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebViewClientCompat
+import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import kotlinx.coroutines.launch
 import org.jellyfin.apiclient.interaction.ApiClient
@@ -126,8 +127,41 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         _webViewBinding = null
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     private fun WebView.initialize() {
+        if (isOutdated()) { // Check WebView version
+            AlertDialog.Builder(requireContext()).apply {
+                setTitle(R.string.dialog_web_view_outdated)
+                setMessage(R.string.dialog_web_view_outdated_message)
+                setCancelable(false)
+
+                val webViewPackage = WebViewCompat.getCurrentWebViewPackage(context)
+                if (webViewPackage != null) {
+                    setPositiveButton(R.string.dialog_button_check_for_updates) { _, _ ->
+                        val marketUri = Uri.Builder().apply {
+                            scheme("market")
+                            authority("details")
+                            appendQueryParameter("id", webViewPackage.packageName)
+                        }.build()
+                        val referrerUri = Uri.Builder().apply {
+                            scheme("android-app")
+                            authority(context.packageName)
+                        }.build()
+
+                        val marketIntent = Intent(Intent.ACTION_VIEW).apply {
+                            data = marketUri
+                            putExtra(Intent.EXTRA_REFERRER, referrerUri)
+                        }
+                        startActivity(marketIntent)
+                        requireActivity().finish()
+                    }
+                }
+                setNegativeButton(R.string.dialog_button_close_app) { _, _ ->
+                    requireActivity().finish()
+                }
+            }.show()
+            return
+        }
+
         webViewClient = object : WebViewClientCompat() {
             override fun shouldInterceptRequest(webView: WebView, request: WebResourceRequest): WebResourceResponse? {
                 val url = request.url
@@ -186,10 +220,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
             }
         }
         webChromeClient = WebChromeClient()
-        settings.apply {
-            javaScriptEnabled = true
-            domStorageEnabled = true
-        }
+        settings.applyDefault()
         addJavascriptInterface(NativeInterface(this@WebViewFragment), "NativeInterface")
         addJavascriptInterface(NativePlayer(this@WebViewFragment), "NativePlayer")
         addJavascriptInterface(externalPlayer, "ExternalPlayer")
