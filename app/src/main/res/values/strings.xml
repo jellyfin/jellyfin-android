@@ -1,4 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="dialog_web_view_not_supported">WebView not supported</string>
+    <string name="dialog_web_view_not_supported_message">WebViews are not supported by this device.\nInstall a compatible WebView implementation or switch to a supported device.</string>
+    <string name="dialog_web_view_outdated">WebView outdated</string>
+    <string name="dialog_web_view_outdated_message">The WebView implementation used by your device is outdated.\nPlease update it to a compatible version.</string>
+    <string name="dialog_button_check_for_updates">Check for updates</string>
+    <string name="dialog_button_close_app">Close app</string>
+
     <string name="connect_to_server_title">Connect to Server</string>
     <string name="host_input_hint">Host</string>
     <string name="connection_error_invalid_format">Host has an invalid format</string>
