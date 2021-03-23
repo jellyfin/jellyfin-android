@@ -80,7 +80,6 @@ dependencies {
     val proprietaryImplementation by configurations
 
     // Kotlin
-    implementation(kotlin("stdlib-jdk8"))
     implementation(Dependencies.Kotlin.coroutinesCore)
     implementation(Dependencies.Kotlin.coroutinesAndroid)
 
@@ -156,8 +155,11 @@ tasks.withType<Test> {
 tasks.withType<DependencyUpdatesTask> {
     gradleReleaseChannel = GradleReleaseChannel.CURRENT.id
     rejectVersionIf {
-        !Dependencies.Versions.isStable(candidate.version) &&
-            Dependencies.Versions.isStable(currentVersion)
+        val currentType = classifyVersion(currentVersion)
+        val candidateType = classifyVersion(candidate.version)
+
+        (currentType == VersionType.STABLE && candidateType != VersionType.STABLE) ||
+            (currentType == VersionType.MILESTONE && candidateType == VersionType.UNSTABLE)
     }
 }
 
