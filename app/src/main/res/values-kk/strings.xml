@@ -71,4 +71,12 @@
     <string name="battery_optimizations_message">Tasyğyşderekterdı oinatuğa arnalğan batareiany oŋtailandyrudy ekran öşırulı bolğanda öşırіŋız.</string>
     <string name="pref_download_location">Jükteu orny</string>
     <string name="pref_category_downloads">Jükteuler</string>
+    <string name="dialog_button_close_app">Qoldanbany jabu</string>
+    <string name="dialog_button_check_for_updates">Jaŋartulardy tekseru</string>
+    <string name="dialog_web_view_outdated_message">Qūrylğyŋyz paidalanatyn WebVıew engızuı eskırgen.
+\nOny üilesımdı nūsqağa jaŋartyŋyz.</string>
+    <string name="dialog_web_view_outdated">WebView eskırgen</string>
+    <string name="dialog_web_view_not_supported_message">Būl qūrylğyda WebView üşın qoldau körsetılmeidı.
+\nÜilesımdı WebVıew engızuın ornatyŋyz nemese qoldau körsetıletın qūrylğyğa auysyŋyz.</string>
+    <string name="dialog_web_view_not_supported">WebView üşın qoldau körsetılmeidi</string>
 </resources>
