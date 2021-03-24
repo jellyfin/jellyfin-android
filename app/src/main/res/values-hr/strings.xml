@@ -38,7 +38,7 @@
     <string name="network_title">Dopuštene Vrste Mreže</string>
     <string name="battery_optimizations_message">Molimo onemogućite optimizaciju baterije za reprodukciju medija dok je zaslon isključen.</string>
     <string name="available_servers_title">Dostupni poslužitelji</string>
-    <string name="choose_server_button_text">Odaberi poslužitelj</string>
+    <string name="choose_server_button_text">Odaberi poslužitelja</string>
     <string name="connect_button_text">Spoji se</string>
     <string name="connection_error_cannot_connect">Nije moguće ostvariti vezu. 
 \nMolimo vas da provjerite ime poslužitelja i vašu internetsku vezu.</string>
@@ -69,4 +69,6 @@
     <string name="media_service_car_section_albums">Albumi</string>
     <string name="media_service_car_section_recents">Nedavno gledano</string>
     <string name="media_service_generic_error">Dogodila se greška</string>
+    <string name="pref_download_location">Lokacija preuzimanja</string>
+    <string name="pref_category_downloads">Preuzimanja</string>
 </resources>
