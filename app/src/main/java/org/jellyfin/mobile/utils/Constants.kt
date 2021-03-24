@@ -99,9 +99,6 @@ object Constants {
     // Video player intent extras
     const val EXTRA_MEDIA_SOURCE_ITEM = "org.jellyfin.mobile.MEDIA_SOURCE_ITEM"
 
-    // External player result code
-    const val HANDLE_EXTERNAL_PLAYER = 1
-
     // External player result actions
     const val MPV_PLAYER_RESULT_ACTION = "is.xyz.mpv.MPVActivity.result"
     const val MX_PLAYER_RESULT_ACTION = "com.mxtech.intent.result.VIEW"

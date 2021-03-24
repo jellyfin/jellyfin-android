@@ -51,7 +51,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
     val apiClient: ApiClient by inject()
     private val serverController: ServerController by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
-    private val externalPlayer by lazy { ExternalPlayer(this) }
+    private lateinit var externalPlayer: ExternalPlayer
 
     private var serverId: Long = 0
     private lateinit var instanceUrl: String
@@ -67,6 +67,9 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         val args = requireArguments()
         serverId = requireNotNull(args.getLong(FRAGMENT_WEB_VIEW_EXTRA_SERVER_ID)) { "Server id has not been supplied!" }
         instanceUrl = requireNotNull(args.getString(FRAGMENT_WEB_VIEW_EXTRA_URL)) { "Server url has not been supplied!" }
+
+        externalPlayer = ExternalPlayer(requireContext(), this, requireActivity().activityResultRegistry)
+
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             if (!connected || !webappFunctionChannel.goBack()) {
                 isEnabled = false
@@ -275,12 +278,5 @@ class WebViewFragment : Fragment(), NativePlayerHost {
             add<PlayerFragment>(R.id.fragment_container, args = args)
             addToBackStack(null)
         }.commit()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Constants.HANDLE_EXTERNAL_PLAYER) {
-            externalPlayer.handleActivityResult(resultCode, data)
-        }
     }
 }

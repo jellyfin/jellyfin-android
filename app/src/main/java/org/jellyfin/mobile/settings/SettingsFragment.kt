@@ -84,13 +84,24 @@ class SettingsFragment : Fragment() {
             titleRes = R.string.pref_exoplayer_allow_background_audio
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
         }
+
+        // Generate available external player options
+        val packageManager = requireContext().packageManager
         val externalPlayerOptions = listOf(
+            SelectionItem(ExternalPlayerPackage.SYSTEM_DEFAULT, R.string.external_player_system_default, R.string.external_player_system_default_description),
             SelectionItem(ExternalPlayerPackage.MPV_PLAYER, R.string.external_player_mpv, R.string.external_player_mpv_description),
             SelectionItem(ExternalPlayerPackage.MX_PLAYER_FREE, R.string.external_player_mx_player_free, R.string.external_player_mx_player_free_description),
             SelectionItem(ExternalPlayerPackage.MX_PLAYER_PRO, R.string.external_player_mx_player_pro, R.string.external_player_mx_player_pro_description),
             SelectionItem(ExternalPlayerPackage.VLC_PLAYER, R.string.external_player_vlc_player, R.string.external_player_vlc_player_description),
-        ).filter { isPackageInstalled(it.key) }.plus(SelectionItem(ExternalPlayerPackage.SYSTEM_DEFAULT, R.string.external_player_system_default, R.string.external_player_system_default_description))
-        if (!isPackageInstalled(appPreferences.externalPlayerApp)) appPreferences.externalPlayerApp = ExternalPlayerPackage.SYSTEM_DEFAULT
+        ).filter { item ->
+            item.key == ExternalPlayerPackage.SYSTEM_DEFAULT || packageManager.isPackageInstalled(item.key)
+        }
+
+        // Revert if current selection isn't available
+        if (!packageManager.isPackageInstalled(appPreferences.externalPlayerApp)) {
+            appPreferences.externalPlayerApp = ExternalPlayerPackage.SYSTEM_DEFAULT
+        }
+
         externalPlayerChoicePreference = singleChoice(Constants.PREF_EXTERNAL_PLAYER_APP, externalPlayerOptions) {
             titleRes = R.string.external_player_app
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXTERNAL_PLAYER
