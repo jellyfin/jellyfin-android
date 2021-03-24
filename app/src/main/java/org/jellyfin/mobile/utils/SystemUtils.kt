@@ -18,7 +18,6 @@ import android.provider.Settings
 import android.provider.Settings.System.ACCELEROMETER_ROTATION
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
-import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
@@ -121,8 +120,8 @@ private fun Context.downloadFile(request: DownloadManager.Request, @DownloadMeth
 
 fun Activity.isAutoRotateOn() = Settings.System.getInt(contentResolver, ACCELEROMETER_ROTATION, 0) == 1
 
-fun Fragment.isPackageInstalled(@ExternalPlayerPackage packageName: String) = try {
-    packageName.isNotEmpty() && requireContext().packageManager.getApplicationInfo(packageName, 0).enabled
+fun PackageManager.isPackageInstalled(@ExternalPlayerPackage packageName: String) = try {
+    packageName.isNotEmpty() && getApplicationInfo(packageName, 0).enabled
 } catch (e: PackageManager.NameNotFoundException) {
     false
 }
