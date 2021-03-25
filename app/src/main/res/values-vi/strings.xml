@@ -78,4 +78,12 @@
     <string name="media_service_generic_error">Đã xảy ra lỗi</string>
     <string name="pref_download_location">Nơi tải xuống</string>
     <string name="pref_category_downloads">Tải xuống</string>
+    <string name="dialog_button_close_app">Đóng ứng dụng</string>
+    <string name="dialog_button_check_for_updates">Kiểm tra cập nhật</string>
+    <string name="dialog_web_view_outdated_message">Việc triển khai WebView mà thiết bị của bạn sử dụng đã lỗi thời.
+\nVui lòng cập nhật nó lên một phiên bản tương thích.</string>
+    <string name="dialog_web_view_outdated">WebView đã lỗi thời</string>
+    <string name="dialog_web_view_not_supported_message">WebView không được thiết bị này hỗ trợ.
+\nCài đặt triển khai WebView tương thích hoặc chuyển sang thiết bị được hỗ trợ.</string>
+    <string name="dialog_web_view_not_supported">WebView không được hỗ trợ</string>
 </resources>
