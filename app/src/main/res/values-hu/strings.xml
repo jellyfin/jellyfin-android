@@ -80,4 +80,12 @@
     <string name="media_service_generic_error">Hiba történt</string>
     <string name="pref_download_location">Letöltés helye</string>
     <string name="pref_category_downloads">Letöltések</string>
+    <string name="dialog_web_view_not_supported_message">Ez az eszköz nem támogatja a WebView nézetet.
+\nTelepítsen egy kompatibilis WebView nézetet, vagy váltson egy támogatott eszközre.</string>
+    <string name="dialog_button_close_app">Alkalmazás bezárása</string>
+    <string name="dialog_button_check_for_updates">Frissítések keresése</string>
+    <string name="dialog_web_view_outdated_message">Az eszköz által használt WebView implementáció elavult.
+\nKérjük, frissítse egy kompatibilis verzióra.</string>
+    <string name="dialog_web_view_outdated">A WebView elavult</string>
+    <string name="dialog_web_view_not_supported">A WebView nem támogatott</string>
 </resources>
