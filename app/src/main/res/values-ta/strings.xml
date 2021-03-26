@@ -80,4 +80,12 @@
     <string name="media_service_generic_error">பிழை ஏற்பட்டது</string>
     <string name="pref_download_location">பதிவிறக்கம் செய்ய வேண்டிய இடம்</string>
     <string name="pref_category_downloads">பதிவிறக்கங்கள்</string>
+    <string name="dialog_button_close_app">பயன்பாட்டை மூடு</string>
+    <string name="dialog_button_check_for_updates">புதுப்பிப்புகளைச் சரிபார்க்கவும்</string>
+    <string name="dialog_web_view_outdated_message">உங்கள் சாதனத்தால் பயன்படுத்தப்படும் WebView செயல்படுத்தல் காலாவதியானது.
+\nஇணக்கமான பதிப்பிற்கு புதுப்பிக்கவும்.</string>
+    <string name="dialog_web_view_outdated">WebView காலாவதியானது</string>
+    <string name="dialog_web_view_not_supported_message">WebViews இந்த சாதனத்தால் ஆதரிக்கப்படவில்லை.
+\nஇணக்கமான WebView செயலாக்கத்தை நிறுவவும் அல்லது ஆதரிக்கப்படும் சாதனத்திற்கு மாறவும்.</string>
+    <string name="dialog_web_view_not_supported">WebView ஆதரிக்கப்படவில்லை</string>
 </resources>
