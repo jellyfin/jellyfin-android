@@ -83,4 +83,9 @@
     <string name="dialog_web_view_not_supported_message">WebViews nu sunt suportate de acest dispozitiv.
 \nInstalați o implementare WebView compatibilă sau treceți la un dispozitiv acceptat.</string>
     <string name="dialog_web_view_not_supported">WebView nu este suportat</string>
+    <string name="dialog_button_close_app">Închide aplicația</string>
+    <string name="dialog_button_check_for_updates">Caută actualizare</string>
+    <string name="dialog_web_view_outdated_message">Implementarea WebView utilizată de dispozitivul dvs. este învechită.
+\nVă rugăm să îl actualizați la o versiune compatibilă.</string>
+    <string name="dialog_web_view_outdated">WebView învechit</string>
 </resources>
