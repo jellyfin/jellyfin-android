@@ -1,0 +1,14 @@
+Media dvs., cu condițiile dvs.
+
+Proiectul Jellyfin este un server media open source, software gratuit. Fără taxe, fără urmărire, fără agendă ascunsă. Obțineți serverul nostru gratuit pentru a colecta toate audio, video, fotografii și multe altele într-un singur loc.
+
+Pentru a utiliza aplicația, trebuie să aveți un server Jellyfin configurat și activ. Aflați mai multe la <a href="https://jellyfin.org/" target="_blank"> jellyfin.org </a>.
+
+Cu un server Jellyfin, puteți să:
+
+* Urmăriți emisiuni TV live și înregistrări de pe serverul dvs. Jellyfin (sunt necesare hardware / servicii suplimentare)
+* Transmiteți pe un dispozitiv Chromecast din rețeaua dvs.
+* Transmiteți media pe dispozitivul dvs. Android
+* Vizualizați colecția într-o interfață ușor de utilizat
+
+Aceasta este aplicația oficială însoțitoare Jellyfin pentru Android. Vă mulțumim că utilizați Jellyfin!
