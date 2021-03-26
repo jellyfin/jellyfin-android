@@ -12,11 +12,6 @@ trigger:
     include:
       - '*'
 
-pr:
-  branches:
-    include:
-      - '*'
-
 jobs:
   - job: Test
     displayName: 'Test'
