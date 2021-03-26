@@ -80,4 +80,12 @@
     <string name="media_service_generic_error">Si è verificato un errore</string>
     <string name="pref_download_location">Posizione di download</string>
     <string name="pref_category_downloads">Downloads</string>
+    <string name="dialog_button_close_app">Chiudi l\'app</string>
+    <string name="dialog_button_check_for_updates">Controlla gli aggiornamenti</string>
+    <string name="dialog_web_view_outdated_message">L\'implementazione di WebView utilizzata dal tuo device è obsoleta.
+\nAggiornala ad una versione compatibile.</string>
+    <string name="dialog_web_view_outdated">WebView obsoleta</string>
+    <string name="dialog_web_view_not_supported_message">WebView non supportata da questo device.
+\nInstalla un\'implementazione compatibile or utilizza un device supportato.</string>
+    <string name="dialog_web_view_not_supported">WebView non supportata</string>
 </resources>
