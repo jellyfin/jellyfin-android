@@ -77,10 +77,14 @@ class MainActivity : AppCompatActivity() {
                             // TODO add loading indicator
                         }
                         is ServerState.Unset -> replaceFragment<ConnectFragment>()
-                        is ServerState.Available -> replaceFragment<WebViewFragment>(Bundle().apply {
-                            putLong(Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER_ID, state.server.id)
-                            putString(Constants.FRAGMENT_WEB_VIEW_EXTRA_URL, state.server.hostname)
-                        })
+                        is ServerState.Available -> {
+                            val currentFragment = findFragmentById(R.id.fragment_container)
+                            if (currentFragment !is WebViewFragment || currentFragment.server != state.server) {
+                                replaceFragment<WebViewFragment>(Bundle().apply {
+                                    putParcelable(Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER, state.server)
+                                })
+                            }
+                        }
                     }
                 }
             }

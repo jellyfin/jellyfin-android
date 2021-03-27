@@ -15,8 +15,7 @@ object Constants {
     const val SESSION_CAPABILITIES_PATH = "sessions/capabilities/full"
 
     const val FRAGMENT_CONNECT_EXTRA_ERROR = "org.jellyfin.mobile.intent.extra.ERROR"
-    const val FRAGMENT_WEB_VIEW_EXTRA_SERVER_ID = "org.jellyfin.mobile.intent.extra.SERVER_ID"
-    const val FRAGMENT_WEB_VIEW_EXTRA_URL = "org.jellyfin.mobile.intent.extra.SERVER_URL"
+    const val FRAGMENT_WEB_VIEW_EXTRA_SERVER = "org.jellyfin.mobile.intent.extra.SERVER"
 
     // Preference keys
     const val PREF_SERVER_ID = "pref_server_id"

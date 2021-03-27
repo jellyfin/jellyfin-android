@@ -32,10 +32,10 @@ import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.bridge.NativePlayerHost
 import org.jellyfin.mobile.controller.ServerController
 import org.jellyfin.mobile.databinding.FragmentWebviewBinding
+import org.jellyfin.mobile.model.sql.entity.ServerEntity
 import org.jellyfin.mobile.player.PlayerFragment
 import org.jellyfin.mobile.utils.*
-import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER_ID
-import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_URL
+import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.json.JSONException
 import org.json.JSONObject
@@ -53,8 +53,8 @@ class WebViewFragment : Fragment(), NativePlayerHost {
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private lateinit var externalPlayer: ExternalPlayer
 
-    private var serverId: Long = 0
-    private lateinit var instanceUrl: String
+    lateinit var server: ServerEntity
+        private set
     private var connected = false
 
     // UI
@@ -64,9 +64,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val args = requireArguments()
-        serverId = requireNotNull(args.getLong(FRAGMENT_WEB_VIEW_EXTRA_SERVER_ID)) { "Server id has not been supplied!" }
-        instanceUrl = requireNotNull(args.getString(FRAGMENT_WEB_VIEW_EXTRA_URL)) { "Server url has not been supplied!" }
+        server = requireNotNull(requireArguments().getParcelable(FRAGMENT_WEB_VIEW_EXTRA_SERVER)) { "Server entity has not been supplied!" }
 
         externalPlayer = ExternalPlayer(requireContext(), this, requireActivity().activityResultRegistry)
 
@@ -194,10 +192,10 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                                     }
                                 }
                             }
-                            val server = credentials.getJSONArray("Servers").getJSONObject(0)
-                            val user = server.getString("UserId")
-                            val token = server.getString("AccessToken")
-                            serverController.setupUser(serverId, user, token)
+                            val storedServer = credentials.getJSONArray("Servers").getJSONObject(0)
+                            val user = storedServer.getString("UserId")
+                            val token = storedServer.getString("AccessToken")
+                            serverController.setupUser(server.id, user, token)
                             initLocale()
                         }
                         null
@@ -210,14 +208,14 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                 val errorMessage = errorResponse.data?.run { bufferedReader().use(Reader::readText) }
                 Timber.e("Received WebView HTTP %d error: %s", errorResponse.statusCode, errorMessage)
 
-                if (request.url == Uri.parse(instanceUrl)) onErrorReceived()
+                if (request.url == Uri.parse(server.hostname)) onErrorReceived()
             }
 
             override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceErrorCompat) {
                 val description = if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_RESOURCE_ERROR_GET_DESCRIPTION)) error.description else null
                 Timber.e("Received WebView error at %s: %s", request.url.toString(), description)
 
-                if (request.url.toString() == instanceUrl) onErrorReceived()
+                if (request.url == Uri.parse(server.hostname)) onErrorReceived()
             }
         }
         webChromeClient = object : WebChromeClient() {
@@ -246,7 +244,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         addJavascriptInterface(NativePlayer(this@WebViewFragment), "NativePlayer")
         addJavascriptInterface(externalPlayer, "ExternalPlayer")
 
-        loadUrl(instanceUrl)
+        loadUrl(server.hostname)
     }
 
     fun onConnectedToWebapp() {

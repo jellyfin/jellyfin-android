@@ -5,6 +5,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
+    id("kotlin-parcelize")
     id("de.mannodermaus.android-junit5")
     id("com.github.ben-manes.versions") version Dependencies.Versions.dependencyUpdates
 }
