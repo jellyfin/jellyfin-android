@@ -81,4 +81,11 @@
     <string name="pref_download_location">Emplacement de téléchargement</string>
     <string name="pref_category_downloads">Téléchargements</string>
     <string name="dialog_web_view_not_supported">WebView n\'est pas supporté</string>
+    <string name="dialog_web_view_outdated">Version de WebView trop ancienne</string>
+    <string name="dialog_web_view_outdated_message">L\'implémentation de WebView utilisée par votre appareil est trop ancienne.
+\nVeuillez la mettre à jour vers une version compatible.</string>
+    <string name="dialog_web_view_not_supported_message">WebView n\'est pas supporté par cet appareil.
+\nInstallez une implémentation de WebView compatible, ou utilisez un appareil supporté.</string>
+    <string name="dialog_button_check_for_updates">Chercher des mises à jour</string>
+    <string name="dialog_button_close_app">Fermer l\'application</string>
 </resources>
