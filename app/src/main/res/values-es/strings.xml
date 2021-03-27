@@ -80,4 +80,12 @@
     <string name="media_service_generic_error">Ha habido un error</string>
     <string name="pref_download_location">Ubicación de la descarga</string>
     <string name="pref_category_downloads">Descargas</string>
+    <string name="dialog_button_close_app">Cerrar aplicación</string>
+    <string name="dialog_button_check_for_updates">Buscar actualizaciones</string>
+    <string name="dialog_web_view_outdated_message">La implementación de WebView utilizada por su dispositivo está desactualizada.
+\nActualice a una versión compatible.</string>
+    <string name="dialog_web_view_outdated">WebView desactualizado</string>
+    <string name="dialog_web_view_not_supported_message">WebView no está soportado en este dispositivo.
+\nInstale una implementación compatible de WebView o cambie a un dispositivo compatible.</string>
+    <string name="dialog_web_view_not_supported">WebView no soportado</string>
 </resources>
