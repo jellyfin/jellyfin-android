@@ -80,4 +80,12 @@
     <string name="media_service_item_not_found">Medium konnte nicht gefunden werden</string>
     <string name="pref_download_location">Speicherort</string>
     <string name="pref_category_downloads">Downloads</string>
+    <string name="dialog_button_close_app">App beenden</string>
+    <string name="dialog_button_check_for_updates">Nach Updates suchen</string>
+    <string name="dialog_web_view_outdated_message">Die von Ihrem Gerät verwendete WebView-Implementierung ist veraltet.
+\nBitte aktualisieren Sie sie auf eine kompatible Version.</string>
+    <string name="dialog_web_view_outdated">WebView veraltet</string>
+    <string name="dialog_web_view_not_supported_message">WebViews werden von diesem Gerät nicht unterstützt.
+\nInstallieren Sie eine kompatible WebView-Implementierung oder wechseln Sie zu einem unterstützten Gerät.</string>
+    <string name="dialog_web_view_not_supported">WebView nicht unterstützt</string>
 </resources>
