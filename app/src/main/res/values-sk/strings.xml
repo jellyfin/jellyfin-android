@@ -73,4 +73,12 @@
     <string name="connection_error_invalid_version">Server používa nepodporovanú verziu. Aktualizujte ho na najnovšiu verziu dostupnú na webe jellyfin.org.</string>
     <string name="pref_download_location">Umiestnenie sťahovania</string>
     <string name="pref_category_downloads">Stiahnuté</string>
+    <string name="dialog_button_close_app">Zatvoriť aplikáciu</string>
+    <string name="dialog_button_check_for_updates">Skontrolovať aktualizácie</string>
+    <string name="dialog_web_view_outdated_message">WebView implementácia použitá na vašom zariadení je zastaraná.
+\nProsím, aktualizujte ho na kompatibilnú verziu.</string>
+    <string name="dialog_web_view_outdated">WebView je zastaraný</string>
+    <string name="dialog_web_view_not_supported_message">WebViews nie sú podporované týmto zariadením.
+\nNainštalujte kompatibilnú WebView implementáciu alebo použite iné podporované zariadenie.</string>
+    <string name="dialog_web_view_not_supported">WebView nie je podporovaný</string>
 </resources>
