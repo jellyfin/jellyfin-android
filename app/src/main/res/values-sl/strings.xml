@@ -4,9 +4,9 @@
     <string name="mobile_data_and_roaming">Mobilni podatki in gostovanje</string>
     <string name="mobile_data">Mobilni podatki</string>
     <string name="wifi_only">Samo WiFi</string>
-    <string name="network_message">Ali želite omogočiti prenos prek mobilnih podatkov ali v gostovanju\? Stroški utegnejo biti veliki.</string>
+    <string name="network_message">Ali želite omogočiti prenos prek mobilnih podatkov ali v gostovanju\? Vaš ponudnik vam to lahko dodatno zaračuna.</string>
     <string name="network_title">Dovoljene vrste omrežja</string>
-    <string name="battery_optimizations_message">Prosimo onemogočite optimizacijo akumulatorja za predvajanje predstavnosti pri izklopljenem zaslonu.</string>
+    <string name="battery_optimizations_message">Prosimo onemogočite optimizacijo baterije za predvajanje predstavnosti pri izklopljenem zaslonu.</string>
     <string name="connection_error_invalid_format">Napačen format naslova</string>
     <string name="connect_button_text">Poveži</string>
     <string name="host_input_hint">Naslov</string>
@@ -40,7 +40,7 @@
     <string name="notification_action_play">Predvajaj</string>
     <string name="notification_action_rewind">Previj nazaj</string>
     <string name="notification_action_previous">Prejšnja</string>
-    <string name="download_no_storage_permission">Brez dovoljenja za dostop do shrambe ni mogoče prenesti datotek</string>
+    <string name="download_no_storage_permission">Prenos datotek ni mogoč brez dovoljenj za dostop do shrambe</string>
     <string name="available_servers_title">Razpoložljivi strežniki</string>
     <string name="choose_server_button_text">Izberi strežnik</string>
     <string name="playback_info_and_x_more">...in %d več</string>
@@ -48,7 +48,7 @@
     <string name="playback_info_video_streams">Video sledi</string>
     <string name="video_player_native">Vgrajeni predvajalnik</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Dovoli poteze za svetlost in glasnost v vgrajenem predvajalniku</string>
-    <string name="connection_error_invalid_version">Server uporablja nepodprto različico. Posodobite na najnovejšo različico na jellyfin.org.</string>
+    <string name="connection_error_invalid_version">Strežnik uporablja nepodprto različico. Posodobite na najnovejšo različico na jellyfin.org.</string>
     <string name="external_player_system_default_description">Sistem naj izbere predvajalnik. Nekateri predvajalniki morda niso polno podprti.</string>
     <string name="external_player_system_default">Privzeta nastavitev sistema</string>
     <string name="external_player_vlc_player_description">Prosti odprtokodni predvajalnik, ki podpira večino predstavnostnih datotek.</string>
@@ -63,7 +63,7 @@
     <string name="music_notification_channel_description">Namenjeno nadzoru predvajanja glasbe</string>
     <string name="music_notification_channel">Predvajalnik glasbe Jellyfin</string>
     <string name="media_service_car_item_no_title">Brez naslova</string>
-    <string name="media_service_car_section_playlists">Seznam predvajanja</string>
+    <string name="media_service_car_section_playlists">Seznami predvajanja</string>
     <string name="media_service_car_section_genres">Zvrsti</string>
     <string name="media_service_car_section_songs">Pesmi</string>
     <string name="media_service_car_section_artists">Avtorji</string>
@@ -71,4 +71,14 @@
     <string name="media_service_car_section_recents">Nedavno predvajano</string>
     <string name="media_service_item_not_found">Medijskega elementa ni bilo mogoče najti</string>
     <string name="media_service_generic_error">Prišlo je do napake</string>
+    <string name="pref_download_location">Lokacija prenosov</string>
+    <string name="pref_category_downloads">Prenosi</string>
+    <string name="dialog_button_close_app">Zapri aplikacijo</string>
+    <string name="dialog_button_check_for_updates">Preveri za posodobitve</string>
+    <string name="dialog_web_view_outdated_message">WebView orodje, ki ga uporablja vaša naprava je zastarelo.
+\nProsimo posodobite na združljivo različico.</string>
+    <string name="dialog_web_view_outdated">WebView je zastarel</string>
+    <string name="dialog_web_view_not_supported_message">Ta naprava ne podpira WebView.
+\nNamestite združljivo orodje WebView ali preklopite na podprto napravo.</string>
+    <string name="dialog_web_view_not_supported">WebView ni podprt</string>
 </resources>
