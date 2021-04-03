@@ -80,4 +80,12 @@
     <string name="media_service_generic_error">发生了一个错误</string>
     <string name="pref_download_location">下载位置</string>
     <string name="pref_category_downloads">下载</string>
+    <string name="dialog_button_close_app">关闭应用</string>
+    <string name="dialog_button_check_for_updates">检查更新</string>
+    <string name="dialog_web_view_outdated_message">该设备使用的WebView实现已过时。
+\n请更新至兼容的版本。</string>
+    <string name="dialog_web_view_outdated">过时的WebView</string>
+    <string name="dialog_web_view_not_supported_message">该设备不支持WebView。
+\n安装兼容的WebView实现或切换至受支持的设备。</string>
+    <string name="dialog_web_view_not_supported">不支持WebView</string>
 </resources>
