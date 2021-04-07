@@ -9,13 +9,13 @@ object Dependencies {
         // Core
         const val koin = "2.1.6"
         const val appCompat = "1.2.0"
-        const val androidxCore = "1.5.0-beta03"
-        const val activity = "1.2.1"
-        const val fragment = "1.3.1"
+        const val androidxCore = "1.5.0-rc01"
+        const val activity = "1.2.2"
+        const val fragment = "1.3.2"
         const val exoPlayer = "2.12.3"
 
         // Lifecycle
-        const val lifecycleExtensions = "2.3.0"
+        const val lifecycleExtensions = "2.3.1"
 
         // UI
         const val constraintLayout = "2.0.4"
