@@ -10,6 +10,7 @@ import android.support.v4.media.MediaBrowserCompat.MediaItem.FLAG_PLAYABLE
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import androidx.media.MediaBrowserServiceCompat
+import androidx.media.utils.MediaConstants
 import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.apiclient.model.dto.BaseItemDto
 import org.jellyfin.apiclient.model.dto.BaseItemType
@@ -59,8 +60,8 @@ class LibraryBrowser(
 
         val rootExtras = Bundle().apply {
             putBoolean(MediaService.CONTENT_STYLE_SUPPORTED, true)
-            putInt(MediaService.CONTENT_STYLE_BROWSABLE_HINT, MediaService.CONTENT_STYLE_LIST_ITEM_HINT_VALUE)
-            putInt(MediaService.CONTENT_STYLE_PLAYABLE_HINT, MediaService.CONTENT_STYLE_LIST_ITEM_HINT_VALUE)
+            putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_BROWSABLE, MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_LIST_ITEM)
+            putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_PLAYABLE, MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_LIST_ITEM)
         }
         return MediaBrowserServiceCompat.BrowserRoot(browserRoot, rootExtras)
     }
@@ -236,8 +237,8 @@ class LibraryBrowser(
 
                 if (item.first == LibraryPage.ALBUMS) {
                     setExtras(Bundle().apply {
-                        putInt(MediaService.CONTENT_STYLE_BROWSABLE_HINT, MediaService.CONTENT_STYLE_GRID_ITEM_HINT_VALUE)
-                        putInt(MediaService.CONTENT_STYLE_PLAYABLE_HINT, MediaService.CONTENT_STYLE_GRID_ITEM_HINT_VALUE)
+                        putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_BROWSABLE, MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM)
+                        putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_PLAYABLE, MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM)
                     })
                 }
             }.build()

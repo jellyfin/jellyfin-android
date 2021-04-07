@@ -36,7 +36,7 @@ object Dependencies {
         const val playServicesCast = "19.0.0"
 
         // Media
-        const val media = "1.2.1"
+        const val media = "1.3.0"
 
         // Health
         const val timber = "4.7.1"
