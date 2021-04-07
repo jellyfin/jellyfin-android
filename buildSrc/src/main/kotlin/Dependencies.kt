@@ -40,7 +40,7 @@ object Dependencies {
 
         // Health
         const val timber = "4.7.1"
-        const val leakCanary = "2.6"
+        const val leakCanary = "2.7"
         const val redScreenOfDeath = "0.1.2"
         const val junit = "5.7.1"
         const val kotest = "4.4.3"
