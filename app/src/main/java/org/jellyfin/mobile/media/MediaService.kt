@@ -391,41 +391,7 @@ class MediaService : MediaBrowserServiceCompat() {
     }
 
     companion object {
-        /** Declares that ContentStyle is supported */
+        /** Declares that content style is supported */
         const val CONTENT_STYLE_SUPPORTED = "android.media.browse.CONTENT_STYLE_SUPPORTED"
-
-        /**
-         * Bundle extra indicating the presentation hint for playable media items.
-         */
-        const val CONTENT_STYLE_PLAYABLE_HINT = "android.media.browse.CONTENT_STYLE_PLAYABLE_HINT"
-
-        /**
-         * Bundle extra indicating the presentation hint for browsable media items.
-         */
-        const val CONTENT_STYLE_BROWSABLE_HINT = "android.media.browse.CONTENT_STYLE_BROWSABLE_HINT"
-
-        /**
-         * Specifies the corresponding items should be presented as lists.
-         */
-        const val CONTENT_STYLE_LIST_ITEM_HINT_VALUE = 1
-
-        /**
-         * Specifies that the corresponding items should be presented as grids.
-         */
-        const val CONTENT_STYLE_GRID_ITEM_HINT_VALUE = 2
-
-        /**
-         * Specifies that the corresponding items should be presented as lists and are
-         * represented by a vector icon. This adds a small margin around the icons
-         * instead of filling the full available area.
-         */
-        const val CONTENT_STYLE_CATEGORY_LIST_ITEM_HINT_VALUE = 3
-
-        /**
-         * Specifies that the corresponding items should be presented as grids and are
-         * represented by a vector icon. This adds a small margin around the icons
-         * instead of filling the full available area.
-         */
-        const val CONTENT_STYLE_CATEGORY_GRID_ITEM_HINT_VALUE = 4
     }
 }
