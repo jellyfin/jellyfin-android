@@ -80,4 +80,8 @@
     <string name="media_service_generic_error">Er is een fout opgetreden</string>
     <string name="pref_download_location">Download locatie</string>
     <string name="pref_category_downloads">Downloads</string>
+    <string name="dialog_web_view_outdated">WebView is verouderd</string>
+    <string name="dialog_web_view_not_supported_message">Webviews worden niet ondersteund door dit apparaat.
+\nInstalleer een ondersteunde WebView implementatie of gebruik een ondersteund apparaat.</string>
+    <string name="dialog_web_view_not_supported">WebView wordt niet ondersteund</string>
 </resources>
