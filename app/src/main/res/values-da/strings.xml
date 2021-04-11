@@ -71,4 +71,12 @@
     <string name="external_player_app">Ekstern afspiller app</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Tillad lys- og lydbevægelser i den oprindelige afspiller</string>
     <string name="pref_exoplayer_allow_background_audio">Tillad afspilning af musik i baggrunden i den oprindelige afspiller</string>
+    <string name="dialog_button_close_app">Luk app</string>
+    <string name="dialog_button_check_for_updates">Tjek for opdateringer</string>
+    <string name="dialog_web_view_not_supported_message">Webvisning er ikke understøttet på denne enhed.
+\nInstaller en kompatibel Webvisnings implementering eller skift til en understøttet enhed.</string>
+    <string name="dialog_web_view_outdated_message">Webvisnings implementeringen som er brugt af din enhed er forældet.
+\nOpdater venligst til en kompatibel version.</string>
+    <string name="dialog_web_view_outdated">Webvisning er forældet</string>
+    <string name="dialog_web_view_not_supported">Webvisning er ikke understøttet</string>
 </resources>
