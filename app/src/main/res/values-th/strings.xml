@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_exoplayer_allow_background_audio">อนุญาตให้เล่นเสียงในพื้นหลัง</string>
+    <string name="pref_exoplayer_allow_background_audio">อนุญาตให้เล่นเสียงในพื้นหลังในเครื่องเล่นในตัว</string>
     <string name="pref_enable_exoplayer_summary">เปิดใช้งานเครื่องเล่นวิดีโอ ExoPlayer รุ่นทดลองซึ่งรองรับรูปแบบวิดีโอและโคเด็คเพิ่มเติมและเข้ากันกับระบบปฏิบัติการมากขึ้น</string>
     <string name="pref_enable_exoplayer_title">เปิดใช้งานการเข้ากันของเครื่องเล่นวิดีโอ</string>
     <string name="pref_category_video_player">เครื่องเล่นวีดีโอ</string>
@@ -37,4 +37,48 @@
     <string name="external_player_not_supported_yet">ยังไม่รองรับการติดตามการเล่นในเครื่องเล่นภายนอกที่เลือก ติดต่อนักพัฒนาเพื่อพยายามเพิ่มการสนับสนุน</string>
     <string name="external_player_invalid_play_method">วิธีการเล่นไม่ถูกต้อง</string>
     <string name="download_no_storage_permission">ไม่สามารถดาวน์โหลดไฟล์โดยไม่มีสิทธิ์ในการจัดเก็บ</string>
+    <string name="external_player_vlc_player_description">เครื่องเล่นสื่อที่ฟรีและโอเพ่นซอร์ส ที่เล่นสื่อส่วนมากได้</string>
+    <string name="external_player_mx_player_pro_description">เวอร์ชันจ่ายเงินของเครื่องเล่น MX ที่ให้ประสบการณ์เล่นวิดีโออย่างไม่ถูกขัดจังหวะ</string>
+    <string name="external_player_mx_player_free_description">เครื่องเล่นวิดีโอที่ทรงพลัง ที่มีการเร่งด้วยฮาร์ดแวร์และรองรับคำบรรยาย</string>
+    <string name="external_player_mpv_description">เครื่องเล่นวิดีโอที่เรียบง่าย เล็กเบา และมีอิสระ รองรับรูปแบบสื่อมากมาย</string>
+    <string name="external_player_mx_player_pro">เครื่องเล่น MX Pro</string>
+    <string name="external_player_mx_player_free">เครื่องเล่น MX Free</string>
+    <string name="external_player_system_default_description">ให้ระบบปฏิบัติการเลือกเครื่องเล่นเอง เครื่องเล่นที่เลือกอาจไม่รองรับเต็มที่</string>
+    <string name="pref_download_location">ตำแหน่งดาวน์โหลด</string>
+    <string name="pref_category_downloads">ดาวน์โหลด</string>
+    <string name="external_player_system_default">ตามระบบ</string>
+    <string name="external_player_vlc_player">เครื่องเล่น VLC</string>
+    <string name="external_player_mpv">เครื่องเล่น MPV</string>
+    <string name="external_player_app">แอพเครื่องเล่นภายนอก</string>
+    <string name="video_player_external_description">เครื่องเล่นภายนอกเช่น MX Player หรือ VLC</string>
+    <string name="video_player_external">เครื่องเล่นภายนอก</string>
+    <string name="external_player_invalid_player">ไม่มีเครื่องเล่นภายนอกที่เลือกที่ถูกต้อง ปิดการติดตามการเล่น</string>
+    <string name="external_player_unknown_error">เกิดข้อผิดพลาดกับเครื่องเล่นภายนอก ปิดการติดตามการเล่น</string>
+    <string name="video_player_native_description">พัฒนาจาก ExoPlayer รองรับรูปแบบวิดีโอและการเข้ารหัสมากขึ้น และเข้ากับระบบปฏิบัติการมากขึ้น</string>
+    <string name="video_player_web_description">เครื่องเล่นตั้งต้นจากหน้าเว็บ</string>
+    <string name="video_player_native">เครื่องเล่นในตัว</string>
+    <string name="video_player_web">เครื่องเล่นบนเว็บ</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">อนุญาตท่าทางปรับแสงสว่างและเสียงในเครื่องเล่นในตัว</string>
+    <string name="music_notification_channel_description">ใช้สำหรับควบคุมการเล่นเพลง</string>
+    <string name="music_notification_channel">เครื่องเล่นเพลง Jellyfin</string>
+    <string name="media_service_car_item_no_title">ไม่มีชื่อ</string>
+    <string name="media_service_car_section_playlists">เพลย์ลิสต์</string>
+    <string name="media_service_car_section_genres">ประเภท</string>
+    <string name="media_service_car_section_songs">เพลง</string>
+    <string name="media_service_car_section_artists">ศิลปิน</string>
+    <string name="media_service_car_section_albums">อัลบั้ม</string>
+    <string name="media_service_car_section_recents">เล่นล่าสุด</string>
+    <string name="media_service_item_not_found">ไม่พบสื่อ</string>
+    <string name="media_service_generic_error">เกิดข้อผิดพลาด</string>
+    <string name="available_servers_title">เซิร์ฟเวอร์ที่พบ</string>
+    <string name="choose_server_button_text">เลือกเซิร์ฟเวอร์</string>
+    <string name="connection_error_invalid_version">เซิร์ฟเวอร์ใช้เวอร์ชันที่ไม่รองรับ อัพเดทเป็นเวอร์ชันล่าสุดได้ที่ jellyfin.org</string>
+    <string name="dialog_button_close_app">ปิดแอพ</string>
+    <string name="dialog_button_check_for_updates">ค้นหาอัพเดท</string>
+    <string name="dialog_web_view_outdated_message">ระบบ WebView ของอุปกรณ์นี้เก่าเกินไป
+\nกรุณาอัพเดทเป็นเวอร์ชันใหม่ที่รองรับ</string>
+    <string name="dialog_web_view_outdated">WebView ล้าสมัย</string>
+    <string name="dialog_web_view_not_supported_message">อุปกรณ์นี้ไม่รองรับ WebView
+\nติดตั้งระบบ WebView หรือสลับไปยังอุปกรณ์ที่รองรับ</string>
+    <string name="dialog_web_view_not_supported">ไม่รองรับ WebView</string>
 </resources>
