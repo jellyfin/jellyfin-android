@@ -20,8 +20,6 @@ import com.google.android.exoplayer2.Player
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jellyfin.apiclient.model.dto.ImageOptions
-import org.jellyfin.apiclient.model.entities.ImageType.Primary
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.MainActivity
@@ -29,14 +27,19 @@ import org.jellyfin.mobile.R
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.VIDEO_PLAYER_NOTIFICATION_ID
 import org.jellyfin.mobile.utils.createMediaNotificationChannel
+import org.jellyfin.sdk.api.operations.ImageApi
+import org.jellyfin.sdk.model.api.ImageType
+import org.jellyfin.sdk.model.serializer.toUUID
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinComponent {
     private val context: Context = viewModel.getApplication<Application>()
     private val appPreferences: AppPreferences by inject()
     private val notificationManager: NotificationManager? by lazy { context.getSystemService() }
+    private val imageApi: ImageApi by inject()
     private val imageLoader: ImageLoader by inject()
     private val receiverRegistered = AtomicBoolean(false)
 
@@ -57,12 +60,14 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
 
         viewModel.viewModelScope.launch {
             val mediaIcon: Bitmap? = withContext(Dispatchers.IO) {
-                val imageUrl = viewModel.apiClient.GetImageUrl(mediaSource.id, ImageOptions().apply {
-                    imageType = Primary
-                    val size = context.resources.getDimensionPixelSize(R.dimen.media_notification_height)
-                    maxWidth = size
-                    maxHeight = size
-                })
+                val size = context.resources.getDimensionPixelSize(R.dimen.media_notification_height)
+
+                val imageUrl = imageApi.getItemImageUrl(
+                    itemId = mediaSource.id.toUUID(),
+                    imageType = ImageType.PRIMARY,
+                    maxWidth = size,
+                    maxHeight = size,
+                )
                 imageLoader.execute(ImageRequest.Builder(context).data(imageUrl).build()).drawable?.toBitmap()
             }
 

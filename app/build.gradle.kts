@@ -113,7 +113,7 @@ dependencies {
     kapt(Dependencies.Room.compiler)
 
     // Network
-    implementation(Dependencies.Network.apiclient)
+    implementation(Dependencies.Network.jellyfinSdk)
     implementation(Dependencies.Network.okHttp)
     implementation(Dependencies.Network.coil)
     implementation(Dependencies.Network.exoPlayerHLS)

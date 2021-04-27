@@ -9,13 +9,10 @@ import android.net.Uri
 import android.webkit.JavascriptInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import org.jellyfin.apiclient.interaction.AndroidDevice
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.settings.SettingsFragment
-import org.jellyfin.mobile.utils.Constants
-import org.jellyfin.mobile.utils.Constants.APP_INFO_NAME
-import org.jellyfin.mobile.utils.Constants.APP_INFO_VERSION
+import org.jellyfin.mobile.utils.*
 import org.jellyfin.mobile.utils.Constants.EXTRA_ALBUM
 import org.jellyfin.mobile.utils.Constants.EXTRA_ARTIST
 import org.jellyfin.mobile.utils.Constants.EXTRA_CAN_SEEK
@@ -27,19 +24,16 @@ import org.jellyfin.mobile.utils.Constants.EXTRA_ITEM_ID
 import org.jellyfin.mobile.utils.Constants.EXTRA_PLAYER_ACTION
 import org.jellyfin.mobile.utils.Constants.EXTRA_POSITION
 import org.jellyfin.mobile.utils.Constants.EXTRA_TITLE
-import org.jellyfin.mobile.utils.addFragment
-import org.jellyfin.mobile.utils.disableFullscreen
-import org.jellyfin.mobile.utils.enableFullscreen
-import org.jellyfin.mobile.utils.requestDownload
-import org.jellyfin.mobile.utils.requireMainActivity
-import org.jellyfin.mobile.utils.runOnUiThread
 import org.jellyfin.mobile.webapp.RemotePlayerService
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
+import org.jellyfin.sdk.model.ClientInfo
+import org.jellyfin.sdk.model.DeviceInfo
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import org.koin.core.KoinComponent
+import org.koin.core.get
 import org.koin.core.inject
 import timber.log.Timber
 
@@ -51,19 +45,21 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
     @SuppressLint("HardwareIds")
     @JavascriptInterface
     fun getDeviceInformation(): String? = try {
-        val device = AndroidDevice.fromContext(context)
+        val deviceInfo = get<DeviceInfo>()
+        val clientInfo = get<ClientInfo>()
+
         JSONObject().apply {
-            put("deviceId", device.deviceId)
+            put("deviceId", deviceInfo.id)
             // normalize the name by removing special characters
             // and making sure it's at least 1 character long
             // otherwise the webui will fail to send it to the server
-            val name = device.deviceName
+            val name = deviceInfo.name
                 .replace("[^\\x20-\\x7E]".toRegex(), "")
                 .trim()
                 .padStart(1)
             put("deviceName", name)
-            put("appName", APP_INFO_NAME)
-            put("appVersion", APP_INFO_VERSION)
+            put("appName", clientInfo.name)
+            put("appVersion", clientInfo.version)
         }.toString()
     } catch (e: JSONException) {
         null

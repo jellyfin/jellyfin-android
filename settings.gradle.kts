@@ -1,4 +1,4 @@
-import java.util.Properties
+import java.util.*
 
 include(":app")
 
@@ -14,20 +14,21 @@ pluginManagement {
 
 // Load properties from local.properties
 val properties = Properties().apply {
-    val location = File("local.properties")
-    if (location.exists())
-        load(location.inputStream())
+    val propFile = File("local.properties")
+    if (propFile.exists()) {
+        load(propFile.inputStream())
+    }
 }
 
-// Get value for dependency substitution
+// Check if dependency substitution is enabled
 val enableDependencySubstitution = properties.getProperty("enable.dependency.substitution", "true").equals("true", true)
 
-// Replace apiclient dependency with local version
-val apiclientLocation = "../jellyfin-apiclient-java"
-if (File(apiclientLocation).exists() && enableDependencySubstitution) {
-    includeBuild(apiclientLocation) {
+// Replace SDK dependency with local version
+val sdkLocation = "../jellyfin-sdk-kotlin"
+if (File(sdkLocation).exists() && enableDependencySubstitution) {
+    includeBuild(sdkLocation) {
         dependencySubstitution {
-            substitute(module("org.jellyfin.apiclient:android")).with(project(":android"))
+            substitute(module("org.jellyfin.sdk:jellyfin-platform-android")).with(project(":jellyfin-platform-android"))
         }
     }
 }

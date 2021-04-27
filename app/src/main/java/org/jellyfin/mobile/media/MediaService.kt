@@ -27,14 +27,12 @@ import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import kotlinx.coroutines.*
-import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.cast.CastPlayerProvider
 import org.jellyfin.mobile.cast.ICastPlayerProvider
-import org.jellyfin.mobile.controller.ServerController
+import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.media.car.LibraryBrowser
 import org.jellyfin.mobile.media.car.LibraryPage
-import org.jellyfin.mobile.model.sql.entity.ServerUser
 import org.jellyfin.mobile.utils.toast
 import org.koin.android.ext.android.inject
 import timber.log.Timber
@@ -42,16 +40,13 @@ import com.google.android.exoplayer2.MediaItem as ExoPlayerMediaItem
 
 class MediaService : MediaBrowserServiceCompat() {
 
-    private val apiClient: ApiClient by inject()
-    private val serverController: ServerController by inject()
+    private val apiController: ApiController by inject()
+    private val libraryBrowser: LibraryBrowser by inject()
 
-    private val serviceJob = SupervisorJob()
-    private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
+    private val serviceScope = MainScope()
     private var isForegroundService = false
 
     private lateinit var loadingJob: Job
-    private var serverUser: ServerUser? = null
-    private val libraryBrowser = LibraryBrowser(this, apiClient)
 
     // The current player will either be an ExoPlayer (for local playback) or a CastPlayer (for
     // remote playback through a Cast device).
@@ -91,11 +86,7 @@ class MediaService : MediaBrowserServiceCompat() {
         super.onCreate()
 
         loadingJob = serviceScope.launch {
-            serverUser = serverController.loadCurrentServerUser()
-            serverUser?.let { serverUser ->
-                apiClient.ChangeServerLocation(serverUser.server.hostname.trimEnd('/'))
-                apiClient.SetAuthenticationInfo(serverUser.user.accessToken, serverUser.user.userId)
-            }
+            apiController.loadSavedServerUser()
         }
 
         val sessionActivityPendingIntent = packageManager?.getLaunchIntentForPackage(packageName)?.let { sessionIntent ->
@@ -148,7 +139,7 @@ class MediaService : MediaBrowserServiceCompat() {
         }
 
         // Cancel coroutines when the service is going away
-        serviceJob.cancel()
+        serviceScope.cancel()
 
         // Free ExoPlayer resources
         exoPlayer.removeListener(playerListener)
@@ -168,10 +159,16 @@ class MediaService : MediaBrowserServiceCompat() {
         result.detach()
 
         serviceScope.launch(Dispatchers.IO) {
-            // Ensure credentials were loaded already
+            // Ensure that server and credentials are available
             loadingJob.join()
-            val library = if (serverUser != null) libraryBrowser.loadLibrary(parentId) else null
-            result.sendResult(library ?: emptyList())
+
+            val items = try {
+                if (apiController.currentUser != null) libraryBrowser.loadLibrary(parentId) else null
+            } catch (t: Throwable) {
+                Timber.e(t)
+                null
+            }
+            result.sendResult(items ?: emptyList())
         }
     }
 
@@ -269,7 +266,12 @@ class MediaService : MediaBrowserServiceCompat() {
 
         override fun onPrepare(playWhenReady: Boolean) {
             serviceScope.launch {
-                val recents = libraryBrowser.getDefaultRecents()
+                val recents = try {
+                    libraryBrowser.getDefaultRecents()
+                } catch (t: Throwable) {
+                    Timber.e(t)
+                    null
+                }
                 if (recents != null) {
                     preparePlaylist(recents, 0, playWhenReady)
                 } else setPlaybackError()
@@ -278,7 +280,7 @@ class MediaService : MediaBrowserServiceCompat() {
 
         override fun onPrepareFromMediaId(mediaId: String, playWhenReady: Boolean, extras: Bundle?) {
             if (mediaId == LibraryPage.RESUME) {
-                // Recents requested
+                // Requested recents
                 onPrepare(playWhenReady)
             } else serviceScope.launch {
                 val result = libraryBrowser.buildPlayQueue(mediaId)
@@ -294,7 +296,12 @@ class MediaService : MediaBrowserServiceCompat() {
                 // No search provided, fallback to recents
                 onPrepare(playWhenReady)
             } else serviceScope.launch {
-                val results = libraryBrowser.getSearchResults(query, extras)
+                val results = try {
+                    libraryBrowser.getSearchResults(query, extras)
+                } catch (t: Throwable) {
+                    Timber.e(t)
+                    null
+                }
                 if (results != null) {
                     preparePlaylist(results, 0, playWhenReady)
                 } else setPlaybackError()

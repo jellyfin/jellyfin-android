@@ -9,10 +9,10 @@ import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-suspend fun WebViewFragment.initLocale() {
+suspend fun WebViewFragment.initLocale(userId: String) {
     // Try to set locale via user settings
     val userSettings = suspendCoroutine<String> { continuation ->
-        webView.evaluateJavascript("window.localStorage.getItem('${apiClient.currentUserId}-language')") { result ->
+        webView.evaluateJavascript("window.localStorage.getItem('$userId-language')") { result ->
             continuation.resume(result)
         }
     }

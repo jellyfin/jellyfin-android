@@ -5,37 +5,26 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.jellyfin.apiclient.interaction.ApiClient
-import org.jellyfin.mobile.controller.ServerController
+import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.model.sql.entity.ServerEntity
 
 class MainViewModel(
     app: Application,
-    private val apiClient: ApiClient,
-    private val serverController: ServerController,
+    private val apiController: ApiController,
 ) : AndroidViewModel(app) {
     private val _serverState: MutableStateFlow<ServerState> = MutableStateFlow(ServerState.Pending)
     val serverState: StateFlow<ServerState> get() = _serverState
 
     init {
         viewModelScope.launch {
-            serverState.collect { state ->
-                val serverAddress = state.server?.hostname?.trimEnd('/')
-                if (apiClient.serverAddress != serverAddress)
-                    apiClient.ChangeServerLocation(serverAddress)
-            }
-        }
-
-        viewModelScope.launch {
-            serverController.migrateFromPreferences()
+            apiController.migrateFromPreferences()
             refreshServer()
         }
     }
 
     suspend fun refreshServer() {
-        val server = serverController.loadCurrentServer()
+        val server = apiController.loadSavedServer()
         _serverState.value = server?.let { ServerState.Available(it) } ?: ServerState.Unset
     }
 }
