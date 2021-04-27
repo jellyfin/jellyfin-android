@@ -23,21 +23,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import org.jellyfin.apiclient.Jellyfin
-import org.jellyfin.apiclient.discovery.DiscoveryServerInfo
-import org.jellyfin.apiclient.discovery.ServerDiscovery
-import org.jellyfin.apiclient.interaction.ApiClient
-import org.jellyfin.apiclient.model.system.PublicSystemInfo
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.controller.ServerController
+import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.databinding.FragmentConnectBinding
 import org.jellyfin.mobile.utils.Constants
-import org.jellyfin.mobile.utils.PRODUCT_NAME_SUPPORTED_SINCE
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
-import org.jellyfin.mobile.utils.getPublicSystemInfo
 import org.jellyfin.mobile.viewmodel.MainViewModel
+import org.jellyfin.sdk.Jellyfin
+import org.jellyfin.sdk.discovery.LocalServerDiscovery
+import org.jellyfin.sdk.model.ServerVersion
+import org.jellyfin.sdk.model.api.ServerDiscoveryInfo
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import timber.log.Timber
@@ -45,8 +40,7 @@ import timber.log.Timber
 class ConnectFragment : Fragment() {
     private val mainViewModel: MainViewModel by sharedViewModel()
     private val jellyfin: Jellyfin by inject()
-    private val apiClient: ApiClient by inject()
-    private val serverController: ServerController by inject()
+    private val apiController: ApiController by inject()
 
     // UI
     private var _connectServerBinding: FragmentConnectBinding? = null
@@ -57,9 +51,13 @@ class ConnectFragment : Fragment() {
     private val connectButton: Button get() = connectServerBinding.connectButton
     private val chooseServerButton: Button get() = connectServerBinding.chooseServerButton
 
-    private val serverList = ArrayList<DiscoveryServerInfo>(ServerDiscovery.DISCOVERY_MAX_SERVERS)
+    private val serverList = ArrayList<ServerDiscoveryInfo>(LocalServerDiscovery.DISCOVERY_MAX_SERVERS)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _connectServerBinding = FragmentConnectBinding.inflate(inflater, container, false)
         return serverSetupLayout.apply { applyWindowInsetsAsMargins() }
     }
@@ -117,7 +115,7 @@ class ConnectFragment : Fragment() {
             val httpUrl = checkServerUrlAndConnection(enteredUrl)
             if (httpUrl != null) {
                 clearServerList()
-                serverController.setupServer(httpUrl.toString())
+                apiController.setupServer(httpUrl)
                 mainViewModel.refreshServer()
             }
             hostInput.isEnabled = true
@@ -127,10 +125,13 @@ class ConnectFragment : Fragment() {
 
     private fun discoverServers() {
         lifecycleScope.launch {
-            jellyfin.discovery.discover().flowOn(Dispatchers.IO).collect { serverInfo ->
-                serverList.add(serverInfo)
-                chooseServerButton.isVisible = true
-            }
+            jellyfin.discovery
+                .discoverLocalServers(maxServers = LocalServerDiscovery.DISCOVERY_MAX_SERVERS)
+                .flowOn(Dispatchers.IO)
+                .collect { serverInfo ->
+                    serverList.add(serverInfo)
+                    chooseServerButton.isVisible = true
+                }
         }
     }
 
@@ -138,7 +139,7 @@ class ConnectFragment : Fragment() {
         AlertDialog.Builder(activity).apply {
             setTitle(R.string.available_servers_title)
             setItems(serverList.map { "${it.name}\n${it.address}" }.toTypedArray()) { _, index ->
-                connect(serverList[index].address)
+                connect(serverList[index].address!!)
             }
         }.show()
     }
@@ -157,61 +158,52 @@ class ConnectFragment : Fragment() {
         connectionErrorText.isVisible = false
     }
 
-    private suspend fun checkServerUrlAndConnection(enteredUrl: String): HttpUrl? {
+    private suspend fun checkServerUrlAndConnection(enteredUrl: String): String? {
         Timber.i("checkServerUrlAndConnection $enteredUrl")
 
-        val normalizedUrl = enteredUrl.run {
-            if (lastOrNull() == '/') this
-            else "$this/"
-        }
-        val urls = jellyfin.discovery.addressCandidates(normalizedUrl)
-        Timber.i("Address candidates are $urls")
+        val candidates = jellyfin.discovery.getAddressCandidates(enteredUrl)
+        Timber.i("Address candidates are $candidates")
 
-        var httpUrl: HttpUrl? = null
-        var serverInfo: PublicSystemInfo? = null
-        loop@ for (url in urls) {
-            httpUrl = url.toHttpUrlOrNull()
+        val recommendedServer = jellyfin.discovery.getRecommendedServer(candidates, false)
 
-            if (httpUrl == null) {
-                showConnectionError(R.string.connection_error_invalid_format)
-                return null // Format is invalid, don't try any other variants
-            }
+        // No server found that replied
+        if (recommendedServer == null) {
+            Timber.i("No recommended server found")
 
-            // Set API client address
-            apiClient.ChangeServerLocation(httpUrl.toString().trimEnd('/'))
-
-            serverInfo = apiClient.getPublicSystemInfo()
-            if (serverInfo != null)
-                break@loop
-        }
-
-        if (httpUrl == null || serverInfo == null) {
-            Timber.w("Failed to find server info, url was $httpUrl")
-
-            showConnectionError()
+            // TODO add candidates to error
+            showConnectionError(R.string.connection_error_cannot_connect)
             return null
         }
 
-        val version = serverInfo.version
-            .split('.')
-            .mapNotNull(String::toIntOrNull)
+        val systemInfo = recommendedServer.systemInfo
 
-        val isValidInstance = when {
-            version.size != 3 -> false
-            // Major version is invalid
-            version[0] != PRODUCT_NAME_SUPPORTED_SINCE.first -> false
-            // Minor version is too old
-            version[1] < PRODUCT_NAME_SUPPORTED_SINCE.second -> false
-            else -> true // FIXME: check ProductName once API client supports it
+        // System Info is missing, shouldn't be able to happen but check just in case
+        if (systemInfo == null) {
+            Timber.w("Recommended server did not contain system information!")
+
+            showConnectionError(R.string.connection_error_invalid_version)
+            return null
         }
 
-        Timber.i("Server at $httpUrl with version ${serverInfo.version} valid: $isValidInstance")
+        val version = systemInfo.version?.let { ServerVersion.fromString(it) }
+
+        val isValidInstance = when {
+            // Incorrect format
+            version == null -> false
+            // Version too old
+            version < Jellyfin.recommendedVersion -> false
+            // Incorrect product name
+            systemInfo.productName != "Jellyfin Server" -> false
+            else -> true
+        }
+
+        Timber.i("Recommended server at ${recommendedServer.address} with version $version valid: $isValidInstance")
 
         if (!isValidInstance) {
             showConnectionError(R.string.connection_error_invalid_version)
             return null
         }
 
-        return httpUrl
+        return recommendedServer.address
     }
 }

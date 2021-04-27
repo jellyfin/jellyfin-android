@@ -23,14 +23,13 @@ import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import kotlinx.coroutines.launch
-import org.jellyfin.apiclient.interaction.ApiClient
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.bridge.NativeInterface
 import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.bridge.NativePlayerHost
-import org.jellyfin.mobile.controller.ServerController
+import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.databinding.FragmentWebviewBinding
 import org.jellyfin.mobile.model.sql.entity.ServerEntity
 import org.jellyfin.mobile.player.PlayerFragment
@@ -48,8 +47,7 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class WebViewFragment : Fragment(), NativePlayerHost {
-    val apiClient: ApiClient by inject()
-    private val serverController: ServerController by inject()
+    private val apiController: ApiController by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private lateinit var externalPlayer: ExternalPlayer
 
@@ -195,8 +193,8 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                             val storedServer = credentials.getJSONArray("Servers").getJSONObject(0)
                             val user = storedServer.getString("UserId")
                             val token = storedServer.getString("AccessToken")
-                            serverController.setupUser(server.id, user, token)
-                            initLocale()
+                            apiController.setupUser(server.id, user, token)
+                            initLocale(user)
                         }
                         null
                     }
