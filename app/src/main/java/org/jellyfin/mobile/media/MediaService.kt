@@ -191,11 +191,16 @@ class MediaService : MediaBrowserServiceCompat() {
         }
 
         currentPlayer.playWhenReady = playWhenReady
-        currentPlayer.stop(true)
+        with(currentPlayer) {
+            stop()
+            clearMediaItems()
+        }
         if (currentPlayer == exoPlayer) {
-            exoPlayer.setMediaItems(mediaItems)
-            exoPlayer.prepare()
-            exoPlayer.seekTo(initialPlaybackIndex, playbackStartPositionMs)
+            with(exoPlayer) {
+                setMediaItems(mediaItems)
+                prepare()
+                seekTo(initialPlaybackIndex, playbackStartPositionMs)
+            }
         } else {
             val castPlayer = castPlayerProvider.get()
             if (currentPlayer == castPlayer) {
@@ -218,7 +223,10 @@ class MediaService : MediaBrowserServiceCompat() {
             if (currentPlaylistItems.isEmpty()) {
                 // We are joining a playback session.
                 // Loading the session from the new player is not supported, so we stop playback.
-                currentPlayer.stop(true)
+                with(currentPlayer) {
+                    stop()
+                    clearMediaItems()
+                }
             } else if (playbackState != Player.STATE_IDLE && playbackState != Player.STATE_ENDED) {
                 preparePlaylist(
                     metadataList = currentPlaylistItems,
@@ -229,7 +237,10 @@ class MediaService : MediaBrowserServiceCompat() {
             }
         }
         mediaSessionConnector.setPlayer(newPlayer)
-        previousPlayer?.stop(true)
+        previousPlayer?.run {
+            stop()
+            clearMediaItems()
+        }
     }
 
     private fun setPlaybackError() {
@@ -376,8 +387,6 @@ class MediaService : MediaBrowserServiceCompat() {
                 ExoPlaybackException.TYPE_RENDERER -> Timber.e("TYPE_RENDERER: %s", error.rendererException.message)
                 ExoPlaybackException.TYPE_UNEXPECTED -> Timber.e("TYPE_UNEXPECTED: %s", error.unexpectedException.message)
                 ExoPlaybackException.TYPE_REMOTE -> Timber.e("TYPE_REMOTE: %s", error.message)
-                ExoPlaybackException.TYPE_OUT_OF_MEMORY -> Timber.e("TYPE_OUT_OF_MEMORY: %s", error.outOfMemoryError.message)
-                ExoPlaybackException.TYPE_TIMEOUT -> Timber.e("TYPE_TIMEOUT: %s", error.timeoutException.message)
             }
             applicationContext.toast(message, Toast.LENGTH_LONG)
         }

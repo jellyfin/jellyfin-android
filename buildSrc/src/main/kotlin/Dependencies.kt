@@ -12,7 +12,7 @@ object Dependencies {
         const val androidxCore = "1.5.0-rc01"
         const val activity = "1.2.2"
         const val fragment = "1.3.2"
-        const val exoPlayer = "2.12.3"
+        const val exoPlayer = "2.13.3"
 
         // Lifecycle
         const val lifecycleExtensions = "2.3.1"
@@ -41,7 +41,7 @@ object Dependencies {
         // Health
         const val timber = "4.7.1"
         const val leakCanary = "2.7"
-        const val redScreenOfDeath = "0.1.2"
+        const val redScreenOfDeath = "0.1.3"
         const val junit = "5.7.1"
         const val kotest = "4.4.3"
         const val mockk = "1.11.0"
@@ -55,13 +55,13 @@ object Dependencies {
     }
 
     object Core {
-        const val koin = "org.koin:koin-android:${Versions.koin}"
-        const val koinViewModel = "org.koin:koin-android-viewmodel:${Versions.koin}"
+        const val koin = "io.insert-koin:koin-android:${Versions.koin}"
+        const val koinViewModel = "io.insert-koin:koin-android-viewmodel:${Versions.koin}"
         val appCompat = androidx("appcompat", Versions.appCompat)
         val androidx = androidxKtx("core", Versions.androidxCore)
         val activity = androidxKtx("activity", Versions.activity)
         val fragment = androidxKtx("fragment", Versions.fragment)
-        const val koinFragment = "org.koin:koin-androidx-fragment:${Versions.koin}"
+        const val koinFragment = "io.insert-koin:koin-androidx-fragment:${Versions.koin}"
         val exoPlayer = exoPlayer("core")
     }
 
@@ -111,8 +111,8 @@ object Dependencies {
     object Health {
         const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
         const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${Versions.leakCanary}"
-        const val redScreenOfDeath = "com.melegy.redscreenofdeath:red-screen-of-death:${Versions.redScreenOfDeath}"
-        const val redScreenOfDeathNoOp = "com.melegy.redscreenofdeath:red-screen-of-death-no-op:${Versions.redScreenOfDeath}"
+        const val redScreenOfDeath = "com.mlegy.redscreenofdeath:red-screen-of-death:${Versions.redScreenOfDeath}"
+        const val redScreenOfDeathNoOp = "com.mlegy.redscreenofdeath:red-screen-of-death-no-op:${Versions.redScreenOfDeath}"
         const val junit = "org.junit.jupiter:junit-jupiter-api:${Versions.junit}"
         const val junitEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junit}"
         const val kotestAssertions = "io.kotest:kotest-assertions-core-jvm:${Versions.kotest}"

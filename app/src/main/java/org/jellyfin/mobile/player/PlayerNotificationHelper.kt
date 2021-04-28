@@ -32,7 +32,6 @@ import org.jellyfin.sdk.model.api.ImageType
 import org.jellyfin.sdk.model.serializer.toUUID
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinComponent {
