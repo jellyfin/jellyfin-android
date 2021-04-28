@@ -2,23 +2,21 @@
 
 buildscript {
     repositories {
-        google()
         mavenCentral()
-        jcenter()
+        google()
     }
     dependencies {
         val kotlinVersion: String by project
-        classpath("com.android.tools.build:gradle:4.1.2")
+        classpath("com.android.tools.build:gradle:4.1.3")
         classpath(kotlin("gradle-plugin", kotlinVersion))
-        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.6.2.0")
+        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.7.1.1")
     }
 }
 
 allprojects {
     repositories {
-        google()
         mavenCentral()
-        jcenter()
+        google()
     }
 }
 
