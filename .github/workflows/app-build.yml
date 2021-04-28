@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - master
+  pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-20.04
-    if: ${{ github.repository == 'jellyfin/jellyfin-android' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -19,24 +19,18 @@ jobs:
           distribution: 'adopt'
           java-version: 11
 
-      - name: Set dev JELLYFIN_VERISON
-        run: |
-          VERSION=$(curl --silent "https://api.github.com/repos/${{ github.repository }}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-          echo "JELLYFIN_VERSION=$(echo ${VERSION#v} | tr / -)-dev" >> $GITHUB_ENV
-
       - name: Build Unsigned Release
-        run: ./gradlew --no-daemon --info assembleRelease versionTxt
+        run: ./gradlew --no-daemon --info assembleDebug
 
       - name: Split APK release types
         run: |
           mkdir -p build/jellyfin-publish/release-libre build/jellyfin-publish/release-proprietary;
-          mv app/build/outputs/apk/*/*/jellyfin-android-*-libre-release-unsigned.apk build/jellyfin-publish/release-libre/;
-          mv app/build/outputs/apk/*/*/jellyfin-android-*-proprietary-release-unsigned.apk build/jellyfin-publish/release-proprietary/;
-          mv app/build/version.txt build/jellyfin-publish/;
+          mv app/build/outputs/apk/*/*/jellyfin-android-*-libre-debug.apk build/jellyfin-publish/release-libre/;
+          mv app/build/outputs/apk/*/*/jellyfin-android-*-proprietary-debug.apk build/jellyfin-publish/release-proprietary/;
 
       - uses: actions/upload-artifact@v2
         with:
-          name: build-publish-artifact
-          retention-days: 30
+          name: build-artifacts
+          retention-days: 14
           if-no-files-found: error
           path: build/jellyfin-publish
