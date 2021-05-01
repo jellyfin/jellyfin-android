@@ -84,4 +84,8 @@
     <string name="dialog_web_view_not_supported_message">Webviews worden niet ondersteund door dit apparaat.
 \nInstalleer een ondersteunde WebView implementatie of gebruik een ondersteund apparaat.</string>
     <string name="dialog_web_view_not_supported">WebView wordt niet ondersteund</string>
+    <string name="dialog_button_close_app">App sluiten</string>
+    <string name="dialog_button_check_for_updates">Naar updates zoeken</string>
+    <string name="dialog_web_view_outdated_message">De WebView implementatie gebruikt door jouw apparaat is verouderd.
+\nUpdate het tot een compatibele versie alsjeblieft.</string>
 </resources>
