@@ -78,4 +78,12 @@
     <string name="media_service_item_not_found">Mediaobjekt kunde inte hittas</string>
     <string name="pref_download_location">Nedladdningsplats</string>
     <string name="pref_category_downloads">Nedladdningar</string>
+    <string name="dialog_button_close_app">Stäng app</string>
+    <string name="dialog_button_check_for_updates">Sök efter uppdateringar</string>
+    <string name="dialog_web_view_outdated_message">Din enhets WebView-implementering är utdaterad.
+\nVänligen uppdatera till en kompatibel version.</string>
+    <string name="dialog_web_view_outdated">WebView utdaterad</string>
+    <string name="dialog_web_view_not_supported_message">WebViews stöds ej av denna enhet.
+\nInstallera en kompatibel WebView-implementering eller använd en enhet som stöds.</string>
+    <string name="dialog_web_view_not_supported">WebView stöds ej</string>
 </resources>
