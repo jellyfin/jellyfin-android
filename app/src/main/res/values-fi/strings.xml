@@ -79,4 +79,6 @@
     <string name="media_service_generic_error">Tapahtui virhe</string>
     <string name="pref_download_location">Lataussijainti</string>
     <string name="pref_category_downloads">Lataukset</string>
+    <string name="dialog_button_close_app">Sulje sovellus</string>
+    <string name="dialog_button_check_for_updates">Tarkista päivitykset</string>
 </resources>
