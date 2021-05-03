@@ -204,8 +204,11 @@ class LibraryBrowser(
         return result.items?.firstOrNull()?.id
     }
 
-    suspend fun getDefaultRecents(): List<MediaMetadataCompat>? =
-        getLibraries().firstOrNull()?.mediaId?.let { defaultLibrary -> getRecents(defaultLibrary.toUUID()) }
+    suspend fun getDefaultRecents(): List<MediaMetadataCompat>? = getLibraries().firstOrNull()?.mediaId?.let { defaultLibrary ->
+        val libraryId = defaultLibrary.split('|').getOrNull(1) ?: return@let null
+
+        getRecents(libraryId.toUUID())
+    }
 
     private suspend fun getLibraries(): List<MediaBrowserCompat.MediaItem> {
         val userViews by userViewsApi.getUserViews(
