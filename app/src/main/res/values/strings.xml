@@ -60,7 +60,9 @@
 
     <string name="activity_name_settings">Jellyfin Settings</string>
     <string name="pref_category_music_player">Music player</string>
-    <string name="pref_music_notification_always_dismissible_title">Make music player notification always dismissible</string>
+    <string name="pref_music_notification_always_dismissible_title">Dismissible player notification</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">The notification can only be dismissed when playback is paused</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">The notification can always be dismissed, even when playing media</string>
     <string name="pref_category_video_player">Video player</string>
     <string name="pref_video_player_type_title">Video player type</string>
     <string name="video_player_web">Web player</string>
@@ -69,8 +71,9 @@
     <string name="video_player_web_description">The default HTML video player from the Web UI</string>
     <string name="video_player_native_description">Based on ExoPlayer, supports more video formats and codecs, and is more integrated into the OS</string>
     <string name="video_player_external_description">External video playback apps like MX Player and VLC</string>
-    <string name="pref_exoplayer_allow_background_audio">Allow playing audio in the background in native player</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Allow brightness and volume gestures in native player</string>
+    <string name="pref_exoplayer_allow_background_audio">Background audio</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Allow playing videos in the background with audio-only</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Brightness and volume gestures</string>
 
     <string name="external_player_app">External player app</string>
     <string name="external_player_mpv">MPV Player</string>

@@ -61,6 +61,8 @@ class SettingsFragment : Fragment() {
         }
         checkBox(Constants.PREF_MUSIC_NOTIFICATION_ALWAYS_DISMISSIBLE) {
             titleRes = R.string.pref_music_notification_always_dismissible_title
+            summaryRes = R.string.pref_music_notification_always_dismissible_summary_off
+            summaryOnRes = R.string.pref_music_notification_always_dismissible_summary_on
         }
         categoryHeader(PREF_CATEGORY_VIDEO_PLAYER) {
             titleRes = R.string.pref_category_video_player
@@ -86,6 +88,7 @@ class SettingsFragment : Fragment() {
         }
         backgroundAudioPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO) {
             titleRes = R.string.pref_exoplayer_allow_background_audio
+            summaryRes = R.string.pref_exoplayer_allow_background_audio_summary
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
         }
 
