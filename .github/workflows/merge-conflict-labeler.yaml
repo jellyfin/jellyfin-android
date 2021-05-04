@@ -1,4 +1,4 @@
-name: Merge conflict label
+name: Merge conflict labeler
 
 on:
   push:
