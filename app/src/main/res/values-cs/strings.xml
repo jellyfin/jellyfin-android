@@ -14,7 +14,7 @@
     <string name="pref_enable_exoplayer_summary">Povolit experimentální přehrávač videa ExoPlayer, který podporuje více formátů a kodeků, a je lépe integrovaný do systému</string>
     <string name="pref_enable_exoplayer_title">Povolit integraci přehrávače videa</string>
     <string name="pref_category_video_player">Přehrávač videa</string>
-    <string name="pref_music_notification_always_dismissible_title">Umožnit odstranění oznámení hudebního přehrávače</string>
+    <string name="pref_music_notification_always_dismissible_title">Odstranění oznámení hudebního přehrávače</string>
     <string name="pref_category_music_player">Přehrávač hudby</string>
     <string name="activity_name_settings">Nastavení Jellyfin</string>
     <string name="menu_item_none">Žádný</string>
@@ -25,7 +25,7 @@
     <string name="connection_error_cannot_connect">Připojení se nezdařilo.
 \nZkontrolujte název hostitele a síťové připojení.</string>
     <string name="playback_info_play_method">Způsob přehrávání: %s</string>
-    <string name="pref_exoplayer_allow_background_audio">Povolit přehrávání zvuku na pozadí v nativním přehrávači</string>
+    <string name="pref_exoplayer_allow_background_audio">Zvuk na pozadí</string>
     <string name="notification_action_stop">Zastavit</string>
     <string name="notification_action_next">Další</string>
     <string name="notification_action_fast_forward">Přetočit vpřed</string>
@@ -47,7 +47,7 @@
     <string name="pref_video_player_type_title">Typ přehrávače videa</string>
     <string name="available_servers_title">Dostupné servery</string>
     <string name="choose_server_button_text">Vybrat server</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Povolit kontrolu jasu a hlasitosti v nativním přehrávači</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Gesta kontroly jasu a hlasitosti</string>
     <string name="external_player_system_default_description">Nechat výběr přehrávače na systému. Některé přehrávače nemusí být plně kompatibilní.</string>
     <string name="external_player_system_default">Systémový výchozí</string>
     <string name="external_player_vlc_player_description">Svobodný open source přehrávač pro více platforem, který přehraje téměř cokoliv.</string>
@@ -88,4 +88,7 @@
     <string name="dialog_web_view_not_supported_message">WebViews není na tomto zařízení podporován.
 \nNainstalujte kompatibilní implementaci WebView nebo změňte zařízení.</string>
     <string name="dialog_web_view_not_supported">WebView není podporován</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Umožnit přehrávání pouze zvuku videí na pozadí</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Oznámení je možné odstranit kdykoliv, i při přehrávání médií</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">Oznámení je možné odstranit pouze při pozastaveném přehrávání</string>
 </resources>
