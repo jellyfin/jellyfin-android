@@ -32,6 +32,10 @@ class SettingsFragment : Fragment() {
     private lateinit var swipeGesturesPreference: Preference
     private lateinit var externalPlayerChoicePreference: Preference
 
+    init {
+        Preference.Config.titleMaxLines = 2
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val localInflater = inflater.withThemedContext(requireContext(), R.style.AppTheme_Settings)
         val binding = FragmentSettingsBinding.inflate(localInflater, container, false)
