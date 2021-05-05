@@ -191,7 +191,7 @@ class ConnectFragment : Fragment() {
             // Incorrect format
             version == null -> false
             // Version too old
-            version < Jellyfin.recommendedVersion -> false
+            version < Jellyfin.minimumVersion -> false
             // Incorrect product name
             systemInfo.productName != "Jellyfin Server" -> false
             else -> true
