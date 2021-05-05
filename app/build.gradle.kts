@@ -16,6 +16,7 @@ detekt {
     buildUponDefaultConfig = true
     allRules = false
     config = files("${rootProject.projectDir}/detekt.yml")
+    ignoreFailures = true
 
     reports {
         html.enabled = true
