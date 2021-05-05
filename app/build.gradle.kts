@@ -81,6 +81,7 @@ android {
     }
     lintOptions {
         isAbortOnError = false
+        sarifReport = true
         disable("MissingTranslation", "ExtraTranslation")
     }
 }
