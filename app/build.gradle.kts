@@ -15,7 +15,7 @@ plugins {
 detekt {
     buildUponDefaultConfig = true
     allRules = false
-    config = files("$projectDir/detekt.yml")
+    config = files("${rootProject.projectDir}/detekt.yml")
 
     reports {
         html.enabled = true
