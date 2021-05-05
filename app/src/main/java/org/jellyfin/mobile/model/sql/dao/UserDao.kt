@@ -14,6 +14,7 @@ import org.jellyfin.mobile.model.sql.entity.UserEntity.Key.TABLE_NAME
 import org.jellyfin.mobile.model.sql.entity.UserEntity.Key.USER_ID
 
 @Dao
+@Suppress("TooManyFunctions")
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insert(entity: UserEntity): Long
