@@ -2,6 +2,7 @@ object Dependencies {
     object Versions {
         // Gradle plugins
         const val dependencyUpdates = "0.38.0"
+        const val detekt = "1.17.0-RC2"
 
         // KotlinX
         const val coroutines = "1.4.3"

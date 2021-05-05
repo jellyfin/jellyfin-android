@@ -1,13 +1,29 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.github.benmanes.gradle.versions.updates.gradle.GradleReleaseChannel
+import io.gitlab.arturbosch.detekt.Detekt
 
 plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
     id("kotlin-parcelize")
+    id("io.gitlab.arturbosch.detekt") version Dependencies.Versions.detekt
     id("de.mannodermaus.android-junit5")
     id("com.github.ben-manes.versions") version Dependencies.Versions.dependencyUpdates
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    allRules = false
+    config = files("${rootProject.projectDir}/detekt.yml")
+    ignoreFailures = true
+
+    reports {
+        html.enabled = true
+        xml.enabled = false
+        txt.enabled = true
+        sarif.enabled = true
+    }
 }
 
 android {
@@ -61,15 +77,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     lintOptions {
         isAbortOnError = false
+        sarifReport = true
         disable("MissingTranslation", "ExtraTranslation")
     }
 }
@@ -145,31 +158,45 @@ dependencies {
     androidTestImplementation(Dependencies.Health.androidXEspresso)
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-    testLogging {
-        outputs.upToDateWhen { false }
-        showStandardStreams = true
+tasks {
+    withType<Detekt> {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
-}
 
-tasks.withType<DependencyUpdatesTask> {
-    gradleReleaseChannel = GradleReleaseChannel.CURRENT.id
-    rejectVersionIf {
-        val currentType = classifyVersion(currentVersion)
-        val candidateType = classifyVersion(candidate.version)
-
-        (currentType == VersionType.STABLE && candidateType != VersionType.STABLE) ||
-            (currentType == VersionType.MILESTONE && candidateType == VersionType.UNSTABLE)
+    // Testing
+    withType<Test> {
+        useJUnitPlatform()
+        testLogging {
+            outputs.upToDateWhen { false }
+            showStandardStreams = true
+        }
     }
-}
 
-tasks.register("versionTxt") {
-    val path = buildDir.resolve("version.txt")
+    // Configure dependency updates task
+    withType<DependencyUpdatesTask> {
+        gradleReleaseChannel = GradleReleaseChannel.CURRENT.id
+        rejectVersionIf {
+            val currentType = classifyVersion(currentVersion)
+            val candidateType = classifyVersion(candidate.version)
 
-    doLast {
-        val versionString = "v${android.defaultConfig.versionName}=${android.defaultConfig.versionCode}"
-        println("Writing [$versionString] to $path")
-        path.writeText("$versionString\n")
+            when (candidateType) {
+                // Always accept stable updates
+                VersionType.STABLE -> true
+                // Accept milestone updates for current milestone and unstable
+                VersionType.MILESTONE -> currentType != VersionType.STABLE
+                // Only accept unstable for current unstable
+                VersionType.UNSTABLE -> currentType == VersionType.UNSTABLE
+            }.not()
+        }
+    }
+
+    register("versionTxt") {
+        val path = buildDir.resolve("version.txt")
+
+        doLast {
+            val versionString = "v${android.defaultConfig.versionName}=${android.defaultConfig.versionCode}"
+            println("Writing [$versionString] to $path")
+            path.writeText("$versionString\n")
+        }
     }
 }

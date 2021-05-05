@@ -54,6 +54,7 @@ class SettingsFragment : Fragment() {
         requireMainActivity().setSupportActionBar(null)
     }
 
+    @Suppress("LongMethod")
     private fun buildSettingsScreen() = screen(requireContext()) {
         collapseIcon = true
         categoryHeader(PREF_CATEGORY_MUSIC_PLAYER) {
