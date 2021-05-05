@@ -1,13 +1,28 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.github.benmanes.gradle.versions.updates.gradle.GradleReleaseChannel
+import io.gitlab.arturbosch.detekt.Detekt
 
 plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
     id("kotlin-parcelize")
+    id("io.gitlab.arturbosch.detekt") version Dependencies.Versions.detekt
     id("de.mannodermaus.android-junit5")
     id("com.github.ben-manes.versions") version Dependencies.Versions.dependencyUpdates
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    allRules = false
+    config = files("$projectDir/detekt.yml")
+
+    reports {
+        html.enabled = true
+        xml.enabled = false
+        txt.enabled = true
+        sarif.enabled = true
+    }
 }
 
 android {
@@ -142,6 +157,10 @@ dependencies {
 }
 
 tasks {
+    withType<Detekt> {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     // Testing
     withType<Test> {
         useJUnitPlatform()

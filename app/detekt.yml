@@ -1,0 +1,29 @@
+build:
+  maxIssues: 0
+
+complexity:
+  ComplexMethod:
+    ignoreSimpleWhenEntries: true
+  LongParameterList:
+    constructorThreshold: 10
+    functionThreshold: 10
+  TooManyFunctions:
+    thresholdInFiles: 16
+    thresholdInClasses: 16
+    thresholdInInterfaces: 8
+    thresholdInObjects: 16
+    thresholdInEnums: 8
+    ignoreOverridden: true
+    ignoreDeprecated: true
+
+naming:
+  PackageNaming:
+    # Package names must be lowercase letters
+    packagePattern: '[a-z]+(\.[a-z]+)*'
+
+style:
+  ForbiddenComment:
+    # Allow TODOs
+    values: [ 'FIXME:', 'STOPSHIP:' ]
+  MaxLineLength:
+    maxLineLength: 200
