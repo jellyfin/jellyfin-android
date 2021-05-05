@@ -14,7 +14,7 @@
     <string name="pref_enable_exoplayer_summary">A kísérleti ExoPlayer engedélyezése, amely több formátumot és kodeket támogat, és jobban integrálva van az Androidba</string>
     <string name="pref_enable_exoplayer_title">Videólejátszó integrációjának engedélyezése</string>
     <string name="pref_category_video_player">Videólejátszó</string>
-    <string name="pref_music_notification_always_dismissible_title">Legyenek a zenelejátszó értesítések mindig elvethetők</string>
+    <string name="pref_music_notification_always_dismissible_title">Elvethető zenelejátszó értesítés(ek)</string>
     <string name="pref_category_music_player">Zenelejátszó</string>
     <string name="activity_name_settings">Jellyfin Beállítások</string>
     <string name="menu_item_none">Nincs</string>
@@ -46,8 +46,8 @@
     <string name="external_player_mx_player_free">MX lejátszó (ingyenes)</string>
     <string name="external_player_mpv">MPV lejátszó</string>
     <string name="video_player_native">Beépített lejátszó</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Kézmozdulatok engedélyezése a fény- és hangerősség beállítására a beépített lejátszóban</string>
-    <string name="pref_exoplayer_allow_background_audio">Engedélyezze a hang lejátszását a háttérben a beépített lejátszóban</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Fényerő és hangerő gesztusok</string>
+    <string name="pref_exoplayer_allow_background_audio">Háttérhang</string>
     <string name="external_player_unknown_error">Ismeretlen hiba a külső lejátszóban. A lejátszás követése le van tiltva.</string>
     <string name="external_player_invalid_player">Nincs kiválasztva érvényes külső lejátszó. A lejátszás követése le van tiltva.</string>
     <string name="external_player_not_supported_yet">A lejátszás követése a kiválasztott külső lejátszóban még nem támogatott. Vegye fel a kapcsolatot a fejlesztőkkel a támogatás hozzáadása érdekében.</string>
@@ -88,4 +88,7 @@
 \nKérjük, frissítse egy kompatibilis verzióra.</string>
     <string name="dialog_web_view_outdated">A WebView elavult</string>
     <string name="dialog_web_view_not_supported">A WebView nem támogatott</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Videó lejátszása a háttérben, csak hanggal</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Az értesítést mindig el lehet utasítani, még média lejátszása közben is</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">Az értesítés csak akkor szüntethető meg, ha a lejátszás is szünetel</string>
 </resources>
