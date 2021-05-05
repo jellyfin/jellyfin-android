@@ -11,7 +11,7 @@
     <string name="host_input_hint">Adresse</string>
     <string name="connect_to_server_title">Serververbindung herstellen</string>
     <string name="connection_error_invalid_format">Adressformat ungültig</string>
-    <string name="pref_music_notification_always_dismissible_title">Musik Player Benachrichtigung immer verwerfbar</string>
+    <string name="pref_music_notification_always_dismissible_title">Verwerfbare Musik Player Benachrichtigung</string>
     <string name="pref_enable_exoplayer_summary">Aktiviere den experimentellen ExoPlayer Video Player, welcher mehr Videoformate und -Codecs unterstützt und besser ins Betriebssystem integriert ist</string>
     <string name="pref_enable_exoplayer_title">Aktiviere Video Player Integration</string>
     <string name="pref_category_video_player">Videoplayer</string>
@@ -25,7 +25,7 @@
     <string name="connection_error_cannot_connect">Es konnte keine Verbindung hergestellt werden.
 \nBitte überprüfe den Hostnamen und die Netzwerkverbindung.</string>
     <string name="playback_info_play_method">Wiedergabemethode: %s</string>
-    <string name="pref_exoplayer_allow_background_audio">Wiedergabe von Audio im Hintergrund im nativen Player erlauben</string>
+    <string name="pref_exoplayer_allow_background_audio">Hintergrund-Ton</string>
     <string name="notification_action_stop">Stopp</string>
     <string name="notification_action_next">Nächstes</string>
     <string name="notification_action_fast_forward">Vorwärts spulen</string>
@@ -47,7 +47,7 @@
     <string name="pref_video_player_type_title">Typ des Videoplayers</string>
     <string name="available_servers_title">Verfügbare Server</string>
     <string name="choose_server_button_text">Server auswählen</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Helligkeits- und Lautstärkegesten im nativen Player zulassen</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Helligkeits- und Lautstärkegesten</string>
     <string name="mediaservice_library_latest">Neueste</string>
     <string name="external_player_mx_player_pro">MX Player Pro</string>
     <string name="external_player_mx_player_free">MX Player Free</string>
@@ -88,4 +88,7 @@
     <string name="dialog_web_view_not_supported_message">WebViews werden von diesem Gerät nicht unterstützt.
 \nInstallieren Sie eine kompatible WebView-Implementierung oder wechseln Sie zu einem unterstützten Gerät.</string>
     <string name="dialog_web_view_not_supported">WebView nicht unterstützt</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Zulassen der Wiedergabe von Videos im Hintergrund nur mit Audio</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Die Benachrichtigung kann immer verworfen werden, auch während der Medienwiedergabe</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">Die Benachrichtigung kann nur verworfen werden, wenn die Wiedergabe pausiert ist</string>
 </resources>
