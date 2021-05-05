@@ -141,31 +141,41 @@ dependencies {
     androidTestImplementation(Dependencies.Health.androidXEspresso)
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-    testLogging {
-        outputs.upToDateWhen { false }
-        showStandardStreams = true
+tasks {
+    // Testing
+    withType<Test> {
+        useJUnitPlatform()
+        testLogging {
+            outputs.upToDateWhen { false }
+            showStandardStreams = true
+        }
     }
-}
 
-tasks.withType<DependencyUpdatesTask> {
-    gradleReleaseChannel = GradleReleaseChannel.CURRENT.id
-    rejectVersionIf {
-        val currentType = classifyVersion(currentVersion)
-        val candidateType = classifyVersion(candidate.version)
+    // Configure dependency updates task
+    withType<DependencyUpdatesTask> {
+        gradleReleaseChannel = GradleReleaseChannel.CURRENT.id
+        rejectVersionIf {
+            val currentType = classifyVersion(currentVersion)
+            val candidateType = classifyVersion(candidate.version)
 
-        (currentType == VersionType.STABLE && candidateType != VersionType.STABLE) ||
-            (currentType == VersionType.MILESTONE && candidateType == VersionType.UNSTABLE)
+            when (candidateType) {
+                // Always accept stable updates
+                VersionType.STABLE -> true
+                // Accept milestone updates for current milestone and unstable
+                VersionType.MILESTONE -> currentType != VersionType.STABLE
+                // Only accept unstable for current unstable
+                VersionType.UNSTABLE -> currentType == VersionType.UNSTABLE
+            }.not()
+        }
     }
-}
 
-tasks.register("versionTxt") {
-    val path = buildDir.resolve("version.txt")
+    register("versionTxt") {
+        val path = buildDir.resolve("version.txt")
 
-    doLast {
-        val versionString = "v${android.defaultConfig.versionName}=${android.defaultConfig.versionCode}"
-        println("Writing [$versionString] to $path")
-        path.writeText("$versionString\n")
+        doLast {
+            val versionString = "v${android.defaultConfig.versionName}=${android.defaultConfig.versionCode}"
+            println("Writing [$versionString] to $path")
+            path.writeText("$versionString\n")
+        }
     }
 }
