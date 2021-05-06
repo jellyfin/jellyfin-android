@@ -2,7 +2,7 @@
 <resources>
     <string name="video_player_native">Trình phát gốc</string>
     <string name="host_input_hint">Máy chủ</string>
-    <string name="pref_exoplayer_allow_background_audio">Cho phép phát âm thanh trong nền trong trình phát gốc</string>
+    <string name="pref_exoplayer_allow_background_audio">Âm thanh nền</string>
     <string name="video_player_external_description">Các ứng dụng phát lại video bên ngoài như MX Player và VLC</string>
     <string name="video_player_native_description">Dựa trên ExoPlayer, hỗ trợ nhiều định dạng video và mã hóa hơn, đồng thời được tích hợp nhiều hơn vào hệ điều hành</string>
     <string name="video_player_web_description">Trình phát video HTML mặc định từ giao diện người dùng Web</string>
@@ -10,7 +10,7 @@
     <string name="video_player_web">Trình phát web</string>
     <string name="pref_video_player_type_title">Loại trình phát video</string>
     <string name="pref_category_video_player">Trình phát video</string>
-    <string name="pref_music_notification_always_dismissible_title">Đặt thông báo của trình phát nhạc luôn có thể bỏ qua</string>
+    <string name="pref_music_notification_always_dismissible_title">Loại bỏ thông báo trình phát</string>
     <string name="pref_category_music_player">Trình phát nhạc</string>
     <string name="activity_name_settings">Cài đặt Jellyfin</string>
     <string name="external_player_unknown_error">Lỗi không xác định trong trình phát bên ngoài. Đã tắt theo dõi phát lại.</string>
@@ -45,7 +45,7 @@
     <string name="connect_to_server_title">Kết nối đến Máy chủ</string>
     <string name="available_servers_title">Máy chủ hiện có</string>
     <string name="choose_server_button_text">Chọn máy chủ</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Cho phép điều chỉnh độ sáng và âm lượng bằng cử chỉ trong trình phát gốc</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Độ sáng và cử chỉ âm lượng</string>
     <string name="external_player_system_default_description">Hãy để hệ thống xử lý lựa chọn của trình phát, một số trình phát có thể không hoàn toàn tương thích.</string>
     <string name="external_player_system_default">Mặc định hệ thống</string>
     <string name="external_player_vlc_player_description">Trình phát đa phương tiện, đa nền tảng miễn phí và mã nguồn mở, phát hầu hết các tệp đa phương tiện.</string>
@@ -86,4 +86,7 @@
     <string name="dialog_web_view_not_supported_message">WebView không được thiết bị này hỗ trợ.
 \nCài đặt triển khai WebView tương thích hoặc chuyển sang thiết bị được hỗ trợ.</string>
     <string name="dialog_web_view_not_supported">WebView không được hỗ trợ</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Cho phép phát video trong nền chỉ có âm thanh</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Thông báo luôn có thể bị loại bỏ, ngay cả khi phát phương tiện</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">Chỉ có thể loại bỏ thông báo khi quá trình phát bị tạm dừng</string>
 </resources>
