@@ -167,7 +167,7 @@ class ConnectFragment : Fragment() {
         val recommendedServer = jellyfin.discovery.getRecommendedServer(candidates, false)
 
         // No server found that replied
-        if (recommendedServer == null) {
+        if (recommendedServer?.systemInfo == null) {
             Timber.i("No recommended server found")
 
             // TODO add candidates to error
