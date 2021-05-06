@@ -29,7 +29,6 @@ import org.jellyfin.mobile.utils.Constants.VIDEO_PLAYER_NOTIFICATION_ID
 import org.jellyfin.mobile.utils.createMediaNotificationChannel
 import org.jellyfin.sdk.api.operations.ImageApi
 import org.jellyfin.sdk.model.api.ImageType
-import org.jellyfin.sdk.model.serializer.toUUID
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.util.concurrent.atomic.AtomicBoolean
@@ -42,15 +41,15 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     private val imageLoader: ImageLoader by inject()
     private val receiverRegistered = AtomicBoolean(false)
 
-    val shouldShowNotification: Boolean
+    val allowBackgroundAudio: Boolean
         get() = appPreferences.exoPlayerAllowBackgroundAudio
 
     @Suppress("DEPRECATION")
     fun postNotification() {
-        if (!shouldShowNotification) return
         val nm = notificationManager ?: return
-        val mediaSource = viewModel.mediaSourceManager.jellyfinMediaSource.value ?: return
         val player = viewModel.playerOrNull ?: return
+        val queueItem = viewModel.mediaQueueManager.mediaQueue.value ?: return
+        val mediaSource = queueItem.jellyfinMediaSource
         val playbackState = player.playbackState
         if (playbackState != Player.STATE_READY && playbackState != Player.STATE_BUFFERING) return
 
@@ -62,7 +61,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                 val size = context.resources.getDimensionPixelSize(R.dimen.media_notification_height)
 
                 val imageUrl = imageApi.getItemImageUrl(
-                    itemId = mediaSource.id.toUUID(),
+                    itemId = mediaSource.itemId,
                     imageType = ImageType.PRIMARY,
                     maxWidth = size,
                     maxHeight = size,
@@ -84,17 +83,25 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                 }
                 setSmallIcon(R.drawable.ic_notification)
                 mediaIcon?.let(::setLargeIcon)
-                setContentTitle(mediaSource.title)
-                mediaSource.artists?.let(::setContentText)
+                setContentTitle(mediaSource.name)
+                mediaSource.item?.artists?.joinToString()?.let(::setContentText)
                 setStyle(style)
                 setVisibility(Notification.VISIBILITY_PUBLIC)
-                addAction(generateAction(R.drawable.ic_rewind_black_32dp, R.string.notification_action_rewind, Constants.ACTION_REWIND))
+                if (queueItem.hasPrevious()) {
+                    addAction(generateAction(R.drawable.ic_skip_previous_black_32dp, R.string.notification_action_previous, Constants.ACTION_PREVIOUS))
+                } else {
+                    addAction(generateAction(R.drawable.ic_rewind_black_32dp, R.string.notification_action_rewind, Constants.ACTION_REWIND))
+                }
                 val playbackAction = when {
                     !player.playWhenReady -> generateAction(R.drawable.ic_play_black_42dp, R.string.notification_action_play, Constants.ACTION_PLAY)
                     else -> generateAction(R.drawable.ic_pause_black_42dp, R.string.notification_action_pause, Constants.ACTION_PAUSE)
                 }
                 addAction(playbackAction)
-                addAction(generateAction(R.drawable.ic_fast_forward_black_32dp, R.string.notification_action_fast_forward, Constants.ACTION_FAST_FORWARD))
+                if (queueItem.hasNext()) {
+                    addAction(generateAction(R.drawable.ic_skip_next_black_32dp, R.string.notification_action_next, Constants.ACTION_NEXT))
+                } else {
+                    addAction(generateAction(R.drawable.ic_fast_forward_black_32dp, R.string.notification_action_fast_forward, Constants.ACTION_FAST_FORWARD))
+                }
                 setContentIntent(buildContentIntent())
                 setDeleteIntent(buildDeleteIntent())
             }.build()
@@ -108,12 +115,14 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                 addAction(Constants.ACTION_PAUSE)
                 addAction(Constants.ACTION_REWIND)
                 addAction(Constants.ACTION_FAST_FORWARD)
+                addAction(Constants.ACTION_PREVIOUS)
+                addAction(Constants.ACTION_NEXT)
+                addAction(Constants.ACTION_STOP)
             })
         }
     }
 
     fun dismissNotification() {
-        if (!shouldShowNotification) return
         notificationManager?.cancel(VIDEO_PLAYER_NOTIFICATION_ID)
         if (receiverRegistered.compareAndSet(true, false))
             context.unregisterReceiver(notificationActionReceiver)
@@ -149,6 +158,9 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                 Constants.ACTION_PAUSE -> viewModel.pause()
                 Constants.ACTION_REWIND -> viewModel.rewind()
                 Constants.ACTION_FAST_FORWARD -> viewModel.fastForward()
+                Constants.ACTION_PREVIOUS -> viewModel.skipToPrevious(force = true)
+                Constants.ACTION_NEXT -> viewModel.skipToNext()
+                Constants.ACTION_STOP -> viewModel.stop()
             }
         }
     }

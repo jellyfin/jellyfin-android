@@ -1,36 +1,10 @@
 package org.jellyfin.mobile.player
 
 import android.media.MediaCodecInfo.CodecProfileLevel
-import android.media.MediaCodecList
 import android.media.MediaFormat
 import com.google.android.exoplayer2.util.MimeTypes
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
 
-object ExoPlayerFormats {
-    val supportedCodecs: SupportedCodecs by lazy {
-        val videoCodecs: MutableMap<String, ExoPlayerCodec> = HashMap()
-        val audioCodecs: MutableMap<String, ExoPlayerCodec> = HashMap()
-        val androidCodecs = MediaCodecList(MediaCodecList.REGULAR_CODECS)
-        for (codecInfo in androidCodecs.codecInfos) {
-            if (!codecInfo.isEncoder) {
-                for (mimeType in codecInfo.supportedTypes) {
-                    val codec = ExoPlayerCodec(codecInfo.getCapabilitiesForType(mimeType))
-                    if (codec.codec != null) {
-                        val tmpCodecs: MutableMap<String, ExoPlayerCodec> = if (codec.isAudio) audioCodecs else videoCodecs
-                        if (tmpCodecs.containsKey(mimeType)) {
-                            tmpCodecs[mimeType]!!.mergeCodec(codec)
-                        } else {
-                            tmpCodecs[mimeType] = codec
-                        }
-                    }
-                }
-            }
-        }
-        SupportedCodecs(videoCodecs, audioCodecs)
-    }
-
+object CodecHelpers {
     fun getVideoCodec(mimeType: String): String? = when (mimeType) {
         MediaFormat.MIMETYPE_VIDEO_MPEG2 -> "mpeg2video"
         MediaFormat.MIMETYPE_VIDEO_H263 -> "h263"
@@ -258,17 +232,20 @@ object ExoPlayerFormats {
     }
 
     /**
-     * Fetch the ExoPlayer subtitle format, if supported, otherwise null
+     * Get the mimeType for a subtitle codec if supported.
      *
-     * @param format subtitle format given by jellyfin
-     * @return exoplayer subtitle format, otherwise null if not supported
+     * @param codec Subtitle codec given by Jellyfin.
+     * @return The mimeType or null if not supported.
      */
-    fun getSubtitleFormat(format: String): String? {
-        return when (format) {
+    fun getSubtitleMimeType(codec: String?): String? {
+        return when (codec) {
+            "srt", "subrip" -> MimeTypes.APPLICATION_SUBRIP
             "ssa", "ass" -> MimeTypes.TEXT_SSA
-            "vtt", "webvtt" -> MimeTypes.TEXT_VTT
             "ttml" -> MimeTypes.APPLICATION_TTML
-            "srt", "sub", "subrip" -> MimeTypes.APPLICATION_SUBRIP
+            "vtt", "webvtt" -> MimeTypes.TEXT_VTT
+            "idx", "sub" -> MimeTypes.APPLICATION_VOBSUB
+            "pgs", "pgssub" -> MimeTypes.APPLICATION_PGS
+            "smi", "smil" -> "application/smil+xml"
             else -> null
         }
     }
@@ -289,26 +266,4 @@ object ExoPlayerFormats {
         CodecProfileLevel.AACObjectSSR -> "SSR"
         else -> null
     }
-}
-
-class SupportedCodecs(
-    private val videoCodecs: Map<String, ExoPlayerCodec?>,
-    private val audioCodecs: Map<String, ExoPlayerCodec?>
-) {
-    fun toJSONString() = try {
-        JSONObject().apply {
-            put("videoCodecs", JSONArray().apply {
-                for (codec in videoCodecs.values) {
-                    codec?.let { put(it.toJSONObject()) }
-                }
-            })
-            put("audioCodecs", JSONArray().apply {
-                for (codec in audioCodecs.values) {
-                    codec?.let { put(it.toJSONObject()) }
-                }
-            })
-        }
-    } catch (e: JSONException) {
-        JSONObject()
-    }.toString()
 }

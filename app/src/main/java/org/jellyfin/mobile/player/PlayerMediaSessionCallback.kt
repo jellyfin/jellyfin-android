@@ -23,6 +23,14 @@ class PlayerMediaSessionCallback(private val viewModel: PlayerViewModel) : Media
         viewModel.fastForward()
     }
 
+    override fun onSkipToPrevious() {
+        viewModel.skipToPrevious(force = true)
+    }
+
+    override fun onSkipToNext() {
+        viewModel.skipToNext()
+    }
+
     override fun onStop() {
         viewModel.stop()
     }

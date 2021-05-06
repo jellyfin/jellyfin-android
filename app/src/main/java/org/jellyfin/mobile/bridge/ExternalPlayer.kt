@@ -10,19 +10,28 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.LifecycleOwner
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.player.source.ExternalSubtitleStream
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.isPackageInstalled
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
-import org.json.JSONException
+import org.jellyfin.sdk.api.client.ApiClient
+import org.jellyfin.sdk.api.operations.VideosApi
+import org.jellyfin.sdk.model.api.DeviceProfile
+import org.jellyfin.sdk.model.api.MediaStream
+import org.jellyfin.sdk.model.api.PlayMethod
 import org.json.JSONObject
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import org.koin.core.qualifier.named
 import timber.log.Timber
 
 class ExternalPlayer(
@@ -30,9 +39,14 @@ class ExternalPlayer(
     lifecycleOwner: LifecycleOwner,
     registry: ActivityResultRegistry,
 ) : KoinComponent {
+    private val coroutinesScope = MainScope()
 
     private val appPreferences: AppPreferences by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
+    private val mediaSourceResolver: MediaSourceResolver by inject()
+    private val externalPlayerProfile: DeviceProfile by inject(named(DEVICE_PROFILE_NAME))
+    private val videosApi: VideosApi by inject()
+    private val apiClient: ApiClient by inject()
 
     private val playerContract = registry.register("externalplayer", lifecycleOwner, ActivityResultContracts.StartActivityForResult()) { result ->
         val resultCode = result.resultCode
@@ -60,37 +74,83 @@ class ExternalPlayer(
 
     @JavascriptInterface
     fun initPlayer(args: String) {
-        try {
-            val mediaSource = JellyfinMediaSource(JSONObject(args))
-            if (mediaSource.playMethod == "DirectStream") {
-                val playerIntent = Intent(Intent.ACTION_VIEW).apply {
-                    if (context.packageManager.isPackageInstalled(appPreferences.externalPlayerApp)) {
-                        component = getComponent(appPreferences.externalPlayerApp)
-                    }
-                    setDataAndType(mediaSource.uri, mediaSource.mimeType)
-                    putExtra("title", mediaSource.title)
-                    putExtra("position", mediaSource.mediaStartMs.toInt())
-                    putExtra("return_result", true)
-                    putExtra("secure_uri", true)
-                    val selectedTrack = mediaSource.subtitleTracksGroup.tracks.getOrNull(mediaSource.subtitleTracksGroup.selectedTrack)?.url
-                    if (selectedTrack != null) {
-                        val externalTracks = mediaSource.subtitleTracksGroup.tracks.filter { !it.embedded && it.url != null }
-                        putExtra("subs", externalTracks.map { Uri.parse(it.url) }.toTypedArray())
-                        putExtra("subs.name", externalTracks.map { it.language }.toTypedArray())
-                        putExtra("subs.filename", externalTracks.map { it.title }.toTypedArray())
-                        putExtra("subs.enable", arrayOf(Uri.parse(selectedTrack)))
-                    }
-                }
-                playerContract.launch(playerIntent)
-                Timber.d("Starting playback [id=${mediaSource.id}, title=${mediaSource.title}, playMethod=${mediaSource.playMethod}, mediaStartMs=${mediaSource.mediaStartMs}]")
-            } else {
-                Timber.d("Play Method '${mediaSource.playMethod}' not tested, ignoring…")
+        val playOptions = PlayOptions.fromJson(JSONObject(args)) ?: return
+
+        coroutinesScope.launch {
+            val jellyfinMediaSource = mediaSourceResolver.resolveMediaSource(
+                itemId = playOptions.mediaSourceId!!,
+                deviceProfile = externalPlayerProfile,
+                startTimeTicks = playOptions.startPositionTicks,
+                audioStreamIndex = playOptions.audioStreamIndex,
+                subtitleStreamIndex = playOptions.subtitleStreamIndex,
+            ) ?: return@launch
+
+            playMediaSource(playOptions, jellyfinMediaSource)
+        }
+    }
+
+    private fun playMediaSource(playOptions: PlayOptions, source: JellyfinMediaSource) {
+        val sourceInfo = source.sourceInfo
+        val url = when (source.playMethod) {
+            PlayMethod.DIRECT_PLAY -> {
+                videosApi.getVideoStreamUrl(
+                    itemId = source.itemId,
+                    static = true,
+                    mediaSourceId = source.id,
+                )
+            }
+            PlayMethod.DIRECT_STREAM -> {
+                val container = requireNotNull(sourceInfo.container) { "Missing direct stream container" }
+                videosApi.getVideoStreamByContainerUrl(
+                    itemId = source.itemId,
+                    container = container,
+                    mediaSourceId = source.id,
+                )
+            }
+            PlayMethod.TRANSCODE -> {
+                Timber.d("Transcoding is not supported for External Player, ignoring…")
                 notifyEvent(Constants.EVENT_CANCELED)
                 context.toast(R.string.external_player_invalid_play_method, Toast.LENGTH_LONG)
+                return
             }
-        } catch (e: JSONException) {
-            Timber.e(e)
         }
+
+        // Select correct subtitle
+        val selectedSubtitleIndex = source.subtitleStreams.binarySearchBy(playOptions.subtitleStreamIndex, selector = MediaStream::index)
+        source.selectSubtitleStream(selectedSubtitleIndex)
+
+        // Build playback intent
+        val playerIntent = Intent(Intent.ACTION_VIEW).apply {
+            if (context.packageManager.isPackageInstalled(appPreferences.externalPlayerApp)) {
+                component = getComponent(appPreferences.externalPlayerApp)
+            }
+            setDataAndType(Uri.parse(url), "video/*")
+            putExtra("title", source.name)
+            putExtra("position", source.startTimeMs.toInt())
+            putExtra("return_result", true)
+            putExtra("secure_uri", true)
+
+            val externalSubs = source.getExternalSubtitleStreams()
+            val enabledSubUrl = when {
+                source.selectedSubtitleStream != null -> {
+                    externalSubs.find { stream -> stream.index == source.selectedSubtitleStream?.index }?.let { sub ->
+                        apiClient.createUrl(sub.deliveryUrl)
+                    }
+                }
+                else -> null
+            }
+
+            // MX Player API / MPV
+            putExtra("subs", externalSubs.map { stream -> Uri.parse(apiClient.createUrl(stream.deliveryUrl)) }.toTypedArray())
+            putExtra("subs.name", externalSubs.map(ExternalSubtitleStream::displayTitle).toTypedArray())
+            putExtra("subs.filename", externalSubs.map(ExternalSubtitleStream::language).toTypedArray())
+            putExtra("subs.enable", enabledSubUrl?.let { url -> arrayOf(Uri.parse(url)) } ?: emptyArray())
+
+            // VLC
+            if (enabledSubUrl != null) putExtra("subtitles_location", enabledSubUrl)
+        }
+        playerContract.launch(playerIntent)
+        Timber.d("Starting playback [id=${source.itemId}, title=${source.name}, playMethod=${source.playMethod}, startTimeMs=${source.startTimeMs}]")
     }
 
     private fun notifyEvent(event: String, parameters: String = "") {
@@ -217,5 +277,9 @@ class ExternalPlayer(
             ExternalPlayerPackage.VLC_PLAYER -> ComponentName(packageName, "$packageName.gui.video.VideoPlayerActivity")
             else -> null
         }
+    }
+
+    companion object {
+        const val DEVICE_PROFILE_NAME = "Android External Player"
     }
 }

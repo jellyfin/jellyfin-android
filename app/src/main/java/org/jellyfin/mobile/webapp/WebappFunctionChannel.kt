@@ -19,13 +19,8 @@ class WebappFunctionChannel {
     fun seekTo(pos: Long) = call("$PLAYBACK_MANAGER.seekMs($pos);")
     fun goBack() = call("$NAVIGATION_HELPER.goBack();")
 
-    // ExoPlayer helpers
-    fun exoPlayerNotifyStopped() = call("$EXO_PLAYER.notifyStopped();")
-    fun exoPlayerUpdateProgress(position: Long) = call("$EXO_PLAYER._currentTime = $position;")
-
     companion object {
         private const val NAVIGATION_HELPER = "window.NavigationHelper"
         private const val PLAYBACK_MANAGER = "$NAVIGATION_HELPER.playbackManager"
-        private const val EXO_PLAYER = "window.ExoPlayer"
     }
 }

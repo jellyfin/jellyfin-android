@@ -26,9 +26,9 @@ inline fun MediaSession.applyDefaultLocalAudioAttributes(contentType: Int) {
 }
 
 fun JellyfinMediaSource.toMediaMetadata(): MediaMetadata = MediaMetadata.Builder().apply {
-    putString(MediaMetadata.METADATA_KEY_MEDIA_ID, id)
-    putString(MediaMetadata.METADATA_KEY_TITLE, title)
-    putLong(MediaMetadata.METADATA_KEY_DURATION, mediaDurationTicks / Constants.TICKS_PER_MILLISECOND)
+    putString(MediaMetadata.METADATA_KEY_MEDIA_ID, itemId.toString())
+    putString(MediaMetadata.METADATA_KEY_TITLE, name)
+    putLong(MediaMetadata.METADATA_KEY_DURATION, runTimeMs)
 }.build()
 
 fun MediaSession.setPlaybackState(playbackState: Int, position: Long, playbackActions: Long) {
@@ -57,6 +57,13 @@ fun AudioManager.getVolumeRange(streamType: Int): IntRange {
     val minVolume = (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) getStreamMinVolume(streamType) else 0)
     val maxVolume = getStreamMaxVolume(streamType)
     return minVolume..maxVolume
+}
+
+fun AudioManager.getVolumeLevelPercent(): Int {
+    val stream = AudioManager.STREAM_MUSIC
+    val volumeRange = getVolumeRange(stream)
+    val currentVolume = getStreamVolume(stream)
+    return (currentVolume - volumeRange.first) * 100 / volumeRange.width
 }
 
 /**
