@@ -1,14 +1,13 @@
 package org.jellyfin.mobile.bridge
 
-import android.os.Bundle
 import android.webkit.JavascriptInterface
 import kotlinx.coroutines.channels.Channel
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
-import org.jellyfin.mobile.player.ExoPlayerFormats
 import org.jellyfin.mobile.player.PlayerEvent
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
+import org.json.JSONObject
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.qualifier.named
@@ -22,14 +21,10 @@ class NativePlayer(private val host: NativePlayerHost) : KoinComponent {
     fun isEnabled() = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
 
     @JavascriptInterface
-    fun getSupportedFormats() = ExoPlayerFormats.supportedCodecs.toJSONString()
-
-    @JavascriptInterface
     fun loadPlayer(args: String) {
-        val argsBundle = Bundle().apply {
-            putString(Constants.EXTRA_MEDIA_SOURCE_ITEM, args)
+        PlayOptions.fromJson(JSONObject(args))?.let { options ->
+            host.loadNativePlayer(options)
         }
-        host.loadNativePlayer(argsBundle)
     }
 
     @JavascriptInterface

@@ -32,6 +32,7 @@ import org.jellyfin.mobile.bridge.NativePlayerHost
 import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.databinding.FragmentWebviewBinding
 import org.jellyfin.mobile.model.sql.entity.ServerEntity
+import org.jellyfin.mobile.bridge.PlayOptions
 import org.jellyfin.mobile.player.PlayerFragment
 import org.jellyfin.mobile.utils.*
 import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER
@@ -269,8 +270,11 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         onSelectServer(error = true)
     }
 
-    override fun loadNativePlayer(args: Bundle) = runOnUiThread {
+    override fun loadNativePlayer(playOptions: PlayOptions) = runOnUiThread {
         parentFragmentManager.beginTransaction().apply {
+            val args = Bundle().apply {
+                putParcelable(Constants.EXTRA_MEDIA_PLAY_OPTIONS, playOptions)
+            }
             add<PlayerFragment>(R.id.fragment_container, args = args)
             addToBackStack(null)
         }.commit()

@@ -4,7 +4,17 @@ import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.Jellyfin
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.KtorClient
-import org.jellyfin.sdk.api.operations.*
+import org.jellyfin.sdk.api.operations.ArtistsApi
+import org.jellyfin.sdk.api.operations.GenresApi
+import org.jellyfin.sdk.api.operations.ImageApi
+import org.jellyfin.sdk.api.operations.ItemsApi
+import org.jellyfin.sdk.api.operations.MediaInfoApi
+import org.jellyfin.sdk.api.operations.PlayStateApi
+import org.jellyfin.sdk.api.operations.PlaylistsApi
+import org.jellyfin.sdk.api.operations.SystemApi
+import org.jellyfin.sdk.api.operations.UniversalAudioApi
+import org.jellyfin.sdk.api.operations.UserViewsApi
+import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.discovery.AndroidBroadcastAddressesProvider
 import org.jellyfin.sdk.interaction.androidDevice
 import org.jellyfin.sdk.model.ClientInfo
@@ -29,12 +39,14 @@ val apiModule = module {
 
     // Add API modules
     single { SystemApi(get()) }
-    single { ImageApi(get()) }
-    single { PlayStateApi(get()) }
     single { ItemsApi(get()) }
+    single { ImageApi(get()) }
     single { UserViewsApi(get()) }
     single { ArtistsApi(get()) }
     single { GenresApi(get()) }
     single { PlaylistsApi(get()) }
+    single { VideosApi(get()) }
     single { UniversalAudioApi(get()) }
+    single { MediaInfoApi(get()) }
+    single { PlayStateApi(get()) }
 }

@@ -1,8 +1,7 @@
 export class ExternalPlayerPlugin {
-    constructor({ appSettings, events, playbackManager }) {
+    constructor({ events, playbackManager }) {
         window['ExtPlayer'] = this;
 
-        this.appSettings = appSettings;
         this.events = events;
         this.playbackManager = playbackManager;
 
@@ -37,10 +36,6 @@ export class ExternalPlayerPlugin {
         return this._externalPlayer.isEnabled();
     }
 
-    supportsPlayMethod(playMethod, item) {
-        return playMethod === 'DirectStream';
-    }
-
     currentSrc() {
         return this._currentSrc;
     }
@@ -50,7 +45,7 @@ export class ExternalPlayerPlugin {
         this._paused = false;
         this._currentSrc = options.url;
         this._isIntro = options.item && options.item.ProviderIds && options.item.ProviderIds.hasOwnProperty("prerolls.video");
-        this._externalPlayer.initPlayer(JSON.stringify(options));
+        this._externalPlayer.initPlayer(JSON.stringify(options.item.playOptions));
     }
 
     setSubtitleStreamIndex(index) { }
@@ -137,62 +132,16 @@ export class ExternalPlayerPlugin {
     }
 
     async getDeviceProfile() {
-        if (this.cachedDeviceProfile) {
-            return this.cachedDeviceProfile;
-        }
-
-        var bitrateSetting = this.appSettings.maxStreamingBitrate();
-
         var profile = {};
-        profile.Name = "Android External Player"
-        profile.MaxStreamingBitrate = bitrateSetting;
+        profile.Name = 'Android External Player Stub';
+        profile.MaxStreamingBitrate = 100000000;
         profile.MaxStaticBitrate = 100000000;
-        profile.MusicStreamingTranscodingBitrate = 192000;
+        profile.MusicStreamingTranscodingBitrate = 320000;
 
         profile.DirectPlayProfiles = [];
-
-        // leave container null for all
-        profile.DirectPlayProfiles.push({
-            Type: 'Video'
-        });
-
-        // leave container null for all
-        profile.DirectPlayProfiles.push({
-            Type: 'Audio'
-        });
-
         profile.CodecProfiles = [];
-
         profile.SubtitleProfiles = [];
-
-        var subtitleProfiles = ['ass', 'idx', 'smi', 'srt', 'ssa', 'subrip'];
-
-        var embedSubtitleProfiles = ['pgs', 'pgssub'];
-
-        subtitleProfiles.concat(embedSubtitleProfiles).forEach(function (format) {
-            profile.SubtitleProfiles.push({
-                Format: format,
-                Method: 'Embed'
-            });
-        });
-
-        var externalSubtitleProfiles = ['sub', 'vtt'];
-
-        subtitleProfiles.concat(externalSubtitleProfiles).forEach(function (format) {
-            profile.SubtitleProfiles.push({
-                Format: format,
-                Method: 'External'
-            });
-        });
-
-        profile.SubtitleProfiles.push({
-            Format: 'dvdsub',
-            Method: 'Encode'
-        });
-
         profile.TranscodingProfiles = [];
-
-        this.cachedDeviceProfile = profile;
 
         return profile;
     }

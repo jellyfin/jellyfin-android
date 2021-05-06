@@ -1,118 +1,108 @@
 package org.jellyfin.mobile.player.source
 
-import android.net.Uri
-import com.google.android.exoplayer2.util.MimeTypes
+import org.jellyfin.mobile.player.CodecHelpers
 import org.jellyfin.mobile.utils.Constants
-import org.jellyfin.mobile.utils.asIterable
-import org.json.JSONArray
-import org.json.JSONObject
+import org.jellyfin.sdk.model.api.BaseItemDto
+import org.jellyfin.sdk.model.api.MediaSourceInfo
+import org.jellyfin.sdk.model.api.MediaStream
+import org.jellyfin.sdk.model.api.MediaStreamType
+import org.jellyfin.sdk.model.api.PlayMethod
+import java.util.UUID
 
-class JellyfinMediaSource(item: JSONObject) {
-    val id: String = item.optJSONObject("item")?.optString("Id") ?: ""
-    val title: String = item.optString("title")
-    val artists: String? = item.optJSONObject("item")?.optJSONArray("Artists")?.asIterable()?.joinToString()
-    val uri: Uri = Uri.parse(item.optString("url"))
-    val mimeType: String = item.optString("mimeType")
-    val playMethod: String = item.optString("playMethod")
-    val mediaStartMs: Long = item.optLong("playerStartPositionTicks") / Constants.TICKS_PER_MILLISECOND
-    val mediaDurationTicks: Long
-    val videoTracksGroup: ExoPlayerTracksGroup<ExoPlayerTrack.Video>
-    val audioTracksGroup: ExoPlayerTracksGroup<ExoPlayerTrack.Audio>
-    val subtitleTracksGroup: ExoPlayerTracksGroup<ExoPlayerTrack.Text>
-    val isTranscoding: Boolean
+class JellyfinMediaSource(
+    val itemId: UUID,
+    val item: BaseItemDto?,
+    val sourceInfo: MediaSourceInfo,
+    startTimeTicks: Long? = null,
+    audioStreamIndex: Int? = null,
+    subtitleStreamIndex: Int? = null,
+) {
+    val id: String = requireNotNull(sourceInfo.id) { "Media source has no id" }
+    val name: String = sourceInfo.name.orEmpty()
 
-    val selectedVideoTrack: ExoPlayerTrack.Video?
-        get() = videoTracksGroup.tracks.getOrNull(videoTracksGroup.selectedTrack)
-    val selectedAudioTrack: ExoPlayerTrack.Audio?
-        get() = audioTracksGroup.tracks.getOrNull(audioTracksGroup.selectedTrack)
-    val selectedSubtitleTrack: ExoPlayerTrack.Text?
-        get() = subtitleTracksGroup.tracks.getOrNull(subtitleTracksGroup.selectedTrack)
+    val playMethod: PlayMethod = when {
+        sourceInfo.supportsDirectPlay -> PlayMethod.DIRECT_PLAY
+        sourceInfo.supportsDirectStream -> PlayMethod.DIRECT_STREAM
+        sourceInfo.supportsTranscoding -> PlayMethod.TRANSCODE
+        else -> throw IllegalArgumentException("No play method found for $name ($itemId)")
+    }
 
-    val audioTracksCount: Int get() = audioTracksGroup.tracks.size
-    val subtitleTracksCount: Int get() = subtitleTracksGroup.tracks.size
+    val startTimeMs = (startTimeTicks ?: 0L) / Constants.TICKS_PER_MILLISECOND
+    val runTimeTicks: Long = sourceInfo.runTimeTicks ?: 0
+    val runTimeMs: Long = runTimeTicks / Constants.TICKS_PER_MILLISECOND
+
+    private val mediaStreams: List<MediaStream> = sourceInfo.mediaStreams.orEmpty()
+    val videoStreams: List<MediaStream>
+    val audioStreams: List<MediaStream>
+    val subtitleStreams: List<MediaStream>
+
+    var selectedVideoStream: MediaStream? = null
+        private set
+    var selectedAudioStream: MediaStream? = null
+        private set
+    var selectedSubtitleStream: MediaStream? = null
+        private set
 
     init {
-        val mediaSource = item.optJSONObject("mediaSource")
-        if (mediaSource != null) {
-            mediaDurationTicks = mediaSource.optLong("RunTimeTicks")
-            val textTrackUrls = HashMap<Int, String>().apply {
-                item.optJSONArray("textTracks")?.let { textTracks ->
-                    for (i in 0 until textTracks.length()) {
-                        textTracks.optJSONObject(i)?.let { track ->
-                            val index = track.optInt("index", -1)
-                            val url = track.optString("url", "")
-                            if (index >= 0 && url.isNotEmpty()) put(index, url)
-                        }
-                    }
+        // Classify MediaStreams
+        val video = ArrayList<MediaStream>()
+        val audio = ArrayList<MediaStream>()
+        val subtitle = ArrayList<MediaStream>()
+        for (mediaStream in mediaStreams) {
+            when (mediaStream.type) {
+                MediaStreamType.VIDEO -> video += mediaStream
+                MediaStreamType.AUDIO -> {
+                    audio += mediaStream
+                    if (mediaStream.index == audioStreamIndex ?: sourceInfo.defaultAudioStreamIndex)
+                        selectedAudioStream = mediaStream
                 }
-            }
-            val tracks = mediaSource.optJSONArray("MediaStreams") ?: JSONArray()
-            val subtitleTracks: MutableList<JSONObject> = ArrayList()
-            val audioTracks: MutableList<JSONObject> = ArrayList()
-            val videoTracks: MutableList<JSONObject> = ArrayList()
-            for (index in 0 until tracks.length()) {
-                val track: JSONObject? = tracks.optJSONObject(index)
-                when (track?.optString("Type")) {
-                    "Video" -> videoTracks.add(track)
-                    "Audio" -> audioTracks.add(track)
-                    "Subtitle" -> subtitleTracks.add(track)
+                MediaStreamType.SUBTITLE -> {
+                    subtitle += mediaStream
+                    if (mediaStream.index == subtitleStreamIndex ?: sourceInfo.defaultSubtitleStreamIndex)
+                        selectedSubtitleStream = mediaStream
                 }
-            }
-            videoTracksGroup = loadVideoTracks(videoTracks)
-            audioTracksGroup = loadAudioTracks(mediaSource, audioTracks)
-            subtitleTracksGroup = loadSubtitleTracks(mediaSource, subtitleTracks, textTrackUrls)
-        } else {
-            mediaDurationTicks = 0
-            videoTracksGroup = ExoPlayerTracksGroup(-1, emptyList())
-            audioTracksGroup = ExoPlayerTracksGroup(-1, emptyList())
-            subtitleTracksGroup = ExoPlayerTracksGroup(-1, emptyList())
-        }
-        isTranscoding = mediaSource?.optString("TranscodingSubProtocol") == "hls"
-    }
-
-    private fun loadVideoTracks(tracks: List<JSONObject>): ExoPlayerTracksGroup<ExoPlayerTrack.Video> {
-        val defaultSelection = 0
-        val videoTracks: MutableList<ExoPlayerTrack.Video> = ArrayList()
-        for (track in tracks) {
-            videoTracks += ExoPlayerTrack.Video(track)
-        }
-        videoTracks.sortBy(ExoPlayerTrack.Video::index)
-        return ExoPlayerTracksGroup(defaultSelection, videoTracks)
-    }
-
-    private fun loadAudioTracks(mediaSource: JSONObject, tracks: List<JSONObject>): ExoPlayerTracksGroup<ExoPlayerTrack.Audio> {
-        val defaultSelection = mediaSource.optInt("DefaultAudioStreamIndex", -1)
-        val audioTracks: MutableList<ExoPlayerTrack.Audio> = ArrayList()
-        for (track in tracks) {
-            audioTracks += ExoPlayerTrack.Audio(track)
-        }
-        audioTracks.sortBy(ExoPlayerTrack.Audio::index)
-        var currentSelection = -1
-        audioTracks.forEachIndexed { index, track ->
-            if (track.index == defaultSelection)
-                currentSelection = index
-        }
-        return ExoPlayerTracksGroup(currentSelection, audioTracks)
-    }
-
-    private fun loadSubtitleTracks(mediaSource: JSONObject, tracks: List<JSONObject>, textTrackUrls: HashMap<Int, String>): ExoPlayerTracksGroup<ExoPlayerTrack.Text> {
-        val defaultSelection = mediaSource.optInt("DefaultSubtitleStreamIndex", -1)
-        val subtitleTracks: MutableList<ExoPlayerTrack.Text> = ArrayList()
-        for (track in tracks) {
-            val index = track.optInt("Index", -1)
-            if (index >= 0) {
-                val textTrack = ExoPlayerTrack.Text(track, textTrackUrls[index])
-                // ExoPlayer doesn't support embedded WebVTT subtitles
-                if (!textTrack.embedded || textTrack.format != MimeTypes.TEXT_VTT)
-                    subtitleTracks += textTrack
+                MediaStreamType.EMBEDDED_IMAGE -> Unit // ignore
             }
         }
-        subtitleTracks.sortBy(ExoPlayerTrack.Text::index)
-        var currentSelection = -1
-        subtitleTracks.forEachIndexed { index, track ->
-            if (track.index == defaultSelection)
-                currentSelection = index
-        }
-        return ExoPlayerTracksGroup(currentSelection, subtitleTracks)
+
+        // Sort results
+        video.sortBy(MediaStream::index)
+        audio.sortBy(MediaStream::index)
+        subtitle.sortBy(MediaStream::index)
+
+        // Apply
+        videoStreams = video
+        audioStreams = audio
+        subtitleStreams = subtitle
+
+        selectedVideoStream = videoStreams.firstOrNull()
+    }
+
+    fun selectAudioStream(sourceIndex: Int): Boolean {
+        // Ensure selected index exists in audio streams
+        if (sourceIndex !in audioStreams.indices)
+            return false
+
+        selectedAudioStream = audioStreams[sourceIndex]
+        return true
+    }
+
+    fun selectSubtitleStream(sourceIndex: Int): Boolean {
+        // "Illegal" selections disable subtitles
+        selectedSubtitleStream = subtitleStreams.getOrNull(sourceIndex)
+        return true
+    }
+
+    fun getExternalSubtitleStreams(): List<ExternalSubtitleStream> = subtitleStreams.mapNotNull { stream ->
+        val mimeType = CodecHelpers.getSubtitleMimeType(stream.codec)
+        if (stream.isExternal && stream.deliveryUrl != null && mimeType != null) {
+            ExternalSubtitleStream(
+                index = stream.index,
+                deliveryUrl = stream.deliveryUrl!!,
+                mimeType = mimeType,
+                displayTitle = stream.displayTitle.orEmpty(),
+                language = stream.language ?: Constants.LANGUAGE_UNDEFINED,
+            )
+        } else null
     }
 }

@@ -81,11 +81,12 @@ object Constants {
     // Video player constants
     const val LANGUAGE_UNDEFINED = "und"
     const val TICKS_PER_MILLISECOND = 10000
-    const val PLAYER_TIME_UPDATE_RATE = 3000L
+    const val PLAYER_TIME_UPDATE_RATE = 1000L
     const val DEFAULT_CONTROLS_TIMEOUT_MS = 2500
     const val GESTURE_EXCLUSION_AREA_TOP = 48
     const val DEFAULT_CENTER_OVERLAY_TIMEOUT_MS = 250
     const val DEFAULT_SEEK_TIME_MS = 5000L
+    const val MAX_SKIP_TO_PREV_MS = 3000L
     const val SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS: Long = PlaybackState.ACTION_PLAY_PAUSE or
         PlaybackState.ACTION_PLAY or
         PlaybackState.ACTION_PAUSE or
@@ -96,7 +97,7 @@ object Constants {
     const val VIDEO_PLAYER_NOTIFICATION_ID = 99
 
     // Video player intent extras
-    const val EXTRA_MEDIA_SOURCE_ITEM = "org.jellyfin.mobile.MEDIA_SOURCE_ITEM"
+    const val EXTRA_MEDIA_PLAY_OPTIONS = "org.jellyfin.mobile.MEDIA_PLAY_OPTIONS"
 
     // External player result actions
     const val MPV_PLAYER_RESULT_ACTION = "is.xyz.mpv.MPVActivity.result"

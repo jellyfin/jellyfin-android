@@ -11,15 +11,10 @@ class PlayerLifecycleObserver(private val viewModel: PlayerViewModel) : Lifecycl
         viewModel.setupPlayer()
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun onStart() {
-        viewModel.notificationHelper.dismissNotification()
-    }
-
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
-        if (viewModel.notificationHelper.shouldShowNotification) {
-            viewModel.notificationHelper.postNotification()
-        } else viewModel.pause()
+        if (!viewModel.notificationHelper.allowBackgroundAudio) {
+            viewModel.pause()
+        }
     }
 }

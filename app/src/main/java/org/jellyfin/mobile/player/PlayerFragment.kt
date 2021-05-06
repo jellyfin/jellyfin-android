@@ -10,9 +10,23 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings.System
-import android.view.*
-import android.view.WindowManager.LayoutParams.*
-import android.widget.*
+import android.view.GestureDetector
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.OrientationEventListener
+import android.view.ScaleGestureDetector
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
+import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
+import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_OFF
+import android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.core.content.getSystemService
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
@@ -25,16 +39,25 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.api.aspectRational
+import org.jellyfin.mobile.api.isLandscape
+import org.jellyfin.mobile.bridge.PlayOptions
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
-import org.jellyfin.mobile.player.source.ExoPlayerTrack
-import org.jellyfin.mobile.utils.*
+import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CENTER_OVERLAY_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_SEEK_TIME_MS
 import org.jellyfin.mobile.utils.Constants.GESTURE_EXCLUSION_AREA_TOP
+import org.jellyfin.mobile.utils.SmartOrientationListener
+import org.jellyfin.mobile.utils.dip
+import org.jellyfin.mobile.utils.disableFullscreen
+import org.jellyfin.mobile.utils.enableFullscreen
+import org.jellyfin.mobile.utils.isAutoRotateOn
+import org.jellyfin.mobile.utils.isFullscreen
+import org.jellyfin.mobile.utils.lockOrientation
+import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.android.ext.android.inject
-import timber.log.Timber
 import kotlin.math.abs
 
 class PlayerFragment : Fragment() {
@@ -58,8 +81,8 @@ class PlayerFragment : Fragment() {
     private var playbackMenus: PlaybackMenus? = null
     private val audioManager: AudioManager by lazy { requireContext().getSystemService()!! }
 
-    private val currentVideoTrack: ExoPlayerTrack.Video?
-        get() = viewModel.mediaSourceManager.jellyfinMediaSource.value?.selectedVideoTrack
+    private val currentVideoStream: MediaStream?
+        get() = viewModel.mediaSourceOrNull?.selectedVideoStream
 
     private var isZoomEnabled = false
 
@@ -123,29 +146,30 @@ class PlayerFragment : Fragment() {
             } else {
                 window.clearFlags(FLAG_KEEP_SCREEN_ON)
             }
-            if (playerState == Player.STATE_ENDED) {
-                parentFragmentManager.popBackStack()
-                return@observe
-            }
             loadingIndicator.isVisible = playerState == Player.STATE_BUFFERING
         }
-        viewModel.mediaSourceManager.jellyfinMediaSource.observe(this) { jellyfinMediaSource ->
+        viewModel.mediaQueueManager.mediaQueue.observe(this) { queueItem ->
+            val jellyfinMediaSource = queueItem.jellyfinMediaSource
+
             // On playback start, switch to landscape for landscape videos, and (only) enable fullscreen for portrait videos
             with(requireActivity()) {
-                val videoTrack = jellyfinMediaSource.selectedVideoTrack
-                if (videoTrack == null || videoTrack.width >= videoTrack.height) {
+                if (jellyfinMediaSource.selectedVideoStream?.isLandscape != false) {
                     requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                 } else {
                     enableFullscreen()
+                    updateFullscreenSwitcher(isFullscreen())
                 }
             }
 
-            titleTextView.text = jellyfinMediaSource.title
-            playbackMenus?.onItemChanged(jellyfinMediaSource)
+            // Update title and player menus
+            titleTextView.text = jellyfinMediaSource.name
+            playbackMenus?.onQueueItemChanged(queueItem)
         }
 
-        // Handle intent
-        viewModel.mediaSourceManager.handleArguments(requireArguments())
+        // Handle fragment arguments, extract playback options and start playback
+        requireArguments().getParcelable<PlayOptions>(Constants.EXTRA_MEDIA_PLAY_OPTIONS)?.let { playOptions ->
+            viewModel.mediaQueueManager.startPlayback(playOptions)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -154,6 +178,7 @@ class PlayerFragment : Fragment() {
         return playerBinding.root
     }
 
+    @Suppress("DEPRECATION")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -185,8 +210,8 @@ class PlayerFragment : Fragment() {
 
         // Handle fullscreen switcher
         fullscreenSwitcher.setOnClickListener {
-            val videoTrack = currentVideoTrack
-            if (videoTrack == null || videoTrack.width >= videoTrack.height) {
+            val videoTrack = currentVideoStream
+            if (videoTrack == null || videoTrack.width!! >= videoTrack.height!!) {
                 // Landscape video, change orientation (which affects the fullscreen state)
                 val current = resources.configuration.orientation
                 requireActivity().requestedOrientation = when (current) {
@@ -257,8 +282,7 @@ class PlayerFragment : Fragment() {
                 enableFullscreen()
             } else {
                 // Disable fullscreen for landscape video in portrait orientation
-                val videoTrack = currentVideoTrack
-                if (videoTrack == null || videoTrack.width >= videoTrack.height) {
+                if (currentVideoStream?.isLandscape != false) {
                     disableFullscreen()
                 }
             }
@@ -418,8 +442,6 @@ class PlayerFragment : Fragment() {
         zoomGestureDetector.isQuickScaleEnabled = false
 
         playerView.setOnTouchListener { _, event ->
-            Timber.d("RW: ${playerBinding.root.width}, PW: ${(playerBinding.root.parent as? View)?.width}")
-
             if (playerView.useController) {
                 when (event.pointerCount) {
                     1 -> gestureDetector.onTouchEvent(event)
@@ -447,14 +469,31 @@ class PlayerFragment : Fragment() {
      * @return true if the audio track was changed
      */
     fun onAudioTrackSelected(index: Int): Boolean {
-        return viewModel.mediaSourceManager.selectAudioTrack(index)
+        return viewModel.mediaQueueManager.selectAudioTrack(index)
     }
 
     /**
      * @return true if the subtitle was changed
      */
     fun onSubtitleSelected(index: Int): Boolean {
-        return viewModel.mediaSourceManager.selectSubtitle(index)
+        return viewModel.mediaQueueManager.selectSubtitle(index)
+    }
+
+    /**
+     * Toggle subtitles, selecting the first by [MediaStream.index] if there are multiple.
+     *
+     * @return true if subtitles are enabled now, false if not
+     */
+    fun toggleSubtitles(): Boolean {
+        return viewModel.mediaQueueManager.toggleSubtitles()
+    }
+
+    fun onSkipToPrevious() {
+        viewModel.skipToPrevious()
+    }
+
+    fun onSkipToNext() {
+        viewModel.skipToNext()
     }
 
     fun onUserLeaveHint() {
@@ -462,7 +501,7 @@ class PlayerFragment : Fragment() {
             with(requireActivity()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     val params = PictureInPictureParams.Builder().apply {
-                        setAspectRatio(currentVideoTrack?.aspectRatio)
+                        setAspectRatio(currentVideoStream?.aspectRational)
                     }.build()
                     enterPictureInPictureMode(params)
                 } else {

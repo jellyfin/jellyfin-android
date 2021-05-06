@@ -5,6 +5,7 @@ import android.app.Application
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.session.MediaSession
+import android.media.session.PlaybackState
 import androidx.core.content.getSystemService
 import androidx.lifecycle.*
 import com.google.android.exoplayer2.C
@@ -12,7 +13,6 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.analytics.AnalyticsCollector
-import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.util.Clock
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
@@ -20,16 +20,14 @@ import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
 import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
-import org.jellyfin.mobile.player.source.MediaSourceManager
+import org.jellyfin.mobile.player.source.MediaQueueManager
 import org.jellyfin.mobile.utils.*
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
-import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.jellyfin.sdk.api.operations.PlayStateApi
-import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.api.PlaybackProgressInfo
+import org.jellyfin.sdk.model.api.PlaybackStartInfo
 import org.jellyfin.sdk.model.api.PlaybackStopInfo
 import org.jellyfin.sdk.model.api.RepeatMode
-import org.jellyfin.sdk.model.serializer.toUUID
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.qualifier.named
@@ -38,24 +36,29 @@ import java.util.*
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.EventListener {
     private val apiController by inject<ApiController>()
     private val playStateApi by inject<PlayStateApi>()
-    val mediaSourceManager = MediaSourceManager(this)
+
+    private val lifecycleObserver = PlayerLifecycleObserver(this)
     private val audioManager: AudioManager by lazy { getApplication<Application>().getSystemService()!! }
     val notificationHelper: PlayerNotificationHelper by lazy { PlayerNotificationHelper(this) }
-    private val lifecycleObserver = PlayerLifecycleObserver(this)
 
+    // Media source handling
+    val mediaQueueManager = MediaQueueManager(this, viewModelScope)
+    val mediaSourceOrNull: JellyfinMediaSource?
+        get() = mediaQueueManager.mediaQueue.value?.jellyfinMediaSource
+
+    // ExoPlayer
     private val _player = MutableLiveData<ExoPlayer?>()
     private val _playerState = MutableLiveData<Int>()
+    val player: LiveData<ExoPlayer?> get() = _player
+    val playerState: LiveData<Int> get() = _playerState
+
+    private var progressUpdateJob: Job? = null
 
     /**
      * Returns the current ExoPlayer instance or null
      */
     val playerOrNull: ExoPlayer? get() = _player.value
 
-    // Public LiveData getters
-    val player: LiveData<ExoPlayer?> get() = _player
-    val playerState: LiveData<Int> get() = _playerState
-
-    private val webappFunctionChannel: WebappFunctionChannel by inject()
     private val playerEventChannel: Channel<PlayerEvent> by inject(named(PLAYER_EVENT_CHANNEL))
 
     val mediaSession: MediaSession by lazy {
@@ -81,7 +84,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     is PlayerEvent.Seek -> playerOrNull?.seekTo(event.ms)
                     is PlayerEvent.SetVolume -> {
                         setVolume(event.volume)
-                        reportPlaybackState()
+                        playerOrNull?.reportPlaybackState()
                     }
                 }
             }
@@ -93,10 +96,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
      */
     fun setupPlayer() {
         _player.value = SimpleExoPlayer.Builder(getApplication()).apply {
-            setTrackSelector(mediaSourceManager.trackSelector)
+            setTrackSelector(mediaQueueManager.trackSelector)
             if (BuildConfig.DEBUG) {
                 setAnalyticsCollector(AnalyticsCollector(Clock.DEFAULT).apply {
-                    addListener(mediaSourceManager.eventLogger)
+                    addListener(mediaQueueManager.eventLogger)
                 })
             }
         }.build().apply {
@@ -109,96 +112,113 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
      * Release the current ExoPlayer and stop/release the current MediaSession
      */
     private fun releasePlayer() {
+        notificationHelper.dismissNotification()
         mediaSession.isActive = false
         mediaSession.release()
-        val playerState = playerOrNull?.let { player ->
-            val state = player.playbackState to player.currentPosition
-            player.removeListener(this)
-            player.release()
-            state
+        playerOrNull?.run {
+            removeListener(this@PlayerViewModel)
+            release()
         }
         _player.value = null
-
-        val mediaSource = mediaSourceManager.jellyfinMediaSource.value
-        if (playerState != null && mediaSource != null) {
-            // viewModelScope is already cancelled at this point, so we need a fallback
-            CoroutineScope(Dispatchers.Main).launch {
-                // Report playback stop to webapp - necessary for playlists to work
-                webappFunctionChannel.exoPlayerNotifyStopped()
-
-                // Report playback stop via API
-                withTimeoutOrNull(200) {
-                    val (playbackState, currentPosition) = playerState
-                    playStateApi.reportPlaybackStopped(
-                        PlaybackStopInfo(
-                            itemId = mediaSource.id.toUUID(),
-                            positionTicks = when (playbackState) {
-                                Player.STATE_ENDED -> mediaSource.mediaDurationTicks
-                                else -> currentPosition * Constants.TICKS_PER_MILLISECOND
-                            },
-                            failed = false,
-                        )
-                    )
-                    if (playbackState == Player.STATE_ENDED) {
-                        val userId = requireNotNull(apiController.currentUser) { "Current user is null!" }
-                        // Mark video as watched
-                        playStateApi.markPlayedItem(userId = userId, itemId = mediaSource.id.toUUID())
-                    }
-                }
-            }
-        }
     }
 
-    fun playMedia(source: MediaSource, replace: Boolean = false, startPosition: Long = 0) {
+    fun play(queueItem: MediaQueueManager.QueueItem.Loaded) {
         val player = playerOrNull ?: return
-        if (replace || player.contentDuration == C.TIME_UNSET /* no content loaded yet */) {
-            player.setMediaSource(source)
-            player.prepare()
-            if (startPosition > 0) player.seekTo(startPosition)
-            player.playWhenReady = true
+        player.setMediaSource(queueItem.exoMediaSource)
+        player.prepare()
+        val startTime = queueItem.jellyfinMediaSource.startTimeMs
+        if (startTime > 0) {
+            player.seekTo(startTime)
         }
-    }
+        player.playWhenReady = true
+        mediaSession.setMetadata(queueItem.jellyfinMediaSource.toMediaMetadata())
 
-    fun updateMediaMetadata(mediaSource: JellyfinMediaSource) {
-        mediaSession.setMetadata(mediaSource.toMediaMetadata())
-    }
-
-    private fun setupTimeUpdates() {
         viewModelScope.launch {
+            player.reportPlaybackStart(queueItem.jellyfinMediaSource)
+        }
+    }
+
+    private fun startProgressUpdates() {
+        progressUpdateJob = viewModelScope.launch {
             while (true) {
-                reportPlaybackState()
                 delay(Constants.PLAYER_TIME_UPDATE_RATE)
+                playerOrNull?.reportPlaybackState()
             }
         }
     }
 
-    private suspend fun reportPlaybackState() {
-        val player = playerOrNull ?: return
-        val mediaSource = mediaSourceManager.jellyfinMediaSource.value ?: return
-        val playbackPositionMillis = player.currentPosition
-        if (player.playbackState != Player.STATE_ENDED) {
-            webappFunctionChannel.exoPlayerUpdateProgress(playbackPositionMillis)
+    private fun stopProgressUpdates() {
+        progressUpdateJob?.cancel()
+    }
 
+    private suspend fun Player.reportPlaybackStart(mediaSource: JellyfinMediaSource) {
+        playStateApi.reportPlaybackStart(
+            PlaybackStartInfo(
+                itemId = mediaSource.itemId,
+                playMethod = mediaSource.playMethod,
+                audioStreamIndex = mediaSource.selectedAudioStream?.index,
+                subtitleStreamIndex = mediaSource.selectedSubtitleStream?.index,
+                isPaused = !isPlaying,
+                isMuted = false,
+                canSeek = true,
+                positionTicks = mediaSource.startTimeMs * Constants.TICKS_PER_MILLISECOND,
+                volumeLevel = audioManager.getVolumeLevelPercent(),
+                repeatMode = RepeatMode.REPEAT_NONE,
+            )
+        )
+    }
+
+    private suspend fun Player.reportPlaybackState() {
+        val mediaSource = mediaSourceOrNull ?: return
+        val playbackPositionMillis = currentPosition
+        if (playbackState != Player.STATE_ENDED) {
             val stream = AudioManager.STREAM_MUSIC
             val volumeRange = audioManager.getVolumeRange(stream)
             val currentVolume = audioManager.getStreamVolume(stream)
             playStateApi.reportPlaybackProgress(
                 PlaybackProgressInfo(
-                    itemId = mediaSource.id.toUUID(),
-                    canSeek = true,
-                    isPaused = !player.isPlaying,
+                    itemId = mediaSource.itemId,
+                    playMethod = mediaSource.playMethod,
+                    audioStreamIndex = mediaSource.selectedAudioStream?.index,
+                    subtitleStreamIndex = mediaSource.selectedSubtitleStream?.index,
+                    isPaused = !isPlaying,
                     isMuted = false,
+                    canSeek = true,
                     positionTicks = playbackPositionMillis * Constants.TICKS_PER_MILLISECOND,
                     volumeLevel = (currentVolume - volumeRange.first) * 100 / volumeRange.width,
                     repeatMode = RepeatMode.REPEAT_NONE,
-                    playMethod = when (mediaSource.playMethod) {
-                        "DirectPlay" -> PlayMethod.DIRECT_PLAY
-                        "DirectStream" -> PlayMethod.DIRECT_STREAM
-                        "Transcode" -> PlayMethod.TRANSCODE
-                        else -> throw IllegalArgumentException()
-                    },
                 )
             )
+        }
+    }
+
+    private fun reportPlaybackStop() {
+        val mediaSource = mediaSourceOrNull ?: return
+        val player = playerOrNull ?: return
+        val hasFinished = player.playbackState == Player.STATE_ENDED
+        val lastPositionTicks = when {
+            hasFinished -> mediaSource.runTimeTicks
+            else -> player.currentPosition * Constants.TICKS_PER_MILLISECOND
+        }
+
+        // viewModelScope may already be cancelled at this point, so we need to fallback
+        CoroutineScope(Dispatchers.Main).launch {
+            // Report stopped playback
+            playStateApi.reportPlaybackStopped(
+                PlaybackStopInfo(
+                    itemId = mediaSource.itemId,
+                    positionTicks = lastPositionTicks,
+                    failed = false,
+                )
+            )
+
+            // Mark video as watched if playback finished
+            if (hasFinished) {
+                playStateApi.markPlayedItem(
+                    userId = apiController.requireUser(),
+                    itemId = mediaSource.itemId,
+                )
+            }
         }
     }
 
@@ -224,8 +244,34 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         seekToOffset(Constants.DEFAULT_SEEK_TIME_MS)
     }
 
+    fun skipToPrevious(force: Boolean = false) {
+        val player = playerOrNull ?: return
+        when {
+            // Skip to previous element
+            force || player.currentPosition <= Constants.MAX_SKIP_TO_PREV_MS -> {
+                viewModelScope.launch {
+                    pause()
+                    if (!mediaQueueManager.previous()) {
+                        // Skip to previous failed, go to start of video anyway
+                        playerOrNull?.seekTo(0)
+                        play()
+                    }
+                }
+            }
+            // Rewind to start of track if not at the start already
+            else -> player.seekTo(0)
+        }
+    }
+
+    fun skipToNext() {
+        viewModelScope.launch {
+            mediaQueueManager.next()
+        }
+    }
+
     fun stop() {
         pause()
+        reportPlaybackStop()
         releasePlayer()
     }
 
@@ -244,41 +290,51 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     @SuppressLint("SwitchIntDef")
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
         val player = playerOrNull ?: return
-        when (playbackState) {
-            Player.STATE_READY -> {
-                mediaSourceManager.selectInitialTracks()
-                mediaSession.isActive = true
-                setupTimeUpdates()
-            }
+
+        // Notify fragment of current state
+        _playerState.value = playbackState
+
+        // Initialise various components
+        if (playbackState == Player.STATE_READY) {
+            mediaQueueManager.selectInitialTracks()
+            mediaSession.isActive = true
+            notificationHelper.postNotification()
+        }
+
+        // Setup or stop regular progress updates
+        if (playbackState == Player.STATE_READY && playWhenReady) {
+            startProgressUpdates()
+        } else {
+            stopProgressUpdates()
         }
 
         // Update media session
-        mediaSession.setPlaybackState(player, SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS)
+        var playbackActions = SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
+        mediaQueueManager.mediaQueue.value?.let { queueItem ->
+            if (queueItem.hasPrevious()) playbackActions = playbackActions or PlaybackState.ACTION_SKIP_TO_PREVIOUS
+            if (queueItem.hasNext()) playbackActions = playbackActions or PlaybackState.ACTION_SKIP_TO_NEXT
+        }
+        mediaSession.setPlaybackState(player, playbackActions)
 
-        // Update playback state and position
+        // Force update playback state and position
         viewModelScope.launch {
-            reportPlaybackState()
-        }
+            when (playbackState) {
+                Player.STATE_READY, Player.STATE_BUFFERING -> {
+                    player.reportPlaybackState()
+                }
+                Player.STATE_ENDED -> {
+                    reportPlaybackStop()
 
-        // Update notification if necessary
-        when (playbackState) {
-            Player.STATE_READY, Player.STATE_BUFFERING -> {
-                // Only in not-started state (aka in background)
-                if (!ProcessLifecycleOwner.get().lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED))
-                    notificationHelper.postNotification()
-            }
-            Player.STATE_ENDED -> {
-                notificationHelper.dismissNotification()
+                    if (!mediaQueueManager.next())
+                        releasePlayer()
+                }
             }
         }
-
-        // Notify activity of current state
-        _playerState.value = playbackState
     }
 
     override fun onCleared() {
+        reportPlaybackStop()
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
-        notificationHelper.dismissNotification()
         releasePlayer()
     }
 }

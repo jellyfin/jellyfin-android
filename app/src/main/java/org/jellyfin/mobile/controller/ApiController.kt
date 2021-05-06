@@ -7,7 +7,6 @@ import org.jellyfin.mobile.model.sql.dao.ServerDao
 import org.jellyfin.mobile.model.sql.dao.UserDao
 import org.jellyfin.mobile.model.sql.entity.ServerEntity
 import org.jellyfin.sdk.api.client.ApiClient
-import org.jellyfin.sdk.api.client.KtorClient
 import org.jellyfin.sdk.model.DeviceInfo
 import org.jellyfin.sdk.model.serializer.toUUID
 import java.util.*
@@ -94,4 +93,6 @@ class ApiController(
         apiClient.deviceInfo = baseDeviceInfo
         apiClient.accessToken = null
     }
+
+    fun requireUser(): UUID = requireNotNull(currentUser) { "Current user is null!" }
 }
