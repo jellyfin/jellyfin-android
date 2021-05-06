@@ -25,7 +25,7 @@ object Dependencies {
         const val modernAndroidPreferences = "2.0"
 
         // Room
-        const val room = "2.2.6"
+        const val room = "2.3.0"
 
         // Network
         const val jellyfinSdk = "1.0.0-beta.4"

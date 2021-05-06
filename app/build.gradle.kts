@@ -77,9 +77,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
     lintOptions {
         isAbortOnError = false
         sarifReport = true
