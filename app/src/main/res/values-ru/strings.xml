@@ -15,10 +15,10 @@
     <string name="connection_error_invalid_format">Хост имеет недопустимый формат</string>
     <string name="connect_button_text">Соединение</string>
     <string name="host_input_hint">Узел</string>
-    <string name="pref_exoplayer_allow_background_audio">Разрешить воспроизведение звука в фоновом режиме во встроенном проигрывателе</string>
+    <string name="pref_exoplayer_allow_background_audio">Фоновое аудио</string>
     <string name="video_player_external_description">Приложения внешнего воспроизведения видео, такие как MX Player и VLC</string>
     <string name="video_player_native_description">Основано на ExoPlayer, поддерживается больше видео форматов и кодеков и теснее интегрировано с ОС</string>
-    <string name="pref_music_notification_always_dismissible_title">Уведомления музыкального проигрывателя всегда отключены</string>
+    <string name="pref_music_notification_always_dismissible_title">Отключаемое уведомление проигрывателя</string>
     <string name="external_player_unknown_error">Неизвестная ошибка внешнего проигрывателя. Отслеживание воспроизведения отключено.</string>
     <string name="external_player_invalid_player">Выбран недопустимый внешний проигрыватель. Отслеживание воспроизведения отключено.</string>
     <string name="pref_video_player_type_title">Тип видео проигрывателя</string>
@@ -45,7 +45,7 @@
     <string name="connection_error_cannot_connect">Невозможно установить соединение.
 \nПроверьте имя узла и сетевое соединение.</string>
     <string name="external_player_not_supported_yet">Отслеживание воспроизведения пока не поддерживается выбранным внешним проигрывателем. Свяжитесь с разработчиками, чтобы попытаться добавить поддержку для него.</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Управление жестами яркостью и громкостью во встроенном проигрывателе</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Жесты яркости и громкости</string>
     <string name="external_player_system_default_description">Пусть система берет на себя выбор проигрывателя, некоторые проигрыватели могут быть не полностью совместимы.</string>
     <string name="mediaservice_library_playlists">Плей-листы</string>
     <string name="mediaservice_library_genres">Жанры</string>
@@ -86,4 +86,7 @@
     <string name="dialog_web_view_not_supported_message">WebView не поддерживается данным устройством.
 \nУстановите совместимую реализацию WebView или переключитесь на поддерживаемое устройство.</string>
     <string name="dialog_web_view_not_supported">WebView не поддерживается</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Разрешить воспроизведение видео в фоновом режиме только со звуком</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Уведомление всегда можно отключить, даже при воспроизведении медиаданных</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">Уведомление можно отключить, только когда воспроизведение на паузе</string>
 </resources>
