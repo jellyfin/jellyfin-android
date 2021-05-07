@@ -17,7 +17,7 @@
     <string name="activity_name_settings">Paramètres Jellyfin</string>
     <string name="menu_item_none">Aucun</string>
     <string name="pref_category_music_player">Lecteur de musique</string>
-    <string name="pref_music_notification_always_dismissible_title">Notification rejetable</string>
+    <string name="pref_music_notification_always_dismissible_title">Notification du lecteur balayable</string>
     <string name="playback_info_and_x_more">... et %d autres</string>
     <string name="playback_info_audio_streams">Flux audio</string>
     <string name="playback_info_video_streams">Flux vidéo</string>
@@ -25,7 +25,7 @@
     <string name="playback_info_play_method">Méthode de lecture : %s</string>
     <string name="connection_error_cannot_connect">La connexion n\'a pas pu être établie. 
 \nVérifiez le nom de l\'hôte et votre connexion réseau.</string>
-    <string name="pref_exoplayer_allow_background_audio">Autoriser la lecture audio en arrière-plan dans le lecteur natif</string>
+    <string name="pref_exoplayer_allow_background_audio">Audio en arrière-plan</string>
     <string name="notification_action_stop">Arrêter</string>
     <string name="notification_action_next">Suivant</string>
     <string name="notification_action_fast_forward">Avance rapide</string>
@@ -47,7 +47,7 @@
     <string name="external_player_invalid_play_method">Méthode de lecture invalide.</string>
     <string name="available_servers_title">Serveurs disponibles</string>
     <string name="choose_server_button_text">Choisir un serveur</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Autoriser le contrôle de la luminosité et du volume à l\'aide de gestes dans le lecteur natif</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Gestes de contrôle de la luminosité et du volume</string>
     <string name="external_player_mx_player_pro_description">La version payante de MX Player qui fournit une expérience vidéo ininterrompue.</string>
     <string name="external_player_mx_player_pro">MX Player Pro</string>
     <string name="external_player_mx_player_free">MX Player Gratuit</string>
@@ -88,4 +88,7 @@
 \nInstallez une implémentation de WebView compatible, ou utilisez un appareil supporté.</string>
     <string name="dialog_button_check_for_updates">Chercher des mises à jour</string>
     <string name="dialog_button_close_app">Fermer l\'application</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Autoriser la lecture de vidéos en arrière-plan avec l\'audio uniquement</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">La notification peut toujours être balayée, même lorsque la lecture d\'un média est en cours</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">La notification peut seulement être balayée lorsque le lecture est en pause</string>
 </resources>
