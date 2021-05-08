@@ -3,7 +3,7 @@
     <string name="pref_enable_exoplayer_summary">மேலும் வீடியோ வடிவங்கள் மற்றும் கோடெக்குகளை ஆதரிக்கும், மேலும் OS இல் மேலும் ஒருங்கிணைந்த சோதனை எக்ஸோபிளேயர் வீடியோ பிளேயரை இயக்கவும்</string>
     <string name="pref_enable_exoplayer_title">வீடியோ பிளேயர் ஒருங்கிணைப்பை இயக்கு</string>
     <string name="pref_category_video_player">வீடியோ பிளேயர்</string>
-    <string name="pref_music_notification_always_dismissible_title">மியூசிக் பிளேயர் அறிவிப்பை எப்போதும் நிராகரிக்கும்படி செய்யுங்கள்</string>
+    <string name="pref_music_notification_always_dismissible_title">நிராகரிக்கக்கூடிய பிளேயர் அறிவிப்பு</string>
     <string name="pref_category_music_player">இசைப்பான்</string>
     <string name="activity_name_settings">ஜெல்லிஃபின் அமைப்புகள்</string>
     <string name="menu_item_none">எதுவுமில்லை</string>
@@ -25,7 +25,7 @@
     <string name="playback_info_play_method">வாசிக்கும் முறை: %s</string>
     <string name="connection_error_cannot_connect">இணைப்பை நிறுவ முடியாது.
 \nஹோஸ்ட்பெயர் மற்றும் உங்கள் பிணைய இணைப்பை சரிபார்க்கவும்.</string>
-    <string name="pref_exoplayer_allow_background_audio">சொந்த பிளேயரில் பின்னணியில் ஆடியோவை இயக்க அனுமதிக்கவும்</string>
+    <string name="pref_exoplayer_allow_background_audio">பின்னணி ஆடியோ</string>
     <string name="notification_action_stop">நிறுத்து</string>
     <string name="notification_action_next">அடுத்து</string>
     <string name="notification_action_fast_forward">வேகமாக முன்னோக்கி</string>
@@ -47,7 +47,7 @@
     <string name="pref_video_player_type_title">வீடியோ பிளேயர் வகை</string>
     <string name="available_servers_title">பெறக்கூடிய சேவையகங்கள்</string>
     <string name="choose_server_button_text">சேவையகத்தைத் தேர்வுசெய்க</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">சொந்த பிளேயரில் பிரகாசம் மற்றும் தொகுதி சைகைகளை அனுமதிக்கவும்</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">பிரகாசம் மற்றும் தொகுதி சைகைகள்</string>
     <string name="mediaservice_library_playlists">பிளேலிஸ்ட்கள்</string>
     <string name="mediaservice_library_genres">வகைகள்</string>
     <string name="mediaservice_library_songs">பாடல்கள்</string>
@@ -88,4 +88,7 @@
     <string name="dialog_web_view_not_supported_message">WebViews இந்த சாதனத்தால் ஆதரிக்கப்படவில்லை.
 \nஇணக்கமான WebView செயலாக்கத்தை நிறுவவும் அல்லது ஆதரிக்கப்படும் சாதனத்திற்கு மாறவும்.</string>
     <string name="dialog_web_view_not_supported">WebView ஆதரிக்கப்படவில்லை</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">ஆடியோ மட்டும் மூலம் பின்னணியில் வீடியோக்களை இயக்க அனுமதிக்கவும்</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">மீடியா இயக்கப்படும்போது கூட அறிவிப்பை எப்போதும் தள்ளுபடி செய்யலாம்</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">பிளேபேக் இடைநிறுத்தப்படும்போது மட்டுமே அறிவிப்பை நிராகரிக்க முடியும்</string>
 </resources>
