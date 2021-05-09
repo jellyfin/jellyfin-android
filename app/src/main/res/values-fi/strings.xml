@@ -34,7 +34,7 @@
     <string name="notification_action_play">Toista</string>
     <string name="notification_action_pause">Pysäytä</string>
     <string name="choose_server_button_text">Valitse palvelin</string>
-    <string name="pref_exoplayer_allow_background_audio">Salli äänen toisto taustalla vakiosoittimessa</string>
+    <string name="pref_exoplayer_allow_background_audio">Äänentoisto taustalla</string>
     <string name="video_player_external_description">Ulkoiset videotoistosovellukset kuten MX Player ja VLC</string>
     <string name="video_player_native_description">Perustuu ExoPlayeriin, tukee useampia videoformaatteja sekä koodekkeja ja on integroitu käyttöjärjestelmään vahvemmin</string>
     <string name="video_player_web_description">Oletus HTML-videosoitin web-käyttöliittymästä</string>
@@ -81,4 +81,7 @@
     <string name="pref_category_downloads">Lataukset</string>
     <string name="dialog_button_close_app">Sulje sovellus</string>
     <string name="dialog_button_check_for_updates">Tarkista päivitykset</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">Ilmoitus</string>
+    <string name="dialog_web_view_outdated">WebView vanhentunut</string>
+    <string name="dialog_web_view_not_supported">WebView ei ole tuettu</string>
 </resources>
