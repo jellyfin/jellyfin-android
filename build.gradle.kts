@@ -17,8 +17,7 @@ allprojects {
     repositories {
         mavenCentral()
         google()
-        maven {
-            setUrl("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
             content {
                 includeGroup(Dependencies.Groups.jellyfin)
             }
