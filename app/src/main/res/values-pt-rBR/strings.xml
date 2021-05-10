@@ -18,7 +18,7 @@
 \nPor favor confira o hostname e sua conexão com a rede.</string>
     <string name="connection_error_invalid_format">Host possui formato inválido</string>
     <string name="host_input_hint">Host</string>
-    <string name="pref_music_notification_always_dismissible_title">Faz o reprodutor de música sempre dispensar notificações</string>
+    <string name="pref_music_notification_always_dismissible_title">Notificação do reprodutor de música descartável</string>
     <string name="pref_enable_exoplayer_summary">Habilita o reprodutor de vídeo experimental que suporta mais formatos de vídeo e codecs, e é mais integrado ao SO</string>
     <string name="pref_enable_exoplayer_title">Habilita integração do reprodutor de vídeo</string>
     <string name="pref_category_video_player">Reprodutor de vídeo nativo</string>
@@ -29,7 +29,7 @@
     <string name="notification_action_previous">Anterior</string>
     <string name="download_no_storage_permission">Não é possível baixar arquivos sem permissões de armazenamento</string>
     <string name="external_player_invalid_play_method">Método de reprodução inválido.</string>
-    <string name="pref_exoplayer_allow_background_audio">Permitir reprodução de áudio em segundo plano no reprodutor nativo</string>
+    <string name="pref_exoplayer_allow_background_audio">Áudio em segundo plano</string>
     <string name="notification_action_stop">Parar</string>
     <string name="notification_action_next">Próximo</string>
     <string name="notification_action_fast_forward">Avanço rápido</string>
@@ -39,7 +39,7 @@
     <string name="video_player_native">Reprodutor Nativo</string>
     <string name="video_player_web">Reprodutor Web</string>
     <string name="pref_video_player_type_title">Tipo de reprodutor de Vídeo</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Habilitar controle de brilho e volume através de gestos no reprodutor de video padrão</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Gestos para o controle de brilho e volume</string>
     <string name="video_player_external_description">Reprodutores de vídeo externos, como MX Player e VLC</string>
     <string name="video_player_native_description">Baseado no ExoPlayer, suporta mais formatos de vídeo e codecs, e é mais integrado ao sistema operacional</string>
     <string name="video_player_web_description">O vídeo player HTML padrão da interface web</string>
@@ -88,4 +88,7 @@
     <string name="dialog_web_view_not_supported_message">WebViews não são suportados por este dispositivo.
 \nInstale uma implementação WebView compatível ou mude para um dispositivo compatível.</string>
     <string name="dialog_web_view_not_supported">WebView não compatível</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Permite a reprodução de vídeos em segundo plano somente com o áudio</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">A notificação sempre pode ser descartada, mesmo enquanto ocorre a reprodução de mídia</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">A notificação só pode ser descartada quando a reprodução estiver em pausa</string>
 </resources>
