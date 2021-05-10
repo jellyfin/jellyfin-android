@@ -29,6 +29,7 @@ object Dependencies {
 
         // Network
         const val jellyfinSdk = "1.0.0-beta.4"
+        const val jellyfinSdkSnapshot = "latest-SNAPSHOT"
         const val okHttp = "4.9.1"
         const val coil = "1.1.1"
 
@@ -49,6 +50,10 @@ object Dependencies {
         const val androidXRunner = "1.3.0"
         const val androidXEspresso = "3.3.0"
         const val androidDesugarLibs = "1.1.5"
+    }
+
+    object Groups {
+        const val jellyfin = "org.jellyfin.sdk"
     }
 
     object Kotlin {
@@ -89,7 +94,7 @@ object Dependencies {
     }
 
     object Network {
-        const val jellyfinSdk = "org.jellyfin.sdk:jellyfin-platform-android:${Versions.jellyfinSdk}"
+        const val jellyfinSdk = "${Groups.jellyfin}:jellyfin-platform-android:${Versions.jellyfinSdk}"
         const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
         const val coil = "io.coil-kt:coil-base:${Versions.coil}"
         val exoPlayerHLS = exoPlayer("hls")
