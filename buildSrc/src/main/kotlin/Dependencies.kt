@@ -48,6 +48,7 @@ object Dependencies {
         const val mockk = "1.11.0"
         const val androidXRunner = "1.3.0"
         const val androidXEspresso = "3.3.0"
+        const val androidDesugarLibs = "1.1.5"
     }
 
     object Kotlin {
@@ -107,7 +108,7 @@ object Dependencies {
     }
 
     /**
-     * Includes logging, debugging, and testing
+     * Includes logging, debugging, testing and desugaring
      */
     object Health {
         const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
@@ -122,6 +123,7 @@ object Dependencies {
         const val mockk = "io.mockk:mockk:${Versions.mockk}"
         const val androidXRunner = "androidx.test:runner:${Versions.androidXRunner}"
         const val androidXEspresso = "androidx.test.espresso:espresso-core:${Versions.androidXEspresso}"
+        const val androidDesugarLibs = "com.android.tools:desugar_jdk_libs:${Versions.androidDesugarLibs}"
     }
 
     // Helpers
