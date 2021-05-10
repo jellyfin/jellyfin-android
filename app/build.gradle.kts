@@ -77,6 +77,9 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
     lintOptions {
         isAbortOnError = false
         sarifReport = true
@@ -153,6 +156,9 @@ dependencies {
     testImplementation(Dependencies.Health.mockk)
     androidTestImplementation(Dependencies.Health.androidXRunner)
     androidTestImplementation(Dependencies.Health.androidXEspresso)
+
+    // Desugaring
+    coreLibraryDesugaring(Dependencies.Health.androidDesugarLibs)
 }
 
 tasks {
