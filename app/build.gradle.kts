@@ -1,3 +1,4 @@
+import com.android.build.gradle.options.parseBoolean
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.github.benmanes.gradle.versions.updates.gradle.GradleReleaseChannel
 import io.gitlab.arturbosch.detekt.Detekt
@@ -126,7 +127,14 @@ dependencies {
     kapt(Dependencies.Room.compiler)
 
     // Network
-    implementation(Dependencies.Network.jellyfinSdk)
+    val useSdkSnapshot: String by project
+    implementation(Dependencies.Network.jellyfinSdk) {
+        version {
+            if (parseBoolean("useSdkSnapshot", useSdkSnapshot)) {
+                strictly(Dependencies.Versions.jellyfinSdkSnapshot)
+            }
+        }
+    }
     implementation(Dependencies.Network.okHttp)
     implementation(Dependencies.Network.coil)
     implementation(Dependencies.Network.exoPlayerHLS)

@@ -17,6 +17,11 @@ allprojects {
     repositories {
         mavenCentral()
         google()
+        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+            content {
+                includeGroup(Dependencies.Groups.jellyfin)
+            }
+        }
     }
 }
 
