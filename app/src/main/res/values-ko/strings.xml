@@ -11,7 +11,7 @@
     <string name="host_input_hint">호스트</string>
     <string name="connect_to_server_title">서버 연결</string>
     <string name="battery_optimizations_message">화면을 끈 상태로 미디어 재생하려면 배터리 최적화를 비활성화 해주십시오.</string>
-    <string name="pref_exoplayer_allow_background_audio">자체 플레이어에서 백그라운드에서 오디오 재생을 허용</string>
+    <string name="pref_exoplayer_allow_background_audio">백그라운드 오디오</string>
     <string name="pref_enable_exoplayer_summary">더 많은 비디오 포맷과 코덱을 지원하고 OS에 더욱 integrated되어 있는 아직 실험적인 ExoPlayer 비디오 플레이어를 활성화합니다</string>
     <string name="pref_enable_exoplayer_title">비디오 플레이어 통합 활성화</string>
     <string name="pref_category_video_player">비디오 재생기</string>
@@ -68,4 +68,19 @@
     <string name="external_player_app">외부 플레이어 앱</string>
     <string name="connection_error_invalid_version">서버가 지원되지 않는 버전을 사용함 jellyfin.org에서 최신 버전으로 업그레이드하십시오.</string>
     <string name="media_service_generic_error">에러가 발생했습니다</string>
+    <string name="pref_download_location">다운로드 위치</string>
+    <string name="pref_category_downloads">다운로드</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">알림은 재생 중일 때를 포함하여, 항상 지울 수 있습니다</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">알림은 재생 중이지 않을 때만 지울 수 있습니다</string>
+    <string name="media_service_car_item_no_title">제목 없음</string>
+    <string name="media_service_car_section_playlists">재생목록</string>
+    <string name="media_service_car_section_genres">장르</string>
+    <string name="media_service_car_section_songs">음악</string>
+    <string name="media_service_car_section_artists">아티스트</string>
+    <string name="media_service_car_section_albums">앨범</string>
+    <string name="media_service_car_section_recents">최근에 재생됨</string>
+    <string name="dialog_button_close_app">앱 종료</string>
+    <string name="dialog_button_check_for_updates">업데이트를 확인하십시오</string>
+    <string name="dialog_web_view_not_supported_message">이 기기에서는 WebView가 지원되지 않습니다.
+\n호환되는 WebView를 설치하거나, 지원하는 기기를 사용하십시오.</string>
 </resources>
