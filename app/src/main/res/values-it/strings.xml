@@ -10,7 +10,7 @@
     <string name="pref_enable_exoplayer_summary">Abilita il lettore ExoPlayer sperimentale che supporta numerosi formati video ed è più integrato nel Sistema Operativo</string>
     <string name="pref_enable_exoplayer_title">Abilita integrazione del video player</string>
     <string name="pref_category_video_player">Video player nativo</string>
-    <string name="pref_music_notification_always_dismissible_title">Rendi le notifiche del player musicale sempre rimovibili</string>
+    <string name="pref_music_notification_always_dismissible_title">Notifiche del player rimovibili</string>
     <string name="pref_category_music_player">Player Musicale</string>
     <string name="activity_name_settings">Impostazioni Jellyfin</string>
     <string name="connection_error_invalid_format">L\'Host non ha un formato valido</string>
@@ -25,7 +25,7 @@
     <string name="playback_info_play_method">Metodo di riproduzione: %s</string>
     <string name="connection_error_cannot_connect">La connessione non può essere stabilita.
 \nControlla l\'hostname e la tua connessione di rete.</string>
-    <string name="pref_exoplayer_allow_background_audio">Permetti la riproduzione dell\'audio in sottofondo utilizzando il player nativo</string>
+    <string name="pref_exoplayer_allow_background_audio">Audio di sottofondo</string>
     <string name="notification_action_stop">Interrompi</string>
     <string name="notification_action_next">Prossimo</string>
     <string name="notification_action_pause">Pausa</string>
@@ -45,7 +45,7 @@
     <string name="external_player_unknown_error">Errore sconosciuto nel player usato. Tracciamento dell\'avanzamento di riproduzione corrente disabilitato.</string>
     <string name="external_player_invalid_player">Nessun video player valido selezionato. Il tracciamento dell\'avanzamento di riproduzione è stato disabilitato.</string>
     <string name="external_player_not_supported_yet">Il salvataggio dell\'avanzamento di riproduzione non è ancora supportato per il video player selezionato. Contatta gli sviluppatori per chiedere di implementare questa funzionalità.</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Permetti le gesture della luminosità e del volume nel player nativo</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Gesture della luminosità e del volume</string>
     <string name="available_servers_title">Server disponibili</string>
     <string name="choose_server_button_text">Scegli il server</string>
     <string name="mediaservice_library_playlists">Playlist</string>
@@ -88,4 +88,7 @@
     <string name="dialog_web_view_not_supported_message">WebView non supportata da questo device.
 \nInstalla un\'implementazione compatibile or utilizza un device supportato.</string>
     <string name="dialog_web_view_not_supported">WebView non supportata</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Permetti la riproduzione dei video anche con solo l\'audio di sottofondo</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">La notifica può sempre essere rimossa, anche durante la visione</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">La notifica può essere rimossa solo quando il player è in pausa</string>
 </resources>
