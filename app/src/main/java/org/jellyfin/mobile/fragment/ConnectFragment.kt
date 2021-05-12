@@ -11,7 +11,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.annotation.StringRes
 import androidx.core.content.getSystemService
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
@@ -21,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
@@ -31,7 +31,8 @@ import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.viewmodel.MainViewModel
 import org.jellyfin.sdk.Jellyfin
 import org.jellyfin.sdk.discovery.LocalServerDiscovery
-import org.jellyfin.sdk.model.ServerVersion
+import org.jellyfin.sdk.discovery.RecommendedServerInfo
+import org.jellyfin.sdk.discovery.RecommendedServerInfoScore
 import org.jellyfin.sdk.model.api.ServerDiscoveryInfo
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.sharedViewModel
@@ -149,13 +150,18 @@ class ConnectFragment : Fragment() {
         chooseServerButton.isVisible = false
     }
 
-    private fun showConnectionError(@StringRes errorString: Int = R.string.connection_error_cannot_connect) {
-        connectionErrorText.setText(errorString)
-        connectionErrorText.isVisible = true
+    private fun showConnectionError(error: String? = null) {
+        connectionErrorText.apply {
+            text = error ?: getText(R.string.connection_error_cannot_connect)
+            isVisible = true
+        }
     }
 
     private fun clearConnectionError() {
-        connectionErrorText.isVisible = false
+        connectionErrorText.apply {
+            text = null
+            isVisible = false
+        }
     }
 
     private suspend fun checkServerUrlAndConnection(enteredUrl: String): String? {
@@ -164,46 +170,58 @@ class ConnectFragment : Fragment() {
         val candidates = jellyfin.discovery.getAddressCandidates(enteredUrl)
         Timber.i("Address candidates are $candidates")
 
-        val recommendedServer = jellyfin.discovery.getRecommendedServer(candidates, false)
-
-        // No server found that replied
-        if (recommendedServer?.systemInfo == null) {
-            Timber.i("No recommended server found")
-
-            // TODO add candidates to error
-            showConnectionError(R.string.connection_error_cannot_connect)
-            return null
+        // Find servers and classify them into groups.
+        // BAD servers are collected in case we need an error message,
+        // GOOD are kept if there's no GREAT one.
+        val badServers = mutableListOf<RecommendedServerInfo>()
+        val goodServers = mutableListOf<RecommendedServerInfo>()
+        val greatServer = jellyfin.discovery.getRecommendedServers(candidates).firstOrNull { recommendedServer ->
+            when (recommendedServer.score) {
+                RecommendedServerInfoScore.GREAT -> true
+                RecommendedServerInfoScore.GOOD -> {
+                    goodServers += recommendedServer
+                    false
+                }
+                RecommendedServerInfoScore.OK,
+                RecommendedServerInfoScore.BAD -> {
+                    badServers += recommendedServer
+                    false
+                }
+            }
         }
 
-        val systemInfo = recommendedServer.systemInfo
-
-        // System Info is missing, shouldn't be able to happen but check just in case
-        if (systemInfo == null) {
-            Timber.w("Recommended server did not contain system information!")
-
-            showConnectionError(R.string.connection_error_invalid_version)
-            return null
+        val server = greatServer ?: goodServers.firstOrNull()
+        if (server != null) {
+            val systemInfo = requireNotNull(server.systemInfo)
+            Timber.i("Found valid server at ${server.address} with rating ${server.score} and version ${systemInfo.version}")
+            return server.address
         }
 
-        val version = systemInfo.version?.let { ServerVersion.fromString(it) }
+        // No valid server found, log and show error message
+        val loggedServers = badServers.joinToString { "${it.address}/${it.systemInfo}" }
+        Timber.i("No valid servers found, invalid candidates were: $loggedServers")
 
-        val isValidInstance = when {
-            // Incorrect format
-            version == null -> false
-            // Version too old
-            version < Jellyfin.minimumVersion -> false
-            // Incorrect product name
-            systemInfo.productName != "Jellyfin Server" -> false
-            else -> true
-        }
+        val error = if (badServers.isNotEmpty()) {
+            val count = badServers.size
+            val (unreachableServers, incompatibleServers) = badServers.partition { result -> result.systemInfo == null }
 
-        Timber.i("Recommended server at ${recommendedServer.address} with version $version valid: $isValidInstance")
+            StringBuilder(resources.getQuantityString(R.plurals.connection_error_prefix, count, count)).apply {
+                if (unreachableServers.isNotEmpty()) {
+                    append("\n\n")
+                    append(getString(R.string.connection_error_unable_to_reach_sever))
+                    append(":\n")
+                    append(unreachableServers.joinToString(separator = "\n") { result -> "\u00b7 ${result.address}" })
+                }
+                if (incompatibleServers.isNotEmpty()) {
+                    append("\n\n")
+                    append(getString(R.string.connection_error_unsupported_version_or_product))
+                    append(":\n")
+                    append(incompatibleServers.joinToString(separator = "\n") { result -> "\u00b7 ${result.address}" })
+                }
+            }.toString()
+        } else null
 
-        if (!isValidInstance) {
-            showConnectionError(R.string.connection_error_invalid_version)
-            return null
-        }
-
-        return recommendedServer.address
+        showConnectionError(error)
+        return null
     }
 }
