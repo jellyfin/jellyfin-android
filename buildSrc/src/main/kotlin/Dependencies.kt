@@ -28,7 +28,7 @@ object Dependencies {
         const val room = "2.3.0"
 
         // Network
-        const val jellyfinSdk = "1.0.0-beta.4"
+        const val jellyfinSdk = "1.0.0-beta.5"
         const val jellyfinSdkSnapshot = "latest-SNAPSHOT"
         const val okHttp = "4.9.1"
         const val coil = "1.1.1"
