@@ -82,4 +82,10 @@
     <string name="pref_exoplayer_allow_background_audio_summary">Beinelerdıñ tek dybysyn öñdık oinatuğa rūqsat etu</string>
     <string name="pref_music_notification_always_dismissible_summary_on">Habarlandyrudy ärqaşan, tıptı tasyğyşderekter oinatylğan kezde de bosatuğa bolady</string>
     <string name="pref_music_notification_always_dismissible_summary_off">Habarlandyru tek oinatu kıdırtılgen kezde bosatyluy mümkın</string>
+    <string name="connection_error_unsupported_version_or_product">Qoldauda joq nusqa nemese önım</string>
+    <string name="connection_error_unable_to_reach_sever">Serverge qoljetkızu mümkın bolmady</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">%d ümıtker engızu üşın synap körıldı, nätijesi joq.</item>
+        <item quantity="other">%d ümıtker engızu üşın synap körıldı, nätijesi joq.</item>
+    </plurals>
 </resources>
