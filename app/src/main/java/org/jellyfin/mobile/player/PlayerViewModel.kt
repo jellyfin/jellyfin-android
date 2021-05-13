@@ -23,6 +23,7 @@ import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaQueueManager
 import org.jellyfin.mobile.utils.*
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
+import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.jellyfin.sdk.api.operations.PlayStateApi
 import org.jellyfin.sdk.model.api.PlaybackProgressInfo
 import org.jellyfin.sdk.model.api.PlaybackStartInfo
@@ -31,6 +32,7 @@ import org.jellyfin.sdk.model.api.RepeatMode
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.qualifier.named
+import timber.log.Timber
 import java.util.*
 
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.EventListener {
@@ -42,7 +44,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     val notificationHelper: PlayerNotificationHelper by lazy { PlayerNotificationHelper(this) }
 
     // Media source handling
-    val mediaQueueManager = MediaQueueManager(this, viewModelScope)
+    val mediaQueueManager = MediaQueueManager(this)
     val mediaSourceOrNull: JellyfinMediaSource?
         get() = mediaQueueManager.mediaQueue.value?.jellyfinMediaSource
 
@@ -152,20 +154,24 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     private suspend fun Player.reportPlaybackStart(mediaSource: JellyfinMediaSource) {
-        playStateApi.reportPlaybackStart(
-            PlaybackStartInfo(
-                itemId = mediaSource.itemId,
-                playMethod = mediaSource.playMethod,
-                audioStreamIndex = mediaSource.selectedAudioStream?.index,
-                subtitleStreamIndex = mediaSource.selectedSubtitleStream?.index,
-                isPaused = !isPlaying,
-                isMuted = false,
-                canSeek = true,
-                positionTicks = mediaSource.startTimeMs * Constants.TICKS_PER_MILLISECOND,
-                volumeLevel = audioManager.getVolumeLevelPercent(),
-                repeatMode = RepeatMode.REPEAT_NONE,
+        try {
+            playStateApi.reportPlaybackStart(
+                PlaybackStartInfo(
+                    itemId = mediaSource.itemId,
+                    playMethod = mediaSource.playMethod,
+                    audioStreamIndex = mediaSource.selectedAudioStream?.index,
+                    subtitleStreamIndex = mediaSource.selectedSubtitleStream?.index,
+                    isPaused = !isPlaying,
+                    isMuted = false,
+                    canSeek = true,
+                    positionTicks = mediaSource.startTimeMs * Constants.TICKS_PER_MILLISECOND,
+                    volumeLevel = audioManager.getVolumeLevelPercent(),
+                    repeatMode = RepeatMode.REPEAT_NONE,
+                )
             )
-        )
+        } catch (e: ApiClientException) {
+            Timber.e(e, "Failed to report playback start")
+        }
     }
 
     private suspend fun Player.reportPlaybackState() {
@@ -175,20 +181,24 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             val stream = AudioManager.STREAM_MUSIC
             val volumeRange = audioManager.getVolumeRange(stream)
             val currentVolume = audioManager.getStreamVolume(stream)
-            playStateApi.reportPlaybackProgress(
-                PlaybackProgressInfo(
-                    itemId = mediaSource.itemId,
-                    playMethod = mediaSource.playMethod,
-                    audioStreamIndex = mediaSource.selectedAudioStream?.index,
-                    subtitleStreamIndex = mediaSource.selectedSubtitleStream?.index,
-                    isPaused = !isPlaying,
-                    isMuted = false,
-                    canSeek = true,
-                    positionTicks = playbackPositionMillis * Constants.TICKS_PER_MILLISECOND,
-                    volumeLevel = (currentVolume - volumeRange.first) * 100 / volumeRange.width,
-                    repeatMode = RepeatMode.REPEAT_NONE,
+            try {
+                playStateApi.reportPlaybackProgress(
+                    PlaybackProgressInfo(
+                        itemId = mediaSource.itemId,
+                        playMethod = mediaSource.playMethod,
+                        audioStreamIndex = mediaSource.selectedAudioStream?.index,
+                        subtitleStreamIndex = mediaSource.selectedSubtitleStream?.index,
+                        isPaused = !isPlaying,
+                        isMuted = false,
+                        canSeek = true,
+                        positionTicks = playbackPositionMillis * Constants.TICKS_PER_MILLISECOND,
+                        volumeLevel = (currentVolume - volumeRange.first) * 100 / volumeRange.width,
+                        repeatMode = RepeatMode.REPEAT_NONE,
+                    )
                 )
-            )
+            } catch (e: ApiClientException) {
+                Timber.e(e, "Failed to report playback progress")
+            }
         }
     }
 
@@ -203,21 +213,25 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
         // viewModelScope may already be cancelled at this point, so we need to fallback
         CoroutineScope(Dispatchers.Main).launch {
-            // Report stopped playback
-            playStateApi.reportPlaybackStopped(
-                PlaybackStopInfo(
-                    itemId = mediaSource.itemId,
-                    positionTicks = lastPositionTicks,
-                    failed = false,
+            try {
+                // Report stopped playback
+                playStateApi.reportPlaybackStopped(
+                    PlaybackStopInfo(
+                        itemId = mediaSource.itemId,
+                        positionTicks = lastPositionTicks,
+                        failed = false,
+                    )
                 )
-            )
 
-            // Mark video as watched if playback finished
-            if (hasFinished) {
-                playStateApi.markPlayedItem(
-                    userId = apiController.requireUser(),
-                    itemId = mediaSource.itemId,
-                )
+                // Mark video as watched if playback finished
+                if (hasFinished) {
+                    playStateApi.markPlayedItem(
+                        userId = apiController.requireUser(),
+                        itemId = mediaSource.itemId,
+                    )
+                }
+            } catch (e: ApiClientException) {
+                Timber.e(e, "Failed to report playback stop")
             }
         }
     }

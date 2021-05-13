@@ -51,6 +51,9 @@
     <string name="notification_action_next">Next</string>
     <string name="notification_action_stop">Stop</string>
 
+    <string name="player_error_invalid_play_options">Unable to resolve playback info</string>
+    <string name="player_error_network_failure">Unable to load media info from server</string>
+    <string name="player_error_unsupported_content">Media cannot be played by this device</string>
     <string name="menu_item_none">None</string>
     <string name="playback_info_play_method">Play method: %s</string>
     <string name="playback_info_transcoding">Transcoding: %b</string>

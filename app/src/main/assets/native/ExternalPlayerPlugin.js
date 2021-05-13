@@ -45,7 +45,9 @@ export class ExternalPlayerPlugin {
         this._paused = false;
         this._currentSrc = options.url;
         this._isIntro = options.item && options.item.ProviderIds && options.item.ProviderIds.hasOwnProperty("prerolls.video");
-        this._externalPlayer.initPlayer(JSON.stringify(options.item.playOptions));
+        const playOptions = options.item.playOptions;
+        playOptions.ids = options.item ? [options.item.Id] : [];
+        this._externalPlayer.initPlayer(JSON.stringify(playOptions));
     }
 
     setSubtitleStreamIndex(index) { }
@@ -132,7 +134,7 @@ export class ExternalPlayerPlugin {
     }
 
     async getDeviceProfile() {
-        var profile = {};
+        const profile = {};
         profile.Name = 'Android External Player Stub';
         profile.MaxStreamingBitrate = 100000000;
         profile.MaxStaticBitrate = 100000000;
