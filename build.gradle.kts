@@ -9,6 +9,7 @@ buildscript {
         val kotlinVersion: String by project
         classpath("com.android.tools.build:gradle:7.0.1")
         classpath(kotlin("gradle-plugin", kotlinVersion))
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5")
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.7.1.1")
     }
 }
@@ -28,6 +29,7 @@ allprojects {
                 includeVersionByRegex(JellyfinSdk.GROUP, ".*", JellyfinSdk.SNAPSHOT_UNSTABLE)
             }
         }
+        maven { setUrl("https://jitpack.io") }
     }
 }
 

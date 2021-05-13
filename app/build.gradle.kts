@@ -6,6 +6,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
+    id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
     id(Plugins.detekt) version Plugins.Versions.detekt
     id(Plugins.androidJunit5)
@@ -27,7 +28,7 @@ detekt {
 }
 
 android {
-    compileSdk = 30
+    compileSdk = 31
     defaultConfig {
         applicationId = "org.jellyfin.mobile"
         minSdk = 21
@@ -86,10 +87,14 @@ android {
     @Suppress("UnstableApiUsage")
     buildFeatures {
         viewBinding = true
+        compose = true
     }
     kotlinOptions {
         @Suppress("SuspiciousCollectionReassignment")
         freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
@@ -123,7 +128,13 @@ dependencies {
     implementation(libs.google.material)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.webkit)
+    implementation(libs.androidx.palette)
     implementation(libs.modernandroidpreferences)
+
+    // Jetpack Compose
+    implementation(libs.bundles.compose)
+    implementation(libs.navigation.compose)
+    implementation(libs.bundles.accompanist)
 
     // Network
     val sdkVersion = findProperty("sdk.version")?.toString()

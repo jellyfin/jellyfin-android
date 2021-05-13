@@ -8,6 +8,7 @@ androidx-core = "1.6.0"
 androidx-appcompat = "1.3.1"
 androidx-activity = "1.3.0"
 androidx-fragment = "1.3.6"
+navigation = "2.4.0-alpha07"
 androiddesugarlibs = "1.1.5"
 
 # Lifecycle extensions
@@ -17,7 +18,12 @@ androidx-lifecycle = "2.3.1"
 androidx-constraintlayout = "2.1.0"
 google-material = "1.4.0"
 androidx-webkit = "1.4.0"
+androidx-palette = "1.0.0"
 modernandroidpreferences = "2.1.0"
+
+# Compose
+compose = "1.0.1"
+accompanist = "0.10.0"
 
 # Network
 jellyfin-sdk = "1.0.2"
@@ -69,7 +75,21 @@ androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-p
 google-material = { group = "com.google.android.material", name = "material", version.ref = "google-material" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
 androidx-webkit = { group = "androidx.webkit", name = "webkit", version.ref = "androidx-webkit" }
+androidx-palette = { group = "androidx.palette", name = "palette", version.ref = "androidx-palette" }
 modernandroidpreferences = { group = "de.maxr1998", name = "modernandroidpreferences", version.ref = "modernandroidpreferences" }
+
+# Compose
+compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "compose" }
+compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "compose" }
+compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "compose" }
+compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose" }
+compose-material-icons = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "compose" }
+compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose" }
+compose-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "compose" }
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+accompanist-coil = { group = "com.google.accompanist", name = "accompanist-coil", version.ref = "accompanist" }
+accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanist" }
 
 # Network
 jellyfin-sdk = { group = "org.jellyfin.sdk", name = "jellyfin-platform-android", version.ref = "jellyfin-sdk" }
@@ -117,6 +137,17 @@ androidx-lifecycle = [
     "androidx-lifecycle-common",
     "androidx-lifecycle-process",
 ]
+compose = [
+    "compose-runtime",
+    "compose-ui",
+    "compose-foundation",
+    "compose-animation",
+    "compose-material",
+    "compose-material-icons",
+    "compose-material-icons-extended",
+    "compose-runtime-livedata",
+]
+accompanist = ["accompanist-coil", "accompanist-pager"]
 exoplayer = [
     "exoplayer-core",
     "exoplayer-ui",
