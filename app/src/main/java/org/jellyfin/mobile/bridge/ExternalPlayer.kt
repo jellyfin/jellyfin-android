@@ -14,6 +14,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.source.ExternalSubtitleStream
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceResolver
@@ -74,18 +75,30 @@ class ExternalPlayer(
 
     @JavascriptInterface
     fun initPlayer(args: String) {
-        val playOptions = PlayOptions.fromJson(JSONObject(args)) ?: return
+        val playOptions = PlayOptions.fromJson(JSONObject(args))
+        val itemId = playOptions?.run { mediaSourceId ?: ids.firstOrNull() }
+        if (playOptions == null || itemId == null) {
+            context.toast(R.string.player_error_invalid_play_options)
+            return
+        }
 
         coroutinesScope.launch {
-            val jellyfinMediaSource = mediaSourceResolver.resolveMediaSource(
-                itemId = playOptions.mediaSourceId!!,
+            mediaSourceResolver.resolveMediaSource(
+                itemId = itemId,
                 deviceProfile = externalPlayerProfile,
                 startTimeTicks = playOptions.startPositionTicks,
                 audioStreamIndex = playOptions.audioStreamIndex,
                 subtitleStreamIndex = playOptions.subtitleStreamIndex,
-            ) ?: return@launch
-
-            playMediaSource(playOptions, jellyfinMediaSource)
+            ).onSuccess { jellyfinMediaSource ->
+                playMediaSource(playOptions, jellyfinMediaSource)
+            }.onFailure { error ->
+                when (error as? PlayerException) {
+                    is PlayerException.InvalidPlayOptions -> context.toast(R.string.player_error_invalid_play_options)
+                    is PlayerException.NetworkFailure -> context.toast(R.string.player_error_network_failure)
+                    is PlayerException.UnsupportedContent -> context.toast(R.string.player_error_unsupported_content)
+                    null -> throw error // Unknown error, rethrow from here
+                }
+            }
         }
     }
 

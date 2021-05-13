@@ -14,21 +14,21 @@ import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.util.EventLogger
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import org.jellyfin.mobile.bridge.PlayOptions
+import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.operations.VideosApi
-import org.jellyfin.sdk.model.api.*
+import org.jellyfin.sdk.model.api.DeviceProfile
+import org.jellyfin.sdk.model.api.MediaStream
+import org.jellyfin.sdk.model.api.PlayMethod
 import org.koin.core.KoinComponent
 import org.koin.core.get
 import org.koin.core.inject
-import java.util.*
+import java.util.UUID
 
 class MediaQueueManager(
     private val viewModel: PlayerViewModel,
-    private val coroutineScope: CoroutineScope,
 ) : KoinComponent {
     private val apiClient: ApiClient by inject()
     private val mediaSourceResolver: MediaSourceResolver by inject()
@@ -45,26 +45,28 @@ class MediaQueueManager(
     /**
      * Handle initial playback options from fragment.
      * Start of a playback session that can contain one or multiple played videos.
+     *
+     * @return an error of type [PlayerException] or null on success.
      */
-    fun startPlayback(playOptions: PlayOptions): Boolean {
+    suspend fun startPlayback(playOptions: PlayOptions): PlayerException? {
         if (playOptions != currentPlayOptions) {
-            coroutineScope.launch {
-                val itemId = playOptions.ids[playOptions.startIndex]
-                val jellyfinMediaSource = mediaSourceResolver.resolveMediaSource(
-                    itemId = itemId,
-                    deviceProfile = deviceProfile,
-                    startTimeTicks = playOptions.startPositionTicks,
-                    audioStreamIndex = playOptions.audioStreamIndex,
-                    subtitleStreamIndex = playOptions.subtitleStreamIndex,
-                ) ?: return@launch
-
+            val itemId = playOptions.ids[playOptions.startIndex]
+            mediaSourceResolver.resolveMediaSource(
+                itemId = itemId,
+                deviceProfile = deviceProfile,
+                startTimeTicks = playOptions.startPositionTicks,
+                audioStreamIndex = playOptions.audioStreamIndex,
+                subtitleStreamIndex = playOptions.subtitleStreamIndex,
+            ).onSuccess { jellyfinMediaSource ->
                 val previous = QueueItem.Stub(playOptions.ids.take(playOptions.startIndex))
                 val next = QueueItem.Stub(playOptions.ids.drop(playOptions.startIndex + 1))
                 createQueueItem(jellyfinMediaSource, previous, next).play()
+            }.onFailure { error ->
+                // Should always be of this type, other errors are silently dropped
+                return error as? PlayerException
             }
-            return true
         }
-        return false
+        return null
     }
 
     @CheckResult
@@ -81,7 +83,7 @@ class MediaQueueManager(
             }
             is QueueItem.Stub -> {
                 val previousId = previous.ids.lastOrNull() ?: return false
-                val jellyfinMediaSource = mediaSourceResolver.resolveMediaSource(previousId, deviceProfile) ?: return false
+                val jellyfinMediaSource = mediaSourceResolver.resolveMediaSource(previousId, deviceProfile).getOrNull() ?: return false
 
                 val previousPrevious = QueueItem.Stub(previous.ids.dropLast(1))
                 createQueueItem(jellyfinMediaSource, previousPrevious, current).play()
@@ -98,7 +100,7 @@ class MediaQueueManager(
             }
             is QueueItem.Stub -> {
                 val nextId = next.ids.firstOrNull() ?: return false
-                val jellyfinMediaSource = mediaSourceResolver.resolveMediaSource(nextId, deviceProfile) ?: return false
+                val jellyfinMediaSource = mediaSourceResolver.resolveMediaSource(nextId, deviceProfile).getOrNull() ?: return false
 
                 val nextNext = QueueItem.Stub(next.ids.drop(1))
                 createQueueItem(jellyfinMediaSource, current, nextNext).play()

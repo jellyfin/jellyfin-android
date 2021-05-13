@@ -34,9 +34,11 @@ import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
+import kotlinx.coroutines.launch
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.api.aspectRational
@@ -56,6 +58,7 @@ import org.jellyfin.mobile.utils.enableFullscreen
 import org.jellyfin.mobile.utils.isAutoRotateOn
 import org.jellyfin.mobile.utils.isFullscreen
 import org.jellyfin.mobile.utils.lockOrientation
+import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.android.ext.android.inject
 import kotlin.math.abs
@@ -167,8 +170,18 @@ class PlayerFragment : Fragment() {
         }
 
         // Handle fragment arguments, extract playback options and start playback
-        requireArguments().getParcelable<PlayOptions>(Constants.EXTRA_MEDIA_PLAY_OPTIONS)?.let { playOptions ->
-            viewModel.mediaQueueManager.startPlayback(playOptions)
+        lifecycleScope.launch {
+            val context = requireContext()
+            val playOptions = requireArguments().getParcelable<PlayOptions>(Constants.EXTRA_MEDIA_PLAY_OPTIONS)
+            if (playOptions == null) {
+                context.toast(R.string.player_error_invalid_play_options)
+                return@launch
+            }
+            when (viewModel.mediaQueueManager.startPlayback(playOptions)) {
+                is PlayerException.InvalidPlayOptions -> context.toast(R.string.player_error_invalid_play_options)
+                is PlayerException.NetworkFailure -> context.toast(R.string.player_error_network_failure)
+                is PlayerException.UnsupportedContent -> context.toast(R.string.player_error_unsupported_content)
+            }
         }
     }
 
