@@ -91,4 +91,11 @@
     <string name="pref_exoplayer_allow_background_audio_summary">Umožnit přehrávání pouze zvuku videí na pozadí</string>
     <string name="pref_music_notification_always_dismissible_summary_on">Oznámení je možné odstranit kdykoliv, i při přehrávání médií</string>
     <string name="pref_music_notification_always_dismissible_summary_off">Oznámení je možné odstranit pouze při pozastaveném přehrávání</string>
+    <string name="connection_error_unsupported_version_or_product">Nepodporovaná verze produktu</string>
+    <string name="connection_error_unable_to_reach_sever">Server se nepodařilo kontaktovat</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">%d kandidát byl bez úspěchu vyzkoušen.</item>
+        <item quantity="few">%d kandidáti byl bez úspěchu vyzkoušen.</item>
+        <item quantity="other">%d kandidátů bylo bez úspěchu vyzkoušeno.</item>
+    </plurals>
 </resources>
