@@ -89,4 +89,12 @@
     <string name="pref_exoplayer_allow_background_audio_summary">Разрешить воспроизведение видео в фоновом режиме только со звуком</string>
     <string name="pref_music_notification_always_dismissible_summary_on">Уведомление всегда можно отключить, даже при воспроизведении медиаданных</string>
     <string name="pref_music_notification_always_dismissible_summary_off">Уведомление можно отключить, только когда воспроизведение на паузе</string>
+    <string name="connection_error_unsupported_version_or_product">Неподдерживаемая версия или продукт</string>
+    <string name="connection_error_unable_to_reach_sever">Невозможно получить доступ к серверу</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Испытан %d кандидат для ввода, безуспешно.</item>
+        <item quantity="few">Испытано %d кандидата для ввода, безуспешно.</item>
+        <item quantity="many">Испытано %d кандидатов для ввода, безуспешно.</item>
+        <item quantity="other">Испытано %d кандидатов для ввода, безуспешно.</item>
+    </plurals>
 </resources>
