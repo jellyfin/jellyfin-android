@@ -91,4 +91,9 @@
     <string name="pref_exoplayer_allow_background_audio_summary">允许在后台播放视频的音频部分</string>
     <string name="pref_music_notification_always_dismissible_summary_on">即使正在播放媒体，也始终可以忽略该通知</string>
     <string name="pref_music_notification_always_dismissible_summary_off">仅在暂停播放时才能忽略该通知</string>
+    <string name="connection_error_unsupported_version_or_product">不支持的版本或产品</string>
+    <string name="connection_error_unable_to_reach_sever">无法访问服务器</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="other">尝试%d个候选输入，但未成功。</item>
+    </plurals>
 </resources>
