@@ -89,4 +89,9 @@
     <string name="pref_exoplayer_allow_background_audio_summary">Cho phép phát video trong nền chỉ có âm thanh</string>
     <string name="pref_music_notification_always_dismissible_summary_on">Thông báo luôn có thể bị loại bỏ, ngay cả khi phát phương tiện</string>
     <string name="pref_music_notification_always_dismissible_summary_off">Chỉ có thể loại bỏ thông báo khi quá trình phát bị tạm dừng</string>
+    <string name="connection_error_unsupported_version_or_product">Phiên bản hoặc sản phẩm không được hỗ trợ</string>
+    <string name="connection_error_unable_to_reach_sever">Không thể kết nối với máy chủ</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="other">Đã thử %d ứng viên cho đầu vào, nhưng không thành công.</item>
+    </plurals>
 </resources>
