@@ -9,7 +9,7 @@ object Constants {
     const val APP_INFO_VERSION: String = BuildConfig.VERSION_NAME
 
     // Webapp constants
-    const val MINIMUM_WEB_VIEW_VERSION = 88
+    const val MINIMUM_WEB_VIEW_VERSION = 80
     const val WEB_CONFIG_PATH = "config.json"
     const val CAST_SDK_PATH = "cast_sender.js"
     const val SESSION_CAPABILITIES_PATH = "sessions/capabilities/full"
