@@ -4,9 +4,12 @@ import android.app.Service
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.provider.Settings
 import android.view.OrientationEventListener
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -56,13 +59,20 @@ class MainActivity : AppCompatActivity() {
         bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
 
         // Check WebView support
-        if (!isWebViewSupported()) {
+        if (!appPreferences.ignoreWebViewChecks && !isWebViewSupported()) {
             AlertDialog.Builder(this).apply {
                 setTitle(R.string.dialog_web_view_not_supported)
                 setMessage(R.string.dialog_web_view_not_supported_message)
                 setCancelable(false)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    setNeutralButton(R.string.dialog_button_open_settings) { _, _ ->
+                        startActivity(Intent(Settings.ACTION_WEBVIEW_SETTINGS))
+                        Toast.makeText(context, R.string.toast_reopen_after_change, Toast.LENGTH_LONG).show()
+                        finishAfterTransition()
+                    }
+                }
                 setNegativeButton(R.string.dialog_button_close_app) { _, _ ->
-                    finish()
+                    finishAfterTransition()
                 }
             }.show()
             return
@@ -103,7 +113,11 @@ class MainActivity : AppCompatActivity() {
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
-    ) = permissionRequestHelper.handleRequestPermissionsResult(requestCode, permissions, grantResults)
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        permissionRequestHelper.handleRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()

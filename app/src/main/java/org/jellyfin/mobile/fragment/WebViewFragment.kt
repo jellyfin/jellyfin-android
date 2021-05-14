@@ -5,11 +5,13 @@ import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
@@ -23,16 +25,17 @@ import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import kotlinx.coroutines.launch
+import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.bridge.NativeInterface
 import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.bridge.NativePlayerHost
+import org.jellyfin.mobile.bridge.PlayOptions
 import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.databinding.FragmentWebviewBinding
 import org.jellyfin.mobile.model.sql.entity.ServerEntity
-import org.jellyfin.mobile.bridge.PlayOptions
 import org.jellyfin.mobile.player.PlayerFragment
 import org.jellyfin.mobile.utils.*
 import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER
@@ -48,6 +51,7 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class WebViewFragment : Fragment(), NativePlayerHost {
+    private val appPreferences: AppPreferences by inject()
     private val apiController: ApiController by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private lateinit var externalPlayer: ExternalPlayer
@@ -109,6 +113,8 @@ class WebViewFragment : Fragment(), NativePlayerHost {
             }
         }
 
+        appPreferences.ignoreWebViewChecks = false
+
         // Setup WebView
         webView.initialize()
 
@@ -126,15 +132,14 @@ class WebViewFragment : Fragment(), NativePlayerHost {
     }
 
     private fun WebView.initialize() {
-        if (isOutdated()) { // Check WebView version
+        if (!appPreferences.ignoreWebViewChecks && isOutdated()) { // Check WebView version
             AlertDialog.Builder(requireContext()).apply {
                 setTitle(R.string.dialog_web_view_outdated)
                 setMessage(R.string.dialog_web_view_outdated_message)
-                setCancelable(false)
 
                 val webViewPackage = WebViewCompat.getCurrentWebViewPackage(context)
                 if (webViewPackage != null) {
-                    setPositiveButton(R.string.dialog_button_check_for_updates) { _, _ ->
+                    setNegativeButton(R.string.dialog_button_check_for_updates) { _, _ ->
                         val marketUri = Uri.Builder().apply {
                             scheme("market")
                             authority("details")
@@ -153,8 +158,20 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                         requireActivity().finish()
                     }
                 }
-                setNegativeButton(R.string.dialog_button_close_app) { _, _ ->
-                    requireActivity().finish()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    setNeutralButton(R.string.dialog_button_open_settings) { _, _ ->
+                        startActivity(Intent(Settings.ACTION_WEBVIEW_SETTINGS))
+                        Toast.makeText(context, R.string.toast_reopen_after_change, Toast.LENGTH_LONG).show()
+                        requireActivity().finishAfterTransition()
+                    }
+                }
+                setPositiveButton(R.string.dialog_button_close_app) { _, _ ->
+                    requireActivity().finishAfterTransition()
+                }
+                setOnCancelListener {
+                    appPreferences.ignoreWebViewChecks = true
+                    // Re-initialize
+                    initialize()
                 }
             }.show()
             return
