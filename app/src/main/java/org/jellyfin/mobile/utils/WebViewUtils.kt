@@ -42,9 +42,14 @@ fun WebView.isOutdated(): Boolean =
     getWebViewMajorVersion() < Constants.MINIMUM_WEB_VIEW_VERSION
 
 private fun WebView.getWebViewMajorVersion(): Int {
-    return """.*Chrome/(\d+)\..*""".toRegex().matchEntire(getDefaultUserAgentString())?.let { match ->
+    val userAgent = getDefaultUserAgentString()
+    val version = """.*Chrome/(\d+)\..*""".toRegex().matchEntire(userAgent)?.let { match ->
         match.groupValues.getOrNull(1)?.toInt()
     } ?: 0
+
+    Timber.i("WebView user agent is $userAgent, detected version is $version")
+
+    return version
 }
 
 // Based on https://stackoverflow.com/a/29218966
