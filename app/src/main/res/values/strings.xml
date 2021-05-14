@@ -5,6 +5,8 @@
     <string name="dialog_web_view_outdated_message">The WebView implementation used by your device is outdated.\nPlease update it to a compatible version.</string>
     <string name="dialog_button_check_for_updates">Check for updates</string>
     <string name="dialog_button_close_app">Close app</string>
+    <string name="dialog_button_open_settings">Open settings</string>
+    <string name="toast_reopen_after_change">Please reopen the app after changes are made</string>
 
     <string name="connect_to_server_title">Connect to Server</string>
     <string name="host_input_hint">Host</string>

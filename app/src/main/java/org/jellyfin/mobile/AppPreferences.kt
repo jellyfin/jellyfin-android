@@ -46,6 +46,14 @@ class AppPreferences(context: Context) {
             }
         }
 
+    var ignoreWebViewChecks: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_IGNORE_WEBVIEW_CHECKS, false)
+        set(value) {
+            sharedPreferences.edit {
+                putBoolean(Constants.PREF_IGNORE_WEBVIEW_CHECKS, value)
+            }
+        }
+
     var downloadMethod: Int?
         get() = sharedPreferences.getInt(Constants.PREF_DOWNLOAD_METHOD, -1).takeIf { it >= 0 }
         set(value) {

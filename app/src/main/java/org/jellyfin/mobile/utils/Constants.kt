@@ -22,6 +22,7 @@ object Constants {
     const val PREF_USER_ID = "pref_user_id"
     const val PREF_INSTANCE_URL = "pref_instance_url"
     const val PREF_IGNORE_BATTERY_OPTIMIZATIONS = "pref_ignore_battery_optimizations"
+    const val PREF_IGNORE_WEBVIEW_CHECKS = "pref_ignore_webview_checks"
     const val PREF_DOWNLOAD_METHOD = "pref_download_method"
     const val PREF_MUSIC_NOTIFICATION_ALWAYS_DISMISSIBLE = "pref_music_notification_always_dismissible"
     const val PREF_VIDEO_PLAYER_TYPE = "pref_video_player_type"
