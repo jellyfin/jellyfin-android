@@ -98,4 +98,7 @@
         <item quantity="few">%d kandidáti byl bez úspěchu vyzkoušen.</item>
         <item quantity="other">%d kandidátů bylo bez úspěchu vyzkoušeno.</item>
     </plurals>
+    <string name="player_error_unsupported_content">Média nelze na tomto zařízení přehrát</string>
+    <string name="player_error_network_failure">Nelze načíst informace o médiích ze serveru</string>
+    <string name="player_error_invalid_play_options">Nelze zpracovat informace o přehrávání</string>
 </resources>
