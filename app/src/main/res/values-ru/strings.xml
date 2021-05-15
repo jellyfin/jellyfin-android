@@ -97,4 +97,7 @@
         <item quantity="many">Испытано %d кандидатов для ввода, безуспешно.</item>
         <item quantity="other">Испытано %d кандидатов для ввода, безуспешно.</item>
     </plurals>
+    <string name="player_error_unsupported_content">На этом устройстве невозможно воспроизводить медиаданные</string>
+    <string name="player_error_network_failure">Невозможно загрузить информацию о медиаданных с сервера</string>
+    <string name="player_error_invalid_play_options">Невозможно получить информацию о воспроизведении</string>
 </resources>
