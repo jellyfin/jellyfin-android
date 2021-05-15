@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
 
         // Check WebView support
-        if (!appPreferences.ignoreWebViewChecks && !isWebViewSupported()) {
+        if (!isWebViewSupported()) {
             AlertDialog.Builder(this).apply {
                 setTitle(R.string.dialog_web_view_not_supported)
                 setMessage(R.string.dialog_web_view_not_supported_message)

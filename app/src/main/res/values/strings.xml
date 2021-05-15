@@ -6,6 +6,7 @@
     <string name="dialog_button_check_for_updates">Check for updates</string>
     <string name="dialog_button_close_app">Close app</string>
     <string name="dialog_button_open_settings">Open settings</string>
+    <string name="dialog_button_ignore">Ignore</string>
     <string name="toast_reopen_after_change">Please reopen the app after changes are made</string>
 
     <string name="connect_to_server_title">Connect to Server</string>

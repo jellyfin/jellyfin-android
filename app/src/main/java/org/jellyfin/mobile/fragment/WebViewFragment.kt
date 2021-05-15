@@ -113,8 +113,6 @@ class WebViewFragment : Fragment(), NativePlayerHost {
             }
         }
 
-        appPreferences.ignoreWebViewChecks = false
-
         // Setup WebView
         webView.initialize()
 
@@ -136,39 +134,41 @@ class WebViewFragment : Fragment(), NativePlayerHost {
             AlertDialog.Builder(requireContext()).apply {
                 setTitle(R.string.dialog_web_view_outdated)
                 setMessage(R.string.dialog_web_view_outdated_message)
+                setCancelable(false)
 
                 val webViewPackage = WebViewCompat.getCurrentWebViewPackage(context)
                 if (webViewPackage != null) {
-                    setNegativeButton(R.string.dialog_button_check_for_updates) { _, _ ->
-                        val marketUri = Uri.Builder().apply {
-                            scheme("market")
-                            authority("details")
-                            appendQueryParameter("id", webViewPackage.packageName)
-                        }.build()
-                        val referrerUri = Uri.Builder().apply {
-                            scheme("android-app")
-                            authority(context.packageName)
-                        }.build()
+                    val marketUri = Uri.Builder().apply {
+                        scheme("market")
+                        authority("details")
+                        appendQueryParameter("id", webViewPackage.packageName)
+                    }.build()
+                    val referrerUri = Uri.Builder().apply {
+                        scheme("android-app")
+                        authority(context.packageName)
+                    }.build()
 
-                        val marketIntent = Intent(Intent.ACTION_VIEW).apply {
-                            data = marketUri
-                            putExtra(Intent.EXTRA_REFERRER, referrerUri)
+                    val marketIntent = Intent(Intent.ACTION_VIEW).apply {
+                        data = marketUri
+                        putExtra(Intent.EXTRA_REFERRER, referrerUri)
+                    }
+
+                    // Only show button if the intent can be resolved
+                    if (marketIntent.resolveActivity(context.packageManager) != null) {
+                        setNegativeButton(R.string.dialog_button_check_for_updates) { _, _ ->
+                            startActivity(marketIntent)
+                            requireActivity().finishAfterTransition()
                         }
-                        startActivity(marketIntent)
-                        requireActivity().finish()
                     }
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    setNeutralButton(R.string.dialog_button_open_settings) { _, _ ->
+                    setPositiveButton(R.string.dialog_button_open_settings) { _, _ ->
                         startActivity(Intent(Settings.ACTION_WEBVIEW_SETTINGS))
                         Toast.makeText(context, R.string.toast_reopen_after_change, Toast.LENGTH_LONG).show()
                         requireActivity().finishAfterTransition()
                     }
                 }
-                setPositiveButton(R.string.dialog_button_close_app) { _, _ ->
-                    requireActivity().finishAfterTransition()
-                }
-                setOnCancelListener {
+                setNeutralButton(R.string.dialog_button_ignore) { _, _ ->
                     appPreferences.ignoreWebViewChecks = true
                     // Re-initialize
                     initialize()
