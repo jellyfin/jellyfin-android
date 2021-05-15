@@ -88,4 +88,7 @@
         <item quantity="one">%d ümıtker engızu üşın synap körıldı, nätijesi joq.</item>
         <item quantity="other">%d ümıtker engızu üşın synap körıldı, nätijesi joq.</item>
     </plurals>
+    <string name="player_error_unsupported_content">Būl qūrylğyda tasyğyşderekterdı oinatu mümkın emes</string>
+    <string name="player_error_network_failure">Serverden tasyğyşderekter aqparyn jükteu mümkın emes</string>
+    <string name="player_error_invalid_play_options">Oinatu turaly aqpar şeşıluı mümkın emes</string>
 </resources>
