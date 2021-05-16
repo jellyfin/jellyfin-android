@@ -94,4 +94,7 @@
     <plurals name="connection_error_prefix">
         <item quantity="other">Đã thử %d ứng viên cho đầu vào, nhưng không thành công.</item>
     </plurals>
+    <string name="player_error_unsupported_content">Thiết bị này không thể phát phương tiện</string>
+    <string name="player_error_network_failure">Không thể tải thông tin phương tiện từ máy chủ</string>
+    <string name="player_error_invalid_play_options">Không thể xử lý thông tin phát lại</string>
 </resources>
