@@ -1,0 +1,14 @@
+U media, op u voorwaardes.
+
+Die Jellyfin-projek is 'n oopbron, gratis sagtewaremediaserver. Geen fooie, geen dop, geen verborge agenda. Kry ons gratis bediener om al u klank, video, foto's en meer op een plek te versamel.
+
+Om die app te kan gebruik, moet u 'n Jellyfin-bediener laat instel en laat loop. Kom meer te wete op <a href="https://jellyfin.org/" target="_blank"> jellyfin.org </a>.
+
+Met 'n Jellyfin-bediener kan u:
+
+* Kyk regstreekse TV en opnames van u Jellyfin-bediener (ekstra hardeware / dienste benodig)
+* Stroom na 'n Chromecast-toestel in u netwerk
+* Stroom u media na u Android-toestel
+* Kyk na u versameling in 'n gebruiksvriendelike koppelvlak
+
+Dit is die amptelike Jellyfin-metgesel-app vir Android. Dankie dat u Jellyfin gebruik!
