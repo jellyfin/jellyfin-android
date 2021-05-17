@@ -97,4 +97,7 @@
         <item quantity="one">Probando %d candidato para entrada, sin exito.</item>
         <item quantity="other">Probando %d candidatos para entrada, sin exito.</item>
     </plurals>
+    <string name="player_error_unsupported_content">El medio no puede ser reproducido en este dispositivo</string>
+    <string name="player_error_network_failure">Incapaz de cargar la información del medio desde el server</string>
+    <string name="player_error_invalid_play_options">Incapaz de resolver la información de reproducción</string>
 </resources>
