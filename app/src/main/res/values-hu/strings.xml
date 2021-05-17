@@ -97,4 +97,7 @@
     </plurals>
     <string name="connection_error_unsupported_version_or_product">Nem támogatott verzió vagy termék</string>
     <string name="connection_error_unable_to_reach_sever">Nem sikerült elérni a szervert</string>
+    <string name="player_error_unsupported_content">A média nem játszható le ezzel az eszközzel</string>
+    <string name="player_error_network_failure">Nem sikerült betölteni a médiaadatokat a szerverről</string>
+    <string name="player_error_invalid_play_options">Nem sikerült feloldani a lejátszási információkat</string>
 </resources>
