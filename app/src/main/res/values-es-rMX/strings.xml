@@ -13,7 +13,7 @@
     <string name="connection_error_invalid_format">La dirección del servidor tiene un formato inválido</string>
     <string name="host_input_hint">Dirección del Servidor</string>
     <string name="connect_to_server_title">Conectar al Servidor</string>
-    <string name="pref_exoplayer_allow_background_audio">Permitir reproducción de audio en segundo plano en el reproductor nativo</string>
+    <string name="pref_exoplayer_allow_background_audio">Reproducción de audio en segundo plano</string>
     <string name="video_player_external_description">Apps externas de reproducción de video como MX Player y VLC</string>
     <string name="video_player_native_description">Basado en ExoPlayer, soporta más formatos y codecs, se integra mejor con el sistema</string>
     <string name="video_player_web_description">El reproductor de video HTML predeterminado de la interfaz Web</string>
@@ -22,7 +22,7 @@
     <string name="video_player_web">Reproductor web</string>
     <string name="pref_video_player_type_title">Tipo de reproductor de video</string>
     <string name="pref_category_video_player">Reproductor de video</string>
-    <string name="pref_music_notification_always_dismissible_title">Hacer que la notificación del reproductor de música se pueda descartar en cualquier momento</string>
+    <string name="pref_music_notification_always_dismissible_title">Permitir descartar la notificación del reproductor de música</string>
     <string name="pref_category_music_player">Reproductor de música</string>
     <string name="activity_name_settings">Configuraciones de Jellyfin</string>
     <string name="external_player_unknown_error">Error desconocido en el reproductor externo. Se deshabilitará el seguimiento de la reproducción.</string>
@@ -45,7 +45,7 @@
     <string name="download_no_storage_permission">No se pueden descargar archivos sin acceso al almacenamiento</string>
     <string name="available_servers_title">Servidores disponibles</string>
     <string name="choose_server_button_text">Seleccionar servidor</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Permitir gestos para control de brillo y volumen en reproductor nativo</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Gestos para control de brillo y volumen</string>
     <string name="external_player_system_default_description">Permite que el sistema seleccione el reproductor de video, algunos podrían no ser completamente compatibles.</string>
     <string name="external_player_system_default">Predeterminado de sistema</string>
     <string name="external_player_vlc_player_description">Reproductor multimedia multiplataforma, gratuito y de código abierto que reproduce la mayoría de archivos multimedia.</string>
@@ -86,4 +86,16 @@
     <string name="dialog_web_view_not_supported_message">WebView no está soportado por este dispositivo.
 \nInstale una implementación de WebView compatible o cambie a un dispositivo soportado.</string>
     <string name="dialog_web_view_not_supported">WebView no soportado</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Permitir la reproducción de vídeos en segundo plano solo con audio</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">La notificación se podrá descartar en cualquier momento, incluso mientras se reproduce un medio</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">La notificación solamente se podrá descartar cuando la reproducción esté en pausa</string>
+    <string name="player_error_unsupported_content">El medio no se puede reproducir en este dispositivo</string>
+    <string name="player_error_network_failure">No se pudo resolver la información de reproducción desde el servidor</string>
+    <string name="player_error_invalid_play_options">No se pudo resolver la información de reproducción</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Se ha intentado con %d candidato de entrada, sin exito.</item>
+        <item quantity="other">Se ha intentado con %d candidatos de entrada, sin exito.</item>
+    </plurals>
+    <string name="connection_error_unsupported_version_or_product">Versión del producto no soportada</string>
+    <string name="connection_error_unable_to_reach_sever">No se puede conectar con el servidor</string>
 </resources>
