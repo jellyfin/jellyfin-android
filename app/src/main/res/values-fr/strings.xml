@@ -97,4 +97,6 @@
     </plurals>
     <string name="connection_error_unsupported_version_or_product">Version ou produit non supporté</string>
     <string name="connection_error_unable_to_reach_sever">Impossible de contacter le serveur</string>
+    <string name="player_error_unsupported_content">Le média ne peut pas être lu sur cet appareil</string>
+    <string name="player_error_network_failure">Impossible de charger les informations du média depuis le serveur</string>
 </resources>
