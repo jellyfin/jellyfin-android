@@ -14,13 +14,13 @@
     <string name="playback_info_audio_streams">Lyd-strømmer</string>
     <string name="playback_info_video_streams">Video-strømmer</string>
     <string name="menu_item_none">Ingen</string>
-    <string name="pref_music_notification_always_dismissible_title">Gjør at musikkspillervarslingen alltid kan avvises</string>
+    <string name="pref_music_notification_always_dismissible_title">Avvisbar musikkspillervarsling</string>
     <string name="pref_enable_exoplayer_summary">Aktiver den eksperimentelle ExoPlayer-videoavspilleren som støtter flere videoformater og kodeker, og er bedre integrert med operativsystemet</string>
     <string name="pref_category_video_player">Videospiller</string>
     <string name="playback_info_transcoding">Koder om: %b</string>
     <string name="connection_error_cannot_connect">Tilkoblingen kunne ikke bli etablert.
 \nVennligst sjekk tjenernavnet og nettverkstilkoblingen.</string>
-    <string name="pref_exoplayer_allow_background_audio">Tillat avspilling av lyd i bakgrunnen i innebygget avspiller</string>
+    <string name="pref_exoplayer_allow_background_audio">Bakgrunnslyd</string>
     <string name="pref_enable_exoplayer_title">Aktiver videospillerintegrasjon</string>
     <string name="pref_category_music_player">Musikkspiller</string>
     <string name="activity_name_settings">Jellyfin-innstillinger</string>
@@ -44,7 +44,7 @@
     <string name="pref_video_player_type_title">Videospiller-type</string>
     <string name="available_servers_title">Tilgjengelige tjenere</string>
     <string name="choose_server_button_text">Velg tjener</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Tillat lysstyrke- og volumbevegelser i innebygget avspiller</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Lysstyrke- og volumbevegelser</string>
     <string name="external_player_unknown_error">Ukjent feil i ekstern spiller. Avspillingssporing er deaktivert.</string>
     <string name="external_player_invalid_player">Ingen gyldig ekstern spiller valgt. Avspillingssporing er deaktivert.</string>
     <string name="external_player_not_supported_yet">Avspillingssporing støttes ikke i valgt ekstern spiller ennå. Kontakt utviklere for å prøve å legge til støtte for det.</string>
@@ -73,4 +73,24 @@
     <string name="external_player_mx_player_free">MX Player Free</string>
     <string name="pref_download_location">Nedlastingssted</string>
     <string name="pref_category_downloads">Nedlastinger</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Tillat at videoer spilles av i bakgrunnen med kun lyd</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Varselet kan alltid avvises, selv mens media spilles</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">Varslingen kan bare avvises når avspilling er pauset</string>
+    <string name="player_error_unsupported_content">Media kan ikke spilles av på denne enheten</string>
+    <string name="player_error_network_failure">Kunne ikke laste inn medieinfo fra tjeneren</string>
+    <string name="player_error_invalid_play_options">Kunne ikke hente avspillingsinfo</string>
+    <string name="connection_error_unsupported_version_or_product">Ikke støttet versjon eller produkt</string>
+    <string name="connection_error_unable_to_reach_sever">Kunne ikke nå tjeneren</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Prøvde %d kandidat for input, uten hell.</item>
+        <item quantity="other">Prøvde %d kandidater for input, uten hell.</item>
+    </plurals>
+    <string name="dialog_button_close_app">Lukk appen</string>
+    <string name="dialog_button_check_for_updates">Se etter oppdateringer</string>
+    <string name="dialog_web_view_outdated_message">WebView-implementasjonen brukt av enheten din er utdatert.
+\nVennligst oppdater den til en kompatibel versjon.</string>
+    <string name="dialog_web_view_outdated">WebView utdatert</string>
+    <string name="dialog_web_view_not_supported_message">WebView støttes ikke av denne enheten.
+\nInstaller en kompatibel WebView-implementasjon eller bytt til en støttet enhet.</string>
+    <string name="dialog_web_view_not_supported">WebView støttes ikke</string>
 </resources>
