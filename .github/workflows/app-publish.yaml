@@ -8,7 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    environment: release
     if: ${{ github.repository == 'jellyfin/jellyfin-android' }}
     steps:
       - name: Checkout repository
