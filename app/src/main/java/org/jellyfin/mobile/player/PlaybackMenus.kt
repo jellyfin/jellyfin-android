@@ -28,8 +28,8 @@ class PlaybackMenus(
     private val lockScreenButton: View by playerControlsBinding::lockScreenButton
     private val audioStreamsButton: View by playerControlsBinding::audioStreamsButton
     private val subtitlesButton: ImageButton by playerControlsBinding::subtitlesButton
-    private val infoButton: View by playerControlsBinding::infoButton
     private val speedButton: View by playerControlsBinding::speedButton
+    private val infoButton: View by playerControlsBinding::infoButton
     private val playbackInfo: TextView by playerBinding::playbackInfo
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
@@ -65,12 +65,12 @@ class PlaybackMenus(
                 }
             }
         }
-        infoButton.setOnClickListener {
-            playbackInfo.isVisible = !playbackInfo.isVisible
-        }
         speedButton.setOnClickListener {
             fragment.suppressControllerAutoHide(true)
             speedMenu.show()
+        }
+        infoButton.setOnClickListener {
+            playbackInfo.isVisible = !playbackInfo.isVisible
         }
         playbackInfo.setOnClickListener {
             dismissPlaybackInfo()
