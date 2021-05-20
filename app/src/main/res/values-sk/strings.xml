@@ -14,7 +14,7 @@
     <string name="pref_enable_exoplayer_summary">Povoliť experimentálny prehrávač videa ExoPlayer, ktorý podporuje viac formátov a kodekov, a je lepšie integrovaný do operačného systému</string>
     <string name="pref_enable_exoplayer_title">Povoliť integráciu prehrávača videa</string>
     <string name="pref_category_video_player">Prehrávač videa</string>
-    <string name="pref_music_notification_always_dismissible_title">Umožniť odstránenie upozornení hudobného prehrávača</string>
+    <string name="pref_music_notification_always_dismissible_title">Umožniť odstránenie upozornení prehrávača</string>
     <string name="pref_category_music_player">Prehrávač hudby</string>
     <string name="activity_name_settings">Nastavenia Jellyfinu</string>
     <string name="menu_item_none">Žiadny</string>
@@ -22,7 +22,7 @@
     <string name="playback_info_audio_streams">Zvukové streamy</string>
     <string name="playback_info_video_streams">Video streamy</string>
     <string name="playback_info_transcoding">Prekódovanie: %b</string>
-    <string name="pref_exoplayer_allow_background_audio">Povoliť prehrávanie zvuku na pozadí v natívnom prehrávači</string>
+    <string name="pref_exoplayer_allow_background_audio">Zvuk na pozadí</string>
     <string name="video_player_external_description">Externý prehrávač videa, napr. MX Player alebo VLC</string>
     <string name="video_player_native_description">Založený na prehrávači ExoPlayer, podporuje viac video formátov a kodekov, a je lepšie integrovaný do systému</string>
     <string name="video_player_web_description">Predvolený HTML prehrávač videa z webového rozhrania</string>
@@ -55,7 +55,7 @@
     <string name="external_player_mpv_description">Jednoduchý, malý a voľne dostupný video prehrávač. Podporuje široké spektrum mediálnych formátov.</string>
     <string name="external_player_mpv">MPV Player</string>
     <string name="external_player_app">Externý prehrávač</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Povoliť kontrolu jasu a hlasitosti pomocou gest v natívnom prehrávači</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Gestá kontroly jasu a hlasitosti</string>
     <string name="external_player_unknown_error">Neznáma chyba v externom prehrávači. Sledovanie pozície prehrávania bolo zakázané.</string>
     <string name="external_player_invalid_player">Nebol vybraný platný externý prehrávač. Sledovanie pozície prehrávania bolo zakázané.</string>
     <string name="external_player_not_supported_yet">Sledovanie pozície prehrávania v externom prehrávači nie je podporované. Kontaktujte vývojárov a požiadajte ich, aby podporu pridali.</string>
@@ -81,4 +81,17 @@
     <string name="dialog_web_view_not_supported_message">WebViews nie sú podporované týmto zariadením.
 \nNainštalujte kompatibilnú WebView implementáciu alebo použite iné podporované zariadenie.</string>
     <string name="dialog_web_view_not_supported">WebView nie je podporovaný</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Povoliť prehrávanie videí na pozadí len ako zvuk</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Upozornenie môže byť vždy odstránené, aj počas prehrávania média</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">Upozornenie môže byť odstránené len pri pozastavenom prehrávaní</string>
+    <string name="player_error_unsupported_content">Na tomto zariadení sa médium nedá prehrať</string>
+    <string name="player_error_network_failure">Nie je možné načítať informácie o médiu zo servera</string>
+    <string name="player_error_invalid_play_options">Nie je možné spracovať informácie o prehrávaní</string>
+    <string name="connection_error_unsupported_version_or_product">Nepodporovaná verzia alebo produkt</string>
+    <string name="connection_error_unable_to_reach_sever">Server sa nepodarilo kontaktovať</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">%d kandidát bol bez úspechu vyskúšaný.</item>
+        <item quantity="few">%d kandidáti boli bez úspechu vyskúšaný.</item>
+        <item quantity="other">%d kandidátov bolo bez úspechu vyskúšaných.</item>
+    </plurals>
 </resources>
