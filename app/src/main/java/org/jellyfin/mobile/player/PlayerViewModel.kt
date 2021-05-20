@@ -283,6 +283,22 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
     }
 
+    /**
+     * Set the playback speed to [speed]
+     *
+     * @return true if the speed was changed
+     */
+    fun setPlaybackSpeed(speed: Float): Boolean {
+        val player = playerOrNull ?: return false
+
+        val parameters = player.playbackParameters
+        if (parameters.speed != speed) {
+            player.setPlaybackParameters(parameters.withSpeed(speed))
+            return true
+        }
+        return false
+    }
+
     fun stop() {
         pause()
         reportPlaybackStop()
