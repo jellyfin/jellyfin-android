@@ -501,6 +501,13 @@ class PlayerFragment : Fragment() {
         return viewModel.mediaQueueManager.toggleSubtitles()
     }
 
+    /**
+     * @return true if the playback speed was changed
+     */
+    fun onSpeedSelected(speed: Float): Boolean {
+        return viewModel.setPlaybackSpeed(speed)
+    }
+
     fun onSkipToPrevious() {
         viewModel.skipToPrevious()
     }

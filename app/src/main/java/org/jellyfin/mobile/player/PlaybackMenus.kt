@@ -28,10 +28,12 @@ class PlaybackMenus(
     private val lockScreenButton: View by playerControlsBinding::lockScreenButton
     private val audioStreamsButton: View by playerControlsBinding::audioStreamsButton
     private val subtitlesButton: ImageButton by playerControlsBinding::subtitlesButton
+    private val speedButton: View by playerControlsBinding::speedButton
     private val infoButton: View by playerControlsBinding::infoButton
     private val playbackInfo: TextView by playerBinding::playbackInfo
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
+    private val speedMenu: PopupMenu = createSpeedMenu()
 
     private var subtitleCount = 0
     private var subtitlesOn = false
@@ -62,6 +64,10 @@ class PlaybackMenus(
                     subtitlesMenu.show()
                 }
             }
+        }
+        speedButton.setOnClickListener {
+            fragment.suppressControllerAutoHide(true)
+            speedMenu.show()
         }
         infoButton.setOnClickListener {
             playbackInfo.isVisible = !playbackInfo.isVisible
@@ -147,6 +153,25 @@ class PlaybackMenus(
         setOnDismissListener(this@PlaybackMenus)
     }
 
+    private fun createSpeedMenu() = PopupMenu(context, speedButton).apply {
+        for (step in 2..8) {
+            val newSpeed = step * 0.25f
+            menu.add(SPEED_MENU_GROUP, step, Menu.NONE, "${newSpeed}x").isChecked = newSpeed == 1f
+        }
+        menu.setGroupCheckable(SPEED_MENU_GROUP, true, true)
+        setOnMenuItemClickListener { clickedItem: MenuItem ->
+            fragment.onSpeedSelected(clickedItem.itemId * 0.25f).also { success ->
+                if (success) {
+                    menu.forEach { item ->
+                        item.isChecked = false
+                    }
+                    clickedItem.isChecked = true
+                }
+            }
+        }
+        setOnDismissListener(this@PlaybackMenus)
+    }
+
     private fun buildMenuItems(menu: Menu, groupId: Int, mediaStreams: List<MediaStream>, selectedStream: MediaStream?, showNone: Boolean = false) {
         menu.clear()
         val itemNone = if (showNone) menu.add(groupId, -1, Menu.NONE, fragment.getString(R.string.menu_item_none)) else null
@@ -180,5 +205,6 @@ class PlaybackMenus(
     companion object {
         private const val SUBTITLES_MENU_GROUP = 0
         private const val AUDIO_MENU_GROUP = 1
+        private const val SPEED_MENU_GROUP = 2
     }
 }
