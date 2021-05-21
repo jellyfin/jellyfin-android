@@ -91,4 +91,7 @@
     <string name="player_error_unsupported_content">Būl qūrylğyda tasyğyşderekterdı oinatu mümkın emes</string>
     <string name="player_error_network_failure">Serverden tasyğyşderekter aqparyn jükteu mümkın emes</string>
     <string name="player_error_invalid_play_options">Oinatu turaly aqpar şeşıluı mümkın emes</string>
+    <string name="toast_reopen_after_change">Özgerıster jasalğannan keiın qoldanbany qaita aşyñyz</string>
+    <string name="dialog_button_ignore">Elemeu</string>
+    <string name="dialog_button_open_settings">Parametrlerdı aşu</string>
 </resources>
