@@ -101,4 +101,7 @@
     <string name="player_error_unsupported_content">Média nelze na tomto zařízení přehrát</string>
     <string name="player_error_network_failure">Nelze načíst informace o médiích ze serveru</string>
     <string name="player_error_invalid_play_options">Nelze zpracovat informace o přehrávání</string>
+    <string name="toast_reopen_after_change">Po provedení změn znovu aplikaci spusťte</string>
+    <string name="dialog_button_ignore">Ignorovat</string>
+    <string name="dialog_button_open_settings">Otevřít nastavení</string>
 </resources>
