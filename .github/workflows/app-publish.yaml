@@ -22,7 +22,7 @@ jobs:
       - name: Set JELLYFIN_VERSION
         run: echo "JELLYFIN_VERSION=$(echo ${GITHUB_REF#refs/tags/v} | tr / -)" >> $GITHUB_ENV
 
-      - name: Build Signed Release
+      - name: Assemble release APKs
         env:
           KEYSTORE: ${{ secrets.KEYSTORE }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -37,7 +37,7 @@ jobs:
           mv app/build/outputs/apk/*/*/jellyfin-android-*-proprietary-release.apk build/jellyfin-publish/release-proprietary/;
           mv app/build/version.txt build/jellyfin-publish/;
 
-      - name: Upload Release Artifacts
+      - name: Upload release artifacts
         uses: alexellis/upload-assets@0.3.0
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -57,7 +57,7 @@ jobs:
           remote_user: ${{ secrets.DEPLOY_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Update Release symlinks
+      - name: Update repo.jellyfin.org symlinks
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.DEPLOY_HOST  }}
