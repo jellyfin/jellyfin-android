@@ -42,10 +42,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          asset_paths: >-
-            '["build/jellyfin-publish/release-libre/*",
+          asset_paths: |
+            ["build/jellyfin-publish/release-libre/*",
             "build/jellyfin-publish/release-proprietary/*",
-            "build/jellyfin-publish/version.txt"]'
+            "build/jellyfin-publish/version.txt"]
 
       - name: Upload to repo.jellyfin.org
         uses: burnett01/rsync-deployments@4.1
