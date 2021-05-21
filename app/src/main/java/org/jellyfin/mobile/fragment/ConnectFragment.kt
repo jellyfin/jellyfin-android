@@ -128,7 +128,7 @@ class ConnectFragment : Fragment() {
     }
 
     private fun showLoadingIndicator(showIndicator: Boolean) {
-        progressIndicator.visibility = if(showIndicator) View.VISIBLE else View.GONE
+        progressIndicator.visibility = if (showIndicator) View.VISIBLE else View.GONE
     }
 
     private fun discoverServers() {
