@@ -16,10 +16,10 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: adopt
           java-version: 11
 
-      - name: Build Unsigned Release
+      - name: Assemble debug APKs
         run: ./gradlew --no-daemon --info assembleDebug
 
       - name: Split APK release types
