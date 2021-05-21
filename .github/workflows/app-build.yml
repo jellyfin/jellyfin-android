@@ -1,0 +1,36 @@
+name: App Build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
+      - name: Build Unsigned Release
+        run: ./gradlew --no-daemon --info assembleDebug
+
+      - name: Split APK release types
+        run: |
+          mkdir -p build/jellyfin-publish/release-libre build/jellyfin-publish/release-proprietary;
+          mv app/build/outputs/apk/*/*/jellyfin-android-*-libre-debug.apk build/jellyfin-publish/release-libre/;
+          mv app/build/outputs/apk/*/*/jellyfin-android-*-proprietary-debug.apk build/jellyfin-publish/release-proprietary/;
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build-artifacts
+          retention-days: 14
+          if-no-files-found: error
+          path: build/jellyfin-publish

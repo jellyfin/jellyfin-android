@@ -46,6 +46,15 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    val releaseSigningConfig = SigningHelper.loadSigningConfig(project)?.let { config ->
+        signingConfigs.create("release") {
+            storeFile = config.storeFile
+            storePassword = config.storePassword
+            keyAlias = config.keyAlias
+            keyPassword = config.keyPassword
+        }
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
@@ -53,6 +62,7 @@ android {
             aaptOptions.cruncherEnabled = false
 
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = releaseSigningConfig
         }
         getByName("debug") {
             applicationIdSuffix = ".debug"
