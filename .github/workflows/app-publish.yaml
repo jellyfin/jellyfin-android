@@ -60,7 +60,7 @@ jobs:
       - name: Update repo.jellyfin.org symlinks
         uses: appleboy/ssh-action@v0.1.4
         with:
-          host: ${{ secrets.DEPLOY_HOST  }}
+          host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           envs: JELLYFIN_VERSION
