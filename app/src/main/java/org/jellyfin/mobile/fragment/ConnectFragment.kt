@@ -18,6 +18,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.firstOrNull
@@ -51,6 +52,7 @@ class ConnectFragment : Fragment() {
     private val connectionErrorText: TextView get() = connectServerBinding.connectionErrorText
     private val connectButton: Button get() = connectServerBinding.connectButton
     private val chooseServerButton: Button get() = connectServerBinding.chooseServerButton
+    private val progressIndicator: CircularProgressIndicator get() = connectServerBinding.connectProgress
 
     private val serverList = ArrayList<ServerDiscoveryInfo>(LocalServerDiscovery.DISCOVERY_MAX_SERVERS)
 
@@ -111,7 +113,7 @@ class ConnectFragment : Fragment() {
         hostInput.isEnabled = false
         connectButton.isEnabled = false
         clearConnectionError()
-
+        showLoadingIndicator(true)
         lifecycleScope.launch {
             val httpUrl = checkServerUrlAndConnection(enteredUrl)
             if (httpUrl != null) {
@@ -121,7 +123,12 @@ class ConnectFragment : Fragment() {
             }
             hostInput.isEnabled = true
             connectButton.isEnabled = true
+            showLoadingIndicator(false)
         }
+    }
+
+    private fun showLoadingIndicator(showIndicator: Boolean) {
+        progressIndicator.visibility = if(showIndicator) View.VISIBLE else View.GONE
     }
 
     private fun discoverServers() {
@@ -155,6 +162,7 @@ class ConnectFragment : Fragment() {
             text = error ?: getText(R.string.connection_error_cannot_connect)
             isVisible = true
         }
+        showLoadingIndicator(false)
     }
 
     private fun clearConnectionError() {
@@ -162,6 +170,7 @@ class ConnectFragment : Fragment() {
             text = null
             isVisible = false
         }
+        showLoadingIndicator(false)
     }
 
     private suspend fun checkServerUrlAndConnection(enteredUrl: String): String? {
