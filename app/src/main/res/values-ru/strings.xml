@@ -100,4 +100,7 @@
     <string name="player_error_unsupported_content">На этом устройстве невозможно воспроизводить медиаданные</string>
     <string name="player_error_network_failure">Невозможно загрузить информацию о медиаданных с сервера</string>
     <string name="player_error_invalid_play_options">Невозможно получить информацию о воспроизведении</string>
+    <string name="toast_reopen_after_change">После внесения изменений снова откройте приложение</string>
+    <string name="dialog_button_ignore">Игнорировать</string>
+    <string name="dialog_button_open_settings">Открыть параметры</string>
 </resources>
