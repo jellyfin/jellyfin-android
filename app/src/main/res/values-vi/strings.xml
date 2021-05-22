@@ -97,4 +97,7 @@
     <string name="player_error_unsupported_content">Thiết bị này không thể phát phương tiện</string>
     <string name="player_error_network_failure">Không thể tải thông tin phương tiện từ máy chủ</string>
     <string name="player_error_invalid_play_options">Không thể xử lý thông tin phát lại</string>
+    <string name="toast_reopen_after_change">Vui lòng mở lại ứng dụng sau khi thay đổi được thực hiện</string>
+    <string name="dialog_button_ignore">Bỏ qua</string>
+    <string name="dialog_button_open_settings">Mở cài đặt</string>
 </resources>
