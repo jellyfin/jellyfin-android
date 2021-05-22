@@ -99,4 +99,8 @@
     <string name="connection_error_unable_to_reach_sever">Impossible de contacter le serveur</string>
     <string name="player_error_unsupported_content">Le média ne peut pas être lu sur cet appareil</string>
     <string name="player_error_network_failure">Impossible de charger les informations du média depuis le serveur</string>
+    <string name="player_error_invalid_play_options">Impossible de résoudre les informations de lecture</string>
+    <string name="toast_reopen_after_change">Veuillez ouvrir l\'application à nouveau après avoir effectué des modifications</string>
+    <string name="dialog_button_ignore">Ignorer</string>
+    <string name="dialog_button_open_settings">Ouvrir les paramètres</string>
 </resources>
