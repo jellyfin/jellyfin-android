@@ -100,4 +100,7 @@
         <item quantity="one">Intentado candidato %d para la entrada, sin éxito.</item>
         <item quantity="other">Intentados los candidatos %d para la entrada, sin éxito.</item>
     </plurals>
+    <string name="toast_reopen_after_change">Vuelve a abrir la aplicación después de realizar los cambios</string>
+    <string name="dialog_button_ignore">Ignorar</string>
+    <string name="dialog_button_open_settings">Abrir ajustes</string>
 </resources>
