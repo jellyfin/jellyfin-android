@@ -50,8 +50,8 @@ jobs:
       - name: Upload to repo.jellyfin.org
         uses: burnett01/rsync-deployments@4.1
         with:
-          switches: -rltgoDzvO --delete --exclude='*' --include='**/*.apk' --include='*.txt'
-          path: build/jellyfin-publish/
+          switches: -vrptz
+          path: build/jellyfin-publish/**/
           remote_path: /srv/repository/releases/client/android/versions/v${{ env.JELLYFIN_VERSION }}
           remote_host: ${{ secrets.DEPLOY_HOST }}
           remote_user: ${{ secrets.DEPLOY_USER }}
