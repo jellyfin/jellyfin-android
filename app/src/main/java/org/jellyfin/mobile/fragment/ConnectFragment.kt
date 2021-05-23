@@ -113,7 +113,7 @@ class ConnectFragment : Fragment() {
         hostInput.isEnabled = false
         connectButton.isEnabled = false
         clearConnectionError()
-        showLoadingIndicator(true)
+        progressIndicator.isVisible = true
         lifecycleScope.launch {
             val httpUrl = checkServerUrlAndConnection(enteredUrl)
             if (httpUrl != null) {
@@ -123,12 +123,8 @@ class ConnectFragment : Fragment() {
             }
             hostInput.isEnabled = true
             connectButton.isEnabled = true
-            showLoadingIndicator(false)
+            progressIndicator.isVisible = false
         }
-    }
-
-    private fun showLoadingIndicator(showIndicator: Boolean) {
-        progressIndicator.visibility = if (showIndicator) View.VISIBLE else View.GONE
     }
 
     private fun discoverServers() {
@@ -162,7 +158,7 @@ class ConnectFragment : Fragment() {
             text = error ?: getText(R.string.connection_error_cannot_connect)
             isVisible = true
         }
-        showLoadingIndicator(false)
+        progressIndicator.isVisible = false
     }
 
     private fun clearConnectionError() {
@@ -170,7 +166,7 @@ class ConnectFragment : Fragment() {
             text = null
             isVisible = false
         }
-        showLoadingIndicator(false)
+        progressIndicator.isVisible = false
     }
 
     private suspend fun checkServerUrlAndConnection(enteredUrl: String): String? {
