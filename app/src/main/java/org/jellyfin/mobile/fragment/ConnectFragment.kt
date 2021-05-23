@@ -51,6 +51,7 @@ class ConnectFragment : Fragment() {
     private val connectionErrorText: TextView get() = connectServerBinding.connectionErrorText
     private val connectButton: Button get() = connectServerBinding.connectButton
     private val chooseServerButton: Button get() = connectServerBinding.chooseServerButton
+    private val connectionProgress: View get() = connectServerBinding.connectionProgress
 
     private val serverList = ArrayList<ServerDiscoveryInfo>(LocalServerDiscovery.DISCOVERY_MAX_SERVERS)
 
@@ -109,18 +110,21 @@ class ConnectFragment : Fragment() {
 
     private fun connect(enteredUrl: String = hostInput.text.toString()) {
         hostInput.isEnabled = false
-        connectButton.isEnabled = false
+        connectButton.isVisible = false
+        connectionProgress.isVisible = true
+        chooseServerButton.isVisible = false
         clearConnectionError()
-
         lifecycleScope.launch {
             val httpUrl = checkServerUrlAndConnection(enteredUrl)
             if (httpUrl != null) {
-                clearServerList()
+                serverList.clear()
                 apiController.setupServer(httpUrl)
                 mainViewModel.refreshServer()
             }
             hostInput.isEnabled = true
-            connectButton.isEnabled = true
+            connectButton.isVisible = true
+            connectionProgress.isVisible = false
+            chooseServerButton.isVisible = serverList.isNotEmpty()
         }
     }
 
@@ -131,7 +135,8 @@ class ConnectFragment : Fragment() {
                 .flowOn(Dispatchers.IO)
                 .collect { serverInfo ->
                     serverList.add(serverInfo)
-                    chooseServerButton.isVisible = true
+                    // Only show server chooser when not connecting already
+                    if (connectButton.isVisible) chooseServerButton.isVisible = true
                 }
         }
     }
@@ -143,11 +148,6 @@ class ConnectFragment : Fragment() {
                 connect(serverList[index].address!!)
             }
         }.show()
-    }
-
-    private fun clearServerList() {
-        serverList.clear()
-        chooseServerButton.isVisible = false
     }
 
     private fun showConnectionError(error: String? = null) {
