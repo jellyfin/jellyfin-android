@@ -135,7 +135,8 @@ class ConnectFragment : Fragment() {
                 .flowOn(Dispatchers.IO)
                 .collect { serverInfo ->
                     serverList.add(serverInfo)
-                    chooseServerButton.isVisible = true
+                    // Only show server chooser when not connecting already
+                    chooseServerButton.isVisible = connectButton.isVisible
                 }
         }
     }
