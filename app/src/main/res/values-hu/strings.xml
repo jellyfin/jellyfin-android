@@ -100,4 +100,7 @@
     <string name="player_error_unsupported_content">A média nem játszható le ezzel az eszközzel</string>
     <string name="player_error_network_failure">Nem sikerült betölteni a médiaadatokat a szerverről</string>
     <string name="player_error_invalid_play_options">Nem sikerült feloldani a lejátszási információkat</string>
+    <string name="toast_reopen_after_change">Kérjük, nyisd meg újra az alkalmazást a módosítások elvégzése után</string>
+    <string name="dialog_button_ignore">Mellőzés</string>
+    <string name="dialog_button_open_settings">Beállítások megnyitása</string>
 </resources>
