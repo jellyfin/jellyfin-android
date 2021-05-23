@@ -18,7 +18,6 @@ import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.firstOrNull
@@ -52,7 +51,7 @@ class ConnectFragment : Fragment() {
     private val connectionErrorText: TextView get() = connectServerBinding.connectionErrorText
     private val connectButton: Button get() = connectServerBinding.connectButton
     private val chooseServerButton: Button get() = connectServerBinding.chooseServerButton
-    private val progressIndicator: CircularProgressIndicator get() = connectServerBinding.connectProgress
+    private val connectionProgress: View get() = connectServerBinding.connectionProgress
 
     private val serverList = ArrayList<ServerDiscoveryInfo>(LocalServerDiscovery.DISCOVERY_MAX_SERVERS)
 
@@ -111,19 +110,21 @@ class ConnectFragment : Fragment() {
 
     private fun connect(enteredUrl: String = hostInput.text.toString()) {
         hostInput.isEnabled = false
-        connectButton.isEnabled = false
+        connectButton.isVisible = false
+        connectionProgress.isVisible = true
+        chooseServerButton.isVisible = false
         clearConnectionError()
-        progressIndicator.isVisible = true
         lifecycleScope.launch {
             val httpUrl = checkServerUrlAndConnection(enteredUrl)
             if (httpUrl != null) {
-                clearServerList()
+                serverList.clear()
                 apiController.setupServer(httpUrl)
                 mainViewModel.refreshServer()
             }
             hostInput.isEnabled = true
-            connectButton.isEnabled = true
-            progressIndicator.isVisible = false
+            connectButton.isVisible = true
+            connectionProgress.isVisible = false
+            chooseServerButton.isVisible = serverList.isNotEmpty()
         }
     }
 
@@ -148,17 +149,11 @@ class ConnectFragment : Fragment() {
         }.show()
     }
 
-    private fun clearServerList() {
-        serverList.clear()
-        chooseServerButton.isVisible = false
-    }
-
     private fun showConnectionError(error: String? = null) {
         connectionErrorText.apply {
             text = error ?: getText(R.string.connection_error_cannot_connect)
             isVisible = true
         }
-        progressIndicator.isVisible = false
     }
 
     private fun clearConnectionError() {
@@ -166,7 +161,6 @@ class ConnectFragment : Fragment() {
             text = null
             isVisible = false
         }
-        progressIndicator.isVisible = false
     }
 
     private suspend fun checkServerUrlAndConnection(enteredUrl: String): String? {
