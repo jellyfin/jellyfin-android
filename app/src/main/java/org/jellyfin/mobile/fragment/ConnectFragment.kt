@@ -136,7 +136,7 @@ class ConnectFragment : Fragment() {
                 .collect { serverInfo ->
                     serverList.add(serverInfo)
                     // Only show server chooser when not connecting already
-                    if (connectButton.isVisible) chooseServerButton.isVisible
+                    if (connectButton.isVisible) chooseServerButton.isVisible = true
                 }
         }
     }
