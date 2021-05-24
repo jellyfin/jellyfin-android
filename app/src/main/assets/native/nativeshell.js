@@ -43,7 +43,7 @@ window.NativeShell = {
     },
 
     openUrl(url, target) {
-        window.NativeInterface.openUrl(url, target);
+        window.NativeInterface.openUrl(url);
     },
 
     updateMediaSession(mediaInfo) {

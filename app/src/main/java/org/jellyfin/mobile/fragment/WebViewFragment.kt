@@ -180,7 +180,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         webViewClient = object : WebViewClientCompat() {
             override fun shouldInterceptRequest(webView: WebView, request: WebResourceRequest): WebResourceResponse? {
                 val url = request.url
-                val path = url.path?.toLowerCase(Locale.ROOT) ?: return null
+                val path = url.path?.lowercase(Locale.ROOT) ?: return null
                 return when {
                     path.endsWith(Constants.WEB_CONFIG_PATH) -> {
                         runOnUiThread {
