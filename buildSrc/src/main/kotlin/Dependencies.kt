@@ -2,17 +2,17 @@ object Dependencies {
     object Versions {
         // Gradle plugins
         const val dependencyUpdates = "0.38.0"
-        const val detekt = "1.17.0-RC2"
+        const val detekt = "1.17.1"
 
         // KotlinX
-        const val coroutines = "1.4.3"
+        const val coroutines = "1.5.0"
 
         // Core
         const val koin = "2.1.6"
-        const val appCompat = "1.2.0"
-        const val androidxCore = "1.5.0-rc01"
-        const val activity = "1.2.2"
-        const val fragment = "1.3.2"
+        const val appCompat = "1.3.0"
+        const val androidxCore = "1.5.0"
+        const val activity = "1.2.3"
+        const val fragment = "1.3.4"
         const val exoPlayer = "2.13.3"
 
         // Lifecycle
@@ -22,7 +22,7 @@ object Dependencies {
         const val constraintLayout = "2.0.4"
         const val material = "1.3.0"
         const val webkitX = "1.4.0"
-        const val modernAndroidPreferences = "2.0"
+        const val modernAndroidPreferences = "2.1.0"
 
         // Room
         const val room = "2.3.0"
@@ -34,18 +34,18 @@ object Dependencies {
         const val coil = "1.1.1"
 
         // Cast
-        const val mediaRouter = "1.2.2"
+        const val mediaRouter = "1.2.3"
         const val playServicesCast = "19.0.0"
 
         // Media
-        const val media = "1.3.0"
+        const val media = "1.3.1"
 
         // Health
         const val timber = "4.7.1"
         const val leakCanary = "2.7"
         const val redScreenOfDeath = "0.1.3"
-        const val junit = "5.7.1"
-        const val kotest = "4.4.3"
+        const val junit = "5.7.2"
+        const val kotest = "4.6.0"
         const val mockk = "1.11.0"
         const val androidXRunner = "1.3.0"
         const val androidXEspresso = "3.3.0"
