@@ -29,36 +29,36 @@ class NativePlayer(private val host: NativePlayerHost) : KoinComponent {
 
     @JavascriptInterface
     fun pausePlayer() {
-        playerEventChannel.offer(PlayerEvent.Pause)
+        playerEventChannel.trySend(PlayerEvent.Pause)
     }
 
     @JavascriptInterface
     fun resumePlayer() {
-        playerEventChannel.offer(PlayerEvent.Resume)
+        playerEventChannel.trySend(PlayerEvent.Resume)
     }
 
     @JavascriptInterface
     fun stopPlayer() {
-        playerEventChannel.offer(PlayerEvent.Stop)
+        playerEventChannel.trySend(PlayerEvent.Stop)
     }
 
     @JavascriptInterface
     fun destroyPlayer() {
-        playerEventChannel.offer(PlayerEvent.Destroy)
+        playerEventChannel.trySend(PlayerEvent.Destroy)
     }
 
     @JavascriptInterface
     fun seek(ticks: Long) {
-        playerEventChannel.offer(PlayerEvent.Seek(ticks / Constants.TICKS_PER_MILLISECOND))
+        playerEventChannel.trySend(PlayerEvent.Seek(ticks / Constants.TICKS_PER_MILLISECOND))
     }
 
     @JavascriptInterface
     fun seekMs(ms: Long) {
-        playerEventChannel.offer(PlayerEvent.Seek(ms))
+        playerEventChannel.trySend(PlayerEvent.Seek(ms))
     }
 
     @JavascriptInterface
     fun setVolume(volume: Int) {
-        playerEventChannel.offer(PlayerEvent.SetVolume(volume))
+        playerEventChannel.trySend(PlayerEvent.SetVolume(volume))
     }
 }

@@ -11,7 +11,7 @@ class WebappFunctionChannel {
 
     operator fun iterator(): ChannelIterator<String> = internalChannel.iterator()
 
-    fun call(action: String) = internalChannel.offer(action)
+    fun call(action: String) = internalChannel.trySend(action).isSuccess
 
     // Web component helpers
     fun callPlaybackManagerAction(action: String) = call("$PLAYBACK_MANAGER.$action();")
