@@ -162,7 +162,7 @@ class LibraryBrowser(
                         imageTypeLimit = 1,
                         enableImageTypes = listOf(ImageType.PRIMARY),
                         enableTotalRecordCount = false,
-                        limit = 100,
+                        limit = 50,
                     ).content.extractItems()
                 }?.let { artistTracks ->
                     Timber.d("Got result, starting playback")
@@ -181,7 +181,7 @@ class LibraryBrowser(
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
             enableTotalRecordCount = false,
-            limit = 100,
+            limit = 50,
         )
 
         return result.extractItems()
@@ -269,7 +269,7 @@ class LibraryBrowser(
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
             enableTotalRecordCount = false,
-            limit = 100,
+            limit = 50,
         )
 
         return result.extractItems("${LibraryPage.RECENTS}|$libraryId")
@@ -291,7 +291,7 @@ class LibraryBrowser(
             recursive = true,
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
-            limit = 100,
+            limit = 400,
         )
 
         return result.extractItems()?.browsable()
@@ -306,7 +306,7 @@ class LibraryBrowser(
             recursive = true,
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
-            limit = 100,
+            limit = 200,
         )
 
         return result.extractItems(libraryId.toString())?.browsable()
@@ -318,7 +318,7 @@ class LibraryBrowser(
             parentId = libraryId,
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
-            limit = 100,
+            limit = 50,
         )
 
         return result.extractItems(libraryId.toString())?.browsable()
@@ -334,7 +334,7 @@ class LibraryBrowser(
             recursive = true,
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
-            limit = 100,
+            limit = 20,
         )
 
         return result.extractItems()?.browsable()
