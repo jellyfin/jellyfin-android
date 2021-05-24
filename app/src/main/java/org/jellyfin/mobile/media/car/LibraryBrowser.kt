@@ -33,6 +33,7 @@ import org.jellyfin.sdk.api.operations.UserViewsApi
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.BaseItemDtoQueryResult
 import org.jellyfin.sdk.model.api.ImageType
+import org.jellyfin.sdk.model.api.ItemFields
 import org.jellyfin.sdk.model.api.ItemFilter
 import org.jellyfin.sdk.model.api.SortOrder
 import org.jellyfin.sdk.model.serializer.toUUID
@@ -162,7 +163,7 @@ class LibraryBrowser(
                         imageTypeLimit = 1,
                         enableImageTypes = listOf(ImageType.PRIMARY),
                         enableTotalRecordCount = false,
-                        limit = 100,
+                        limit = 50,
                     ).content.extractItems()
                 }?.let { artistTracks ->
                     Timber.d("Got result, starting playback")
@@ -181,7 +182,7 @@ class LibraryBrowser(
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
             enableTotalRecordCount = false,
-            limit = 100,
+            limit = 50,
         )
 
         return result.extractItems()
@@ -269,7 +270,7 @@ class LibraryBrowser(
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
             enableTotalRecordCount = false,
-            limit = 100,
+            limit = 50,
         )
 
         return result.extractItems("${LibraryPage.RECENTS}|$libraryId")
@@ -286,12 +287,11 @@ class LibraryBrowser(
             artistIds = filterArtist?.let(::listOf),
             genreIds = filterGenre?.let(::listOf),
             includeItemTypes = listOf("MusicAlbum"),
-            sortBy = listOf("DatePlayed"),
-            sortOrder = listOf(SortOrder.DESCENDING),
+            sortBy = listOf(ItemFields.SORT_NAME.serialName),
             recursive = true,
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
-            limit = 100,
+            limit = 400,
         )
 
         return result.extractItems()?.browsable()
@@ -302,11 +302,11 @@ class LibraryBrowser(
             userId = apiController.currentUser,
             parentId = libraryId,
             includeItemTypes = listOf("MusicArtist"),
-            sortBy = listOf("SortName"),
+            sortBy = listOf(ItemFields.SORT_NAME.serialName),
             recursive = true,
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
-            limit = 100,
+            limit = 200,
         )
 
         return result.extractItems(libraryId.toString())?.browsable()
@@ -318,7 +318,7 @@ class LibraryBrowser(
             parentId = libraryId,
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
-            limit = 100,
+            limit = 50,
         )
 
         return result.extractItems(libraryId.toString())?.browsable()
@@ -334,7 +334,7 @@ class LibraryBrowser(
             recursive = true,
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
-            limit = 100,
+            limit = 20,
         )
 
         return result.extractItems()?.browsable()
@@ -344,7 +344,7 @@ class LibraryBrowser(
         val result by itemsApi.getItems(
             userId = apiController.currentUser,
             parentId = albumId,
-            sortBy = listOf("SortName"),
+            sortBy = listOf(ItemFields.SORT_NAME.serialName),
         )
 
         return result.extractItems("${LibraryPage.ALBUM}|$albumId")
