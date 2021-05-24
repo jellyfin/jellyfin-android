@@ -94,4 +94,7 @@
         <item quantity="few">%d kandidáti boli bez úspechu vyskúšaný.</item>
         <item quantity="other">%d kandidátov bolo bez úspechu vyskúšaných.</item>
     </plurals>
+    <string name="toast_reopen_after_change">Pre aplikovanie zmien je nutné reštartovať aplikáciu</string>
+    <string name="dialog_button_ignore">Ignorovať</string>
+    <string name="dialog_button_open_settings">Otvoriť nastavenia</string>
 </resources>
