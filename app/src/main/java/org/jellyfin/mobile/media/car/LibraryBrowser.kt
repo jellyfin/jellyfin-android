@@ -33,6 +33,7 @@ import org.jellyfin.sdk.api.operations.UserViewsApi
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.BaseItemDtoQueryResult
 import org.jellyfin.sdk.model.api.ImageType
+import org.jellyfin.sdk.model.api.ItemFields
 import org.jellyfin.sdk.model.api.ItemFilter
 import org.jellyfin.sdk.model.api.SortOrder
 import org.jellyfin.sdk.model.serializer.toUUID
@@ -286,7 +287,7 @@ class LibraryBrowser(
             artistIds = filterArtist?.let(::listOf),
             genreIds = filterGenre?.let(::listOf),
             includeItemTypes = listOf("MusicAlbum"),
-            sortBy = listOf("SortName"),
+            sortBy = listOf(ItemFields.SORT_NAME.serialName),
             recursive = true,
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
@@ -301,7 +302,7 @@ class LibraryBrowser(
             userId = apiController.currentUser,
             parentId = libraryId,
             includeItemTypes = listOf("MusicArtist"),
-            sortBy = listOf("SortName"),
+            sortBy = listOf(ItemFields.SORT_NAME.serialName),
             recursive = true,
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
@@ -343,7 +344,7 @@ class LibraryBrowser(
         val result by itemsApi.getItems(
             userId = apiController.currentUser,
             parentId = albumId,
-            sortBy = listOf("SortName"),
+            sortBy = listOf(ItemFields.SORT_NAME.serialName),
         )
 
         return result.extractItems("${LibraryPage.ALBUM}|$albumId")
