@@ -12,22 +12,27 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
           distribution: adopt
           java-version: 11
-
+      - name: Setup Gradle cache
+        uses: actions/cache@v2.1.5
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
       - name: Assemble debug APKs
         run: ./gradlew --no-daemon --info assembleDebug
-
       - name: Split APK release types
         run: |
           mkdir -p build/jellyfin-publish/release-libre build/jellyfin-publish/release-proprietary;
           mv app/build/outputs/apk/*/*/jellyfin-android-*-libre-debug.apk build/jellyfin-publish/release-libre/;
           mv app/build/outputs/apk/*/*/jellyfin-android-*-proprietary-debug.apk build/jellyfin-publish/release-proprietary/;
-
       - uses: actions/upload-artifact@v2
         with:
           name: build-artifacts
