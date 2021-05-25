@@ -98,4 +98,7 @@
     </plurals>
     <string name="connection_error_unsupported_version_or_product">Versión del producto no soportada</string>
     <string name="connection_error_unable_to_reach_sever">No se puede conectar con el servidor</string>
+    <string name="toast_reopen_after_change">Favor de volver a abrir la aplicación después de realizar los cambios</string>
+    <string name="dialog_button_ignore">Ignorar</string>
+    <string name="dialog_button_open_settings">Abrir ajustes</string>
 </resources>
