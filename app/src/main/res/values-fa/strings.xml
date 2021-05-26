@@ -1,2 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pref_download_location">مکان بارگیری</string>
+    <string name="pref_category_downloads">بارگیری ها</string>
+    <string name="external_player_system_default_description">اجازه دهید سیستم انتخاب پخش کننده را کنترل کند ، ممکن است بعضی از پخش کننده ها کاملاً سازگار نباشند.</string>
+    <string name="external_player_system_default">پیش فرض سیستم</string>
+    <string name="external_player_vlc_player_description">پخش کننده چندرسانه ای کراس پلت فرم رایگان و منبع باز که اکثر پرونده های چندرسانه ای را پخش می کند.</string>
+    <string name="external_player_vlc_player">VLC پخش کننده</string>
+    <string name="external_player_mx_player_pro_description">نسخه پولی MX Player که تجربه ویدئویی بدون وقفه را فراهم می کند.</string>
+    <string name="external_player_mx_player_pro">MX Player حرفه ای</string>
+    <string name="external_player_mx_player_free_description">پخش کننده فیلم قدرتمند با شتاب سخت افزاری پیشرفته و پشتیبانی از زیرنویس.</string>
+    <string name="external_player_mx_player_free">MX Player رایگان</string>
+    <string name="external_player_mpv_description">یک پخش کننده ویدیوی ساده ، کوچک و سبک (مانند آزادی). این از طیف گسترده ای از قالب های فایل رسانه پشتیبانی می کند.</string>
+    <string name="external_player_mpv">پخش کننده MPV</string>
+    <string name="external_player_app">برنامه پخش کننده خارجی</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">حرکات روشنایی و حجم</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">پخش فیلم در پس زمینه فقط با صدا مجاز است</string>
+    <string name="pref_exoplayer_allow_background_audio">صدای پس زمینه</string>
+    <string name="video_player_external_description">برنامه های پخش فیلم خارجی مانند MX Player و VLC</string>
+    <string name="video_player_native_description">بر اساس ExoPlayer ، از فرمت های ویدیویی و کدک های بیشتری پشتیبانی می کند و بیشتر در سیستم عامل ادغام شده است</string>
+    <string name="video_player_web_description">پخش کننده ویدیوی HTML پیش فرض از UI Web</string>
+    <string name="video_player_native">پخش کننده بومی</string>
+    <string name="video_player_external">پخش کننده خارجی</string>
+    <string name="video_player_web">پخش کننده وب</string>
+    <string name="pref_video_player_type_title">نوع پخش کننده ویدیو</string>
+    <string name="pref_category_video_player">دستگاه پخش ویدئو</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">اعلان را می توان همیشه رد کرد ، حتی هنگام پخش رسانه</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">فقط درصورت مکث پخش می توان اعلان را رد کرد</string>
+    <string name="pref_music_notification_always_dismissible_title">اعلان پخش پذیرفته نشدنی</string>
+    <string name="pref_category_music_player">پخش کننده موسیقی</string>
+    <string name="activity_name_settings">تنظیمات Jellyfin</string>
+    <string name="external_player_unknown_error">خطای ناشناخته در پخش کننده خارجی. ردیابی پخش غیرفعال است.</string>
+    <string name="external_player_invalid_player">پخش کننده خارجی معتبری انتخاب نشده است. ردیابی پخش غیرفعال است.</string>
+    <string name="external_player_not_supported_yet">ردیابی پخش هنوز در پخش کننده خارجی انتخاب شده پشتیبانی نمی شود. با توسعه دهندگان تماس بگیرید تا سعی کنید پشتیبانی از آن را اضافه کنید.</string>
+    <string name="external_player_invalid_play_method">روش بازی نامعتبر است.</string>
+    <string name="playback_info_and_x_more">… و%d بیشتر</string>
+    <string name="playback_info_audio_streams">جریانهای صوتی</string>
+    <string name="playback_info_video_streams">جریان های ویدئویی</string>
+    <string name="playback_info_transcoding">کدگذاری:%b</string>
+    <string name="playback_info_play_method">روش پخش:%s</string>
+    <string name="menu_item_none">هیچ یک</string>
+    <string name="player_error_unsupported_content">این دستگاه نمی تواند رسانه را پخش کند</string>
+    <string name="player_error_network_failure">بارگیری اطلاعات رسانه از سرور امکان پذیر نیست</string>
+    <string name="player_error_invalid_play_options">اطلاعات پخش قابل حل نیست</string>
+    <string name="notification_action_stop">متوقف کردن</string>
+    <string name="notification_action_next">بعدی</string>
+    <string name="notification_action_fast_forward">سریع به جلو</string>
+    <string name="notification_action_pause">مکث</string>
+    <string name="notification_action_play">پخش</string>
+    <string name="notification_action_rewind">باز پیچی</string>
+    <string name="notification_action_previous">قبلی</string>
+    <string name="music_notification_channel_description">برای کنترل های پخش موسیقی استفاده می شود</string>
+    <string name="music_notification_channel">پخش کننده موسیقی Jellyfin</string>
+    <string name="media_service_car_item_no_title">بدون عنوان</string>
+    <string name="media_service_car_section_playlists">لیست های پخش</string>
+    <string name="media_service_car_section_genres">ژانرها</string>
+    <string name="media_service_car_section_songs">آهنگ ها</string>
+    <string name="media_service_car_section_artists">هنرمندان</string>
+    <string name="media_service_car_section_albums">آلبوم ها</string>
+    <string name="media_service_car_section_recents">آخرین پخش شده ها</string>
+    <string name="media_service_item_not_found">مورد رسانه یافت نشد</string>
+    <string name="media_service_generic_error">خطایی روی داد</string>
+    <string name="download_no_storage_permission">بارگیری فایلها بدون مجوزهای ذخیره سازی امکان پذیر نیست</string>
+    <string name="downloading">در حال بارگیری</string>
+    <string name="mobile_data_and_roaming">داده تلفن همراه و رومینگ</string>
+    <string name="mobile_data">داده های موبایل</string>
+    <string name="wifi_only">فقط وای فای</string>
+    <string name="network_message">آیا می خواهید به بارگیری داده های تلفن همراه یا شبکه های رومینگ اجازه دهید؟ ممکن است هزینه های ارائه دهنده شما اعمال شود.</string>
+    <string name="network_title">انواع مجاز شبکه</string>
+    <string name="battery_optimizations_message">لطفاً هنگام خاموش بودن صفحه ، بهینه سازی باتری را برای پخش رسانه غیرفعال کنید.</string>
+    <string name="available_servers_title">سرورهای موجود</string>
+    <string name="choose_server_button_text">سرور را انتخاب کنید</string>
+    <string name="connect_button_text">متصل شوید</string>
+    <string name="connection_error_unsupported_version_or_product">نسخه یا محصول پشتیبانی نشده</string>
+    <string name="connection_error_unable_to_reach_sever">دسترسی به سرور امکان پذیر نیست</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">مفرد
+\n٪ d کاندیدای ورودی را امتحان کرد ، بدون موفقیت.</item>
+        <item quantity="other">جمع
+\n٪ d داوطلب را برای ورود بدون موفقیت امتحان کرد.</item>
+    </plurals>
+    <string name="connection_error_cannot_connect">اتصال برقرار نیست.
+\nلطفاً نام میزبان و اتصال شبکه خود را بررسی کنید.</string>
+    <string name="connection_error_invalid_format">قالب میزبان نامعتبر است</string>
+    <string name="host_input_hint">میزبان</string>
+    <string name="connect_to_server_title">اتصال به سرور</string>
+    <string name="toast_reopen_after_change">لطفاً پس از ایجاد تغییرات ، برنامه را دوباره باز کنید</string>
+    <string name="dialog_button_ignore">چشم پوشی</string>
+    <string name="dialog_button_open_settings">تنظیمات را باز کنید</string>
+    <string name="dialog_button_close_app">بستن برنامه</string>
+    <string name="dialog_button_check_for_updates">به روزرسانی ها را بررسی کنید</string>
+    <string name="dialog_web_view_outdated_message">اجرای WebView که توسط دستگاه شما استفاده می شود منسوخ شده است.
+\nلطفاً آن را به نسخه سازگار به روز کنید.</string>
+    <string name="dialog_web_view_outdated">WebView قدیمی است</string>
+    <string name="dialog_web_view_not_supported_message">WebViews توسط این دستگاه پشتیبانی نمی شود.
+\nیک پیاده سازی WebView سازگار نصب کنید یا به یک دستگاه پشتیبانی شده بروید.</string>
+    <string name="dialog_web_view_not_supported">WebView پشتیبانی نمی شود</string>
+</resources>
