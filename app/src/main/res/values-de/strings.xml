@@ -100,4 +100,7 @@
         <item quantity="one">%d Kandidat für Eingabe versucht, ohne Erfolg.</item>
         <item quantity="other">%d Kandidaten für Eingabe versucht, ohne Erfolg.</item>
     </plurals>
+    <string name="toast_reopen_after_change">Bitte öffnen Sie die App erneut, nachdem Änderungen vorgenommen wurden</string>
+    <string name="dialog_button_ignore">Ignorieren</string>
+    <string name="dialog_button_open_settings">Einstellungen öffnen</string>
 </resources>
