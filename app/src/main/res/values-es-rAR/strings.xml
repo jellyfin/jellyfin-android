@@ -100,4 +100,7 @@
     <string name="player_error_unsupported_content">El medio no puede ser reproducido en este dispositivo</string>
     <string name="player_error_network_failure">Incapaz de cargar la información del medio desde el server</string>
     <string name="player_error_invalid_play_options">Incapaz de resolver la información de reproducción</string>
+    <string name="toast_reopen_after_change">Por favor vuelva a abrir la aplicación después de realizar los cambios</string>
+    <string name="dialog_button_ignore">Ignorar</string>
+    <string name="dialog_button_open_settings">Abrir ajustes</string>
 </resources>
