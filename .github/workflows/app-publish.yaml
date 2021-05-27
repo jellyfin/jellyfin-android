@@ -28,10 +28,10 @@ jobs:
         run: ./gradlew --no-daemon --info assembleRelease versionTxt
       - name: Split APK release types
         run: |
-          mkdir -p build/jellyfin-publish;
-          mv app/build/outputs/apk/*/*/jellyfin-android-*-libre-release.apk build/jellyfin-publish/;
-          mv app/build/outputs/apk/*/*/jellyfin-android-*-proprietary-release.apk build/jellyfin-publish/;
-          mv app/build/version.txt build/jellyfin-publish/;
+          mkdir -p build/jellyfin-publish
+          mv app/build/outputs/apk/*/*/jellyfin-android-*-libre-release.apk build/jellyfin-publish/
+          mv app/build/outputs/apk/*/*/jellyfin-android-*-proprietary-release.apk build/jellyfin-publish/
+          mv app/build/version.txt build/jellyfin-publish/
       - name: Upload release artifacts
         uses: alexellis/upload-assets@0.3.0
         env:
