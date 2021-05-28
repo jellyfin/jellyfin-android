@@ -14,7 +14,7 @@
     <string name="pref_enable_exoplayer_summary">Omogoči poskusni ExoPlayer video predvajalnik, ki podpira več formatov in kodekov in je bolj integriran v operacijski sistem</string>
     <string name="pref_enable_exoplayer_title">Omogoči integracijo video predvajalnika</string>
     <string name="pref_category_video_player">Video predvajalnik</string>
-    <string name="pref_music_notification_always_dismissible_title">Omogoči skrivanje obvestila predvajalnika glasbe</string>
+    <string name="pref_music_notification_always_dismissible_title">Skrivanje obvestila predvajalnika</string>
     <string name="pref_category_music_player">Predvajalnik glasbe</string>
     <string name="activity_name_settings">Nastavitve Jellyfin</string>
     <string name="menu_item_none">Brez</string>
@@ -22,7 +22,7 @@
     <string name="playback_info_play_method">Način predvajanja: %s</string>
     <string name="connection_error_cannot_connect">Povezave ni mogoče vzpostaviti.
 \nPreverite naslov in vašo internetno povezavo.</string>
-    <string name="pref_exoplayer_allow_background_audio">Omogoči predvajanje zvoka v ozadju z vgrajenim predvajalnikom</string>
+    <string name="pref_exoplayer_allow_background_audio">Zvok v ozadju</string>
     <string name="video_player_external_description">Zunanji predvajalniki, na premer aplikacije MX Player in VLC</string>
     <string name="video_player_native_description">Temelji na ExoPlayer, podpira več video formatov in kodekov ter je bolj integriran z operacijskim sistemom</string>
     <string name="video_player_web_description">Privzeti HTML video predvajalnik iz spletnega vmesnika</string>
@@ -47,7 +47,7 @@
     <string name="playback_info_audio_streams">Zvočne sledi</string>
     <string name="playback_info_video_streams">Video sledi</string>
     <string name="video_player_native">Vgrajeni predvajalnik</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Dovoli poteze za svetlost in glasnost v vgrajenem predvajalniku</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Poteze za svetlost in glasnost</string>
     <string name="connection_error_invalid_version">Strežnik uporablja nepodprto različico. Posodobite na najnovejšo različico na jellyfin.org.</string>
     <string name="external_player_system_default_description">Sistem naj izbere predvajalnik. Nekateri predvajalniki morda niso polno podprti.</string>
     <string name="external_player_system_default">Privzeta nastavitev sistema</string>
@@ -81,4 +81,21 @@
     <string name="dialog_web_view_not_supported_message">Ta naprava ne podpira WebView.
 \nNamestite združljivo orodje WebView ali preklopite na podprto napravo.</string>
     <string name="dialog_web_view_not_supported">WebView ni podprt</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Dovoli predvajanje videov v ozadju samo z zvokom</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Obvestilo je mogoče skriti vedno, tudi ko se predvaja predstavnost</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">Obvestilo je mogoče skriti samo ko je predvajanje ustavljeno</string>
+    <string name="player_error_unsupported_content">Predstavnosti ni mogoče predvajati na tej napravi</string>
+    <string name="player_error_network_failure">Podatkov o predstavnosti ni mogoče pridobiti s strežnika</string>
+    <string name="player_error_invalid_play_options">Podatkov o predvajanju ni mogoče razčleniti</string>
+    <string name="connection_error_unsupported_version_or_product">Nepodprta različica ali produkt</string>
+    <string name="connection_error_unable_to_reach_sever">Strežnika ni mogoče doseči</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Poskusil %d kandidat za vnos, brez uspeha.</item>
+        <item quantity="two">Poskusil %d kandidata za vnos, brez uspeha.</item>
+        <item quantity="few">Poskusil %d kandidate za vnos, brez uspeha.</item>
+        <item quantity="other">Poskusil %d kandidatov za vnos, brez uspeha.</item>
+    </plurals>
+    <string name="toast_reopen_after_change">Za uveljavitev sprememb ponovno zaženite aplikacijo</string>
+    <string name="dialog_button_ignore">Prezri</string>
+    <string name="dialog_button_open_settings">Odpri nastavitve</string>
 </resources>
