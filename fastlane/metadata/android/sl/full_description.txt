@@ -1,0 +1,14 @@
+Vaša predstavnost, vaša pravila.
+
+Jellyfin je odprtokodni, prosti predstavnostni strežnik. Brez stroškov, brez sledenja in brez skritih namenov. Pridobite naš brezplačni strežnik in začnite zbirati vso vašo glasbo, videoposnetke in slike na enem mestu.
+
+Za uporabo aplikacije potrebujete delujoč Jellyfin strežnik. Več informacij na <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
+
+Z Jellyfin strežnikom lahko:
+
+* Gledate TV v živo in posnetke preteklih oddaj z vašega Jellyfin strežnika (zahteva dodatno strojno opremo/storitve)
+* Pretakate vsebine na naprave Chromecast v vašem omrežju
+* Pretakate predstavnost na vašo napravo Android
+* Si ogledate vašo zbirko z enostavnem vmesnikom.
+
+To je uradni odjemalec Jellyfin za Android. Hvala, ker uporabljate Jellyfin!
