@@ -29,7 +29,7 @@ object Dependencies {
 
         // Network
         const val jellyfinSdk = "1.0.0-beta.7"
-        const val jellyfinSdkSnapshot = "latest-SNAPSHOT"
+        const val jellyfinSdkSnapshot = "master-SNAPSHOT"
         const val okHttp = "4.9.1"
         const val coil = "1.1.1"
 

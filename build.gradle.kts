@@ -19,7 +19,7 @@ allprojects {
         google()
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
             content {
-                includeGroup(Dependencies.Groups.jellyfin)
+                includeVersionByRegex(Dependencies.Groups.jellyfin, ".*", ".*-SNAPSHOT")
             }
         }
     }
