@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="downloading">Lejupielādē</string>
-    <string name="mobile_data_and_roaming">Mobilie dati un viesabonēšana</string>
+    <string name="mobile_data_and_roaming">Mobilie Dati un Viesabonēšana</string>
     <string name="mobile_data">Mobilie Dati</string>
     <string name="wifi_only">Tikai WiFi</string>
-    <string name="network_message">Vai vēlaties atļaut lejupielādi izmantojot mobilos vai viesabonēšanas tīklus\? Var tikt piemērota papildus maksa no pakalpojuma piedāvātāja.</string>
+    <string name="network_message">Vai atļaut lejupielādi izmantojot mobilos vai viesabonēšanas tīklus\? Var tikt piemērota papildus maksa no pakalpojuma piedāvātāja.</string>
     <string name="network_title">Atļautie Tīkla Veidi</string>
     <string name="battery_optimizations_message">Lūdzu atspējo baterijas optimizāciju lai atskaņotu saturu kamēr ekrāns ir izslēgts.</string>
     <string name="activity_name_settings">Jellyfin Iestatījumi</string>
@@ -17,10 +17,10 @@
     <string name="playback_info_video_streams">Video straumes</string>
     <string name="playback_info_transcoding">Pārkodēšana: %b</string>
     <string name="playback_info_play_method">Atskaņošanas metode: %s</string>
-    <string name="menu_item_none">Nekāds</string>
+    <string name="menu_item_none">Nekas</string>
     <string name="notification_action_stop">Apturēt</string>
     <string name="notification_action_next">Nākamais</string>
-    <string name="notification_action_pause">Pauzēt</string>
+    <string name="notification_action_pause">Pauze</string>
     <string name="notification_action_play">Atskaņot</string>
     <string name="notification_action_rewind">Attīt</string>
     <string name="notification_action_previous">Iepriekšējais</string>
@@ -31,7 +31,7 @@
     <string name="media_service_car_section_genres">Žanri</string>
     <string name="media_service_car_section_songs">Dziesmas</string>
     <string name="media_service_car_section_artists">Izpildītāji</string>
-    <string name="media_service_car_section_albums">Albumi</string>
+    <string name="media_service_car_section_albums">Albūmi</string>
     <string name="media_service_car_section_recents">Nesen atskaņots</string>
     <string name="download_no_storage_permission">Nevar lejupielādēt datnes bez krātuves atļaujas</string>
     <string name="available_servers_title">Pieejamie serveri</string>
@@ -39,4 +39,18 @@
     <string name="connect_button_text">Savienot</string>
     <string name="connection_error_invalid_version">Serveris lieto neatbalstītu versiju. Atjaunojiet uz jaunāko versiju no jellyfin.org.</string>
     <string name="connect_to_server_title">Savienoties ar Serveri</string>
+    <string name="connection_error_cannot_connect">Savienojums nav izdevies.
+\nLūdzu, pārbaudiet \"hostname\" un jūsu tīkla savienojumu.</string>
+    <string name="connection_error_invalid_format">Ierīcei ir nepareizs ievades formāts</string>
+    <string name="toast_reopen_after_change">Lūdzu atver programmu vēlreiz, pēc tam kad izmaiņas ir veiktas</string>
+    <string name="dialog_button_ignore">Ignorēt</string>
+    <string name="dialog_button_open_settings">Atvērt iestatījumus</string>
+    <string name="dialog_button_close_app">Aizvērt programmu</string>
+    <string name="dialog_button_check_for_updates">Pārbaudīt atjauninājumus</string>
+    <string name="dialog_web_view_outdated_message">\"WebView\" implementācija šajā ierīcē ir novecojusi.
+\nLūdzu, atjaunojiet to.</string>
+    <string name="dialog_web_view_outdated">\"WebView\" novecojis</string>
+    <string name="dialog_web_view_not_supported_message">\"WebView\" skats nav atbalstīts šajā ierīcē.
+\nUzinstalējiet nepieciešamo \"WebView\" implementāciju vai pārejat uz citu ierīci.</string>
+    <string name="dialog_web_view_not_supported">Internta skats nav atbalstīts</string>
 </resources>
