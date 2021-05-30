@@ -9,21 +9,34 @@ complexity:
     functionThreshold: 10
   TooManyFunctions:
     thresholdInFiles: 16
-    thresholdInClasses: 16
+    thresholdInClasses: 20
     thresholdInInterfaces: 8
     thresholdInObjects: 16
     thresholdInEnums: 8
     ignoreOverridden: true
     ignoreDeprecated: true
 
+exceptions:
+  SwallowedException:
+    active: false
+
 naming:
   PackageNaming:
     # Package names must be lowercase letters
     packagePattern: '[a-z]+(\.[a-z]+)*'
 
+performance:
+  SpreadOperator:
+    active: false
+
 style:
   ForbiddenComment:
     # Allow TODOs
     values: [ 'FIXME:', 'STOPSHIP:' ]
+  LoopWithTooManyJumpStatements:
+    maxJumpCount: 2
   MaxLineLength:
     maxLineLength: 200
+  ReturnCount:
+    excludeGuardClauses: true
+    max: 3

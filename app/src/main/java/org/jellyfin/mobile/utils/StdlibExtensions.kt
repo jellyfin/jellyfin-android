@@ -19,5 +19,5 @@ val IntRange.width: Int
 
 @CheckResult
 fun IntRange.scaleInRange(percent: Int): Int {
-    return start + width * percent / 100
+    return start + width * percent / Constants.PERCENT_MAX
 }

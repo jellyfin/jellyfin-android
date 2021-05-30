@@ -10,7 +10,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.*
+import android.webkit.ConsoleMessage
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
+import android.webkit.WebView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
@@ -37,8 +41,20 @@ import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.databinding.FragmentWebviewBinding
 import org.jellyfin.mobile.model.sql.entity.ServerEntity
 import org.jellyfin.mobile.player.PlayerFragment
-import org.jellyfin.mobile.utils.*
+import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER
+import org.jellyfin.mobile.utils.JS_INJECTION_CODE
+import org.jellyfin.mobile.utils.addFragment
+import org.jellyfin.mobile.utils.applyDefault
+import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
+import org.jellyfin.mobile.utils.dip
+import org.jellyfin.mobile.utils.initLocale
+import org.jellyfin.mobile.utils.isOutdated
+import org.jellyfin.mobile.utils.loadAsset
+import org.jellyfin.mobile.utils.replaceFragment
+import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
+import org.jellyfin.mobile.utils.runOnUiThread
+import org.jellyfin.mobile.utils.unescapeJson
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.json.JSONException
 import org.json.JSONObject
@@ -92,6 +108,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
 
         // Setup exclusion rects for gestures
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            @Suppress("MagicNumber")
             webView.doOnNextLayout { webView ->
                 // Maximum allowed exclusion rect height is 200dp,
                 // offsetting 100dp from the center in both directions
@@ -131,49 +148,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
 
     private fun WebView.initialize() {
         if (!appPreferences.ignoreWebViewChecks && isOutdated()) { // Check WebView version
-            AlertDialog.Builder(requireContext()).apply {
-                setTitle(R.string.dialog_web_view_outdated)
-                setMessage(R.string.dialog_web_view_outdated_message)
-                setCancelable(false)
-
-                val webViewPackage = WebViewCompat.getCurrentWebViewPackage(context)
-                if (webViewPackage != null) {
-                    val marketUri = Uri.Builder().apply {
-                        scheme("market")
-                        authority("details")
-                        appendQueryParameter("id", webViewPackage.packageName)
-                    }.build()
-                    val referrerUri = Uri.Builder().apply {
-                        scheme("android-app")
-                        authority(context.packageName)
-                    }.build()
-
-                    val marketIntent = Intent(Intent.ACTION_VIEW).apply {
-                        data = marketUri
-                        putExtra(Intent.EXTRA_REFERRER, referrerUri)
-                    }
-
-                    // Only show button if the intent can be resolved
-                    if (marketIntent.resolveActivity(context.packageManager) != null) {
-                        setNegativeButton(R.string.dialog_button_check_for_updates) { _, _ ->
-                            startActivity(marketIntent)
-                            requireActivity().finishAfterTransition()
-                        }
-                    }
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    setPositiveButton(R.string.dialog_button_open_settings) { _, _ ->
-                        startActivity(Intent(Settings.ACTION_WEBVIEW_SETTINGS))
-                        Toast.makeText(context, R.string.toast_reopen_after_change, Toast.LENGTH_LONG).show()
-                        requireActivity().finishAfterTransition()
-                    }
-                }
-                setNeutralButton(R.string.dialog_button_ignore) { _, _ ->
-                    appPreferences.ignoreWebViewChecks = true
-                    // Re-initialize
-                    initialize()
-                }
-            }.show()
+            showOutdatedWebViewDialog()
             return
         }
 
@@ -261,6 +236,52 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         addJavascriptInterface(externalPlayer, "ExternalPlayer")
 
         loadUrl(server.hostname)
+    }
+
+    private fun showOutdatedWebViewDialog() {
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle(R.string.dialog_web_view_outdated)
+            setMessage(R.string.dialog_web_view_outdated_message)
+            setCancelable(false)
+
+            val webViewPackage = WebViewCompat.getCurrentWebViewPackage(context)
+            if (webViewPackage != null) {
+                val marketUri = Uri.Builder().apply {
+                    scheme("market")
+                    authority("details")
+                    appendQueryParameter("id", webViewPackage.packageName)
+                }.build()
+                val referrerUri = Uri.Builder().apply {
+                    scheme("android-app")
+                    authority(context.packageName)
+                }.build()
+
+                val marketIntent = Intent(Intent.ACTION_VIEW).apply {
+                    data = marketUri
+                    putExtra(Intent.EXTRA_REFERRER, referrerUri)
+                }
+
+                // Only show button if the intent can be resolved
+                if (marketIntent.resolveActivity(context.packageManager) != null) {
+                    setNegativeButton(R.string.dialog_button_check_for_updates) { _, _ ->
+                        startActivity(marketIntent)
+                        requireActivity().finishAfterTransition()
+                    }
+                }
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                setPositiveButton(R.string.dialog_button_open_settings) { _, _ ->
+                    startActivity(Intent(Settings.ACTION_WEBVIEW_SETTINGS))
+                    Toast.makeText(context, R.string.toast_reopen_after_change, Toast.LENGTH_LONG).show()
+                    requireActivity().finishAfterTransition()
+                }
+            }
+            setNeutralButton(R.string.dialog_button_ignore) { _, _ ->
+                appPreferences.ignoreWebViewChecks = true
+                // Re-initialize
+                webView.initialize()
+            }
+        }.show()
     }
 
     fun onConnectedToWebapp() {

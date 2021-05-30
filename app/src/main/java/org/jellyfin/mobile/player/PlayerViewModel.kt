@@ -7,22 +7,40 @@ import android.media.AudioManager
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
 import androidx.core.content.getSystemService
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.analytics.AnalyticsCollector
 import com.google.android.exoplayer2.util.Clock
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
 import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaQueueManager
-import org.jellyfin.mobile.utils.*
+import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
+import org.jellyfin.mobile.utils.applyDefaultAudioAttributes
+import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
+import org.jellyfin.mobile.utils.getRendererIndexByType
+import org.jellyfin.mobile.utils.getVolumeLevelPercent
+import org.jellyfin.mobile.utils.getVolumeRange
+import org.jellyfin.mobile.utils.scaleInRange
+import org.jellyfin.mobile.utils.seekToOffset
+import org.jellyfin.mobile.utils.setPlaybackState
+import org.jellyfin.mobile.utils.toMediaMetadata
+import org.jellyfin.mobile.utils.width
 import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.jellyfin.sdk.api.operations.PlayStateApi
 import org.jellyfin.sdk.model.api.PlaybackProgressInfo
@@ -192,7 +210,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         isMuted = false,
                         canSeek = true,
                         positionTicks = playbackPositionMillis * Constants.TICKS_PER_MILLISECOND,
-                        volumeLevel = (currentVolume - volumeRange.first) * 100 / volumeRange.width,
+                        volumeLevel = (currentVolume - volumeRange.first) * Constants.PERCENT_MAX / volumeRange.width,
                         repeatMode = RepeatMode.REPEAT_NONE,
                     )
                 )

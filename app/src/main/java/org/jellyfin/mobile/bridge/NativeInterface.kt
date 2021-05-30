@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.bridge
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -102,7 +103,7 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         context.startActivity(intent)
         true
-    } catch (e: Exception) {
+    } catch (e: ActivityNotFoundException) {
         Timber.e("openIntent: %s", e.message)
         false
     }

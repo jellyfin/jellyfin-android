@@ -26,11 +26,11 @@ import android.webkit.WebView
 import timber.log.Timber
 
 fun Context.isWebViewSupported(): Boolean {
+    @Suppress("TooGenericExceptionCaught")
     try {
-        // May throw android.webkit.WebViewFactory$MissingWebViewPackageException if WebView
-        // is not installed
+        // May throw android.webkit.WebViewFactory$MissingWebViewPackageException if WebView is not installed
         CookieManager.getInstance()
-    } catch (e: Throwable) {
+    } catch (e: Exception) {
         Timber.e(e)
         return false
     }

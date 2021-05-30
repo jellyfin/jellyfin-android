@@ -203,6 +203,7 @@ class MediaQueueManager(
      * @param initial whether this is an initial selection and checks for re-selection should be skipped.
      * @return true if the audio track was changed
      */
+    @Suppress("ReturnCount")
     fun selectAudioTrack(streamIndex: Int, initial: Boolean = false): Boolean {
         val mediaSource = _mediaQueue.value?.jellyfinMediaSource ?: return false
         val sourceIndex = mediaSource.audioStreams.binarySearchBy(streamIndex, selector = MediaStream::index)
