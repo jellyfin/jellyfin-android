@@ -24,8 +24,8 @@ import org.jellyfin.mobile.viewmodel.MainViewModel
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.koin.android.ext.koin.androidApplication
-import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.androidx.fragment.dsl.fragment
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
