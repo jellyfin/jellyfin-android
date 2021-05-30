@@ -91,4 +91,16 @@
     <string name="pref_exoplayer_allow_background_audio_summary">ஆடியோ மட்டும் மூலம் பின்னணியில் வீடியோக்களை இயக்க அனுமதிக்கவும்</string>
     <string name="pref_music_notification_always_dismissible_summary_on">மீடியா இயக்கப்படும்போது கூட அறிவிப்பை எப்போதும் தள்ளுபடி செய்யலாம்</string>
     <string name="pref_music_notification_always_dismissible_summary_off">பிளேபேக் இடைநிறுத்தப்படும்போது மட்டுமே அறிவிப்பை நிராகரிக்க முடியும்</string>
+    <string name="player_error_unsupported_content">இந்த சாதனத்தால் மீடியாவை இயக்க முடியாது</string>
+    <string name="player_error_network_failure">சேவையகத்திலிருந்து ஊடக தகவலை ஏற்ற முடியவில்லை</string>
+    <string name="player_error_invalid_play_options">பின்னணி தகவலை தீர்க்க முடியவில்லை</string>
+    <string name="connection_error_unsupported_version_or_product">ஆதரிக்கப்படாத பதிப்பு அல்லது தயாரிப்பு</string>
+    <string name="connection_error_unable_to_reach_sever">சேவையகத்தை அடைய முடியவில்லை</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">உள்ளீடு செய்ய %d வேட்பாளரை முயற்சித்தேன், வெற்றி இல்லாமல்.</item>
+        <item quantity="other">உள்ளீடு செய்ய %d வேட்பாளர்களை முயற்சித்தது, வெற்றி இல்லாமல்.</item>
+    </plurals>
+    <string name="toast_reopen_after_change">மாற்றங்கள் செய்யப்பட்ட பிறகு பயன்பாட்டை மீண்டும் திறக்கவும்</string>
+    <string name="dialog_button_ignore">புறக்கணிக்கவும்</string>
+    <string name="dialog_button_open_settings">அமைப்புகளைத் திறக்கவும்</string>
 </resources>
