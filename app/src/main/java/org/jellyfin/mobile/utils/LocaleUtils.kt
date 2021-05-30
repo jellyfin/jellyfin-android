@@ -5,7 +5,7 @@ import android.content.res.Configuration
 import android.os.Build
 import org.jellyfin.mobile.fragment.WebViewFragment
 import timber.log.Timber
-import java.util.*
+import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 

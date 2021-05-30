@@ -8,8 +8,8 @@ import org.jellyfin.mobile.player.PlayerEvent
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 import org.json.JSONObject
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 
 class NativePlayer(private val host: NativePlayerHost) : KoinComponent {

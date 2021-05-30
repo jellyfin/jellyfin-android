@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="playback_info_video_streams"/>
+    <string name="playback_info_video_streams" />
     <string name="pref_category_music_player">Luajtësi i Muzikës</string>
-    <string name="pref_category_video_player"/>
+    <string name="pref_category_video_player" />
     <string name="activity_name_settings">Cilësimet e Jellyfin</string>
     <string name="external_player_unknown_error">Një gabim i panjohur në player-in e jashtëm. Gjurmimi i luajtjes është çaktivizuar.</string>
     <string name="external_player_invalid_player">Nuk është zgjedhur asnjë player i jashtëm. Gjurmimi i luajtjes është çaktivizuar.</string>

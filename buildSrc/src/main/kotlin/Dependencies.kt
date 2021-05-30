@@ -8,7 +8,7 @@ object Dependencies {
         const val coroutines = "1.5.0"
 
         // Core
-        const val koin = "2.1.6"
+        const val koin = "3.0.2"
         const val appCompat = "1.3.0"
         const val androidxCore = "1.5.0"
         const val activity = "1.2.3"
@@ -62,13 +62,11 @@ object Dependencies {
     }
 
     object Core {
-        const val koin = "io.insert-koin:koin-android:${Versions.koin}"
-        const val koinViewModel = "io.insert-koin:koin-android-viewmodel:${Versions.koin}"
+        const val koinAndroid = "io.insert-koin:koin-android:${Versions.koin}"
         val appCompat = androidx("appcompat", Versions.appCompat)
         val androidx = androidxKtx("core", Versions.androidxCore)
         val activity = androidxKtx("activity", Versions.activity)
         val fragment = androidxKtx("fragment", Versions.fragment)
-        const val koinFragment = "io.insert-koin:koin-androidx-fragment:${Versions.koin}"
         val exoPlayer = exoPlayer("core")
     }
 

@@ -88,6 +88,10 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    kotlinOptions {
+        @Suppress("SuspiciousCollectionReassignment")
+        freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
+    }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
     }
@@ -109,13 +113,11 @@ dependencies {
     implementation(Dependencies.Kotlin.coroutinesAndroid)
 
     // Core
-    implementation(Dependencies.Core.koin)
-    implementation(Dependencies.Core.koinViewModel)
+    implementation(Dependencies.Core.koinAndroid)
     implementation(Dependencies.Core.appCompat)
     implementation(Dependencies.Core.androidx)
     implementation(Dependencies.Core.activity)
     implementation(Dependencies.Core.fragment)
-    implementation(Dependencies.Core.koinFragment)
     implementation(Dependencies.Core.exoPlayer)
 
     // Lifecycle

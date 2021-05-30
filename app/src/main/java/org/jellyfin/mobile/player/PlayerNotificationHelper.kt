@@ -29,8 +29,8 @@ import org.jellyfin.mobile.utils.Constants.VIDEO_PLAYER_NOTIFICATION_ID
 import org.jellyfin.mobile.utils.createMediaNotificationChannel
 import org.jellyfin.sdk.api.operations.ImageApi
 import org.jellyfin.sdk.model.api.ImageType
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinComponent {

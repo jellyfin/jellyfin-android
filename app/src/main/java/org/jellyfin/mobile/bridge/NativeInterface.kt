@@ -38,9 +38,9 @@ import org.jellyfin.sdk.model.DeviceInfo
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import org.koin.core.KoinComponent
-import org.koin.core.get
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.component.inject
 import timber.log.Timber
 
 class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {

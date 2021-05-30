@@ -30,8 +30,8 @@ import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.PlayMethod
 import org.json.JSONObject
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
 

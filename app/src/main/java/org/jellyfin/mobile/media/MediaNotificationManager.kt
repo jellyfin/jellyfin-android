@@ -37,8 +37,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.utils.Constants
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /**
  * A wrapper class for ExoPlayer's PlayerNotificationManager. It sets up the notification shown to
