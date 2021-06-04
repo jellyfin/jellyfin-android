@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.app.DownloadManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -42,7 +43,7 @@ fun MainActivity.requestNoBatteryOptimizations() {
                     try {
                         val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
                         startActivity(intent)
-                    } catch (e: Exception) {
+                    } catch (e: ActivityNotFoundException) {
                         Timber.e(e)
                     }
 
@@ -59,7 +60,8 @@ suspend fun WebViewFragment.requestDownload(uri: Uri, title: String, filename: S
     val appPreferences: AppPreferences = get()
 
     // Storage permission for downloads isn't necessary from Android 10 onwards
-    if (Build.VERSION.SDK_INT <= 28) {
+    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+        @Suppress("MagicNumber")
         val granted = withTimeout(2 * 60 * 1000 /* 2 minutes */) {
             suspendCoroutine<Boolean> { continuation ->
                 requireActivity().requestPermission(WRITE_EXTERNAL_STORAGE) { requestPermissionsResult ->
@@ -137,17 +139,17 @@ fun Context.createMediaNotificationChannel(notificationManager: NotificationMana
 
 @Suppress("DEPRECATION")
 fun Context.getDownloadsPaths(): List<String> = ArrayList<String>().apply {
-    getExternalFilesDirs(null).forEach { directory ->
-        /* Ignore currently unavailable shared storage */
-        if (directory != null) {
-            val path = directory.absolutePath
-            val androidFolderIndex = path.indexOf("/Android")
-            if (androidFolderIndex != -1) {
-                val storageDirectory = File(path.substring(0, androidFolderIndex))
-                if (storageDirectory.isDirectory) {
-                    add(File(storageDirectory, Environment.DIRECTORY_DOWNLOADS).absolutePath)
-                }
-            }
+    for (directory in getExternalFilesDirs(null)) {
+        // Ignore currently unavailable shared storage
+        if (directory == null) continue
+
+        val path = directory.absolutePath
+        val androidFolderIndex = path.indexOf("/Android")
+        if (androidFolderIndex == -1) continue
+
+        val storageDirectory = File(path.substring(0, androidFolderIndex))
+        if (storageDirectory.isDirectory) {
+            add(File(storageDirectory, Environment.DIRECTORY_DOWNLOADS).absolutePath)
         }
     }
     if (isEmpty()) {

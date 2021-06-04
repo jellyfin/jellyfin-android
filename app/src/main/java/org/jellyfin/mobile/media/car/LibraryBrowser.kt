@@ -24,6 +24,7 @@ import org.jellyfin.mobile.media.setMediaId
 import org.jellyfin.mobile.media.setMediaUri
 import org.jellyfin.mobile.media.setTitle
 import org.jellyfin.mobile.media.setTrackNumber
+import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.jellyfin.sdk.api.operations.GenresApi
 import org.jellyfin.sdk.api.operations.ImageApi
 import org.jellyfin.sdk.api.operations.ItemsApi
@@ -41,6 +42,7 @@ import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
 import java.util.*
 
+@Suppress("TooManyFunctions")
 class LibraryBrowser(
     private val context: Context,
     private val apiController: ApiController,
@@ -73,6 +75,7 @@ class LibraryBrowser(
 
         val split = parentId.split('|')
 
+        @Suppress("MagicNumber")
         if (split.size !in 1..3)
             return null
 
@@ -110,6 +113,7 @@ class LibraryBrowser(
 
     suspend fun buildPlayQueue(mediaId: String): Pair<List<MediaMetadataCompat>, Int>? {
         val split = mediaId.split('|')
+        @Suppress("MagicNumber")
         if (split.size != 3)
             return null
 
@@ -123,7 +127,8 @@ class LibraryBrowser(
                 LibraryPage.PLAYLIST -> getPlaylist(collectionId)
                 else -> null
             }
-        } catch (t: Throwable) {
+        } catch (e: ApiClientException) {
+            Timber.e(e)
             null
         } ?: return null
 

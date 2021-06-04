@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.player
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.PictureInPictureParams
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
@@ -27,6 +28,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.content.getSystemService
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
@@ -353,7 +355,7 @@ class PlayerFragment : Fragment() {
                     setBounds(left, viewCenterY - viewCenterX / 2, right, viewCenterY + viewCenterX / 2)
                     setHotspot(e.x, e.y)
                     state = intArrayOf(android.R.attr.state_enabled, android.R.attr.state_pressed)
-                    playerView.postDelayed(100) {
+                    playerView.postDelayed(Constants.DOUBLE_TAP_RIPPLE_DURATION_MS) {
                         state = IntArray(0)
                     }
                 }
@@ -391,7 +393,7 @@ class PlayerFragment : Fragment() {
                 val viewCenterX = playerView.measuredWidth / 2
 
                 // Distance to swipe to go from min to max
-                val distanceFull = playerView.measuredHeight * 0.66f
+                val distanceFull = playerView.measuredHeight * Constants.FULL_SWIPE_RANGE_SCREEN_RATIO
                 val ratioChange = distanceY / distanceFull
 
                 if (firstEvent.x.toInt() > viewCenterX) {
@@ -421,7 +423,7 @@ class PlayerFragment : Fragment() {
                         val brightness = window.brightness
                         swipeGestureValueTracker = when (brightness) {
                             in brightnessRange -> brightness
-                            else -> System.getFloat(requireContext().contentResolver, System.SCREEN_BRIGHTNESS) / 255
+                            else -> System.getFloat(requireContext().contentResolver, System.SCREEN_BRIGHTNESS) / Constants.SCREEN_BRIGHTNESS_MAX
                         }
                     }
 
@@ -429,8 +431,8 @@ class PlayerFragment : Fragment() {
                     window.brightness = swipeGestureValueTracker
 
                     gestureIndicatorOverlayImage.setImageResource(R.drawable.ic_brightness_white_24dp)
-                    gestureIndicatorOverlayProgress.max = 100
-                    gestureIndicatorOverlayProgress.progress = (swipeGestureValueTracker * 100).toInt()
+                    gestureIndicatorOverlayProgress.max = Constants.PERCENT_MAX
+                    gestureIndicatorOverlayProgress.progress = (swipeGestureValueTracker * Constants.PERCENT_MAX).toInt()
                 }
 
                 gestureIndicatorOverlayLayout.isVisible = true
@@ -443,14 +445,14 @@ class PlayerFragment : Fragment() {
 
             override fun onScale(detector: ScaleGestureDetector): Boolean {
                 val scaleFactor = detector.scaleFactor
-                if (abs(scaleFactor - 1f) > 0.01f) {
+                if (abs(scaleFactor - Constants.ZOOM_SCALE_BASE) > Constants.ZOOM_SCALE_THRESHOLD) {
                     isZoomEnabled = scaleFactor > 1
                     updateZoomMode(isZoomEnabled)
                 }
                 return true
             }
 
-            override fun onScaleEnd(detector: ScaleGestureDetector) {}
+            override fun onScaleEnd(detector: ScaleGestureDetector) = Unit
         })
         zoomGestureDetector.isQuickScaleEnabled = false
 
@@ -518,17 +520,20 @@ class PlayerFragment : Fragment() {
 
     fun onUserLeaveHint() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && viewModel.playerOrNull?.isPlaying == true) {
-            with(requireActivity()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    val params = PictureInPictureParams.Builder().apply {
-                        setAspectRatio(currentVideoStream?.aspectRational)
-                    }.build()
-                    enterPictureInPictureMode(params)
-                } else {
-                    @Suppress("DEPRECATION")
-                    enterPictureInPictureMode()
-                }
-            }
+            requireActivity().enterPictureInPicture()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun Activity.enterPictureInPicture() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val params = PictureInPictureParams.Builder().apply {
+                setAspectRatio(currentVideoStream?.aspectRational)
+            }.build()
+            enterPictureInPictureMode(params)
+        } else {
+            @Suppress("DEPRECATION")
+            enterPictureInPictureMode()
         }
     }
 

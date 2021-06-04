@@ -21,12 +21,20 @@ import androidx.mediarouter.media.MediaControlIntent
 import androidx.mediarouter.media.MediaRouteSelector
 import androidx.mediarouter.media.MediaRouter
 import androidx.mediarouter.media.MediaRouterParams
-import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.ControlDispatcher
+import com.google.android.exoplayer2.ExoPlaybackException
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.cast.CastPlayerProvider
 import org.jellyfin.mobile.cast.ICastPlayerProvider
@@ -34,6 +42,7 @@ import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.media.car.LibraryBrowser
 import org.jellyfin.mobile.media.car.LibraryPage
 import org.jellyfin.mobile.utils.toast
+import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import com.google.android.exoplayer2.MediaItem as ExoPlayerMediaItem
@@ -164,8 +173,8 @@ class MediaService : MediaBrowserServiceCompat() {
 
             val items = try {
                 if (apiController.currentUser != null) libraryBrowser.loadLibrary(parentId) else null
-            } catch (t: Throwable) {
-                Timber.e(t)
+            } catch (e: ApiClientException) {
+                Timber.e(e)
                 null
             }
             result.sendResult(items ?: emptyList())
@@ -279,8 +288,8 @@ class MediaService : MediaBrowserServiceCompat() {
             serviceScope.launch {
                 val recents = try {
                     libraryBrowser.getDefaultRecents()
-                } catch (t: Throwable) {
-                    Timber.e(t)
+                } catch (e: ApiClientException) {
+                    Timber.e(e)
                     null
                 }
                 if (recents != null) {
@@ -309,8 +318,8 @@ class MediaService : MediaBrowserServiceCompat() {
             } else serviceScope.launch {
                 val results = try {
                     libraryBrowser.getSearchResults(query, extras)
-                } catch (t: Throwable) {
-                    Timber.e(t)
+                } catch (e: ApiClientException) {
+                    Timber.e(e)
                     null
                 }
                 if (results != null) {

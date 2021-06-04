@@ -3,6 +3,7 @@ package org.jellyfin.mobile.utils
 import android.media.session.PlaybackState
 import org.jellyfin.mobile.BuildConfig
 
+@Suppress("MagicNumber")
 object Constants {
     // App Info
     const val APP_INFO_NAME = "Jellyfin Android"
@@ -54,6 +55,7 @@ object Constants {
         PlaybackState.ACTION_SKIP_TO_PREVIOUS or
         PlaybackState.ACTION_SET_RATING
     const val MEDIA_PLAYER_NOTIFICATION_ID = 42
+    const val REMOTE_PLAYER_CONTENT_INTENT_REQUEST_CODE = 100
 
     // Music player intent actions
     const val ACTION_SHOW_PLAYER = "org.jellyfin.mobile.intent.action.SHOW_PLAYER"
@@ -88,6 +90,11 @@ object Constants {
     const val DEFAULT_CENTER_OVERLAY_TIMEOUT_MS = 250
     const val DEFAULT_SEEK_TIME_MS = 5000L
     const val MAX_SKIP_TO_PREV_MS = 3000L
+    const val DOUBLE_TAP_RIPPLE_DURATION_MS = 100L
+    const val FULL_SWIPE_RANGE_SCREEN_RATIO = 0.66f
+    const val SCREEN_BRIGHTNESS_MAX = 255
+    const val ZOOM_SCALE_BASE = 1f
+    const val ZOOM_SCALE_THRESHOLD = 0.01f
     const val SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS: Long = PlaybackState.ACTION_PLAY_PAUSE or
         PlaybackState.ACTION_PLAY or
         PlaybackState.ACTION_PAUSE or
@@ -113,4 +120,7 @@ object Constants {
     // Orientation constants
     val ORIENTATION_PORTRAIT_RANGE = CombinedIntRange(340..360, 0..20)
     val ORIENTATION_LANDSCAPE_RANGE = CombinedIntRange(70..110, 250..290)
+
+    // Misc
+    const val PERCENT_MAX = 100
 }

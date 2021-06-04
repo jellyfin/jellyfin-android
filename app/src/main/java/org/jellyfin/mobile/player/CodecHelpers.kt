@@ -4,6 +4,7 @@ import android.media.MediaCodecInfo.CodecProfileLevel
 import android.media.MediaFormat
 import com.google.android.exoplayer2.util.MimeTypes
 
+@Suppress("TooManyFunctions")
 object CodecHelpers {
     fun getVideoCodec(mimeType: String): String? = when (mimeType) {
         MediaFormat.MIMETYPE_VIDEO_MPEG2 -> "mpeg2video"
@@ -132,15 +133,16 @@ object CodecHelpers {
         else -> null
     }?.let { Integer.valueOf(it) }
 
-    // FIXME: server only handles numeric levels
-    private fun getMPEG2VideoLevel(@Suppress("UNUSED_PARAMETER") level: Int): String? = null /*when (level) {
-        CodecProfileLevel.MPEG2LevelLL -> "ll"
-        CodecProfileLevel.MPEG2LevelML -> "ml"
-        CodecProfileLevel.MPEG2LevelH14 -> "h14"
-        CodecProfileLevel.MPEG2LevelHL -> "hl"
-        CodecProfileLevel.MPEG2LevelHP -> "hp"
+    /**
+     * Level numbers taken from FFmpeg `libavcodec/mpeg12enc.c`.
+     */
+    private fun getMPEG2VideoLevel(level: Int): String? = when (level) {
+        CodecProfileLevel.MPEG2LevelLL -> "10"
+        CodecProfileLevel.MPEG2LevelML -> "8"
+        CodecProfileLevel.MPEG2LevelH14 -> "6"
+        CodecProfileLevel.MPEG2LevelHL -> "4"
         else -> null
-    }*/
+    }
 
     private fun getH263Level(level: Int): String? = when (level) {
         CodecProfileLevel.H263Level10 -> "10"

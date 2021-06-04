@@ -13,6 +13,7 @@ import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.source.MediaQueueManager
 import org.jellyfin.sdk.model.api.MediaStream
+import java.util.Locale
 
 /**
  *  Provides a menu UI for audio, subtitle and video stream selection
@@ -94,25 +95,30 @@ class PlaybackMenus(
             joinToString(
                 "\n",
                 "${fragment.getString(R.string.playback_info_video_streams)}:\n",
-                limit = 3,
-                truncated = fragment.getString(R.string.playback_info_and_x_more, size - 3)
-            ) {
-                val bitrate = it.bitRate ?: 0
+                limit = MAX_VIDEO_STREAMS_DISPLAY,
+                truncated = fragment.getString(R.string.playback_info_and_x_more, size - MAX_VIDEO_STREAMS_DISPLAY)
+            ) { stream ->
+                val bitrate = stream.bitRate ?: 0
+
+                @Suppress("MagicNumber")
                 val bitrateString = when {
-                    bitrate > 1_000_000 -> String.format("%.2f Mbps", bitrate.toDouble() / 1_000_000)
-                    bitrate > 1_000 -> String.format("%.2f kbps", bitrate.toDouble() / 1_000)
-                    else -> String.format("%d kbps", bitrate / 1000)
+                    bitrate > 1_000_000 -> "%.2f Mbps".format(Locale.getDefault(), bitrate.toDouble() / 1_000_000)
+                    bitrate > 1_000 -> "%.2f Kbps".format(Locale.getDefault(), bitrate.toDouble() / 1_000)
+                    else -> "%d Kbps".format(bitrate / 1000)
                 }
-                "- ${it.displayTitle} ($bitrateString)"
+                "- ${stream.displayTitle} ($bitrateString)"
             }
         }
         val audioTracksInfo = mediaSource.audioStreams.run {
             joinToString(
                 "\n",
                 "${fragment.getString(R.string.playback_info_audio_streams)}:\n",
-                limit = 5,
-                truncated = fragment.getString(R.string.playback_info_and_x_more, size - 3)
-            ) { "- ${it.displayTitle} (${it.language})" }
+                limit = MAX_AUDIO_STREAMS_DISPLAY,
+                truncated = fragment.getString(R.string.playback_info_and_x_more, size - MAX_AUDIO_STREAMS_DISPLAY)
+            ) { stream ->
+                val languageString = stream.language?.let { lang -> " ($lang)" }.orEmpty()
+                "- ${stream.displayTitle}$languageString"
+            }
         }
         playbackInfo.text = listOf(
             playMethod,
@@ -154,13 +160,13 @@ class PlaybackMenus(
     }
 
     private fun createSpeedMenu() = PopupMenu(context, speedButton).apply {
-        for (step in 2..8) {
-            val newSpeed = step * 0.25f
+        for (step in SPEED_MENU_STEP_MIN..SPEED_MENU_STEP_MAX) {
+            val newSpeed = step * SPEED_MENU_STEP_SIZE
             menu.add(SPEED_MENU_GROUP, step, Menu.NONE, "${newSpeed}x").isChecked = newSpeed == 1f
         }
         menu.setGroupCheckable(SPEED_MENU_GROUP, true, true)
         setOnMenuItemClickListener { clickedItem: MenuItem ->
-            fragment.onSpeedSelected(clickedItem.itemId * 0.25f).also { success ->
+            fragment.onSpeedSelected(clickedItem.itemId * SPEED_MENU_STEP_SIZE).also { success ->
                 if (success) {
                     menu.forEach { item ->
                         item.isChecked = false
@@ -206,5 +212,12 @@ class PlaybackMenus(
         private const val SUBTITLES_MENU_GROUP = 0
         private const val AUDIO_MENU_GROUP = 1
         private const val SPEED_MENU_GROUP = 2
+
+        private const val MAX_VIDEO_STREAMS_DISPLAY = 3
+        private const val MAX_AUDIO_STREAMS_DISPLAY = 5
+
+        private const val SPEED_MENU_STEP_SIZE = 0.25f
+        private const val SPEED_MENU_STEP_MIN = 2 // → 0.5x
+        private const val SPEED_MENU_STEP_MAX = 8 // → 2x
     }
 }

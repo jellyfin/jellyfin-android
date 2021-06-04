@@ -44,7 +44,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     val allowBackgroundAudio: Boolean
         get() = appPreferences.exoPlayerAllowBackgroundAudio
 
-    @Suppress("DEPRECATION")
+    @Suppress("DEPRECATION", "LongMethod")
     fun postNotification() {
         val nm = notificationManager ?: return
         val player = viewModel.playerOrNull ?: return

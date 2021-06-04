@@ -14,7 +14,6 @@ import android.graphics.Bitmap
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaMetadata
-import android.media.Rating
 import android.media.session.MediaController
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
@@ -154,7 +153,10 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     private fun startWakelock() {
-        if (!wakeLock.isHeld) wakeLock.acquire(4 * 60 * 60 * 1000L /* 4 hours */)
+        if (!wakeLock.isHeld) {
+            @Suppress("MagicNumber")
+            wakeLock.acquire(4 * 60 * 60 * 1000L /* 4 hours */)
+        }
     }
 
     private fun stopWakelock() {
@@ -186,6 +188,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         }
     }
 
+    @Suppress("ComplexMethod", "LongMethod")
     private fun notify(handledIntent: Intent) {
         if (handledIntent.getStringExtra(EXTRA_PLAYER_ACTION) == "playbackstop") {
             onStopped()
@@ -241,6 +244,7 @@ class RemotePlayerService : Service(), CoroutineScope {
 
             val style = Notification.MediaStyle().apply {
                 setMediaSession(mediaSession.sessionToken)
+                @Suppress("MagicNumber")
                 val compactActions = if (supportsNativeSeek) intArrayOf(0, 1, 2) else intArrayOf(0, 2, 4)
                 setShowActionsInCompactView(*compactActions)
             }
@@ -318,7 +322,7 @@ class RemotePlayerService : Service(), CoroutineScope {
             action = Constants.ACTION_SHOW_PLAYER
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
-        return PendingIntent.getActivity(this, 100, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+        return PendingIntent.getActivity(this, Constants.REMOTE_PLAYER_CONTENT_INTENT_REQUEST_CODE, intent, PendingIntent.FLAG_CANCEL_CURRENT)
     }
 
     private fun generateAction(icon: Int, @StringRes title: Int, intentAction: String): Notification.Action {
@@ -372,8 +376,6 @@ class RemotePlayerService : Service(), CoroutineScope {
                     val canSeek = (currentState.actions and PlaybackState.ACTION_SEEK_TO) != 0L
                     setPlaybackState(isPlaying, pos, canSeek)
                 }
-
-                override fun onSetRating(rating: Rating) {}
             })
         }
     }

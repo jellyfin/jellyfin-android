@@ -10,6 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class PermissionRequestHelper {
     private val permissionRequests: SparseArray<PermissionRequestCallback> = SparseArray<PermissionRequestCallback>()
+
+    @Suppress("MagicNumber")
     private var requestCode = AtomicInteger(50000) // start at a high number to prevent collisions
 
     fun getRequestCode() = requestCode.getAndIncrement()

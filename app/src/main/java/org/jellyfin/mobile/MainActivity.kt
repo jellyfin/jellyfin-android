@@ -46,7 +46,9 @@ class MainActivity : AppCompatActivity() {
             serviceBinder = binder as? RemotePlayerService.ServiceBinder
         }
 
-        override fun onServiceDisconnected(componentName: ComponentName) {}
+        override fun onServiceDisconnected(componentName: ComponentName) {
+            serviceBinder = null
+        }
     }
 
     private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(this) }

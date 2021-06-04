@@ -48,7 +48,7 @@ fun MediaSession.setPlaybackState(player: Player, playbackActions: Long) {
         Player.STATE_IDLE, Player.STATE_ENDED -> PlaybackState.STATE_NONE
         Player.STATE_READY -> if (player.isPlaying) PlaybackState.STATE_PLAYING else PlaybackState.STATE_PAUSED
         Player.STATE_BUFFERING -> PlaybackState.STATE_BUFFERING
-        else -> throw RuntimeException("Invalid Player playbackState $playerState")
+        else -> throw IllegalStateException("Invalid player playbackState $playerState")
     }
     setPlaybackState(playbackState, player.currentPosition, playbackActions)
 }
@@ -63,7 +63,7 @@ fun AudioManager.getVolumeLevelPercent(): Int {
     val stream = AudioManager.STREAM_MUSIC
     val volumeRange = getVolumeRange(stream)
     val currentVolume = getStreamVolume(stream)
-    return (currentVolume - volumeRange.first) * 100 / volumeRange.width
+    return (currentVolume - volumeRange.first) * Constants.PERCENT_MAX / volumeRange.width
 }
 
 /**

@@ -107,30 +107,31 @@ class DeviceProfileBuilder {
         ignoreTranscodeByteRangeRequests = false,
     )
 
+    @Suppress("NestedBlockDepth")
     private fun getAndroidCodecs(): Pair<Map<String, DeviceCodec.Video>, Map<String, DeviceCodec.Audio>> {
         val videoCodecs: MutableMap<String, DeviceCodec.Video> = HashMap()
         val audioCodecs: MutableMap<String, DeviceCodec.Audio> = HashMap()
 
         val androidCodecs = MediaCodecList(MediaCodecList.REGULAR_CODECS)
         for (codecInfo in androidCodecs.codecInfos) {
-            if (!codecInfo.isEncoder) {
-                for (mimeType in codecInfo.supportedTypes) {
-                    val codec = DeviceCodec.from(codecInfo.getCapabilitiesForType(mimeType)) ?: continue
-                    val name = codec.name
-                    when (codec) {
-                        is DeviceCodec.Video -> {
-                            if (videoCodecs.containsKey(name)) {
-                                videoCodecs[name] = videoCodecs[name]!!.mergeCodec(codec)
-                            } else {
-                                videoCodecs[name] = codec
-                            }
+            if (codecInfo.isEncoder) continue
+
+            for (mimeType in codecInfo.supportedTypes) {
+                val codec = DeviceCodec.from(codecInfo.getCapabilitiesForType(mimeType)) ?: continue
+                val name = codec.name
+                when (codec) {
+                    is DeviceCodec.Video -> {
+                        if (videoCodecs.containsKey(name)) {
+                            videoCodecs[name] = videoCodecs[name]!!.mergeCodec(codec)
+                        } else {
+                            videoCodecs[name] = codec
                         }
-                        is DeviceCodec.Audio -> {
-                            if (audioCodecs.containsKey(mimeType)) {
-                                audioCodecs[name] = audioCodecs[name]!!.mergeCodec(codec)
-                            } else {
-                                audioCodecs[name] = codec
-                            }
+                    }
+                    is DeviceCodec.Audio -> {
+                        if (audioCodecs.containsKey(mimeType)) {
+                            audioCodecs[name] = audioCodecs[name]!!.mergeCodec(codec)
+                        } else {
+                            audioCodecs[name] = codec
                         }
                     }
                 }

@@ -93,6 +93,7 @@ class ConnectFragment : Fragment() {
 
         // Show keyboard
         serverSetupLayout.doOnNextLayout {
+            @Suppress("MagicNumber")
             hostInput.postDelayed(25) {
                 hostInput.requestFocus()
 
