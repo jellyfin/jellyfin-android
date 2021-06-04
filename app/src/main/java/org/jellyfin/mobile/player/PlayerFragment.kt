@@ -452,9 +452,7 @@ class PlayerFragment : Fragment() {
                 return true
             }
 
-            @Suppress("EmptyFunctionBlock")
-            override fun onScaleEnd(detector: ScaleGestureDetector) {
-            }
+            override fun onScaleEnd(detector: ScaleGestureDetector) = Unit
         })
         zoomGestureDetector.isQuickScaleEnabled = false
 

@@ -103,8 +103,8 @@ class PlaybackMenus(
                 @Suppress("MagicNumber")
                 val bitrateString = when {
                     bitrate > 1_000_000 -> "%.2f Mbps".format(Locale.getDefault(), bitrate.toDouble() / 1_000_000)
-                    bitrate > 1_000 -> "%.2f kbps".format(Locale.getDefault(), bitrate.toDouble() / 1_000)
-                    else -> "%d kbps".format(bitrate / 1000)
+                    bitrate > 1_000 -> "%.2f Kbps".format(Locale.getDefault(), bitrate.toDouble() / 1_000)
+                    else -> "%d Kbps".format(bitrate / 1000)
                 }
                 "- ${stream.displayTitle} ($bitrateString)"
             }

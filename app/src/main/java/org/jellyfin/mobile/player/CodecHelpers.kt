@@ -134,7 +134,7 @@ object CodecHelpers {
     }?.let { Integer.valueOf(it) }
 
     /**
-     * Level numbers taken from FFmpeg libavcodec/mpeg12enc.c
+     * Level numbers taken from FFmpeg `libavcodec/mpeg12enc.c`.
      */
     private fun getMPEG2VideoLevel(level: Int): String? = when (level) {
         CodecProfileLevel.MPEG2LevelLL -> "10"
