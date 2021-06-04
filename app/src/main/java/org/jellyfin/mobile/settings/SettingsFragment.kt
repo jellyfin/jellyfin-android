@@ -69,13 +69,13 @@ class SettingsFragment : Fragment() {
             titleRes = R.string.pref_category_video_player
         }
         val videoPlayerOptions = listOf(
-            SelectionItem(VideoPlayerType.EXO_PLAYER, R.string.video_player_native, R.string.video_player_native_description),
             SelectionItem(VideoPlayerType.WEB_PLAYER, R.string.video_player_web, R.string.video_player_web_description),
+            SelectionItem(VideoPlayerType.EXO_PLAYER, R.string.video_player_native, R.string.video_player_native_description),
             SelectionItem(VideoPlayerType.EXTERNAL_PLAYER, R.string.video_player_external, R.string.video_player_external_description),
         )
         singleChoice(Constants.PREF_VIDEO_PLAYER_TYPE, videoPlayerOptions) {
             titleRes = R.string.pref_video_player_type_title
-            initialSelection = VideoPlayerType.EXO_PLAYER
+            initialSelection = VideoPlayerType.WEB_PLAYER
             defaultOnSelectionChange { selection ->
                 swipeGesturesPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER

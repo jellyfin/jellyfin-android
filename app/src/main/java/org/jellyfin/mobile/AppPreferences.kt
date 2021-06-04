@@ -89,7 +89,7 @@ class AppPreferences(context: Context) {
 
     @VideoPlayerType
     val videoPlayerType: String
-        get() = sharedPreferences.getString(Constants.PREF_VIDEO_PLAYER_TYPE, VideoPlayerType.EXO_PLAYER)!!
+        get() = sharedPreferences.getString(Constants.PREF_VIDEO_PLAYER_TYPE, VideoPlayerType.WEB_PLAYER)!!
 
     val exoPlayerAllowSwipeGestures: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_ALLOW_SWIPE_GESTURES, true)
