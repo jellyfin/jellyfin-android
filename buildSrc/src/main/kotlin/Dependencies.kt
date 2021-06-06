@@ -1,7 +1,7 @@
 object Dependencies {
     object Versions {
         // Gradle plugins
-        const val dependencyUpdates = "0.38.0"
+        const val dependencyUpdates = "0.39.0"
         const val detekt = "1.17.1"
 
         // KotlinX
@@ -13,7 +13,7 @@ object Dependencies {
         const val androidxCore = "1.5.0"
         const val activity = "1.2.3"
         const val fragment = "1.3.4"
-        const val exoPlayer = "2.13.3"
+        const val exoPlayer = "2.14.0"
 
         // Lifecycle
         const val lifecycleExtensions = "2.3.1"

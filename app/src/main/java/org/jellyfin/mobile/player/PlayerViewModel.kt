@@ -53,7 +53,7 @@ import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.util.*
 
-class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.EventListener {
+class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
     private val apiController by inject<ApiController>()
     private val playStateApi by inject<PlayStateApi>()
 
@@ -311,7 +311,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
         val parameters = player.playbackParameters
         if (parameters.speed != speed) {
-            player.setPlaybackParameters(parameters.withSpeed(speed))
+            player.playbackParameters = parameters.withSpeed(speed)
             return true
         }
         return false

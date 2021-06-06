@@ -77,7 +77,7 @@ class MediaService : MediaBrowserServiceCompat() {
         .build()
 
     @Suppress("MemberVisibilityCanBePrivate")
-    val playerListener: Player.EventListener = PlayerEventListener()
+    val playerListener: Player.Listener = PlayerEventListener()
 
     private val exoPlayer: SimpleExoPlayer by lazy {
         SimpleExoPlayer.Builder(this).build().apply {
@@ -363,7 +363,7 @@ class MediaService : MediaBrowserServiceCompat() {
     /**
      * Listen for events from ExoPlayer.
      */
-    private inner class PlayerEventListener : Player.EventListener {
+    private inner class PlayerEventListener : Player.Listener {
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) {
                 Player.STATE_BUFFERING,
