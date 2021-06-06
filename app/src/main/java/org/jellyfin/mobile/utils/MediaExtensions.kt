@@ -9,6 +9,7 @@ import android.media.session.MediaSession
 import android.media.session.PlaybackState
 import android.os.Build
 import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
@@ -80,14 +81,14 @@ inline fun SimpleExoPlayer.applyDefaultAudioAttributes(@C.AudioContentType conte
 /**
  * Get the index of the first renderer with the specified [type]
  */
-fun Player.getRendererIndexByType(type: Int): Int {
+fun ExoPlayer.getRendererIndexByType(type: Int): Int {
     for (i in 0 until rendererCount) {
         if (getRendererType(i) == type) return i
     }
     return -1
 }
 
-fun Player.seekToOffset(offsetMs: Long) {
+fun ExoPlayer.seekToOffset(offsetMs: Long) {
     var positionMs = currentPosition + offsetMs
     val durationMs = duration
     if (durationMs != C.TIME_UNSET) {
