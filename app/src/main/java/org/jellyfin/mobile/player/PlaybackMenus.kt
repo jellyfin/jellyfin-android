@@ -12,6 +12,7 @@ import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.source.MediaQueueManager
+import org.jellyfin.mobile.utils.QualityOption
 import org.jellyfin.sdk.model.api.MediaStream
 import java.util.Locale
 
@@ -30,11 +31,13 @@ class PlaybackMenus(
     private val audioStreamsButton: View by playerControlsBinding::audioStreamsButton
     private val subtitlesButton: ImageButton by playerControlsBinding::subtitlesButton
     private val speedButton: View by playerControlsBinding::speedButton
+    private val qualityButton: View by playerControlsBinding::qualityButton
     private val infoButton: View by playerControlsBinding::infoButton
     private val playbackInfo: TextView by playerBinding::playbackInfo
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
     private val speedMenu: PopupMenu = createSpeedMenu()
+    private val qualityMenu: PopupMenu = createQualityMenu()
 
     private var subtitleCount = 0
     private var subtitlesOn = false
@@ -70,6 +73,10 @@ class PlaybackMenus(
             fragment.suppressControllerAutoHide(true)
             speedMenu.show()
         }
+        qualityButton.setOnClickListener {
+            fragment.suppressControllerAutoHide(true)
+            qualityMenu.show()
+        }
         infoButton.setOnClickListener {
             playbackInfo.isVisible = !playbackInfo.isVisible
         }
@@ -78,7 +85,7 @@ class PlaybackMenus(
         }
     }
 
-    fun onQueueItemChanged(queueItem: MediaQueueManager.QueueItem.Loaded) {
+    fun onQueueItemChanged(queueItem: MediaQueueManager.QueueItem.Loaded, qualityOptions: List<QualityOption>) {
         nextButton.isEnabled = queueItem.hasNext()
 
         val mediaSource = queueItem.jellyfinMediaSource
@@ -125,6 +132,14 @@ class PlaybackMenus(
             videoTracksInfo,
             audioTracksInfo,
         ).joinToString("\n\n")
+
+        with(qualityMenu.menu) {
+            clear()
+            qualityOptions.forEach {
+                add(QUALITY_MENU_GROUP, it.bitrate, Menu.NONE, it.name).isChecked = it.selected
+            }
+            setGroupCheckable(QUALITY_MENU_GROUP, true, true)
+        }
     }
 
     private fun createSubtitlesMenu() = PopupMenu(context, subtitlesButton).apply {
@@ -178,6 +193,20 @@ class PlaybackMenus(
         setOnDismissListener(this@PlaybackMenus)
     }
 
+    private fun createQualityMenu() = PopupMenu(context, qualityButton).apply {
+        setOnMenuItemClickListener { clickedItem: MenuItem ->
+            fragment.onQualitySelected(clickedItem).also { success ->
+                if (success) {
+                    menu.forEach { item ->
+                        item.isChecked = false
+                    }
+                    clickedItem.isChecked = true
+                }
+            }
+        }
+        setOnDismissListener(this@PlaybackMenus)
+    }
+
     private fun buildMenuItems(menu: Menu, groupId: Int, mediaStreams: List<MediaStream>, selectedStream: MediaStream?, showNone: Boolean = false) {
         menu.clear()
         val itemNone = if (showNone) menu.add(groupId, -1, Menu.NONE, fragment.getString(R.string.menu_item_none)) else null
@@ -212,6 +241,7 @@ class PlaybackMenus(
         private const val SUBTITLES_MENU_GROUP = 0
         private const val AUDIO_MENU_GROUP = 1
         private const val SPEED_MENU_GROUP = 2
+        private const val QUALITY_MENU_GROUP = 3
 
         private const val MAX_VIDEO_STREAMS_DISPLAY = 3
         private const val MAX_AUDIO_STREAMS_DISPLAY = 5

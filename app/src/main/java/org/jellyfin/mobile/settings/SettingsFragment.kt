@@ -9,6 +9,7 @@ import de.Maxr1998.modernpreferences.Preference
 import de.Maxr1998.modernpreferences.PreferencesAdapter
 import de.Maxr1998.modernpreferences.helpers.categoryHeader
 import de.Maxr1998.modernpreferences.helpers.checkBox
+import de.Maxr1998.modernpreferences.helpers.custom
 import de.Maxr1998.modernpreferences.helpers.defaultOnSelectionChange
 import de.Maxr1998.modernpreferences.helpers.screen
 import de.Maxr1998.modernpreferences.helpers.singleChoice
@@ -30,6 +31,9 @@ class SettingsFragment : Fragment() {
     private val settingsAdapter: PreferencesAdapter by lazy { PreferencesAdapter(buildSettingsScreen()) }
     private lateinit var backgroundAudioPreference: Preference
     private lateinit var swipeGesturesPreference: Preference
+    private lateinit var rememberBrightnessPreference: Preference
+    private lateinit var qualityPreference: QualityPreference
+    private lateinit var qualityPreferenceMetered: QualityPreference
     private lateinit var externalPlayerChoicePreference: Preference
 
     init {
@@ -77,7 +81,10 @@ class SettingsFragment : Fragment() {
             titleRes = R.string.pref_video_player_type_title
             initialSelection = VideoPlayerType.WEB_PLAYER
             defaultOnSelectionChange { selection ->
+                qualityPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                qualityPreferenceMetered.enabled = selection == VideoPlayerType.EXO_PLAYER
                 swipeGesturesPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                rememberBrightnessPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
@@ -86,6 +93,11 @@ class SettingsFragment : Fragment() {
             titleRes = R.string.pref_exoplayer_allow_brightness_volume_gesture
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
             defaultValue = true
+        }
+        rememberBrightnessPreference = checkBox(Constants.PREF_EXOPLAYER_REMEMBER_BRIGHTNESS) {
+            titleRes = R.string.pref_exoplayer_remeber_brightness
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+            defaultValue = false
         }
         backgroundAudioPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO) {
             titleRes = R.string.pref_exoplayer_allow_background_audio
@@ -113,6 +125,14 @@ class SettingsFragment : Fragment() {
         externalPlayerChoicePreference = singleChoice(Constants.PREF_EXTERNAL_PLAYER_APP, externalPlayerOptions) {
             titleRes = R.string.external_player_app
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXTERNAL_PLAYER
+        }
+        qualityPreference = custom(Constants.PREF_BITRATE_VIDEO) {
+            titleRes = R.string.pref_exoplayer_quality
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+        }
+        qualityPreferenceMetered = custom(Constants.PREF_BITRATE_VIDEO_METERED) {
+            titleRes = R.string.pref_exoplayer_quality_metered
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
         }
         categoryHeader(PREF_CATEGORY_DOWNLOADS) {
             titleRes = R.string.pref_category_downloads

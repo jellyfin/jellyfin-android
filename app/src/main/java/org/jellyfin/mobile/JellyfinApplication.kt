@@ -9,11 +9,13 @@ import org.jellyfin.mobile.utils.JellyTree
 import org.jellyfin.mobile.utils.isWebViewSupported
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.koin.fragmentFactory
+import org.koin.core.KoinExperimentalAPI
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
 @Suppress("unused")
 class JellyfinApplication : Application() {
+    @OptIn(KoinExperimentalAPI::class)
     override fun onCreate() {
         super.onCreate()
 

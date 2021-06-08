@@ -3,10 +3,12 @@ package org.jellyfin.mobile
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Environment
+import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import androidx.core.content.edit
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.QualityOptions
 import java.io.File
 
 class AppPreferences(context: Context) {
@@ -91,11 +93,26 @@ class AppPreferences(context: Context) {
     val videoPlayerType: String
         get() = sharedPreferences.getString(Constants.PREF_VIDEO_PLAYER_TYPE, VideoPlayerType.WEB_PLAYER)!!
 
+    var maxBitrateVideo: Int
+        get() = sharedPreferences.getInt(Constants.PREF_BITRATE_VIDEO, QualityOptions.MAX_BITRATE_VIDEO)
+        set(value) = sharedPreferences.edit { putInt(Constants.PREF_BITRATE_VIDEO, value) }
+
+    var maxBitrateVideoMetered: Int
+        get() = sharedPreferences.getInt(Constants.PREF_BITRATE_VIDEO_METERED, QualityOptions.MAX_BITRATE_VIDEO)
+        set(value) = sharedPreferences.edit { putInt(Constants.PREF_BITRATE_VIDEO_METERED, value) }
+
     val exoPlayerAllowSwipeGestures: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_ALLOW_SWIPE_GESTURES, true)
 
     val exoPlayerAllowBackgroundAudio: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO, false)
+
+    val exoPlayerRememberBrightness: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_REMEMBER_BRIGHTNESS, false)
+
+    var exoPlayerBrightness: Float
+        get() = sharedPreferences.getFloat(Constants.PREF_EXOPLAYER_BRIGHTNESS, BRIGHTNESS_OVERRIDE_NONE)
+        set(value) = sharedPreferences.edit { putFloat(Constants.PREF_EXOPLAYER_BRIGHTNESS, value) }
 
     @ExternalPlayerPackage
     var externalPlayerApp: String

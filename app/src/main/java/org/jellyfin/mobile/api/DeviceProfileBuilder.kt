@@ -4,24 +4,34 @@ import android.media.MediaCodecList
 import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.player.DeviceCodec
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.QualityOption
+import org.jellyfin.mobile.utils.QualityOptions
+import org.jellyfin.mobile.utils.selected
 import org.jellyfin.sdk.model.api.CodecProfile
+import org.jellyfin.sdk.model.api.CodecType
 import org.jellyfin.sdk.model.api.ContainerProfile
 import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.DirectPlayProfile
 import org.jellyfin.sdk.model.api.DlnaProfileType
 import org.jellyfin.sdk.model.api.EncodingContext
+import org.jellyfin.sdk.model.api.ProfileCondition
+import org.jellyfin.sdk.model.api.ProfileConditionType
+import org.jellyfin.sdk.model.api.ProfileConditionValue
 import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
 import org.jellyfin.sdk.model.api.SubtitleProfile
 import org.jellyfin.sdk.model.api.TranscodeSeekInfo
 import org.jellyfin.sdk.model.api.TranscodingProfile
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
-class DeviceProfileBuilder {
+class DeviceProfileBuilder : KoinComponent {
 
     init {
         require(SUPPORTED_CONTAINER_FORMATS.size == AVAILABLE_VIDEO_CODECS.size && SUPPORTED_CONTAINER_FORMATS.size == AVAILABLE_AUDIO_CODECS.size)
     }
 
     fun getDeviceProfile(): DeviceProfile {
+        val qualityOption: QualityOption = get<QualityOptions>().getVideoQualityOptions().selected()
         val containerProfiles = ArrayList<ContainerProfile>()
         val directPlayProfiles = ArrayList<DirectPlayProfile>()
         val codecProfiles = ArrayList<CodecProfile>()
@@ -61,6 +71,80 @@ class DeviceProfileBuilder {
             }
         }
 
+        for (videoCodec in androidVideoCodecs.values) {
+            val profileConditions = ArrayList<ProfileCondition>().apply {
+                add(
+                    ProfileCondition(
+                        condition = ProfileConditionType.LESS_THAN_EQUAL,
+                        property = ProfileConditionValue.VIDEO_BITRATE,
+                        value = "${videoCodec.maxBitrate}",
+                        isRequired = false
+                    )
+                )
+                if (!videoCodec.profiles.isNullOrEmpty()) {
+                    add(
+                        ProfileCondition(
+                            condition = ProfileConditionType.EQUALS_ANY,
+                            property = ProfileConditionValue.VIDEO_PROFILE,
+                            value = videoCodec.profiles.joinToString(separator = "|"),
+                            isRequired = false
+                        )
+                    )
+                }
+                videoCodec.levels.maxOrNull()?.let { maxLevel ->
+                    add(
+                        ProfileCondition(
+                            condition = ProfileConditionType.LESS_THAN_EQUAL,
+                            property = ProfileConditionValue.VIDEO_LEVEL,
+                            value = "$maxLevel",
+                            isRequired = false
+                        )
+                    )
+                }
+            }
+            codecProfiles.add(
+                CodecProfile(
+                    type = CodecType.VIDEO,
+                    conditions = profileConditions,
+                    codec = videoCodec.name
+                )
+            )
+        }
+
+        codecProfiles.add(
+            CodecProfile(
+                type = CodecType.VIDEO,
+                conditions = ArrayList<ProfileCondition>().apply {
+                    add(
+                        ProfileCondition(
+                            condition = ProfileConditionType.NOT_EQUALS,
+                            property = ProfileConditionValue.VIDEO_CODEC_TAG,
+                            value = "xvid",
+                            isRequired = false
+                        )
+                    )
+                }
+            )
+        )
+
+        qualityOption.maxHeight?.let { maxHeight ->
+            codecProfiles.add(
+                CodecProfile(
+                    type = CodecType.VIDEO,
+                    conditions = ArrayList<ProfileCondition>().apply {
+                        add(
+                            ProfileCondition(
+                                condition = ProfileConditionType.LESS_THAN_EQUAL,
+                                property = ProfileConditionValue.HEIGHT,
+                                value = "$maxHeight",
+                                isRequired = false
+                            )
+                        )
+                    }
+                )
+            )
+        }
+
         return DeviceProfile(
             name = Constants.APP_INFO_NAME,
             directPlayProfiles = directPlayProfiles,
@@ -68,6 +152,8 @@ class DeviceProfileBuilder {
             containerProfiles = containerProfiles,
             codecProfiles = codecProfiles,
             subtitleProfiles = getSubtitleProfiles(EXO_EMBEDDED_SUBTITLES, EXO_EXTERNAL_SUBTITLES),
+            maxStreamingBitrate = qualityOption.bitrate,
+            maxStaticBitrate = qualityOption.bitrate,
 
             // TODO: remove redundant defaults after API/SDK is fixed
             maxAlbumArtWidth = Int.MAX_VALUE,
@@ -93,6 +179,8 @@ class DeviceProfileBuilder {
         containerProfiles = emptyList(),
         codecProfiles = emptyList(),
         subtitleProfiles = getSubtitleProfiles(EXTERNAL_PLAYER_SUBTITLES, EXTERNAL_PLAYER_SUBTITLES),
+        maxStreamingBitrate = QualityOptions.MAX_BITRATE_VIDEO,
+        maxStaticBitrate = QualityOptions.MAX_BITRATE_VIDEO,
 
         // TODO: remove redundant defaults after API/SDK is fixed
         maxAlbumArtWidth = Int.MAX_VALUE,

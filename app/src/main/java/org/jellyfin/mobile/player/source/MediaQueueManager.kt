@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.annotation.CheckResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.MediaSource
@@ -14,14 +15,19 @@ import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.util.EventLogger
+import kotlinx.coroutines.launch
+import org.jellyfin.mobile.api.DeviceProfileBuilder
 import org.jellyfin.mobile.bridge.PlayOptions
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
+import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.operations.VideosApi
+import org.jellyfin.sdk.model.DeviceInfo
 import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.PlayMethod
+import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -32,7 +38,7 @@ class MediaQueueManager(
 ) : KoinComponent {
     private val apiClient: ApiClient by inject()
     private val mediaSourceResolver: MediaSourceResolver by inject()
-    private val deviceProfile: DeviceProfile by inject()
+    private val deviceProfile: DeviceProfile get() = get<DeviceProfileBuilder>().getDeviceProfile()
     private val videosApi: VideosApi by inject()
     private val _mediaQueue: MutableLiveData<QueueItem.Loaded> = MutableLiveData()
     val mediaQueue: LiveData<QueueItem.Loaded> get() = _mediaQueue
@@ -67,6 +73,25 @@ class MediaQueueManager(
             }
         }
         return null
+    }
+
+    /**
+     * Reinitialize current media source, necessary for transcodes.
+     */
+    fun restartPlayback() {
+        viewModel.viewModelScope.launch {
+            val player = viewModel.playerOrNull ?: return@launch
+            val current = _mediaQueue.value ?: return@launch
+            viewModel.stop(releasePlayer = false)
+            val jellyfinMediaSource = mediaSourceResolver.resolveMediaSource(
+                itemId = current.jellyfinMediaSource.itemId,
+                deviceProfile = deviceProfile,
+                startTimeTicks = player.contentPosition * Constants.TICKS_PER_MILLISECOND,
+                audioStreamIndex = current.jellyfinMediaSource.selectedAudioStream?.index,
+                subtitleStreamIndex = current.jellyfinMediaSource.selectedSubtitleStream?.index,
+            ).getOrNull() ?: return@launch
+            createQueueItem(jellyfinMediaSource, current.previous, current.next).play()
+        }
     }
 
     @CheckResult
@@ -141,7 +166,9 @@ class MediaQueueManager(
                 val url = videosApi.getVideoStreamUrl(
                     itemId = source.itemId,
                     static = true,
+                    playSessionId = source.playSessionId,
                     mediaSourceId = source.id,
+                    deviceId = get<DeviceInfo>().id
                 )
 
                 val mediaItem = builder.setUri(url).build()
@@ -152,7 +179,9 @@ class MediaQueueManager(
                 val url = videosApi.getVideoStreamByContainerUrl(
                     itemId = source.itemId,
                     container = container,
+                    playSessionId = source.playSessionId,
                     mediaSourceId = source.id,
+                    deviceId = get<DeviceInfo>().id
                 )
 
                 val mediaItem = builder.setUri(url).build()
@@ -254,6 +283,12 @@ class MediaQueueManager(
             !initial && streamIndex == mediaSource.selectedSubtitleStream?.index -> return true
             // Apply selection in media source, abort on failure
             !mediaSource.selectSubtitleStream(sourceIndex) -> return false
+            // For transcoded media, special handling is required
+            !initial && mediaSource.playMethod == PlayMethod.TRANSCODE ||
+            !initial && mediaSource.selectedSubtitleStream?.deliveryMethod == SubtitleDeliveryMethod.ENCODE -> {
+                restartPlayback()
+                return true
+            }
         }
 
         // Handle selection in player

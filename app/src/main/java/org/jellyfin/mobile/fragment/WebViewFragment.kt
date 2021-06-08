@@ -43,12 +43,12 @@ import org.jellyfin.mobile.model.sql.entity.ServerEntity
 import org.jellyfin.mobile.player.PlayerFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER
-import org.jellyfin.mobile.utils.JS_INJECTION_CODE
 import org.jellyfin.mobile.utils.addFragment
 import org.jellyfin.mobile.utils.applyDefault
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.dip
 import org.jellyfin.mobile.utils.initLocale
+import org.jellyfin.mobile.utils.injectScript
 import org.jellyfin.mobile.utils.isOutdated
 import org.jellyfin.mobile.utils.loadAsset
 import org.jellyfin.mobile.utils.replaceFragment
@@ -157,13 +157,11 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                 val url = request.url
                 val path = url.path?.lowercase(Locale.ROOT) ?: return null
                 return when {
-                    path.endsWith(Constants.WEB_CONFIG_PATH) -> {
+                    !connected && url.toString().matches(".*main.[a-zA-Z0-9]{20}\\.bundle\\.js$".toRegex()) -> {
                         runOnUiThread {
-                            webView.evaluateJavascript(JS_INJECTION_CODE) {
-                                onConnectedToWebapp()
-                            }
+                            onConnectedToWebapp()
                         }
-                        null // continue loading normally
+                        injectScript(url)
                     }
                     path.contains("native") -> webView.context.loadAsset("native/${url.lastPathSegment}")
                     path.endsWith(Constants.CAST_SDK_PATH) -> {
@@ -199,14 +197,14 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                 val errorMessage = errorResponse.data?.run { bufferedReader().use(Reader::readText) }
                 Timber.e("Received WebView HTTP %d error: %s", errorResponse.statusCode, errorMessage)
 
-                if (request.url == Uri.parse(server.hostname)) onErrorReceived()
+                if (request.url == Uri.parse("${server.hostname}/")) onErrorReceived()
             }
 
             override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceErrorCompat) {
                 val description = if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_RESOURCE_ERROR_GET_DESCRIPTION)) error.description else null
                 Timber.e("Received WebView error at %s: %s", request.url.toString(), description)
 
-                if (request.url == Uri.parse(server.hostname)) onErrorReceived()
+                if (request.url == Uri.parse("${server.hostname}/")) onErrorReceived()
             }
         }
         webChromeClient = object : WebChromeClient() {

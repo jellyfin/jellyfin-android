@@ -13,6 +13,7 @@ import android.os.Looper
 import android.provider.Settings.System
 import android.view.GestureDetector
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.OrientationEventListener
 import android.view.ScaleGestureDetector
@@ -37,10 +38,14 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import coil.ImageLoader
+import coil.request.ImageRequest
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.api.aspectRational
@@ -53,6 +58,7 @@ import org.jellyfin.mobile.utils.Constants.DEFAULT_CENTER_OVERLAY_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_SEEK_TIME_MS
 import org.jellyfin.mobile.utils.Constants.GESTURE_EXCLUSION_AREA_TOP
+import org.jellyfin.mobile.utils.QualityOptions
 import org.jellyfin.mobile.utils.SmartOrientationListener
 import org.jellyfin.mobile.utils.dip
 import org.jellyfin.mobile.utils.disableFullscreen
@@ -60,7 +66,10 @@ import org.jellyfin.mobile.utils.enableFullscreen
 import org.jellyfin.mobile.utils.isAutoRotateOn
 import org.jellyfin.mobile.utils.isFullscreen
 import org.jellyfin.mobile.utils.lockOrientation
+import org.jellyfin.mobile.utils.realScreenSize
 import org.jellyfin.mobile.utils.toast
+import org.jellyfin.sdk.api.operations.ImageApi
+import org.jellyfin.sdk.model.api.ImageType
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.android.ext.android.inject
 import kotlin.math.abs
@@ -68,6 +77,7 @@ import kotlin.math.abs
 class PlayerFragment : Fragment() {
 
     private val appPreferences: AppPreferences by inject()
+    private val qualityOptions: QualityOptions by inject()
     private val viewModel: PlayerViewModel by viewModels()
     private var _playerBinding: FragmentPlayerBinding? = null
     private val playerBinding: FragmentPlayerBinding get() = _playerBinding!!
@@ -85,6 +95,10 @@ class PlayerFragment : Fragment() {
     private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
     private var playbackMenus: PlaybackMenus? = null
     private val audioManager: AudioManager by lazy { requireContext().getSystemService()!! }
+    private val imageApi: ImageApi by inject()
+    private val imageLoader: ImageLoader by inject()
+    private val exoShutter: View get() = playerBinding.playerView.findViewById(R.id.exo_shutter)
+    private val contentFrame: AspectRatioFrameLayout get() = playerBinding.playerView.findViewById(R.id.exo_content_frame)
 
     private val currentVideoStream: MediaStream?
         get() = viewModel.mediaSourceOrNull?.selectedVideoStream
@@ -152,6 +166,7 @@ class PlayerFragment : Fragment() {
                 window.clearFlags(FLAG_KEEP_SCREEN_ON)
             }
             loadingIndicator.isVisible = playerState == Player.STATE_BUFFERING
+            if (playerState > Player.STATE_BUFFERING) exoShutter.isVisible = false
         }
         viewModel.mediaQueueManager.mediaQueue.observe(this) { queueItem ->
             val jellyfinMediaSource = queueItem.jellyfinMediaSource
@@ -166,9 +181,42 @@ class PlayerFragment : Fragment() {
                 }
             }
 
+            // Update backdrop image
+            exoShutter.setBackgroundResource(android.R.color.black)
+            contentFrame.setAspectRatio(0F)
+            jellyfinMediaSource.item?.backdropImageTags?.firstOrNull()?.let { backdropImageTag ->
+                lifecycleScope.launch {
+                    val currentItemId = jellyfinMediaSource.itemId
+                    val screenSize = requireActivity().realScreenSize()
+                    withContext(Dispatchers.IO) {
+                        val backdropUrl = imageApi.getItemImageUrl(
+                            itemId = currentItemId,
+                            imageType = ImageType.BACKDROP,
+                            width = screenSize.x,
+                            height = screenSize.y,
+                            tag = backdropImageTag
+                        )
+                        imageLoader.execute(ImageRequest.Builder(requireContext()).data(backdropUrl).build()).drawable
+                    }?.let {
+                        if (currentItemId == jellyfinMediaSource.itemId) {
+                            exoShutter.background = it
+                            if (viewModel.playerOrNull?.playbackState != Player.STATE_READY) {
+                                contentFrame.setAspectRatio(screenSize.x.toFloat() / screenSize.y.toFloat())
+                                exoShutter.isVisible = true
+                            }
+                        }
+                    }
+                }
+            }
+
             // Update title and player menus
             titleTextView.text = jellyfinMediaSource.name
-            playbackMenus?.onQueueItemChanged(queueItem)
+            playbackMenus?.onQueueItemChanged(
+                queueItem, qualityOptions.getVideoQualityOptions(
+                    videoWidth = jellyfinMediaSource.selectedVideoStream?.width,
+                    videoHeight = jellyfinMediaSource.selectedVideoStream?.height
+                )
+            )
         }
 
         // Handle fragment arguments, extract playback options and start playback
@@ -184,6 +232,11 @@ class PlayerFragment : Fragment() {
                 is PlayerException.NetworkFailure -> context.toast(R.string.player_error_network_failure)
                 is PlayerException.UnsupportedContent -> context.toast(R.string.player_error_unsupported_content)
             }
+        }
+
+        // Restore brightness if allowed
+        if (appPreferences.exoPlayerRememberBrightness) {
+            requireActivity().window.brightness = appPreferences.exoPlayerBrightness
         }
     }
 
@@ -429,6 +482,9 @@ class PlayerFragment : Fragment() {
 
                     swipeGestureValueTracker = (swipeGestureValueTracker + ratioChange).coerceIn(brightnessRange)
                     window.brightness = swipeGestureValueTracker
+                    if (appPreferences.exoPlayerRememberBrightness) {
+                        appPreferences.exoPlayerBrightness = swipeGestureValueTracker
+                    }
 
                     gestureIndicatorOverlayImage.setImageResource(R.drawable.ic_brightness_white_24dp)
                     gestureIndicatorOverlayProgress.max = Constants.PERCENT_MAX
@@ -508,6 +564,16 @@ class PlayerFragment : Fragment() {
      */
     fun onSpeedSelected(speed: Float): Boolean {
         return viewModel.setPlaybackSpeed(speed)
+    }
+
+    /**
+     * @return true if the quality option was changed
+     */
+    fun onQualitySelected(quality: MenuItem): Boolean {
+        if (quality.isChecked) return false
+        qualityOptions.currentMaxBitrateVideo = quality.itemId
+        viewModel.mediaQueueManager.restartPlayback()
+        return true
     }
 
     fun onSkipToPrevious() {

@@ -2,6 +2,7 @@ package org.jellyfin.mobile.player.source
 
 import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.player.PlayerException
+import org.jellyfin.mobile.utils.QualityOptions
 import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.jellyfin.sdk.api.operations.ItemsApi
 import org.jellyfin.sdk.api.operations.MediaInfoApi
@@ -24,6 +25,7 @@ class MediaSourceResolver(
         subtitleStreamIndex: Int? = null,
     ): Result<JellyfinMediaSource> {
         // Load media source info
+        val playSessionId: String
         val mediaSourceInfo = try {
             val playbackInfoResponse by mediaInfoApi.getPostedPlaybackInfo(
                 itemId = itemId,
@@ -33,10 +35,12 @@ class MediaSourceResolver(
                     startTimeTicks = startTimeTicks,
                     audioStreamIndex = audioStreamIndex,
                     subtitleStreamIndex = subtitleStreamIndex,
-                    maxStreamingBitrate = /* 1 GB/s */ 1_000_000_000,
+                    maxStreamingBitrate = deviceProfile.maxStreamingBitrate ?: QualityOptions.MAX_BITRATE_VIDEO
                 ),
             )
-
+            playbackInfoResponse.playSessionId.let {
+                playSessionId = it ?: return Result.failure(PlayerException.UnsupportedContent())
+            }
             playbackInfoResponse.mediaSources?.find { source ->
                 source.id?.toUUIDOrNull() == itemId
             } ?: return Result.failure(PlayerException.UnsupportedContent())
@@ -63,6 +67,7 @@ class MediaSourceResolver(
                 itemId = itemId,
                 item = item,
                 sourceInfo = mediaSourceInfo,
+                playSessionId = playSessionId,
                 startTimeTicks = startTimeTicks,
                 audioStreamIndex = audioStreamIndex,
                 subtitleStreamIndex = subtitleStreamIndex,

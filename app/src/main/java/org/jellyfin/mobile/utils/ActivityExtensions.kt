@@ -8,6 +8,8 @@ import android.graphics.Point
 import android.view.Surface
 import android.view.View
 import android.view.WindowManager
+import kotlin.math.max
+import kotlin.math.min
 
 const val STABLE_LAYOUT_FLAGS = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -43,5 +45,18 @@ fun Activity.lockOrientation() {
         Surface.ROTATION_180 -> if (height > width) ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT else ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
         Surface.ROTATION_270 -> if (width > height) ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE else ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         else -> if (height > width) ActivityInfo.SCREEN_ORIENTATION_PORTRAIT else ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+    }
+}
+
+/**
+ * Gets the real size of the display without subtracting any window decor or
+ * applying any compatibility scale factors.
+ *
+ * The result should be consistent no matter the orientation of the device.
+ */
+fun Activity.realScreenSize(): Point {
+    windowManager.defaultDisplay.rotation
+    with(Point().also(windowManager.defaultDisplay::getRealSize)) {
+        return Point(max(x, y), min(y, x))
     }
 }

@@ -7,7 +7,6 @@ import org.jellyfin.mobile.player.CodecHelpers.getAudioProfile
 import org.jellyfin.mobile.player.CodecHelpers.getVideoCodec
 import org.jellyfin.mobile.player.CodecHelpers.getVideoLevel
 import org.jellyfin.mobile.player.CodecHelpers.getVideoProfile
-import java.util.*
 import kotlin.collections.HashSet
 import kotlin.math.max
 
@@ -21,7 +20,7 @@ sealed class DeviceCodec(
         name: String,
         mimeType: String,
         profiles: Set<String>,
-        private val levels: Set<Int>,
+        val levels: Set<Int>,
         maxBitrate: Int,
     ) : DeviceCodec(name, mimeType, profiles, maxBitrate) {
 
@@ -70,7 +69,7 @@ sealed class DeviceCodec(
                 videoCodec != null -> {
                     val profiles = HashSet<String>()
                     val levels = HashSet<Int>()
-                    for (profileLevel in codecCapabilities.profileLevels) {
+                    for (profileLevel in codecCapabilities.profileLevels.reversed()) {
                         getVideoProfile(videoCodec, profileLevel.profile)?.let(profiles::add)
                         getVideoLevel(videoCodec, profileLevel.level)?.let(levels::add)
                     }
@@ -85,7 +84,7 @@ sealed class DeviceCodec(
                 }
                 audioCodec != null -> {
                     val profiles = HashSet<String>()
-                    for (profileLevel in codecCapabilities.profileLevels) {
+                    for (profileLevel in codecCapabilities.profileLevels.reversed()) {
                         getAudioProfile(audioCodec, profileLevel.profile)?.let(profiles::add)
                     }
 

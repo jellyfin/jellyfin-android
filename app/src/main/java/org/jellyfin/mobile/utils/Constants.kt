@@ -11,7 +11,6 @@ object Constants {
 
     // Webapp constants
     const val MINIMUM_WEB_VIEW_VERSION = 80
-    const val WEB_CONFIG_PATH = "config.json"
     const val CAST_SDK_PATH = "cast_sender.js"
     const val SESSION_CAPABILITIES_PATH = "sessions/capabilities/full"
 
@@ -27,8 +26,12 @@ object Constants {
     const val PREF_DOWNLOAD_METHOD = "pref_download_method"
     const val PREF_MUSIC_NOTIFICATION_ALWAYS_DISMISSIBLE = "pref_music_notification_always_dismissible"
     const val PREF_VIDEO_PLAYER_TYPE = "pref_video_player_type"
+    const val PREF_BITRATE_VIDEO = "pref_bitrate_video"
+    const val PREF_BITRATE_VIDEO_METERED = "pref_bitrate_video_metered"
     const val PREF_EXOPLAYER_ALLOW_SWIPE_GESTURES = "pref_exoplayer_allow_swipe_gestures"
     const val PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO = "pref_exoplayer_allow_background_audio"
+    const val PREF_EXOPLAYER_REMEMBER_BRIGHTNESS = "pref_exoplayer_remember_brightness"
+    const val PREF_EXOPLAYER_BRIGHTNESS = "pref_exoplayer_brightness"
     const val PREF_EXTERNAL_PLAYER_APP = "pref_external_player_app"
     const val PREF_DOWNLOAD_LOCATION = "pref_download_location"
 
@@ -84,7 +87,7 @@ object Constants {
     // Video player constants
     const val LANGUAGE_UNDEFINED = "und"
     const val TICKS_PER_MILLISECOND = 10000
-    const val PLAYER_TIME_UPDATE_RATE = 1000L
+    const val PLAYER_TIME_UPDATE_RATE = 10000L
     const val DEFAULT_CONTROLS_TIMEOUT_MS = 2500
     const val GESTURE_EXCLUSION_AREA_TOP = 48
     const val DEFAULT_CENTER_OVERLAY_TIMEOUT_MS = 250

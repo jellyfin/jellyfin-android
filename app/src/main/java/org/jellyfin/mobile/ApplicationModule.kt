@@ -20,6 +20,7 @@ import org.jellyfin.mobile.player.PlayerFragment
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
+import org.jellyfin.mobile.utils.QualityOptions
 import org.jellyfin.mobile.viewmodel.MainViewModel
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
@@ -53,8 +54,8 @@ val applicationModule = module {
 
     // Media player helpers
     single { MediaSourceResolver(get(), get(), get()) }
+    single { QualityOptions(androidApplication()) }
     single { DeviceProfileBuilder() }
-    single { get<DeviceProfileBuilder>().getDeviceProfile() }
     single(named(ExternalPlayer.DEVICE_PROFILE_NAME)) { get<DeviceProfileBuilder>().getExternalPlayerProfile() }
 
     // ExoPlayer data sources

@@ -1,18 +1,19 @@
 package org.jellyfin.mobile.utils
 
 import android.content.Context
+import android.net.Uri
 import android.webkit.WebResourceResponse
 import timber.log.Timber
 import java.io.IOException
+import java.util.Locale
 
-const val JS_INJECTION_CODE = """
+private const val JS_INJECTION_CODE = """
 !function() {
-    if (window.injectedAppJS) {
-        return;
-    }
+    document.currentScript.remove();
     var scripts = [
         '/native/nativeshell.js',
         '/native/EventEmitter.js',
+        '%s?'+Date.now()
     ];
     scripts.forEach(function(src) {
         var scriptElement = document.createElement('script');
@@ -22,7 +23,6 @@ const val JS_INJECTION_CODE = """
         scriptElement.setAttribute('defer', '');
         document.body.appendChild(scriptElement);
     });
-    window.injectedAppJS = true;
 }();
 """
 
@@ -36,4 +36,7 @@ fun Context.loadAsset(url: String, mimeType: String = "application/javascript"):
     return WebResourceResponse(mimeType, Charsets.UTF_8.name(), data)
 }
 
-val emptyResponse = WebResourceResponse("text/html", Charsets.UTF_8.toString(), "".byteInputStream())
+fun injectScript(url: Uri): WebResourceResponse {
+    val data = JS_INJECTION_CODE.format(Locale.getDefault(), url).byteInputStream()
+    return WebResourceResponse("application/javascript", Charsets.UTF_8.name(), data)
+}

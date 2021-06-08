@@ -9,7 +9,7 @@ import org.jellyfin.mobile.model.sql.entity.ServerEntity
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.model.DeviceInfo
 import org.jellyfin.sdk.model.serializer.toUUID
-import java.util.*
+import java.util.UUID
 
 class ApiController(
     private val appPreferences: AppPreferences,
@@ -81,9 +81,10 @@ class ApiController(
     private fun configureApiClientUser(userId: String, accessToken: String) {
         currentUser = userId.toUUID()
 
+        // FIXME - This breaks the session of the webapp
         // Append user id to device id to ensure uniqueness across sessions
-        currentDeviceId = baseDeviceInfo.id + currentUser.toString()
-        apiClient.deviceInfo = baseDeviceInfo.copy(id = currentDeviceId)
+        // currentDeviceId = baseDeviceInfo.id + currentUser.toString()
+        // apiClient.deviceInfo = baseDeviceInfo.copy(id = currentDeviceId)
         apiClient.accessToken = accessToken
     }
 
