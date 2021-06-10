@@ -14,7 +14,7 @@
     <string name="pref_enable_exoplayer_summary">Gebruik de experimentele video speler voor betere integratie met het besturingssysteem</string>
     <string name="pref_enable_exoplayer_title">Gebruik ingebouwde video speler</string>
     <string name="pref_category_video_player">Videospeler</string>
-    <string name="pref_music_notification_always_dismissible_title">Muziek notificatie kan weggeveegd worden</string>
+    <string name="pref_music_notification_always_dismissible_title">Wegveegbare muziek notificatie</string>
     <string name="pref_category_music_player">Muziek speler</string>
     <string name="activity_name_settings">Jellyfin Instellingen</string>
     <string name="menu_item_none">Geen</string>
@@ -22,7 +22,7 @@
     <string name="external_player_invalid_player">Geen geldige externe speler geselecteerd. Afspelen tracering uitgeschakeld.</string>
     <string name="external_player_not_supported_yet">Het volgen van afspelen wordt nog niet ondersteund in de geselecteerde externe speler. Neem contact op met de ontwikkelaars om er ondersteuning voor toe te voegen.</string>
     <string name="external_player_invalid_play_method">Ongeldige afspeelmethode.</string>
-    <string name="pref_exoplayer_allow_background_audio">Sta het afspelen van audio op de achtergrond toe op de standaard speler</string>
+    <string name="pref_exoplayer_allow_background_audio">Achtergrond geluid</string>
     <string name="playback_info_and_x_more">...en nog %d meer</string>
     <string name="playback_info_audio_streams">Audiostreams</string>
     <string name="playback_info_video_streams">Videostreams</string>
@@ -47,7 +47,7 @@
     <string name="pref_video_player_type_title">Videospeler type</string>
     <string name="available_servers_title">Beschikbare servers</string>
     <string name="choose_server_button_text">Kies server</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Helderheid en volume gebaren toestaan in standaard speler</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Helderheid en volume gebaren</string>
     <string name="external_player_mpv_description">Een simpele, kleine en vrije videospeler. Het ondersteunt een groot aantal media formaten.</string>
     <string name="external_player_mpv">MPV Speler</string>
     <string name="external_player_app">Externe speler applicatie</string>
@@ -88,4 +88,14 @@
     <string name="dialog_button_check_for_updates">Naar updates zoeken</string>
     <string name="dialog_web_view_outdated_message">De WebView implementatie gebruikt door jouw apparaat is verouderd.
 \nUpdate het tot een compatibele versie alsjeblieft.</string>
+    <string name="player_error_unsupported_content">Media kan niet afgespeeld worden door dit apparaat</string>
+    <string name="connection_error_unsupported_version_or_product">Niet ondersteunde versie of product</string>
+    <string name="connection_error_unable_to_reach_sever">Niet gelukt om de server te bereiken</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">%d kandidaat geprobeerd zonder success.</item>
+        <item quantity="other">%d kandidaten geprobeerd zonder success.</item>
+    </plurals>
+    <string name="toast_reopen_after_change">Heropen de app nadat veranderingen zijn aangebracht</string>
+    <string name="dialog_button_ignore">Negeren</string>
+    <string name="dialog_button_open_settings">Open instellingen</string>
 </resources>
