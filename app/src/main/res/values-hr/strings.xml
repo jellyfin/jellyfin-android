@@ -42,7 +42,6 @@
     <string name="connect_button_text">Spoji se</string>
     <string name="connection_error_cannot_connect">Nije moguće ostvariti vezu. 
 \nMolimo vas da provjerite ime poslužitelja i vašu internetsku vezu.</string>
-    <string name="connection_error_invalid_version">Inačica poslužitelja nije podržana. Ažurirajte poslužitelj na najnoviju inačicu putem jellyfin.org.</string>
     <string name="connection_error_invalid_format">Lokacija poslužitelja je neispravna</string>
     <string name="host_input_hint">Poslužitelj</string>
     <string name="connect_to_server_title">Spoji se na poslužitelj</string>

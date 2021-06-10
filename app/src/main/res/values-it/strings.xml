@@ -7,7 +7,6 @@
     <string name="network_message">Consentire il download dei media quando utilizzi i dati mobili o sei in roaming\? Il tuo provider potrebbe addebbitarti il costo se previsto.</string>
     <string name="battery_optimizations_message">Disabilita le ottimizzazioni della batteria per consentire la riproduzione in background quando lo schermo è spento.</string>
     <string name="network_title">Tipi di Rete Consentiti</string>
-    <string name="pref_enable_exoplayer_summary">Abilita il lettore ExoPlayer sperimentale che supporta numerosi formati video ed è più integrato nel Sistema Operativo</string>
     <string name="pref_enable_exoplayer_title">Abilita integrazione del video player</string>
     <string name="pref_category_video_player">Video player nativo</string>
     <string name="pref_music_notification_always_dismissible_title">Notifiche del player rimovibili</string>
@@ -48,9 +47,7 @@
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Gesture della luminosità e del volume</string>
     <string name="available_servers_title">Server disponibili</string>
     <string name="choose_server_button_text">Scegli il server</string>
-    <string name="mediaservice_library_playlists">Playlist</string>
     <string name="mediaservice_library_genres">Generi</string>
-    <string name="mediaservice_library_songs">Brani</string>
     <string name="mediaservice_library_artists">Artisti</string>
     <string name="external_player_system_default">Default di sistema</string>
     <string name="external_player_vlc_player_description">Player video multipiattaforma free and Open Source in grado di riprodurre molti file multimediali.</string>
@@ -62,9 +59,7 @@
     <string name="external_player_mpv_description">Un video player semplice, leggero e gratis (inteso come libero e gratuito). Supporta una vasta varietà di formati.</string>
     <string name="external_player_mpv">Player MPV</string>
     <string name="external_player_app">Player video esterno</string>
-    <string name="connection_error_invalid_version">Il server utilizza una versione non supportata. Aggiorna all\'ultima versione disponibile su jellyfin.org.</string>
     <string name="mediaservice_library_albums">Album</string>
-    <string name="mediaservice_library_latest">Recente</string>
     <string name="mediaservice_shuffle">Casuale</string>
     <string name="external_player_system_default_description">Lascia la decisione del lettore al sistema, alcuni lettori possono essere non completamente compatibili.</string>
     <string name="music_notification_channel_description">Utilizzato per i controlli di riproduzione musicale</string>

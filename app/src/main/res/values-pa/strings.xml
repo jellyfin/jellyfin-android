@@ -63,7 +63,6 @@
     <string name="available_servers_title">ਉਪਲੱਬਧ ਸਰਵਰ</string>
     <string name="choose_server_button_text">ਸਰਵਰ ਚੁਣੋ</string>
     <string name="connect_button_text">ਜੁੜੋ</string>
-    <string name="connection_error_invalid_version">ਸਰਵਰ ਇੱਕ ਅਸਮਰਥਿਤ ਸੰਸਕਰਣ ਦੀ ਵਰਤੋਂ ਕਰਦਾ ਹੈ. \'ਤੇ ਉਪਲਬਧ ਨਵੀਨਤਮ ਸੰਸਕਰਣ\' ਤੇ ਅਪਗ੍ਰੇਡ ਕਰੋ jellyfin.org.</string>
     <string name="connection_error_cannot_connect">ਕੁਨੈਕਸ਼ਨ ਸਥਾਪਤ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ.
 \nਕਿਰਪਾ ਕਰਕੇ ਹੋਸਟ-ਨਾਂ ਅਤੇ ਆਪਣੇ ਨੈਟਵਰਕ ਕਨੈਕਸ਼ਨ ਦੀ ਜਾਂਚ ਕਰੋ.</string>
     <string name="connection_error_invalid_format">ਹੋਸਟ ਦਾ ਇੱਕ ਅਵੈਧ ਫਾਰਮੈਟ ਹੈ</string>

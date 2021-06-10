@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_exoplayer_allow_background_audio">อนุญาตให้เล่นเสียงในพื้นหลังในเครื่องเล่นในตัว</string>
-    <string name="pref_enable_exoplayer_summary">เปิดใช้งานเครื่องเล่นวิดีโอ ExoPlayer รุ่นทดลองซึ่งรองรับรูปแบบวิดีโอและโคเด็คเพิ่มเติมและเข้ากันกับระบบปฏิบัติการมากขึ้น</string>
     <string name="pref_enable_exoplayer_title">เปิดใช้งานการเข้ากันของเครื่องเล่นวิดีโอ</string>
     <string name="pref_category_video_player">เครื่องเล่นวีดีโอ</string>
     <string name="pref_music_notification_always_dismissible_title">ทำให้การแจ้งเตือนเครื่องเล่นเพลงปิดได้เสมอ</string>
@@ -72,7 +71,6 @@
     <string name="media_service_generic_error">เกิดข้อผิดพลาด</string>
     <string name="available_servers_title">เซิร์ฟเวอร์ที่พบ</string>
     <string name="choose_server_button_text">เลือกเซิร์ฟเวอร์</string>
-    <string name="connection_error_invalid_version">เซิร์ฟเวอร์ใช้เวอร์ชันที่ไม่รองรับ อัพเดทเป็นเวอร์ชันล่าสุดได้ที่ jellyfin.org</string>
     <string name="dialog_button_close_app">ปิดแอพ</string>
     <string name="dialog_button_check_for_updates">ค้นหาอัพเดท</string>
     <string name="dialog_web_view_outdated_message">ระบบ WebView ของอุปกรณ์นี้เก่าเกินไป

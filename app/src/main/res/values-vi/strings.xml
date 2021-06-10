@@ -57,13 +57,9 @@
     <string name="external_player_mpv_description">Một trình phát video nhỏ, nhẹ và đơn giản (tự do chọn lựa). Nó hỗ trợ nhiều định dạng tệp đa phương tiện.</string>
     <string name="external_player_mpv">Trình phát MPV</string>
     <string name="external_player_app">Ứng dụng trình phát bên ngoài</string>
-    <string name="mediaservice_library_playlists">Danh Sách Phát</string>
     <string name="mediaservice_library_genres">Thể Loại</string>
-    <string name="mediaservice_library_songs">Bài Hát</string>
     <string name="mediaservice_library_artists">Nghệ Sĩ</string>
-    <string name="mediaservice_library_albums">Albums</string>
     <string name="mediaservice_library_latest">Mới Nhất</string>
-    <string name="mediaservice_shuffle">Ngẫu Nhiên</string>
     <string name="connection_error_invalid_version">Máy chủ sử dụng phiên bản không được hỗ trợ. Nâng cấp lên phiên bản mới nhất có tại jellyfin.org.</string>
     <string name="music_notification_channel_description">Được sử dụng để điều khiển phát nhạc</string>
     <string name="music_notification_channel">Trình Phát Nhạc Jellyfin</string>

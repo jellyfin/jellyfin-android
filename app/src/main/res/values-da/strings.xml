@@ -50,7 +50,6 @@
     <string name="available_servers_title">Tilgængelige servere</string>
     <string name="choose_server_button_text">Vælg en server</string>
     <string name="connect_button_text">Forbind</string>
-    <string name="connection_error_invalid_version">Serveren bruger en ikke understøttet version. Opgrader til den nyeste version på jellyfin.org.</string>
     <string name="connection_error_cannot_connect">Der kunne ikke oprettes forbindelse.
 \nUndersøg venligst værtsnavnet og din internet forbindelse.</string>
     <string name="host_input_hint">Vært</string>

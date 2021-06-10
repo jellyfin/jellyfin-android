@@ -57,7 +57,6 @@
     <string name="video_player_web_description">Ueb paidalanuşylyq interfeisındegı ädepkı HTML beine oinatqyş</string>
     <string name="pref_music_notification_always_dismissible_title">Oinatqyştyñ bosatylatyn habarlandyruy</string>
     <string name="download_no_storage_permission">Jad rūqsattarysyz faildardy jüktep alu mümkın emes</string>
-    <string name="connection_error_invalid_version">Server qoldau körsetılmegen nūsqany paidalanady. Jellyfin.org saitynda qoljetımdı eñ keiıngı nūsqasyna deiın jañartyñyz.</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Jaryqtyq pen dybys deñgeilerıniñ qimyldary</string>
     <string name="pref_exoplayer_allow_background_audio">Öñdık dybys</string>
     <string name="external_player_system_default_description">Oinatqyşty tañdauğa jüiege mümkındık berılsın, keibır oinatqyştar tolyq syiysymdy bolmauy mümkın.</string>

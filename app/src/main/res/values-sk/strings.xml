@@ -11,7 +11,6 @@
     <string name="connect_button_text">Pripojiť</string>
     <string name="host_input_hint">Hostiteľ</string>
     <string name="connect_to_server_title">Pripojiť k serveru</string>
-    <string name="pref_enable_exoplayer_summary">Povoliť experimentálny prehrávač videa ExoPlayer, ktorý podporuje viac formátov a kodekov, a je lepšie integrovaný do operačného systému</string>
     <string name="pref_enable_exoplayer_title">Povoliť integráciu prehrávača videa</string>
     <string name="pref_category_video_player">Prehrávač videa</string>
     <string name="pref_music_notification_always_dismissible_title">Umožniť odstránenie upozornení prehrávača</string>
@@ -70,7 +69,6 @@
     <string name="media_service_car_section_recents">Nedávno prehrávané</string>
     <string name="media_service_item_not_found">Položka média nebola nájdená</string>
     <string name="media_service_generic_error">Došlo k chybe</string>
-    <string name="connection_error_invalid_version">Server používa nepodporovanú verziu. Aktualizujte ho na najnovšiu verziu dostupnú na webe jellyfin.org.</string>
     <string name="pref_download_location">Umiestnenie sťahovania</string>
     <string name="pref_category_downloads">Stiahnuté</string>
     <string name="dialog_button_close_app">Zatvoriť aplikáciu</string>

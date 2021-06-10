@@ -20,7 +20,6 @@
     <string name="menu_item_none">Ninguno</string>
     <string name="pref_category_video_player">Reproductor de Video</string>
     <string name="pref_music_notification_always_dismissible_title">Notificación del reproductor de música descartable</string>
-    <string name="pref_enable_exoplayer_summary">Habilita el reproductor de video experimental ExoPlayer que soporta más formatos de video y códecs, y está más integrado en el sistema operativo</string>
     <string name="pref_enable_exoplayer_title">Habilitar integración del reproductor de video</string>
     <string name="playback_info_play_method">Método de reproducción: %s</string>
     <string name="connection_error_cannot_connect">La conexión no puede ser establecida.
@@ -59,13 +58,9 @@
     <string name="external_player_mpv_description">Un reproductor de video simple, pequeño, ligero y libre. Soporta una gran variedad de formatos multimedia.</string>
     <string name="external_player_mpv">Reproductor MPV</string>
     <string name="external_player_app">Reproductor de video externo</string>
-    <string name="mediaservice_library_playlists">Listas de reproducción</string>
     <string name="mediaservice_library_genres">Géneros</string>
-    <string name="mediaservice_library_songs">Canciones</string>
     <string name="mediaservice_library_artists">Artistas</string>
-    <string name="mediaservice_library_albums">Álbumes</string>
     <string name="mediaservice_library_latest">Más reciente</string>
-    <string name="mediaservice_shuffle">Aleatorio</string>
     <string name="music_notification_channel_description">Se utiliza para controlar la reproducción de música</string>
     <string name="music_notification_channel">Reproductor de música de Jellyfin</string>
     <string name="media_service_car_item_no_title">Sin título</string>
@@ -77,7 +72,6 @@
     <string name="media_service_car_section_recents">Reproducido recientemente</string>
     <string name="media_service_item_not_found">No se puede encontrar el elemento</string>
     <string name="media_service_generic_error">Ha ocurrido un error</string>
-    <string name="connection_error_invalid_version">El servidor utiliza una versión no soportada. Actualiza a la última versión disponible en jellyfin.org.</string>
     <string name="pref_download_location">Ubicación de las descargas</string>
     <string name="pref_category_downloads">Descargas</string>
     <string name="dialog_button_close_app">Cerrar aplicación</string>

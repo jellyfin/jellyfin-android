@@ -37,7 +37,6 @@
     <string name="available_servers_title">Pieejamie serveri</string>
     <string name="choose_server_button_text">Izvēlēties serveri</string>
     <string name="connect_button_text">Savienot</string>
-    <string name="connection_error_invalid_version">Serveris lieto neatbalstītu versiju. Atjaunojiet uz jaunāko versiju no jellyfin.org.</string>
     <string name="connect_to_server_title">Savienoties ar Serveri</string>
     <string name="connection_error_cannot_connect">Savienojums nav izdevies.
 \nLūdzu, pārbaudiet \"hostname\" un jūsu tīkla savienojumu.</string>

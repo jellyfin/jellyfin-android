@@ -29,7 +29,6 @@
     <string name="download_no_storage_permission">Неможливо завантажити файли без дозволу на зберігання</string>
     <string name="available_servers_title">Доступні сервера</string>
     <string name="choose_server_button_text">Виберіть сервер</string>
-    <string name="connection_error_invalid_version">Сервер використовує непідтримувану версію. Оновіться до останньої версії, яка доступна на jellyfin.org.</string>
     <string name="connection_error_cannot_connect">Неможливо встановити з\'єднання.
 \nПеревірте, будь ласка, ім\'я сервера та ваше мережеве з\'єднання.</string>
 </resources>

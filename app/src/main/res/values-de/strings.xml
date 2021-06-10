@@ -12,7 +12,6 @@
     <string name="connect_to_server_title">Serververbindung herstellen</string>
     <string name="connection_error_invalid_format">Adressformat ungültig</string>
     <string name="pref_music_notification_always_dismissible_title">Musikwiedergabe-Benachrichtigung verwerfbar</string>
-    <string name="pref_enable_exoplayer_summary">Aktiviere den experimentellen ExoPlayer Video Player, welcher mehr Videoformate und -Codecs unterstützt und besser ins Betriebssystem integriert ist</string>
     <string name="pref_enable_exoplayer_title">Aktiviere Video Player Integration</string>
     <string name="pref_category_video_player">Videoplayer</string>
     <string name="pref_category_music_player">Musikplayer</string>
@@ -48,16 +47,12 @@
     <string name="available_servers_title">Verfügbare Server</string>
     <string name="choose_server_button_text">Server auswählen</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Helligkeits- und Lautstärkegesten</string>
-    <string name="mediaservice_library_latest">Neueste</string>
     <string name="external_player_mx_player_pro">MX Player Pro</string>
     <string name="external_player_mx_player_free">MX Player Free</string>
     <string name="external_player_mpv">MPV Player</string>
     <string name="external_player_app">Anwendung für externe Videowiedergabe</string>
-    <string name="mediaservice_library_playlists">Wiedergabelisten</string>
     <string name="mediaservice_library_genres">Genres</string>
-    <string name="mediaservice_library_songs">Lieder</string>
     <string name="mediaservice_library_artists">Künstler</string>
-    <string name="mediaservice_library_albums">Alben</string>
     <string name="mediaservice_shuffle">Zufallswiedergabe</string>
     <string name="external_player_system_default_description">Überlassen Sie dem System die Wahl der Player, einige Player sind möglicherweise nicht vollständig kompatibel.</string>
     <string name="external_player_system_default">Systemstandard</string>
@@ -66,7 +61,6 @@
     <string name="external_player_mx_player_pro_description">Die kostenpflichtige Version des MX-Players, die ein unterbrechungsfreies Videoerlebnis bietet.</string>
     <string name="external_player_mx_player_free_description">Leistungsstarker Videoplayer mit fortschrittlicher Hardwarebeschleunigung und Untertitelunterstützung.</string>
     <string name="external_player_mpv_description">Ein einfacher, leichter und freier Videoplayer. Er unterstützt eine Vielzahl von Medienformaten.</string>
-    <string name="connection_error_invalid_version">Der Server verwendet eine nicht unterstützte Version. Aktualisieren Sie auf die neueste Version, verfügbar auf jellyfin.org.</string>
     <string name="media_service_generic_error">Ein Fehler ist aufgetreten</string>
     <string name="music_notification_channel_description">Zur Steuerung der Musikwiedergabe verwendet</string>
     <string name="music_notification_channel">Jellyfin Musik</string>
