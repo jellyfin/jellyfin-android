@@ -8,7 +8,6 @@
     <string name="connect_to_server_title">Sambungkan ke Server</string>
     <string name="menu_item_none">Tidak ada</string>
     <string name="host_input_hint">Host</string>
-    <string name="pref_enable_exoplayer_title">Aktifkan integrasi pemutar video</string>
     <string name="pref_category_video_player">Pemutar video</string>
     <string name="network_title">Jenis Jaringan yang Diizinkan</string>
     <string name="mobile_data_and_roaming">Data Seluler dan Roaming</string>

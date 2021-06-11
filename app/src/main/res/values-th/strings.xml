@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_exoplayer_allow_background_audio">อนุญาตให้เล่นเสียงในพื้นหลังในเครื่องเล่นในตัว</string>
-    <string name="pref_enable_exoplayer_title">เปิดใช้งานการเข้ากันของเครื่องเล่นวิดีโอ</string>
     <string name="pref_category_video_player">เครื่องเล่นวีดีโอ</string>
     <string name="pref_music_notification_always_dismissible_title">ทำให้การแจ้งเตือนเครื่องเล่นเพลงปิดได้เสมอ</string>
     <string name="pref_category_music_player">เครื่องเล่นเพลง</string>

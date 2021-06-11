@@ -11,7 +11,6 @@
     <string name="connect_button_text">Připojit</string>
     <string name="host_input_hint">Hostitel</string>
     <string name="connect_to_server_title">Připojit k serveru</string>
-    <string name="pref_enable_exoplayer_title">Povolit integraci přehrávače videa</string>
     <string name="pref_category_video_player">Přehrávač videa</string>
     <string name="pref_music_notification_always_dismissible_title">Odstranění oznámení hudebního přehrávače</string>
     <string name="pref_category_music_player">Přehrávač hudby</string>
@@ -58,9 +57,7 @@
     <string name="external_player_mpv_description">Jednoduchý, malý a svobodný přehrávač. Podporuje mnoho různých formátů.</string>
     <string name="external_player_mpv">MPV</string>
     <string name="external_player_app">Externí přehrávač</string>
-    <string name="mediaservice_library_genres">Žánry</string>
     <string name="mediaservice_library_artists">Umělci</string>
-    <string name="mediaservice_library_latest">Nejnovější</string>
     <string name="connection_error_invalid_version">Verze serveru není podporovaná. Aktualizujte na nejnovější verzi dostupnou z webu jellyfin.org.</string>
     <string name="music_notification_channel_description">Používá se pro ovládání přehrávání hudby</string>
     <string name="music_notification_channel">Přehrávač hudby Jellyfin</string>

@@ -17,7 +17,6 @@
 \nPor favor, comprueba el nombre de host y tu conexión a la red.</string>
     <string name="pref_category_video_player">Reproductor de vídeo</string>
     <string name="pref_category_music_player">Reproductor de música</string>
-    <string name="pref_enable_exoplayer_title">Habilitar la integración del reproductor de video</string>
     <string name="pref_music_notification_always_dismissible_title">Notificación del reproductor descartable</string>
     <string name="activity_name_settings">Ajustes de Jellyfin</string>
     <string name="playback_info_and_x_more">... y %d más</string>
@@ -58,9 +57,7 @@
     <string name="external_player_mpv_description">Un reproductor de video simple, pequeño, ligero y libre. Soporta una amplia variedad de formatos multimedia.</string>
     <string name="external_player_mpv">Reproductor MPV</string>
     <string name="external_player_app">Reproductor de video externo</string>
-    <string name="mediaservice_library_genres">Géneros</string>
     <string name="mediaservice_library_artists">Artistas</string>
-    <string name="mediaservice_library_latest">Más reciente</string>
     <string name="connection_error_invalid_version">El servidor utiliza una versión no soportada. Actualiza a la última versión disponible en jellyfin.org.</string>
     <string name="music_notification_channel_description">Utilizado para el control de la reproducción de música</string>
     <string name="music_notification_channel">Reproductor de Música Jellyfin</string>

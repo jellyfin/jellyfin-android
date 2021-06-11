@@ -11,7 +11,6 @@
     <string name="connect_button_text">Poveži</string>
     <string name="host_input_hint">Naslov</string>
     <string name="connect_to_server_title">Poveži s strežnikom</string>
-    <string name="pref_enable_exoplayer_title">Omogoči integracijo video predvajalnika</string>
     <string name="pref_category_video_player">Video predvajalnik</string>
     <string name="pref_music_notification_always_dismissible_title">Skrivanje obvestila predvajalnika</string>
     <string name="pref_category_music_player">Predvajalnik glasbe</string>
