@@ -12,7 +12,6 @@ import android.support.v4.media.MediaMetadataCompat
 import androidx.media.MediaBrowserServiceCompat
 import androidx.media.utils.MediaConstants
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.media.MediaService
 import org.jellyfin.mobile.media.mediaId
 import org.jellyfin.mobile.media.setAlbum
@@ -24,6 +23,7 @@ import org.jellyfin.mobile.media.setMediaId
 import org.jellyfin.mobile.media.setMediaUri
 import org.jellyfin.mobile.media.setTitle
 import org.jellyfin.mobile.media.setTrackNumber
+import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.jellyfin.sdk.api.operations.GenresApi
 import org.jellyfin.sdk.api.operations.ImageApi
@@ -40,12 +40,12 @@ import org.jellyfin.sdk.model.api.SortOrder
 import org.jellyfin.sdk.model.serializer.toUUID
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
-import java.util.*
+import java.util.UUID
 
 @Suppress("TooManyFunctions")
 class LibraryBrowser(
     private val context: Context,
-    private val apiController: ApiController,
+    private val apiClient: ApiClient,
     private val itemsApi: ItemsApi,
     private val userViewsApi: UserViewsApi,
     private val genresApi: GenresApi,
@@ -76,8 +76,10 @@ class LibraryBrowser(
         val split = parentId.split('|')
 
         @Suppress("MagicNumber")
-        if (split.size !in 1..3)
+        if (split.size !in 1..3) {
+            Timber.e("Invalid libraryId format '$parentId'")
             return null
+        }
 
         val type = split[0]
         val libraryId = split.getOrNull(1)?.toUUIDOrNull()
@@ -114,8 +116,10 @@ class LibraryBrowser(
     suspend fun buildPlayQueue(mediaId: String): Pair<List<MediaMetadataCompat>, Int>? {
         val split = mediaId.split('|')
         @Suppress("MagicNumber")
-        if (split.size != 3)
+        if (split.size != 3) {
+            Timber.e("Invalid mediaId format '$mediaId'")
             return null
+        }
 
         val type = split[0]
         val collectionId = split[1].toUUID()
@@ -159,8 +163,7 @@ class LibraryBrowser(
                     Timber.d("Searching for artist $artistQuery")
                     searchItems(artistQuery, "MusicArtist")
                 }?.let { artistId ->
-                    itemsApi.getItems(
-                        userId = apiController.currentUser,
+                    itemsApi.getItemsByUserId(
                         artistIds = listOf(artistId),
                         includeItemTypes = listOf("Audio"),
                         sortBy = listOf("Random"),
@@ -179,8 +182,7 @@ class LibraryBrowser(
 
         // Fallback to generic search
         Timber.d("Searching for '$searchQuery'")
-        val result by itemsApi.getItems(
-            userId = apiController.currentUser,
+        val result by itemsApi.getItemsByUserId(
             searchTerm = searchQuery,
             includeItemTypes = listOf("Audio"),
             recursive = true,
@@ -197,8 +199,7 @@ class LibraryBrowser(
      * Find a single specific item for the given [searchQuery] with a specific [type]
      */
     private suspend fun searchItems(searchQuery: String, type: String): UUID? {
-        val result by itemsApi.getItems(
-            userId = apiController.currentUser,
+        val result by itemsApi.getItemsByUserId(
             searchTerm = searchQuery,
             includeItemTypes = listOf(type),
             recursive = true,
@@ -217,16 +218,14 @@ class LibraryBrowser(
     }
 
     private suspend fun getLibraries(): List<MediaBrowserCompat.MediaItem> {
-        val userViews by userViewsApi.getUserViews(
-            userId = apiController.currentUser ?: return emptyList()
-        )
+        val userViews by userViewsApi.getUserViews()
 
         return userViews.items.orEmpty()
             .filter { item -> item.collectionType.equals("music", ignoreCase = true) }
             .map { item ->
                 val itemImageUrl = imageApi.getItemImageUrl(
                     itemId = item.id,
-                    imageType = ImageType.PRIMARY
+                    imageType = ImageType.PRIMARY,
                 )
 
                 val description = MediaDescriptionCompat.Builder().apply {
@@ -264,8 +263,7 @@ class LibraryBrowser(
     }
 
     private suspend fun getRecents(libraryId: UUID): List<MediaMetadataCompat>? {
-        val result by itemsApi.getItems(
-            userId = apiController.currentUser,
+        val result by itemsApi.getItemsByUserId(
             parentId = libraryId,
             includeItemTypes = listOf("Audio"),
             filters = listOf(ItemFilter.IS_PLAYED),
@@ -286,8 +284,7 @@ class LibraryBrowser(
         filterArtist: UUID? = null,
         filterGenre: UUID? = null
     ): List<MediaBrowserCompat.MediaItem>? {
-        val result by itemsApi.getItems(
-            userId = apiController.currentUser,
+        val result by itemsApi.getItemsByUserId(
             parentId = libraryId,
             artistIds = filterArtist?.let(::listOf),
             genreIds = filterGenre?.let(::listOf),
@@ -303,8 +300,7 @@ class LibraryBrowser(
     }
 
     private suspend fun getArtists(libraryId: UUID): List<MediaBrowserCompat.MediaItem>? {
-        val result by itemsApi.getItems(
-            userId = apiController.currentUser,
+        val result by itemsApi.getItemsByUserId(
             parentId = libraryId,
             includeItemTypes = listOf("MusicArtist"),
             sortBy = listOf(ItemFields.SORT_NAME.serialName),
@@ -319,7 +315,7 @@ class LibraryBrowser(
 
     private suspend fun getGenres(libraryId: UUID): List<MediaBrowserCompat.MediaItem>? {
         val result by genresApi.getGenres(
-            userId = apiController.currentUser,
+            userId = apiClient.userId,
             parentId = libraryId,
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
@@ -330,8 +326,7 @@ class LibraryBrowser(
     }
 
     private suspend fun getPlaylists(libraryId: UUID): List<MediaBrowserCompat.MediaItem>? {
-        val result by itemsApi.getItems(
-            userId = apiController.currentUser,
+        val result by itemsApi.getItemsByUserId(
             parentId = libraryId,
             includeItemTypes = listOf("Playlist"),
             sortBy = listOf("DatePlayed"),
@@ -346,8 +341,7 @@ class LibraryBrowser(
     }
 
     private suspend fun getAlbum(albumId: UUID): List<MediaMetadataCompat>? {
-        val result by itemsApi.getItems(
-            userId = apiController.currentUser,
+        val result by itemsApi.getItemsByUserId(
             parentId = albumId,
             sortBy = listOf(ItemFields.SORT_NAME.serialName),
         )
@@ -357,8 +351,7 @@ class LibraryBrowser(
 
     private suspend fun getPlaylist(playlistId: UUID): List<MediaMetadataCompat>? {
         val result by playlistsApi.getPlaylistItems(
-            playlistId = playlistId,
-            userId = apiController.currentUser ?: return null
+            playlistId = playlistId
         )
 
         return result.extractItems("${LibraryPage.PLAYLIST}|$playlistId")
@@ -389,8 +382,8 @@ class LibraryBrowser(
         if (item.type.equals("audio", ignoreCase = true)) {
             val uri = universalAudioApi.getUniversalAudioStreamUrl(
                 itemId = item.id,
-                userId = apiController.currentUser,
-                deviceId = apiController.currentDeviceId,
+                userId = apiClient.userId,
+                deviceId = apiClient.deviceInfo.id,
                 maxStreamingBitrate = 140000000,
                 container = listOf(
                     "opus",

@@ -26,7 +26,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
-import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaQueueManager
 import org.jellyfin.mobile.utils.Constants
@@ -51,10 +50,8 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
-import java.util.*
 
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
-    private val apiController by inject<ApiController>()
     private val playStateApi by inject<PlayStateApi>()
 
     private val lifecycleObserver = PlayerLifecycleObserver(this)
@@ -243,10 +240,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
                 // Mark video as watched if playback finished
                 if (hasFinished) {
-                    playStateApi.markPlayedItem(
-                        userId = apiController.requireUser(),
-                        itemId = mediaSource.itemId,
-                    )
+                    playStateApi.markPlayedItem(itemId = mediaSource.itemId)
                 }
             } catch (e: ApiClientException) {
                 Timber.e(e, "Failed to report playback stop")

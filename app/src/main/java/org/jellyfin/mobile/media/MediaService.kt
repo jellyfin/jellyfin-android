@@ -42,14 +42,15 @@ import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.media.car.LibraryBrowser
 import org.jellyfin.mobile.media.car.LibraryPage
 import org.jellyfin.mobile.utils.toast
+import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import com.google.android.exoplayer2.MediaItem as ExoPlayerMediaItem
 
 class MediaService : MediaBrowserServiceCompat() {
-
     private val apiController: ApiController by inject()
+    private val apiClient: ApiClient by inject()
     private val libraryBrowser: LibraryBrowser by inject()
 
     private val serviceScope = MainScope()
@@ -172,7 +173,12 @@ class MediaService : MediaBrowserServiceCompat() {
             loadingJob.join()
 
             val items = try {
-                if (apiController.currentUser != null) libraryBrowser.loadLibrary(parentId) else null
+                if (apiClient.userId != null) {
+                    libraryBrowser.loadLibrary(parentId)
+                } else {
+                    Timber.e("Missing userId in ApiClient")
+                    null
+                }
             } catch (e: ApiClientException) {
                 Timber.e(e)
                 null
