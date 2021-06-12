@@ -17,6 +17,11 @@ allprojects {
     repositories {
         mavenCentral()
         google()
+        mavenLocal {
+            content {
+                includeVersionByRegex(Dependencies.Groups.jellyfin, ".*", Dependencies.Versions.jellyfinSdkLocal)
+            }
+        }
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
             content {
                 includeVersionByRegex(Dependencies.Groups.jellyfin, ".*", ".*-SNAPSHOT")
