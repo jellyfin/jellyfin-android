@@ -1,7 +1,7 @@
 package org.jellyfin.mobile.player.source
 
-import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.player.PlayerException
+import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.jellyfin.sdk.api.operations.ItemsApi
 import org.jellyfin.sdk.api.operations.MediaInfoApi
@@ -12,7 +12,7 @@ import timber.log.Timber
 import java.util.UUID
 
 class MediaSourceResolver(
-    private val apiController: ApiController,
+    private val apiClient: ApiClient,
     private val mediaInfoApi: MediaInfoApi,
     private val itemsApi: ItemsApi,
 ) {
@@ -25,10 +25,10 @@ class MediaSourceResolver(
     ): Result<JellyfinMediaSource> {
         // Load media source info
         val mediaSourceInfo = try {
-            val playbackInfoResponse by mediaInfoApi.getPostedPlaybackInfo(
+            val response by mediaInfoApi.getPostedPlaybackInfo(
                 itemId = itemId,
                 data = PlaybackInfoDto(
-                    userId = apiController.requireUser(),
+                    userId = apiClient.userId,
                     deviceProfile = deviceProfile,
                     startTimeTicks = startTimeTicks,
                     audioStreamIndex = audioStreamIndex,
@@ -37,7 +37,7 @@ class MediaSourceResolver(
                 ),
             )
 
-            playbackInfoResponse.mediaSources?.find { source ->
+            response.mediaSources?.find { source ->
                 source.id?.toUUIDOrNull() == itemId
             } ?: return Result.failure(PlayerException.UnsupportedContent())
         } catch (e: ApiClientException) {
@@ -47,11 +47,8 @@ class MediaSourceResolver(
 
         // Load additional item info if possible
         val item = try {
-            val itemsResponse by itemsApi.getItems(
-                userId = apiController.requireUser(),
-                ids = listOf(itemId),
-            )
-            itemsResponse.items?.firstOrNull()
+            val response by itemsApi.getItemsByUserId(ids = listOf(itemId))
+            response.items?.firstOrNull()
         } catch (e: ApiClientException) {
             Timber.e(e, "Failed to load item for media source $itemId")
             null

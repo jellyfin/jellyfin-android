@@ -18,12 +18,6 @@ class ApiController(
     private val serverDao: ServerDao,
     private val userDao: UserDao,
 ) {
-    var currentUser: UUID? = null
-        private set
-
-    var currentDeviceId: String = baseDeviceInfo.id
-        private set
-
     /**
      * Migrate from preferences if necessary
      */
@@ -79,20 +73,15 @@ class ApiController(
     }
 
     private fun configureApiClientUser(userId: String, accessToken: String) {
-        currentUser = userId.toUUID()
-
-        // Append user id to device id to ensure uniqueness across sessions
-        currentDeviceId = baseDeviceInfo.id + currentUser.toString()
-        apiClient.deviceInfo = baseDeviceInfo.copy(id = currentDeviceId)
+        apiClient.userId = userId.toUUID()
         apiClient.accessToken = accessToken
+        // Append user id to device id to ensure uniqueness across sessions
+        apiClient.deviceInfo = baseDeviceInfo.copy(id = baseDeviceInfo.id + userId)
     }
 
     private fun resetApiClientUser() {
-        currentUser = null
-        currentDeviceId = baseDeviceInfo.id
-        apiClient.deviceInfo = baseDeviceInfo
+        apiClient.userId = null
         apiClient.accessToken = null
+        apiClient.deviceInfo = baseDeviceInfo
     }
-
-    fun requireUser(): UUID = requireNotNull(currentUser) { "Current user is null!" }
 }
