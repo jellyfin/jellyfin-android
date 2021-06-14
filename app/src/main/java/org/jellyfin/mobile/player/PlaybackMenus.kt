@@ -47,7 +47,7 @@ class PlaybackMenus(
             fragment.onSkipToNext()
         }
         lockScreenButton.setOnClickListener {
-            fragment.lockScreen()
+            fragment.playerLockScreenHelper.lockScreen()
         }
         audioStreamsButton.setOnClickListener {
             fragment.suppressControllerAutoHide(true)
