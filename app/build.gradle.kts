@@ -1,4 +1,3 @@
-import com.android.build.gradle.options.parseBoolean
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.github.benmanes.gradle.versions.updates.gradle.GradleReleaseChannel
 import io.gitlab.arturbosch.detekt.Detekt
@@ -139,12 +138,13 @@ dependencies {
     kapt(Dependencies.Room.compiler)
 
     // Network
-    val useSdkSnapshot: String by project
+    val sdkVersion = findProperty("sdk.version")?.toString()
     implementation(Dependencies.Network.jellyfinSdk) {
-        version {
-            if (parseBoolean("useSdkSnapshot", useSdkSnapshot)) {
-                strictly(Dependencies.Versions.jellyfinSdkSnapshot)
-            }
+        // Change version if desired
+        when (sdkVersion) {
+            "local" -> version { strictly(Dependencies.Versions.jellyfinSdkLocal) }
+            "snapshot" -> version { strictly(Dependencies.Versions.jellyfinSdkSnapshot) }
+            "unstable-snapshot" -> version { strictly(Dependencies.Versions.jellyfinSdkSnapshotUnstable) }
         }
     }
     implementation(Dependencies.Network.okHttp)
