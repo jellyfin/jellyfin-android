@@ -53,6 +53,8 @@ import org.jellyfin.mobile.utils.Constants.DEFAULT_CENTER_OVERLAY_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_SEEK_TIME_MS
 import org.jellyfin.mobile.utils.Constants.GESTURE_EXCLUSION_AREA_TOP
+import org.jellyfin.mobile.utils.Constants.PIP_MAX_RATIONAL
+import org.jellyfin.mobile.utils.Constants.PIP_MIN_RATIONAL
 import org.jellyfin.mobile.utils.SmartOrientationListener
 import org.jellyfin.mobile.utils.dip
 import org.jellyfin.mobile.utils.disableFullscreen
@@ -528,7 +530,14 @@ class PlayerFragment : Fragment() {
     private fun Activity.enterPictureInPicture() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val params = PictureInPictureParams.Builder().apply {
-                setAspectRatio(currentVideoStream?.aspectRational)
+                val aspectRational = currentVideoStream?.aspectRational?.let { aspectRational ->
+                    when {
+                        aspectRational < PIP_MIN_RATIONAL -> PIP_MIN_RATIONAL
+                        aspectRational > PIP_MAX_RATIONAL -> PIP_MAX_RATIONAL
+                        else -> aspectRational
+                    }
+                }
+                setAspectRatio(aspectRational)
             }.build()
             enterPictureInPictureMode(params)
         } else {
