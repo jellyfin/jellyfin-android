@@ -143,8 +143,8 @@ dependencies {
         // Change version if desired
         when (sdkVersion) {
             "local" -> version { strictly(Dependencies.Versions.jellyfinSdkLocal) }
-            "unstable-snapshot" -> version { strictly(Dependencies.Versions.jellyfinSdkSnapshotUnstable) }
             "snapshot" -> version { strictly(Dependencies.Versions.jellyfinSdkSnapshot) }
+            "unstable-snapshot" -> version { strictly(Dependencies.Versions.jellyfinSdkSnapshotUnstable) }
         }
     }
     implementation(Dependencies.Network.okHttp)

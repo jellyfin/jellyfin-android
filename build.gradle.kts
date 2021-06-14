@@ -24,7 +24,8 @@ allprojects {
         }
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
             content {
-                includeVersionByRegex(Dependencies.Groups.jellyfin, ".*", ".*-SNAPSHOT")
+                includeVersionByRegex(Dependencies.Groups.jellyfin, ".*", Dependencies.Versions.jellyfinSdkSnapshot)
+                includeVersionByRegex(Dependencies.Groups.jellyfin, ".*", Dependencies.Versions.jellyfinSdkSnapshotUnstable)
             }
         }
     }
