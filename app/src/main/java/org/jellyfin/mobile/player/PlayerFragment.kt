@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.PictureInPictureParams
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -298,6 +299,12 @@ class PlayerFragment : Fragment() {
                     }
                 }
                 setAspectRatio(aspectRational)
+                val contentFrame: View = playerView.findViewById(R.id.exo_content_frame)
+                val contentRect = with(contentFrame) {
+                    val (x, y) = intArrayOf(0, 0).also(::getLocationInWindow)
+                    Rect(x, y, x + width, y + height)
+                }
+                setSourceRectHint(contentRect)
             }.build()
             enterPictureInPictureMode(params)
         } else {
