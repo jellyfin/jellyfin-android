@@ -93,8 +93,6 @@ class PlayerFragment : Fragment() {
 
     private var isZoomEnabled = false
 
-    private val swipeGesturesEnabled by appPreferences::exoPlayerAllowSwipeGestures
-
     /**
      * Tracks a value during a swipe gesture (between multiple onScroll calls).
      * When the gesture starts it's reset to an initial value and gets increased or decreased
@@ -381,7 +379,7 @@ class PlayerFragment : Fragment() {
             }
 
             override fun onScroll(firstEvent: MotionEvent, currentEvent: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
-                if (!swipeGesturesEnabled)
+                if (!appPreferences.exoPlayerAllowSwipeGestures)
                     return false
 
                 // Check whether swipe was started in excluded region
