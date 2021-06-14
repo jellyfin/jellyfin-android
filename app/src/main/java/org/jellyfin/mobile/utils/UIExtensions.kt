@@ -8,6 +8,7 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
@@ -46,3 +47,11 @@ fun View.applyWindowInsetsAsMargins() {
 }
 
 inline fun Resources.dip(px: Int) = (px * displayMetrics.density).toInt()
+
+inline var Window.brightness: Float
+    get() = attributes.screenBrightness
+    set(value) {
+        attributes = attributes.apply {
+            screenBrightness = value
+        }
+    }

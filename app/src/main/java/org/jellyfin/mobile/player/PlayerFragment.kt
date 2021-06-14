@@ -1,47 +1,31 @@
 package org.jellyfin.mobile.player
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.PictureInPictureParams
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.Settings.System
-import android.view.GestureDetector
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.OrientationEventListener
-import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
-import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_OFF
 import android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.content.getSystemService
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
-import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
 import kotlinx.coroutines.launch
-import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.api.aspectRational
 import org.jellyfin.mobile.api.isLandscape
@@ -49,54 +33,36 @@ import org.jellyfin.mobile.bridge.PlayOptions
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.utils.Constants
-import org.jellyfin.mobile.utils.Constants.DEFAULT_CENTER_OVERLAY_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
-import org.jellyfin.mobile.utils.Constants.DEFAULT_SEEK_TIME_MS
-import org.jellyfin.mobile.utils.Constants.GESTURE_EXCLUSION_AREA_TOP
 import org.jellyfin.mobile.utils.Constants.PIP_MAX_RATIONAL
 import org.jellyfin.mobile.utils.Constants.PIP_MIN_RATIONAL
 import org.jellyfin.mobile.utils.SmartOrientationListener
-import org.jellyfin.mobile.utils.dip
+import org.jellyfin.mobile.utils.brightness
 import org.jellyfin.mobile.utils.disableFullscreen
 import org.jellyfin.mobile.utils.enableFullscreen
 import org.jellyfin.mobile.utils.isFullscreen
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaStream
-import org.koin.android.ext.android.inject
-import kotlin.math.abs
 
 class PlayerFragment : Fragment() {
-    private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
     private var _playerBinding: FragmentPlayerBinding? = null
     private val playerBinding: FragmentPlayerBinding get() = _playerBinding!!
     private val playerView: PlayerView get() = playerBinding.playerView
     private val playerOverlay: View get() = playerBinding.playerOverlay
     private val loadingIndicator: View get() = playerBinding.loadingIndicator
-    private val gestureIndicatorOverlayLayout: LinearLayout get() = playerBinding.gestureOverlayLayout
-    private val gestureIndicatorOverlayImage: ImageView get() = playerBinding.gestureOverlayImage
-    private val gestureIndicatorOverlayProgress: ProgressBar get() = playerBinding.gestureOverlayProgress
     private var _playerControlsBinding: ExoPlayerControlViewBinding? = null
     private val playerControlsBinding: ExoPlayerControlViewBinding get() = _playerControlsBinding!!
     private val playerControlsView: View get() = playerControlsBinding.root
     private val titleTextView: TextView get() = playerControlsBinding.trackTitle
     private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
     private var playbackMenus: PlaybackMenus? = null
-    private val audioManager: AudioManager by lazy { requireContext().getSystemService()!! }
 
     lateinit var playerLockScreenHelper: PlayerLockScreenHelper
+    lateinit var playerGestureHelper: PlayerGestureHelper
 
     private val currentVideoStream: MediaStream?
         get() = viewModel.mediaSourceOrNull?.selectedVideoStream
-
-    private var isZoomEnabled = false
-
-    /**
-     * Tracks a value during a swipe gesture (between multiple onScroll calls).
-     * When the gesture starts it's reset to an initial value and gets increased or decreased
-     * (depending on the direction) as the gesture progresses.
-     */
-    private var swipeGestureValueTracker = -1f
 
     /**
      * Listener that watches the current device orientation.
@@ -107,22 +73,6 @@ class PlayerFragment : Fragment() {
      * the orientation would get reverted before the user had any chance to rotate the device to the desired position.
      */
     private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(requireActivity()) }
-
-    /**
-     * Runnable that hides [playerView] controller
-     */
-    private val hidePlayerViewControllerAction = Runnable {
-        if (_playerBinding != null) {
-            playerView.hideController()
-        }
-    }
-
-    /**
-     * Runnable that hides [gestureIndicatorOverlayLayout]
-     */
-    private val hideGestureIndicatorOverlayAction = Runnable {
-        gestureIndicatorOverlayLayout.isVisible = false
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -212,7 +162,7 @@ class PlayerFragment : Fragment() {
         playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
 
         // Setup gesture handling
-        setupGestureDetector()
+        playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)
 
         // Handle fullscreen switcher
         fullscreenSwitcher.setOnClickListener {
@@ -278,10 +228,6 @@ class PlayerFragment : Fragment() {
         fullscreenSwitcher.setImageResource(fullscreenDrawable)
     }
 
-    private fun updateZoomMode(enabled: Boolean) {
-        playerView.resizeMode = if (enabled) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FIT
-    }
-
     /**
      * If true, the player controls will show indefinitely
      */
@@ -289,155 +235,12 @@ class PlayerFragment : Fragment() {
         playerView.controllerShowTimeoutMs = if (suppress) -1 else DEFAULT_CONTROLS_TIMEOUT_MS
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setupGestureDetector() {
-        // Handles taps when controls are locked
-        val unlockDetector = GestureDetector(requireContext(), object : GestureDetector.SimpleOnGestureListener() {
-            override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
-                playerLockScreenHelper.peekUnlockButton()
-                return true
-            }
-        })
-        // Handles double tap to seek and brightness/volume gestures
-        val gestureDetector = GestureDetector(requireContext(), object : GestureDetector.SimpleOnGestureListener() {
-            override fun onDoubleTap(e: MotionEvent): Boolean {
-                val viewWidth = playerView.measuredWidth
-                val viewHeight = playerView.measuredHeight
-                val viewCenterX = viewWidth / 2
-                val viewCenterY = viewHeight / 2
-                val fastForward = e.x.toInt() > viewCenterX
-
-                // Show ripple effect
-                playerView.foreground?.apply {
-                    val left = if (fastForward) viewCenterX else 0
-                    val right = if (fastForward) viewWidth else viewCenterX
-                    setBounds(left, viewCenterY - viewCenterX / 2, right, viewCenterY + viewCenterX / 2)
-                    setHotspot(e.x, e.y)
-                    state = intArrayOf(android.R.attr.state_enabled, android.R.attr.state_pressed)
-                    playerView.postDelayed(Constants.DOUBLE_TAP_RIPPLE_DURATION_MS) {
-                        state = IntArray(0)
-                    }
-                }
-
-                // Fast-forward/rewind
-                viewModel.seekToOffset(if (fastForward) DEFAULT_SEEK_TIME_MS else DEFAULT_SEEK_TIME_MS.unaryMinus())
-
-                // Cancel previous runnable to not hide controller while seeking
-                playerView.removeCallbacks(hidePlayerViewControllerAction)
-
-                // Ensure controller gets hidden after seeking
-                playerView.postDelayed(hidePlayerViewControllerAction, DEFAULT_CONTROLS_TIMEOUT_MS.toLong())
-                return true
-            }
-
-            override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
-                playerView.apply {
-                    if (!isControllerVisible) showController() else hideController()
-                }
-                return true
-            }
-
-            override fun onScroll(firstEvent: MotionEvent, currentEvent: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
-                if (!appPreferences.exoPlayerAllowSwipeGestures)
-                    return false
-
-                // Check whether swipe was started in excluded region
-                if (firstEvent.y < resources.dip(GESTURE_EXCLUSION_AREA_TOP))
-                    return false
-
-                // Check whether swipe was oriented vertically
-                if (abs(distanceY / distanceX) < 2)
-                    return false
-
-                val viewCenterX = playerView.measuredWidth / 2
-
-                // Distance to swipe to go from min to max
-                val distanceFull = playerView.measuredHeight * Constants.FULL_SWIPE_RANGE_SCREEN_RATIO
-                val ratioChange = distanceY / distanceFull
-
-                if (firstEvent.x.toInt() > viewCenterX) {
-                    // Swiping on the right, change volume
-
-                    val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-                    if (swipeGestureValueTracker == -1f) swipeGestureValueTracker = currentVolume.toFloat()
-
-                    val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-                    val change = ratioChange * maxVolume
-                    swipeGestureValueTracker += change
-
-                    val toSet = swipeGestureValueTracker.toInt().coerceIn(0, maxVolume)
-                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, toSet, 0)
-
-                    gestureIndicatorOverlayImage.setImageResource(R.drawable.ic_volume_white_24dp)
-                    gestureIndicatorOverlayProgress.max = maxVolume
-                    gestureIndicatorOverlayProgress.progress = toSet
-                } else {
-                    // Swiping on the left, change brightness
-
-                    val window = requireActivity().window
-                    val brightnessRange = BRIGHTNESS_OVERRIDE_OFF..BRIGHTNESS_OVERRIDE_FULL
-
-                    // Initialize on first swipe
-                    if (swipeGestureValueTracker == -1f) {
-                        val brightness = window.brightness
-                        swipeGestureValueTracker = when (brightness) {
-                            in brightnessRange -> brightness
-                            else -> System.getFloat(requireContext().contentResolver, System.SCREEN_BRIGHTNESS) / Constants.SCREEN_BRIGHTNESS_MAX
-                        }
-                    }
-
-                    swipeGestureValueTracker = (swipeGestureValueTracker + ratioChange).coerceIn(brightnessRange)
-                    window.brightness = swipeGestureValueTracker
-
-                    gestureIndicatorOverlayImage.setImageResource(R.drawable.ic_brightness_white_24dp)
-                    gestureIndicatorOverlayProgress.max = Constants.PERCENT_MAX
-                    gestureIndicatorOverlayProgress.progress = (swipeGestureValueTracker * Constants.PERCENT_MAX).toInt()
-                }
-
-                gestureIndicatorOverlayLayout.isVisible = true
-                return true
-            }
-        })
-        // Handles scale/zoom gesture
-        val zoomGestureDetector = ScaleGestureDetector(requireContext(), object : ScaleGestureDetector.OnScaleGestureListener {
-            override fun onScaleBegin(detector: ScaleGestureDetector): Boolean = isLandscape()
-
-            override fun onScale(detector: ScaleGestureDetector): Boolean {
-                val scaleFactor = detector.scaleFactor
-                if (abs(scaleFactor - Constants.ZOOM_SCALE_BASE) > Constants.ZOOM_SCALE_THRESHOLD) {
-                    isZoomEnabled = scaleFactor > 1
-                    updateZoomMode(isZoomEnabled)
-                }
-                return true
-            }
-
-            override fun onScaleEnd(detector: ScaleGestureDetector) = Unit
-        })
-        zoomGestureDetector.isQuickScaleEnabled = false
-
-        playerView.setOnTouchListener { _, event ->
-            if (playerView.useController) {
-                when (event.pointerCount) {
-                    1 -> gestureDetector.onTouchEvent(event)
-                    2 -> zoomGestureDetector.onTouchEvent(event)
-                }
-            } else unlockDetector.onTouchEvent(event)
-            if (event.action == MotionEvent.ACTION_UP) {
-                // Hide gesture indicator after timeout, if shown
-                gestureIndicatorOverlayLayout.apply {
-                    if (isVisible) {
-                        removeCallbacks(hideGestureIndicatorOverlayAction)
-                        postDelayed(hideGestureIndicatorOverlayAction, DEFAULT_CENTER_OVERLAY_TIMEOUT_MS.toLong())
-                    }
-                }
-                swipeGestureValueTracker = -1f
-            }
-            true
-        }
-    }
-
     fun isLandscape(configuration: Configuration = resources.configuration) =
         configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+    fun onSeek(offsetMs: Long) {
+        viewModel.seekToOffset(offsetMs)
+    }
 
     /**
      * @return true if the audio track was changed
@@ -515,7 +318,7 @@ class PlayerFragment : Fragment() {
         super.onConfigurationChanged(newConfig)
         Handler(Looper.getMainLooper()).post {
             updateFullscreenState(newConfig)
-            updateZoomMode(isLandscape(newConfig) && isZoomEnabled)
+            playerGestureHelper.handleConfiguration(newConfig)
         }
     }
 
@@ -545,12 +348,4 @@ class PlayerFragment : Fragment() {
             window.brightness = BRIGHTNESS_OVERRIDE_NONE
         }
     }
-
-    private inline var Window.brightness: Float
-        get() = attributes.screenBrightness
-        set(value) {
-            attributes = attributes.apply {
-                screenBrightness = value
-            }
-        }
 }
