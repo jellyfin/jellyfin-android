@@ -59,16 +59,13 @@ import org.jellyfin.mobile.utils.SmartOrientationListener
 import org.jellyfin.mobile.utils.dip
 import org.jellyfin.mobile.utils.disableFullscreen
 import org.jellyfin.mobile.utils.enableFullscreen
-import org.jellyfin.mobile.utils.isAutoRotateOn
 import org.jellyfin.mobile.utils.isFullscreen
-import org.jellyfin.mobile.utils.lockOrientation
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.android.ext.android.inject
 import kotlin.math.abs
 
 class PlayerFragment : Fragment() {
-
     private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
     private var _playerBinding: FragmentPlayerBinding? = null
@@ -76,7 +73,6 @@ class PlayerFragment : Fragment() {
     private val playerView: PlayerView get() = playerBinding.playerView
     private val playerOverlay: View get() = playerBinding.playerOverlay
     private val loadingIndicator: View get() = playerBinding.loadingIndicator
-    private val unlockScreenButton: ImageButton get() = playerBinding.unlockScreenButton
     private val gestureIndicatorOverlayLayout: LinearLayout get() = playerBinding.gestureOverlayLayout
     private val gestureIndicatorOverlayImage: ImageView get() = playerBinding.gestureOverlayImage
     private val gestureIndicatorOverlayProgress: ProgressBar get() = playerBinding.gestureOverlayProgress
@@ -87,6 +83,8 @@ class PlayerFragment : Fragment() {
     private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
     private var playbackMenus: PlaybackMenus? = null
     private val audioManager: AudioManager by lazy { requireContext().getSystemService()!! }
+
+    lateinit var playerLockScreenHelper: PlayerLockScreenHelper
 
     private val currentVideoStream: MediaStream?
         get() = viewModel.mediaSourceOrNull?.selectedVideoStream
@@ -109,15 +107,6 @@ class PlayerFragment : Fragment() {
      * the orientation would get reverted before the user had any chance to rotate the device to the desired position.
      */
     private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(requireActivity()) }
-
-    /**
-     * Runnable that hides the unlock screen button, used by [peekUnlockButton]
-     */
-    private val hideUnlockButtonAction = Runnable {
-        if (_playerBinding != null) {
-            unlockScreenButton.isVisible = false
-        }
-    }
 
     /**
      * Runnable that hides [playerView] controller
@@ -220,6 +209,8 @@ class PlayerFragment : Fragment() {
         // Set controller timeout
         suppressControllerAutoHide(false)
 
+        playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
+
         // Setup gesture handling
         setupGestureDetector()
 
@@ -241,12 +232,6 @@ class PlayerFragment : Fragment() {
                 }
             }
         }
-
-        // Handle unlock action
-        unlockScreenButton.setOnClickListener {
-            unlockScreenButton.isVisible = false
-            unlockScreen()
-        }
     }
 
     override fun onStart() {
@@ -260,26 +245,6 @@ class PlayerFragment : Fragment() {
         // When returning from another app, fullscreen mode for landscape orientation has to be set again
         with(requireActivity()) {
             if (isLandscape()) enableFullscreen()
-        }
-    }
-
-    fun lockScreen() {
-        playerView.useController = false
-        orientationListener.disable()
-        requireActivity().lockOrientation()
-        peekUnlockButton()
-    }
-
-    private fun unlockScreen() {
-        if (requireActivity().isAutoRotateOn()) {
-            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-        }
-        orientationListener.enable()
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || !requireActivity().isInPictureInPictureMode) {
-            playerView.useController = true
-            playerView.apply {
-                if (!isControllerVisible) showController()
-            }
         }
     }
 
@@ -324,18 +289,12 @@ class PlayerFragment : Fragment() {
         playerView.controllerShowTimeoutMs = if (suppress) -1 else DEFAULT_CONTROLS_TIMEOUT_MS
     }
 
-    private fun peekUnlockButton() {
-        playerView.removeCallbacks(hideUnlockButtonAction)
-        unlockScreenButton.isVisible = true
-        playerView.postDelayed(hideUnlockButtonAction, DEFAULT_CONTROLS_TIMEOUT_MS.toLong())
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     private fun setupGestureDetector() {
         // Handles taps when controls are locked
         val unlockDetector = GestureDetector(requireContext(), object : GestureDetector.SimpleOnGestureListener() {
             override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
-                peekUnlockButton()
+                playerLockScreenHelper.peekUnlockButton()
                 return true
             }
         })
@@ -548,7 +507,7 @@ class PlayerFragment : Fragment() {
         playerView.useController = !isInPictureInPictureMode
         if (isInPictureInPictureMode) {
             playbackMenus?.dismissPlaybackInfo()
-            hideUnlockButtonAction.run()
+            playerLockScreenHelper.hideUnlockButton()
         }
     }
 
