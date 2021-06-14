@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.utils
 
 import android.media.session.PlaybackState
+import android.util.Rational
 import org.jellyfin.mobile.BuildConfig
 
 @Suppress("MagicNumber")
@@ -95,6 +96,8 @@ object Constants {
     const val SCREEN_BRIGHTNESS_MAX = 255
     const val ZOOM_SCALE_BASE = 1f
     const val ZOOM_SCALE_THRESHOLD = 0.01f
+    val PIP_MIN_RATIONAL = Rational(100, 239)
+    val PIP_MAX_RATIONAL = Rational(239, 100)
     const val SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS: Long = PlaybackState.ACTION_PLAY_PAUSE or
         PlaybackState.ACTION_PLAY or
         PlaybackState.ACTION_PAUSE or
