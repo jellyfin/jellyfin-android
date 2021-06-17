@@ -3,6 +3,7 @@ package org.jellyfin.mobile
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Environment
+import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import androidx.core.content.edit
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.settings.VideoPlayerType
@@ -96,6 +97,21 @@ class AppPreferences(context: Context) {
 
     val exoPlayerAllowBackgroundAudio: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO, false)
+
+    val exoPlayerRememberBrightness: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_REMEMBER_BRIGHTNESS, false)
+
+    var exoPlayerBrightness: Float
+        get() = if (exoPlayerRememberBrightness) {
+            sharedPreferences.getFloat(Constants.PREF_EXOPLAYER_BRIGHTNESS, BRIGHTNESS_OVERRIDE_NONE)
+        } else {
+            BRIGHTNESS_OVERRIDE_NONE
+        }
+        set(value) {
+            if (exoPlayerRememberBrightness) {
+                sharedPreferences.edit { putFloat(Constants.PREF_EXOPLAYER_BRIGHTNESS, value) }
+            }
+        }
 
     @ExternalPlayerPackage
     var externalPlayerApp: String

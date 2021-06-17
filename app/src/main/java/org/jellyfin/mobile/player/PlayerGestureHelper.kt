@@ -36,6 +36,10 @@ class PlayerGestureHelper(
     private val gestureIndicatorOverlayImage: ImageView by playerBinding::gestureOverlayImage
     private val gestureIndicatorOverlayProgress: ProgressBar by playerBinding::gestureOverlayProgress
 
+    init {
+        fragment.requireActivity().window.brightness = appPreferences.exoPlayerBrightness
+    }
+
     /**
      * Tracks whether video content should fill the screen, cutting off unwanted content on the sides.
      * Useful on wide-screen phones to remove black bars from some movies.
@@ -165,6 +169,7 @@ class PlayerGestureHelper(
 
                 swipeGestureValueTracker = (swipeGestureValueTracker + ratioChange).coerceIn(brightnessRange)
                 window.brightness = swipeGestureValueTracker
+                appPreferences.exoPlayerBrightness = window.brightness
 
                 gestureIndicatorOverlayImage.setImageResource(org.jellyfin.mobile.R.drawable.ic_brightness_white_24dp)
                 gestureIndicatorOverlayProgress.max = Constants.PERCENT_MAX

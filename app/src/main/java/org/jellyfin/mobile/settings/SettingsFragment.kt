@@ -28,8 +28,9 @@ class SettingsFragment : Fragment() {
 
     private val appPreferences: AppPreferences by inject()
     private val settingsAdapter: PreferencesAdapter by lazy { PreferencesAdapter(buildSettingsScreen()) }
-    private lateinit var backgroundAudioPreference: Preference
     private lateinit var swipeGesturesPreference: Preference
+    private lateinit var backgroundAudioPreference: Preference
+    private lateinit var rememberBrightnessPreference: Preference
     private lateinit var externalPlayerChoicePreference: Preference
 
     init {
@@ -79,6 +80,7 @@ class SettingsFragment : Fragment() {
             defaultOnSelectionChange { selection ->
                 swipeGesturesPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                rememberBrightnessPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
         }
@@ -91,6 +93,11 @@ class SettingsFragment : Fragment() {
             titleRes = R.string.pref_exoplayer_allow_background_audio
             summaryRes = R.string.pref_exoplayer_allow_background_audio_summary
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+        }
+        rememberBrightnessPreference = checkBox(Constants.PREF_EXOPLAYER_REMEMBER_BRIGHTNESS) {
+            titleRes = R.string.pref_exoplayer_remember_brightness
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+            defaultValue = false
         }
 
         // Generate available external player options

@@ -85,6 +85,7 @@
     <string name="pref_exoplayer_allow_background_audio">Background audio</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Allow playing videos in the background with audio-only</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Brightness and volume gestures</string>
+    <string name="pref_exoplayer_remember_brightness">Remember brightness changes</string>
 
     <string name="external_player_app">External player app</string>
     <string name="external_player_mpv">MPV Player</string>
