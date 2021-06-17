@@ -84,7 +84,7 @@
     <string name="connection_error_unsupported_version_or_product">Qoldauda joq nusqa nemese önım</string>
     <string name="connection_error_unable_to_reach_sever">Serverge qoljetkızu mümkın bolmady</string>
     <plurals name="connection_error_prefix">
-        <item quantity="one">%d ümıtker engızu üşın synap körıldı, nätijesi joq.</item>
+        <item quantity="one">%d ümıtker engızu üşın synap körıldı, nätijesı joq.</item>
         <item quantity="other">%d ümıtker engızu üşın synap körıldı, nätijesi joq.</item>
     </plurals>
     <string name="player_error_unsupported_content">Būl qūrylğyda tasyğyşderekterdı oinatu mümkın emes</string>
