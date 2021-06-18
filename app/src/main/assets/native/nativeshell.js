@@ -2,6 +2,7 @@ const features = [
     "filedownload",
     "displaylanguage",
     "subtitleappearancesettings",
+    "subtitleburnsettings",
     //'sharing',
     "exit",
     "htmlaudioautoplay",
