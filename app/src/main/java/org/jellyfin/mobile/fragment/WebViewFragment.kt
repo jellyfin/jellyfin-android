@@ -162,11 +162,10 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                         onConnectedToWebapp()
                         assetsPathHandler.handle("native/injectionScript.js")
                     }
+                    // Load injected scripts from application assets
                     path.contains("/native/") -> assetsPathHandler.handle("native/${url.lastPathSegment}")
-                    path.endsWith(Constants.CAST_SDK_PATH) -> {
-                        // Load the chrome.cast.js library instead
-                        assetsPathHandler.handle("native/chrome.cast.js")
-                    }
+                    // Load the chrome.cast.js library instead
+                    path.endsWith(Constants.CAST_SDK_PATH) -> assetsPathHandler.handle("native/chrome.cast.js")
                     path.endsWith(Constants.SESSION_CAPABILITIES_PATH) -> {
                         lifecycleScope.launch {
                             val credentials = suspendCoroutine<JSONObject> { continuation ->
