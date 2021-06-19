@@ -95,23 +95,19 @@ class AppPreferences(context: Context) {
     val exoPlayerAllowSwipeGestures: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_ALLOW_SWIPE_GESTURES, true)
 
-    val exoPlayerAllowBackgroundAudio: Boolean
-        get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO, false)
-
     val exoPlayerRememberBrightness: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_REMEMBER_BRIGHTNESS, false)
 
     var exoPlayerBrightness: Float
-        get() = if (exoPlayerRememberBrightness) {
-            sharedPreferences.getFloat(Constants.PREF_EXOPLAYER_BRIGHTNESS, BRIGHTNESS_OVERRIDE_NONE)
-        } else {
-            BRIGHTNESS_OVERRIDE_NONE
-        }
+        get() = sharedPreferences.getFloat(Constants.PREF_EXOPLAYER_BRIGHTNESS, BRIGHTNESS_OVERRIDE_NONE)
         set(value) {
-            if (exoPlayerRememberBrightness) {
-                sharedPreferences.edit { putFloat(Constants.PREF_EXOPLAYER_BRIGHTNESS, value) }
+            sharedPreferences.edit {
+                putFloat(Constants.PREF_EXOPLAYER_BRIGHTNESS, value)
             }
         }
+
+    val exoPlayerAllowBackgroundAudio: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO, false)
 
     @ExternalPlayerPackage
     var externalPlayerApp: String
