@@ -14,6 +14,7 @@ import de.Maxr1998.modernpreferences.helpers.defaultOnCheckedChange
 import de.Maxr1998.modernpreferences.helpers.defaultOnSelectionChange
 import de.Maxr1998.modernpreferences.helpers.screen
 import de.Maxr1998.modernpreferences.helpers.singleChoice
+import de.Maxr1998.modernpreferences.preferences.CheckBoxPreference
 import de.Maxr1998.modernpreferences.preferences.choice.SelectionItem
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
@@ -30,7 +31,7 @@ class SettingsFragment : Fragment() {
 
     private val appPreferences: AppPreferences by inject()
     private val settingsAdapter: PreferencesAdapter by lazy { PreferencesAdapter(buildSettingsScreen()) }
-    private lateinit var swipeGesturesPreference: Preference
+    private lateinit var swipeGesturesPreference: CheckBoxPreference
     private lateinit var rememberBrightnessPreference: Preference
     private lateinit var backgroundAudioPreference: Preference
     private lateinit var externalPlayerChoicePreference: Preference
@@ -81,7 +82,7 @@ class SettingsFragment : Fragment() {
             initialSelection = VideoPlayerType.WEB_PLAYER
             defaultOnSelectionChange { selection ->
                 swipeGesturesPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
-                rememberBrightnessPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                rememberBrightnessPreference.enabled = selection == VideoPlayerType.EXO_PLAYER && swipeGesturesPreference.checked
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
@@ -90,10 +91,13 @@ class SettingsFragment : Fragment() {
             titleRes = R.string.pref_exoplayer_allow_brightness_volume_gesture
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
             defaultValue = true
+            defaultOnCheckedChange { checked ->
+                rememberBrightnessPreference.enabled = checked
+            }
         }
         rememberBrightnessPreference = checkBox(Constants.PREF_EXOPLAYER_REMEMBER_BRIGHTNESS) {
             titleRes = R.string.pref_exoplayer_remember_brightness
-            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER && appPreferences.exoPlayerAllowSwipeGestures
             defaultOnCheckedChange { checked ->
                 if (!checked) appPreferences.exoPlayerBrightness = BRIGHTNESS_OVERRIDE_NONE
             }
