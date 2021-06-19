@@ -20,6 +20,7 @@ import android.webkit.WebView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
@@ -33,7 +34,6 @@ import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.AppPreferences
-import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.bridge.NativeInterface
@@ -68,7 +68,7 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class WebViewFragment : Fragment(), NativePlayerHost {
-    private val appPreferences: AppPreferences by inject()
+    val appPreferences: AppPreferences by inject()
     private val apiController: ApiController by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private lateinit var assetsPathHandler: AssetsPathHandler
@@ -81,7 +81,8 @@ class WebViewFragment : Fragment(), NativePlayerHost {
     // UI
     private var _webViewBinding: FragmentWebviewBinding? = null
     private val webViewBinding get() = _webViewBinding!!
-    val webView: WebView get() = webViewBinding.root
+    val rootView: CoordinatorLayout get() = webViewBinding.root
+    val webView: WebView get() = webViewBinding.webView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,13 +101,14 @@ class WebViewFragment : Fragment(), NativePlayerHost {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _webViewBinding = FragmentWebviewBinding.inflate(inflater, container, false)
-        return webView.apply { applyWindowInsetsAsMargins() }
+        return webViewBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Apply window insets
+        webView.applyWindowInsetsAsMargins()
         ViewCompat.requestApplyInsets(webView)
 
         // Setup exclusion rects for gestures
@@ -291,7 +293,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
 
     fun onConnectedToWebapp() {
         connected = true
-        (activity as? MainActivity)?.requestNoBatteryOptimizations()
+        requestNoBatteryOptimizations()
     }
 
     fun onSelectServer(error: Boolean = false) = runOnUiThread {

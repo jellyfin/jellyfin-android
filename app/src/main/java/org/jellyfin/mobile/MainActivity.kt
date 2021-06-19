@@ -35,7 +35,6 @@ import org.koin.core.KoinExperimentalAPI
 
 class MainActivity : AppCompatActivity() {
     private val mainViewModel: MainViewModel by viewModel()
-    val appPreferences: AppPreferences by inject()
     val chromecast: IChromecast = Chromecast()
     private val permissionRequestHelper: PermissionRequestHelper by inject()
 
