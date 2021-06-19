@@ -3,6 +3,7 @@ package org.jellyfin.mobile.fragment
 import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
+import android.net.http.SslError
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -11,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.ConsoleMessage
+import android.webkit.SslErrorHandler
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
@@ -195,14 +197,21 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                 val errorMessage = errorResponse.data?.run { bufferedReader().use(Reader::readText) }
                 Timber.e("Received WebView HTTP %d error: %s", errorResponse.statusCode, errorMessage)
 
-                if (request.url == Uri.parse(server.hostname)) onErrorReceived()
+                if (request.url == Uri.parse(view.url)) onErrorReceived()
             }
 
             override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceErrorCompat) {
                 val description = if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_RESOURCE_ERROR_GET_DESCRIPTION)) error.description else null
                 Timber.e("Received WebView error at %s: %s", request.url.toString(), description)
 
-                if (request.url == Uri.parse(server.hostname)) onErrorReceived()
+                if (request.url == Uri.parse(view.url)) onErrorReceived()
+            }
+
+            override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
+                Timber.e("Received SSL error: %s", error.toString())
+                handler.cancel()
+
+                if (error.url == view.url) onErrorReceived()
             }
         }
         webChromeClient = object : WebChromeClient() {
