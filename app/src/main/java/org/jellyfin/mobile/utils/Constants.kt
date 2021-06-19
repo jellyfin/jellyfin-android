@@ -12,7 +12,7 @@ object Constants {
 
     // Webapp constants
     const val MINIMUM_WEB_VIEW_VERSION = 80
-    const val WEB_CONFIG_PATH = "config.json"
+    val MAIN_BUNDLE_PATH_REGEX = Regex(""".*/main\.[^/\s]+\.bundle\.js""")
     const val CAST_SDK_PATH = "cast_sender.js"
     const val SESSION_CAPABILITIES_PATH = "sessions/capabilities/full"
 

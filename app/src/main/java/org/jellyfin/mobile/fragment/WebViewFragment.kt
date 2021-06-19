@@ -25,6 +25,7 @@ import androidx.fragment.app.add
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.webkit.WebResourceErrorCompat
+import androidx.webkit.WebViewAssetLoader.AssetsPathHandler
 import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
@@ -43,14 +44,12 @@ import org.jellyfin.mobile.model.sql.entity.ServerEntity
 import org.jellyfin.mobile.player.PlayerFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER
-import org.jellyfin.mobile.utils.JS_INJECTION_CODE
 import org.jellyfin.mobile.utils.addFragment
 import org.jellyfin.mobile.utils.applyDefault
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.dip
 import org.jellyfin.mobile.utils.initLocale
 import org.jellyfin.mobile.utils.isOutdated
-import org.jellyfin.mobile.utils.loadAsset
 import org.jellyfin.mobile.utils.replaceFragment
 import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
 import org.jellyfin.mobile.utils.runOnUiThread
@@ -61,7 +60,7 @@ import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.io.Reader
-import java.util.*
+import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -70,6 +69,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
     private val appPreferences: AppPreferences by inject()
     private val apiController: ApiController by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
+    private lateinit var assetsPathHandler: AssetsPathHandler
     private lateinit var externalPlayer: ExternalPlayer
 
     lateinit var server: ServerEntity
@@ -85,6 +85,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         super.onCreate(savedInstanceState)
         server = requireNotNull(requireArguments().getParcelable(FRAGMENT_WEB_VIEW_EXTRA_SERVER)) { "Server entity has not been supplied!" }
 
+        assetsPathHandler = AssetsPathHandler(requireContext())
         externalPlayer = ExternalPlayer(requireContext(), this, requireActivity().activityResultRegistry)
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
@@ -157,19 +158,14 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                 val url = request.url
                 val path = url.path?.lowercase(Locale.ROOT) ?: return null
                 return when {
-                    path.endsWith(Constants.WEB_CONFIG_PATH) -> {
-                        runOnUiThread {
-                            webView.evaluateJavascript(JS_INJECTION_CODE) {
-                                onConnectedToWebapp()
-                            }
-                        }
-                        null // continue loading normally
+                    path.matches(Constants.MAIN_BUNDLE_PATH_REGEX) && "deferred" !in url.query.orEmpty() -> {
+                        onConnectedToWebapp()
+                        assetsPathHandler.handle("native/injectionScript.js")
                     }
-                    path.contains("native") -> webView.context.loadAsset("native/${url.lastPathSegment}")
-                    path.endsWith(Constants.CAST_SDK_PATH) -> {
-                        // Load the chrome.cast.js library instead
-                        webView.context.loadAsset("native/chrome.cast.js")
-                    }
+                    // Load injected scripts from application assets
+                    path.contains("/native/") -> assetsPathHandler.handle("native/${url.lastPathSegment}")
+                    // Load the chrome.cast.js library instead
+                    path.endsWith(Constants.CAST_SDK_PATH) -> assetsPathHandler.handle("native/chrome.cast.js")
                     path.endsWith(Constants.SESSION_CAPABILITIES_PATH) -> {
                         lifecycleScope.launch {
                             val credentials = suspendCoroutine<JSONObject> { continuation ->
