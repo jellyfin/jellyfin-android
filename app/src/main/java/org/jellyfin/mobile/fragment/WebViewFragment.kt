@@ -210,6 +210,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
             override fun onReceivedSslError(view: WebView, handler: SslErrorHandler?, error: SslError) {
                 super.onReceivedSslError(view, handler, error)
                 Timber.e("Received SSL error: %s", error.toString())
+
                 if (error.url == view.url) onErrorReceived()
             }
         }
@@ -290,7 +291,6 @@ class WebViewFragment : Fragment(), NativePlayerHost {
 
     fun onConnectedToWebapp() {
         connected = true
-        webView.animate().alpha(1f).start()
         (activity as? MainActivity)?.requestNoBatteryOptimizations()
     }
 
