@@ -207,9 +207,9 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                 if (request.url == Uri.parse(view.url)) onErrorReceived()
             }
 
-            override fun onReceivedSslError(view: WebView, handler: SslErrorHandler?, error: SslError) {
-                super.onReceivedSslError(view, handler, error)
+            override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
                 Timber.e("Received SSL error: %s", error.toString())
+                handler.cancel()
 
                 if (error.url == view.url) onErrorReceived()
             }
