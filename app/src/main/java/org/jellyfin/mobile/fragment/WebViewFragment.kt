@@ -188,7 +188,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                             val user = storedServer.getString("UserId")
                             val token = storedServer.getString("AccessToken")
                             apiController.setupUser(server.id, user, token)
-                            initLocale(user)
+                            webView.initLocale(user)
                         }
                         null
                     }
