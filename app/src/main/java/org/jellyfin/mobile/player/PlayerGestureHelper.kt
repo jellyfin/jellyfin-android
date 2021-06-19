@@ -6,7 +6,8 @@ import android.provider.Settings
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
-import android.view.WindowManager
+import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
+import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_OFF
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -35,6 +36,12 @@ class PlayerGestureHelper(
     private val gestureIndicatorOverlayLayout: LinearLayout by playerBinding::gestureOverlayLayout
     private val gestureIndicatorOverlayImage: ImageView by playerBinding::gestureOverlayImage
     private val gestureIndicatorOverlayProgress: ProgressBar by playerBinding::gestureOverlayProgress
+
+    init {
+        if (appPreferences.exoPlayerRememberBrightness) {
+            fragment.requireActivity().window.brightness = appPreferences.exoPlayerBrightness
+        }
+    }
 
     /**
      * Tracks whether video content should fill the screen, cutting off unwanted content on the sides.
@@ -152,7 +159,7 @@ class PlayerGestureHelper(
                 // Swiping on the left, change brightness
 
                 val window = fragment.requireActivity().window
-                val brightnessRange = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_OFF..WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
+                val brightnessRange = BRIGHTNESS_OVERRIDE_OFF..BRIGHTNESS_OVERRIDE_FULL
 
                 // Initialize on first swipe
                 if (swipeGestureValueTracker == -1f) {
@@ -165,6 +172,9 @@ class PlayerGestureHelper(
 
                 swipeGestureValueTracker = (swipeGestureValueTracker + ratioChange).coerceIn(brightnessRange)
                 window.brightness = swipeGestureValueTracker
+                if (appPreferences.exoPlayerRememberBrightness) {
+                    appPreferences.exoPlayerBrightness = swipeGestureValueTracker
+                }
 
                 gestureIndicatorOverlayImage.setImageResource(org.jellyfin.mobile.R.drawable.ic_brightness_white_24dp)
                 gestureIndicatorOverlayProgress.max = Constants.PERCENT_MAX

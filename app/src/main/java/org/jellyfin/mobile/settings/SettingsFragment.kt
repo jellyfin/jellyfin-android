@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import androidx.fragment.app.Fragment
 import de.Maxr1998.modernpreferences.Preference
 import de.Maxr1998.modernpreferences.PreferencesAdapter
 import de.Maxr1998.modernpreferences.helpers.categoryHeader
 import de.Maxr1998.modernpreferences.helpers.checkBox
+import de.Maxr1998.modernpreferences.helpers.defaultOnCheckedChange
 import de.Maxr1998.modernpreferences.helpers.defaultOnSelectionChange
 import de.Maxr1998.modernpreferences.helpers.screen
 import de.Maxr1998.modernpreferences.helpers.singleChoice
@@ -28,8 +30,9 @@ class SettingsFragment : Fragment() {
 
     private val appPreferences: AppPreferences by inject()
     private val settingsAdapter: PreferencesAdapter by lazy { PreferencesAdapter(buildSettingsScreen()) }
-    private lateinit var backgroundAudioPreference: Preference
     private lateinit var swipeGesturesPreference: Preference
+    private lateinit var rememberBrightnessPreference: Preference
+    private lateinit var backgroundAudioPreference: Preference
     private lateinit var externalPlayerChoicePreference: Preference
 
     init {
@@ -78,6 +81,7 @@ class SettingsFragment : Fragment() {
             initialSelection = VideoPlayerType.WEB_PLAYER
             defaultOnSelectionChange { selection ->
                 swipeGesturesPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                rememberBrightnessPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
@@ -86,6 +90,13 @@ class SettingsFragment : Fragment() {
             titleRes = R.string.pref_exoplayer_allow_brightness_volume_gesture
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
             defaultValue = true
+        }
+        rememberBrightnessPreference = checkBox(Constants.PREF_EXOPLAYER_REMEMBER_BRIGHTNESS) {
+            titleRes = R.string.pref_exoplayer_remember_brightness
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+            defaultOnCheckedChange { checked ->
+                if (!checked) appPreferences.exoPlayerBrightness = BRIGHTNESS_OVERRIDE_NONE
+            }
         }
         backgroundAudioPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO) {
             titleRes = R.string.pref_exoplayer_allow_background_audio

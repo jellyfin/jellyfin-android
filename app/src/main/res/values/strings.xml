@@ -82,9 +82,10 @@
     <string name="video_player_web_description">The default HTML video player from the Web UI</string>
     <string name="video_player_native_description">Based on ExoPlayer, supports more video formats and codecs, and is more integrated into the OS</string>
     <string name="video_player_external_description">External video playback apps like MX Player and VLC</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Brightness and volume gestures</string>
+    <string name="pref_exoplayer_remember_brightness">Remember display brightness</string>
     <string name="pref_exoplayer_allow_background_audio">Background audio</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Allow playing videos in the background with audio-only</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Brightness and volume gestures</string>
 
     <string name="external_player_app">External player app</string>
     <string name="external_player_mpv">MPV Player</string>
