@@ -158,7 +158,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                 val url = request.url
                 val path = url.path?.lowercase(Locale.ROOT) ?: return null
                 return when {
-                    path.matches(Constants.MAIN_BUNDLE_PATH_REGEX) && url.query.isNullOrEmpty() -> {
+                    path.matches(Constants.MAIN_BUNDLE_PATH_REGEX) && "deferred" !in url.query.orEmpty() -> {
                         onConnectedToWebapp()
                         assetsPathHandler.handle("native/injectionScript.js")
                     }
