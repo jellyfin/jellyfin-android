@@ -9,7 +9,7 @@
         scriptElement.src = script;
         scriptElement.charset = 'utf-8';
         scriptElement.setAttribute('defer', '');
-        document.head.appendChild(scriptElement);
+        document.body.appendChild(scriptElement);
     }
     document.currentScript.remove();
 })();
