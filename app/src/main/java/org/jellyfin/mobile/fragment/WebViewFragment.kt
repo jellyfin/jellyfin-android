@@ -50,6 +50,7 @@ import org.jellyfin.mobile.utils.addFragment
 import org.jellyfin.mobile.utils.applyDefault
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.dip
+import org.jellyfin.mobile.utils.fadeIn
 import org.jellyfin.mobile.utils.initLocale
 import org.jellyfin.mobile.utils.isOutdated
 import org.jellyfin.mobile.utils.replaceFragment
@@ -291,8 +292,9 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         }.show()
     }
 
-    fun onConnectedToWebapp() {
+    private fun onConnectedToWebapp() {
         connected = true
+        runOnUiThread { webView.fadeIn() }
         requestNoBatteryOptimizations()
     }
 
@@ -310,7 +312,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         }
     }
 
-    fun onErrorReceived() {
+    private fun onErrorReceived() {
         connected = false
         onSelectServer(error = true)
     }
