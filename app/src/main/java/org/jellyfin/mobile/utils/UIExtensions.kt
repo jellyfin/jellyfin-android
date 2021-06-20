@@ -51,12 +51,12 @@ fun View.applyWindowInsetsAsMargins() {
 fun View.fadeIn() {
     alpha = 0f
     isVisible = true
-    with(animate()) {
+    animate().apply {
         alpha(1f)
         @Suppress("MagicNumber")
         duration = 300L
         interpolator = LinearOutSlowInInterpolator()
-        start()
+        withLayer()
     }
 }
 
