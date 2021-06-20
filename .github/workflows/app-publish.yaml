@@ -21,7 +21,7 @@ jobs:
         run: echo "JELLYFIN_VERSION=$(echo ${GITHUB_REF#refs/tags/v} | tr / -)" >> $GITHUB_ENV
       - name: Assemble release APKs
         run: ./gradlew --no-daemon --info assembleRelease versionTxt
-      - name: Sign Libre APK
+      - name: Sign libre APK
         id: libreSign
         uses: r0adkll/sign-android-release@v1
         with:
@@ -30,7 +30,7 @@ jobs:
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           alias: ${{ secrets.KEY_ALIAS }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
-      - name: Sign Proprietary APK
+      - name: Sign proprietary APK
         id: proprietarySign
         uses: r0adkll/sign-android-release@v1
         with:
