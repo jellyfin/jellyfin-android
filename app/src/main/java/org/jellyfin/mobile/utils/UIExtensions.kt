@@ -14,7 +14,9 @@ import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
+import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
@@ -43,6 +45,18 @@ fun View.applyWindowInsetsAsMargins() {
             layoutParams.updateMargins(left, top, right, bottom)
         }
         windowInsets
+    }
+}
+
+fun View.fadeIn() {
+    alpha = 0f
+    isVisible = true
+    animate().apply {
+        alpha(1f)
+        @Suppress("MagicNumber")
+        duration = 300L
+        interpolator = LinearOutSlowInInterpolator()
+        withLayer()
     }
 }
 

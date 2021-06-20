@@ -24,7 +24,6 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.BuildConfig
-import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
@@ -34,11 +33,11 @@ import java.io.File
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-fun MainActivity.requestNoBatteryOptimizations() {
+fun WebViewFragment.requestNoBatteryOptimizations() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        val powerManager: PowerManager = getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
+        val powerManager: PowerManager = requireContext().getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
         if (!appPreferences.ignoreBatteryOptimizations && !powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) {
-            Snackbar.make(findViewById(R.id.root_view), R.string.battery_optimizations_message, Snackbar.LENGTH_INDEFINITE).apply {
+            Snackbar.make(rootView, R.string.battery_optimizations_message, Snackbar.LENGTH_INDEFINITE).apply {
                 setAction(android.R.string.ok) {
                     try {
                         val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
