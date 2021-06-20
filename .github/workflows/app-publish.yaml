@@ -20,17 +20,30 @@ jobs:
       - name: Set JELLYFIN_VERSION
         run: echo "JELLYFIN_VERSION=$(echo ${GITHUB_REF#refs/tags/v} | tr / -)" >> $GITHUB_ENV
       - name: Assemble release APKs
-        env:
-          KEYSTORE: ${{ secrets.KEYSTORE }}
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: ./gradlew --no-daemon --info assembleRelease versionTxt
+      - name: Sign libre APK
+        id: libreSign
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/outputs/apk/libre/release
+          signingKeyBase64: ${{ secrets.KEYSTORE }}
+          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+      - name: Sign proprietary APK
+        id: proprietarySign
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/outputs/apk/proprietary/release
+          signingKeyBase64: ${{ secrets.KEYSTORE }}
+          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
       - name: Split APK release types
         run: |
           mkdir -p build/jellyfin-publish
-          mv app/build/outputs/apk/*/*/jellyfin-android-*-libre-release.apk build/jellyfin-publish/
-          mv app/build/outputs/apk/*/*/jellyfin-android-*-proprietary-release.apk build/jellyfin-publish/
+          mv ${{ steps.libreSign.outputs.signedReleaseFile }} build/jellyfin-publish/
+          mv ${{ steps.proprietarySign.outputs.signedReleaseFile }} build/jellyfin-publish/
           mv app/build/version.txt build/jellyfin-publish/
       - name: Upload release artifacts
         uses: alexellis/upload-assets@0.3.0
