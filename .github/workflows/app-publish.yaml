@@ -42,8 +42,8 @@ jobs:
       - name: Split APK release types
         run: |
           mkdir -p build/jellyfin-publish
-          mv ${{ steps.libreSign.outputs.signedReleaseFile }} build/jellyfin-publish/
-          mv ${{ steps.proprietarySign.outputs.signedReleaseFile }} build/jellyfin-publish/
+          mv ${{ steps.libreSign.outputs.signedReleaseFile }} build/jellyfin-publish/jellyfin-android-v${{ env.JELLYFIN_VERSION }}-libre.apk
+          mv ${{ steps.proprietarySign.outputs.signedReleaseFile }} build/jellyfin-publish/jellyfin-android-v${{ env.JELLYFIN_VERSION }}-proprietary.apk
           mv app/build/version.txt build/jellyfin-publish/
       - name: Upload release artifacts
         uses: alexellis/upload-assets@0.3.0
