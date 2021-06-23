@@ -46,7 +46,6 @@
     <string name="available_servers_title">பெறக்கூடிய சேவையகங்கள்</string>
     <string name="choose_server_button_text">சேவையகத்தைத் தேர்வுசெய்க</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">பிரகாசம் மற்றும் தொகுதி சைகைகள்</string>
-    <string name="mediaservice_library_artists">கலைஞர்கள்</string>
     <string name="external_player_system_default_description">பிளேயர் தேர்வை கணினி கையாளட்டும், சில வீரர்கள் முழுமையாக இணக்கமாக இருக்காது.</string>
     <string name="external_player_system_default">கணினி இயல்புநிலை</string>
     <string name="external_player_vlc_player_description">பெரும்பாலான மல்டிமீடியா கோப்புகளை இயக்கும் இலவச மற்றும் திறந்த மூல குறுக்கு-தளம் மல்டிமீடியா பிளேயர்.</string>
