@@ -93,4 +93,5 @@
     <string name="toast_reopen_after_change">Bitte öffnen Sie die App erneut, nachdem Änderungen vorgenommen wurden</string>
     <string name="dialog_button_ignore">Ignorieren</string>
     <string name="dialog_button_open_settings">Einstellungen öffnen</string>
+    <string name="pref_exoplayer_remember_brightness">Displayhelligkeit merken</string>
 </resources>
