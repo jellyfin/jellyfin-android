@@ -57,7 +57,6 @@
     <string name="external_player_mpv_description">一个简单，轻巧的免费的视频播放器。它支持多种媒体文件格式。</string>
     <string name="external_player_mpv">MPV 播放器</string>
     <string name="external_player_app">外部播放器应用</string>
-    <string name="connection_error_invalid_version">服务器使用了不受支持的版本。升级到jellyfin.org上可用的最新版本。</string>
     <string name="music_notification_channel_description">用于控制音乐播放</string>
     <string name="music_notification_channel">Jellyfin 音乐播放器</string>
     <string name="media_service_car_item_no_title">无标题</string>
@@ -93,4 +92,5 @@
     <string name="toast_reopen_after_change">进行更改设置后重新打开应用</string>
     <string name="dialog_button_ignore">忽略</string>
     <string name="dialog_button_open_settings">打开设置</string>
+    <string name="pref_exoplayer_remember_brightness">记住显示亮度</string>
 </resources>
