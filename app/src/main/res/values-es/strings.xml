@@ -57,7 +57,6 @@
     <string name="external_player_mpv_description">Un reproductor de video simple, pequeño, ligero y libre. Soporta una amplia variedad de formatos multimedia.</string>
     <string name="external_player_mpv">Reproductor MPV</string>
     <string name="external_player_app">Reproductor de video externo</string>
-    <string name="connection_error_invalid_version">El servidor utiliza una versión no soportada. Actualiza a la última versión disponible en jellyfin.org.</string>
     <string name="music_notification_channel_description">Utilizado para el control de la reproducción de música</string>
     <string name="music_notification_channel">Reproductor de Música Jellyfin</string>
     <string name="media_service_car_item_no_title">Sin título</string>
@@ -94,4 +93,5 @@
     <string name="toast_reopen_after_change">Vuelve a abrir la aplicación después de realizar los cambios</string>
     <string name="dialog_button_ignore">Ignorar</string>
     <string name="dialog_button_open_settings">Abrir ajustes</string>
+    <string name="pref_exoplayer_remember_brightness">Recordar brillo de pantalla</string>
 </resources>
