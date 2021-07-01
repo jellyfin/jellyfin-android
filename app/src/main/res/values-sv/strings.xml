@@ -44,7 +44,7 @@
     <string name="video_player_web_description">HTML-videospelaren som är standard i webb-gränssnittet</string>
     <string name="pref_video_player_type_title">Videospelar-typ</string>
     <string name="external_player_not_supported_yet">Stöd för uppspelningsspårning saknas i den valda spelaren. Kontakta utvecklarna för att försöka lägga till stöd för det.</string>
-    <string name="pref_music_notification_always_dismissible_title">Gör musikspelarnotifikationer alltid avfärdningsbara</string>
+    <string name="pref_music_notification_always_dismissible_title">Avfärdningsbar uppspelarnotifikation</string>
     <string name="playback_info_and_x_more">...och %d fler</string>
     <string name="external_player_system_default_description">Låt systemet hantera spelarvalet. Vissa spelare kanske inte är helt kompatibla.</string>
     <string name="external_player_system_default">Systemstandard</string>
@@ -78,4 +78,15 @@
     <string name="dialog_web_view_not_supported_message">WebViews stöds ej av denna enhet.
 \nInstallera en kompatibel WebView-implementering eller använd en enhet som stöds.</string>
     <string name="dialog_web_view_not_supported">WebView stöds ej</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Tillåt att videor spelas i bakgrunden med endast ljud</string>
+    <string name="pref_exoplayer_remember_brightness">Kom ihåg skärmens ljusstyrka</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Notifikationen kan alltid avfärdas, även vid uppspelning av media</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">Notifikationen kan endast avfärdas när uppspelningen är pausad</string>
+    <string name="player_error_unsupported_content">Media kan inte spelas upp av denna enhet</string>
+    <string name="player_error_network_failure">Kan inte ladda media-information från server</string>
+    <string name="connection_error_unsupported_version_or_product">Versionen eller produkten stöds ej</string>
+    <string name="connection_error_unable_to_reach_sever">Kan inte nå servern</string>
+    <string name="toast_reopen_after_change">Vänligen starta om appen efter genomförda ändringar</string>
+    <string name="dialog_button_ignore">Ignorera</string>
+    <string name="dialog_button_open_settings">Öppna inställningar</string>
 </resources>
