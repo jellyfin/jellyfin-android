@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="dialog_web_view_outdated">ವೆಬ್‌ವೀಕ್ಷಣೆ ಹಳೆಯದು</string>
+    <string name="dialog_web_view_not_supported_message">ಈ ಸಾಧನವು ವೆಬ್‌ವೀಕ್ಷಣೆಗಳನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ.
+\nಹೊಂದಾಣಿಕೆಯ ವೆಬ್‌ವೀಕ್ಷಣೆ ಅನುಷ್ಠಾನವನ್ನು ಸ್ಥಾಪಿಸಿ ಅಥವಾ ಬೆಂಬಲಿತ ಸಾಧನಕ್ಕೆ ಬದಲಾಯಿಸಿ.</string>
+    <string name="dialog_web_view_not_supported">ವೆಬ್‌ವೀಕ್ಷಣೆ ಬೆಂಬಲಿಸುವುದಿಲ್ಲ</string>
+</resources>
