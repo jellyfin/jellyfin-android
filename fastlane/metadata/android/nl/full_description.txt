@@ -1,6 +1,6 @@
 Jouw media, op jouw voorwaarden.
 
-Het Jellyfin project is een open source, vrije software mediaserver. Geen kosten, geen tracking, geen verborgen agenda. Gebruik de gratis server om al je audio, video, foto's en meer op één plek op te slaan.
+Het Jellyfin project is een open source, gratis software mediaserver. Geen kosten, geen tracking, geen verborgen agenda. Gebruik de gratis server om al je audio, video, foto's en meer op één plek op te slaan.
 
 Om de app te gebruiken, moet je een Jellyfin server draaiend hebben. Voor meer informatie ga naar <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
 
