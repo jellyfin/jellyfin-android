@@ -21,8 +21,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.webkit.CookieManager
+import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
 import android.webkit.WebView
+import androidx.webkit.WebViewAssetLoader
 import timber.log.Timber
 
 fun Context.isWebViewSupported(): Boolean {
@@ -70,4 +72,18 @@ private fun WebView.getDefaultUserAgentString(): String {
 fun WebSettings.applyDefault() {
     javaScriptEnabled = true
     domStorageEnabled = true
+}
+
+/**
+ * Opens the requested file from the application's assets directory.
+ *
+ * On some devices Android doesn't set the JavaScript MIME type,
+ * thus manually set it to "application/javascript" where applicable.
+ *
+ * @see WebViewAssetLoader.AssetsPathHandler.handle
+ */
+fun WebViewAssetLoader.AssetsPathHandler.inject(path: String): WebResourceResponse? = handle(path)?.apply {
+    if (path.endsWith(".js", ignoreCase = true)) {
+        mimeType = "application/javascript"
+    }
 }

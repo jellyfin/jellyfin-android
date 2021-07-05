@@ -52,6 +52,7 @@ import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.dip
 import org.jellyfin.mobile.utils.fadeIn
 import org.jellyfin.mobile.utils.initLocale
+import org.jellyfin.mobile.utils.inject
 import org.jellyfin.mobile.utils.isOutdated
 import org.jellyfin.mobile.utils.replaceFragment
 import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
@@ -165,12 +166,12 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                 return when {
                     path.matches(Constants.MAIN_BUNDLE_PATH_REGEX) && "deferred" !in url.query.orEmpty() -> {
                         onConnectedToWebapp()
-                        assetsPathHandler.handle("native/injectionScript.js")
+                        assetsPathHandler.inject("native/injectionScript.js")
                     }
                     // Load injected scripts from application assets
-                    path.contains("/native/") -> assetsPathHandler.handle("native/${url.lastPathSegment}")
+                    path.contains("/native/") -> assetsPathHandler.inject("native/${url.lastPathSegment}")
                     // Load the chrome.cast.js library instead
-                    path.endsWith(Constants.CAST_SDK_PATH) -> assetsPathHandler.handle("native/chrome.cast.js")
+                    path.endsWith(Constants.CAST_SDK_PATH) -> assetsPathHandler.inject("native/chrome.cast.js")
                     path.endsWith(Constants.SESSION_CAPABILITIES_PATH) -> {
                         lifecycleScope.launch {
                             val credentials = suspendCoroutine<JSONObject> { continuation ->
