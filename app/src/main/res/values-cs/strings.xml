@@ -57,7 +57,6 @@
     <string name="external_player_mpv_description">Jednoduchý, malý a svobodný přehrávač. Podporuje mnoho různých formátů.</string>
     <string name="external_player_mpv">MPV</string>
     <string name="external_player_app">Externí přehrávač</string>
-    <string name="connection_error_invalid_version">Verze serveru není podporovaná. Aktualizujte na nejnovější verzi dostupnou z webu jellyfin.org.</string>
     <string name="music_notification_channel_description">Používá se pro ovládání přehrávání hudby</string>
     <string name="music_notification_channel">Přehrávač hudby Jellyfin</string>
     <string name="media_service_car_item_no_title">Bez názvu</string>
