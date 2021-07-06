@@ -18,7 +18,7 @@ class JellyfinMediaSource(
     subtitleStreamIndex: Int? = null,
 ) {
     val id: String = requireNotNull(sourceInfo.id) { "Media source has no id" }
-    val name: String = sourceInfo.name.orEmpty()
+    val name: String = item?.name ?: sourceInfo.name.orEmpty()
 
     val playMethod: PlayMethod = when {
         sourceInfo.supportsDirectPlay -> PlayMethod.DIRECT_PLAY
