@@ -40,7 +40,7 @@ import org.jellyfin.sdk.model.api.SortOrder
 import org.jellyfin.sdk.model.serializer.toUUID
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
-import java.util.UUID
+import java.util.*
 
 @Suppress("TooManyFunctions")
 class LibraryBrowser(
@@ -367,7 +367,7 @@ class LibraryBrowser(
 
         val isAlbum = item.albumId != null
         val itemId = when {
-            item.imageTags.containsKey(ImageType.PRIMARY) -> item.id
+            item.imageTags?.containsKey(ImageType.PRIMARY) == true -> item.id
             isAlbum -> item.albumId
             else -> null
         }
@@ -375,7 +375,7 @@ class LibraryBrowser(
             imageApi.getItemImageUrl(
                 itemId = itemId,
                 imageType = ImageType.PRIMARY,
-                tag = if (isAlbum) item.albumPrimaryImageTag else item.imageTags[ImageType.PRIMARY],
+                tag = if (isAlbum) item.albumPrimaryImageTag else item.imageTags?.get(ImageType.PRIMARY),
             )
         }
 
