@@ -1,1 +1,1 @@
-Mobiler Client für den freien Media-Server
+Mobiler Client für Jellyfin, das freie Software-Mediensystem
