@@ -93,4 +93,5 @@
     <string name="toast_reopen_after_change">மாற்றங்கள் செய்யப்பட்ட பிறகு பயன்பாட்டை மீண்டும் திறக்கவும்</string>
     <string name="dialog_button_ignore">புறக்கணிக்கவும்</string>
     <string name="dialog_button_open_settings">அமைப்புகளைத் திறக்கவும்</string>
+    <string name="pref_exoplayer_remember_brightness">காட்சி பிரகாசத்தை நினைவில் கொள்க</string>
 </resources>
