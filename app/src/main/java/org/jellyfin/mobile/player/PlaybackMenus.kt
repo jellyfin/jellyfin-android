@@ -8,6 +8,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
@@ -29,11 +30,13 @@ class PlaybackMenus(
     private val lockScreenButton: View by playerControlsBinding::lockScreenButton
     private val audioStreamsButton: View by playerControlsBinding::audioStreamsButton
     private val subtitlesButton: ImageButton by playerControlsBinding::subtitlesButton
+    private val aspectRatioButton: View by playerControlsBinding::aspectRatioButton
     private val speedButton: View by playerControlsBinding::speedButton
     private val infoButton: View by playerControlsBinding::infoButton
     private val playbackInfo: TextView by playerBinding::playbackInfo
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
+    private val aspectRatioMenu: PopupMenu = createAspectRatioMenu()
     private val speedMenu: PopupMenu = createSpeedMenu()
 
     private var subtitleCount = 0
@@ -65,6 +68,10 @@ class PlaybackMenus(
                     subtitlesMenu.show()
                 }
             }
+        }
+        aspectRatioButton.setOnClickListener {
+            fragment.suppressControllerAutoHide(true)
+            aspectRatioMenu.show()
         }
         speedButton.setOnClickListener {
             fragment.suppressControllerAutoHide(true)
@@ -159,6 +166,29 @@ class PlaybackMenus(
         setOnDismissListener(this@PlaybackMenus)
     }
 
+    private fun createAspectRatioMenu() = PopupMenu(context, aspectRatioButton).apply {
+        menu.add(ASPECT_RATIO_MENU, AspectRatioFrameLayout.RESIZE_MODE_FIT, Menu.NONE, R.string.exoplayer_resize_mode_fit)
+        menu.add(ASPECT_RATIO_MENU, AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH, Menu.NONE, R.string.exoplayer_resize_mode_fixed_width)
+        menu.add(ASPECT_RATIO_MENU, AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT, Menu.NONE, R.string.exoplayer_resize_mode_fixed_height)
+        menu.add(ASPECT_RATIO_MENU, AspectRatioFrameLayout.RESIZE_MODE_FILL, Menu.NONE, R.string.exoplayer_resize_mode_fill)
+        menu.add(ASPECT_RATIO_MENU, AspectRatioFrameLayout.RESIZE_MODE_ZOOM, Menu.NONE, R.string.exoplayer_resize_mode_zoom)
+        menu.forEach {
+            it.isChecked = it.itemId == playerBinding.playerView.resizeMode
+        }
+        menu.setGroupCheckable(ASPECT_RATIO_MENU, true, true)
+        setOnMenuItemClickListener { clickedItem: MenuItem ->
+            fragment.onResizeModeSelected(clickedItem.itemId).also { success ->
+                if (success) {
+                    menu.forEach { item ->
+                        item.isChecked = false
+                    }
+                    clickedItem.isChecked = true
+                }
+            }
+        }
+        setOnDismissListener(this@PlaybackMenus)
+    }
+
     private fun createSpeedMenu() = PopupMenu(context, speedButton).apply {
         for (step in SPEED_MENU_STEP_MIN..SPEED_MENU_STEP_MAX) {
             val newSpeed = step * SPEED_MENU_STEP_SIZE
@@ -211,7 +241,8 @@ class PlaybackMenus(
     companion object {
         private const val SUBTITLES_MENU_GROUP = 0
         private const val AUDIO_MENU_GROUP = 1
-        private const val SPEED_MENU_GROUP = 2
+        private const val ASPECT_RATIO_MENU = 2
+        private const val SPEED_MENU_GROUP = 3
 
         private const val MAX_VIDEO_STREAMS_DISPLAY = 3
         private const val MAX_AUDIO_STREAMS_DISPLAY = 5
