@@ -34,6 +34,7 @@ import org.jellyfin.mobile.utils.runOnUiThread
 import org.jellyfin.mobile.webapp.RemotePlayerService
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
+import org.jellyfin.sdk.api.client.util.AuthorizationHeaderBuilder
 import org.jellyfin.sdk.model.ClientInfo
 import org.jellyfin.sdk.model.DeviceInfo
 import org.json.JSONArray
@@ -60,10 +61,7 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
             // normalize the name by removing special characters
             // and making sure it's at least 1 character long
             // otherwise the webui will fail to send it to the server
-            val name = deviceInfo.name
-                .replace("[^\\x20-\\x7E]".toRegex(), "")
-                .trim()
-                .padStart(1)
+            val name = AuthorizationHeaderBuilder.encodeParameterValue(deviceInfo.name).padStart(1)
             put("deviceName", name)
             put("appName", clientInfo.name)
             put("appVersion", clientInfo.version)
