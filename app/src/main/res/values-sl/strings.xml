@@ -95,4 +95,5 @@
     <string name="toast_reopen_after_change">Za uveljavitev sprememb ponovno zaženite aplikacijo</string>
     <string name="dialog_button_ignore">Prezri</string>
     <string name="dialog_button_open_settings">Odpri nastavitve</string>
+    <string name="pref_exoplayer_remember_brightness">Zapomni si svetlost zaslona</string>
 </resources>
