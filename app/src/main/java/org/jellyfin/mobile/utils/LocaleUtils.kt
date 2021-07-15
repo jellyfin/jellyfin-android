@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.webkit.WebView
+import org.json.JSONException
+import org.json.JSONObject
 import timber.log.Timber
 import java.util.Locale
 import kotlin.coroutines.resume
@@ -11,12 +13,16 @@ import kotlin.coroutines.suspendCoroutine
 
 suspend fun WebView.initLocale(userId: String) {
     // Try to set locale via user settings
-    val userSettings = suspendCoroutine<String> { continuation ->
+    val userSettings = suspendCoroutine<String?> { continuation ->
         evaluateJavascript("window.localStorage.getItem('$userId-language')") { result ->
-            continuation.resume(result)
+            try {
+                continuation.resume(JSONObject("{locale:$result}").getString("locale"))
+            } catch (e: JSONException) {
+                continuation.resume(null)
+            }
         }
     }
-    if (context.setLocale(userSettings.unescapeJson()))
+    if (context.setLocale(userSettings))
         return
 
     // Fallback to device locale
@@ -24,7 +30,7 @@ suspend fun WebView.initLocale(userId: String) {
 }
 
 private fun Context.setLocale(localeString: String?): Boolean {
-    if (localeString.isNullOrEmpty() || localeString == "null")
+    if (localeString.isNullOrEmpty())
         return false
 
     val localeSplit = localeString.split('-')
