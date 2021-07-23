@@ -26,6 +26,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
+import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaQueueManager
 import org.jellyfin.mobile.utils.Constants
@@ -50,8 +51,10 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
+import java.lang.NumberFormatException
 
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
+    private val apiController by inject<ApiController>()
     private val playStateApi by inject<PlayStateApi>()
 
     private val lifecycleObserver = PlayerLifecycleObserver(this)
@@ -258,16 +261,24 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         playerOrNull?.playWhenReady = false
     }
 
-    fun seekToOffset(offsetMs: Long) {
-        playerOrNull?.seekToOffset(offsetMs)
-    }
-
     fun rewind() {
-        seekToOffset(Constants.DEFAULT_SEEK_TIME_MS.unaryMinus())
+        playerOrNull?.seekToOffset(
+            offsetMs = try {
+                apiController.displayPreferences?.customPrefs?.get("skipBackLength")?.toLong()
+            } catch (e: NumberFormatException) {
+                null
+            }?.unaryMinus() ?: Constants.DEFAULT_SEEK_TIME_MS.unaryMinus()
+        )
     }
 
     fun fastForward() {
-        seekToOffset(Constants.DEFAULT_SEEK_TIME_MS)
+        playerOrNull?.seekToOffset(
+            offsetMs = try {
+                apiController.displayPreferences?.customPrefs?.get("skipForwardLength")?.toLong()
+            } catch (e: NumberFormatException) {
+                null
+            } ?: Constants.DEFAULT_SEEK_TIME_MS
+        )
     }
 
     fun skipToPrevious(force: Boolean = false) {

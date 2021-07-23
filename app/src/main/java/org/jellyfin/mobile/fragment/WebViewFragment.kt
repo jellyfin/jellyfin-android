@@ -79,6 +79,11 @@ class WebViewFragment : Fragment(), NativePlayerHost {
     lateinit var server: ServerEntity
         private set
     private var connected = false
+    private val refreshDisplayPreferences = Runnable {
+        lifecycleScope.launch {
+            apiController.refreshDisplayPreferences()
+        }
+    }
 
     // UI
     private var _webViewBinding: FragmentWebviewBinding? = null
@@ -191,6 +196,11 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                             apiController.setupUser(server.id, user, token)
                             webView.initLocale(user)
                         }
+                        null
+                    }
+                    request.method == "POST" && path.endsWith(Constants.DISPLAY_PREFERENCES_PATH) -> {
+                        removeCallbacks(refreshDisplayPreferences)
+                        postDelayed(refreshDisplayPreferences, Constants.DISPLAY_PREFERENCES_TIMEOUT_MS)
                         null
                     }
                     else -> null

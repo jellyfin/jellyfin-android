@@ -239,9 +239,9 @@ class PlayerFragment : Fragment() {
     fun isLandscape(configuration: Configuration = resources.configuration) =
         configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-    fun onSeek(offsetMs: Long) {
-        viewModel.seekToOffset(offsetMs)
-    }
+    fun onRewind() = viewModel.rewind()
+
+    fun onFastForward() = viewModel.fastForward()
 
     /**
      * @return true if the audio track was changed
