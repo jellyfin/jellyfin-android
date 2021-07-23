@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import android.os.Environment
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import androidx.core.content.edit
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.RESIZE_MODE_FIT
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.ResizeMode
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
@@ -103,6 +105,18 @@ class AppPreferences(context: Context) {
         set(value) {
             sharedPreferences.edit {
                 putFloat(Constants.PREF_EXOPLAYER_BRIGHTNESS, value)
+            }
+        }
+
+    val exoPlayerRememberAspectRatio: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_REMEMBER_ASPECT_RATIO, false)
+
+    @ResizeMode
+    var exoPlayerResizeMode: Int
+        get() = sharedPreferences.getInt(Constants.PREF_EXOPLAYER_ASPECT_RATIO, RESIZE_MODE_FIT)
+        set(value) {
+            sharedPreferences.edit {
+                putInt(Constants.PREF_EXOPLAYER_ASPECT_RATIO, value)
             }
         }
 

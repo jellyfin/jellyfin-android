@@ -25,8 +25,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.ResizeMode
 import com.google.android.exoplayer2.ui.PlayerView
 import kotlinx.coroutines.launch
+import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.api.aspectRational
 import org.jellyfin.mobile.api.isLandscape
@@ -44,8 +46,11 @@ import org.jellyfin.mobile.utils.enableFullscreen
 import org.jellyfin.mobile.utils.isFullscreen
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaStream
+import org.koin.android.ext.android.inject
+import kotlin.properties.Delegates
 
 class PlayerFragment : Fragment() {
+    private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
     private var _playerBinding: FragmentPlayerBinding? = null
     private val playerBinding: FragmentPlayerBinding get() = _playerBinding!!
@@ -62,6 +67,7 @@ class PlayerFragment : Fragment() {
     lateinit var playerLockScreenHelper: PlayerLockScreenHelper
     lateinit var playerGestureHelper: PlayerGestureHelper
 
+    private var currentResizeMode by Delegates.notNull<Int>()
     private val currentVideoStream: MediaStream?
         get() = viewModel.mediaSourceOrNull?.selectedVideoStream
 
@@ -136,6 +142,15 @@ class PlayerFragment : Fragment() {
     @Suppress("DEPRECATION")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Handle aspect ratio changes
+        currentResizeMode = playerView.resizeMode
+        if (appPreferences.exoPlayerRememberAspectRatio) {
+            onResizeModeSelected(appPreferences.exoPlayerResizeMode)
+        }
+        playerView.setAspectRatioListener { _, _, _ ->
+            onResizeModeSelected(currentResizeMode)
+        }
 
         // Handle system window insets
         ViewCompat.setOnApplyWindowInsetsListener(playerBinding.root) { _, insets ->
@@ -264,6 +279,23 @@ class PlayerFragment : Fragment() {
      */
     fun toggleSubtitles(): Boolean {
         return viewModel.mediaQueueManager.toggleSubtitles()
+    }
+
+    /**
+     * Sets the resize mode to [resizeMode]
+     *
+     * @return true if the resize mode was changed
+     */
+    fun onResizeModeSelected(@ResizeMode resizeMode: Int): Boolean {
+        if (playerView.resizeMode != resizeMode) {
+            currentResizeMode = resizeMode
+            playerView.resizeMode = resizeMode
+            if (appPreferences.exoPlayerRememberAspectRatio) {
+                appPreferences.exoPlayerResizeMode = resizeMode
+            }
+            return true
+        }
+        return false
     }
 
     /**
