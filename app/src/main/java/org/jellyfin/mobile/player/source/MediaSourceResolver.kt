@@ -24,6 +24,7 @@ class MediaSourceResolver(
         subtitleStreamIndex: Int? = null,
     ): Result<JellyfinMediaSource> {
         // Load media source info
+        val playSessionId: String
         val mediaSourceInfo = try {
             val response by mediaInfoApi.getPostedPlaybackInfo(
                 itemId = itemId,
@@ -37,6 +38,9 @@ class MediaSourceResolver(
                 ),
             )
 
+            response.playSessionId.let {
+                playSessionId = it ?: return Result.failure(PlayerException.UnsupportedContent())
+            }
             response.mediaSources?.find { source ->
                 source.id?.toUUIDOrNull() == itemId
             } ?: return Result.failure(PlayerException.UnsupportedContent())
@@ -60,6 +64,7 @@ class MediaSourceResolver(
                 itemId = itemId,
                 item = item,
                 sourceInfo = mediaSourceInfo,
+                playSessionId = playSessionId,
                 startTimeTicks = startTimeTicks,
                 audioStreamIndex = audioStreamIndex,
                 subtitleStreamIndex = subtitleStreamIndex,

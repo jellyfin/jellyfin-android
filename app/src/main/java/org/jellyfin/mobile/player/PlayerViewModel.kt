@@ -40,13 +40,17 @@ import org.jellyfin.mobile.utils.seekToOffset
 import org.jellyfin.mobile.utils.setPlaybackState
 import org.jellyfin.mobile.utils.toMediaMetadata
 import org.jellyfin.mobile.utils.width
+import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
+import org.jellyfin.sdk.api.operations.HlsSegmentApi
 import org.jellyfin.sdk.api.operations.PlayStateApi
+import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.api.PlaybackProgressInfo
 import org.jellyfin.sdk.model.api.PlaybackStartInfo
 import org.jellyfin.sdk.model.api.PlaybackStopInfo
 import org.jellyfin.sdk.model.api.RepeatMode
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
@@ -174,6 +178,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 PlaybackStartInfo(
                     itemId = mediaSource.itemId,
                     playMethod = mediaSource.playMethod,
+                    playSessionId = mediaSource.playSessionId,
                     audioStreamIndex = mediaSource.selectedAudioStream?.index,
                     subtitleStreamIndex = mediaSource.selectedSubtitleStream?.index,
                     isPaused = !isPlaying,
@@ -201,6 +206,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     PlaybackProgressInfo(
                         itemId = mediaSource.itemId,
                         playMethod = mediaSource.playMethod,
+                        playSessionId = mediaSource.playSessionId,
                         audioStreamIndex = mediaSource.selectedAudioStream?.index,
                         subtitleStreamIndex = mediaSource.selectedSubtitleStream?.index,
                         isPaused = !isPlaying,
@@ -234,6 +240,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     PlaybackStopInfo(
                         itemId = mediaSource.itemId,
                         positionTicks = lastPositionTicks,
+                        playSessionId = mediaSource.playSessionId,
                         failed = false,
                     )
                 )
@@ -241,6 +248,14 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 // Mark video as watched if playback finished
                 if (hasFinished) {
                     playStateApi.markPlayedItem(itemId = mediaSource.itemId)
+                }
+
+                // Stop active encoding if transcoding
+                if (mediaSource.playMethod == PlayMethod.TRANSCODE) {
+                    get<HlsSegmentApi>().stopEncodingProcess(
+                        deviceId = get<ApiClient>().deviceInfo.id,
+                        playSessionId = mediaSource.playSessionId
+                    )
                 }
             } catch (e: ApiClientException) {
                 Timber.e(e, "Failed to report playback stop")

@@ -6,6 +6,7 @@ import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.KtorClient
 import org.jellyfin.sdk.api.operations.ArtistsApi
 import org.jellyfin.sdk.api.operations.GenresApi
+import org.jellyfin.sdk.api.operations.HlsSegmentApi
 import org.jellyfin.sdk.api.operations.ImageApi
 import org.jellyfin.sdk.api.operations.ItemsApi
 import org.jellyfin.sdk.api.operations.MediaInfoApi
@@ -49,4 +50,5 @@ val apiModule = module {
     single { UniversalAudioApi(get()) }
     single { MediaInfoApi(get()) }
     single { PlayStateApi(get()) }
+    single { HlsSegmentApi(get()) }
 }

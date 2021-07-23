@@ -141,7 +141,9 @@ class MediaQueueManager(
                 val url = videosApi.getVideoStreamUrl(
                     itemId = source.itemId,
                     static = true,
+                    playSessionId = source.playSessionId,
                     mediaSourceId = source.id,
+                    deviceId = apiClient.deviceInfo.id,
                 )
 
                 val mediaItem = builder.setUri(url).build()
@@ -152,7 +154,9 @@ class MediaQueueManager(
                 val url = videosApi.getVideoStreamByContainerUrl(
                     itemId = source.itemId,
                     container = container,
+                    playSessionId = source.playSessionId,
                     mediaSourceId = source.id,
+                    deviceId = apiClient.deviceInfo.id,
                 )
 
                 val mediaItem = builder.setUri(url).build()

@@ -75,8 +75,9 @@ class ApiController(
     private fun configureApiClientUser(userId: String, accessToken: String) {
         apiClient.userId = userId.toUUID()
         apiClient.accessToken = accessToken
+        // FIXME - This causes two sessions on the webapp for the same device
         // Append user id to device id to ensure uniqueness across sessions
-        apiClient.deviceInfo = baseDeviceInfo.copy(id = baseDeviceInfo.id + userId)
+        //apiClient.deviceInfo = baseDeviceInfo.copy(id = baseDeviceInfo.id + userId)
     }
 
     private fun resetApiClientUser() {
