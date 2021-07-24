@@ -1,2 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="pref_download_location">Lokalizacja pobranych</string>
+    <string name="pref_category_downloads">Pobrane</string>
+    <string name="external_player_system_default">Domyśle systemu</string>
+    <string name="video_player_external">Zewnętrzny odtwarzacz</string>
+    <string name="video_player_native">Natywny odtwarzacz</string>
+    <string name="pref_video_player_type_title">Typ odtwarzacza wideo</string>
+    <string name="pref_category_video_player">Odtwarzacz wideo</string>
+    <string name="pref_music_notification_always_dismissible_title">Wyłącz powiadomienia odtwarzacza</string>
+    <string name="pref_category_music_player">Odtwarzacz muzyki</string>
+    <string name="activity_name_settings">Ustawienia Jellyfin</string>
+    <string name="playback_info_and_x_more">... i %d wiecej</string>
+    <string name="playback_info_transcoding">Transkodowanie: %b</string>
+    <string name="playback_info_play_method">Metoda odtwarzania: %s</string>
+    <string name="player_error_unsupported_content">Media nie może być odtworzone na tym urządzeniu</string>
+    <string name="notification_action_stop">Zatrzymaj</string>
+    <string name="notification_action_next">Następne</string>
+    <string name="notification_action_fast_forward">Szybkie przewijanie</string>
+    <string name="notification_action_pause">Pauza</string>
+    <string name="notification_action_play">Odtwórz</string>
+    <string name="notification_action_previous">Poprzednie</string>
+    <string name="music_notification_channel">Odtwarzacz muzyczny Jellyfin</string>
+    <string name="media_service_car_item_no_title">Bez tytułu</string>
+    <string name="media_service_car_section_playlists">Playlisty</string>
+    <string name="media_service_car_section_genres">Gatunki</string>
+    <string name="media_service_car_section_songs">Piosenki</string>
+    <string name="media_service_car_section_artists">Artyści</string>
+    <string name="media_service_car_section_albums">Albumy</string>
+    <string name="media_service_car_section_recents">Ostatnio odtwarzane</string>
+    <string name="media_service_item_not_found">Nie można znaleźć media</string>
+    <string name="media_service_generic_error">Wystąpił błąd</string>
+    <string name="download_no_storage_permission">Nie można pobrać plików bez dostępu do pamięci</string>
+    <string name="downloading">Pobieranie</string>
+    <string name="mobile_data">Dane mobilne</string>
+    <string name="wifi_only">Tylko WiFi</string>
+    <string name="network_title">Dozwolone rodzaje sieci</string>
+    <string name="available_servers_title">Dostępne serwery</string>
+    <string name="choose_server_button_text">Wybierz serwer</string>
+    <string name="connect_button_text">Połącz</string>
+    <string name="connection_error_unsupported_version_or_product">Nie wspierana wersja lub produkt</string>
+    <string name="connection_error_unable_to_reach_sever">Nie można odnaleźć serwera</string>
+    <string name="connection_error_cannot_connect">Nie można nawiązać połączenia.
+\nSprawdź nazwę hosta i połączenie sieciowe.</string>
+    <string name="connection_error_invalid_format">Host ma nieprawidłowy format</string>
+    <string name="connect_to_server_title">Połącz z serwerem</string>
+    <string name="toast_reopen_after_change">Uruchom ponownie aplikację po dokonaniu zmian</string>
+    <string name="dialog_button_ignore">Ignoruj</string>
+    <string name="dialog_button_open_settings">Otwórz ustawienia</string>
+    <string name="dialog_button_close_app">Zamknij aplikację</string>
+    <string name="dialog_button_check_for_updates">Sprawdź aktualizacje</string>
+    <string name="dialog_web_view_not_supported">WebView nie wspierane</string>
+</resources>
