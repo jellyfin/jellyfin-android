@@ -89,4 +89,5 @@
     <string name="toast_reopen_after_change">Perfavore, riapri l\'app dopo aver fatto le modifiche</string>
     <string name="dialog_button_ignore">Ignora</string>
     <string name="dialog_button_open_settings">Impostazioni</string>
+    <string name="pref_exoplayer_remember_brightness">Ricorda la luminisità del display</string>
 </resources>
