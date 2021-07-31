@@ -57,7 +57,6 @@ import org.jellyfin.mobile.utils.isOutdated
 import org.jellyfin.mobile.utils.replaceFragment
 import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
 import org.jellyfin.mobile.utils.runOnUiThread
-import org.jellyfin.mobile.utils.unescapeJson
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.json.JSONException
 import org.json.JSONObject
@@ -175,9 +174,9 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                     path.endsWith(Constants.SESSION_CAPABILITIES_PATH) -> {
                         lifecycleScope.launch {
                             val credentials = suspendCoroutine<JSONObject> { continuation ->
-                                webView.evaluateJavascript("window.localStorage.getItem('jellyfin_credentials')") { result ->
+                                webView.evaluateJavascript("JSON.parse(window.localStorage.getItem('jellyfin_credentials'))") { result ->
                                     try {
-                                        continuation.resume(JSONObject(result.unescapeJson()))
+                                        continuation.resume(JSONObject(result))
                                     } catch (e: JSONException) {
                                         val message = "Failed to extract credentials"
                                         Timber.e(e, message)
