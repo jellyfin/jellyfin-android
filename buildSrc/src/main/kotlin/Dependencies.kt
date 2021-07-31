@@ -8,19 +8,19 @@ object Dependencies {
         const val coroutines = "1.5.1"
 
         // Core
-        const val koin = "3.0.2"
-        const val appCompat = "1.3.0"
-        const val androidxCore = "1.5.0"
-        const val activity = "1.2.3"
-        const val fragment = "1.3.4"
-        const val exoPlayer = "2.14.0"
+        const val koin = "3.1.2"
+        const val appCompat = "1.3.1"
+        const val androidxCore = "1.6.0"
+        const val activity = "1.3.0"
+        const val fragment = "1.3.6"
+        const val exoPlayer = "2.14.2"
 
         // Lifecycle
         const val lifecycleExtensions = "2.3.1"
 
         // UI
-        const val constraintLayout = "2.0.4"
-        const val material = "1.3.0"
+        const val constraintLayout = "2.1.0"
+        const val material = "1.4.0"
         const val webkitX = "1.4.0"
         const val modernAndroidPreferences = "2.1.0"
 
@@ -33,24 +33,24 @@ object Dependencies {
         const val jellyfinSdkSnapshot = "master-SNAPSHOT"
         const val jellyfinSdkSnapshotUnstable = "openapi-unstable-SNAPSHOT"
         const val okHttp = "4.9.1"
-        const val coil = "1.1.1"
+        const val coil = "1.3.1"
 
         // Cast
-        const val mediaRouter = "1.2.3"
-        const val playServicesCast = "19.0.0"
+        const val mediaRouter = "1.2.4"
+        const val playServicesCast = "20.0.0"
 
         // Media
-        const val media = "1.3.1"
+        const val media = "1.4.0"
 
         // Health
         const val timber = "4.7.1"
         const val leakCanary = "2.7"
         const val redScreenOfDeath = "0.1.3"
         const val junit = "5.7.2"
-        const val kotest = "4.6.0"
-        const val mockk = "1.11.0"
-        const val androidXRunner = "1.3.0"
-        const val androidXEspresso = "3.3.0"
+        const val kotest = "4.6.1"
+        const val mockk = "1.12.0"
+        const val androidXRunner = "1.4.0"
+        const val androidXEspresso = "3.4.0"
         const val androidDesugarLibs = "1.1.5"
     }
 
