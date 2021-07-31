@@ -5,7 +5,7 @@ object Dependencies {
         const val detekt = "1.17.1"
 
         // KotlinX
-        const val coroutines = "1.5.0"
+        const val coroutines = "1.5.1"
 
         // Core
         const val koin = "3.0.2"
