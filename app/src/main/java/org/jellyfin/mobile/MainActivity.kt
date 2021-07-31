@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Load UI
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             mainViewModel.serverState.collect { state ->
                 with(supportFragmentManager) {
                     when (state) {
