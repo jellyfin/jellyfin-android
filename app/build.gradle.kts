@@ -27,11 +27,11 @@ detekt {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
     defaultConfig {
         applicationId = "org.jellyfin.mobile"
-        minSdkVersion(21)
-        targetSdkVersion(30)
+        minSdk = 21
+        targetSdk = 30
         versionName = project.getVersionName()
         versionCode = getVersionCode(versionName!!)
         setProperty("archivesBaseName", "jellyfin-android-v$versionName")
@@ -70,7 +70,7 @@ android {
         }
     }
 
-    flavorDimensions("variant")
+    flavorDimensions += "variant"
     productFlavors {
         register("libre") {
             dimension = "variant"
@@ -94,7 +94,7 @@ android {
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
     }
-    lintOptions {
+    lint {
         isAbortOnError = false
         sarifReport = true
         disable("MissingTranslation", "ExtraTranslation")
