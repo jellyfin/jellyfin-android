@@ -19,13 +19,13 @@ allprojects {
         google()
         mavenLocal {
             content {
-                includeVersionByRegex(Dependencies.Groups.jellyfin, ".*", Dependencies.Versions.jellyfinSdkLocal)
+                includeVersionByRegex(JellyfinSdk.GROUP, ".*", JellyfinSdk.LOCAL)
             }
         }
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
             content {
-                includeVersionByRegex(Dependencies.Groups.jellyfin, ".*", Dependencies.Versions.jellyfinSdkSnapshot)
-                includeVersionByRegex(Dependencies.Groups.jellyfin, ".*", Dependencies.Versions.jellyfinSdkSnapshotUnstable)
+                includeVersionByRegex(JellyfinSdk.GROUP, ".*", JellyfinSdk.SNAPSHOT)
+                includeVersionByRegex(JellyfinSdk.GROUP, ".*", JellyfinSdk.SNAPSHOT_UNSTABLE)
             }
         }
     }
