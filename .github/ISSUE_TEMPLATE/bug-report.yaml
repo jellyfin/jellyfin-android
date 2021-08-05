@@ -25,12 +25,13 @@ body:
       description: |
         Please paste your client logs (logcat) here, *NOT* server logs (in most cases).
         Learn how to capture those logcats [here](https://wiki.lineageos.org/logcat.html).
+        Make sure that they don't contain any sensitive information like server URL, auth tokens or passwords.
       placeholder: Paste logs…
       render: shell
   - type: input
     id: app-version
     attributes:
-      label: Applicaiton version
+      label: Application version
       description: The version of the installed Jellyfin Android app.
       placeholder: 2.3.0
     validations:
@@ -39,20 +40,13 @@ body:
     id: installation-source
     attributes:
       label: Where did you install the app from?
-      description: Choose the appropriate app store or installtion method.
+      description: Choose the appropriate app store or installation method.
       options:
         - Google Play
         - F-Droid
         - Amazon Appstore
-        - Sideloaded APK (GitHub, etc.)
-  - type: dropdown
-    id: app-variant
-    attributes:
-      label: Which variant are you using?
-      description: Proprietary (with cast support - Google Play, Amazon) or libre (F-Droid).
-      options:
-        - Proprietary
-        - Libre
+        - Sideloaded APK (libre build)
+        - Sideloaded APK (proprietary build)
   - type: input
     id: device-info
     attributes:
@@ -66,13 +60,14 @@ body:
     attributes:
       label: Android version
       description: Version of the OS and other information (e.g. custom ROM / OEM skin)
-      placeholder: Android 11, Android 10
+      placeholder: Android 11, LineageOS 18.1
     validations:
       required: true
   - type: input
     id: server-version
     attributes:
       label: Jellyfin server version
+      description: If on unstable, please specify the commit hash.
       placeholder: 10.7.6
     validations:
       required: true
@@ -85,4 +80,4 @@ body:
       options:
         - label: Web player (default)
         - label: Integrated player (ExoPlayer)
-        - label: External player (mpv, VLC)
+        - label: External player (VLC, mpv, MX Player)
