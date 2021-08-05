@@ -2,7 +2,7 @@
     const scripts = [
         '/native/nativeshell.js',
         '/native/EventEmitter.js',
-        document.currentScript.src.concat('?deferred=true&ts=', Date.now())
+        document.currentScript.src.split(/[?#]/)[0].concat('?deferred=true&ts=', Date.now())
     ];
     for (const script of scripts) {
         const scriptElement = document.createElement('script');

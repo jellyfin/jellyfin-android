@@ -200,7 +200,13 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                 val errorMessage = errorResponse.data?.run { bufferedReader().use(Reader::readText) }
                 Timber.e("Received WebView HTTP %d error: %s", errorResponse.statusCode, errorMessage)
 
-                if (request.url == Uri.parse(view.url)) onErrorReceived()
+                if (request.url == Uri.parse(view.url)) {
+                    if (errorResponse.statusCode == 404 && !request.url.toString().endsWith(Constants.FALLBACK_WEB_PATH)) {
+                        webView.loadUrl("${request.url}/${Constants.FALLBACK_WEB_PATH}")
+                        return
+                    }
+                    onErrorReceived()
+                }
             }
 
             override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceErrorCompat) {

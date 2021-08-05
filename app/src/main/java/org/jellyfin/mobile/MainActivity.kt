@@ -14,7 +14,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import org.jellyfin.mobile.cast.Chromecast
 import org.jellyfin.mobile.cast.IChromecast
 import org.jellyfin.mobile.fragment.ConnectFragment
