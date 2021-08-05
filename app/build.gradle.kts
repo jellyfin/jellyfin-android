@@ -111,23 +111,23 @@ dependencies {
     // Core
     implementation(libs.koin)
     implementation(libs.androidx.core)
-    implementation(libs.androidx.appCompat)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.fragment)
-    coreLibraryDesugaring(libs.androidDesugarLibs)
+    coreLibraryDesugaring(libs.androiddesugarlibs)
 
     // Lifecycle
-    implementation(libs.bundles.androidx.lifecycleExtensions)
+    implementation(libs.bundles.androidx.lifecycle)
 
     // UI
     implementation(libs.google.material)
-    implementation(libs.androidx.constraintLayout)
+    implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.webkit)
-    implementation(libs.modernAndroidPreferences)
+    implementation(libs.modernandroidpreferences)
 
     // Network
     val sdkVersion = findProperty("sdk.version")?.toString()
-    implementation(libs.jellyfinSdk) {
+    implementation(libs.jellyfin.sdk) {
         // Change version if desired
         when (sdkVersion) {
             "local" -> version { strictly(JellyfinSdk.LOCAL) }
@@ -141,11 +141,11 @@ dependencies {
     // Media
     implementation(libs.androidx.media)
     implementation(libs.androidx.mediarouter)
-    implementation(libs.bundles.exoPlayer)
+    implementation(libs.bundles.exoplayer)
     @Suppress("UnstableApiUsage")
-    proprietaryImplementation(libs.exoPlayer.cast)
+    proprietaryImplementation(libs.exoplayer.cast)
     @Suppress("UnstableApiUsage")
-    proprietaryImplementation(libs.bundles.playServices)
+    proprietaryImplementation(libs.bundles.playservices)
 
     // Room
     implementation(libs.bundles.androidx.room)
@@ -153,9 +153,9 @@ dependencies {
 
     // Monitoring
     implementation(libs.timber)
-    debugImplementation(libs.leakCanary)
-    debugImplementation(libs.redScreenOfDeath.impl)
-    releaseImplementation(libs.redScreenOfDeath.noop)
+    debugImplementation(libs.leakcanary)
+    debugImplementation(libs.redscreenofdeath.impl)
+    releaseImplementation(libs.redscreenofdeath.noop)
 
     // Testing
     testImplementation(libs.junit.api)
