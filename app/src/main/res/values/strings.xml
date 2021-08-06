@@ -77,7 +77,7 @@
     <string name="pref_category_video_player">Video player</string>
     <string name="pref_video_player_type_title">Video player type</string>
     <string name="video_player_web">Web player</string>
-    <string name="video_player_native">Native player</string>
+    <string name="video_player_integrated">Integrated player</string>
     <string name="video_player_external">External player</string>
     <string name="video_player_web_description">The default HTML video player from the Web UI</string>
     <string name="video_player_native_description">Based on ExoPlayer, supports more video formats and codecs, and is more integrated into the OS</string>
