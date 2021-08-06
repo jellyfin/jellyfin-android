@@ -163,6 +163,16 @@ dependencies {
     testImplementation(libs.bundles.kotest)
     testImplementation(libs.mockk)
     androidTestImplementation(libs.bundles.androidx.test)
+
+    //ffmpeg lib import
+    implementation(
+        fileTree(
+            mapOf(
+                "dir" to "libs",
+                "include" to listOf("*.aar")
+            )
+        )
+    )
 }
 
 tasks {

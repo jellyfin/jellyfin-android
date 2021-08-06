@@ -26,36 +26,27 @@ class DeviceProfileBuilder {
         val directPlayProfiles = ArrayList<DirectPlayProfile>()
         val codecProfiles = ArrayList<CodecProfile>()
 
-        val (androidVideoCodecs, androidAudioCodecs) = getAndroidCodecs()
-
-        val supportedVideoCodecs = Array(AVAILABLE_VIDEO_CODECS.size) { i ->
-            AVAILABLE_VIDEO_CODECS[i].filter { codec -> androidVideoCodecs.containsKey(codec) }.toTypedArray()
-        }
-
-        val supportedAudioCodecs = Array(AVAILABLE_AUDIO_CODECS.size) { i ->
-            AVAILABLE_AUDIO_CODECS[i].filter { codec -> androidAudioCodecs.containsKey(codec) }.toTypedArray()
-        }
 
         for (i in SUPPORTED_CONTAINER_FORMATS.indices) {
             val container = SUPPORTED_CONTAINER_FORMATS[i]
-            if (supportedVideoCodecs[i].isNotEmpty()) {
+            if (AVAILABLE_VIDEO_CODECS[i].isNotEmpty()) {
                 containerProfiles.add(ContainerProfile(type = DlnaProfileType.VIDEO, container = container))
                 directPlayProfiles.add(
                     DirectPlayProfile(
                         type = DlnaProfileType.VIDEO,
                         container = SUPPORTED_CONTAINER_FORMATS[i],
-                        videoCodec = supportedVideoCodecs[i].joinToString(","),
-                        audioCodec = supportedAudioCodecs[i].joinToString(","),
+                        videoCodec = AVAILABLE_VIDEO_CODECS[i].joinToString(","),
+                        audioCodec = AVAILABLE_AUDIO_CODECS[i].joinToString(","),
                     )
                 )
             }
-            if (supportedAudioCodecs[i].isNotEmpty()) {
+            if (AVAILABLE_AUDIO_CODECS[i].isNotEmpty()) {
                 containerProfiles.add(ContainerProfile(type = DlnaProfileType.AUDIO, container = container))
                 directPlayProfiles.add(
                     DirectPlayProfile(
                         type = DlnaProfileType.AUDIO,
                         container = SUPPORTED_CONTAINER_FORMATS[i],
-                        audioCodec = supportedVideoCodecs[i].joinToString(","),
+                        audioCodec = AVAILABLE_AUDIO_CODECS[i].joinToString(","),
                     )
                 )
             }
@@ -107,39 +98,6 @@ class DeviceProfileBuilder {
         ignoreTranscodeByteRangeRequests = false,
     )
 
-    @Suppress("NestedBlockDepth")
-    private fun getAndroidCodecs(): Pair<Map<String, DeviceCodec.Video>, Map<String, DeviceCodec.Audio>> {
-        val videoCodecs: MutableMap<String, DeviceCodec.Video> = HashMap()
-        val audioCodecs: MutableMap<String, DeviceCodec.Audio> = HashMap()
-
-        val androidCodecs = MediaCodecList(MediaCodecList.REGULAR_CODECS)
-        for (codecInfo in androidCodecs.codecInfos) {
-            if (codecInfo.isEncoder) continue
-
-            for (mimeType in codecInfo.supportedTypes) {
-                val codec = DeviceCodec.from(codecInfo.getCapabilitiesForType(mimeType)) ?: continue
-                val name = codec.name
-                when (codec) {
-                    is DeviceCodec.Video -> {
-                        if (videoCodecs.containsKey(name)) {
-                            videoCodecs[name] = videoCodecs[name]!!.mergeCodec(codec)
-                        } else {
-                            videoCodecs[name] = codec
-                        }
-                    }
-                    is DeviceCodec.Audio -> {
-                        if (audioCodecs.containsKey(mimeType)) {
-                            audioCodecs[name] = audioCodecs[name]!!.mergeCodec(codec)
-                        } else {
-                            audioCodecs[name] = codec
-                        }
-                    }
-                }
-            }
-        }
-
-        return videoCodecs to audioCodecs
-    }
 
     private fun getTranscodingProfiles(): List<TranscodingProfile> = ArrayList<TranscodingProfile>().apply {
         add(
@@ -268,17 +226,17 @@ class DeviceProfileBuilder {
             // webm
             arrayOf("vorbis", "opus"),
             // mkv
-            arrayOf("mp1", "mp2", "mp3", "aac", "vorbis", "opus", "flac" /*, "ac3", "eac3", "dts"*/),
+            arrayOf("mp1", "mp2", "mp3", "aac", "vorbis", "opus", "flac" , "ac3", "eac3", "dts"),
             // mp3
             arrayOf("mp3"),
             // ogg
             arrayOf("vorbis", "opus", "flac"),
             // wav
-            arrayOf("wav" /*, "pcm"*/),
+            arrayOf("wav" , "pcm"),
             // ts
-            arrayOf("mp1", "mp2", "mp3", "aac" /*, "ac3", "dts"*/),
+            arrayOf("mp1", "mp2", "mp3", "aac" , "ac3", "dts"),
             // m2ts
-            arrayOf("pcm", "aac" /*, "ac3", "dts"*/),
+            arrayOf("pcm", "aac" , "ac3", "dts"),
             // flv
             arrayOf("mp3", "aac"),
             // aac
@@ -289,8 +247,8 @@ class DeviceProfileBuilder {
             arrayOf("3gpp", "aac", "flac"),
         )
 
-        private val EXO_EMBEDDED_SUBTITLES = arrayOf("srt", "subrip", "ttml")
-        private val EXO_EXTERNAL_SUBTITLES = arrayOf("srt", "subrip", "ttml", "vtt", "webvtt")
+        private val EXO_EMBEDDED_SUBTITLES = arrayOf("srt", "subrip", "ttml", "pgssub", "pgs", "sub")
+        private val EXO_EXTERNAL_SUBTITLES = arrayOf("srt", "subrip", "ttml", "vtt", "webvtt", "pgssub", "pgs", "sub")
         private val EXTERNAL_PLAYER_SUBTITLES = arrayOf(
             "ssa", "ass", "srt", "subrip", "idx", "sub", "vtt", "webvtt", "ttml", "pgs", "pgssub", "smi", "smil"
         )

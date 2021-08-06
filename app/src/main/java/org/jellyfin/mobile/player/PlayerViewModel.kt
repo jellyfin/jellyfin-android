@@ -13,10 +13,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.RenderersFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.analytics.AnalyticsCollector
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
+import com.google.android.exoplayer2.extractor.ts.TsExtractor
 import com.google.android.exoplayer2.util.Clock
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -112,7 +116,15 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
      * Setup a new [SimpleExoPlayer] for video playback, register callbacks and set attributes
      */
     fun setupPlayer() {
-        _player.value = SimpleExoPlayer.Builder(getApplication()).apply {
+        //ffmpeg extension enable
+        val renderersFactory: RenderersFactory = DefaultRenderersFactory(getApplication())
+            .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER)
+        // https://github.com/google/ExoPlayer/issues/8571
+        // https://github.com/google/ExoPlayer/issues/8571
+        val extractorsFactory = DefaultExtractorsFactory()
+            .setTsExtractorTimestampSearchBytes(1500 * TsExtractor.TS_PACKET_SIZE)
+
+        _player.value = SimpleExoPlayer.Builder(getApplication(),renderersFactory, extractorsFactory).apply {
             setTrackSelector(mediaQueueManager.trackSelector)
             if (BuildConfig.DEBUG) {
                 setAnalyticsCollector(AnalyticsCollector(Clock.DEFAULT).apply {
