@@ -74,7 +74,7 @@ class SettingsFragment : Fragment() {
         }
         val videoPlayerOptions = listOf(
             SelectionItem(VideoPlayerType.WEB_PLAYER, R.string.video_player_web, R.string.video_player_web_description),
-            SelectionItem(VideoPlayerType.EXO_PLAYER, R.string.video_player_native, R.string.video_player_native_description),
+            SelectionItem(VideoPlayerType.EXO_PLAYER, R.string.video_player_integrated, R.string.video_player_native_description),
             SelectionItem(VideoPlayerType.EXTERNAL_PLAYER, R.string.video_player_external, R.string.video_player_external_description),
         )
         singleChoice(Constants.PREF_VIDEO_PLAYER_TYPE, videoPlayerOptions) {
