@@ -1,0 +1,132 @@
+[versions]
+# KotlinX
+coroutines = "1.5.1"
+
+# Core
+koin = "3.1.2"
+androidx-core = "1.6.0"
+androidx-appcompat = "1.3.1"
+androidx-activity = "1.3.0"
+androidx-fragment = "1.3.6"
+androiddesugarlibs = "1.1.5"
+
+# Lifecycle extensions
+androidx-lifecycle = "2.3.1"
+
+# UI
+androidx-constraintlayout = "2.1.0"
+google-material = "1.4.0"
+androidx-webkit = "1.4.0"
+modernandroidpreferences = "2.1.0"
+
+# Network
+jellyfin-sdk = "1.0.1"
+okhttp = "4.9.1"
+coil = "1.3.1"
+
+# Media
+androidx-media = "1.4.0"
+androidx-mediarouter = "1.2.4"
+exoplayer = "2.14.2"
+playservices = "20.0.0"
+
+# Room
+androidx-room = "2.3.0"
+
+# Monitoring
+timber = "4.7.1"
+leakcanary = "2.7"
+redscreenofdeath = "0.1.3"
+
+# Testing
+junit = "5.7.2"
+kotest = "4.6.1"
+mockk = "1.12.0"
+androidx-test-runner = "1.4.0"
+androidx-test-espresso = "3.4.0"
+
+[libraries]
+# KotlinX
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+
+# Core
+koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
+androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidx-activity" }
+androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidx-fragment" }
+androiddesugarlibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androiddesugarlibs" }
+
+# Lifecycle Extensions
+androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common-java8", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "androidx-lifecycle" }
+
+# UI
+google-material = { group = "com.google.android.material", name = "material", version.ref = "google-material" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
+androidx-webkit = { group = "androidx.webkit", name = "webkit", version.ref = "androidx-webkit" }
+modernandroidpreferences = { group = "de.maxr1998", name = "modernandroidpreferences", version.ref = "modernandroidpreferences" }
+
+# Network
+jellyfin-sdk = { group = "org.jellyfin.sdk", name = "jellyfin-platform-android", version.ref = "jellyfin-sdk" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+coil = { group = "io.coil-kt", name = "coil-base", version.ref = "coil" }
+
+# Media
+androidx-media = { group = "androidx.media", name = "media", version.ref = "androidx-media" }
+androidx-mediarouter = { group = "androidx.mediarouter", name = "mediarouter", version.ref = "androidx-mediarouter" }
+exoplayer-core = { group = "com.google.android.exoplayer", name = "exoplayer-core", version.ref = "exoplayer" }
+exoplayer-ui = { group = "com.google.android.exoplayer", name = "exoplayer-ui", version.ref = "exoplayer" }
+exoplayer-mediaSession = { group = "com.google.android.exoplayer", name = "extension-mediasession", version.ref = "exoplayer" }
+exoplayer-hls = { group = "com.google.android.exoplayer", name = "exoplayer-hls", version.ref = "exoplayer" }
+exoplayer-cast = { group = "com.google.android.exoplayer", name = "extension-cast", version.ref = "exoplayer" }
+playservices-cast = { group = "com.google.android.gms", name = "play-services-cast", version.ref = "playservices" }
+playservices-castframework = { group = "com.google.android.gms", name = "play-services-cast-framework", version.ref = "playservices" }
+
+# Room
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidx-room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
+
+# Monitoring
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
+redscreenofdeath-impl = { group = "com.mlegy.redscreenofdeath", name = "red-screen-of-death", version.ref = "redscreenofdeath" }
+redscreenofdeath-noop = { group = "com.mlegy.redscreenofdeath", name = "red-screen-of-death-no-op", version.ref = "redscreenofdeath" }
+
+# Testing
+junit-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit" }
+junit-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit" }
+kotest-runner = { group = "io.kotest", name = "kotest-runner-junit5-jvm", version.ref = "kotest" }
+kotest-assertions = { group = "io.kotest", name = "kotest-assertions-core-jvm", version.ref = "kotest" }
+kotest-property = { group = "io.kotest", name = "kotest-property-jvm", version.ref = "kotest" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-test-runner" }
+androidx-test-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-test-espresso" }
+
+[bundles]
+coroutines = ["coroutines-core", "coroutines-android"]
+androidx-lifecycle = [
+    "androidx-lifecycle-viewmodel",
+    "androidx-lifecycle-livedata",
+    "androidx-lifecycle-runtime",
+    "androidx-lifecycle-common",
+    "androidx-lifecycle-process",
+]
+exoplayer = [
+    "exoplayer-core",
+    "exoplayer-ui",
+    "exoplayer-mediaSession",
+    "exoplayer-hls",
+]
+playservices = [
+    "playservices-cast",
+    "playservices-castframework",
+]
+androidx-room = ["androidx-room-runtime", "androidx-room-ktx"]
+kotest = ["kotest-runner", "kotest-assertions", "kotest-property"]
+androidx-test = ["androidx-test-runner", "androidx-test-espresso"]

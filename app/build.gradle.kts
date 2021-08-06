@@ -7,9 +7,9 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("kotlin-parcelize")
-    id("io.gitlab.arturbosch.detekt") version Dependencies.Versions.detekt
-    id("de.mannodermaus.android-junit5")
-    id("com.github.ben-manes.versions") version Dependencies.Versions.dependencyUpdates
+    id(Plugins.detekt) version Plugins.Versions.detekt
+    id(Plugins.androidJunit5)
+    id(Plugins.dependencyUpdates) version Plugins.Versions.dependencyUpdates
 }
 
 detekt {
@@ -103,82 +103,66 @@ android {
 
 
 dependencies {
-    // Add implementation functions for build flavors
-    val libreImplementation by configurations
     val proprietaryImplementation by configurations
 
     // Kotlin
-    implementation(Dependencies.Kotlin.coroutinesCore)
-    implementation(Dependencies.Kotlin.coroutinesAndroid)
+    implementation(libs.bundles.coroutines)
 
     // Core
-    implementation(Dependencies.Core.koinAndroid)
-    implementation(Dependencies.Core.appCompat)
-    implementation(Dependencies.Core.androidx)
-    implementation(Dependencies.Core.activity)
-    implementation(Dependencies.Core.fragment)
-    implementation(Dependencies.Core.exoPlayer)
+    implementation(libs.koin)
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.fragment)
+    coreLibraryDesugaring(libs.androiddesugarlibs)
 
     // Lifecycle
-    implementation(Dependencies.Lifecycle.viewModel)
-    implementation(Dependencies.Lifecycle.liveData)
-    implementation(Dependencies.Lifecycle.runtime)
-    implementation(Dependencies.Lifecycle.common)
-    implementation(Dependencies.Lifecycle.process)
+    implementation(libs.bundles.androidx.lifecycle)
 
     // UI
-    implementation(Dependencies.UI.constraintLayout)
-    implementation(Dependencies.UI.material)
-    implementation(Dependencies.UI.webkitX)
-    implementation(Dependencies.UI.exoPlayer)
-    implementation(Dependencies.UI.modernAndroidPreferences)
-
-    // Room
-    implementation(Dependencies.Room.runtime)
-    kapt(Dependencies.Room.compiler)
+    implementation(libs.google.material)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.webkit)
+    implementation(libs.modernandroidpreferences)
 
     // Network
     val sdkVersion = findProperty("sdk.version")?.toString()
-    implementation(Dependencies.Network.jellyfinSdk) {
+    implementation(libs.jellyfin.sdk) {
         // Change version if desired
         when (sdkVersion) {
-            "local" -> version { strictly(Dependencies.Versions.jellyfinSdkLocal) }
-            "snapshot" -> version { strictly(Dependencies.Versions.jellyfinSdkSnapshot) }
-            "unstable-snapshot" -> version { strictly(Dependencies.Versions.jellyfinSdkSnapshotUnstable) }
+            "local" -> version { strictly(JellyfinSdk.LOCAL) }
+            "snapshot" -> version { strictly(JellyfinSdk.SNAPSHOT) }
+            "unstable-snapshot" -> version { strictly(JellyfinSdk.SNAPSHOT_UNSTABLE) }
         }
     }
-    implementation(Dependencies.Network.okHttp)
-    implementation(Dependencies.Network.coil)
-    implementation(Dependencies.Network.exoPlayerHLS)
-
-    // Cast
-    implementation(Dependencies.Cast.mediaRouter)
-    proprietaryImplementation(Dependencies.Cast.exoPlayerCastExtension)
-    proprietaryImplementation(Dependencies.Cast.playServicesCast)
-    proprietaryImplementation(Dependencies.Cast.playServicesCastFramework)
+    implementation(libs.okhttp)
+    implementation(libs.coil)
 
     // Media
-    implementation(Dependencies.Media.media)
-    implementation(Dependencies.Media.exoPlayerMediaSession)
+    implementation(libs.androidx.media)
+    implementation(libs.androidx.mediarouter)
+    implementation(libs.bundles.exoplayer)
+    @Suppress("UnstableApiUsage")
+    proprietaryImplementation(libs.exoplayer.cast)
+    @Suppress("UnstableApiUsage")
+    proprietaryImplementation(libs.bundles.playservices)
 
-    // Health
-    implementation(Dependencies.Health.timber)
-    debugImplementation(Dependencies.Health.leakCanary)
-    debugImplementation(Dependencies.Health.redScreenOfDeath)
-    releaseImplementation(Dependencies.Health.redScreenOfDeathNoOp)
+    // Room
+    implementation(libs.bundles.androidx.room)
+    kapt(libs.androidx.room.compiler)
+
+    // Monitoring
+    implementation(libs.timber)
+    debugImplementation(libs.leakcanary)
+    debugImplementation(libs.redscreenofdeath.impl)
+    releaseImplementation(libs.redscreenofdeath.noop)
 
     // Testing
-    testImplementation(Dependencies.Health.junit)
-    testRuntimeOnly(Dependencies.Health.junitEngine)
-    testImplementation(Dependencies.Health.kotestAssertions)
-    testImplementation(Dependencies.Health.kotestProperty)
-    testImplementation(Dependencies.Health.kotestRunner)
-    testImplementation(Dependencies.Health.mockk)
-    androidTestImplementation(Dependencies.Health.androidXRunner)
-    androidTestImplementation(Dependencies.Health.androidXEspresso)
-
-    // Desugaring
-    coreLibraryDesugaring(Dependencies.Health.androidDesugarLibs)
+    testImplementation(libs.junit.api)
+    testRuntimeOnly(libs.junit.engine)
+    testImplementation(libs.bundles.kotest)
+    testImplementation(libs.mockk)
+    androidTestImplementation(libs.bundles.androidx.test)
 }
 
 tasks {
