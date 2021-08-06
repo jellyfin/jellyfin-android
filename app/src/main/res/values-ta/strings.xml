@@ -40,7 +40,6 @@
     <string name="video_player_native_description">ExoPlayer ஐ அடிப்படையாகக் கொண்டு, மேலும் வீடியோ வடிவங்கள் மற்றும் கோடெக்குகளை ஆதரிக்கிறது, மேலும் இது OS உடன் ஒருங்கிணைக்கப்படுகிறது</string>
     <string name="video_player_web_description">வலை UI இலிருந்து இயல்புநிலை HTML வீடியோ பிளேயர்</string>
     <string name="video_player_external">வெளிப்புற பிளேயர்</string>
-    <string name="video_player_native">சொந்த பிளேயர்</string>
     <string name="video_player_web">வலை பிளேயர்</string>
     <string name="pref_video_player_type_title">வீடியோ பிளேயர் வகை</string>
     <string name="available_servers_title">பெறக்கூடிய சேவையகங்கள்</string>

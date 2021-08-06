@@ -40,7 +40,6 @@
     <string name="video_player_native_description">Basiert auf ExoPlayer, unterstützt mehr Videoformate und Codecs und ist besser in das Betriebssystem integriert</string>
     <string name="video_player_web_description">Der Standard-HTML-Videoplayer aus der Web-Benutzeroberfläche</string>
     <string name="video_player_external">Externer Player</string>
-    <string name="video_player_native">Nativer Player</string>
     <string name="video_player_web">Webplayer</string>
     <string name="pref_video_player_type_title">Typ des Videoplayers</string>
     <string name="available_servers_title">Verfügbare Server</string>

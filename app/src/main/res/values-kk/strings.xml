@@ -9,7 +9,6 @@
     <string name="external_player_mpv">MPV oinatqyş</string>
     <string name="external_player_app">Syrtqy oinatqyş qoldanbasy</string>
     <string name="video_player_external">Syrtqy oinatqyş</string>
-    <string name="video_player_native">Töl oinatqyş</string>
     <string name="video_player_web">Ueb oinatqyş</string>
     <string name="pref_video_player_type_title">Beine oinatqyş türı</string>
     <string name="pref_category_video_player">Beine oinatqyşy</string>

@@ -24,7 +24,6 @@
     <string name="pref_video_player_type_title">Тип видео проигрывателя</string>
     <string name="video_player_web_description">По умолчанию HTML видео проигрыватель из веб-интерфейса</string>
     <string name="video_player_external">Внешний проигрыватель</string>
-    <string name="video_player_native">Встроенный проигрыватель</string>
     <string name="video_player_web">Веб проигрыватель</string>
     <string name="external_player_invalid_play_method">Неверный метод воспроизведения.</string>
     <string name="playback_info_and_x_more">…и ещё %d</string>

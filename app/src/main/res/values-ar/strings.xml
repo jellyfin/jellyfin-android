@@ -33,7 +33,6 @@
     <string name="video_player_native_description">استنادًا إلى ExoPlayer ، يدعم المزيد من تنسيقات الفيديو وبرامج الترميز ، وهو أكثر تكاملاً في نظام التشغيل</string>
     <string name="video_player_web_description">مشغل فيديو HTML الافتراضي من Web UI</string>
     <string name="video_player_external">المشغل الخارجي</string>
-    <string name="video_player_native">المشغل المحلي</string>
     <string name="video_player_web">مشغل الويب</string>
     <string name="pref_video_player_type_title">نوع مشغل فيديو</string>
     <string name="pref_category_video_player">مشغل فيديو</string>

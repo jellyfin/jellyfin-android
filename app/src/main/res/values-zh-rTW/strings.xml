@@ -17,7 +17,6 @@
     <string name="video_player_external_description">像是 MX Player 和 VLC 的外部影片播放器</string>
     <string name="video_player_native_description">基於 ExoPlayer，支援更多的影片格式和編碼，且與系統更契合</string>
     <string name="video_player_external">外部播放器</string>
-    <string name="video_player_native">內建播放器</string>
     <string name="video_player_web">網頁播放器</string>
     <string name="pref_video_player_type_title">影片播放器類型</string>
     <string name="pref_category_video_player">影片播放器</string>

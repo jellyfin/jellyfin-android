@@ -5,7 +5,6 @@
     <string name="video_player_native_description">Zasnovan na ExoPlayeru, podržava više video formata i kodeka i više je integriran u OS</string>
     <string name="video_player_web_description">Zadani HTML video player iz Web sučelja</string>
     <string name="video_player_external">Vanjski player</string>
-    <string name="video_player_native">Ugrađeni player</string>
     <string name="video_player_web">Web player</string>
     <string name="pref_video_player_type_title">Tip video playera</string>
     <string name="pref_category_video_player">Video player</string>

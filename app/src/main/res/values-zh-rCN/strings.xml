@@ -40,7 +40,6 @@
     <string name="video_player_native_description">基于 ExoPlayer 的支持更多视频格式和编码，并且更集成于系统的播放器</string>
     <string name="video_player_web_description">网页界面中的默认 HTML 视频播放器</string>
     <string name="video_player_external">外部播放器</string>
-    <string name="video_player_native">原生播放器</string>
     <string name="video_player_web">网页播放器</string>
     <string name="pref_video_player_type_title">视频播放器类型</string>
     <string name="available_servers_title">现存服务器</string>

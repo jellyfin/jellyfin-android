@@ -36,7 +36,6 @@
     <string name="video_player_external">Luajtës i jashtëm</string>
     <string name="available_servers_title">Server të disponueshem</string>
     <string name="choose_server_button_text">Zgjedh serverin</string>
-    <string name="video_player_native">Lojtarë vendas</string>
     <string name="pref_download_location">Vendndodhja e shkarkimit</string>
     <string name="pref_category_downloads">Shkarkimet</string>
     <string name="external_player_system_default_description">Lëreni sistemin të zgjedhë zgjedhjen e lojtarit, disa lojtarë mund të mos jenë plotësisht të pajtueshëm.</string>

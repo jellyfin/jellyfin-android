@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="video_player_native">Trình phát gốc</string>
     <string name="host_input_hint">Máy chủ</string>
     <string name="pref_exoplayer_allow_background_audio">Âm thanh nền</string>
     <string name="video_player_external_description">Các ứng dụng phát lại video bên ngoài như MX Player và VLC</string>

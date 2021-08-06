@@ -36,7 +36,6 @@
     <string name="video_player_native_description">Basé sur ExoPlayer, supporte plus de formats et codecs vidéos et est mieux intégré au système d\'exploitation</string>
     <string name="video_player_web_description">Le lecteur vidéo HTML par défaut de l\'interface Web</string>
     <string name="video_player_external">Lecteur externe</string>
-    <string name="video_player_native">Lecteur natif</string>
     <string name="video_player_web">Lecteur web</string>
     <string name="pref_video_player_type_title">Type de lecteur vidéo</string>
     <string name="external_player_not_supported_yet">Suivi de lecture non supporté actuellement dans le lecteur externe. Contactez les développeurs afin de demander de l\'aide pour ajouter le support.</string>

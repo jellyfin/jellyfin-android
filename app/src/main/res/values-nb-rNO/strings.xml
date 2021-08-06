@@ -37,7 +37,6 @@
     <string name="video_player_native_description">Basert på ExoPlayer, støtter flere videoformat og kodeker, og er mer integrert i operativsystemet</string>
     <string name="video_player_web_description">Standard HTML-videospiller fra nettleser-grensesnittet</string>
     <string name="video_player_external">Ekstern avspiller</string>
-    <string name="video_player_native">Innebygd avspiller</string>
     <string name="video_player_web">Web-spiller</string>
     <string name="pref_video_player_type_title">Videospiller-type</string>
     <string name="available_servers_title">Tilgjengelige tjenere</string>

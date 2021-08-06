@@ -44,7 +44,6 @@
     <string name="playback_info_and_x_more">...in %d več</string>
     <string name="playback_info_audio_streams">Zvočne sledi</string>
     <string name="playback_info_video_streams">Video sledi</string>
-    <string name="video_player_native">Vgrajeni predvajalnik</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Poteze za svetlost in glasnost</string>
     <string name="external_player_system_default_description">Sistem naj izbere predvajalnik. Nekateri predvajalniki morda niso polno podprti.</string>
     <string name="external_player_system_default">Privzeta nastavitev sistema</string>

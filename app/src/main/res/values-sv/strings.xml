@@ -2,7 +2,6 @@
 <resources>
     <string name="download_no_storage_permission">Kan inte ladda ner filer utan lagringsbehörigheter</string>
     <string name="video_player_external">Extern spelare</string>
-    <string name="video_player_native">Inbyggd spelare</string>
     <string name="video_player_web">Webbspelare</string>
     <string name="pref_category_video_player">Videospelare</string>
     <string name="pref_category_music_player">Musikspelare</string>

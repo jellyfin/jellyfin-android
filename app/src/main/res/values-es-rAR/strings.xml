@@ -37,7 +37,6 @@
     <string name="video_player_native_description">Basado en ExoPlayer, soporta más formatos y codecs de video, se integra mejor con el sistema</string>
     <string name="video_player_web_description">El reproductor de video predeterminado de la interfaz web</string>
     <string name="video_player_external">Reproductor externo</string>
-    <string name="video_player_native">Reproductor nativo</string>
     <string name="video_player_web">Reproductor Web</string>
     <string name="pref_video_player_type_title">Tipo de reproductor de Video</string>
     <string name="external_player_unknown_error">Error desconocido en reproductor externo. Se ha deshabilitado el seguimiento de reproducción.</string>

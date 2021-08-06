@@ -47,7 +47,6 @@
     <string name="choose_server_button_text">בחר שרת</string>
     <string name="video_player_web_description">נגן ברירת מחדל בדפדפן</string>
     <string name="video_player_external">נגן חיצוני</string>
-    <string name="video_player_native">נגן מקומי</string>
     <string name="video_player_web">נגן ברשת</string>
     <string name="pref_video_player_type_title">סוג נגן וידאו</string>
     <string name="external_player_unknown_error">שגיאה לא ידועה בנגן חיצוני. מעקב ניגון מושבת.</string>

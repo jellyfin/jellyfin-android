@@ -19,7 +19,6 @@
     <string name="video_player_external_description">برنامه های پخش فیلم خارجی مانند MX Player و VLC</string>
     <string name="video_player_native_description">بر اساس ExoPlayer ، از فرمت های ویدیویی و کدک های بیشتری پشتیبانی می کند و بیشتر در سیستم عامل ادغام شده است</string>
     <string name="video_player_web_description">پخش کننده ویدیوی HTML پیش فرض از UI Web</string>
-    <string name="video_player_native">پخش کننده بومی</string>
     <string name="video_player_external">پخش کننده خارجی</string>
     <string name="video_player_web">پخش کننده وب</string>
     <string name="pref_video_player_type_title">نوع پخش کننده ویدیو</string>

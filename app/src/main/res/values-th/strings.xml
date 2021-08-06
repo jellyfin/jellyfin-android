@@ -54,7 +54,6 @@
     <string name="external_player_unknown_error">เกิดข้อผิดพลาดกับเครื่องเล่นภายนอก ปิดการติดตามการเล่น</string>
     <string name="video_player_native_description">พัฒนาจาก ExoPlayer รองรับรูปแบบวิดีโอและการเข้ารหัสมากขึ้น และเข้ากับระบบปฏิบัติการมากขึ้น</string>
     <string name="video_player_web_description">เครื่องเล่นตั้งต้นจากหน้าเว็บ</string>
-    <string name="video_player_native">เครื่องเล่นในตัว</string>
     <string name="video_player_web">เครื่องเล่นบนเว็บ</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">อนุญาตท่าทางปรับแสงสว่างและเสียงในเครื่องเล่นในตัว</string>
     <string name="music_notification_channel_description">ใช้สำหรับควบคุมการเล่นเพลง</string>

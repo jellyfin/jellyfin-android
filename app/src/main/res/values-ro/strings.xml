@@ -40,7 +40,6 @@
     <string name="video_player_native_description">Bazat pe ExoPlayer, acceptă mai multe formate video și codecuri și este mai integrat în sistemul de operare</string>
     <string name="video_player_web_description">Redare video HTML implicită din Web UI</string>
     <string name="video_player_external">Redare externă</string>
-    <string name="video_player_native">Redare nativă</string>
     <string name="video_player_web">Redare web</string>
     <string name="pref_video_player_type_title">Tipul de redare video</string>
     <string name="available_servers_title">Servere disponibile</string>

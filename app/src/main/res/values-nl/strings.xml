@@ -36,7 +36,6 @@
     <string name="download_no_storage_permission">Kan geen bestanden downloaden zonder machtigingen</string>
     <string name="connection_error_cannot_connect">Er kan geen verbinding worden gemaakt.
 \nControleer de hostnaam en uw netwerkverbinding.</string>
-    <string name="video_player_native">Standaard speler</string>
     <string name="video_player_external_description">Externe video-afspeelapplicaties zoals MX Player en VLC</string>
     <string name="video_player_native_description">Gebaseerd op ExoPlayer, ondersteunt meer videoformaten en codecs, en is meer geïntegreerd in het besturingssysteem</string>
     <string name="video_player_web_description">De standaard HTML-videospeler van de webinterface</string>

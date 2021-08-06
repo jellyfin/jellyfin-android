@@ -36,7 +36,6 @@
     <string name="video_player_native_description">Berdasarkan ExoPlayer, mendukung lebih banyak format video dan codec, dan lebih terintegrasi ke dalam OS</string>
     <string name="video_player_web_description">Pemutar asli video HTML dari UI Web</string>
     <string name="video_player_external">Pemutar eksternal</string>
-    <string name="video_player_native">Pemutar asli</string>
     <string name="video_player_web">Pemutar web</string>
     <string name="pref_video_player_type_title">Jenis pemutar video</string>
     <string name="external_player_unknown_error">Kesalahan tidak diketahui di pemutar eksternal. Pelacakan pemutaran dinonaktifkan.</string>

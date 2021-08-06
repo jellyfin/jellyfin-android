@@ -25,7 +25,6 @@
     <string name="video_player_native_description">Založený na prehrávači ExoPlayer, podporuje viac video formátov a kodekov, a je lepšie integrovaný do systému</string>
     <string name="video_player_web_description">Predvolený HTML prehrávač videa z webového rozhrania</string>
     <string name="video_player_external">Externý prehrávač</string>
-    <string name="video_player_native">Natívny prehrávač</string>
     <string name="video_player_web">Webový prehrávač</string>
     <string name="pref_video_player_type_title">Typ prehrávača videa</string>
     <string name="external_player_invalid_play_method">Neplatný spôsob prehrávania.</string>

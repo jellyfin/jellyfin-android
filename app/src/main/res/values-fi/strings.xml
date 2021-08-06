@@ -39,7 +39,6 @@
     <string name="video_player_web_description">Oletus HTML-videosoitin web-käyttöliittymästä</string>
     <string name="external_player_not_supported_yet">Toiston seurantaa ei vielä tueta valitussa ulkoisessa soittimessa. Ota yhteyttä kehittäjiin ja pyydä tuen lisäystä.</string>
     <string name="video_player_external">Ulkoinen soitin</string>
-    <string name="video_player_native">Vakiosoitin</string>
     <string name="video_player_web">Web-soitin</string>
     <string name="pref_video_player_type_title">Videosoittimen tyyppi</string>
     <string name="pref_category_video_player">Videosoitin</string>

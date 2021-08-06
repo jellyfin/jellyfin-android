@@ -4,7 +4,6 @@
     <string name="pref_category_downloads">Pobrane</string>
     <string name="external_player_system_default">Domyśle systemu</string>
     <string name="video_player_external">Zewnętrzny odtwarzacz</string>
-    <string name="video_player_native">Natywny odtwarzacz</string>
     <string name="pref_video_player_type_title">Typ odtwarzacza wideo</string>
     <string name="pref_category_video_player">Odtwarzacz wideo</string>
     <string name="pref_music_notification_always_dismissible_title">Wyłącz powiadomienia odtwarzacza</string>

@@ -38,7 +38,6 @@
     <string name="video_player_external_description">App video player esterne come MX Player e VLC</string>
     <string name="video_player_native_description">Derivato da ExoPlayer, supporta più formati e codec video ed è integrato meglio con l\'OS</string>
     <string name="video_player_external">Player esterno</string>
-    <string name="video_player_native">Player nativo</string>
     <string name="pref_video_player_type_title">Tipo di video player</string>
     <string name="external_player_unknown_error">Errore sconosciuto nel player usato. Tracciamento dell\'avanzamento di riproduzione corrente disabilitato.</string>
     <string name="external_player_invalid_player">Nessun video player valido selezionato. Il tracciamento dell\'avanzamento di riproduzione è stato disabilitato.</string>

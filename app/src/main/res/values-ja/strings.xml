@@ -36,7 +36,6 @@
     <string name="video_player_native_description">ExoPlayerを元にし、より多くのビデオフォーマットとコーデックをサポートし、よりOSに統合</string>
     <string name="video_player_web_description">Web UIによるデフォルトのHTMLビデオプレーヤー</string>
     <string name="video_player_external">外部のプレーヤー</string>
-    <string name="video_player_native">内蔵のプレーヤー</string>
     <string name="video_player_web">ウェブプレーヤー</string>
     <string name="pref_video_player_type_title">ビデオプレーヤーの種類</string>
     <string name="pref_category_video_player">ビデオプレーヤー</string>

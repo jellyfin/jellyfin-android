@@ -40,7 +40,6 @@
     <string name="video_player_external_description">MX Player나 VLC와 같은 외부 비디오 재생 앱</string>
     <string name="video_player_native_description">ExoPlayer 기반의 OS와 더 잘 통합된 플레이어. 더 많은 비디오 포맷과 코덱을 지원합니다</string>
     <string name="video_player_web_description">웹 UI에서 제공하는 기본 HTML 비디오 플레이어</string>
-    <string name="video_player_native">자체 플레이어</string>
     <string name="video_player_web">웹 플레이어</string>
     <string name="pref_video_player_type_title">비디오 재생기 종류</string>
     <string name="download_no_storage_permission">저장소 권한 없이 파일을 다운로드할 수 없습니다</string>

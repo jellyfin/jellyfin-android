@@ -17,7 +17,6 @@
     <string name="video_player_native_description">ਐਕਸੋਪਲੇਅਰ ਦੇ ਅਧਾਰ ਤੇ, ਵਧੇਰੇ ਵਿਡੀਓ ਫਾਰਮੈਟਾਂ ਅਤੇ ਕੋਡੇਕਸ ਦਾ ਸਮਰਥਨ ਕਰਦਾ ਹੈ, ਅਤੇ ਓਐਸ ਵਿੱਚ ਵਧੇਰੇ ਏਕੀਕ੍ਰਿਤ ਹੈ</string>
     <string name="video_player_web_description">ਵੈਬ UI ਤੋਂ ਡਿਫੌਲਟ HTML ਵੀਡੀਓ ਪਲੇਅਰ</string>
     <string name="video_player_external">ਬਾਹਰੀ ਖਿਡਾਰੀ</string>
-    <string name="video_player_native">ਨੇਟਿਵ ਖਿਡਾਰੀ</string>
     <string name="video_player_web">ਵੈੱਬ ਪਲੇਅਰ</string>
     <string name="pref_video_player_type_title">ਵੀਡੀਓ ਪਲੇਅਰ ਦੀ ਕਿਸਮ</string>
     <string name="pref_category_video_player">ਵੀਡੀਓ ਪਲੇਅਰ</string>

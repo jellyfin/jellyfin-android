@@ -43,7 +43,6 @@
     <string name="external_player_mx_player_free_description">Hatékony videólejátszó fejlett hardveres gyorsítással és felirat támogatással.</string>
     <string name="external_player_mx_player_free">MX lejátszó (ingyenes)</string>
     <string name="external_player_mpv">MPV lejátszó</string>
-    <string name="video_player_native">Beépített lejátszó</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Fényerő és hangerő gesztusok</string>
     <string name="pref_exoplayer_allow_background_audio">Háttérhang</string>
     <string name="external_player_unknown_error">Ismeretlen hiba a külső lejátszóban. A lejátszás követése le van tiltva.</string>
