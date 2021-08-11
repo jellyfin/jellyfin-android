@@ -93,4 +93,5 @@
     <string name="dialog_button_ignore">Ignorar</string>
     <string name="dialog_button_open_settings">Abrir ajustes</string>
     <string name="pref_exoplayer_remember_brightness">Recordar brillo de pantalla</string>
+    <string name="video_player_integrated">Reproductor integrado</string>
 </resources>
