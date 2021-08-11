@@ -5,6 +5,12 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
+# Fix for https://youtrack.jetbrains.com/issue/KTOR-2708
+-keep public class io.ktor.client.** {
+    public <methods>;
+    private <methods>;
+}
+
 # Keep names of all Jellyfin classes
 -keepnames class org.jellyfin.mobile.**.* { *; }
 -keepnames interface org.jellyfin.mobile.**.* { *; }
