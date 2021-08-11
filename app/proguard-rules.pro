@@ -32,17 +32,3 @@
 -assumevalues class android.os.Build$VERSION {
   int SDK_INT return 21..2147483647;
 }
-
-# Remove default Android logging methods
--assumenosideeffects class android.util.Log {
-  public static *** v(...);
-  public static *** d(...);
-  public static *** i(...);
-}
-
-# Remove Timber logging methods
--assumenosideeffects class timber.log.Timber {
-  public static *** v(...);
-  public static *** d(...);
-  public static *** i(...);
-}
