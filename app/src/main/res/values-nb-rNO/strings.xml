@@ -89,4 +89,9 @@
     <string name="dialog_web_view_not_supported_message">WebView støttes ikke av denne enheten.
 \nInstaller en kompatibel WebView-implementasjon eller bytt til en støttet enhet.</string>
     <string name="dialog_web_view_not_supported">WebView støttes ikke</string>
+    <string name="pref_exoplayer_remember_brightness">Husk skjermlysstyrke</string>
+    <string name="video_player_integrated">Integrert avspiller</string>
+    <string name="toast_reopen_after_change">Vennligst åpne applikasjonen på nytt etter endringene er gjort</string>
+    <string name="dialog_button_ignore">Ignorer</string>
+    <string name="dialog_button_open_settings">Åpne innstillinger</string>
 </resources>
