@@ -20,6 +20,7 @@ import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.model.api.DeviceProfile
+import org.jellyfin.sdk.model.api.MediaProtocol
 import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.PlayMethod
 import org.koin.core.component.KoinComponent
@@ -135,17 +136,26 @@ class MediaQueueManager(
     @CheckResult
     private fun createVideoMediaSource(source: JellyfinMediaSource): MediaSource {
         val sourceInfo = source.sourceInfo
-        val builder = MediaItem.Builder().setMediaId(source.itemId.toString())
-        return when (source.playMethod) {
+        val (url, factory) = when (source.playMethod) {
             PlayMethod.DIRECT_PLAY -> {
-                val url = videosApi.getVideoStreamUrl(
-                    itemId = source.itemId,
-                    static = true,
-                    mediaSourceId = source.id,
-                )
+                when (sourceInfo.protocol) {
+                    MediaProtocol.FILE -> {
+                        val url = videosApi.getVideoStreamUrl(
+                            itemId = source.itemId,
+                            static = true,
+                            mediaSourceId = source.id,
+                        )
 
-                val mediaItem = builder.setUri(url).build()
-                get<ProgressiveMediaSource.Factory>().createMediaSource(mediaItem)
+                        url to get<ProgressiveMediaSource.Factory>()
+                    }
+                    MediaProtocol.HTTP -> {
+                        val url = requireNotNull(sourceInfo.path)
+                        val factory = get<HlsMediaSource.Factory>().setAllowChunklessPreparation(true)
+
+                        url to factory
+                    }
+                    else -> throw IllegalArgumentException("Unsupported protocol ${sourceInfo.protocol}")
+                }
             }
             PlayMethod.DIRECT_STREAM -> {
                 val container = requireNotNull(sourceInfo.container) { "Missing direct stream container" }
@@ -155,20 +165,25 @@ class MediaQueueManager(
                     mediaSourceId = source.id,
                 )
 
-                val mediaItem = builder.setUri(url).build()
-                get<ProgressiveMediaSource.Factory>().createMediaSource(mediaItem)
+                url to get<ProgressiveMediaSource.Factory>()
             }
             PlayMethod.TRANSCODE -> {
                 val transcodingPath = requireNotNull(sourceInfo.transcodingUrl) { "Missing transcode URL" }
                 val protocol = sourceInfo.transcodingSubProtocol
                 require(protocol == "hls") { "Unsupported transcode protocol '$protocol'" }
                 val transcodingUrl = apiClient.createUrl(transcodingPath)
-                val mediaItem = builder.setUri(transcodingUrl).build()
-                get<HlsMediaSource.Factory>()
-                    .setAllowChunklessPreparation(true)
-                    .createMediaSource(mediaItem)
+                val factory = get<HlsMediaSource.Factory>().setAllowChunklessPreparation(true)
+
+                transcodingUrl to factory
             }
         }
+
+        val mediaItem = MediaItem.Builder()
+            .setMediaId(source.itemId.toString())
+            .setUri(url)
+            .build()
+
+        return factory.createMediaSource(mediaItem)
     }
 
     /**
