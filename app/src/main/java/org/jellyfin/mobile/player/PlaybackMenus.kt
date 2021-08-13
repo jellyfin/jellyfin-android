@@ -98,15 +98,14 @@ class PlaybackMenus(
                 limit = MAX_VIDEO_STREAMS_DISPLAY,
                 truncated = fragment.getString(R.string.playback_info_and_x_more, size - MAX_VIDEO_STREAMS_DISPLAY)
             ) { stream ->
-                val bitrate = stream.bitRate ?: 0
-
-                @Suppress("MagicNumber")
+                val bitrate = stream.bitRate
                 val bitrateString = when {
-                    bitrate > 1_000_000 -> "%.2f Mbps".format(Locale.getDefault(), bitrate.toDouble() / 1_000_000)
-                    bitrate > 1_000 -> "%.2f Kbps".format(Locale.getDefault(), bitrate.toDouble() / 1_000)
-                    else -> "%d Kbps".format(bitrate / 1000)
+                    bitrate == null -> ""
+                    bitrate > BITRATE_MEGA_BIT -> " (%.2f Mbps)".format(Locale.getDefault(), bitrate.toDouble() / BITRATE_MEGA_BIT)
+                    bitrate > BITRATE_KILO_BIT -> " (%.2f Kbps)".format(Locale.getDefault(), bitrate.toDouble() / BITRATE_KILO_BIT)
+                    else -> " (%d bps)".format(bitrate)
                 }
-                "- ${stream.displayTitle} ($bitrateString)"
+                "- ${stream.displayTitle}$bitrateString"
             }
         }
         val audioTracksInfo = mediaSource.audioStreams.run {
@@ -215,6 +214,9 @@ class PlaybackMenus(
 
         private const val MAX_VIDEO_STREAMS_DISPLAY = 3
         private const val MAX_AUDIO_STREAMS_DISPLAY = 5
+
+        private const val BITRATE_MEGA_BIT = 1_000_000
+        private const val BITRATE_KILO_BIT = 1_000
 
         private const val SPEED_MENU_STEP_SIZE = 0.25f
         private const val SPEED_MENU_STEP_MIN = 2 // → 0.5x
