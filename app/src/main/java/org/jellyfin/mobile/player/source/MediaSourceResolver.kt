@@ -37,8 +37,8 @@ class MediaSourceResolver(
                 ),
             )
 
-            response.mediaSources?.find { source ->
-                source.id?.toUUIDOrNull() == itemId
+            response.mediaSources?.let { sources ->
+                sources.find { source -> source.id?.toUUIDOrNull() == itemId } ?: sources.firstOrNull()
             } ?: return Result.failure(PlayerException.UnsupportedContent())
         } catch (e: ApiClientException) {
             Timber.e(e, "Failed to load media source $itemId")
