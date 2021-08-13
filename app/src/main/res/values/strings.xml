@@ -62,6 +62,7 @@
     <string name="playback_info_transcoding">Transcoding: %b</string>
     <string name="playback_info_video_streams">Video streams</string>
     <string name="playback_info_audio_streams">Audio streams</string>
+    <string name="playback_info_stream_unknown_title">Unknown title</string>
     <string name="playback_info_and_x_more">…and %d more</string>
 
     <string name="external_player_invalid_play_method">Invalid play method.</string>

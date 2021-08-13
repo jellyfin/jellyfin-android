@@ -105,7 +105,8 @@ class PlaybackMenus(
                     bitrate > BITRATE_KILO_BIT -> " (%.2f Kbps)".format(Locale.getDefault(), bitrate.toDouble() / BITRATE_KILO_BIT)
                     else -> " (%d bps)".format(bitrate)
                 }
-                "- ${stream.displayTitle}$bitrateString"
+                val title = stream.displayTitle?.takeUnless(String::isEmpty) ?: fragment.getString(R.string.playback_info_stream_unknown_title)
+                "- $title$bitrateString"
             }
         }
         val audioTracksInfo = mediaSource.audioStreams.run {
@@ -115,8 +116,9 @@ class PlaybackMenus(
                 limit = MAX_AUDIO_STREAMS_DISPLAY,
                 truncated = fragment.getString(R.string.playback_info_and_x_more, size - MAX_AUDIO_STREAMS_DISPLAY)
             ) { stream ->
-                val languageString = stream.language?.let { lang -> " ($lang)" }.orEmpty()
-                "- ${stream.displayTitle}$languageString"
+                val title = stream.displayTitle?.takeUnless(String::isEmpty) ?: fragment.getString(R.string.playback_info_stream_unknown_title)
+                val language = stream.language?.let { lang -> " ($lang)" }.orEmpty()
+                "- $title$language"
             }
         }
         playbackInfo.text = listOf(
