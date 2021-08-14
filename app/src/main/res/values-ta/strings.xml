@@ -94,4 +94,5 @@
     <string name="dialog_button_open_settings">அமைப்புகளைத் திறக்கவும்</string>
     <string name="pref_exoplayer_remember_brightness">காட்சி பிரகாசத்தை நினைவில் கொள்க</string>
     <string name="video_player_integrated">ஒருங்கிணைந்த பிளேயர்</string>
+    <string name="playback_info_stream_unknown_title">தெரியாத தலைப்பு</string>
 </resources>
