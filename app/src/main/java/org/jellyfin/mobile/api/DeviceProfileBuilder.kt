@@ -55,7 +55,7 @@ class DeviceProfileBuilder {
                     DirectPlayProfile(
                         type = DlnaProfileType.AUDIO,
                         container = SUPPORTED_CONTAINER_FORMATS[i],
-                        audioCodec = supportedVideoCodecs[i].joinToString(","),
+                        audioCodec = supportedAudioCodecs[i].joinToString(","),
                     )
                 )
             }
