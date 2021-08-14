@@ -94,4 +94,5 @@
     <string name="dialog_button_open_settings">Parametrlerdı aşu</string>
     <string name="pref_exoplayer_remember_brightness">Ekran jaryqtyğyn saqtau</string>
     <string name="video_player_integrated">Bırıktırılgen oinatqyş</string>
+    <string name="playback_info_stream_unknown_title">Belgısız atau</string>
 </resources>
