@@ -93,4 +93,5 @@
     <string name="dialog_button_open_settings">Mở cài đặt</string>
     <string name="pref_exoplayer_remember_brightness">Ghi nhớ độ sáng màn hình</string>
     <string name="video_player_integrated">Trình phát tích hợp</string>
+    <string name="playback_info_stream_unknown_title">Không rõ tiêu đề</string>
 </resources>
