@@ -205,9 +205,19 @@ class WebViewFragment : Fragment(), NativePlayerHost {
 
             override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceErrorCompat) {
                 val description = if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_RESOURCE_ERROR_GET_DESCRIPTION)) error.description else null
-                Timber.e("Received WebView error at %s: %s", request.url.toString(), description)
+                val errorCode = if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_RESOURCE_ERROR_GET_CODE)) error.errorCode else ERROR_UNKNOWN
+                Timber.e("Received WebView error %d at %s: %s", errorCode, request.url.toString(), description)
 
-                if (request.url == Uri.parse(view.url)) onErrorReceived()
+                // Abort on some specific error codes or when the request url matches the server url
+                when (errorCode) {
+                    ERROR_HOST_LOOKUP,
+                    ERROR_CONNECT,
+                    ERROR_TIMEOUT,
+                    ERROR_REDIRECT_LOOP,
+                    ERROR_UNSUPPORTED_SCHEME,
+                    ERROR_FAILED_SSL_HANDSHAKE -> onErrorReceived()
+                    else -> if (request.url == Uri.parse(view.url)) onErrorReceived()
+                }
             }
 
             override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
