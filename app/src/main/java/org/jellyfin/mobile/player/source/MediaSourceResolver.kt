@@ -34,6 +34,7 @@ class MediaSourceResolver(
                     audioStreamIndex = audioStreamIndex,
                     subtitleStreamIndex = subtitleStreamIndex,
                     maxStreamingBitrate = /* 1 GB/s */ 1_000_000_000,
+                    autoOpenLiveStream = true,
                 ),
             )
 
