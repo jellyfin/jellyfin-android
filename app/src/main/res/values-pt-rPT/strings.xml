@@ -67,4 +67,26 @@
     <string name="external_player_mpv">Reprodutor MPV</string>
     <string name="external_player_app">Reprodutor externo de mídia</string>
     <string name="media_service_item_not_found">Não foi possível encontrar este item</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">A notificação só pode ser ignorada quando o playback está pausado</string>
+    <string name="playback_info_stream_unknown_title">Titulo desconhecido</string>
+    <string name="player_error_unsupported_content">Media incapaz de reprodução por este dispositivo</string>
+    <string name="player_error_network_failure">Incapaz de carregar informação de media do servidor</string>
+    <string name="player_error_invalid_play_options">Incapaz de resolver informação de playback</string>
+    <string name="connection_error_unsupported_version_or_product">Versão ou produto não suportado</string>
+    <string name="connection_error_unable_to_reach_sever">Incapaz de chegar ao servidor</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Tentado %d candidato para input, sem êxito.</item>
+        <item quantity="other">Tentado %d candidatos para input, sem êxito.</item>
+    </plurals>
+    <string name="dialog_button_open_settings">Abrir definições</string>
+    <string name="dialog_button_close_app">Fechar app</string>
+    <string name="dialog_button_check_for_updates">Procurar actualizações</string>
+    <string name="dialog_web_view_outdated_message">A implementação do WebView utilizada pelo seu dispositivo está desatualizada.
+\nPor favor actualize para uma versão compatível.</string>
+    <string name="dialog_web_view_outdated">WebView desatualizado</string>
+    <string name="dialog_web_view_not_supported_message">WebViews não são suportados por este dispositivo.
+\nInstale uma implementação compatível do WebView ou troque para um dispositivo suportado.</string>
+    <string name="dialog_web_view_not_supported">WebView não suportado</string>
+    <string name="toast_reopen_after_change">Reabra a aplicação após fazer as alterações</string>
+    <string name="dialog_button_ignore">Ignorar</string>
 </resources>
