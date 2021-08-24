@@ -29,11 +29,15 @@ class DeviceProfileBuilder {
         val (androidVideoCodecs, androidAudioCodecs) = getAndroidCodecs()
 
         val supportedVideoCodecs = Array(AVAILABLE_VIDEO_CODECS.size) { i ->
-            AVAILABLE_VIDEO_CODECS[i].filter { codec -> androidVideoCodecs.containsKey(codec) }.toTypedArray()
+            AVAILABLE_VIDEO_CODECS[i].filter { codec ->
+                androidVideoCodecs.containsKey(codec)
+            }.toTypedArray()
         }
 
         val supportedAudioCodecs = Array(AVAILABLE_AUDIO_CODECS.size) { i ->
-            AVAILABLE_AUDIO_CODECS[i].filter { codec -> androidAudioCodecs.containsKey(codec) }.toTypedArray()
+            AVAILABLE_AUDIO_CODECS[i].filter { codec ->
+                androidAudioCodecs.containsKey(codec) || codec in FORCED_AUDIO_CODECS
+            }.toTypedArray()
         }
 
         for (i in SUPPORTED_CONTAINER_FORMATS.indices) {
@@ -256,6 +260,11 @@ class DeviceProfileBuilder {
         )
 
         /**
+         * List of PCM codecs supported by ExoPlayer by default
+         */
+        private val PCM_CODECS = arrayOf("pcm_s8", "pcm_s16be", "pcm_s16le", "pcm_s24le", "pcm_s32le", "pcm_f32le")
+
+        /**
          * IMPORTANT: Must have same length as [SUPPORTED_CONTAINER_FORMATS],
          * as it maps the codecs to the containers with the same index!
          */
@@ -268,17 +277,17 @@ class DeviceProfileBuilder {
             // webm
             arrayOf("vorbis", "opus"),
             // mkv
-            arrayOf("mp1", "mp2", "mp3", "aac", "vorbis", "opus", "flac" /*, "ac3", "eac3", "dts"*/),
+            arrayOf(*PCM_CODECS, "mp1", "mp2", "mp3", "aac", "vorbis", "opus", "flac" /*, "ac3", "eac3", "dts"*/),
             // mp3
             arrayOf("mp3"),
             // ogg
             arrayOf("vorbis", "opus", "flac"),
             // wav
-            arrayOf("wav" /*, "pcm"*/),
+            PCM_CODECS,
             // ts
             arrayOf("mp1", "mp2", "mp3", "aac" /*, "ac3", "dts"*/),
             // m2ts
-            arrayOf("pcm", "aac" /*, "ac3", "dts"*/),
+            arrayOf(*PCM_CODECS, "aac" /*, "ac3", "dts"*/),
             // flv
             arrayOf("mp3", "aac"),
             // aac
@@ -288,6 +297,12 @@ class DeviceProfileBuilder {
             // 3gp
             arrayOf("3gpp", "aac", "flac"),
         )
+
+        /**
+         * List of audio codecs that will be added to the device profile regardless of [MediaCodecList] advertising them.
+         * This is especially useful for codecs supported by decoders integrated to ExoPlayer or added through an extension.
+         */
+        private val FORCED_AUDIO_CODECS = arrayOf(*PCM_CODECS)
 
         private val EXO_EMBEDDED_SUBTITLES = arrayOf("srt", "subrip", "ttml")
         private val EXO_EXTERNAL_SUBTITLES = arrayOf("srt", "subrip", "ttml", "vtt", "webvtt")
