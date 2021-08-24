@@ -88,4 +88,11 @@
     <string name="toast_reopen_after_change">Vänligen starta om appen efter genomförda ändringar</string>
     <string name="dialog_button_ignore">Ignorera</string>
     <string name="dialog_button_open_settings">Öppna inställningar</string>
+    <string name="video_player_integrated">Integrerad spelare</string>
+    <string name="playback_info_stream_unknown_title">Okänd titel</string>
+    <string name="player_error_invalid_play_options">Oförmögen att lösa uppspelnings info</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Försökte nå %d kandidat för inmatning, utan större framgång.</item>
+        <item quantity="other">Försökte nå %d kandidater för inmatning, utan större framgång.</item>
+    </plurals>
 </resources>
