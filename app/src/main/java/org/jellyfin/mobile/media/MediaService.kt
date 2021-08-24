@@ -23,7 +23,7 @@ import androidx.mediarouter.media.MediaRouter
 import androidx.mediarouter.media.MediaRouterParams
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ControlDispatcher
-import com.google.android.exoplayer2.ExoPlaybackException
+import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
@@ -80,7 +80,7 @@ class MediaService : MediaBrowserServiceCompat() {
     @Suppress("MemberVisibilityCanBePrivate")
     val playerListener: Player.Listener = PlayerEventListener()
 
-    private val exoPlayer: SimpleExoPlayer by lazy {
+    private val exoPlayer: Player by lazy {
         SimpleExoPlayer.Builder(this).build().apply {
             setAudioAttributes(playerAudioAttributes, true)
             setHandleAudioBecomingNoisy(true)
@@ -392,18 +392,8 @@ class MediaService : MediaBrowserServiceCompat() {
             }
         }
 
-        override fun onPlayerError(error: ExoPlaybackException) {
-            var message = R.string.media_service_generic_error
-            when (error.type) {
-                ExoPlaybackException.TYPE_SOURCE -> {
-                    message = R.string.media_service_item_not_found
-                    Timber.e("TYPE_SOURCE: %s", error.sourceException.message)
-                }
-                ExoPlaybackException.TYPE_RENDERER -> Timber.e("TYPE_RENDERER: %s", error.rendererException.message)
-                ExoPlaybackException.TYPE_UNEXPECTED -> Timber.e("TYPE_UNEXPECTED: %s", error.unexpectedException.message)
-                ExoPlaybackException.TYPE_REMOTE -> Timber.e("TYPE_REMOTE: %s", error.message)
-            }
-            applicationContext.toast(message, Toast.LENGTH_LONG)
+        override fun onPlayerError(error: PlaybackException) {
+            toast("${getString(R.string.media_service_generic_error)}: ${error.errorCodeName}", Toast.LENGTH_LONG)
         }
     }
 

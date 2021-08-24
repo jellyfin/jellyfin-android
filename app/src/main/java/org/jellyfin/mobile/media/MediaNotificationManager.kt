@@ -27,7 +27,7 @@ import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.graphics.drawable.toBitmap
 import coil.ImageLoader
 import coil.request.ImageRequest
-import com.google.android.exoplayer2.DefaultControlDispatcher
+import com.google.android.exoplayer2.ForwardingPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +36,8 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.Constants.MEDIA_NOTIFICATION_CHANNEL_ID
+import org.jellyfin.mobile.utils.Constants.MEDIA_PLAYER_NOTIFICATION_ID
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -58,29 +59,36 @@ class MediaNotificationManager(
     init {
         val mediaController = MediaControllerCompat(context, sessionToken)
 
-        notificationManager = PlayerNotificationManager.createWithNotificationChannel(
-            context,
-            Constants.MEDIA_NOTIFICATION_CHANNEL_ID,
-            R.string.music_notification_channel,
-            R.string.music_notification_channel_description,
-            Constants.MEDIA_PLAYER_NOTIFICATION_ID,
-            DescriptionAdapter(mediaController),
-            notificationListener
-        ).apply {
+        notificationManager = PlayerNotificationManager
+            .Builder(context, MEDIA_PLAYER_NOTIFICATION_ID, MEDIA_NOTIFICATION_CHANNEL_ID)
+            .setChannelNameResourceId(R.string.music_notification_channel)
+            .setChannelDescriptionResourceId(R.string.music_notification_channel_description)
+            .setMediaDescriptionAdapter(DescriptionAdapter(mediaController))
+            .setNotificationListener(notificationListener)
+            .build()
+
+        notificationManager.apply {
             setMediaSessionToken(sessionToken)
             setSmallIcon(R.drawable.ic_notification)
-
-            // Don't display the rewind or fast-forward buttons.
-            setControlDispatcher(DefaultControlDispatcher(0, 0))
         }
     }
 
     fun showNotificationForPlayer(player: Player) {
-        notificationManager.setPlayer(player)
+        notificationManager.setPlayer(NotificationForwardingPlayer(player))
     }
 
     fun hideNotification() {
         notificationManager.setPlayer(null)
+    }
+
+    /**
+     * Removes rewind and fast-forward buttons from notification
+     */
+    private class NotificationForwardingPlayer(player: Player) : ForwardingPlayer(player) {
+        override fun getAvailableCommands(): Player.Commands = super.getAvailableCommands().buildUpon().removeAll(
+            COMMAND_SEEK_BACK,
+            COMMAND_SEEK_FORWARD,
+        ).build()
     }
 
     private inner class DescriptionAdapter(
