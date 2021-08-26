@@ -78,6 +78,9 @@ class WebViewFragment : Fragment(), NativePlayerHost {
     lateinit var server: ServerEntity
         private set
     private var connected = false
+    private val timeoutRunnable = Runnable {
+        onErrorReceived()
+    }
 
     // UI
     private var _webViewBinding: FragmentWebviewBinding? = null
@@ -253,6 +256,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         addJavascriptInterface(externalPlayer, "ExternalPlayer")
 
         loadUrl(server.hostname)
+        postDelayed(timeoutRunnable, Constants.INITIAL_CONNECTION_TIMEOUT)
     }
 
     private fun showOutdatedWebViewDialog() {
@@ -302,6 +306,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
     }
 
     private fun onConnectedToWebapp() {
+        webView.removeCallbacks(timeoutRunnable)
         connected = true
         runOnUiThread { webView.fadeIn() }
         requestNoBatteryOptimizations()
