@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.lifecycle.Lifecycle
@@ -80,6 +81,9 @@ class WebViewFragment : Fragment(), NativePlayerHost {
     private var connected = false
     private val timeoutRunnable = Runnable {
         onErrorReceived()
+    }
+    private val showProgressIndicatorRunnable = Runnable {
+        _webViewBinding?.progressIndicator?.isVisible = true
     }
 
     // UI
@@ -257,6 +261,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
 
         loadUrl(server.hostname)
         postDelayed(timeoutRunnable, Constants.INITIAL_CONNECTION_TIMEOUT)
+        postDelayed(showProgressIndicatorRunnable, Constants.SHOW_PROGRESS_BAR_DELAY)
     }
 
     private fun showOutdatedWebViewDialog() {
@@ -307,8 +312,12 @@ class WebViewFragment : Fragment(), NativePlayerHost {
 
     private fun onConnectedToWebapp() {
         webView.removeCallbacks(timeoutRunnable)
+        webView.removeCallbacks(showProgressIndicatorRunnable)
         connected = true
-        runOnUiThread { webView.fadeIn() }
+        runOnUiThread {
+            webViewBinding.progressIndicator.isVisible = false
+            webView.fadeIn()
+        }
         requestNoBatteryOptimizations()
     }
 
