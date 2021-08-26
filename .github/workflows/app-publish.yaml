@@ -19,8 +19,8 @@ jobs:
           java-version: 11
       - name: Set JELLYFIN_VERSION
         run: echo "JELLYFIN_VERSION=$(echo ${GITHUB_REF#refs/tags/v} | tr / -)" >> $GITHUB_ENV
-      - name: Assemble release APKs
-        run: ./gradlew --no-daemon --info assemble versionTxt
+      - name: Assemble release APKs and bundle
+        run: ./gradlew --no-daemon --info assemble bundleProprietaryRelease versionTxt
       - name: Sign libre APK
         id: libreSign
         uses: r0adkll/sign-android-release@v1
@@ -39,7 +39,16 @@ jobs:
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           alias: ${{ secrets.KEY_ALIAS }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
-      - name: Split APK release types
+      - name: Sign proprietary app bundle
+        id: proprietaryBundleSign
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/outputs/bundle/proprietaryRelease
+          signingKeyBase64: ${{ secrets.KEYSTORE }}
+          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+      - name: Collect APK and bundle artifacts in release directory
         run: |
           mkdir -p build/jellyfin-publish
           mv app/build/outputs/apk/*/*/jellyfin-android-*-libre-debug.apk build/jellyfin-publish/
@@ -48,6 +57,7 @@ jobs:
           mv app/build/outputs/apk/*/*/jellyfin-android-*-proprietary-release-unsigned.apk build/jellyfin-publish/
           mv ${{ steps.libreSign.outputs.signedReleaseFile }} build/jellyfin-publish/jellyfin-android-v${{ env.JELLYFIN_VERSION }}-libre-release.apk
           mv ${{ steps.proprietarySign.outputs.signedReleaseFile }} build/jellyfin-publish/jellyfin-android-v${{ env.JELLYFIN_VERSION }}-proprietary-release.apk
+          mv ${{ steps.proprietaryBundleSign.outputs.signedReleaseFile }} build/jellyfin-publish/jellyfin-android-v${{ env.JELLYFIN_VERSION }}-proprietary-release.aab
           mv app/build/version.txt build/jellyfin-publish/
       - name: Upload release artifacts
         uses: alexellis/upload-assets@0.3.0
