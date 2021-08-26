@@ -20,7 +20,6 @@ import android.webkit.WebView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
@@ -83,14 +82,11 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         onErrorReceived()
     }
     private val showProgressIndicatorRunnable = Runnable {
-        _webViewBinding?.progressIndicator?.isVisible = true
+        webViewBinding?.progressIndicator?.isVisible = true
     }
 
     // UI
-    private var _webViewBinding: FragmentWebviewBinding? = null
-    private val webViewBinding get() = _webViewBinding!!
-    val rootView: CoordinatorLayout get() = webViewBinding.root
-    val webView: WebView get() = webViewBinding.webView
+    private var webViewBinding: FragmentWebviewBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,12 +104,14 @@ class WebViewFragment : Fragment(), NativePlayerHost {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _webViewBinding = FragmentWebviewBinding.inflate(inflater, container, false)
-        return webViewBinding.root
+        return FragmentWebviewBinding.inflate(inflater, container, false).also { binding ->
+            webViewBinding = binding
+        }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val webView = webViewBinding!!.webView
 
         // Apply window insets
         webView.applyWindowInsetsAsMargins()
@@ -122,7 +120,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         // Setup exclusion rects for gestures
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             @Suppress("MagicNumber")
-            webView.doOnNextLayout { webView ->
+            webView.doOnNextLayout {
                 // Maximum allowed exclusion rect height is 200dp,
                 // offsetting 100dp from the center in both directions
                 // uses the maximum available space
@@ -156,12 +154,12 @@ class WebViewFragment : Fragment(), NativePlayerHost {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _webViewBinding = null
+        webViewBinding = null
     }
 
     private fun WebView.initialize() {
         if (!appPreferences.ignoreWebViewChecks && isOutdated()) { // Check WebView version
-            showOutdatedWebViewDialog()
+            showOutdatedWebViewDialog(this)
             return
         }
 
@@ -264,7 +262,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         postDelayed(showProgressIndicatorRunnable, Constants.SHOW_PROGRESS_BAR_DELAY)
     }
 
-    private fun showOutdatedWebViewDialog() {
+    private fun showOutdatedWebViewDialog(webView: WebView) {
         AlertDialog.Builder(requireContext()).apply {
             setTitle(R.string.dialog_web_view_outdated)
             setMessage(R.string.dialog_web_view_outdated_message)
@@ -311,6 +309,8 @@ class WebViewFragment : Fragment(), NativePlayerHost {
     }
 
     private fun onConnectedToWebapp() {
+        val webViewBinding = webViewBinding ?: return
+        val webView = webViewBinding.webView
         webView.removeCallbacks(timeoutRunnable)
         webView.removeCallbacks(showProgressIndicatorRunnable)
         connected = true
@@ -318,7 +318,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
             webViewBinding.progressIndicator.isVisible = false
             webView.fadeIn()
         }
-        requestNoBatteryOptimizations()
+        requestNoBatteryOptimizations(webViewBinding.root)
     }
 
     fun onSelectServer(error: Boolean = false) = runOnUiThread {
