@@ -93,4 +93,6 @@
     <string name="dialog_button_ignore">Ignorer</string>
     <string name="dialog_button_open_settings">Ouvrir les paramètres</string>
     <string name="pref_exoplayer_remember_brightness">Se souvenir de la luminosité</string>
+    <string name="video_player_integrated">Lecteur integré</string>
+    <string name="playback_info_stream_unknown_title">Titre inconnu</string>
 </resources>
