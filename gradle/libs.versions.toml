@@ -1,4 +1,8 @@
 [versions]
+# Plugins
+detekt = "1.18.1"
+dependencyupdates = "0.39.0"
+
 # KotlinX
 coroutines = "1.5.2"
 
@@ -45,6 +49,10 @@ kotest = "4.6.2"
 mockk = "1.12.0"
 androidx-test-runner = "1.4.0"
 androidx-test-espresso = "3.4.0"
+
+[plugins]
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+dependencyupdates = { id = "com.github.ben-manes.versions", version.ref = "dependencyupdates" }
 
 [libraries]
 # KotlinX
