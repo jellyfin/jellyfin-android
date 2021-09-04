@@ -2,6 +2,7 @@ package org.jellyfin.mobile.utils
 
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity
+import android.app.ActivityManager
 import android.app.AlertDialog
 import android.app.DownloadManager
 import android.app.NotificationChannel
@@ -156,3 +157,6 @@ fun Context.getDownloadsPaths(): List<String> = ArrayList<String>().apply {
         add(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath)
     }
 }
+
+val Context.isLowRamDevice: Boolean
+    get() = getSystemService<ActivityManager>()!!.isLowRamDevice
