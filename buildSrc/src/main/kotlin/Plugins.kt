@@ -1,7 +1,7 @@
 object Plugins {
     object Versions {
         const val dependencyUpdates = "0.39.0"
-        const val detekt = "1.17.1"
+        const val detekt = "1.18.1"
     }
 
     const val detekt = "io.gitlab.arturbosch.detekt"
