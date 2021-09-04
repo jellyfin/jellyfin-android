@@ -7,9 +7,9 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("kotlin-parcelize")
-    id(Plugins.detekt) version Plugins.Versions.detekt
-    id(Plugins.androidJunit5)
-    id(Plugins.dependencyUpdates) version Plugins.Versions.dependencyUpdates
+    alias(libs.plugins.detekt)
+    id("de.mannodermaus.android-junit5")
+    alias(libs.plugins.dependencyupdates)
 }
 
 detekt {
