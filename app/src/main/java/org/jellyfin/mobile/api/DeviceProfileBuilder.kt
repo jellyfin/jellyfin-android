@@ -151,7 +151,7 @@ class DeviceProfileBuilder {
                 type = DlnaProfileType.VIDEO,
                 container = "ts",
                 videoCodec = "h264",
-                audioCodec = AVAILABLE_AUDIO_CODECS[SUPPORTED_CONTAINER_FORMATS.indexOf("ts")].joinToString(","),
+                audioCodec = "mp1,mp2,mp3,aac,ac3,eac3,dts,mlp,truehd",
                 context = EncodingContext.STREAMING,
                 protocol = "hls",
 
@@ -223,7 +223,7 @@ class DeviceProfileBuilder {
          * IMPORTANT: Don't change without updating [AVAILABLE_VIDEO_CODECS] and [AVAILABLE_AUDIO_CODECS]
          */
         private val SUPPORTED_CONTAINER_FORMATS = arrayOf(
-            "mp4", "fmp4", "webm", "mkv", "mp3", "ogg", "wav", "ts", "m2ts", "flv", "aac", "flac", "3gp",
+            "mp4", "fmp4", "webm", "mkv", "mp3", "ogg", "wav", "mpegts", "flv", "aac", "flac", "3gp",
         )
 
         /**
@@ -245,10 +245,8 @@ class DeviceProfileBuilder {
             emptyArray(),
             // wav
             emptyArray(),
-            // ts
-            arrayOf("mpeg4", "h264"),
-            // m2ts
-            arrayOf("mpeg1video", "mpeg2video", "mpeg4", "h264"),
+            // mpegts
+            arrayOf("mpeg1video", "mpeg2video", "mpeg4", "h264", "hevc"),
             // flv
             arrayOf("mpeg4", "h264"),
             // aac
@@ -276,17 +274,15 @@ class DeviceProfileBuilder {
             // webm
             arrayOf("vorbis", "opus"),
             // mkv
-            arrayOf(*PCM_CODECS, "mp1", "mp2", "mp3", "aac", "vorbis", "opus", "flac", "alac", "ac3", "eac3", "dts"),
+            arrayOf(*PCM_CODECS, "mp1", "mp2", "mp3", "aac", "vorbis", "opus", "flac", "alac", "ac3", "eac3", "dts", "mlp", "truehd"),
             // mp3
             arrayOf("mp3"),
             // ogg
             arrayOf("vorbis", "opus", "flac"),
             // wav
             PCM_CODECS,
-            // ts
-            arrayOf("mp1", "mp2", "mp3", "aac", "ac3", "dts"),
-            // m2ts
-            arrayOf(*PCM_CODECS, "aac", "ac3", "dts"),
+            // mpegts
+            arrayOf(*PCM_CODECS, "mp1", "mp2", "mp3", "aac", "ac3", "eac3", "dts", "mlp", "truehd"),
             // flv
             arrayOf("mp3", "aac"),
             // aac
