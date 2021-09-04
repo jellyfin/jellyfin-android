@@ -1,6 +1,6 @@
 [versions]
 # KotlinX
-coroutines = "1.5.1"
+coroutines = "1.5.2"
 
 # Core
 koin = "3.1.2"
