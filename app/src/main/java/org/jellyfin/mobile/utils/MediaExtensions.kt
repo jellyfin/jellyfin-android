@@ -11,6 +11,8 @@ import android.os.Build
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.analytics.AnalyticsCollector
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import com.google.android.exoplayer2.audio.AudioAttributes as ExoPlayerAudioAttributes
 
@@ -77,16 +79,6 @@ inline fun ExoPlayer.AudioComponent.applyDefaultAudioAttributes(@C.AudioContentT
     setAudioAttributes(audioAttributes, true)
 }
 
-/**
- * Get the index of the first renderer with the specified [type]
- */
-fun ExoPlayer.getRendererIndexByType(type: Int): Int {
-    for (i in 0 until rendererCount) {
-        if (getRendererType(i) == type) return i
-    }
-    return -1
-}
-
 fun Player.seekToOffset(offsetMs: Long) {
     var positionMs = currentPosition + offsetMs
     val durationMs = duration
@@ -95,4 +87,8 @@ fun Player.seekToOffset(offsetMs: Long) {
     }
     positionMs = positionMs.coerceAtLeast(0)
     seekTo(positionMs)
+}
+
+fun Player.logTracks(analyticsCollector: AnalyticsCollector) {
+    analyticsCollector.onTracksChanged(currentTrackGroups, currentTrackSelections)
 }
