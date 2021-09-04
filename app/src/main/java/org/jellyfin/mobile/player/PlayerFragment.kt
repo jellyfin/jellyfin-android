@@ -247,14 +247,14 @@ class PlayerFragment : Fragment() {
      * @return true if the audio track was changed
      */
     fun onAudioTrackSelected(index: Int): Boolean {
-        return viewModel.mediaQueueManager.selectAudioTrack(index)
+        return viewModel.selectAudioTrack(index)
     }
 
     /**
      * @return true if the subtitle was changed
      */
     fun onSubtitleSelected(index: Int): Boolean {
-        return viewModel.mediaQueueManager.selectSubtitle(index)
+        return viewModel.selectSubtitle(index)
     }
 
     /**

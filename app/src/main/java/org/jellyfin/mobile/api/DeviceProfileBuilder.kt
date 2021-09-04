@@ -262,22 +262,21 @@ class DeviceProfileBuilder {
         /**
          * List of PCM codecs supported by ExoPlayer by default
          */
-        private val PCM_CODECS = arrayOf("pcm_s8", "pcm_s16be", "pcm_s16le", "pcm_s24le", "pcm_s32le", "pcm_f32le")
+        private val PCM_CODECS = arrayOf("pcm_s8", "pcm_s16be", "pcm_s16le", "pcm_s24le", "pcm_s32le", "pcm_f32le", "pcm_alaw", "pcm_mulaw")
 
         /**
          * IMPORTANT: Must have same length as [SUPPORTED_CONTAINER_FORMATS],
          * as it maps the codecs to the containers with the same index!
          */
-        // TODO: add ffmpeg extension to support all (temporarily disabled) codecs
         private val AVAILABLE_AUDIO_CODECS = arrayOf(
             // mp4
-            arrayOf("mp1", "mp2", "mp3", "aac"),
+            arrayOf("mp1", "mp2", "mp3", "aac", "alac", "ac3"),
             // fmp4
-            emptyArray(),
+            arrayOf("mp3", "aac", "ac3", "eac3"),
             // webm
             arrayOf("vorbis", "opus"),
             // mkv
-            arrayOf(*PCM_CODECS, "mp1", "mp2", "mp3", "aac", "vorbis", "opus", "flac" /*, "ac3", "eac3", "dts"*/),
+            arrayOf(*PCM_CODECS, "mp1", "mp2", "mp3", "aac", "vorbis", "opus", "flac", "alac", "ac3", "eac3", "dts"),
             // mp3
             arrayOf("mp3"),
             // ogg
@@ -285,9 +284,9 @@ class DeviceProfileBuilder {
             // wav
             PCM_CODECS,
             // ts
-            arrayOf("mp1", "mp2", "mp3", "aac" /*, "ac3", "dts"*/),
+            arrayOf("mp1", "mp2", "mp3", "aac", "ac3", "dts"),
             // m2ts
-            arrayOf(*PCM_CODECS, "aac" /*, "ac3", "dts"*/),
+            arrayOf(*PCM_CODECS, "aac", "ac3", "dts"),
             // flv
             arrayOf("mp3", "aac"),
             // aac
@@ -302,7 +301,7 @@ class DeviceProfileBuilder {
          * List of audio codecs that will be added to the device profile regardless of [MediaCodecList] advertising them.
          * This is especially useful for codecs supported by decoders integrated to ExoPlayer or added through an extension.
          */
-        private val FORCED_AUDIO_CODECS = arrayOf(*PCM_CODECS)
+        private val FORCED_AUDIO_CODECS = arrayOf(*PCM_CODECS, "alac", "aac", "ac3", "eac3", "dts", "mlp", "truehd")
 
         private val EXO_EMBEDDED_SUBTITLES = arrayOf("srt", "subrip", "ttml")
         private val EXO_EXTERNAL_SUBTITLES = arrayOf("srt", "subrip", "ttml", "vtt", "webvtt")

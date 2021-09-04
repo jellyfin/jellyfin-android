@@ -13,11 +13,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.analytics.AnalyticsCollector
 import com.google.android.exoplayer2.util.Clock
+import com.google.android.exoplayer2.util.EventLogger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -32,9 +34,9 @@ import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
 import org.jellyfin.mobile.utils.applyDefaultAudioAttributes
 import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
-import org.jellyfin.mobile.utils.getRendererIndexByType
 import org.jellyfin.mobile.utils.getVolumeLevelPercent
 import org.jellyfin.mobile.utils.getVolumeRange
+import org.jellyfin.mobile.utils.logTracks
 import org.jellyfin.mobile.utils.scaleInRange
 import org.jellyfin.mobile.utils.seekToOffset
 import org.jellyfin.mobile.utils.setPlaybackState
@@ -50,6 +52,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
+import java.util.concurrent.atomic.AtomicBoolean
 
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
     private val playStateApi by inject<PlayStateApi>()
@@ -68,6 +71,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private val _playerState = MutableLiveData<Int>()
     val player: LiveData<ExoPlayer?> get() = _player
     val playerState: LiveData<Int> get() = _playerState
+    private val eventLogger = EventLogger(mediaQueueManager.trackSelector)
+    private val analyticsCollector = AnalyticsCollector(Clock.DEFAULT).apply {
+        addListener(eventLogger)
+    }
+    private val initialTracksSelected = AtomicBoolean(false)
 
     private var progressUpdateJob: Job? = null
 
@@ -112,13 +120,12 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
      * Setup a new [SimpleExoPlayer] for video playback, register callbacks and set attributes
      */
     fun setupPlayer() {
-        _player.value = SimpleExoPlayer.Builder(getApplication()).apply {
+        val renderersFactory = DefaultRenderersFactory(getApplication()).apply {
+            setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
+        }
+        _player.value = SimpleExoPlayer.Builder(getApplication(), renderersFactory).apply {
             setTrackSelector(mediaQueueManager.trackSelector)
-            if (BuildConfig.DEBUG) {
-                setAnalyticsCollector(AnalyticsCollector(Clock.DEFAULT).apply {
-                    addListener(mediaQueueManager.eventLogger)
-                })
-            }
+            if (BuildConfig.DEBUG) setAnalyticsCollector(analyticsCollector)
         }.build().apply {
             addListener(this@PlayerViewModel)
             applyDefaultAudioAttributes(C.CONTENT_TYPE_MOVIE)
@@ -141,13 +148,16 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
     fun play(queueItem: MediaQueueManager.QueueItem.Loaded) {
         val player = playerOrNull ?: return
+
         player.setMediaSource(queueItem.exoMediaSource)
         player.prepare()
+
+        initialTracksSelected.set(false)
+
         val startTime = queueItem.jellyfinMediaSource.startTimeMs
-        if (startTime > 0) {
-            player.seekTo(startTime)
-        }
+        if (startTime > 0) player.seekTo(startTime)
         player.playWhenReady = true
+
         mediaSession.setMetadata(queueItem.jellyfinMediaSource.toMediaMetadata())
 
         viewModelScope.launch {
@@ -296,6 +306,20 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     /**
+     * @see MediaQueueManager.selectAudioTrack
+     */
+    fun selectAudioTrack(streamIndex: Int): Boolean = mediaQueueManager.selectAudioTrack(streamIndex).also { success ->
+        if (success) playerOrNull?.logTracks(analyticsCollector)
+    }
+
+    /**
+     * @see MediaQueueManager.selectSubtitle
+     */
+    fun selectSubtitle(streamIndex: Int): Boolean = mediaQueueManager.selectSubtitle(streamIndex).also { success ->
+        if (success) playerOrNull?.logTracks(analyticsCollector)
+    }
+
+    /**
      * Set the playback speed to [speed]
      *
      * @return true if the speed was changed
@@ -325,10 +349,6 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         audioManager.setStreamVolume(stream, scaled, 0)
     }
 
-    fun getPlayerRendererIndex(type: Int): Int {
-        return playerOrNull?.getRendererIndexByType(type) ?: -1
-    }
-
     @SuppressLint("SwitchIntDef")
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
         val player = playerOrNull ?: return
@@ -338,7 +358,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
         // Initialise various components
         if (playbackState == Player.STATE_READY) {
-            mediaQueueManager.selectInitialTracks()
+            if (!initialTracksSelected.getAndSet(true)) {
+                mediaQueueManager.selectInitialTracks()
+            }
             mediaSession.isActive = true
             notificationHelper.postNotification()
         }

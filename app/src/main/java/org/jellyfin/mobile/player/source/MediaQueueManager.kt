@@ -13,10 +13,11 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.util.EventLogger
 import org.jellyfin.mobile.bridge.PlayOptions
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
+import org.jellyfin.mobile.utils.clearSelectionAndDisableRendererByType
+import org.jellyfin.mobile.utils.selectTrackByTypeAndGroup
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.model.api.DeviceProfile
@@ -35,13 +36,11 @@ class MediaQueueManager(
     private val mediaSourceResolver: MediaSourceResolver by inject()
     private val deviceProfile: DeviceProfile by inject()
     private val videosApi: VideosApi by inject()
+    val trackSelector = DefaultTrackSelector(viewModel.getApplication<Application>())
     private val _mediaQueue: MutableLiveData<QueueItem.Loaded> = MutableLiveData()
     val mediaQueue: LiveData<QueueItem.Loaded> get() = _mediaQueue
 
     private var currentPlayOptions: PlayOptions? = null
-
-    val trackSelector = DefaultTrackSelector(viewModel.getApplication<Application>())
-    val eventLogger = EventLogger(trackSelector)
 
     /**
      * Handle initial playback options from fragment.
@@ -207,19 +206,26 @@ class MediaQueueManager(
     fun selectInitialTracks() {
         val queueItem = _mediaQueue.value ?: return
         val mediaSource = queueItem.jellyfinMediaSource
-        selectAudioTrack(mediaSource.selectedAudioStream?.index ?: -1, true)
-        selectSubtitle(mediaSource.selectedSubtitleStream?.index ?: -1, true)
+        selectAudioTrack(mediaSource.selectedAudioStream?.index ?: -1, initial = true)
+        selectSubtitle(mediaSource.selectedSubtitleStream?.index ?: -1, initial = true)
     }
 
     /**
      * Select an audio track in the media source and apply changes to the current player.
      *
      * @param streamIndex the [MediaStream.index] that should be selected
-     * @param initial whether this is an initial selection and checks for re-selection should be skipped.
      * @return true if the audio track was changed
      */
+    fun selectAudioTrack(streamIndex: Int): Boolean {
+        return selectAudioTrack(streamIndex, initial = false)
+    }
+
+    /**
+     * @param initial whether this is an initial selection and checks for re-selection should be skipped.
+     * @see selectAudioTrack
+     */
     @Suppress("ReturnCount")
-    fun selectAudioTrack(streamIndex: Int, initial: Boolean = false): Boolean {
+    private fun selectAudioTrack(streamIndex: Int, initial: Boolean): Boolean {
         val mediaSource = _mediaQueue.value?.jellyfinMediaSource ?: return false
         val sourceIndex = mediaSource.audioStreams.binarySearchBy(streamIndex, selector = MediaStream::index)
 
@@ -235,32 +241,24 @@ class MediaQueueManager(
             !mediaSource.selectAudioStream(sourceIndex) -> return false
         }
 
-        // Handle selection in player
-        val parameters = trackSelector.buildUponParameters()
-        val rendererIndex = viewModel.getPlayerRendererIndex(C.TRACK_TYPE_AUDIO)
-        val trackInfo = trackSelector.currentMappedTrackInfo
-        return if (rendererIndex >= 0 && trackInfo != null) {
-            val trackGroups = trackInfo.getTrackGroups(rendererIndex)
-            if (sourceIndex in 0 until trackGroups.length) {
-                val selection = DefaultTrackSelector.SelectionOverride(sourceIndex, 0)
-                parameters.setSelectionOverride(rendererIndex, trackGroups, selection)
-            } else {
-                parameters.clearSelectionOverride(rendererIndex, trackGroups)
-            }
-            parameters.setRendererDisabled(rendererIndex, false)
-            trackSelector.setParameters(parameters)
-            true
-        } else false
+        return trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_AUDIO, sourceIndex)
     }
 
     /**
      * Select a subtitle track in the media source and apply changes to the current player.
      *
      * @param streamIndex the [MediaStream.index] that should be selected
-     * @param initial whether this is an initial selection and checks for re-selection should be skipped.
      * @return true if the subtitle was changed
      */
-    fun selectSubtitle(streamIndex: Int, initial: Boolean = false): Boolean {
+    fun selectSubtitle(streamIndex: Int): Boolean {
+        return selectSubtitle(streamIndex, initial = false)
+    }
+
+    /**
+     * @param initial whether this is an initial selection and checks for re-selection should be skipped.
+     * @see selectSubtitle
+     */
+    private fun selectSubtitle(streamIndex: Int, initial: Boolean): Boolean {
         val mediaSource = _mediaQueue.value?.jellyfinMediaSource ?: return false
         val sourceIndex = mediaSource.subtitleStreams.binarySearchBy(streamIndex, selector = MediaStream::index)
 
@@ -271,24 +269,12 @@ class MediaQueueManager(
             !mediaSource.selectSubtitleStream(sourceIndex) -> return false
         }
 
-        // Handle selection in player
-        val rendererIndex = viewModel.getPlayerRendererIndex(C.TRACK_TYPE_TEXT)
-        val trackInfo = trackSelector.currentMappedTrackInfo
-        return if (rendererIndex >= 0 && trackInfo != null) {
-            val parameters = trackSelector.buildUponParameters()
-            val trackGroups = trackInfo.getTrackGroups(rendererIndex)
-            if (sourceIndex in 0 until trackGroups.length) {
-                val selection = DefaultTrackSelector.SelectionOverride(sourceIndex, 0)
-                parameters.setSelectionOverride(rendererIndex, trackGroups, selection)
-                parameters.setRendererDisabled(rendererIndex, false)
-            } else {
-                // No subtitle selected, clear selection overrides and disable renderer
-                parameters.clearSelectionOverride(rendererIndex, trackGroups)
-                parameters.setRendererDisabled(rendererIndex, true)
-            }
-            trackSelector.setParameters(parameters)
-            true
-        } else false
+        return when {
+            // Select new subtitle with suitable renderer
+            sourceIndex >= 0 -> trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_TEXT, sourceIndex)
+            // No subtitle selected, clear selection overrides and disable all subtitle renderers
+            else -> trackSelector.clearSelectionAndDisableRendererByType(C.TRACK_TYPE_TEXT)
+        }
     }
 
     /**

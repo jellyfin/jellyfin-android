@@ -5,3 +5,8 @@ object JellyfinSdk {
     const val SNAPSHOT = "master-SNAPSHOT"
     const val SNAPSHOT_UNSTABLE = "openapi-unstable-SNAPSHOT"
 }
+
+object JellyfinExoPlayer {
+    const val GROUP = "org.jellyfin.exoplayer"
+    const val SNAPSHOT = "SNAPSHOT"
+}

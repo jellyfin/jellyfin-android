@@ -26,6 +26,7 @@ allprojects {
             content {
                 includeVersionByRegex(JellyfinSdk.GROUP, ".*", JellyfinSdk.SNAPSHOT)
                 includeVersionByRegex(JellyfinSdk.GROUP, ".*", JellyfinSdk.SNAPSHOT_UNSTABLE)
+                includeVersionByRegex(JellyfinExoPlayer.GROUP, ".*", JellyfinExoPlayer.SNAPSHOT)
             }
         }
     }
