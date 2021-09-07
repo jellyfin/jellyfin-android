@@ -27,11 +27,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.webkit.ServiceWorkerClientCompat
+import androidx.webkit.ServiceWorkerControllerCompat
 import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebViewAssetLoader.AssetsPathHandler
 import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
@@ -162,7 +165,6 @@ class WebViewFragment : Fragment(), NativePlayerHost {
             showOutdatedWebViewDialog(this)
             return
         }
-
         webViewClient = object : WebViewClientCompat() {
             override fun shouldInterceptRequest(webView: WebView, request: WebResourceRequest): WebResourceResponse? {
                 val url = request.url
@@ -230,6 +232,25 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                 handler.cancel()
                 onErrorReceived()
             }
+        }
+        // Workaround for service worker breaking script injections
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.SERVICE_WORKER_BASIC_USAGE)) {
+            val swController = ServiceWorkerControllerCompat.getInstance()
+            swController.setServiceWorkerClient(object : ServiceWorkerClientCompat() {
+                override fun shouldInterceptRequest(request: WebResourceRequest): WebResourceResponse? {
+                    val path = request.url.path?.lowercase(Locale.ROOT) ?: return null
+                    return when {
+                        path.endsWith(Constants.SERVICE_WORKER_PATH) -> {
+                            WebResourceResponse("application/javascript", "utf-8", null).apply {
+                                with(HttpStatusCode.NotFound) {
+                                    setStatusCodeAndReasonPhrase(value, description)
+                                }
+                            }
+                        }
+                        else -> null
+                    }
+                }
+            })
         }
         webChromeClient = object : WebChromeClient() {
             override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
