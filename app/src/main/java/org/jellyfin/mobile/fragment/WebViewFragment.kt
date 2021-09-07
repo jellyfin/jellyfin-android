@@ -12,6 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.ConsoleMessage
+import android.webkit.ServiceWorkerClient
+import android.webkit.ServiceWorkerController
 import android.webkit.SslErrorHandler
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
@@ -161,6 +163,27 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         if (!appPreferences.ignoreWebViewChecks && isOutdated()) { // Check WebView version
             showOutdatedWebViewDialog(this)
             return
+        }
+
+        // Workaround for serviceWorker cache prevent injections
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val swController = ServiceWorkerController.getInstance()
+            swController.setServiceWorkerClient(object : ServiceWorkerClient() {
+                override fun shouldInterceptRequest(request: WebResourceRequest): WebResourceResponse? {
+                    val url = request.url
+                    val path = url.path?.lowercase(Locale.ROOT) ?: return null
+                    return when {
+                        path.endsWith("serviceworker.js") -> {
+                            WebResourceResponse(
+                                "text/javascript",
+                                "utf-8",
+                                "// Workaround for serviceWorker cache prevent injections".byteInputStream(Charsets.UTF_8)
+                            )
+                        }
+                        else -> null
+                    }
+                }
+            })
         }
 
         webViewClient = object : WebViewClientCompat() {
