@@ -1,0 +1,1 @@
+Mobilní klient pro Jellyfin, bezplatný správce médií
