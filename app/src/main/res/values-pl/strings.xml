@@ -49,4 +49,52 @@
     <string name="dialog_button_close_app">Zamknij aplikację</string>
     <string name="dialog_button_check_for_updates">Sprawdź aktualizacje</string>
     <string name="dialog_web_view_not_supported">WebView nie wspierane</string>
+    <string name="external_player_vlc_player">VLC Player (otwarto-źródłowy)</string>
+    <string name="external_player_mx_player_pro">MX Player Pro (wersja płatna)</string>
+    <string name="external_player_mx_player_free">MX Player Free (wersja darmowa)</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Próbowano %d prób do wejścia, bez powodzenia.</item>
+        <item quantity="few">Próbowano %d prób do wejścia, bez powodzenia.</item>
+        <item quantity="many">Próba nie powiodła się.</item>
+        <item quantity="other">Próba nie powiodła się.</item>
+    </plurals>
+    <string name="external_player_system_default_description">Niech system poradzi sobie z wyborem odtwarzacza , niektóre odtwarzacze mogą nie być w pełni kompatybilne.</string>
+    <string name="external_player_vlc_player_description">Darmowy i otwarto-źródłowy, wieloplatformowy odtwarzacz multimedialny, który odtwarza większość plików multimedialnych.</string>
+    <string name="external_player_mx_player_pro_description">Płatna wersja programu MX Player, która zapewnia nieprzerwane odtwarzanie wideo.</string>
+    <string name="external_player_mx_player_free_description">Potężny odtwarzacz wideo z zaawansowaną akceleracją sprzętową i obsługą napisów.</string>
+    <string name="external_player_mpv_description">Prosty, mały i lekki, darmowy odtwarzacz wideo. Obsługuje szeroką gamę formatów plików multimedialnych.</string>
+    <string name="external_player_mpv">MPV Player</string>
+    <string name="external_player_app">Aplikacja odtwarzacza zewnętrznego</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Umożliwienie odtwarzania filmów w tle tylko z dźwiękiem</string>
+    <string name="pref_exoplayer_allow_background_audio">Dźwięk w tle</string>
+    <string name="pref_exoplayer_remember_brightness">Zapamiętaj jasność wyświetlacza</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Gesty jasności i głośności</string>
+    <string name="video_player_external_description">Zewnętrzne aplikacje do odtwarzania wideo, takie jak MX Player i VLC</string>
+    <string name="video_player_native_description">Oparty na ExoPlayerze, obsługuje więcej formatów wideo i kodeków oraz jest bardziej zintegrowany z systemem operacyjnym</string>
+    <string name="video_player_web_description">Domyślny odtwarzacz wideo HTML z interfejsu Web UI</string>
+    <string name="video_player_integrated">Odtwarzacz zintegrowany</string>
+    <string name="video_player_web">Odtwarzacz WWW</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Powiadomienie można zawsze wyłączyć, nawet podczas odtwarzania multimediów</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">Powiadomienie można wyłączyć tylko wtedy, gdy odtwarzanie jest wstrzymane</string>
+    <string name="external_player_unknown_error">Nieznany błąd w odtwarzaczu zewnętrznym. Śledzenie odtwarzania wyłączone.</string>
+    <string name="external_player_invalid_player">Nie wybrano prawidłowego odtwarzacza zewnętrznego. Śledzenie odtwarzania wyłączone.</string>
+    <string name="external_player_not_supported_yet">Śledzenie odtwarzania nie jest jeszcze obsługiwane w wybranym odtwarzaczu zewnętrznym. Skontaktuj się z deweloperami, aby spróbowali dodać wsparcie dla niego.</string>
+    <string name="external_player_invalid_play_method">Nieprawidłowa metoda odtwarzania.</string>
+    <string name="playback_info_stream_unknown_title">Tytuł nieznany</string>
+    <string name="playback_info_audio_streams">Strumienie dźwięku</string>
+    <string name="playback_info_video_streams">Strumienie wideo</string>
+    <string name="menu_item_none">Brak</string>
+    <string name="player_error_network_failure">Nie można załadować informacji o mediach z serwera</string>
+    <string name="player_error_invalid_play_options">Nie można ustalić informacji o odtwarzaniu</string>
+    <string name="notification_action_rewind">Przewiń</string>
+    <string name="music_notification_channel_description">Służy do sterowania odtwarzaniem muzyki</string>
+    <string name="mobile_data_and_roaming">Dane komórkowe i roaming</string>
+    <string name="network_message">Czy chcesz zezwolić na pobieranie danych przez sieć komórkową lub roaming\? Opłaty mogą być naliczane przez twojego dostawcę.</string>
+    <string name="battery_optimizations_message">Proszę wyłączyć optymalizacje baterii dla odtwarzania multimediów, gdy ekran jest wyłączony.</string>
+    <string name="host_input_hint">Host</string>
+    <string name="dialog_web_view_outdated_message">Implementacja WebView używana przez urządzenie jest przestarzała.
+\nZaktualizuj do wersji kompatybilnej.</string>
+    <string name="dialog_web_view_outdated">WebView przestarzałe</string>
+    <string name="dialog_web_view_not_supported_message">WebViews nie jest obsługiwany na tym urządzeniu.
+\nZainstaluj kompatybilną implementację WebView lub zmień urządzenie na obsługiwane.</string>
 </resources>
