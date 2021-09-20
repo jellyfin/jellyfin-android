@@ -1,0 +1,14 @@
+Twoje media, na twoich warunkach.
+
+Projekt Jellyfin jest open source, wolnym oprogramowaniem serwera mediów. Bez opłat, bez śledzenia, bez ukrytych planów. Pobierz nasz darmowy serwer, aby zebrać wszystkie swoje pliki audio, wideo, zdjęcia i inne w jednym miejscu.
+
+Aby korzystać z aplikacji, musisz mieć skonfigurowany i uruchomiony serwer Jellyfin. Dowiedz się więcej na <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
+
+Z serwerem Jellyfin, możesz:
+
+* Oglądać telewizję na żywo i nagrane programy z Twojego serwera Jellyfin (wymagany dodatkowy sprzęt/usługi)
+* Strumieniować do urządzenia Chromecast w twojej sieci
+* Strumieniować media do urządzenia z systemem Android
+* Przeglądaj swoją kolekcję w łatwym w użyciu interfejsie.
+
+To jest oficjalna aplikacja towarzysząca Jellyfin dla Androida. Dziękujemy za korzystanie z Jellyfin!

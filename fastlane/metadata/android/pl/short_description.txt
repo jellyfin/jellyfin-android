@@ -1,0 +1,1 @@
+Mobilny klient dla Jellyfin, darmowy system multimedialny
