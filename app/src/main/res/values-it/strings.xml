@@ -91,4 +91,8 @@
     <string name="pref_exoplayer_remember_brightness">Ricorda la luminisità del display</string>
     <string name="video_player_integrated">Player integrato</string>
     <string name="playback_info_stream_unknown_title">Titolo sconosciuto</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Provato %d candidato per la connessione, ma senza successo.</item>
+        <item quantity="other">Provati %d candidati per la connessione, ma senza successo.</item>
+    </plurals>
 </resources>
