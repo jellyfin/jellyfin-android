@@ -87,4 +87,12 @@
     <string name="toast_reopen_after_change">Heropen de app nadat veranderingen zijn aangebracht</string>
     <string name="dialog_button_ignore">Negeren</string>
     <string name="dialog_button_open_settings">Open instellingen</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Sta het afspelen van video\'s op de achtergrond met alleen audio toe</string>
+    <string name="pref_exoplayer_remember_brightness">Onthoud de helderheid van het scherm</string>
+    <string name="video_player_integrated">Geïntegreerde speler</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">De melding kan altijd worden verwijderd, zelfs tijdens het afspelen van media</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">De melding kan alleen worden verwijderd als het afspelen is gepauzeerd</string>
+    <string name="playback_info_stream_unknown_title">Onbekende titel</string>
+    <string name="player_error_network_failure">Kan media-info niet laden van de server</string>
+    <string name="player_error_invalid_play_options">Kan afspeel info niet oplossen</string>
 </resources>
