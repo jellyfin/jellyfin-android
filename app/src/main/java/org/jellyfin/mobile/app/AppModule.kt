@@ -19,7 +19,6 @@ import okhttp3.OkHttpClient
 import org.chromium.net.CronetEngine
 import org.chromium.net.CronetProvider
 import org.jellyfin.mobile.MainViewModel
-import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.player.audio.car.LibraryBrowser
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayerEvent
@@ -67,8 +66,6 @@ val applicationModule = module {
     // Media player helpers
     single { MediaSourceResolver(get()) }
     single { DeviceProfileBuilder() }
-    single { get<DeviceProfileBuilder>().getDeviceProfile() }
-    single(named(ExternalPlayer.DEVICE_PROFILE_NAME)) { get<DeviceProfileBuilder>().getExternalPlayerProfile() }
 
     // ExoPlayer factories
     single<DataSource.Factory> {

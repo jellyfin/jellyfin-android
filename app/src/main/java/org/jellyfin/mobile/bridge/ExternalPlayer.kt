@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.player.PlayerException
+import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.source.ExternalSubtitleStream
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
@@ -36,7 +37,6 @@ import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
-import org.koin.core.qualifier.named
 import timber.log.Timber
 
 class ExternalPlayer(
@@ -49,7 +49,8 @@ class ExternalPlayer(
     private val appPreferences: AppPreferences by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private val mediaSourceResolver: MediaSourceResolver by inject()
-    private val externalPlayerProfile: DeviceProfile by inject(named(DEVICE_PROFILE_NAME))
+    private val deviceProfileBuilder: DeviceProfileBuilder by inject()
+    private val externalPlayerProfile: DeviceProfile = deviceProfileBuilder.getExternalPlayerProfile()
     private val apiClient: ApiClient = get()
     private val videosApi: VideosApi = apiClient.videosApi
 
