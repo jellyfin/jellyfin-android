@@ -116,8 +116,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         viewModelScope.launch {
             try {
                 val displayPreferencesDto by displayPreferencesApi.getDisplayPreferences(
-                    displayPreferencesId = "usersettings",
-                    client = "emby"
+                    displayPreferencesId = Constants.DISPLAY_PREFERENCES_ID_USER_SETTINGS,
+                    client = Constants.DISPLAY_PREFERENCES_CLIENT_EMBY,
                 )
 
                 val customPrefs = displayPreferencesDto.customPrefs

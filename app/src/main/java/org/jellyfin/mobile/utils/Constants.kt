@@ -94,6 +94,8 @@ object Constants {
     const val DEFAULT_CONTROLS_TIMEOUT_MS = 2500
     const val GESTURE_EXCLUSION_AREA_TOP = 48
     const val DEFAULT_CENTER_OVERLAY_TIMEOUT_MS = 250
+    const val DISPLAY_PREFERENCES_ID_USER_SETTINGS = "usersettings"
+    const val DISPLAY_PREFERENCES_CLIENT_EMBY = "emby"
     const val DISPLAY_PREFERENCES_SKIP_BACK_LENGTH = "skipBackLength"
     const val DISPLAY_PREFERENCES_SKIP_FORWARD_LENGTH = "skipForwardLength"
     const val DEFAULT_SEEK_TIME_MS = 10000L
