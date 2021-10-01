@@ -89,12 +89,12 @@ class PlayerGestureHelper(
             val viewHeight = playerView.measuredHeight
             val viewCenterX = viewWidth / 2
             val viewCenterY = viewHeight / 2
-            val fastForward = e.x.toInt() > viewCenterX
+            val isFastForward = e.x.toInt() > viewCenterX
 
             // Show ripple effect
             playerView.foreground?.apply {
-                val left = if (fastForward) viewCenterX else 0
-                val right = if (fastForward) viewWidth else viewCenterX
+                val left = if (isFastForward) viewCenterX else 0
+                val right = if (isFastForward) viewWidth else viewCenterX
                 setBounds(left, viewCenterY - viewCenterX / 2, right, viewCenterY + viewCenterX / 2)
                 setHotspot(e.x, e.y)
                 state = intArrayOf(android.R.attr.state_enabled, android.R.attr.state_pressed)
@@ -104,7 +104,7 @@ class PlayerGestureHelper(
             }
 
             // Fast-forward/rewind
-            fragment.onSeek(if (fastForward) Constants.DEFAULT_SEEK_TIME_MS else Constants.DEFAULT_SEEK_TIME_MS.unaryMinus())
+            with(fragment) { if (isFastForward) onFastForward() else onRewind() }
 
             // Cancel previous runnable to not hide controller while seeking
             playerView.removeCallbacks(hidePlayerViewControllerAction)
