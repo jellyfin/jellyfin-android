@@ -30,6 +30,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
+import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaQueueManager
 import org.jellyfin.mobile.utils.Constants
@@ -62,6 +63,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
     private val apiClient by inject<ApiClient>()
+    private val apiController by inject<ApiController>()
     private val playStateApi by inject<PlayStateApi>()
     private val hlsSegmentApi by inject<HlsSegmentApi>()
 
@@ -296,16 +298,12 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         playerOrNull?.playWhenReady = false
     }
 
-    fun seekToOffset(offsetMs: Long) {
-        playerOrNull?.seekToOffset(offsetMs)
-    }
-
     fun rewind() {
-        seekToOffset(Constants.DEFAULT_SEEK_TIME_MS.unaryMinus())
+        playerOrNull?.seekToOffset(apiController.displayPreferences.skipBackLength.unaryMinus())
     }
 
     fun fastForward() {
-        seekToOffset(Constants.DEFAULT_SEEK_TIME_MS)
+        playerOrNull?.seekToOffset(apiController.displayPreferences.skipForwardLength)
     }
 
     fun skipToPrevious(force: Boolean = false) {

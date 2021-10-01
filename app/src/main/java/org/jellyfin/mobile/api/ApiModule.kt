@@ -5,6 +5,7 @@ import org.jellyfin.sdk.Jellyfin
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.KtorClient
 import org.jellyfin.sdk.api.operations.ArtistsApi
+import org.jellyfin.sdk.api.operations.DisplayPreferencesApi
 import org.jellyfin.sdk.api.operations.GenresApi
 import org.jellyfin.sdk.api.operations.HlsSegmentApi
 import org.jellyfin.sdk.api.operations.ImageApi
@@ -49,6 +50,7 @@ val apiModule = module {
     single { VideosApi(get()) }
     single { UniversalAudioApi(get()) }
     single { MediaInfoApi(get()) }
+    single { DisplayPreferencesApi(get()) }
     single { PlayStateApi(get()) }
     single { HlsSegmentApi(get()) }
 }

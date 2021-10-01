@@ -35,6 +35,8 @@ import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import io.ktor.http.HttpStatusCode
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
@@ -87,6 +89,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
     private val showProgressIndicatorRunnable = Runnable {
         webViewBinding?.progressIndicator?.isVisible = true
     }
+    private var refreshDisplayPreferencesJob: Job? = null
 
     // UI
     private var webViewBinding: FragmentWebviewBinding? = null
@@ -196,6 +199,14 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                             val token = storedServer.getString("AccessToken")
                             apiController.setupUser(server.id, user, token)
                             webView.initLocale(user)
+                        }
+                        null
+                    }
+                    request.method == "POST" && path.endsWith(Constants.DISPLAY_PREFERENCES_PATH) -> {
+                        refreshDisplayPreferencesJob?.cancel()
+                        refreshDisplayPreferencesJob = lifecycleScope.launch {
+                            delay(Constants.DISPLAY_PREFERENCES_TIMEOUT_MS)
+                            apiController.refreshDisplayPreferences()
                         }
                         null
                     }
