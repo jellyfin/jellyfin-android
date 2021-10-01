@@ -18,8 +18,6 @@ object Constants {
     const val CAST_SDK_PATH = "cast_sender.js"
     const val SESSION_CAPABILITIES_PATH = "sessions/capabilities/full"
     const val SERVICE_WORKER_PATH = "serviceworker.js"
-    const val DISPLAY_PREFERENCES_PATH = "displaypreferences/usersettings"
-    const val DISPLAY_PREFERENCES_TIMEOUT_MS = 1000L
 
     const val FRAGMENT_CONNECT_EXTRA_ERROR = "org.jellyfin.mobile.intent.extra.ERROR"
     const val FRAGMENT_WEB_VIEW_EXTRA_SERVER = "org.jellyfin.mobile.intent.extra.SERVER"
@@ -96,6 +94,8 @@ object Constants {
     const val DEFAULT_CONTROLS_TIMEOUT_MS = 2500
     const val GESTURE_EXCLUSION_AREA_TOP = 48
     const val DEFAULT_CENTER_OVERLAY_TIMEOUT_MS = 250
+    const val DISPLAY_PREFERENCES_SKIP_BACK_LENGTH = "skipBackLength"
+    const val DISPLAY_PREFERENCES_SKIP_FORWARD_LENGTH = "skipForwardLength"
     const val DEFAULT_SEEK_TIME_MS = 10000L
     const val MAX_SKIP_TO_PREV_MS = 3000L
     const val DOUBLE_TAP_RIPPLE_DURATION_MS = 100L

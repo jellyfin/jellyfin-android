@@ -3,17 +3,13 @@ package org.jellyfin.mobile.controller
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.AppPreferences
-import org.jellyfin.mobile.model.DisplayPreferences
 import org.jellyfin.mobile.model.sql.dao.ServerDao
 import org.jellyfin.mobile.model.sql.dao.UserDao
 import org.jellyfin.mobile.model.sql.entity.ServerEntity
-import org.jellyfin.mobile.utils.Constants.DEFAULT_SEEK_TIME_MS
 import org.jellyfin.sdk.api.client.ApiClient
-import org.jellyfin.sdk.api.client.exception.ApiClientException
-import org.jellyfin.sdk.api.operations.DisplayPreferencesApi
 import org.jellyfin.sdk.model.DeviceInfo
 import org.jellyfin.sdk.model.serializer.toUUID
-import timber.log.Timber
+import java.util.*
 
 class ApiController(
     private val appPreferences: AppPreferences,
@@ -21,11 +17,7 @@ class ApiController(
     private val apiClient: ApiClient,
     private val serverDao: ServerDao,
     private val userDao: UserDao,
-    private val displayPreferencesApi: DisplayPreferencesApi
 ) {
-    var displayPreferences = DisplayPreferences()
-        private set
-
     /**
      * Migrate from preferences if necessary
      */
@@ -49,7 +41,6 @@ class ApiController(
             userDao.upsert(serverId, userId, accessToken)
         }
         configureApiClientUser(userId, accessToken)
-        refreshDisplayPreferences()
     }
 
     suspend fun loadSavedServer(): ServerEntity? {
@@ -72,32 +63,8 @@ class ApiController(
 
         if (serverUser?.user?.accessToken != null) {
             configureApiClientUser(serverUser.user.userId, serverUser.user.accessToken)
-            refreshDisplayPreferences()
         } else {
             resetApiClientUser()
-        }
-    }
-
-    suspend fun refreshDisplayPreferences() {
-        displayPreferences = if (apiClient.userId != null) {
-            try {
-                val displayPreferences by displayPreferencesApi.getDisplayPreferences(
-                    displayPreferencesId = "usersettings",
-                    client = "emby"
-                )
-
-                val customPrefs = displayPreferences.customPrefs
-
-                DisplayPreferences(
-                    skipBackLength = customPrefs?.get("skipBackLength")?.toLongOrNull() ?: DEFAULT_SEEK_TIME_MS,
-                    skipForwardLength = customPrefs?.get("skipForwardLength")?.toLongOrNull() ?: DEFAULT_SEEK_TIME_MS
-                )
-            } catch (e: ApiClientException) {
-                Timber.e(e, "Failed to load display preferences")
-                DisplayPreferences()
-            }
-        } else {
-            DisplayPreferences()
         }
     }
 
@@ -116,6 +83,5 @@ class ApiController(
         apiClient.userId = null
         apiClient.accessToken = null
         apiClient.deviceInfo = baseDeviceInfo
-        displayPreferences = DisplayPreferences()
     }
 }

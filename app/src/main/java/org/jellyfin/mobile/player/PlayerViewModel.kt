@@ -30,7 +30,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
-import org.jellyfin.mobile.controller.ApiController
+import org.jellyfin.mobile.model.DisplayPreferences
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaQueueManager
 import org.jellyfin.mobile.utils.Constants
@@ -48,6 +48,7 @@ import org.jellyfin.mobile.utils.toMediaMetadata
 import org.jellyfin.mobile.utils.width
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
+import org.jellyfin.sdk.api.operations.DisplayPreferencesApi
 import org.jellyfin.sdk.api.operations.HlsSegmentApi
 import org.jellyfin.sdk.api.operations.PlayStateApi
 import org.jellyfin.sdk.model.api.PlayMethod
@@ -63,7 +64,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
     private val apiClient by inject<ApiClient>()
-    private val apiController by inject<ApiController>()
+    private val displayPreferencesApi by inject<DisplayPreferencesApi>()
     private val playStateApi by inject<PlayStateApi>()
     private val hlsSegmentApi by inject<HlsSegmentApi>()
 
@@ -106,8 +107,31 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
     private val mediaSessionCallback = PlayerMediaSessionCallback(this)
 
+    private var displayPreferences = DisplayPreferences()
+
     init {
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
+
+        // Load display preferences
+        viewModelScope.launch {
+            try {
+                val displayPreferencesDto by displayPreferencesApi.getDisplayPreferences(
+                    displayPreferencesId = "usersettings",
+                    client = "emby"
+                )
+
+                val customPrefs = displayPreferencesDto.customPrefs
+
+                displayPreferences = DisplayPreferences(
+                    skipBackLength = customPrefs?.get(Constants.DISPLAY_PREFERENCES_SKIP_BACK_LENGTH)?.toLongOrNull()
+                        ?: Constants.DEFAULT_SEEK_TIME_MS,
+                    skipForwardLength = customPrefs?.get(Constants.DISPLAY_PREFERENCES_SKIP_FORWARD_LENGTH)?.toLongOrNull()
+                        ?: Constants.DEFAULT_SEEK_TIME_MS
+                )
+            } catch (e: ApiClientException) {
+                Timber.e(e, "Failed to load display preferences")
+            }
+        }
 
         // Subscribe to player events from webapp
         viewModelScope.launch {
@@ -299,11 +323,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     fun rewind() {
-        playerOrNull?.seekToOffset(apiController.displayPreferences.skipBackLength.unaryMinus())
+        playerOrNull?.seekToOffset(displayPreferences.skipBackLength.unaryMinus())
     }
 
     fun fastForward() {
-        playerOrNull?.seekToOffset(apiController.displayPreferences.skipForwardLength)
+        playerOrNull?.seekToOffset(displayPreferences.skipForwardLength)
     }
 
     fun skipToPrevious(force: Boolean = false) {
