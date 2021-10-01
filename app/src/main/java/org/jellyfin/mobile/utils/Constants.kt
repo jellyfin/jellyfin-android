@@ -90,7 +90,7 @@ object Constants {
     // Video player constants
     const val LANGUAGE_UNDEFINED = "und"
     const val TICKS_PER_MILLISECOND = 10000
-    const val PLAYER_TIME_UPDATE_RATE = 1000L
+    const val PLAYER_TIME_UPDATE_RATE = 10000L
     const val DEFAULT_CONTROLS_TIMEOUT_MS = 2500
     const val GESTURE_EXCLUSION_AREA_TOP = 48
     const val DEFAULT_CENTER_OVERLAY_TIMEOUT_MS = 250

@@ -13,6 +13,7 @@ class JellyfinMediaSource(
     val itemId: UUID,
     val item: BaseItemDto?,
     val sourceInfo: MediaSourceInfo,
+    val playSessionId: String,
     startTimeTicks: Long? = null,
     audioStreamIndex: Int? = null,
     subtitleStreamIndex: Int? = null,

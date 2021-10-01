@@ -110,6 +110,7 @@ class ExternalPlayer(
                     itemId = source.itemId,
                     static = true,
                     mediaSourceId = source.id,
+                    playSessionId = source.playSessionId,
                 )
             }
             PlayMethod.DIRECT_STREAM -> {
@@ -118,6 +119,7 @@ class ExternalPlayer(
                     itemId = source.itemId,
                     container = container,
                     mediaSourceId = source.id,
+                    playSessionId = source.playSessionId,
                 )
             }
             PlayMethod.TRANSCODE -> {

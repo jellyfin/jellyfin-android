@@ -142,7 +142,9 @@ class MediaQueueManager(
                         val url = videosApi.getVideoStreamUrl(
                             itemId = source.itemId,
                             static = true,
+                            playSessionId = source.playSessionId,
                             mediaSourceId = source.id,
+                            deviceId = apiClient.deviceInfo.id,
                         )
 
                         url to get<ProgressiveMediaSource.Factory>()
@@ -161,7 +163,9 @@ class MediaQueueManager(
                 val url = videosApi.getVideoStreamByContainerUrl(
                     itemId = source.itemId,
                     container = container,
+                    playSessionId = source.playSessionId,
                     mediaSourceId = source.id,
+                    deviceId = apiClient.deviceInfo.id,
                 )
 
                 url to get<ProgressiveMediaSource.Factory>()
