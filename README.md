@@ -47,7 +47,7 @@ Jellyfin Mobile is an Android app that connects to Jellyfin instances and integr
 We welcome all contributions and pull requests! If you have a larger feature in mind please open an issue so we can discuss the implementation before you start.
 Even though the client is only a web wrapper there are still lots of improvements and bug fixes that can be accomplished with Android and Kotlin knowledge.
 
-Most of the translations can be found in the [web client](https://translate.jellyfin.org/projects/jellyfin/jellyfin-web) since it's the base for the Android client as well. Translations for the app can also be improved very easily from our [Weblate](https://translate.jellyfin.org/projects/jellyfin/jellyfin-android) instance. Look through the following graphic to see if your native language could use some work!
+Most of the translations can be found in the [web client](https://translate.jellyfin.org/projects/jellyfin/jellyfin-web) since it's the base for the Android client as well. Translations for the app can also be improved very easily from our [Weblate](https://translate.jellyfin.org/projects/jellyfin-android/jellyfin-android) instance. Look through the following graphic to see if your native language could use some work!
 
 <a href="https://translate.jellyfin.org/engage/jellyfin-android/">
 <img alt="Detailed Translation Status" src="https://translate.jellyfin.org/widgets/jellyfin-android/-/jellyfin-android/multi-auto.svg"/>
