@@ -30,8 +30,8 @@
     <string name="connection_error_invalid_format">ホストのフォーマットが無効です</string>
     <string name="host_input_hint">ホスト</string>
     <string name="connect_to_server_title">サーバーへ接続</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">内蔵のプレーヤーでジェスチャーによる明るさと音量の調整を許可</string>
-    <string name="pref_exoplayer_allow_background_audio">内蔵のプレーヤーでバックグラウンドのオーディオ再生を許可</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">輝度と音量のジェスチャー</string>
+    <string name="pref_exoplayer_allow_background_audio">バックグラウンドオーディオ</string>
     <string name="video_player_external_description">MX PlayerやVLCのような外部のビデオ再生アプリ</string>
     <string name="video_player_native_description">ExoPlayerを元にし、より多くのビデオフォーマットとコーデックをサポートし、よりOSに統合</string>
     <string name="video_player_web_description">Web UIによるデフォルトのHTMLビデオプレーヤー</string>
@@ -39,12 +39,12 @@
     <string name="video_player_web">ウェブプレーヤー</string>
     <string name="pref_video_player_type_title">ビデオプレーヤーの種類</string>
     <string name="pref_category_video_player">ビデオプレーヤー</string>
-    <string name="pref_music_notification_always_dismissible_title">通知のミュージックプレーヤーをいつでも削除できるようにする</string>
+    <string name="pref_music_notification_always_dismissible_title">削除可能なプレイヤー通知</string>
     <string name="pref_category_music_player">ミュージックプレーヤー</string>
-    <string name="activity_name_settings">Jellyfin の設定</string>
+    <string name="activity_name_settings">Jellyfinの設定</string>
     <string name="external_player_unknown_error">外部のプレーヤーに不明なエラーがあります。プレイバックトラッキングが無効になっています。</string>
     <string name="external_player_invalid_player">有効な外部のプレーヤーが選択されていません。プレイバックトラッキングが無効になっています。</string>
-    <string name="external_player_not_supported_yet">選択された外部のプレーヤーではプレイバックトラッキングがまだサポートされていません。サポートを追加するよう開発者に連絡してみてください。</string>
+    <string name="external_player_not_supported_yet">選択している外部のプレーヤーの再生記録がまだサポートされていません。開発元にご連絡してください。</string>
     <string name="external_player_system_default_description">プレーヤーの選択をシステムが行います、一部のプレーヤーでは完全な互換性がない可能性があります。</string>
     <string name="external_player_system_default">システムのデフォルト</string>
     <string name="external_player_vlc_player_description">ほとんどのマルチメディアファイルを再生するフリーかつオープンソースのクロスプラットフォームなメディアプレーヤーです。</string>
@@ -69,4 +69,18 @@
     <string name="media_service_generic_error">エラーが発生しました</string>
     <string name="pref_download_location">ダウンロード場所</string>
     <string name="pref_category_downloads">ダウンロード</string>
+    <string name="video_player_integrated">搭載プレイヤー</string>
+    <string name="player_error_unsupported_content">このデバイスはメディア再生不可能です</string>
+    <string name="player_error_network_failure">メディア情報がローディング不可能</string>
+    <string name="dialog_web_view_not_supported">WebViewはサポートされていません</string>
+    <string name="pref_exoplayer_remember_brightness">画面の輝度を保存する</string>
+    <string name="playback_info_stream_unknown_title">タイトル不明</string>
+    <string name="player_error_invalid_play_options">再生情報の解決が失敗しました</string>
+    <string name="connection_error_unable_to_reach_sever">サーバーが接続不良</string>
+    <string name="toast_reopen_after_change">変更してからアプリを再起動してください</string>
+    <string name="dialog_button_ignore">無視</string>
+    <string name="dialog_button_open_settings">設定を開く</string>
+    <string name="dialog_button_close_app">アプリを終了する</string>
+    <string name="dialog_button_check_for_updates">アップデートを確認する</string>
+    <string name="dialog_web_view_outdated">WebViewの古いバージョン</string>
 </resources>
