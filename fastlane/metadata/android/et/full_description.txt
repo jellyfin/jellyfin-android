@@ -1,0 +1,14 @@
+Sinu meedia sinu tingimustel.
+
+Jellyfin projekt on avatud lähtekoodiga vaba tarkvara meediaserver. Pole teenustasu, pole jälgimist ega varjatud plaani. Hangi meie tasuta server, et koguda kogu oma muusika, video, fotod ja muu ühte kohta.
+
+Rakenduse kasutamiseks peab olema Jellyfini server häälestatud ja käivitatud. Lisateavet leiab aadressilt<a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
+
+Jellyfini serveriga saad:
+
+* Vaadata TV otsesaateid ja salvestusi (nõuab lisavarustust/teenuseid)
+* Voogesitada Chromecast seadmega oma võrgus
+* Voogesitada oma meediat oma Android seadmesse
+* Sirvida oma kollektsiooni hõlpsasti kasutatava liidese abil
+
+See on Jellyfini ametlik rakendus Androidile. Täname sind Jellyfini kasutamise eest!
