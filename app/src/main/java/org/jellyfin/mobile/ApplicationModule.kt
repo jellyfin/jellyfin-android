@@ -52,7 +52,7 @@ val applicationModule = module {
     fragment { PlayerFragment() }
 
     // Media player helpers
-    single { MediaSourceResolver(get(), get(), get()) }
+    single { MediaSourceResolver(get()) }
     single { DeviceProfileBuilder() }
     single { get<DeviceProfileBuilder>().getDeviceProfile() }
     single(named(ExternalPlayer.DEVICE_PROFILE_NAME)) { get<DeviceProfileBuilder>().getExternalPlayerProfile() }
@@ -64,5 +64,5 @@ val applicationModule = module {
     single { SingleSampleMediaSource.Factory(get()) }
 
     // Media components
-    single { LibraryBrowser(get(), get(), get(), get(), get(), get(), get(), get()) }
+    single { LibraryBrowser(get(), get()) }
 }

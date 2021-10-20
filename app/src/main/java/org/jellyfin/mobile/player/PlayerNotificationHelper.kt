@@ -27,9 +27,12 @@ import org.jellyfin.mobile.R
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.VIDEO_PLAYER_NOTIFICATION_ID
 import org.jellyfin.mobile.utils.createMediaNotificationChannel
+import org.jellyfin.sdk.api.client.ApiClient
+import org.jellyfin.sdk.api.client.extensions.imageApi
 import org.jellyfin.sdk.api.operations.ImageApi
 import org.jellyfin.sdk.model.api.ImageType
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -37,7 +40,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     private val context: Context = viewModel.getApplication<Application>()
     private val appPreferences: AppPreferences by inject()
     private val notificationManager: NotificationManager? by lazy { context.getSystemService() }
-    private val imageApi: ImageApi by inject()
+    private val imageApi: ImageApi = get<ApiClient>().imageApi
     private val imageLoader: ImageLoader by inject()
     private val receiverRegistered = AtomicBoolean(false)
 

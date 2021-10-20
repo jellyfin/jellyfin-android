@@ -25,6 +25,12 @@ import org.jellyfin.mobile.media.setTitle
 import org.jellyfin.mobile.media.setTrackNumber
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
+import org.jellyfin.sdk.api.client.extensions.genresApi
+import org.jellyfin.sdk.api.client.extensions.imageApi
+import org.jellyfin.sdk.api.client.extensions.itemsApi
+import org.jellyfin.sdk.api.client.extensions.playlistsApi
+import org.jellyfin.sdk.api.client.extensions.universalAudioApi
+import org.jellyfin.sdk.api.client.extensions.userViewsApi
 import org.jellyfin.sdk.api.operations.GenresApi
 import org.jellyfin.sdk.api.operations.ImageApi
 import org.jellyfin.sdk.api.operations.ItemsApi
@@ -46,13 +52,14 @@ import java.util.*
 class LibraryBrowser(
     private val context: Context,
     private val apiClient: ApiClient,
-    private val itemsApi: ItemsApi,
-    private val userViewsApi: UserViewsApi,
-    private val genresApi: GenresApi,
-    private val playlistsApi: PlaylistsApi,
-    private val imageApi: ImageApi,
-    private val universalAudioApi: UniversalAudioApi,
 ) {
+    private val itemsApi: ItemsApi = apiClient.itemsApi
+    private val userViewsApi: UserViewsApi = apiClient.userViewsApi
+    private val genresApi: GenresApi = apiClient.genresApi
+    private val playlistsApi: PlaylistsApi = apiClient.playlistsApi
+    private val imageApi: ImageApi = apiClient.imageApi
+    private val universalAudioApi: UniversalAudioApi = apiClient.universalAudioApi
+
     fun getRoot(hints: Bundle?): MediaBrowserServiceCompat.BrowserRoot {
         /**
          * By default return the browsable root. Treat the EXTRA_RECENT flag as a special case

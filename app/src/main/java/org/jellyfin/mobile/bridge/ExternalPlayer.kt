@@ -25,12 +25,14 @@ import org.jellyfin.mobile.utils.isPackageInstalled
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.jellyfin.sdk.api.client.ApiClient
+import org.jellyfin.sdk.api.client.extensions.videosApi
 import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.PlayMethod
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
@@ -46,8 +48,8 @@ class ExternalPlayer(
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private val mediaSourceResolver: MediaSourceResolver by inject()
     private val externalPlayerProfile: DeviceProfile by inject(named(DEVICE_PROFILE_NAME))
-    private val videosApi: VideosApi by inject()
-    private val apiClient: ApiClient by inject()
+    private val apiClient: ApiClient = get()
+    private val videosApi: VideosApi = apiClient.videosApi
 
     private val playerContract = registry.register("externalplayer", lifecycleOwner, ActivityResultContracts.StartActivityForResult()) { result ->
         val resultCode = result.resultCode

@@ -48,6 +48,9 @@ import org.jellyfin.mobile.utils.toMediaMetadata
 import org.jellyfin.mobile.utils.width
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
+import org.jellyfin.sdk.api.client.extensions.displayPreferencesApi
+import org.jellyfin.sdk.api.client.extensions.hlsSegmentApi
+import org.jellyfin.sdk.api.client.extensions.playStateApi
 import org.jellyfin.sdk.api.operations.DisplayPreferencesApi
 import org.jellyfin.sdk.api.operations.HlsSegmentApi
 import org.jellyfin.sdk.api.operations.PlayStateApi
@@ -57,16 +60,17 @@ import org.jellyfin.sdk.model.api.PlaybackStartInfo
 import org.jellyfin.sdk.model.api.PlaybackStopInfo
 import org.jellyfin.sdk.model.api.RepeatMode
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
-    private val apiClient by inject<ApiClient>()
-    private val displayPreferencesApi by inject<DisplayPreferencesApi>()
-    private val playStateApi by inject<PlayStateApi>()
-    private val hlsSegmentApi by inject<HlsSegmentApi>()
+    private val apiClient: ApiClient = get()
+    private val displayPreferencesApi: DisplayPreferencesApi = apiClient.displayPreferencesApi
+    private val playStateApi: PlayStateApi = apiClient.playStateApi
+    private val hlsSegmentApi: HlsSegmentApi = apiClient.hlsSegmentApi
 
     private val lifecycleObserver = PlayerLifecycleObserver(this)
     private val audioManager: AudioManager by lazy { getApplication<Application>().getSystemService()!! }

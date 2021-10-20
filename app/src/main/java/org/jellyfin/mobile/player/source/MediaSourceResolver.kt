@@ -3,6 +3,8 @@ package org.jellyfin.mobile.player.source
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
+import org.jellyfin.sdk.api.client.extensions.itemsApi
+import org.jellyfin.sdk.api.client.extensions.mediaInfoApi
 import org.jellyfin.sdk.api.operations.ItemsApi
 import org.jellyfin.sdk.api.operations.MediaInfoApi
 import org.jellyfin.sdk.model.api.DeviceProfile
@@ -11,11 +13,10 @@ import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
 import java.util.UUID
 
-class MediaSourceResolver(
-    private val apiClient: ApiClient,
-    private val mediaInfoApi: MediaInfoApi,
-    private val itemsApi: ItemsApi,
-) {
+class MediaSourceResolver(private val apiClient: ApiClient) {
+    private val mediaInfoApi: MediaInfoApi = apiClient.mediaInfoApi
+    private val itemsApi: ItemsApi = apiClient.itemsApi
+
     suspend fun resolveMediaSource(
         itemId: UUID,
         deviceProfile: DeviceProfile,

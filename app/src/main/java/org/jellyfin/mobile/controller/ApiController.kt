@@ -6,6 +6,7 @@ import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.model.sql.dao.ServerDao
 import org.jellyfin.mobile.model.sql.dao.UserDao
 import org.jellyfin.mobile.model.sql.entity.ServerEntity
+import org.jellyfin.sdk.Jellyfin
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.model.DeviceInfo
 import org.jellyfin.sdk.model.serializer.toUUID
@@ -13,11 +14,14 @@ import java.util.*
 
 class ApiController(
     private val appPreferences: AppPreferences,
-    private val baseDeviceInfo: DeviceInfo,
+    private val jellyfin: Jellyfin,
     private val apiClient: ApiClient,
     private val serverDao: ServerDao,
     private val userDao: UserDao,
 ) {
+    private val baseDeviceInfo: DeviceInfo
+        get() = jellyfin.options.deviceInfo!!
+
     /**
      * Migrate from preferences if necessary
      */
