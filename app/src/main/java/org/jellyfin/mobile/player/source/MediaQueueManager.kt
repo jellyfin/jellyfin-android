@@ -19,6 +19,7 @@ import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.utils.clearSelectionAndDisableRendererByType
 import org.jellyfin.mobile.utils.selectTrackByTypeAndGroup
 import org.jellyfin.sdk.api.client.ApiClient
+import org.jellyfin.sdk.api.client.extensions.videosApi
 import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.MediaProtocol
@@ -32,10 +33,10 @@ import java.util.UUID
 class MediaQueueManager(
     private val viewModel: PlayerViewModel,
 ) : KoinComponent {
-    private val apiClient: ApiClient by inject()
+    private val apiClient: ApiClient = get()
     private val mediaSourceResolver: MediaSourceResolver by inject()
     private val deviceProfile: DeviceProfile by inject()
-    private val videosApi: VideosApi by inject()
+    private val videosApi: VideosApi = apiClient.videosApi
     val trackSelector = DefaultTrackSelector(viewModel.getApplication<Application>())
     private val _mediaQueue: MutableLiveData<QueueItem.Loaded> = MutableLiveData()
     val mediaQueue: LiveData<QueueItem.Loaded> get() = _mediaQueue

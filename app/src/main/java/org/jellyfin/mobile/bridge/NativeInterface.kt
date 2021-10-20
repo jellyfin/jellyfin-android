@@ -34,9 +34,8 @@ import org.jellyfin.mobile.utils.runOnUiThread
 import org.jellyfin.mobile.webapp.RemotePlayerService
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
+import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.util.AuthorizationHeaderBuilder
-import org.jellyfin.sdk.model.ClientInfo
-import org.jellyfin.sdk.model.DeviceInfo
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -53,8 +52,9 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
     @SuppressLint("HardwareIds")
     @JavascriptInterface
     fun getDeviceInformation(): String? = try {
-        val deviceInfo = get<DeviceInfo>()
-        val clientInfo = get<ClientInfo>()
+        val apiClient: ApiClient = get()
+        val deviceInfo = apiClient.deviceInfo
+        val clientInfo = apiClient.clientInfo
 
         JSONObject().apply {
             put("deviceId", deviceInfo.id)

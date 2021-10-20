@@ -193,7 +193,7 @@ class ConnectFragment : Fragment() {
 
         val server = greatServer ?: goodServers.firstOrNull()
         if (server != null) {
-            val systemInfo = requireNotNull(server.systemInfo)
+            val systemInfo = requireNotNull(server.systemInfo.getOrNull())
             Timber.i("Found valid server at ${server.address} with rating ${server.score} and version ${systemInfo.version}")
             return server.address
         }
@@ -204,7 +204,7 @@ class ConnectFragment : Fragment() {
 
         val error = if (badServers.isNotEmpty()) {
             val count = badServers.size
-            val (unreachableServers, incompatibleServers) = badServers.partition { result -> result.systemInfo == null }
+            val (unreachableServers, incompatibleServers) = badServers.partition { result -> result.systemInfo.getOrNull() == null }
 
             StringBuilder(resources.getQuantityString(R.plurals.connection_error_prefix, count, count)).apply {
                 if (unreachableServers.isNotEmpty()) {
