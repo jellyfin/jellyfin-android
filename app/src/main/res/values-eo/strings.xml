@@ -1,2 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="activity_name_settings">Parametroj de Jellyfin</string>
+    <string name="playback_info_stream_unknown_title">Nekonata titolo</string>
+    <string name="media_service_car_item_no_title">Sen titolo</string>
+    <string name="mobile_data">Poŝfonaj Datenoj</string>
+    <string name="wifi_only">Nur WiFi</string>
+    <string name="pref_category_downloads">Elŝutaĵoj</string>
+    <string name="downloading">Elŝutiĝas</string>
+    <string name="choose_server_button_text">Elektu servilon</string>
+    <string name="dialog_button_ignore">Ignoru</string>
+    <string name="dialog_button_open_settings">Malfermu parametrojn</string>
+    <string name="dialog_button_close_app">Fermu apon</string>
+    <string name="connect_to_server_title">Konekti al Servilo</string>
+    <string name="dialog_button_check_for_updates">Kontrolu por ĝisdatigoj</string>
+    <string name="media_service_car_section_recents">Lastatempe ludita</string>
+    <string name="menu_item_none">Nenio</string>
+    <string name="notification_action_stop">Halti</string>
+    <string name="notification_action_next">Sekva</string>
+    <string name="notification_action_fast_forward">Rapida antaŭen</string>
+    <string name="notification_action_pause">Paŭzo</string>
+    <string name="notification_action_play">Ludi</string>
+    <string name="notification_action_rewind">Rebobenu</string>
+    <string name="notification_action_previous">Antaŭa</string>
+    <string name="media_service_car_section_playlists">Ludlistoj</string>
+    <string name="media_service_car_section_genres">Ĝenroj</string>
+    <string name="media_service_car_section_songs">Kantoj</string>
+    <string name="media_service_car_section_artists">Artistoj</string>
+    <string name="media_service_car_section_albums">Albumoj</string>
+    <string name="connect_button_text">Konektu</string>
+    <string name="host_input_hint">Gastigo</string>
+</resources>
