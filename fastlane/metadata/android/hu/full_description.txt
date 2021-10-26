@@ -5,6 +5,7 @@ A Jellyfin projekt egy nyílt forráskódú, ingyenesen elérhető szoftver. Nin
 Az alkalmazáshoz szükséges egy beállított és működő Jellyfin szerver. További információkat a <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a> webhelyen találhatsz.
 
 A Jellyfin szerver főbb funkciói:
+
 * Élő TV-nézés, felvételek készítése (további hardver/szolgáltatás szükséges)
 * Közvetítés Chromecast eszközre a helyi hálózatodon.
 * Média közvetítése Android eszközödre.
