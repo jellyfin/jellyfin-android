@@ -73,10 +73,8 @@
     <string name="connection_error_unsupported_version_or_product">نسخه یا محصول پشتیبانی نشده</string>
     <string name="connection_error_unable_to_reach_sever">دسترسی به سرور امکان پذیر نیست</string>
     <plurals name="connection_error_prefix">
-        <item quantity="one">مفرد
-\n٪ d کاندیدای ورودی را امتحان کرد ، بدون موفقیت.</item>
-        <item quantity="other">جمع
-\n٪ d داوطلب را برای ورود بدون موفقیت امتحان کرد.</item>
+        <item quantity="one">٪ d کاندیدای ورودی را امتحان کرد ، بدون موفقیت.</item>
+        <item quantity="other">٪ d داوطلب را برای ورود بدون موفقیت امتحان کرد.</item>
     </plurals>
     <string name="connection_error_cannot_connect">اتصال برقرار نیست.
 \nلطفاً نام میزبان و اتصال شبکه خود را بررسی کنید.</string>
