@@ -8,7 +8,7 @@ Kun Jellyfin-servilo vi povas:
 
 * Spekti TV-eteron kaj rikorditajn seriojn de via Jellyfin-servilo (aldonaj aparataro/servoj necesas)
 * Elsendflui al Chromecast-aparato en via reto
-* Elsendflu vian plurmediojn al via Android-aparato
+* Elsendflui vian plurmediojn al via Android-aparato
 * Spekti vian kolektojn en faciluza interfaco
 
 Jen la oficiala akompana Jellyfin-apo por Android. Dankon pro uzi Jellyfin!
