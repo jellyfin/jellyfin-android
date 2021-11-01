@@ -15,11 +15,13 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.analytics.AnalyticsCollector
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.extractor.ts.TsExtractor
+import com.google.android.exoplayer2.mediacodec.MediaCodecDecoderException
 import com.google.android.exoplayer2.util.Clock
 import com.google.android.exoplayer2.util.EventLogger
 import kotlinx.coroutines.CoroutineScope
@@ -91,6 +93,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         addListener(eventLogger)
     }
     private val initialTracksSelected = AtomicBoolean(false)
+    private var fallbackPreferExtensionRenderers = false
 
     private var progressUpdateJob: Job? = null
 
@@ -159,7 +162,12 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
      */
     fun setupPlayer() {
         val renderersFactory = DefaultRenderersFactory(getApplication()).apply {
-            setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
+            setEnableDecoderFallback(true) // Fallback only works if initialization fails, not decoding at playback time
+            val rendererMode = when {
+                fallbackPreferExtensionRenderers -> DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER
+                else -> DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON
+            }
+            setExtensionRendererMode(rendererMode)
         }
         val extractorsFactory = DefaultExtractorsFactory().apply {
             // https://github.com/google/ExoPlayer/issues/8571
@@ -447,6 +455,19 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         releasePlayer()
                 }
             }
+        }
+    }
+
+    override fun onPlayerError(error: PlaybackException) {
+        if (error.cause is MediaCodecDecoderException && !fallbackPreferExtensionRenderers) {
+            Timber.e(error.cause, "Decoder failed, attempting to restart playback with decoder extensions preferred")
+            playerOrNull?.run {
+                removeListener(this@PlayerViewModel)
+                release()
+            }
+            fallbackPreferExtensionRenderers = true
+            setupPlayer()
+            mediaQueueManager.tryRestartPlayback()
         }
     }
 
