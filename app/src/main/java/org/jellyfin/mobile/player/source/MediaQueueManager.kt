@@ -70,6 +70,10 @@ class MediaQueueManager(
         return null
     }
 
+    fun tryRestartPlayback() {
+        _mediaQueue.value?.play()
+    }
+
     @CheckResult
     private fun createQueueItem(jellyfinMediaSource: JellyfinMediaSource, previous: QueueItem, next: QueueItem): QueueItem.Loaded {
         val exoMediaSource = prepareStreams(jellyfinMediaSource)
