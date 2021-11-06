@@ -27,11 +27,12 @@ detekt {
 }
 
 android {
-    compileSdk = 30
+    compileSdk = 31
+
     defaultConfig {
         applicationId = "org.jellyfin.mobile"
         minSdk = 21
-        targetSdk = 30
+        targetSdk = 31
         versionName = project.getVersionName()
         versionCode = getVersionCode(versionName!!)
         setProperty("archivesBaseName", "jellyfin-android-v$versionName")
