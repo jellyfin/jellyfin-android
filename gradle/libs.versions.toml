@@ -1,10 +1,11 @@
 [versions]
 # Plugins
 android-plugin = "7.0.3"
-detekt = "1.18.1"
-dependencyupdates = "0.39.0"
 kotlin = "1.5.31"
 kotlin-ksp = "1.5.31-1.0.0"
+detekt = "1.18.1"
+android-junit5 = "1.8.0.0"
+dependencyupdates = "0.39.0"
 
 # KotlinX
 coroutines = "1.5.2"
@@ -52,16 +53,15 @@ kotest = "4.6.3"
 mockk = "1.12.0"
 androidx-test-runner = "1.4.0"
 androidx-test-espresso = "3.4.0"
-android-junit5 = "1.8.0.0"
 
 [plugins]
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-dependencyupdates = { id = "com.github.ben-manes.versions", version.ref = "dependencyupdates" }
 android-app = { id = "com.android.application", version.ref = "android-plugin" }
-android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "kotlin-ksp" }
+android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+dependencyupdates = { id = "com.github.ben-manes.versions", version.ref = "dependencyupdates" }
 
 [libraries]
 # KotlinX
