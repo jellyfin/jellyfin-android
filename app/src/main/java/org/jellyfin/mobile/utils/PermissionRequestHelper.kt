@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.util.SparseArray
 import androidx.core.app.ActivityCompat
-import androidx.core.util.set
 import org.koin.android.ext.android.getKoin
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -17,7 +16,7 @@ class PermissionRequestHelper {
     fun getRequestCode() = requestCode.getAndIncrement()
 
     fun addCallback(requestCode: Int, callback: PermissionRequestCallback) {
-        permissionRequests[requestCode] = callback
+        permissionRequests.put(requestCode, callback)
     }
 
     fun handleRequestPermissionsResult(
