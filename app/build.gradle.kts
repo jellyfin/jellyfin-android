@@ -3,12 +3,12 @@ import com.github.benmanes.gradle.versions.updates.gradle.GradleReleaseChannel
 import io.gitlab.arturbosch.detekt.Detekt
 
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    kotlin("kapt")
-    id("kotlin-parcelize")
+    alias(libs.plugins.android.app)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.ksp)
+    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.detekt)
-    id("de.mannodermaus.android-junit5")
+    alias(libs.plugins.android.junit5)
     alias(libs.plugins.dependencyupdates)
 }
 
@@ -150,7 +150,7 @@ dependencies {
 
     // Room
     implementation(libs.bundles.androidx.room)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
     // Monitoring
     implementation(libs.timber)
