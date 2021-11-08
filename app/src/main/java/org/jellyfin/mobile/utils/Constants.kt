@@ -1,6 +1,8 @@
 package org.jellyfin.mobile.utils
 
+import android.app.PendingIntent
 import android.media.session.PlaybackState
+import android.os.Build
 import android.util.Rational
 import org.jellyfin.mobile.BuildConfig
 
@@ -50,6 +52,10 @@ object Constants {
     const val PLAYBACK_MANAGER_COMMAND_VOL_DOWN = "volumeDown"
 
     // Notification
+    val PENDING_INTENT_FLAGS = PendingIntent.FLAG_UPDATE_CURRENT or when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> PendingIntent.FLAG_IMMUTABLE
+        else -> 0
+    }
     const val MEDIA_NOTIFICATION_CHANNEL_ID = "org.jellyfin.mobile.media.NOW_PLAYING"
 
     // Music player constants

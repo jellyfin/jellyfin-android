@@ -135,7 +135,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
         val intent = Intent(intentAction).apply {
             `package` = BuildConfig.APPLICATION_ID
         }
-        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, Constants.PENDING_INTENT_FLAGS)
         @Suppress("DEPRECATION")
         return Notification.Action.Builder(icon, context.getString(title), pendingIntent).build()
     }
@@ -144,14 +144,14 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         }
-        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(context, 0, intent, Constants.PENDING_INTENT_FLAGS)
     }
 
     private fun buildDeleteIntent(): PendingIntent {
         val intent = Intent(Constants.ACTION_PAUSE).apply {
             `package` = BuildConfig.APPLICATION_ID
         }
-        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getBroadcast(context, 0, intent, Constants.PENDING_INTENT_FLAGS)
     }
 
     private val notificationActionReceiver: BroadcastReceiver = object : BroadcastReceiver() {

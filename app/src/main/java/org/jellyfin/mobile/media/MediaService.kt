@@ -41,6 +41,7 @@ import org.jellyfin.mobile.cast.ICastPlayerProvider
 import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.media.car.LibraryBrowser
 import org.jellyfin.mobile.media.car.LibraryPage
+import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
@@ -100,7 +101,7 @@ class MediaService : MediaBrowserServiceCompat() {
         }
 
         val sessionActivityPendingIntent = packageManager?.getLaunchIntentForPackage(packageName)?.let { sessionIntent ->
-            PendingIntent.getActivity(this, 0, sessionIntent, 0)
+            PendingIntent.getActivity(this, 0, sessionIntent, Constants.PENDING_INTENT_FLAGS)
         }
 
         mediaSession = MediaSessionCompat(this, "MediaService").apply {
