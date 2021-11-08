@@ -12,7 +12,6 @@ import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.analytics.AnalyticsCollector
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import com.google.android.exoplayer2.audio.AudioAttributes as ExoPlayerAudioAttributes
 
@@ -71,7 +70,7 @@ fun AudioManager.getVolumeLevelPercent(): Int {
 /**
  * Set ExoPlayer [ExoPlayerAudioAttributes], make ExoPlayer handle audio focus
  */
-inline fun ExoPlayer.AudioComponent.applyDefaultAudioAttributes(@C.AudioContentType contentType: Int) {
+inline fun ExoPlayer.applyDefaultAudioAttributes(@C.AudioContentType contentType: Int) {
     val audioAttributes = ExoPlayerAudioAttributes.Builder()
         .setUsage(C.USAGE_MEDIA)
         .setContentType(contentType)

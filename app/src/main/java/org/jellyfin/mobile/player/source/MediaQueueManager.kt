@@ -207,7 +207,12 @@ class MediaQueueManager(
         val factory = get<SingleSampleMediaSource.Factory>()
         return source.getExternalSubtitleStreams().map { stream ->
             val uri = Uri.parse(apiClient.createUrl(stream.deliveryUrl))
-            val mediaItem = MediaItem.Subtitle(uri, stream.mimeType, stream.language, C.SELECTION_FLAG_AUTOSELECT)
+            val mediaItem = MediaItem.SubtitleConfiguration.Builder(uri).apply {
+                setLabel(stream.displayTitle)
+                setMimeType(stream.mimeType)
+                setLanguage(stream.language)
+                setSelectionFlags(C.SELECTION_FLAG_AUTOSELECT)
+            }.build()
             factory.setTrackId(stream.index.toString()).createMediaSource(mediaItem, source.runTimeMs)
         }.toTypedArray()
     }

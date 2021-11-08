@@ -17,10 +17,7 @@ import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.analytics.AnalyticsCollector
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.extractor.ts.TsExtractor
 import com.google.android.exoplayer2.mediacodec.MediaCodecDecoderException
 import com.google.android.exoplayer2.util.Clock
 import com.google.android.exoplayer2.util.EventLogger
@@ -41,7 +38,6 @@ import org.jellyfin.mobile.utils.applyDefaultAudioAttributes
 import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
 import org.jellyfin.mobile.utils.getVolumeLevelPercent
 import org.jellyfin.mobile.utils.getVolumeRange
-import org.jellyfin.mobile.utils.isLowRamDevice
 import org.jellyfin.mobile.utils.logTracks
 import org.jellyfin.mobile.utils.scaleInRange
 import org.jellyfin.mobile.utils.seekToOffset
@@ -158,7 +154,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     /**
-     * Setup a new [SimpleExoPlayer] for video playback, register callbacks and set attributes
+     * Setup a new [ExoPlayer] for video playback, register callbacks and set attributes
      */
     fun setupPlayer() {
         val renderersFactory = DefaultRenderersFactory(getApplication()).apply {
@@ -169,16 +165,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             }
             setExtensionRendererMode(rendererMode)
         }
-        val extractorsFactory = DefaultExtractorsFactory().apply {
-            // https://github.com/google/ExoPlayer/issues/8571
-            setTsExtractorTimestampSearchBytes(
-                when {
-                    !getApplication<Application>().isLowRamDevice -> 1800 * TsExtractor.TS_PACKET_SIZE // 3x default
-                    else -> TsExtractor.DEFAULT_TIMESTAMP_SEARCH_BYTES
-                }
-            )
-        }
-        _player.value = SimpleExoPlayer.Builder(getApplication(), renderersFactory, extractorsFactory).apply {
+        _player.value = ExoPlayer.Builder(getApplication(), renderersFactory, get()).apply {
             setTrackSelector(mediaQueueManager.trackSelector)
             setAnalyticsCollector(analyticsCollector)
         }.build().apply {

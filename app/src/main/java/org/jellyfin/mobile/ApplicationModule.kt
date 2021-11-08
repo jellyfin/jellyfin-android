@@ -1,11 +1,17 @@
 package org.jellyfin.mobile
 
+import android.content.Context
 import coil.ImageLoader
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
+import com.google.android.exoplayer2.extractor.ts.TsExtractor
+import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
+import com.google.android.exoplayer2.source.MediaSourceFactory
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultDataSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.util.Util
 import kotlinx.coroutines.channels.Channel
 import okhttp3.OkHttpClient
@@ -20,6 +26,7 @@ import org.jellyfin.mobile.player.PlayerFragment
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
+import org.jellyfin.mobile.utils.isLowRamDevice
 import org.jellyfin.mobile.viewmodel.MainViewModel
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
@@ -57,8 +64,25 @@ val applicationModule = module {
     single { get<DeviceProfileBuilder>().getDeviceProfile() }
     single(named(ExternalPlayer.DEVICE_PROFILE_NAME)) { get<DeviceProfileBuilder>().getExternalPlayerProfile() }
 
-    // ExoPlayer data sources
-    single<DataSource.Factory> { DefaultDataSourceFactory(androidApplication(), Util.getUserAgent(androidApplication(), Constants.APP_INFO_NAME)) }
+    // ExoPlayer factories
+    single<DataSource.Factory> {
+        val context: Context = get()
+        val baseDataSourceFactory = DefaultHttpDataSource.Factory().setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
+        DefaultDataSource.Factory(context, baseDataSourceFactory)
+    }
+    single<MediaSourceFactory> {
+        val context: Context = get()
+        val extractorsFactory = DefaultExtractorsFactory().apply {
+            // https://github.com/google/ExoPlayer/issues/8571
+            setTsExtractorTimestampSearchBytes(
+                when {
+                    !context.isLowRamDevice -> 1800 * TsExtractor.TS_PACKET_SIZE // 3x default
+                    else -> TsExtractor.DEFAULT_TIMESTAMP_SEARCH_BYTES
+                }
+            )
+        }
+        DefaultMediaSourceFactory(get<DataSource.Factory>(), extractorsFactory)
+    }
     single { ProgressiveMediaSource.Factory(get()) }
     single { HlsMediaSource.Factory(get<DataSource.Factory>()) }
     single { SingleSampleMediaSource.Factory(get()) }
