@@ -180,7 +180,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
         _player.value = SimpleExoPlayer.Builder(getApplication(), renderersFactory, extractorsFactory).apply {
             setTrackSelector(mediaQueueManager.trackSelector)
-            if (BuildConfig.DEBUG) setAnalyticsCollector(analyticsCollector)
+            setAnalyticsCollector(analyticsCollector)
         }.build().apply {
             addListener(this@PlayerViewModel)
             applyDefaultAudioAttributes(C.CONTENT_TYPE_MOVIE)
