@@ -22,13 +22,13 @@ import androidx.mediarouter.media.MediaRouteSelector
 import androidx.mediarouter.media.MediaRouter
 import androidx.mediarouter.media.MediaRouterParams
 import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.ControlDispatcher
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
+import com.google.android.exoplayer2.source.MediaSourceFactory
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -45,6 +45,7 @@ import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
+import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import com.google.android.exoplayer2.MediaItem as ExoPlayerMediaItem
@@ -82,7 +83,7 @@ class MediaService : MediaBrowserServiceCompat() {
     val playerListener: Player.Listener = PlayerEventListener()
 
     private val exoPlayer: Player by lazy {
-        SimpleExoPlayer.Builder(this).build().apply {
+        ExoPlayer.Builder(this, get<MediaSourceFactory>()).build().apply {
             setAudioAttributes(playerAudioAttributes, true)
             setHandleAudioBecomingNoisy(true)
             addListener(playerListener)
@@ -246,7 +247,7 @@ class MediaService : MediaBrowserServiceCompat() {
             } else if (playbackState != Player.STATE_IDLE && playbackState != Player.STATE_ENDED) {
                 preparePlaylist(
                     metadataList = currentPlaylistItems,
-                    initialPlaybackIndex = previousPlayer.currentWindowIndex,
+                    initialPlaybackIndex = previousPlayer.currentMediaItemIndex,
                     playWhenReady = previousPlayer.playWhenReady,
                     playbackStartPositionMs = previousPlayer.currentPosition
                 )
@@ -339,10 +340,9 @@ class MediaService : MediaBrowserServiceCompat() {
 
         override fun onCommand(
             player: Player,
-            controlDispatcher: ControlDispatcher,
             command: String,
             extras: Bundle?,
-            cb: ResultReceiver?
+            cb: ResultReceiver?,
         ): Boolean = false
     }
 
