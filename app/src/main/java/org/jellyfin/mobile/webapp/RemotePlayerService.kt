@@ -314,7 +314,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         val intent = Intent(applicationContext, RemotePlayerService::class.java).apply {
             action = Constants.ACTION_STOP
         }
-        return PendingIntent.getService(applicationContext, 1, intent, 0)
+        return PendingIntent.getService(applicationContext, 1, intent, Constants.PENDING_INTENT_FLAGS)
     }
 
     private fun createContentIntent(): PendingIntent {
@@ -322,14 +322,14 @@ class RemotePlayerService : Service(), CoroutineScope {
             action = Constants.ACTION_SHOW_PLAYER
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
-        return PendingIntent.getActivity(this, Constants.REMOTE_PLAYER_CONTENT_INTENT_REQUEST_CODE, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+        return PendingIntent.getActivity(this, Constants.REMOTE_PLAYER_CONTENT_INTENT_REQUEST_CODE, intent, Constants.PENDING_INTENT_FLAGS)
     }
 
     private fun generateAction(icon: Int, @StringRes title: Int, intentAction: String): Notification.Action {
         val intent = Intent(applicationContext, RemotePlayerService::class.java).apply {
             action = intentAction
         }
-        val pendingIntent = PendingIntent.getService(applicationContext, MEDIA_PLAYER_NOTIFICATION_ID, intent, 0)
+        val pendingIntent = PendingIntent.getService(applicationContext, MEDIA_PLAYER_NOTIFICATION_ID, intent, Constants.PENDING_INTENT_FLAGS)
         @Suppress("DEPRECATION")
         return Notification.Action.Builder(icon, getString(title), pendingIntent).build()
     }
