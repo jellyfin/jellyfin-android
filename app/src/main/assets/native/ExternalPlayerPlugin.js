@@ -19,6 +19,7 @@ export class ExternalPlayerPlugin {
 
         // Disable orientation lock
         this.isExternalPlayer = true;
+        // _currentTime is in milliseconds
         this._currentTime = 0;
         this._paused = true;
         this._volume = 100;
@@ -41,7 +42,7 @@ export class ExternalPlayerPlugin {
     }
 
     async play(options) {
-        this._currentTime = (options.playerStartPositionTicks || 0) / 10000;
+        this._currentTime = options.playerStartPositionTicks / 10000 || 0;
         this._paused = false;
         this._currentSrc = options.url;
         this._isIntro = options.item && options.item.ProviderIds && options.item.ProviderIds.hasOwnProperty("prerolls.video");
@@ -101,9 +102,8 @@ export class ExternalPlayerPlugin {
     }
 
     async notifyTimeUpdate(currentTime) {
-        // if no time provided handle like playback completed
-        currentTime = currentTime || this.playbackManager.duration(this);
-        currentTime = currentTime / 1000;
+        // Use duration (as if playback completed) if no time is provided
+        currentTime = currentTime || this.playbackManager.duration(this) / 10000;
         this._timeUpdated = this._currentTime != currentTime;
         this._currentTime = currentTime;
         this.events.trigger(this, 'timeupdate');
@@ -119,8 +119,11 @@ export class ExternalPlayerPlugin {
         this.notifyEnded();
     }
 
+    /**
+     * Returns the currently known player time in milliseconds
+     */
     currentTime() {
-        return (this._currentTime || 0) * 1000;
+        return this._currentTime || 0;
     }
 
     async changeSubtitleStream(index) {
@@ -134,17 +137,15 @@ export class ExternalPlayerPlugin {
     }
 
     async getDeviceProfile() {
-        const profile = {};
-        profile.Name = 'Android External Player Stub';
-        profile.MaxStreamingBitrate = 100000000;
-        profile.MaxStaticBitrate = 100000000;
-        profile.MusicStreamingTranscodingBitrate = 320000;
-
-        profile.DirectPlayProfiles = [];
-        profile.CodecProfiles = [];
-        profile.SubtitleProfiles = [];
-        profile.TranscodingProfiles = [];
-
-        return profile;
+        return {
+            Name: 'Android External Player Stub',
+            MaxStreamingBitrate: 100000000,
+            MaxStaticBitrate: 100000000,
+            MusicStreamingTranscodingBitrate: 320000,
+            DirectPlayProfiles: [{Type: 'Video'}, {Type: 'Audio'}],
+            CodecProfiles: [],
+            SubtitleProfiles: [],
+            TranscodingProfiles: []
+        };
     }
 }

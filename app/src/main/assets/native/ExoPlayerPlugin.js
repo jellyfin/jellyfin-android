@@ -163,17 +163,15 @@ export class ExoPlayerPlugin {
     }
 
     async getDeviceProfile() {
-        var profile = {};
-        profile.Name = 'ExoPlayer Stub';
-        profile.MaxStreamingBitrate = 100000000;
-        profile.MaxStaticBitrate = 100000000;
-        profile.MusicStreamingTranscodingBitrate = 320000;
-
-        profile.DirectPlayProfiles = [];
-        profile.CodecProfiles = [];
-        profile.SubtitleProfiles = [];
-        profile.TranscodingProfiles = [];
-
-        return profile;
+        return {
+            Name: 'ExoPlayer Stub',
+            MaxStreamingBitrate: 100000000,
+            MaxStaticBitrate: 100000000,
+            MusicStreamingTranscodingBitrate: 320000,
+            DirectPlayProfiles: [{Type: 'Video'}, {Type: 'Audio'}],
+            CodecProfiles: [],
+            SubtitleProfiles: [],
+            TranscodingProfiles: []
+        };
     }
 }
