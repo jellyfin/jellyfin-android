@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="menu_item_none">Байхгүй</string>
+    <string name="notification_action_play">Тоглуулах</string>
+    <string name="media_service_car_section_playlists">Тоглуулах жагсаалт</string>
+    <string name="media_service_car_section_genres">Төрөл зүйл</string>
+    <string name="media_service_car_section_songs">Дуунууд</string>
+    <string name="media_service_car_section_artists">Жүжигчин</string>
+</resources>
