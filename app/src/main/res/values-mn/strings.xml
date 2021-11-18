@@ -6,4 +6,6 @@
     <string name="media_service_car_section_genres">Төрөл зүйл</string>
     <string name="media_service_car_section_songs">Дуунууд</string>
     <string name="media_service_car_section_artists">Жүжигчин</string>
+    <string name="external_player_mx_player_pro">MX Player Pro</string>
+    <string name="external_player_mx_player_free">MX Player Free</string>
 </resources>
