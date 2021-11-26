@@ -17,7 +17,7 @@
     <string name="connect_to_server_title">Connetti al Server</string>
     <string name="playback_info_audio_streams">Flusso audio</string>
     <string name="playback_info_video_streams">Flussi video</string>
-    <string name="menu_item_none">Niente</string>
+    <string name="menu_item_none">Nessuna</string>
     <string name="playback_info_and_x_more">... e altri %d</string>
     <string name="playback_info_transcoding">Transcodifica: %b</string>
     <string name="playback_info_play_method">Metodo di riproduzione: %s</string>
