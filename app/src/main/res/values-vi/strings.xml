@@ -21,7 +21,7 @@
     <string name="playback_info_video_streams">Luồng video</string>
     <string name="playback_info_transcoding">Chuyển mã: %b</string>
     <string name="playback_info_play_method">Cách phát: %s</string>
-    <string name="menu_item_none">Trống</string>
+    <string name="menu_item_none">Không có</string>
     <string name="notification_action_stop">Dừng</string>
     <string name="notification_action_next">Kế tiếp</string>
     <string name="notification_action_fast_forward">Nhanh về phía trước</string>
