@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="dialog_button_open_settings">Ayarları aç</string>
+    <string name="dialog_button_close_app">Uygulamayı kapat</string>
+    <string name="dialog_button_check_for_updates">Güncellemeleri kontrol et</string>
+    <string name="dialog_web_view_not_supported">WebView desteklenmiyor</string>
+</resources>
