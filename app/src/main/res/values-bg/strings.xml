@@ -16,7 +16,7 @@
     <string name="playback_info_video_streams">Видео потоци</string>
     <string name="playback_info_transcoding">Транскодиране: %b</string>
     <string name="playback_info_play_method">Метод на възпроизвеждане:%s</string>
-    <string name="menu_item_none">Не</string>
+    <string name="menu_item_none">Нито един</string>
     <string name="connect_button_text">Свързване</string>
     <string name="connection_error_cannot_connect">Връзката не може да бъде осъществена
 \nМоля,проверете името на хоста и вашата връзка с интернет.</string>
