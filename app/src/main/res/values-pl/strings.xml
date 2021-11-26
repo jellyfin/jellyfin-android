@@ -83,7 +83,7 @@
     <string name="playback_info_stream_unknown_title">Tytuł nieznany</string>
     <string name="playback_info_audio_streams">Strumienie dźwięku</string>
     <string name="playback_info_video_streams">Strumienie wideo</string>
-    <string name="menu_item_none">Brak</string>
+    <string name="menu_item_none">Żadne</string>
     <string name="player_error_network_failure">Nie można załadować informacji o mediach z serwera</string>
     <string name="player_error_invalid_play_options">Nie można ustalić informacji o odtwarzaniu</string>
     <string name="notification_action_rewind">Przewiń</string>
