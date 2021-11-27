@@ -161,7 +161,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                 Constants.ACTION_PAUSE -> viewModel.pause()
                 Constants.ACTION_REWIND -> viewModel.rewind()
                 Constants.ACTION_FAST_FORWARD -> viewModel.fastForward()
-                Constants.ACTION_PREVIOUS -> viewModel.skipToPrevious(force = true)
+                Constants.ACTION_PREVIOUS -> viewModel.skipToPrevious()
                 Constants.ACTION_NEXT -> viewModel.skipToNext()
                 Constants.ACTION_STOP -> viewModel.stop()
             }
