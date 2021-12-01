@@ -2,8 +2,9 @@ package org.jellyfin.mobile.api
 
 import android.media.MediaCodecList
 import org.jellyfin.mobile.bridge.ExternalPlayer
+import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.player.DeviceCodec
-import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.player.mpv.MPVPlayer
 import org.jellyfin.sdk.model.api.CodecProfile
 import org.jellyfin.sdk.model.api.ContainerProfile
 import org.jellyfin.sdk.model.api.DeviceProfile
@@ -21,7 +22,7 @@ class DeviceProfileBuilder {
         require(SUPPORTED_CONTAINER_FORMATS.size == AVAILABLE_VIDEO_CODECS.size && SUPPORTED_CONTAINER_FORMATS.size == AVAILABLE_AUDIO_CODECS.size)
     }
 
-    fun getDeviceProfile(): DeviceProfile {
+    fun getExoPlayerProfile(): DeviceProfile {
         val containerProfiles = ArrayList<ContainerProfile>()
         val directPlayProfiles = ArrayList<DirectPlayProfile>()
         val codecProfiles = ArrayList<CodecProfile>()
@@ -66,9 +67,9 @@ class DeviceProfileBuilder {
         }
 
         return DeviceProfile(
-            name = Constants.APP_INFO_NAME,
+            name = NativePlayer.PLAYER_NAME,
             directPlayProfiles = directPlayProfiles,
-            transcodingProfiles = getTranscodingProfiles(),
+            transcodingProfiles = getExoPlayerTranscodingProfiles(),
             containerProfiles = containerProfiles,
             codecProfiles = codecProfiles,
             subtitleProfiles = getSubtitleProfiles(EXO_EMBEDDED_SUBTITLES, EXO_EXTERNAL_SUBTITLES),
@@ -87,8 +88,32 @@ class DeviceProfileBuilder {
         )
     }
 
+    fun getMPVPlayerProfile(): DeviceProfile = DeviceProfile(
+        name = MPVPlayer.PLAYER_NAME,
+        directPlayProfiles = listOf(
+            DirectPlayProfile(type = DlnaProfileType.VIDEO),
+            DirectPlayProfile(type = DlnaProfileType.AUDIO),
+        ),
+        transcodingProfiles = getMPVTranscodingProfiles(),
+        containerProfiles = emptyList(),
+        codecProfiles = emptyList(),
+        subtitleProfiles = getSubtitleProfiles(MPV_PLAYER_SUBTITLES.plus("vtt"), MPV_PLAYER_SUBTITLES),
+
+        // TODO: remove redundant defaults after API/SDK is fixed
+        maxAlbumArtWidth = Int.MAX_VALUE,
+        maxAlbumArtHeight = Int.MAX_VALUE,
+        timelineOffsetSeconds = 0,
+        enableAlbumArtInDidl = false,
+        enableSingleAlbumArtLimit = false,
+        enableSingleSubtitleLimit = false,
+        requiresPlainFolders = false,
+        requiresPlainVideoItems = false,
+        enableMsMediaReceiverRegistrar = false,
+        ignoreTranscodeByteRangeRequests = false,
+    )
+
     fun getExternalPlayerProfile(): DeviceProfile = DeviceProfile(
-        name = ExternalPlayer.DEVICE_PROFILE_NAME,
+        name = ExternalPlayer.PLAYER_NAME,
         directPlayProfiles = listOf(
             DirectPlayProfile(type = DlnaProfileType.VIDEO),
             DirectPlayProfile(type = DlnaProfileType.AUDIO),
@@ -145,7 +170,7 @@ class DeviceProfileBuilder {
         return videoCodecs to audioCodecs
     }
 
-    private fun getTranscodingProfiles(): List<TranscodingProfile> = ArrayList<TranscodingProfile>().apply {
+    private fun getExoPlayerTranscodingProfiles(): List<TranscodingProfile> = ArrayList<TranscodingProfile>().apply {
         add(
             TranscodingProfile(
                 type = DlnaProfileType.VIDEO,
@@ -193,6 +218,46 @@ class DeviceProfileBuilder {
                 audioCodec = "mp3",
                 context = EncodingContext.STREAMING,
                 protocol = "http",
+
+                // TODO: remove redundant defaults after API/SDK is fixed
+                estimateContentLength = false,
+                enableMpegtsM2TsMode = false,
+                transcodeSeekInfo = TranscodeSeekInfo.AUTO,
+                copyTimestamps = false,
+                enableSubtitlesInManifest = false,
+                minSegments = 0,
+                segmentLength = 0,
+                breakOnNonKeyFrames = false,
+            )
+        )
+    }
+
+    private fun getMPVTranscodingProfiles(): List<TranscodingProfile> = ArrayList<TranscodingProfile>().apply {
+        add(
+            TranscodingProfile(
+                type = DlnaProfileType.AUDIO,
+                context = EncodingContext.STREAMING,
+
+                // TODO: remove redundant defaults after API/SDK is fixed
+                estimateContentLength = false,
+                enableMpegtsM2TsMode = false,
+                transcodeSeekInfo = TranscodeSeekInfo.AUTO,
+                copyTimestamps = false,
+                enableSubtitlesInManifest = false,
+                minSegments = 0,
+                segmentLength = 0,
+                breakOnNonKeyFrames = false,
+            )
+        )
+        add(
+            TranscodingProfile(
+                type = DlnaProfileType.VIDEO,
+                container = "ts",
+                videoCodec = "h264,h265,hevc,mpeg4,mpeg2video",
+                audioCodec = "mp1,mp2,mp3,aac,ac3,eac3,dts,mlp,truehd,opus,flac,vorbis",
+                context = EncodingContext.STREAMING,
+                protocol = "hls",
+                maxAudioChannels = "6",
 
                 // TODO: remove redundant defaults after API/SDK is fixed
                 estimateContentLength = false,
@@ -303,6 +368,12 @@ class DeviceProfileBuilder {
         private val EXO_EXTERNAL_SUBTITLES = arrayOf("srt", "subrip", "ttml", "vtt", "webvtt")
         private val EXTERNAL_PLAYER_SUBTITLES = arrayOf(
             "ssa", "ass", "srt", "subrip", "idx", "sub", "vtt", "webvtt", "ttml", "pgs", "pgssub", "smi", "smil"
+        )
+        // https://github.com/mpv-player/mpv/blob/6857600c47f069aeb68232a745bc8f81d45c9967/player/external_files.c#L35
+        private val MPV_PLAYER_SUBTITLES = arrayOf(
+            "idx", "sub", "srt", "rt", "ssa", "ass", "mks",/* "vtt", */"sup", "scc", "smi", "lrc", "pgs",
+            // https://ffmpeg.org/general.html#Subtitle-Formats
+            "aqt", "jss", "txt", "mpsub", "pjs", "sami", "stl"
         )
     }
 }

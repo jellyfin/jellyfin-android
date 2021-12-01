@@ -33,6 +33,7 @@ import org.jellyfin.mobile.api.isLandscape
 import org.jellyfin.mobile.bridge.PlayOptions
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
+import org.jellyfin.mobile.player.mpv.MPVPlayer
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.PIP_MAX_RATIONAL
@@ -155,7 +156,7 @@ class PlayerFragment : Fragment() {
         }
 
         // Create playback menus
-        playbackMenus = PlaybackMenus(this, playerBinding, playerControlsBinding)
+        playbackMenus = PlaybackMenus(this, playerBinding, playerControlsBinding, viewModel.playerOrNull is MPVPlayer)
 
         // Set controller timeout
         suppressControllerAutoHide(false)
@@ -271,6 +272,10 @@ class PlayerFragment : Fragment() {
      */
     fun onSpeedSelected(speed: Float): Boolean {
         return viewModel.setPlaybackSpeed(speed)
+    }
+
+    fun onSkipForward() {
+        viewModel.skipForward()
     }
 
     fun onSkipToPrevious() {

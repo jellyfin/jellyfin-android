@@ -79,9 +79,11 @@
     <string name="pref_video_player_type_title">Video player type</string>
     <string name="video_player_web">Web player</string>
     <string name="video_player_integrated">Integrated player</string>
+    <string name="video_player_mpv">MPV player</string>
     <string name="video_player_external">External player</string>
     <string name="video_player_web_description">The default HTML video player from the Web UI</string>
     <string name="video_player_native_description">Based on ExoPlayer, supports more video formats and codecs, and is more integrated into the OS</string>
+    <string name="video_player_mpv_description">Based on libmpv, supports more video, audio and subtitle formats, and is more customizable</string>
     <string name="video_player_external_description">External video playback apps like MX Player and VLC</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Brightness and volume gestures</string>
     <string name="pref_exoplayer_remember_brightness">Remember display brightness</string>

@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.player
 
+import `is`.xyz.libmpv.MPVLib
 import android.annotation.SuppressLint
 import android.app.Application
 import android.media.AudioAttributes
@@ -27,11 +28,16 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
 import org.jellyfin.mobile.model.DisplayPreferences
+import org.jellyfin.mobile.bridge.ExternalPlayer
+import org.jellyfin.mobile.bridge.NativePlayer
+import org.jellyfin.mobile.player.mpv.MPVPlayer
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaQueueManager
+import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
 import org.jellyfin.mobile.utils.applyDefaultAudioAttributes
@@ -66,6 +72,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
     private val apiClient: ApiClient = get()
+	private val appPreferences by inject<AppPreferences>()
     private val displayPreferencesApi: DisplayPreferencesApi = apiClient.displayPreferencesApi
     private val playStateApi: PlayStateApi = apiClient.playStateApi
     private val hlsSegmentApi: HlsSegmentApi = apiClient.hlsSegmentApi
@@ -75,14 +82,20 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     val notificationHelper: PlayerNotificationHelper by lazy { PlayerNotificationHelper(this) }
 
     // Media source handling
-    val mediaQueueManager = MediaQueueManager(this)
+    val mediaQueueManager = MediaQueueManager(
+        viewModel = this, playerName = when (appPreferences.videoPlayerType) {
+            VideoPlayerType.EXO_PLAYER -> NativePlayer.PLAYER_NAME
+            VideoPlayerType.MPV_PLAYER -> MPVPlayer.PLAYER_NAME
+            else -> ExternalPlayer.PLAYER_NAME
+        }
+    )
     val mediaSourceOrNull: JellyfinMediaSource?
         get() = mediaQueueManager.mediaQueue.value?.jellyfinMediaSource
 
-    // ExoPlayer
-    private val _player = MutableLiveData<ExoPlayer?>()
+    // Player
+    private val _player = MutableLiveData<Player?>()
     private val _playerState = MutableLiveData<Int>()
-    val player: LiveData<ExoPlayer?> get() = _player
+    val player: LiveData<Player?> get() = _player
     val playerState: LiveData<Int> get() = _playerState
     private val eventLogger = EventLogger(mediaQueueManager.trackSelector)
     private val analyticsCollector = AnalyticsCollector(Clock.DEFAULT).apply {
@@ -94,9 +107,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private var progressUpdateJob: Job? = null
 
     /**
-     * Returns the current ExoPlayer instance or null
+     * Returns the current Player instance or null
      */
-    val playerOrNull: ExoPlayer? get() = _player.value
+    val playerOrNull: Player? get() = _player.value
 
     private val playerEventChannel: Channel<PlayerEvent> by inject(named(PLAYER_EVENT_CHANNEL))
 
@@ -157,28 +170,43 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     /**
-     * Setup a new [ExoPlayer] for video playback, register callbacks and set attributes
+     * Setup a new [Player] for video playback, register callbacks and set attributes
      */
     fun setupPlayer() {
-        val renderersFactory = DefaultRenderersFactory(getApplication()).apply {
-            setEnableDecoderFallback(true) // Fallback only works if initialization fails, not decoding at playback time
-            val rendererMode = when {
-                fallbackPreferExtensionRenderers -> DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER
-                else -> DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON
+        _player.value = when (appPreferences.videoPlayerType) {
+            VideoPlayerType.EXO_PLAYER -> {
+                val renderersFactory = DefaultRenderersFactory(getApplication()).apply {
+                    setEnableDecoderFallback(true) // Fallback only works if initialization fails, not decoding at playback time
+                    val rendererMode = when {
+                        fallbackPreferExtensionRenderers -> DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER
+                        else -> DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON
+                    }
+                    setExtensionRendererMode(rendererMode)
+                }
+                ExoPlayer.Builder(getApplication(), renderersFactory, get()).apply {
+                    setTrackSelector(mediaQueueManager.trackSelector)
+                    setAnalyticsCollector(analyticsCollector)
+                }.build().apply {
+                    addListener(this@PlayerViewModel)
+                    applyDefaultAudioAttributes(C.CONTENT_TYPE_MOVIE)
+                }
             }
-            setExtensionRendererMode(rendererMode)
-        }
-        _player.value = ExoPlayer.Builder(getApplication(), renderersFactory, get()).apply {
-            setTrackSelector(mediaQueueManager.trackSelector)
-            setAnalyticsCollector(analyticsCollector)
-        }.build().apply {
-            addListener(this@PlayerViewModel)
-            applyDefaultAudioAttributes(C.CONTENT_TYPE_MOVIE)
+			VideoPlayerType.MPV_PLAYER -> {
+                MPVPlayer(
+                    context = getApplication(),
+                    requestAudioFocus = true
+                ).apply {
+                    addListener(this@PlayerViewModel)
+                    analyticsCollector.setPlayer(this, this.applicationLooper)
+                    addListener(analyticsCollector)
+                }
+            }
+            else -> null
         }
     }
 
     /**
-     * Release the current ExoPlayer and stop/release the current MediaSession
+     * Release the current [Player] and stop/release the current [MediaSession]
      */
     private fun releasePlayer() {
         notificationHelper.dismissNotification()
@@ -194,7 +222,15 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     fun play(queueItem: MediaQueueManager.QueueItem.Loaded) {
         val player = playerOrNull ?: return
 
-        player.setMediaSource(queueItem.exoMediaSource)
+        when (player) {
+            is ExoPlayer -> {
+                player.setMediaSource(queueItem.exoMediaSource)
+            }
+            is MPVPlayer -> {
+                player.setMediaItem(MPVPlayer.parseMediaSource(queueItem.exoMediaSource))
+            }
+        }
+
         player.prepare()
 
         initialTracksSelected.set(false)
@@ -330,6 +366,13 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
     fun fastForward() {
         playerOrNull?.seekToOffset(displayPreferences.skipForwardLength)
+    }
+
+    fun skipForward() {
+        val player = playerOrNull ?: return
+        if (player is MPVPlayer) {
+            player.skipForward()
+        }
     }
 
     fun skipToPrevious(force: Boolean = false) {

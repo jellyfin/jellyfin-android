@@ -22,7 +22,8 @@ import java.util.Locale
 class PlaybackMenus(
     private val fragment: PlayerFragment,
     private val playerBinding: FragmentPlayerBinding,
-    private val playerControlsBinding: ExoPlayerControlViewBinding
+    private val playerControlsBinding: ExoPlayerControlViewBinding,
+    enableSkipForward: Boolean = false
 ) : PopupMenu.OnDismissListener {
     private val context = playerBinding.root.context
     private val previousButton: View by playerControlsBinding::previousButton
@@ -32,6 +33,7 @@ class PlaybackMenus(
     private val subtitlesButton: ImageButton by playerControlsBinding::subtitlesButton
     private val speedButton: View by playerControlsBinding::speedButton
     private val infoButton: View by playerControlsBinding::infoButton
+    private val skipForwardButton: View by playerControlsBinding::skipForwardButton
     private val playbackInfo: TextView by playerBinding::playbackInfo
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
@@ -73,6 +75,10 @@ class PlaybackMenus(
         }
         infoButton.setOnClickListener {
             playbackInfo.isVisible = !playbackInfo.isVisible
+        }
+        skipForwardButton.isVisible = enableSkipForward
+        skipForwardButton.setOnClickListener {
+            fragment.onSkipForward()
         }
         playbackInfo.setOnClickListener {
             dismissPlaybackInfo()

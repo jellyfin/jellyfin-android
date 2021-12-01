@@ -47,7 +47,7 @@ class ExternalPlayer(
     private val appPreferences: AppPreferences by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private val mediaSourceResolver: MediaSourceResolver by inject()
-    private val externalPlayerProfile: DeviceProfile by inject(named(DEVICE_PROFILE_NAME))
+    private val externalPlayerProfile: DeviceProfile by inject(named(PLAYER_NAME))
     private val apiClient: ApiClient = get()
     private val videosApi: VideosApi = apiClient.videosApi
 
@@ -297,6 +297,6 @@ class ExternalPlayer(
     }
 
     companion object {
-        const val DEVICE_PROFILE_NAME = "Android External Player"
+        const val PLAYER_NAME = "Android External Player"
     }
 }

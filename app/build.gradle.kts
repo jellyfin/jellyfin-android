@@ -78,6 +78,13 @@ android {
         }
     }
 
+    /*splits {
+        abi {
+            isEnable = true
+            isUniversalApk = true
+        }
+    }*/
+
     @Suppress("UnstableApiUsage")
     buildFeatures {
         viewBinding = true
@@ -88,6 +95,9 @@ android {
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
+    }
+    packagingOptions {
+        jniLibs.keepDebugSymbols += "**/*.so"
     }
     lint {
         isAbortOnError = false
@@ -163,6 +173,11 @@ dependencies {
     testImplementation(libs.bundles.kotest)
     testImplementation(libs.mockk)
     androidTestImplementation(libs.bundles.androidx.test)
+	
+	// TODO: Decide how to build / publish this..
+    implementation(files("libmpv\\app-release.aar"))
+    //implementation(files("libmpv\\app-sources.jar"))
+    //implementation(files("libmpv\\app-javadoc.jar"))
 }
 
 tasks {

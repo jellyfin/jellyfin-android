@@ -75,21 +75,22 @@ class SettingsFragment : Fragment() {
         val videoPlayerOptions = listOf(
             SelectionItem(VideoPlayerType.WEB_PLAYER, R.string.video_player_web, R.string.video_player_web_description),
             SelectionItem(VideoPlayerType.EXO_PLAYER, R.string.video_player_integrated, R.string.video_player_native_description),
+			SelectionItem(VideoPlayerType.MPV_PLAYER, R.string.video_player_mpv, R.string.video_player_mpv_description),
             SelectionItem(VideoPlayerType.EXTERNAL_PLAYER, R.string.video_player_external, R.string.video_player_external_description),
         )
         singleChoice(Constants.PREF_VIDEO_PLAYER_TYPE, videoPlayerOptions) {
             titleRes = R.string.pref_video_player_type_title
             initialSelection = VideoPlayerType.WEB_PLAYER
             defaultOnSelectionChange { selection ->
-                swipeGesturesPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
-                rememberBrightnessPreference.enabled = selection == VideoPlayerType.EXO_PLAYER && swipeGesturesPreference.checked
-                backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                swipeGesturesPreference.enabled = selection in arrayOf(VideoPlayerType.EXO_PLAYER, VideoPlayerType.MPV_PLAYER)
+                rememberBrightnessPreference.enabled = selection in arrayOf(VideoPlayerType.EXO_PLAYER, VideoPlayerType.MPV_PLAYER) && swipeGesturesPreference.checked
+                backgroundAudioPreference.enabled = selection in arrayOf(VideoPlayerType.EXO_PLAYER, VideoPlayerType.MPV_PLAYER)
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
         }
         swipeGesturesPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_SWIPE_GESTURES) {
             titleRes = R.string.pref_exoplayer_allow_brightness_volume_gesture
-            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+            enabled = appPreferences.videoPlayerType in arrayOf(VideoPlayerType.EXO_PLAYER, VideoPlayerType.MPV_PLAYER)
             defaultValue = true
             defaultOnCheckedChange { checked ->
                 rememberBrightnessPreference.enabled = checked
@@ -97,7 +98,7 @@ class SettingsFragment : Fragment() {
         }
         rememberBrightnessPreference = checkBox(Constants.PREF_EXOPLAYER_REMEMBER_BRIGHTNESS) {
             titleRes = R.string.pref_exoplayer_remember_brightness
-            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER && appPreferences.exoPlayerAllowSwipeGestures
+            enabled = appPreferences.videoPlayerType in arrayOf(VideoPlayerType.EXO_PLAYER, VideoPlayerType.MPV_PLAYER) && appPreferences.exoPlayerAllowSwipeGestures
             defaultOnCheckedChange { checked ->
                 if (!checked) appPreferences.exoPlayerBrightness = BRIGHTNESS_OVERRIDE_NONE
             }
@@ -105,7 +106,7 @@ class SettingsFragment : Fragment() {
         backgroundAudioPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO) {
             titleRes = R.string.pref_exoplayer_allow_background_audio
             summaryRes = R.string.pref_exoplayer_allow_background_audio_summary
-            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+            enabled = appPreferences.videoPlayerType in arrayOf(VideoPlayerType.EXO_PLAYER, VideoPlayerType.MPV_PLAYER)
         }
 
         // Generate available external player options

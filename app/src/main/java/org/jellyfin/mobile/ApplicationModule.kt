@@ -17,12 +17,14 @@ import kotlinx.coroutines.channels.Channel
 import okhttp3.OkHttpClient
 import org.jellyfin.mobile.api.DeviceProfileBuilder
 import org.jellyfin.mobile.bridge.ExternalPlayer
+import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.controller.ApiController
 import org.jellyfin.mobile.fragment.ConnectFragment
 import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.media.car.LibraryBrowser
 import org.jellyfin.mobile.player.PlayerEvent
 import org.jellyfin.mobile.player.PlayerFragment
+import org.jellyfin.mobile.player.mpv.MPVPlayer
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
@@ -61,8 +63,9 @@ val applicationModule = module {
     // Media player helpers
     single { MediaSourceResolver(get()) }
     single { DeviceProfileBuilder() }
-    single { get<DeviceProfileBuilder>().getDeviceProfile() }
-    single(named(ExternalPlayer.DEVICE_PROFILE_NAME)) { get<DeviceProfileBuilder>().getExternalPlayerProfile() }
+    single(named(ExternalPlayer.PLAYER_NAME)) { get<DeviceProfileBuilder>().getExternalPlayerProfile() }
+    single(named(MPVPlayer.PLAYER_NAME)) { get<DeviceProfileBuilder>().getMPVPlayerProfile() }
+    single(named(NativePlayer.PLAYER_NAME)) { get<DeviceProfileBuilder>().getExoPlayerProfile() }
 
     // ExoPlayer factories
     single<DataSource.Factory> {

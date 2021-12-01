@@ -6,6 +6,7 @@ import androidx.annotation.CheckResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.MergingMediaSource
@@ -14,10 +15,12 @@ import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import org.jellyfin.mobile.bridge.PlayOptions
+import org.jellyfin.mobile.player.mpv.MPVPlayer
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.utils.clearSelectionAndDisableRendererByType
 import org.jellyfin.mobile.utils.selectTrackByTypeAndGroup
+import org.jellyfin.mobile.player.mpv.TrackType
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.videosApi
 import org.jellyfin.sdk.api.operations.VideosApi
@@ -28,14 +31,16 @@ import org.jellyfin.sdk.model.api.PlayMethod
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
+import org.koin.core.qualifier.named
 import java.util.UUID
 
 class MediaQueueManager(
     private val viewModel: PlayerViewModel,
+    playerName: String
 ) : KoinComponent {
     private val apiClient: ApiClient = get()
     private val mediaSourceResolver: MediaSourceResolver by inject()
-    private val deviceProfile: DeviceProfile by inject()
+    private val deviceProfile: DeviceProfile by inject(named(playerName))
     private val videosApi: VideosApi = apiClient.videosApi
     val trackSelector = DefaultTrackSelector(viewModel.getApplication<Application>())
     private val _mediaQueue: MutableLiveData<QueueItem.Loaded> = MutableLiveData()
@@ -115,7 +120,7 @@ class MediaQueueManager(
     }
 
     /**
-     * Builds the [MediaSource] to be played by ExoPlayer.
+     * Builds the [MediaSource] to be played by Player.
      *
      * @param source The [JellyfinMediaSource] object containing all necessary info about the item to be played.
      * @return A [MediaSource]. This can be the media stream of the correct type for the playback method or
@@ -241,6 +246,7 @@ class MediaQueueManager(
     @Suppress("ReturnCount")
     private fun selectAudioTrack(streamIndex: Int, initial: Boolean): Boolean {
         val mediaSource = _mediaQueue.value?.jellyfinMediaSource ?: return false
+        val player = viewModel.playerOrNull
         val sourceIndex = mediaSource.audioStreams.binarySearchBy(streamIndex, selector = MediaStream::index)
 
         when {
@@ -255,7 +261,18 @@ class MediaQueueManager(
             !mediaSource.selectAudioStream(sourceIndex) -> return false
         }
 
-        return trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_AUDIO, sourceIndex)
+        return when (player) {
+            is ExoPlayer -> {
+                trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_AUDIO, sourceIndex)
+            }
+            is MPVPlayer -> {
+                player.selectTrack(
+                    trackType = TrackType.AUDIO,
+                    index = mediaSource.selectedAudioStream?.index ?: C.INDEX_UNSET
+                )
+            }
+            else -> false
+        }
     }
 
     /**
@@ -274,6 +291,7 @@ class MediaQueueManager(
      */
     private fun selectSubtitle(streamIndex: Int, initial: Boolean): Boolean {
         val mediaSource = _mediaQueue.value?.jellyfinMediaSource ?: return false
+        val player = viewModel.playerOrNull
         val sourceIndex = mediaSource.subtitleStreams.binarySearchBy(streamIndex, selector = MediaStream::index)
 
         when {
@@ -283,11 +301,23 @@ class MediaQueueManager(
             !mediaSource.selectSubtitleStream(sourceIndex) -> return false
         }
 
-        return when {
-            // Select new subtitle with suitable renderer
-            sourceIndex >= 0 -> trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_TEXT, sourceIndex)
-            // No subtitle selected, clear selection overrides and disable all subtitle renderers
-            else -> trackSelector.clearSelectionAndDisableRendererByType(C.TRACK_TYPE_TEXT)
+        return when (player) {
+            is ExoPlayer -> {
+                when {
+                    // Select new subtitle with suitable renderer
+                    sourceIndex >= 0 -> trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_TEXT, sourceIndex)
+                    // No subtitle selected, clear selection overrides and disable all subtitle renderers
+                    else -> trackSelector.clearSelectionAndDisableRendererByType(C.TRACK_TYPE_TEXT)
+                }
+            }
+            is MPVPlayer -> {
+                player.selectTrack(
+                    trackType = TrackType.SUBTITLE,
+                    isExternal = mediaSource.selectedSubtitleStream?.isExternal ?: false,
+                    index = mediaSource.selectedSubtitleStream?.index ?: C.INDEX_UNSET
+                )
+            }
+            else -> false
         }
     }
 

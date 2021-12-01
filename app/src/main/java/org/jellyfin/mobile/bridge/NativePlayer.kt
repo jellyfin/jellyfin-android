@@ -18,7 +18,7 @@ class NativePlayer(private val host: NativePlayerHost) : KoinComponent {
     private val playerEventChannel: Channel<PlayerEvent> by inject(named(PLAYER_EVENT_CHANNEL))
 
     @JavascriptInterface
-    fun isEnabled() = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+    fun isEnabled() = appPreferences.videoPlayerType in arrayOf(VideoPlayerType.EXO_PLAYER, VideoPlayerType.MPV_PLAYER)
 
     @JavascriptInterface
     fun loadPlayer(args: String) {
@@ -60,5 +60,9 @@ class NativePlayer(private val host: NativePlayerHost) : KoinComponent {
     @JavascriptInterface
     fun setVolume(volume: Int) {
         playerEventChannel.trySend(PlayerEvent.SetVolume(volume))
+    }
+
+    companion object {
+        const val PLAYER_NAME = Constants.APP_INFO_NAME
     }
 }
