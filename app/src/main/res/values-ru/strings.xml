@@ -70,7 +70,7 @@
     <string name="pref_download_location">Место загрузок</string>
     <string name="pref_category_downloads">Загрузки</string>
     <string name="dialog_button_close_app">Закрыть приложение</string>
-    <string name="dialog_button_check_for_updates">Проверить на обновления</string>
+    <string name="dialog_button_check_for_updates">Проверить обновления</string>
     <string name="dialog_web_view_outdated_message">Реализация WebView, используемая вашим устройством, устарела.
 \nОбновите его до совместимой версии.</string>
     <string name="dialog_web_view_outdated">WebView устарело</string>
