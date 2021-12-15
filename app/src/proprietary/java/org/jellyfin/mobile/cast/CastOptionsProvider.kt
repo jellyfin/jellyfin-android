@@ -7,7 +7,7 @@ import com.google.android.gms.cast.framework.SessionProvider
 
 class CastOptionsProvider : OptionsProvider {
     override fun getCastOptions(context: Context): CastOptions {
-        return CastOptions.Builder().setReceiverApplicationId(appId).build()
+        return CastOptions.Builder().setReceiverApplicationId(applicationId.orEmpty()).build()
     }
 
     override fun getAdditionalSessionProviders(context: Context): List<SessionProvider>? {
@@ -15,16 +15,19 @@ class CastOptionsProvider : OptionsProvider {
     }
 
     companion object {
-        /** The app id.  */
-        private var appId: String? = null
+        /**
+         * ID of the cast receiver application.
+         */
+        private var applicationId: String? = null
 
         /**
-         * Sets the app ID.
-         * @param applicationId appId
+         * Sets the application ID.
+         *
+         * @param appId the receiver application ID.
          */
         @JvmStatic
-        fun setAppId(applicationId: String?) {
-            appId = applicationId
+        fun setAppId(appId: String) {
+            applicationId = appId
         }
     }
 }
