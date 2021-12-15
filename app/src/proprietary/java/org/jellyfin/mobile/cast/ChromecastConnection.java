@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;
 import androidx.mediarouter.app.MediaRouteChooserDialog;
 import androidx.mediarouter.media.MediaRouteSelector;
@@ -38,24 +39,26 @@ public class ChromecastConnection {
     /**
      * settings object.
      */
-    private SharedPreferences settings;
+    private final SharedPreferences settings;
     /**
      * Controls the media.
      */
-    private ChromecastSession media;
+    private final ChromecastSession media;
 
     /**
      * Lifetime variable.
      */
     private SessionListener newConnectionListener;
+
     /**
      * The Listener callback.
      */
-    private Listener listener;
+    private final Listener listener;
 
     /**
      * Initialize lifetime variable.
      */
+    @NonNull
     private String appId;
 
     /**
@@ -367,21 +370,21 @@ public class ChromecastConnection {
         getSessionManager().removeSessionManagerListener(newConnectionListener, CastSession.class);
         newConnectionListener = new SessionListener() {
             @Override
-            public void onSessionStarted(CastSession castSession, String sessionId) {
+            public void onSessionStarted(@NonNull CastSession castSession, @NonNull String sessionId) {
                 getSessionManager().removeSessionManagerListener(this, CastSession.class);
                 media.setSession(castSession);
                 callback.onJoin(ChromecastUtilities.createSessionObject(castSession));
             }
 
             @Override
-            public void onSessionStartFailed(CastSession castSession, int errCode) {
+            public void onSessionStartFailed(@NonNull CastSession castSession, int errCode) {
                 if (callback.onSessionStartFailed(errCode)) {
                     getSessionManager().removeSessionManagerListener(this, CastSession.class);
                 }
             }
 
             @Override
-            public void onSessionEnded(CastSession castSession, int errCode) {
+            public void onSessionEnded(@NonNull CastSession castSession, int errCode) {
                 if (callback.onSessionEndedBeforeStart(errCode)) {
                     getSessionManager().removeSessionManagerListener(this, CastSession.class);
                 }
@@ -469,7 +472,7 @@ public class ChromecastConnection {
             public void run() {
                 getSessionManager().addSessionManagerListener(new SessionListener() {
                     @Override
-                    public void onSessionEnded(CastSession castSession, int error) {
+                    public void onSessionEnded(@NonNull CastSession castSession, int error) {
                         getSessionManager().removeSessionManagerListener(this, CastSession.class);
                         media.setSession(null);
                         if (callback != null) {
@@ -495,39 +498,39 @@ public class ChromecastConnection {
      */
     private static class SessionListener implements SessionManagerListener<CastSession> {
         @Override
-        public void onSessionStarting(CastSession castSession) {
+        public void onSessionStarting(@NonNull CastSession castSession) {
         }
 
         @Override
-        public void onSessionStarted(CastSession castSession, String sessionId) {
+        public void onSessionStarted(@NonNull CastSession castSession, @NonNull String sessionId) {
         }
 
         @Override
-        public void onSessionStartFailed(CastSession castSession, int error) {
+        public void onSessionStartFailed(@NonNull CastSession castSession, int error) {
         }
 
         @Override
-        public void onSessionEnding(CastSession castSession) {
+        public void onSessionEnding(@NonNull CastSession castSession) {
         }
 
         @Override
-        public void onSessionEnded(CastSession castSession, int error) {
+        public void onSessionEnded(@NonNull CastSession castSession, int error) {
         }
 
         @Override
-        public void onSessionResuming(CastSession castSession, String sessionId) {
+        public void onSessionResuming(@NonNull CastSession castSession, @NonNull String sessionId) {
         }
 
         @Override
-        public void onSessionResumed(CastSession castSession, boolean wasSuspended) {
+        public void onSessionResumed(@NonNull CastSession castSession, boolean wasSuspended) {
         }
 
         @Override
-        public void onSessionResumeFailed(CastSession castSession, int error) {
+        public void onSessionResumeFailed(@NonNull CastSession castSession, int error) {
         }
 
         @Override
-        public void onSessionSuspended(CastSession castSession, int reason) {
+        public void onSessionSuspended(@NonNull CastSession castSession, int reason) {
         }
     }
 
