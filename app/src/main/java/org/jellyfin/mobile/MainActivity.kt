@@ -14,7 +14,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import org.jellyfin.mobile.cast.Chromecast
 import org.jellyfin.mobile.cast.IChromecast
 import org.jellyfin.mobile.fragment.ConnectFragment
@@ -31,7 +30,6 @@ import org.jellyfin.mobile.webapp.RemotePlayerService
 import org.koin.android.ext.android.inject
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.KoinExperimentalAPI
 
 class MainActivity : AppCompatActivity() {
     private val mainViewModel: MainViewModel by viewModel()
@@ -52,7 +50,6 @@ class MainActivity : AppCompatActivity() {
 
     private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(this) }
 
-    @OptIn(KoinExperimentalAPI::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         setupKoinFragmentFactory()
         super.onCreate(savedInstanceState)
