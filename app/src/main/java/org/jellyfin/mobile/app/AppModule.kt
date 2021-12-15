@@ -22,6 +22,7 @@ import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.player.audio.car.LibraryBrowser
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayerEvent
+import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.player.ui.PlayerFragment
 import org.jellyfin.mobile.setup.ConnectionHelper
@@ -66,6 +67,7 @@ val applicationModule = module {
     // Media player helpers
     single { MediaSourceResolver(get()) }
     single { DeviceProfileBuilder() }
+    single { QualityOptionsProvider() }
 
     // ExoPlayer factories
     single<DataSource.Factory> {
