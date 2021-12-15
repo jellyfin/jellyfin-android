@@ -332,18 +332,16 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         playerOrNull?.seekToOffset(displayPreferences.skipForwardLength)
     }
 
-    fun skipToPrevious(force: Boolean = false) {
+    fun skipToPrevious() {
         val player = playerOrNull ?: return
         when {
             // Skip to previous element
-            force || player.currentPosition <= Constants.MAX_SKIP_TO_PREV_MS -> {
-                viewModelScope.launch {
-                    pause()
-                    if (!mediaQueueManager.previous()) {
-                        // Skip to previous failed, go to start of video anyway
-                        playerOrNull?.seekTo(0)
-                        play()
-                    }
+            player.currentPosition <= Constants.MAX_SKIP_TO_PREV_MS -> viewModelScope.launch {
+                pause()
+                if (!mediaQueueManager.previous()) {
+                    // Skip to previous failed, go to start of video anyway
+                    playerOrNull?.seekTo(0)
+                    play()
                 }
             }
             // Rewind to start of track if not at the start already
