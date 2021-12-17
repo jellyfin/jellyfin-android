@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import de.Maxr1998.modernpreferences.Preference
 import de.Maxr1998.modernpreferences.PreferencesAdapter
@@ -12,6 +13,7 @@ import de.Maxr1998.modernpreferences.helpers.categoryHeader
 import de.Maxr1998.modernpreferences.helpers.checkBox
 import de.Maxr1998.modernpreferences.helpers.defaultOnCheckedChange
 import de.Maxr1998.modernpreferences.helpers.defaultOnSelectionChange
+import de.Maxr1998.modernpreferences.helpers.pref
 import de.Maxr1998.modernpreferences.helpers.screen
 import de.Maxr1998.modernpreferences.helpers.singleChoice
 import de.Maxr1998.modernpreferences.preferences.CheckBoxPreference
@@ -20,15 +22,17 @@ import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.FragmentSettingsBinding
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.LogDialog
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
+import org.jellyfin.mobile.utils.createLogs
 import org.jellyfin.mobile.utils.getDownloadsPaths
+import org.jellyfin.mobile.utils.getLogsPaths
 import org.jellyfin.mobile.utils.isPackageInstalled
 import org.jellyfin.mobile.utils.requireMainActivity
 import org.jellyfin.mobile.utils.withThemedContext
 import org.koin.android.ext.android.inject
 
 class SettingsFragment : Fragment() {
-
     private val appPreferences: AppPreferences by inject()
     private val settingsAdapter: PreferencesAdapter by lazy { PreferencesAdapter(buildSettingsScreen()) }
     private lateinit var swipeGesturesPreference: CheckBoxPreference
@@ -139,11 +143,39 @@ class SettingsFragment : Fragment() {
             titleRes = R.string.pref_download_location
             initialSelection = appPreferences.downloadLocation
         }
+
+        categoryHeader(PREF_CATEGORY_LOGS) {
+            titleRes = R.string.pref_category_logs
+        }
+
+        val logsDir: List<SelectionItem> = requireContext().getLogsPaths().map { path ->
+            SelectionItem(path, path, null)
+        }
+
+        singleChoice(Constants.PREF_LOG_LOCATION, logsDir) {
+            titleRes = R.string.pref_log_location
+            initialSelection = appPreferences.logLocation
+        }
+
+        pref("capture-log-button") {
+            title = "Capture log"
+            clickListener = Preference.OnClickListener { _, holder ->
+                requireContext().createLogs()
+                Toast.makeText(holder.itemView.context, "logcat has been captured", Toast.LENGTH_SHORT).show()
+                false
+            }
+        }
+
+        +LogDialog().apply {
+            title = "Clear logs"
+            iconRes = R.drawable.ic_info_24dp
+        }
     }
 
     companion object {
         const val PREF_CATEGORY_MUSIC_PLAYER = "pref_category_music"
         const val PREF_CATEGORY_VIDEO_PLAYER = "pref_category_video"
         const val PREF_CATEGORY_DOWNLOADS = "pref_category_downloads"
+        const val PREF_CATEGORY_LOGS = "pref_category_logs"
     }
 }

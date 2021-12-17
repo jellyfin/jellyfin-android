@@ -2,6 +2,8 @@ package org.jellyfin.mobile.utils
 
 import android.media.session.PlaybackState
 import android.util.Rational
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import de.Maxr1998.modernpreferences.Preference
 import org.jellyfin.mobile.BuildConfig
 
 @Suppress("MagicNumber")
@@ -9,6 +11,7 @@ object Constants {
     // App Info
     const val APP_INFO_NAME = "Jellyfin Android"
     const val APP_INFO_VERSION: String = BuildConfig.VERSION_NAME
+    const val APP_LOGFILE_SCHEMA = "jellyfinLog"
 
     // Webapp constants
     const val MINIMUM_WEB_VIEW_VERSION = 80
@@ -37,6 +40,7 @@ object Constants {
     const val PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO = "pref_exoplayer_allow_background_audio"
     const val PREF_EXTERNAL_PLAYER_APP = "pref_external_player_app"
     const val PREF_DOWNLOAD_LOCATION = "pref_download_location"
+    const val PREF_LOG_LOCATION = "pref_log_location"
 
     // InputManager commands
     const val PLAYBACK_MANAGER_COMMAND_PLAY = "unpause"

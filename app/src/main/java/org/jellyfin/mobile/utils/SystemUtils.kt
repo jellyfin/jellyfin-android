@@ -31,9 +31,18 @@ import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.koin.android.ext.android.get
 import timber.log.Timber
+import java.io.BufferedReader
 import java.io.File
+import java.io.InputStreamReader
+import java.io.PrintWriter
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import android.media.MediaScannerConnection
+import org.jellyfin.mobile.utils.Constants.APP_LOGFILE_SCHEMA
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import kotlin.concurrent.thread
+
 
 fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -63,7 +72,7 @@ suspend fun WebViewFragment.requestDownload(uri: Uri, title: String, filename: S
     // Storage permission for downloads isn't necessary from Android 10 onwards
     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
         @Suppress("MagicNumber")
-        val granted = withTimeout(2 * 60 * 1000 /* 2 minutes */) {
+        val granted = withTimeout(120000L /* 2 minutes */) {
             suspendCoroutine<Boolean> { continuation ->
                 requireActivity().requestPermission(WRITE_EXTERNAL_STORAGE) { requestPermissionsResult ->
                     continuation.resume(requestPermissionsResult[WRITE_EXTERNAL_STORAGE] == PERMISSION_GRANTED)
@@ -160,3 +169,72 @@ fun Context.getDownloadsPaths(): List<String> = ArrayList<String>().apply {
 
 val Context.isLowRamDevice: Boolean
     get() = getSystemService<ActivityManager>()!!.isLowRamDevice
+
+@Suppress("DEPRECATION")
+fun Context.getLogsPaths(): List<String> = ArrayList<String>().apply {
+    for (directory in getExternalFilesDirs(null)) {
+        // Ignore currently unavailable shared storage
+        if (directory == null) continue
+
+        val path = directory.absolutePath
+        val androidFolderIndex = path.indexOf("/Android")
+        if (androidFolderIndex == -1) continue
+
+        val storageDirectory = File(path.substring(0, androidFolderIndex))
+        if (storageDirectory.isDirectory) {
+            add(File(getExternalFilesDir(null).toString()).absolutePath)
+        }
+    }
+    if (isEmpty()) {
+        add(File(getExternalFilesDir(null).toString()).absolutePath)
+    }
+}
+
+
+fun Context.createLogs() {
+    thread{
+        try {
+            val process = Runtime.getRuntime().exec("logcat -d")
+            val bufferedReader = BufferedReader(InputStreamReader(process.inputStream))
+
+            val log = File(getExternalFilesDir(null), APP_LOGFILE_SCHEMA + dateTimeUtil() + ".txt")
+            log.createNewFile()
+
+            val writer = PrintWriter(log)
+            var line: String? = bufferedReader.readLine()
+
+            while (!line.equals(null)) {
+                writer.append(line + "\n")
+                line = bufferedReader.readLine()
+            }
+            writer.close()
+
+            MediaScannerConnection.scanFile(
+                applicationContext, arrayOf(File(getExternalFilesDir(null).toString()).absolutePath), arrayOf("text/plain")
+            ) { _, _ ->
+                //No need to call anything here
+            }
+        }
+        catch(exception : Exception){
+            exception.message?.let { Timber.e(it) }
+        }
+    }
+}
+
+fun Context.deleteAllLogs() {
+    val logList = getLogsPaths()
+
+    logList.forEach{ dir ->
+        val parent = File(dir)
+        val fileList = parent.listFiles()
+        fileList?.forEach { file ->
+            if(file.name.startsWith(APP_LOGFILE_SCHEMA)){
+                file.delete()
+            }
+        }
+    }
+}
+
+fun dateTimeUtil(): String {
+    return LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+}

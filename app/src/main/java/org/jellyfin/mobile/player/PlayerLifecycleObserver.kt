@@ -1,18 +1,15 @@
 package org.jellyfin.mobile.player
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 
-class PlayerLifecycleObserver(private val viewModel: PlayerViewModel) : LifecycleObserver {
+class PlayerLifecycleObserver(private val viewModel: PlayerViewModel) : DefaultLifecycleObserver {
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun onCreate() {
+    override fun onCreate(owner: LifecycleOwner) {
         viewModel.setupPlayer()
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onStop() {
+    override fun onStop(owner: LifecycleOwner) {
         if (!viewModel.notificationHelper.allowBackgroundAudio) {
             viewModel.pause()
         }

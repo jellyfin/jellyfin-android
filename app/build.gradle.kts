@@ -7,8 +7,10 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("kotlin-parcelize")
+    @Suppress("DSL_SCOPE_VIOLATION")
     alias(libs.plugins.detekt)
     id("de.mannodermaus.android-junit5")
+    @Suppress("DSL_SCOPE_VIOLATION")
     alias(libs.plugins.dependencyupdates)
 }
 
@@ -27,11 +29,11 @@ detekt {
 }
 
 android {
-    compileSdk = 30
+    compileSdk = 31
     defaultConfig {
         applicationId = "org.jellyfin.mobile"
         minSdk = 21
-        targetSdk = 30
+        targetSdk = 31
         versionName = project.getVersionName()
         versionCode = getVersionCode(versionName!!)
         setProperty("archivesBaseName", "jellyfin-android-v$versionName")

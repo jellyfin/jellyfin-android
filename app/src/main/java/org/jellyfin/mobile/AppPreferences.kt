@@ -2,15 +2,20 @@ package org.jellyfin.mobile
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Environment
+import android.util.Log
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
+import androidx.annotation.RequiresApi
 import androidx.core.content.edit
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 import java.io.File
+import kotlin.coroutines.coroutineContext
 
 class AppPreferences(context: Context) {
+    private val mContext = context
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
 
@@ -81,6 +86,28 @@ class AppPreferences(context: Context) {
             sharedPreferences.edit {
                 if (File(value).parentFile?.isDirectory == true) {
                     putString(Constants.PREF_DOWNLOAD_LOCATION, value)
+                }
+            }
+        }
+
+    var logLocation: String
+        get() {
+            val defaultStorage = mContext.getExternalFilesDir(null)!!.absolutePath
+            val savedStorage = sharedPreferences.getString(Constants.PREF_LOG_LOCATION, null)
+
+            return if (savedStorage != null && File(savedStorage).parentFile?.isDirectory == true) {
+                // Saved location is still valid
+                savedStorage
+            } else {
+                // Reset download option if corrupt
+                sharedPreferences.edit { putString(Constants.PREF_LOG_LOCATION, null) }
+                defaultStorage
+            }
+        }
+        set(value) {
+            sharedPreferences.edit {
+                if (File(value).parentFile?.isDirectory == true) {
+                    putString(Constants.PREF_LOG_LOCATION, value)
                 }
             }
         }
