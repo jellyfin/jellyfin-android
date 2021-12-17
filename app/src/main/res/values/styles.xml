@@ -5,6 +5,7 @@
         <item name="colorPrimaryDark">@color/jellyfin_primary_dark</item>
         <item name="colorAccent">@color/jellyfin_accent</item>
         <item name="android:windowBackground">@color/theme_background</item>
+        <item name="android:navigationBarColor">@color/theme_background</item>
     </style>
 
     <style name="AppTheme" parent="AppTheme.V21" />
