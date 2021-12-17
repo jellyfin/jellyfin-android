@@ -2,17 +2,14 @@ package org.jellyfin.mobile
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Environment
-import android.util.Log
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
-import androidx.annotation.RequiresApi
 import androidx.core.content.edit
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 import java.io.File
-import kotlin.coroutines.coroutineContext
+
 
 class AppPreferences(context: Context) {
     private val mContext = context

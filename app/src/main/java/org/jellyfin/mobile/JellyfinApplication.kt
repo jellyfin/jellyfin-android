@@ -7,7 +7,6 @@ import org.jellyfin.mobile.api.apiModule
 import org.jellyfin.mobile.model.databaseModule
 import org.jellyfin.mobile.utils.JellyTree
 import org.jellyfin.mobile.utils.isWebViewSupported
-import org.jellyfin.sdk.BuildConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.koin.fragmentFactory
 import org.koin.core.context.startKoin

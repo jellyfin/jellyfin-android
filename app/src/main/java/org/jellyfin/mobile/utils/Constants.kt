@@ -2,8 +2,6 @@ package org.jellyfin.mobile.utils
 
 import android.media.session.PlaybackState
 import android.util.Rational
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import de.Maxr1998.modernpreferences.Preference
 import org.jellyfin.mobile.BuildConfig
 
 @Suppress("MagicNumber")
