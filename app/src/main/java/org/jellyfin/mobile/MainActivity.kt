@@ -63,12 +63,10 @@ class MainActivity : AppCompatActivity() {
 
         ViewCompat.setOnApplyWindowInsetsListener(window.decorView.rootView) { view, insets ->
             view.updatePadding(
-                top = if(Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
+                top = if(Build.VERSION.SDK_INT > Build.VERSION_CODES.R)
                     WindowInsets.Type.statusBars()
-                }
-                else {
+                else
                     insets.systemWindowInsetTop
-                }
             )
             insets
         }
