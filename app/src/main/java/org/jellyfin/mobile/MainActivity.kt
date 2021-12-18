@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
 
     private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(this) }
 
+    @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         setupKoinFragmentFactory()
         super.onCreate(savedInstanceState)
