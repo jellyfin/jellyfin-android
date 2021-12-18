@@ -9,9 +9,12 @@ import android.os.Bundle
 import android.os.IBinder
 import android.provider.Settings
 import android.view.OrientationEventListener
+import android.view.WindowInsets
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import org.jellyfin.mobile.cast.Chromecast
@@ -57,6 +60,18 @@ class MainActivity : AppCompatActivity() {
 
         // Bind player service
         bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
+
+        ViewCompat.setOnApplyWindowInsetsListener(window.decorView.rootView) { view, insets ->
+            view.updatePadding(
+                top = if(Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
+                    WindowInsets.Type.statusBars()
+                }
+                else {
+                    insets.systemWindowInsetTop
+                }
+            )
+            insets
+        }
 
         // Check WebView support
         if (!isWebViewSupported()) {
