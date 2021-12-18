@@ -7,7 +7,7 @@
     <string name="downloading">Lataus</string>
     <string name="mobile_data_and_roaming">Mobiilidata ja verkkovierailu</string>
     <string name="mobile_data">Mobiilidata</string>
-    <string name="pref_music_notification_always_dismissible_title">Tee musiikkisoittimen ilmoituksesta aina poistettava</string>
+    <string name="pref_music_notification_always_dismissible_title">Hylättävä soittimen ilmoitus</string>
     <string name="pref_category_music_player">Musiikkisoitin</string>
     <string name="activity_name_settings">Jellyfinin asetukset</string>
     <string name="connection_error_invalid_format">Isäntäpalvelimen muoto on virheellinen</string>
@@ -55,7 +55,7 @@
     <string name="external_player_mpv_description">Yksinkertainen, pieni ja kevyt täysin ilmainen videosoitin. Tukee laajasti eri tiedostomuotoja.</string>
     <string name="external_player_mpv">MPV Player</string>
     <string name="external_player_app">Ulkoinen toistosovellus</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Salli kirkkauden ja äänenvoimakkuuden säätö eleillä vakiosoittimessa</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Kirkkauden ja äänenvoimakkuuden säätö eleillä</string>
     <string name="media_service_car_item_no_title">Nimetön</string>
     <string name="music_notification_channel_description">Käytetään musiikin toiston ohjaukseen</string>
     <string name="music_notification_channel">Jellyfin-musiikkisoitin</string>
@@ -74,4 +74,25 @@
     <string name="pref_music_notification_always_dismissible_summary_off">Ilmoitus</string>
     <string name="dialog_web_view_outdated">WebView vanhentunut</string>
     <string name="dialog_web_view_not_supported">WebView ei ole tuettu</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Salli videoiden toistaminen taustalla pelkällä äänellä</string>
+    <string name="pref_exoplayer_remember_brightness">Muista näytön kirkkaus</string>
+    <string name="video_player_integrated">Integroitu soitin</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Ilmoitus voidaan aina hylätä, myös mediaa toistettaessa</string>
+    <string name="playback_info_stream_unknown_title">Tuntematon otsikko</string>
+    <string name="player_error_unsupported_content">Tiedostoa ei voida toistaa tällä laitteella</string>
+    <string name="player_error_network_failure">Mediatietoja ei voitu ladata palvelimelta</string>
+    <string name="player_error_invalid_play_options">Toistotietoja ei voitu ratkaista</string>
+    <string name="connection_error_unsupported_version_or_product">Versiota tai laitetta ei tueta</string>
+    <string name="connection_error_unable_to_reach_sever">Palvelimeen ei saatu yhteyttä</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Kokeiltiin %d tuloksetta.</item>
+        <item quantity="other">Kokeiltiin %d tuloksetta.</item>
+    </plurals>
+    <string name="toast_reopen_after_change">Käynnistä sovellus uudelleen muutosten jälkeen</string>
+    <string name="dialog_button_ignore">Hylkää</string>
+    <string name="dialog_button_open_settings">Avaa asetukset</string>
+    <string name="dialog_web_view_outdated_message">Laitteesi WebView-toteutus on vanhentunut.
+\nPäivitä yhteensopivaan versioon.</string>
+    <string name="dialog_web_view_not_supported_message">WebViews ei ole tuettu tällä laitteella.
+\nAsenna yhteensopiva WebView-sovellus tai käytä tuettua laitetta.</string>
 </resources>
