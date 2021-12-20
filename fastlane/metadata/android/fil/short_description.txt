@@ -1,0 +1,1 @@
+Mobile client para sa Jellyfin, ang libreng software media system
