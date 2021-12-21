@@ -102,4 +102,8 @@
 
     <string name="pref_category_downloads">Downloads</string>
     <string name="pref_download_location">Download location</string>
+    <string name="default_aspect_ratio">Default aspect ratio</string>
+    <string name="aspect_ratio_auto">Auto</string>
+    <string name="aspect_ratio_cover">Cover</string>
+    <string name="aspect_ratio_fill">Fill</string>
 </resources>

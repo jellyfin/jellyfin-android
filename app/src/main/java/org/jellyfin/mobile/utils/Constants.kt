@@ -141,4 +141,7 @@ object Constants {
 
     // Misc
     const val PERCENT_MAX = 100
+
+    //default aspect ratio
+    const val DEFAULT_ASPECT_RATIO = "default_aspect_ratio"
 }

@@ -129,6 +129,19 @@ class SettingsFragment : Fragment() {
             titleRes = R.string.external_player_app
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXTERNAL_PLAYER
         }
+
+        //Supported aspect ratios
+        val aspectRatios = listOf(
+            SelectionItem("auto", getString(R.string.aspect_ratio_auto), null),
+            SelectionItem("cover", getString(R.string.aspect_ratio_cover), null),
+            SelectionItem("fill", getString(R.string.aspect_ratio_fill), null)
+        )
+
+        singleChoice(Constants.DEFAULT_ASPECT_RATIO, aspectRatios) {
+            title = getString(R.string.default_aspect_ratio)
+            initialSelection = appPreferences.defaultAspectRatio //auto by default
+        }
+
         categoryHeader(PREF_CATEGORY_DOWNLOADS) {
             titleRes = R.string.pref_category_downloads
         }

@@ -18,6 +18,7 @@ class WebappFunctionChannel {
     fun setVolume(volume: Int) = call("$PLAYBACK_MANAGER.sendCommand({ Name: 'SetVolume', Arguments: { Volume: $volume } });")
     fun seekTo(pos: Long) = call("$PLAYBACK_MANAGER.seekMs($pos);")
     fun goBack() = call("$NAVIGATION_HELPER.goBack();")
+    fun setDefaultAspectRatio(aspect: String) = call("$PLAYBACK_MANAGER.sendCommand({ Name: 'SetAspectRatio', Arguments: { AspectRatio: `$aspect` } });")
 
     companion object {
         private const val NAVIGATION_HELPER = "window.NavigationHelper"

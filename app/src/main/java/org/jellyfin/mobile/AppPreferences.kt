@@ -113,4 +113,8 @@ class AppPreferences(context: Context) {
     var externalPlayerApp: String
         get() = sharedPreferences.getString(Constants.PREF_EXTERNAL_PLAYER_APP, ExternalPlayerPackage.SYSTEM_DEFAULT)!!
         set(value) = sharedPreferences.edit { putString(Constants.PREF_EXTERNAL_PLAYER_APP, value) }
+
+    var defaultAspectRatio: String?
+        get() = sharedPreferences.getString(Constants.DEFAULT_ASPECT_RATIO, "auto")
+        set(value) = sharedPreferences.edit {putString(Constants.DEFAULT_ASPECT_RATIO, value)}
 }

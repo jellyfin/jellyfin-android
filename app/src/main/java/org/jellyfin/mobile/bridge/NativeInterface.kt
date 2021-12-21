@@ -10,6 +10,7 @@ import android.net.Uri
 import android.webkit.JavascriptInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.settings.SettingsFragment
@@ -48,6 +49,7 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
     private val context: Context = fragment.requireContext()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private val remoteVolumeProvider: RemoteVolumeProvider by inject()
+    private val appPreferences: AppPreferences by inject()
 
     @SuppressLint("HardwareIds")
     @JavascriptInterface
@@ -78,6 +80,8 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
                 enableFullscreen()
                 window.setBackgroundDrawable(null)
             }
+            //set default aspect ratio for Html Video Player
+            webappFunctionChannel.setDefaultAspectRatio(appPreferences.defaultAspectRatio as String)
         }
         return true
     }
