@@ -157,8 +157,8 @@ class SettingsFragment : Fragment() {
             initialSelection = appPreferences.logLocation
         }
 
-        pref("capture-log-button") {
-            title = "Capture log"
+        pref(Constants.PREF_CAPTURE_LOG) {
+            titleRes = R.string.pref_capture_log
             clickListener = Preference.OnClickListener { _, holder ->
                 requireContext().createLogs()
                 Toast.makeText(holder.itemView.context, "logcat has been captured", Toast.LENGTH_SHORT).show()
