@@ -9,6 +9,6 @@ Med en Jellyfin server, kan du:
 * Se live TV og optagelser fra din Jellyfin server (yderligere hardware/tjenester er nødvendige)
 * Afspil til en Chromecast enhed på dit netværk
 * Afspil dine medier på din Android enhed
-* Se din samling i et brugervenligt grænseflade
+* Se din samling i et nemt at bruge grænseflade
 
 Dette er den officielle Jellyfin app til Android. Tak fordi du bruger Jellyfin!
