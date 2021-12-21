@@ -140,6 +140,7 @@ class SettingsFragment : Fragment() {
         singleChoice(Constants.DEFAULT_ASPECT_RATIO, aspectRatios) {
             title = getString(R.string.default_aspect_ratio)
             initialSelection = appPreferences.defaultAspectRatio //auto by default
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.WEB_PLAYER
         }
 
         categoryHeader(PREF_CATEGORY_DOWNLOADS) {

@@ -14,6 +14,7 @@ import org.jellyfin.mobile.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.fragment.WebViewFragment
 import org.jellyfin.mobile.settings.SettingsFragment
+import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.EXTRA_ALBUM
 import org.jellyfin.mobile.utils.Constants.EXTRA_ARTIST
@@ -81,7 +82,8 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
                 window.setBackgroundDrawable(null)
             }
             //set default aspect ratio for Html Video Player
-            webappFunctionChannel.setDefaultAspectRatio(appPreferences.defaultAspectRatio as String)
+            if(appPreferences.videoPlayerType == VideoPlayerType.WEB_PLAYER)
+                webappFunctionChannel.setDefaultAspectRatio(appPreferences.defaultAspectRatio as String)
         }
         return true
     }
