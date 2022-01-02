@@ -77,4 +77,14 @@
 \nOpdater venligst til en kompatibel version.</string>
     <string name="dialog_web_view_outdated">Webvisning er forældet</string>
     <string name="dialog_web_view_not_supported">Webvisning er ikke understøttet</string>
+    <string name="player_error_invalid_play_options">Kan ikke afgøre afspilningsoplysninger</string>
+    <string name="connection_error_unsupported_version_or_product">Ikke understøttet version eller produkt</string>
+    <string name="connection_error_unable_to_reach_sever">Kan ikke nå serveren</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Forsøgte %d kandidat for input, uden succes.</item>
+        <item quantity="other">Forsøgte %d kandidater for input, uden succes.</item>
+    </plurals>
+    <string name="toast_reopen_after_change">Venligst genåben applikationen efter at ændringerne er lavet</string>
+    <string name="dialog_button_ignore">Ignorer</string>
+    <string name="dialog_button_open_settings">Åben indstillinger</string>
 </resources>
