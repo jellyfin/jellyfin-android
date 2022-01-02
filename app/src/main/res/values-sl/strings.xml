@@ -95,4 +95,6 @@
     <string name="dialog_button_ignore">Prezri</string>
     <string name="dialog_button_open_settings">Odpri nastavitve</string>
     <string name="pref_exoplayer_remember_brightness">Zapomni si svetlost zaslona</string>
+    <string name="video_player_integrated">Vgrajeni predvajalnik</string>
+    <string name="playback_info_stream_unknown_title">Neznan naslov</string>
 </resources>
