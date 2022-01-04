@@ -84,9 +84,9 @@
     <string name="connection_error_unable_to_reach_sever">Невозможно получить доступ к серверу</string>
     <plurals name="connection_error_prefix">
         <item quantity="one">Испытан %d кандидат для ввода, безуспешно.</item>
-        <item quantity="few">Испытано %d кандидата для ввода, безуспешно.</item>
-        <item quantity="many">Испытано %d кандидатов для ввода, безуспешно.</item>
-        <item quantity="other">Испытано %d кандидатов для ввода, безуспешно.</item>
+        <item quantity="few">Испытаны %d кандидата для ввода, безуспешно.</item>
+        <item quantity="many">Испытаны %d кандидатов для ввода, безуспешно.</item>
+        <item quantity="other">Испытаны %d кандидатов для ввода, безуспешно.</item>
     </plurals>
     <string name="player_error_unsupported_content">На этом устройстве невозможно воспроизводить медиаданные</string>
     <string name="player_error_network_failure">Невозможно загрузить информацию о медиаданных с сервера</string>
