@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_music_notification_always_dismissible_title">Jadikan notifikasi pemutar musik selalu dapat ditutup</string>
+    <string name="pref_music_notification_always_dismissible_title">Notifikasi pemutar yang bisa dihapus</string>
     <string name="pref_category_music_player">Pemutar lagu</string>
     <string name="activity_name_settings">Pengaturan Jellyfin</string>
     <string name="wifi_only">Hanya WiFi</string>
@@ -23,7 +23,7 @@
     <string name="playback_info_play_method">Metode pemutar: %s</string>
     <string name="connection_error_cannot_connect">Koneksi tidak dapat dibuat.
 \nSilakan periksa nama host dan koneksi jaringan Anda.</string>
-    <string name="pref_exoplayer_allow_background_audio">Izinkan memutar audio di latar belakang di pemutar asli</string>
+    <string name="pref_exoplayer_allow_background_audio">Audio latar belakang</string>
     <string name="notification_action_fast_forward">Maju cepat</string>
     <string name="notification_action_pause">Berhenti sebentar</string>
     <string name="notification_action_stop">Berhenti</string>
@@ -42,7 +42,7 @@
     <string name="external_player_invalid_player">Tidak ada pemutar eksternal valid yang dipilih. Pelacakan pemutaran dinonaktifkan.</string>
     <string name="external_player_not_supported_yet">Pelacakan pemutaran belum didukung di pemutar eksternal yang dipilih. Hubungi pengembang untuk mencoba menambahkan dukungan untuknya.</string>
     <string name="external_player_invalid_play_method">Metode putar tidak valid.</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Izinkan kecerahan dan gerakan volume di pemutar asli</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Gerakan kecerahan dan volume</string>
     <string name="available_servers_title">Server yang tersedia</string>
     <string name="choose_server_button_text">Pilih server</string>
     <string name="external_player_mpv">Pemutar MPV</string>
@@ -72,4 +72,26 @@
     <string name="toast_reopen_after_change">Silakan aplikasinya dibuka ulang setelah perubahan</string>
     <string name="dialog_button_open_settings">Buka pengaturan</string>
     <string name="dialog_button_close_app">Tutup aplikasi</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Izinkan memutar video di belakang dengan suara-saja</string>
+    <string name="pref_exoplayer_remember_brightness">Ingat kecerahan layar</string>
+    <string name="video_player_integrated">Pemutar terintegrasi</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Notifikasi selalu bisa dihapus, walaupun sedang memutar media</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">Notifikasi hanya bisa dihapus saat pemutaran dijeda</string>
+    <string name="playback_info_stream_unknown_title">Judul tidak diketahui</string>
+    <string name="player_error_unsupported_content">Media tidak bisa diputar di perangkat ini</string>
+    <string name="player_error_network_failure">Tidak bisa memuat info media dari server</string>
+    <string name="player_error_invalid_play_options">Tidak bisa mengambil info pemutaran</string>
+    <string name="connection_error_unsupported_version_or_product">Versi atau produk tidak didukung</string>
+    <string name="connection_error_unable_to_reach_sever">Tidak bisa menghubungi server</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="other">Mencoba %d masukan, tidak sukses.</item>
+    </plurals>
+    <string name="dialog_button_ignore">Hiraukan</string>
+    <string name="dialog_button_check_for_updates">Cek pembaruan</string>
+    <string name="dialog_web_view_outdated_message">Implementasi WebView yang digunakan perangkat anda sudah lawas.
+\nMohon perbarui dengan versi yang cocok.</string>
+    <string name="dialog_web_view_outdated">WebView versi lama</string>
+    <string name="dialog_web_view_not_supported_message">WebViews tidak didukung oleh perangkat ini.
+\nInstal komponen WebView yang cocok, atau ganti dengan perangkat yang didukung.</string>
+    <string name="dialog_web_view_not_supported">WebView tidak didukung</string>
 </resources>
