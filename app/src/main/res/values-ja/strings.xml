@@ -83,4 +83,15 @@
     <string name="dialog_button_close_app">アプリを終了する</string>
     <string name="dialog_button_check_for_updates">アップデートを確認する</string>
     <string name="dialog_web_view_outdated">WebViewの古いバージョン</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">バックグラウンドで音声のみでの動画再生を可能にする</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">再生が一時停止しているときのみ、通知を解除することができる</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">メディア再生中でも常に通知を解除することができる</string>
+    <string name="connection_error_unsupported_version_or_product">サポートされていないバージョンまたは製品</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="other">入力候補を %d 個試しましたが、成功しませんでした。</item>
+    </plurals>
+    <string name="dialog_web_view_outdated_message">お使いの端末で使用されているWebViewの実装が古くなっています。
+\n互換性のあるバージョンにアップデートしてください。</string>
+    <string name="dialog_web_view_not_supported_message">このデバイスではWebViewはサポートされていません。
+\n互換性のあるWebViewの実装をインストールするか、サポートされているデバイスに切り替えてください。</string>
 </resources>
