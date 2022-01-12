@@ -1,2 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="connection_error_unable_to_reach_sever">Није могуће приступити серверу</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Пробали смо кандидата %d за улаз, без успеха.</item>
+        <item quantity="few">Пробали смо кандидата %d за улаз, без успеха.</item>
+        <item quantity="other">Пробали смо кандидата %d за улаз, без успеха.</item>
+    </plurals>
+    <string name="connection_error_cannot_connect">Конекција није успешно успостављена.
+\nПроверите име домаћина и вашу интернет конекцију.</string>
+    <string name="connection_error_invalid_format">Домаћин има неправилан формат</string>
+    <string name="host_input_hint">Домаћин</string>
+    <string name="connect_to_server_title">Повежите се на сервер</string>
+    <string name="toast_reopen_after_change">Молимо вас да поново отворите апликацију након завршене промене</string>
+    <string name="dialog_button_ignore">Игнориши</string>
+    <string name="dialog_button_open_settings">Отворите подешавања</string>
+    <string name="dialog_button_close_app">Затворите апликацију</string>
+    <string name="dialog_button_check_for_updates">Проверите за ажурирања</string>
+    <string name="dialog_web_view_outdated_message">Веб-Приказ имплементација коришћена на овом уређају је застарела.
+\nМолимо вас ажурирајте га до подржане верзије.</string>
+    <string name="dialog_web_view_outdated">Веб-Приказ застарео</string>
+    <string name="dialog_web_view_not_supported_message">Веб-Приказ није подржан на овом уређају.
+\nИнсталирајте подржну имплементацију Веб-Приказа или се пребаците на подржан уређај.</string>
+    <string name="dialog_web_view_not_supported">WebView није подржан</string>
+</resources>
