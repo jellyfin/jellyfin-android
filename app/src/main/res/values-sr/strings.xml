@@ -22,4 +22,26 @@
     <string name="dialog_web_view_not_supported_message">Веб-Приказ није подржан на овом уређају.
 \nИнсталирајте подржну имплементацију Веб-Приказа или се пребаците на подржан уређај.</string>
     <string name="dialog_web_view_not_supported">WebView није подржан</string>
+    <string name="music_notification_channel">Jellyfin плејер за музику</string>
+    <string name="media_service_car_item_no_title">Без наслова</string>
+    <string name="media_service_car_section_playlists">Плејлисте</string>
+    <string name="media_service_car_section_genres">Жанрови</string>
+    <string name="media_service_car_section_songs">Песме</string>
+    <string name="media_service_car_section_artists">Уметници</string>
+    <string name="media_service_car_section_albums">Албуми</string>
+    <string name="media_service_car_section_recents">Недавно пуштено</string>
+    <string name="media_service_item_not_found">Ставка из медија не може бити пронађена</string>
+    <string name="media_service_generic_error">Дошло је до грешке</string>
+    <string name="download_no_storage_permission">Не можемо преузети фајлове без дозбола за складиште</string>
+    <string name="downloading">Преузимање</string>
+    <string name="mobile_data_and_roaming">Мобилни подаци и роминг</string>
+    <string name="mobile_data">Мобилни подаци</string>
+    <string name="wifi_only">Само ВиФи</string>
+    <string name="network_message">Да ли желите да дозволите да преузимање иде преко мобилних података\? Трошкови од вашег провајдера могу бити примењени.</string>
+    <string name="network_title">Дозвољени типови мреже</string>
+    <string name="battery_optimizations_message">Молимо вас да онемогућите оптимизацију батерије за репродуцкију медија док је екран изгашен.</string>
+    <string name="available_servers_title">Доступни сервери</string>
+    <string name="choose_server_button_text">Изаберите сервер</string>
+    <string name="connect_button_text">Повежите се</string>
+    <string name="connection_error_unsupported_version_or_product">Верзија или производ нису подржани</string>
 </resources>
