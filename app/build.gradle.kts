@@ -17,13 +17,6 @@ detekt {
     allRules = false
     config = files("${rootProject.projectDir}/detekt.yml")
     ignoreFailures = true
-
-    reports {
-        html.enabled = true
-        xml.enabled = false
-        txt.enabled = true
-        sarif.enabled = true
-    }
 }
 
 android {
@@ -168,6 +161,13 @@ dependencies {
 tasks {
     withType<Detekt> {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+
+        reports {
+            html.required.set(true)
+            xml.required.set(false)
+            txt.required.set(true)
+            sarif.required.set(true)
+        }
     }
 
     // Testing
