@@ -4,7 +4,6 @@ import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 
-
 /**
  * Get the index of the first renderer of the specified [type] supporting the track with the specified [groupIndex].
  *

@@ -126,9 +126,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 val customPrefs = displayPreferencesDto.customPrefs
 
                 displayPreferences = DisplayPreferences(
-                    skipBackLength = customPrefs?.get(Constants.DISPLAY_PREFERENCES_SKIP_BACK_LENGTH)?.toLongOrNull()
+                    skipBackLength = customPrefs[Constants.DISPLAY_PREFERENCES_SKIP_BACK_LENGTH]?.toLongOrNull()
                         ?: Constants.DEFAULT_SEEK_TIME_MS,
-                    skipForwardLength = customPrefs?.get(Constants.DISPLAY_PREFERENCES_SKIP_FORWARD_LENGTH)?.toLongOrNull()
+                    skipForwardLength = customPrefs[Constants.DISPLAY_PREFERENCES_SKIP_FORWARD_LENGTH]?.toLongOrNull()
                         ?: Constants.DEFAULT_SEEK_TIME_MS
                 )
             } catch (e: ApiClientException) {
