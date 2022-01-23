@@ -11,9 +11,9 @@ dependencyupdates = "0.41.0"
 coroutines = "1.5.2"
 
 # Core
-koin = "3.1.4"
+koin = "3.1.5"
 androidx-core = "1.7.0"
-androidx-appcompat = "1.4.0"
+androidx-appcompat = "1.4.1"
 androidx-activity = "1.4.0"
 androidx-fragment = "1.4.0"
 androiddesugarlibs = "1.1.5"
@@ -22,10 +22,10 @@ androiddesugarlibs = "1.1.5"
 androidx-lifecycle = "2.4.0"
 
 # UI
-androidx-constraintlayout = "2.1.2"
-google-material = "1.4.0"
+androidx-constraintlayout = "2.1.3"
+google-material = "1.5.0"
 androidx-webkit = "1.4.0"
-modernandroidpreferences = "2.2.1"
+modernandroidpreferences = "2.3.0"
 
 # Network
 jellyfin-sdk = "1.1.2"
@@ -37,20 +37,20 @@ androidx-media = "1.4.3"
 androidx-mediarouter = "1.2.5"
 exoplayer = "2.16.1"
 jellyfin-exoplayer-ffmpegextension = "2.16.1+1"
-playservices = "21.0.0"
+playservices = "21.0.1"
 
 # Room
-androidx-room = "2.4.0"
+androidx-room = "2.4.1"
 
 # Monitoring
 timber = "5.0.1"
-leakcanary = "2.7"
+leakcanary = "2.8.1"
 redscreenofdeath = "0.1.3"
 
 # Testing
 junit = "5.8.2"
-kotest = "5.0.2"
-mockk = "1.12.1"
+kotest = "5.1.0"
+mockk = "1.12.2"
 androidx-test-runner = "1.4.0"
 androidx-test-espresso = "3.4.0"
 
