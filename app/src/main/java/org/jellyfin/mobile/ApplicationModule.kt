@@ -37,6 +37,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 const val PLAYER_EVENT_CHANNEL = "PlayerEventChannel"
+private const val TS_SEARCH_PACKETS = 1800
 
 val applicationModule = module {
     single { AppPreferences(androidApplication()) }
@@ -76,7 +77,7 @@ val applicationModule = module {
             // https://github.com/google/ExoPlayer/issues/8571
             setTsExtractorTimestampSearchBytes(
                 when {
-                    !context.isLowRamDevice -> 1800 * TsExtractor.TS_PACKET_SIZE // 3x default
+                    !context.isLowRamDevice -> TS_SEARCH_PACKETS * TsExtractor.TS_PACKET_SIZE // 3x default
                     else -> TsExtractor.DEFAULT_TIMESTAMP_SEARCH_BYTES
                 }
             )

@@ -17,6 +17,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
     private val mediaInfoApi: MediaInfoApi = apiClient.mediaInfoApi
     private val itemsApi: ItemsApi = apiClient.itemsApi
 
+    @Suppress("ReturnCount")
     suspend fun resolveMediaSource(
         itemId: UUID,
         deviceProfile: DeviceProfile,
