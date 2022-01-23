@@ -287,6 +287,7 @@ class PlayerFragment : Fragment() {
         }
     }
 
+    @Suppress("NestedBlockDepth")
     @RequiresApi(Build.VERSION_CODES.N)
     private fun Activity.enterPictureInPicture() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
