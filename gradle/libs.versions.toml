@@ -3,7 +3,7 @@
 android-plugin = "7.0.4"
 kotlin = "1.6.10"
 kotlin-ksp = "1.6.10-1.0.2"
-detekt = "1.18.1"
+detekt = "1.19.0"
 android-junit5 = "1.8.2.0"
 dependencyupdates = "0.41.0"
 
