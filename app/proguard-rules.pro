@@ -15,7 +15,7 @@
 }
 
 # Keep Chromecast methods
--keepclassmembers class org.jellyfin.mobile.cast.Chromecast {
+-keepclassmembers class org.jellyfin.mobile.player.cast.Chromecast {
     public *;
 }
 

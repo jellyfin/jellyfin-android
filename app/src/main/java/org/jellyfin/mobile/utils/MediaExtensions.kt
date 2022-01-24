@@ -13,6 +13,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.analytics.AnalyticsCollector
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.utils.extensions.width
 import com.google.android.exoplayer2.audio.AudioAttributes as ExoPlayerAudioAttributes
 
 inline fun MediaSession.applyDefaultLocalAudioAttributes(contentType: Int) {

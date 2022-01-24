@@ -59,7 +59,7 @@
         <service android:name=".webapp.RemotePlayerService" />
 
         <service
-            android:name="org.jellyfin.mobile.media.MediaService"
+            android:name="org.jellyfin.mobile.player.audio.MediaService"
             android:exported="true"
             tools:ignore="ExportedService">
             <intent-filter>

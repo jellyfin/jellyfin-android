@@ -28,10 +28,14 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.BuildConfig
-import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
-import org.jellyfin.mobile.model.DisplayPreferences
+import org.jellyfin.mobile.app.PLAYER_EVENT_CHANNEL
+import org.jellyfin.mobile.player.ui.DisplayPreferences
+import org.jellyfin.mobile.player.interaction.PlayerEvent
+import org.jellyfin.mobile.player.interaction.PlayerLifecycleObserver
+import org.jellyfin.mobile.player.interaction.PlayerMediaSessionCallback
+import org.jellyfin.mobile.player.interaction.PlayerNotificationHelper
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
-import org.jellyfin.mobile.player.source.MediaQueueManager
+import org.jellyfin.mobile.player.queue.QueueManager
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
 import org.jellyfin.mobile.utils.applyDefaultAudioAttributes
@@ -39,11 +43,11 @@ import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
 import org.jellyfin.mobile.utils.getVolumeLevelPercent
 import org.jellyfin.mobile.utils.getVolumeRange
 import org.jellyfin.mobile.utils.logTracks
-import org.jellyfin.mobile.utils.scaleInRange
+import org.jellyfin.mobile.utils.extensions.scaleInRange
 import org.jellyfin.mobile.utils.seekToOffset
 import org.jellyfin.mobile.utils.setPlaybackState
 import org.jellyfin.mobile.utils.toMediaMetadata
-import org.jellyfin.mobile.utils.width
+import org.jellyfin.mobile.utils.extensions.width
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.jellyfin.sdk.api.client.extensions.displayPreferencesApi
@@ -75,7 +79,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     val notificationHelper: PlayerNotificationHelper by lazy { PlayerNotificationHelper(this) }
 
     // Media source handling
-    val mediaQueueManager = MediaQueueManager(this)
+    val mediaQueueManager = QueueManager(this)
     val mediaSourceOrNull: JellyfinMediaSource?
         get() = mediaQueueManager.mediaQueue.value?.jellyfinMediaSource
 
@@ -188,7 +192,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         _player.value = null
     }
 
-    fun play(queueItem: MediaQueueManager.QueueItem.Loaded) {
+    fun play(queueItem: QueueManager.QueueItem.Loaded) {
         val player = playerOrNull ?: return
 
         player.setMediaSource(queueItem.exoMediaSource)
@@ -353,14 +357,14 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     /**
-     * @see MediaQueueManager.selectAudioTrack
+     * @see QueueManager.selectAudioTrack
      */
     fun selectAudioTrack(streamIndex: Int): Boolean = mediaQueueManager.selectAudioTrack(streamIndex).also { success ->
         if (success) playerOrNull?.logTracks(analyticsCollector)
     }
 
     /**
-     * @see MediaQueueManager.selectSubtitle
+     * @see QueueManager.selectSubtitle
      */
     fun selectSubtitle(streamIndex: Int): Boolean = mediaQueueManager.selectSubtitle(streamIndex).also { success ->
         if (success) playerOrNull?.logTracks(analyticsCollector)

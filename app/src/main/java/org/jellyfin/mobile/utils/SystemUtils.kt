@@ -24,10 +24,10 @@ import androidx.core.content.getSystemService
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
-import org.jellyfin.mobile.AppPreferences
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.fragment.WebViewFragment
+import org.jellyfin.mobile.webapp.WebViewFragment
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.koin.android.ext.android.get
 import timber.log.Timber
