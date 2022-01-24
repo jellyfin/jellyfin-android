@@ -1,6 +1,6 @@
 package org.jellyfin.mobile.player.source
 
-import org.jellyfin.mobile.player.CodecHelpers
+import org.jellyfin.mobile.player.deviceprofile.CodecHelpers
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.MediaSourceInfo

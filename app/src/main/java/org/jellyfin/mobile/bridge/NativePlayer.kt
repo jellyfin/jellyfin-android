@@ -2,9 +2,10 @@ package org.jellyfin.mobile.bridge
 
 import android.webkit.JavascriptInterface
 import kotlinx.coroutines.channels.Channel
-import org.jellyfin.mobile.AppPreferences
-import org.jellyfin.mobile.PLAYER_EVENT_CHANNEL
-import org.jellyfin.mobile.player.PlayerEvent
+import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.app.PLAYER_EVENT_CHANNEL
+import org.jellyfin.mobile.player.interaction.PlayOptions
+import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 import org.json.JSONObject

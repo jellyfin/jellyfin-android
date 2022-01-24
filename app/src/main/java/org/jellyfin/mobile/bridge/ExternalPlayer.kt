@@ -12,9 +12,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import org.jellyfin.mobile.AppPreferences
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.player.PlayerException
+import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.source.ExternalSubtitleStream
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceResolver
