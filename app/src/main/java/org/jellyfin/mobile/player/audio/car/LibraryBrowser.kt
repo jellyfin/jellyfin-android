@@ -336,12 +336,11 @@ class LibraryBrowser(
         val result by itemsApi.getItemsByUserId(
             parentId = libraryId,
             includeItemTypes = listOf("Playlist"),
-            sortBy = listOf("DatePlayed"),
-            sortOrder = listOf(SortOrder.DESCENDING),
+            sortBy = listOf(ItemFields.SORT_NAME.serialName),
             recursive = true,
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
-            limit = 20,
+            limit = 50,
         )
 
         return result.extractItems()?.browsable()
