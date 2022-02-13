@@ -81,7 +81,7 @@
     <string name="pref_music_notification_always_dismissible_summary_on">La notification peut toujours être balayée, même lorsque la lecture d\'un média est en cours</string>
     <string name="pref_music_notification_always_dismissible_summary_off">La notification peut seulement être balayée lorsque le lecture est en pause</string>
     <plurals name="connection_error_prefix">
-        <item quantity="one">%d candidats a été testé, sans succès.</item>
+        <item quantity="one">%d candidat a été testé, sans succès.</item>
         <item quantity="other">%d candidats ont été testés, sans succès.</item>
     </plurals>
     <string name="connection_error_unsupported_version_or_product">Version ou produit non supporté</string>
