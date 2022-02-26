@@ -92,4 +92,7 @@
     <string name="dialog_web_view_not_supported_message">WebViews توسط این دستگاه پشتیبانی نمی شود.
 \nیک پیاده سازی WebView سازگار نصب کنید یا به یک دستگاه پشتیبانی شده بروید.</string>
     <string name="dialog_web_view_not_supported">WebView پشتیبانی نمی شود</string>
+    <string name="pref_exoplayer_remember_brightness">روشنایی صفحه نمایش را به خاطر بسپار</string>
+    <string name="video_player_integrated">پخش‌کننده یکپارچه</string>
+    <string name="playback_info_stream_unknown_title">عنوان ناشناخته</string>
 </resources>
