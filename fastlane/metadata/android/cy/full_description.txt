@@ -1,0 +1,14 @@
+Eich cyfryngau, ar eich telerau.
+
+Mae'r prosiect Jellyfin yn weinydd cyfryngau meddalwedd agored, rhad ac am ddim. Dim ffioedd, dim olrhain data, dim agenda gudd. Mynnwch ein gweinydd rhad ac am ddim i gasglu'ch holl sain, fideo, lluniau a mwy mewn un lle.
+
+I ddefnyddio'r app, rhaid bod gennych weinydd Jellyfin wedi'i sefydlu a'i redeg. Darganfyddwch fwy yn <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
+
+Gyda gweinydd Jellyfin, gallwch chi:
+
+* Gwylio Teledu Byw a sioeau wedi'u recordio gan eich gweinydd Jellyfin (angen caledwedd/gwasanaethau ychwanegol)
+* Ffrydiwch i ddyfais Chromecast ar eich rhwydwaith
+* Ffrydiwch eich cyfryngau i'ch dyfais Android
+* Gweld eich casgliad mewn rhyngwyneb hawdd i'w ddefnyddio
+
+Dyma ap swyddogol Jellyfin ar gyfer Android. Diolch am ddefnyddio Jellyfin!
