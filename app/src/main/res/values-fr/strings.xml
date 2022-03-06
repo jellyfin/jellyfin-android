@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="network_message">Autoriser le téléchargement via les données mobiles et l\'itinérance \? Des frais de votre fournisseur peuvent s\'appliquer.</string>
+    <string name="network_message">Autoriser le téléchargement via les données mobiles et l\'itinérance \? Des frais de votre fournisseur peuvent s\'appliquer.</string>
     <string name="battery_optimizations_message">Veuillez désactiver les optimisations de la batterie pour permettre la lecture avec écran éteint.</string>
     <string name="downloading">Téléchargement en cours</string>
     <string name="mobile_data_and_roaming">Données mobiles et itinérance</string>
@@ -15,8 +15,8 @@
     <string name="activity_name_settings">Paramètres Jellyfin</string>
     <string name="menu_item_none">Aucun</string>
     <string name="pref_category_music_player">Lecteur de musique</string>
-    <string name="pref_music_notification_always_dismissible_title">Notification du lecteur balayable</string>
-    <string name="playback_info_and_x_more">... et %d autres</string>
+    <string name="pref_music_notification_always_dismissible_title">Notification rejetable du lecteur</string>
+    <string name="playback_info_and_x_more">… et %d autres</string>
     <string name="playback_info_audio_streams">Flux audio</string>
     <string name="playback_info_video_streams">Flux vidéo</string>
     <string name="playback_info_transcoding">Transcodage : %b</string>
@@ -33,7 +33,7 @@
     <string name="notification_action_previous">Précédent</string>
     <string name="download_no_storage_permission">Impossible de télécharger des fichiers sans l\'autorisation de stockage</string>
     <string name="video_player_external_description">Applications externes de lecture vidéo, telles que MX Player et VLC</string>
-    <string name="video_player_native_description">Basé sur ExoPlayer, supporte plus de formats et codecs vidéos et est mieux intégré au système d\'exploitation</string>
+    <string name="video_player_native_description">Basé sur ExoPlayer, il supporte plus de formats et codecs vidéos et il est mieux intégré au système d\'exploitation</string>
     <string name="video_player_web_description">Le lecteur vidéo HTML par défaut de l\'interface Web</string>
     <string name="video_player_external">Lecteur externe</string>
     <string name="video_player_web">Lecteur web</string>
@@ -49,13 +49,13 @@
     <string name="external_player_mx_player_pro">MX Player Pro</string>
     <string name="external_player_mx_player_free">MX Player Gratuit</string>
     <string name="external_player_system_default_description">Laisser le système décider du lecteur, certains lecteurs peuvent ne pas être compatibles.</string>
-    <string name="external_player_system_default">Défaut système</string>
+    <string name="external_player_system_default">Système par défaut</string>
     <string name="external_player_vlc_player_description">Un lecteur multimédia libre et open source capable de lire la plupart des fichiers multimédia.</string>
     <string name="external_player_vlc_player">Lecteur VLC</string>
     <string name="external_player_mx_player_free_description">Lecteur vidéo puissant avec une accélération matérielle et un support des sous-titres avancés.</string>
     <string name="external_player_mpv_description">Un lecteur vidéo simple, léger et libre. Il supporte une grande variété de formats de fichiers multimédias.</string>
     <string name="external_player_mpv">Lecteur MPV</string>
-    <string name="external_player_app">App externe de lecture</string>
+    <string name="external_player_app">Application externe de lecture</string>
     <string name="music_notification_channel">Lecteur de musique Jellyfin</string>
     <string name="media_service_car_item_no_title">Aucun titre</string>
     <string name="media_service_car_section_playlists">Listes de lecture</string>
@@ -67,7 +67,7 @@
     <string name="media_service_generic_error">Une erreur est survenue</string>
     <string name="media_service_item_not_found">L\'élément multimédia est introuvable</string>
     <string name="music_notification_channel_description">Utilisé pour le contrôle de la lecture de musique</string>
-    <string name="pref_download_location">Emplacement de téléchargement</string>
+    <string name="pref_download_location">Emplacement des téléchargements</string>
     <string name="pref_category_downloads">Téléchargements</string>
     <string name="dialog_web_view_not_supported">WebView n\'est pas supporté</string>
     <string name="dialog_web_view_outdated">Version de WebView trop ancienne</string>
@@ -78,8 +78,8 @@
     <string name="dialog_button_check_for_updates">Chercher des mises à jour</string>
     <string name="dialog_button_close_app">Fermer l\'application</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Autoriser la lecture de vidéos en arrière-plan avec l\'audio uniquement</string>
-    <string name="pref_music_notification_always_dismissible_summary_on">La notification peut toujours être balayée, même lorsque la lecture d\'un média est en cours</string>
-    <string name="pref_music_notification_always_dismissible_summary_off">La notification peut seulement être balayée lorsque le lecture est en pause</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">La notification peut toujours être rejetée, même lorsque la lecture d\'un média est en cours</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">La notification peut être rejetée uniquement lorsque la lecture est en pause</string>
     <plurals name="connection_error_prefix">
         <item quantity="one">%d candidat a été testé, sans succès.</item>
         <item quantity="other">%d candidats ont été testés, sans succès.</item>
