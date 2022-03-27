@@ -15,11 +15,11 @@ koin = "3.1.5"
 androidx-core = "1.7.0"
 androidx-appcompat = "1.4.1"
 androidx-activity = "1.4.0"
-androidx-fragment = "1.4.0"
+androidx-fragment = "1.4.1"
 androiddesugarlibs = "1.1.5"
 
 # Lifecycle extensions
-androidx-lifecycle = "2.4.0"
+androidx-lifecycle = "2.4.1"
 
 # UI
 androidx-constraintlayout = "2.1.3"
@@ -33,14 +33,14 @@ okhttp = "4.9.3"
 coil = "1.4.0"
 
 # Media
-androidx-media = "1.4.3"
-androidx-mediarouter = "1.2.5"
+androidx-media = "1.5.0"
+androidx-mediarouter = "1.2.6"
 exoplayer = "2.16.1"
 jellyfin-exoplayer-ffmpegextension = "2.16.1+1"
 playservices = "21.0.1"
 
 # Room
-androidx-room = "2.4.1"
+androidx-room = "2.4.2"
 
 # Monitoring
 timber = "5.0.1"
