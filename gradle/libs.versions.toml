@@ -1,11 +1,11 @@
 [versions]
 # Plugins
-android-plugin = "7.0.4"
+android-plugin = "7.1.2"
 kotlin = "1.6.10"
-kotlin-ksp = "1.6.10-1.0.2"
+kotlin-ksp = "1.6.10-1.0.4"
 detekt = "1.19.0"
 android-junit5 = "1.8.2.0"
-dependencyupdates = "0.41.0"
+dependencyupdates = "0.42.0"
 
 # KotlinX
 coroutines = "1.6.0"

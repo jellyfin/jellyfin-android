@@ -83,9 +83,9 @@ android {
         isCoreLibraryDesugaringEnabled = true
     }
     lint {
-        isAbortOnError = false
+        abortOnError = false
         sarifReport = true
-        disable("MissingTranslation", "ExtraTranslation")
+        disable.addAll(setOf("MissingTranslation", "ExtraTranslation"))
     }
 }
 
