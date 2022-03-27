@@ -40,6 +40,7 @@
             "columnNames": [
               "hostname"
             ],
+            "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Server_hostname` ON `${TABLE_NAME}` (`hostname`)"
           }
         ],
@@ -94,6 +95,7 @@
               "server_id",
               "user_id"
             ],
+            "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_User_server_id_user_id` ON `${TABLE_NAME}` (`server_id`, `user_id`)"
           }
         ],
