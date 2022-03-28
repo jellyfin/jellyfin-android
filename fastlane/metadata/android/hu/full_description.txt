@@ -11,4 +11,4 @@ A Jellyfin szerver főbb funkciói:
 * Média közvetítése Android eszközödre.
 * A gyűjteményed megtekintése egy jól használható, felhasználóbarát felületen.
 
-Ez az alkalmazás a Jellyfin hivatalos mobilalkalmazása. Köszönjük, hogy a Jellyfint választottad!
+Ez az alkalmazás a Jellyfin hivatalos alkalmazás. Köszönjük, hogy a Jellyfint választottad!
