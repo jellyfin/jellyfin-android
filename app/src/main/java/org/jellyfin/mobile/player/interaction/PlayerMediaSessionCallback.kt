@@ -1,8 +1,10 @@
 package org.jellyfin.mobile.player.interaction
 
+import android.annotation.SuppressLint
 import android.media.session.MediaSession
 import org.jellyfin.mobile.player.PlayerViewModel
 
+@SuppressLint("MissingOnPlayFromSearch")
 class PlayerMediaSessionCallback(private val viewModel: PlayerViewModel) : MediaSession.Callback() {
     override fun onPlay() {
         viewModel.play()

@@ -71,6 +71,12 @@ android {
         }
     }
 
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
+
     @Suppress("UnstableApiUsage")
     buildFeatures {
         viewBinding = true
@@ -83,9 +89,9 @@ android {
         isCoreLibraryDesugaringEnabled = true
     }
     lint {
+        lintConfig = file("$rootDir/android-lint.xml")
         abortOnError = false
         sarifReport = true
-        disable.addAll(setOf("MissingTranslation", "ExtraTranslation"))
     }
 }
 

@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.webapp
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -31,9 +32,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.EXTRA_ALBUM
 import org.jellyfin.mobile.utils.Constants.EXTRA_ARTIST
@@ -339,44 +340,47 @@ class RemotePlayerService : Service(), CoroutineScope {
             mediaController = MediaController(applicationContext, sessionToken)
             @Suppress("DEPRECATION")
             setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS or MediaSession.FLAG_HANDLES_MEDIA_BUTTONS)
-            setCallback(object : MediaSession.Callback() {
-                override fun onPlay() {
-                    webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PLAY)
-                }
+            setCallback(
+                @SuppressLint("MissingOnPlayFromSearch")
+                object : MediaSession.Callback() {
+                    override fun onPlay() {
+                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PLAY)
+                    }
 
-                override fun onPause() {
-                    webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PAUSE)
-                }
+                    override fun onPause() {
+                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PAUSE)
+                    }
 
-                override fun onSkipToPrevious() {
-                    webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PREVIOUS)
-                }
+                    override fun onSkipToPrevious() {
+                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PREVIOUS)
+                    }
 
-                override fun onSkipToNext() {
-                    webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_NEXT)
-                }
+                    override fun onSkipToNext() {
+                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_NEXT)
+                    }
 
-                override fun onRewind() {
-                    webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_REWIND)
-                }
+                    override fun onRewind() {
+                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_REWIND)
+                    }
 
-                override fun onFastForward() {
-                    webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_FAST_FORWARD)
-                }
+                    override fun onFastForward() {
+                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_FAST_FORWARD)
+                    }
 
-                override fun onStop() {
-                    webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_STOP)
-                    onStopped()
-                }
+                    override fun onStop() {
+                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_STOP)
+                        onStopped()
+                    }
 
-                override fun onSeekTo(pos: Long) {
-                    webappFunctionChannel.seekTo(pos)
-                    val currentState = playbackState ?: return
-                    val isPlaying = currentState.state == PlaybackState.STATE_PLAYING
-                    val canSeek = (currentState.actions and PlaybackState.ACTION_SEEK_TO) != 0L
-                    setPlaybackState(isPlaying, pos, canSeek)
+                    override fun onSeekTo(pos: Long) {
+                        webappFunctionChannel.seekTo(pos)
+                        val currentState = playbackState ?: return
+                        val isPlaying = currentState.state == PlaybackState.STATE_PLAYING
+                        val canSeek = (currentState.actions and PlaybackState.ACTION_SEEK_TO) != 0L
+                        setPlaybackState(isPlaying, pos, canSeek)
+                    }
                 }
-            })
+            )
         }
     }
 

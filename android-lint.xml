@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<lint>
+    <issue id="ExtraTranslation" severity="warning" />
+    <issue id="MissingQuantity" severity="warning" />
+    <issue id="MissingTranslation" severity="ignore" />
+    <issue id="Typos">
+        <!-- Translations are handled through Weblate -->
+        <ignore regexp="app/src/main/res/values-.*" />
+    </issue>
+    <issue id="TypographyEllipsis">
+        <!-- Weblate doesn't use ellipsis characters -->
+        <ignore regexp="app/src/main/res/values-.*" />
+    </issue>
+</lint>
