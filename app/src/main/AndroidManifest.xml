@@ -77,7 +77,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
-            android:value="org.jellyfin.mobile.cast.CastOptionsProvider" />
+            android:value="org.jellyfin.mobile.player.cast.CastOptionsProvider" />
         <meta-data
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc" />
