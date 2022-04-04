@@ -1,8 +1,8 @@
 自由管理你的多媒體收藏！
 
-Jellyfin 是一個開源、免費的多媒體管理及串流伺服器，而且沒有任何收費及隱藏條款、不會收集任何資料。立即使用 jellyfin 收藏、管理你的影片、音樂、相片或其他媒體！
+Jellyfin 是一個開源、免費的多媒體管理及串流伺服器，它不需任何費用、沒有隱藏的條款、不會收集你的資料。立即使用 jellyfin 收藏、管理你的影片、音樂、相片或其他媒體！
 
-使用此應用程式需要先架設 Jellyfin 的伺服器端。請在 <a href="https://jellyfin.org/" target="_blank"> jellyfin.org</a> 了解更多。
+使用此應用程式前，你需要有架設好的 Jellyfin 伺服器。請前往 <a href="https://jellyfin.org/" target="_blank"> jellyfin.org</a> 取得更多資訊。
 
 Jellyfin 能讓你：
 

@@ -1,1 +1,1 @@
-Jellyfin 的流動應用程式
+Jellyfin的手機客戶端版本
