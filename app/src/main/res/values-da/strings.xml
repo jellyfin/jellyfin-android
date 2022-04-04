@@ -87,4 +87,5 @@
     <string name="toast_reopen_after_change">Venligst genåben applikationen efter at ændringerne er lavet</string>
     <string name="dialog_button_ignore">Ignorer</string>
     <string name="dialog_button_open_settings">Åben indstillinger</string>
+    <string name="playback_info_stream_unknown_title">Ukendt titel</string>
 </resources>
