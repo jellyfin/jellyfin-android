@@ -2,18 +2,18 @@
 <resources>
     <string name="pref_download_location">下載位置</string>
     <string name="pref_category_downloads">下載</string>
-    <string name="external_player_system_default_description">讓系統自動選擇，某些播放器可能不完全兼容。</string>
+    <string name="external_player_system_default_description">讓系統自動選擇，某些播放器可能不完全相容。</string>
     <string name="external_player_system_default">系統預設</string>
-    <string name="external_player_vlc_player_description">免費且開源的跨平台多媒體播放器，可播放大多數的多媒體檔案。</string>
+    <string name="external_player_vlc_player_description">免費且開源的跨平臺多媒體播放器，可播放大多數的多媒體檔案。</string>
     <string name="external_player_vlc_player">VLC 播放器</string>
     <string name="external_player_mx_player_pro_description">MX 播放器的付費版本，提供不間斷的觀影體驗。</string>
-    <string name="external_player_mpv_description">簡單、小巧、自由的影片播放器。支援多種媒體檔案格式。</string>
+    <string name="external_player_mpv_description">簡單、小巧、輕量、免費的影片播放器。支援多種媒體檔案格式。</string>
     <string name="external_player_mx_player_pro">MX 播放器 (專業版)</string>
     <string name="external_player_mx_player_free">MX 播放器 (免費版)</string>
-    <string name="external_player_mx_player_free_description">強大的影片播放器，支援進階硬體加速及字幕。</string>
+    <string name="external_player_mx_player_free_description">強大的影片播放器，支援進階的硬體加速及字幕。</string>
     <string name="external_player_mpv">MPV 播放器</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">允許在內建播放器中使用亮度及音量調整手勢</string>
-    <string name="pref_exoplayer_allow_background_audio">允許內建播放器在背景播放聲音</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">亮度及音量調整手勢</string>
+    <string name="pref_exoplayer_allow_background_audio">背景音訊</string>
     <string name="video_player_external_description">像是 MX Player 和 VLC 的外部影片播放器</string>
     <string name="video_player_native_description">基於 ExoPlayer，支援更多的影片格式和編碼，且與系統更契合</string>
     <string name="video_player_external">外部播放器</string>
@@ -57,4 +57,41 @@
     <string name="connection_error_invalid_format">主機格式無效</string>
     <string name="host_input_hint">主機</string>
     <string name="connect_to_server_title">連接至伺服器</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="other">嘗試了輸入%d種可能後，都失敗了。</item>
+    </plurals>
+    <string name="external_player_not_supported_yet">您選取的外部播放器尚未支援播放追蹤。請聯絡開發者以增加對其的支援。</string>
+    <string name="pref_music_notification_always_dismissible_title">可滑動關閉的播放器通知</string>
+    <string name="external_player_app">外部播放器</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">允許在背景中播放純音訊</string>
+    <string name="pref_exoplayer_remember_brightness">記住顯示亮度</string>
+    <string name="video_player_web_description">Web UI中預設的HTML影片播放器</string>
+    <string name="video_player_integrated">內建的播放器</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">此通知就算在播放媒體時也可以關閉</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">只有在暫停播放時才能關閉此通知</string>
+    <string name="external_player_unknown_error">在外部播放器發生未知錯誤。 播放追蹤已停用。</string>
+    <string name="external_player_invalid_player">尚未選取有效的外部播放器。已停用播放追蹤。</string>
+    <string name="playback_info_stream_unknown_title">未知的標題</string>
+    <string name="playback_info_audio_streams">音訊串流</string>
+    <string name="playback_info_video_streams">影片串流</string>
+    <string name="playback_info_transcoding">轉檔進度：%b</string>
+    <string name="player_error_unsupported_content">媒體無法在此裝置上播放</string>
+    <string name="player_error_network_failure">無法從伺服器載入媒體資訊</string>
+    <string name="player_error_invalid_play_options">無法解析播放資訊</string>
+    <string name="network_title">允許的網路類型</string>
+    <string name="connection_error_unsupported_version_or_product">不受支援的版本或產品</string>
+    <string name="connection_error_unable_to_reach_sever">無法連線至伺服器</string>
+    <string name="connection_error_cannot_connect">無法建立連線。
+\n請檢查主機名稱及網路連線。</string>
+    <string name="toast_reopen_after_change">請在變更後重新開啟應用程式</string>
+    <string name="dialog_button_ignore">忽略</string>
+    <string name="dialog_button_open_settings">開啟設定</string>
+    <string name="dialog_button_close_app">關閉應用程式</string>
+    <string name="dialog_button_check_for_updates">檢查更新</string>
+    <string name="dialog_web_view_outdated_message">您裝置上的WebView工具已過時。
+\n請更新至相容的版本。</string>
+    <string name="dialog_web_view_outdated">過時的WebView</string>
+    <string name="dialog_web_view_not_supported_message">此裝置不支援WebViews。
+\n請安裝相容WebView的工具或切換至支援WebViews的裝置。</string>
+    <string name="dialog_web_view_not_supported">不支援WebView</string>
 </resources>
