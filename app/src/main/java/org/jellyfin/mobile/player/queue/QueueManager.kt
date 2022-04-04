@@ -53,7 +53,7 @@ class QueueManager(
      */
     suspend fun startPlayback(playOptions: PlayOptions): PlayerException? {
         if (playOptions != currentPlayOptions) {
-            val itemId = playOptions.ids[playOptions.startIndex]
+            val itemId = playOptions.run { mediaSourceId ?: ids[playOptions.startIndex]}
             mediaSourceResolver.resolveMediaSource(
                 itemId = itemId,
                 deviceProfile = deviceProfile,
