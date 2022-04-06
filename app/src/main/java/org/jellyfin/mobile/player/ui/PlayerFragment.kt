@@ -28,22 +28,22 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerView
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.utils.extensions.aspectRational
-import org.jellyfin.mobile.utils.extensions.isLandscape
-import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
+import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.PIP_MAX_RATIONAL
 import org.jellyfin.mobile.utils.Constants.PIP_MIN_RATIONAL
 import org.jellyfin.mobile.utils.SmartOrientationListener
 import org.jellyfin.mobile.utils.brightness
+import org.jellyfin.mobile.utils.extensions.aspectRational
 import org.jellyfin.mobile.utils.extensions.disableFullscreen
 import org.jellyfin.mobile.utils.extensions.enableFullscreen
 import org.jellyfin.mobile.utils.extensions.isFullscreen
+import org.jellyfin.mobile.utils.extensions.isLandscape
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaStream
 

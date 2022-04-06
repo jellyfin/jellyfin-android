@@ -46,7 +46,7 @@ import org.jellyfin.sdk.model.api.SortOrder
 import org.jellyfin.sdk.model.serializer.toUUID
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
-import java.util.*
+import java.util.UUID
 
 @Suppress("TooManyFunctions")
 class LibraryBrowser(
@@ -259,10 +259,12 @@ class LibraryBrowser(
                 setTitle(context.getString(item.second))
 
                 if (item.first == LibraryPage.ALBUMS) {
-                    setExtras(Bundle().apply {
-                        putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_BROWSABLE, MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM)
-                        putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_PLAYABLE, MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM)
-                    })
+                    setExtras(
+                        Bundle().apply {
+                            putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_BROWSABLE, MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM)
+                            putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_PLAYABLE, MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM)
+                        }
+                    )
                 }
             }.build()
             MediaBrowserCompat.MediaItem(description, FLAG_BROWSABLE)

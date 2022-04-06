@@ -189,7 +189,13 @@ class PlayerMenus(
         setOnDismissListener(this@PlayerMenus)
     }
 
-    private fun buildMenuItems(menu: Menu, groupId: Int, mediaStreams: List<MediaStream>, selectedStream: MediaStream?, showNone: Boolean = false) {
+    private fun buildMenuItems(
+        menu: Menu,
+        groupId: Int,
+        mediaStreams: List<MediaStream>,
+        selectedStream: MediaStream?,
+        showNone: Boolean = false,
+    ) {
         menu.clear()
         val itemNone = if (showNone) menu.add(groupId, -1, Menu.NONE, fragment.getString(R.string.menu_item_none)) else null
         val menuItems = mediaStreams.map { mediaStream ->

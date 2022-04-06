@@ -20,10 +20,10 @@ import com.google.android.exoplayer2.Player
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.VIDEO_PLAYER_NOTIFICATION_ID
@@ -114,15 +114,18 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
         }
 
         if (receiverRegistered.compareAndSet(false, true)) {
-            context.registerReceiver(notificationActionReceiver, IntentFilter().apply {
-                addAction(Constants.ACTION_PLAY)
-                addAction(Constants.ACTION_PAUSE)
-                addAction(Constants.ACTION_REWIND)
-                addAction(Constants.ACTION_FAST_FORWARD)
-                addAction(Constants.ACTION_PREVIOUS)
-                addAction(Constants.ACTION_NEXT)
-                addAction(Constants.ACTION_STOP)
-            })
+            context.registerReceiver(
+                notificationActionReceiver,
+                IntentFilter().apply {
+                    addAction(Constants.ACTION_PLAY)
+                    addAction(Constants.ACTION_PAUSE)
+                    addAction(Constants.ACTION_REWIND)
+                    addAction(Constants.ACTION_FAST_FORWARD)
+                    addAction(Constants.ACTION_PREVIOUS)
+                    addAction(Constants.ACTION_NEXT)
+                    addAction(Constants.ACTION_STOP)
+                },
+            )
         }
     }
 

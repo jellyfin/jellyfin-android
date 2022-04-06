@@ -36,29 +36,29 @@ import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.launch
-import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.app.ApiClientController
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.bridge.NativeInterface
 import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.bridge.NativePlayerHost
-import org.jellyfin.mobile.player.interaction.PlayOptions
-import org.jellyfin.mobile.app.ApiClientController
-import org.jellyfin.mobile.databinding.FragmentWebviewBinding
-import org.jellyfin.mobile.setup.ConnectFragment
 import org.jellyfin.mobile.data.entity.ServerEntity
+import org.jellyfin.mobile.databinding.FragmentWebviewBinding
+import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.ui.PlayerFragment
+import org.jellyfin.mobile.setup.ConnectFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER
-import org.jellyfin.mobile.utils.extensions.addFragment
 import org.jellyfin.mobile.utils.applyDefault
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.dip
+import org.jellyfin.mobile.utils.extensions.addFragment
+import org.jellyfin.mobile.utils.extensions.replaceFragment
 import org.jellyfin.mobile.utils.fadeIn
 import org.jellyfin.mobile.utils.initLocale
 import org.jellyfin.mobile.utils.inject
 import org.jellyfin.mobile.utils.isOutdated
-import org.jellyfin.mobile.utils.extensions.replaceFragment
 import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
 import org.jellyfin.mobile.utils.runOnUiThread
 import org.json.JSONException
@@ -203,14 +203,22 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                 }
             }
 
-            override fun onReceivedHttpError(view: WebView, request: WebResourceRequest, errorResponse: WebResourceResponse) {
+            override fun onReceivedHttpError(
+                view: WebView,
+                request: WebResourceRequest,
+                errorResponse: WebResourceResponse,
+            ) {
                 val errorMessage = errorResponse.data?.run { bufferedReader().use(Reader::readText) }
                 Timber.e("Received WebView HTTP %d error: %s", errorResponse.statusCode, errorMessage)
 
                 if (request.url == Uri.parse(view.url)) onErrorReceived()
             }
 
-            override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceErrorCompat) {
+            override fun onReceivedError(
+                view: WebView,
+                request: WebResourceRequest,
+                error: WebResourceErrorCompat,
+            ) {
                 val description = if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_RESOURCE_ERROR_GET_DESCRIPTION)) error.description else null
                 val errorCode = if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_RESOURCE_ERROR_GET_CODE)) error.errorCode else ERROR_UNKNOWN
                 Timber.e("Received WebView error %d at %s: %s", errorCode, request.url.toString(), description)

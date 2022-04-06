@@ -22,12 +22,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.ApiClientController
 import org.jellyfin.mobile.databinding.FragmentConnectBinding
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
-import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.sdk.Jellyfin
 import org.jellyfin.sdk.discovery.LocalServerDiscovery
 import org.jellyfin.sdk.discovery.RecommendedServerInfo
