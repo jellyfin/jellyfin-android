@@ -12,8 +12,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.source.ExternalSubtitleStream
@@ -31,6 +31,7 @@ import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.PlayMethod
+import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -103,6 +104,20 @@ class ExternalPlayer(
                 }
             }
         }
+    }
+
+    @JavascriptInterface
+    fun getSubtitleProfiles(): String {
+        val subtitleProfiles = JSONArray()
+        externalPlayerProfile.subtitleProfiles?.forEach { profile ->
+            subtitleProfiles.put(
+                JSONObject().apply {
+                    put("method", profile.method)
+                    put("format", profile.format)
+                }
+            )
+        }
+        return subtitleProfiles.toString()
     }
 
     private fun playMediaSource(playOptions: PlayOptions, source: JellyfinMediaSource) {
