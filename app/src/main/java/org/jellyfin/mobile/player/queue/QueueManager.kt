@@ -13,9 +13,9 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
+import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.utils.clearSelectionAndDisableRendererByType
@@ -53,7 +53,7 @@ class QueueManager(
      */
     suspend fun startPlayback(playOptions: PlayOptions): PlayerException? {
         if (playOptions != currentPlayOptions) {
-            val itemId = playOptions.ids[playOptions.startIndex]
+            val itemId = playOptions.run { mediaSourceId ?: ids[playOptions.startIndex] }
             mediaSourceResolver.resolveMediaSource(
                 itemId = itemId,
                 deviceProfile = deviceProfile,
