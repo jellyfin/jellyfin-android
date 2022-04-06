@@ -162,6 +162,9 @@ dependencies {
     testImplementation(libs.bundles.kotest)
     testImplementation(libs.mockk)
     androidTestImplementation(libs.bundles.androidx.test)
+
+    // Formatting rules for detekt
+    detektPlugins(libs.detekt.formatting)
 }
 
 tasks {

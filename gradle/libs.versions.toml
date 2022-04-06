@@ -127,6 +127,9 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-test-runner" }
 androidx-test-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-test-espresso" }
 
+# Detekt plugins
+detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
+
 [bundles]
 coroutines = ["coroutines-core", "coroutines-android"]
 androidx-lifecycle = [

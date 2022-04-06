@@ -20,6 +20,17 @@ exceptions:
   SwallowedException:
     active: false
 
+formatting:
+  MaximumLineLength:
+    # Already handled by detekt itself
+    active: false
+  NoWildcardImports:
+    # Already handled by detekt itself
+    active: false
+  PackageName:
+    # Already handled by detekt itself
+    active: false
+
 naming:
   PackageNaming:
     # Package names must be lowercase letters
