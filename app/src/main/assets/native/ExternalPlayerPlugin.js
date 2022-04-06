@@ -144,7 +144,7 @@ export class ExternalPlayerPlugin {
             MusicStreamingTranscodingBitrate: 320000,
             DirectPlayProfiles: [{Type: 'Video'}, {Type: 'Audio'}],
             CodecProfiles: [],
-            SubtitleProfiles: [],
+            SubtitleProfiles: JSON.parse(this._externalPlayer.getSubtitleProfiles()),
             TranscodingProfiles: []
         };
     }

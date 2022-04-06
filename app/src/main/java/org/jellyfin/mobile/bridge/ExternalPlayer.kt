@@ -32,6 +32,7 @@ import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.PlayMethod
 import org.json.JSONObject
+import org.json.JSONArray
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -103,6 +104,15 @@ class ExternalPlayer(
                 }
             }
         }
+    }
+
+    @JavascriptInterface
+    fun getSubtitleProfiles(): String {
+        val subtitleProfiles = JSONArray()
+        externalPlayerProfile.subtitleProfiles?.forEach{
+            subtitleProfiles.put( JSONObject( "{Format: '${it.format}', Method: '${it.method}'}" ) )
+        }
+        return subtitleProfiles.toString()
     }
 
     private fun playMediaSource(playOptions: PlayOptions, source: JellyfinMediaSource) {
