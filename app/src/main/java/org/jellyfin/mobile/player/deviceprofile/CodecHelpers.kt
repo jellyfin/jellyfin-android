@@ -168,7 +168,6 @@ object CodecHelpers {
         else -> null
     }
 
-
     private fun getAVCLevel(level: Int): String? = when (level) {
         CodecProfileLevel.AVCLevel1 -> "1"
         CodecProfileLevel.AVCLevel11 -> "11"

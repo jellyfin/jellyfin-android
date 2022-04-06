@@ -11,7 +11,6 @@ import android.webkit.JavascriptInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.webapp.WebViewFragment
 import org.jellyfin.mobile.settings.SettingsFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.EXTRA_ALBUM
@@ -28,11 +27,12 @@ import org.jellyfin.mobile.utils.Constants.EXTRA_TITLE
 import org.jellyfin.mobile.utils.extensions.addFragment
 import org.jellyfin.mobile.utils.extensions.disableFullscreen
 import org.jellyfin.mobile.utils.extensions.enableFullscreen
-import org.jellyfin.mobile.utils.requestDownload
 import org.jellyfin.mobile.utils.extensions.requireMainActivity
+import org.jellyfin.mobile.utils.requestDownload
 import org.jellyfin.mobile.utils.runOnUiThread
 import org.jellyfin.mobile.webapp.RemotePlayerService
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
+import org.jellyfin.mobile.webapp.WebViewFragment
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.util.AuthorizationHeaderBuilder
@@ -191,10 +191,14 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
 
     @JavascriptInterface
     fun execCast(action: String, args: String) {
-        fragment.requireMainActivity().chromecast.execute(action, JSONArray(args), object : JavascriptCallback() {
-            override fun callback(keep: Boolean, err: String?, result: String?) {
-                webappFunctionChannel.call("""window.NativeShell.castCallback("$action", $keep, $err, $result);""")
-            }
-        })
+        fragment.requireMainActivity().chromecast.execute(
+            action,
+            JSONArray(args),
+            object : JavascriptCallback() {
+                override fun callback(keep: Boolean, err: String?, result: String?) {
+                    webappFunctionChannel.call("""window.NativeShell.castCallback("$action", $keep, $err, $result);""")
+                }
+            },
+        )
     }
 }

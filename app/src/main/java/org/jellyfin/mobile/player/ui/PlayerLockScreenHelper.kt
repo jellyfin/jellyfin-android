@@ -8,8 +8,8 @@ import androidx.core.view.isVisible
 import com.google.android.exoplayer2.ui.PlayerView
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.utils.Constants
-import org.jellyfin.mobile.utils.isAutoRotateOn
 import org.jellyfin.mobile.utils.extensions.lockOrientation
+import org.jellyfin.mobile.utils.isAutoRotateOn
 
 class PlayerLockScreenHelper(
     private val playerFragment: PlayerFragment,

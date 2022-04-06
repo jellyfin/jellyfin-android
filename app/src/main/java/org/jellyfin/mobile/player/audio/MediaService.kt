@@ -36,13 +36,13 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.player.cast.CastPlayerProvider
-import org.jellyfin.mobile.player.cast.ICastPlayerProvider
 import org.jellyfin.mobile.app.ApiClientController
 import org.jellyfin.mobile.player.audio.car.LibraryBrowser
 import org.jellyfin.mobile.player.audio.car.LibraryPage
-import org.jellyfin.mobile.utils.extensions.mediaUri
+import org.jellyfin.mobile.player.cast.CastPlayerProvider
+import org.jellyfin.mobile.player.cast.ICastPlayerProvider
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.extensions.mediaUri
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
@@ -142,7 +142,6 @@ class MediaService : MediaBrowserServiceCompat() {
             newPlayer = if (castPlayerProvider.isCastSessionAvailable) castPlayerProvider.get()!! else exoPlayer
         )
         notificationManager.showNotificationForPlayer(currentPlayer)
-
     }
 
     override fun onDestroy() {
@@ -262,10 +261,11 @@ class MediaService : MediaBrowserServiceCompat() {
     }
 
     private fun setPlaybackError() {
-        mediaSession.setPlaybackState(PlaybackStateCompat.Builder().apply {
-            setState(PlaybackStateCompat.STATE_ERROR, 0, 1f)
-            setErrorMessage(PlaybackStateCompat.ERROR_CODE_NOT_SUPPORTED, getString(R.string.media_service_item_not_found))
-        }.build())
+        val errorState = PlaybackStateCompat.Builder()
+            .setState(PlaybackStateCompat.STATE_ERROR, 0, 1f)
+            .setErrorMessage(PlaybackStateCompat.ERROR_CODE_NOT_SUPPORTED, getString(R.string.media_service_item_not_found))
+            .build()
+        mediaSession.setPlaybackState(errorState)
     }
 
     @Suppress("unused")

@@ -15,15 +15,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import org.jellyfin.mobile.player.cast.Chromecast
 import org.jellyfin.mobile.player.cast.IChromecast
-import org.jellyfin.mobile.setup.ConnectFragment
-import org.jellyfin.mobile.webapp.WebViewFragment
 import org.jellyfin.mobile.player.ui.PlayerFragment
+import org.jellyfin.mobile.setup.ConnectFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
 import org.jellyfin.mobile.utils.SmartOrientationListener
-import org.jellyfin.mobile.utils.isWebViewSupported
 import org.jellyfin.mobile.utils.extensions.replaceFragment
+import org.jellyfin.mobile.utils.isWebViewSupported
 import org.jellyfin.mobile.webapp.RemotePlayerService
+import org.jellyfin.mobile.webapp.WebViewFragment
 import org.koin.android.ext.android.inject
 import org.koin.androidx.fragment.android.setupKoinFragmentFactory
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -87,9 +87,11 @@ class MainActivity : AppCompatActivity() {
                         is ServerState.Available -> {
                             val currentFragment = findFragmentById(R.id.fragment_container)
                             if (currentFragment !is WebViewFragment || currentFragment.server != state.server) {
-                                replaceFragment<WebViewFragment>(Bundle().apply {
-                                    putParcelable(Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER, state.server)
-                                })
+                                replaceFragment<WebViewFragment>(
+                                    Bundle().apply {
+                                        putParcelable(Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER, state.server)
+                                    }
+                                )
                             }
                         }
                     }
