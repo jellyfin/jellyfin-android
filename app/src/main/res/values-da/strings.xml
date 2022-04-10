@@ -88,4 +88,6 @@
     <string name="dialog_button_ignore">Ignorer</string>
     <string name="dialog_button_open_settings">Åben indstillinger</string>
     <string name="playback_info_stream_unknown_title">Ukendt titel</string>
+    <string name="player_error_unsupported_content">Mediet kan ikke afspilles af denne enhed</string>
+    <string name="player_error_network_failure">Ude af stand til at hente medieoplysninger fra server</string>
 </resources>
