@@ -25,7 +25,7 @@ jobs:
           mkdir -p build/jellyfin-publish
           mv app/build/outputs/apk/*/*/jellyfin-android-*-libre-debug.apk build/jellyfin-publish/
           mv app/build/outputs/apk/*/*/jellyfin-android-*-proprietary-debug.apk build/jellyfin-publish/
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
           retention-days: 14
