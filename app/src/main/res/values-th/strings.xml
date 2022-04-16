@@ -77,4 +77,12 @@
     <string name="dialog_web_view_not_supported_message">อุปกรณ์นี้ไม่รองรับ WebView
 \nติดตั้งระบบ WebView หรือสลับไปยังอุปกรณ์ที่รองรับ</string>
     <string name="dialog_web_view_not_supported">ไม่รองรับ WebView</string>
+    <string name="connection_error_unsupported_version_or_product">เวอร์ชั่นหรือผลิตภัณฑ์ที่ไม่รองรับ</string>
+    <string name="connection_error_unable_to_reach_sever">ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="other">ลอง %d จากข้อมูลที่ให้มา แต่ไม่สำเร็จ</item>
+    </plurals>
+    <string name="toast_reopen_after_change">โปรดออกแอปเข้าใหม่อีกครั้งหลังจากการเปลี่ยนแปลง</string>
+    <string name="dialog_button_ignore">ไม่สนใจ</string>
+    <string name="dialog_button_open_settings">เปิดการตั้งค่า</string>
 </resources>
