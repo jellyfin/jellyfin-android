@@ -13,7 +13,7 @@
     <string name="battery_optimizations_message">화면을 끈 상태로 미디어 재생하려면 배터리 최적화를 비활성화 해주십시오.</string>
     <string name="pref_exoplayer_allow_background_audio">백그라운드 오디오</string>
     <string name="pref_category_video_player">비디오 재생기</string>
-    <string name="pref_music_notification_always_dismissible_title">음악 플레이어 알림을 언제나 지울 수 있도록 만듭니다</string>
+    <string name="pref_music_notification_always_dismissible_title">지울 수 있는 음악 플레이어 알림</string>
     <string name="pref_category_music_player">음악 플레이어</string>
     <string name="activity_name_settings">젤리핀 설정</string>
     <string name="playback_info_and_x_more">...그리고 %d 만큼 더</string>
@@ -36,7 +36,7 @@
     <string name="external_player_invalid_player">적절한 외부 플레이어가 선택되지 않았습니다. 재생 구간 추적이 비활성화되었습니다.</string>
     <string name="external_player_not_supported_yet">선택한 외부 플레이어에서 재생 구간 추적이 지원되지 않습니다. 해당 앱 개발자에게 문의해보세요.</string>
     <string name="external_player_invalid_play_method">잘못된 재생 방법입니다.</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">자체 플레이어에서 밝기와 볼륨 제스처를 허용</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">밝기와 볼륨 제스처 허용</string>
     <string name="video_player_external_description">MX Player나 VLC와 같은 외부 비디오 재생 앱</string>
     <string name="video_player_native_description">ExoPlayer 기반의 OS와 더 잘 통합된 플레이어. 더 많은 비디오 포맷과 코덱을 지원합니다</string>
     <string name="video_player_web_description">웹 UI에서 제공하는 기본 HTML 비디오 플레이어</string>
@@ -69,7 +69,29 @@
     <string name="media_service_car_section_albums">앨범</string>
     <string name="media_service_car_section_recents">최근에 재생됨</string>
     <string name="dialog_button_close_app">앱 종료</string>
-    <string name="dialog_button_check_for_updates">업데이트를 확인하십시오</string>
+    <string name="dialog_button_check_for_updates">업데이트 확인</string>
     <string name="dialog_web_view_not_supported_message">이 기기에서는 WebView가 지원되지 않습니다.
 \n호환되는 WebView를 설치하거나, 지원하는 기기를 사용하십시오.</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="other">입력에 %d 후보를 사용하였으나, 성공하지 못했습니다.</item>
+    </plurals>
+    <string name="connection_error_unable_to_reach_sever">서버에 연결할 수 없음</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">백그라운드에서 영상의 소리만 재생하도록 허용</string>
+    <string name="media_service_item_not_found">미디어 찾을 수 없음</string>
+    <string name="player_error_network_failure">서버에서 미디어 정보를 불러올 수 없음</string>
+    <string name="player_error_invalid_play_options">재생 정보를 해석할 수 없음</string>
+    <string name="playback_info_stream_unknown_title">알 수 없는 타이틀</string>
+    <string name="player_error_unsupported_content">이 기기에서 재생할 수 없는 미디어</string>
+    <string name="music_notification_channel_description">음악 재생 컨트롤에 사용됩니다</string>
+    <string name="music_notification_channel">Jellyfin 음악 플레이어</string>
+    <string name="connection_error_unsupported_version_or_product">지원되지 않는 버전 또는 제품</string>
+    <string name="pref_exoplayer_remember_brightness">화면 밝기 기억</string>
+    <string name="video_player_integrated">내장 플레이어</string>
+    <string name="toast_reopen_after_change">변경 후에는 앱을 다시 시작하여 주십시오</string>
+    <string name="dialog_button_ignore">무시</string>
+    <string name="dialog_button_open_settings">설정 열기</string>
+    <string name="dialog_web_view_outdated">WebView 버전이 오래됨</string>
+    <string name="dialog_web_view_outdated_message">이 기기의 WebView 버전이 오래되었습니다.
+\n호환되는 버전으로 업데이트 해 주십시오.</string>
+    <string name="dialog_web_view_not_supported">WebView 지원되지 않음</string>
 </resources>
