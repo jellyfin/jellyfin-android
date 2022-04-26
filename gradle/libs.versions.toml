@@ -28,7 +28,7 @@ androidx-webkit = "1.4.0"
 modernandroidpreferences = "2.3.0"
 
 # Network
-jellyfin-sdk = "1.1.2"
+jellyfin-sdk = "1.2.0"
 okhttp = "4.9.3"
 coil = "1.4.0"
 
