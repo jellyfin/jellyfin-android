@@ -36,7 +36,7 @@ coil = "1.4.0"
 androidx-media = "1.5.0"
 androidx-mediarouter = "1.2.6"
 exoplayer = "2.16.1"
-jellyfin-exoplayer-ffmpegextension = "2.16.1+1"
+jellyfin-exoplayer-ffmpegextension = "2.17.1+1"
 playservices = "21.0.1"
 
 # Room
