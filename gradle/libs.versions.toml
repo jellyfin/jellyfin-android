@@ -33,7 +33,7 @@ okhttp = "4.9.3"
 coil = "1.4.0"
 
 # Media
-androidx-media = "1.5.0"
+androidx-media = "1.6.0"
 androidx-mediarouter = "1.2.6"
 exoplayer = "2.16.1"
 jellyfin-exoplayer-ffmpegextension = "2.16.1+1"
