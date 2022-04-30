@@ -12,10 +12,10 @@ import org.jellyfin.mobile.data.entity.UserEntity.Key.USER_ID
 @Entity(
     tableName = TABLE_NAME,
     indices = [
-        Index(value = [SERVER_ID, USER_ID], unique = true)
+        Index(value = [SERVER_ID, USER_ID], unique = true),
     ],
     foreignKeys = [
-        ForeignKey(entity = ServerEntity::class, parentColumns = [ServerEntity.ID], childColumns = [SERVER_ID])
+        ForeignKey(entity = ServerEntity::class, parentColumns = [ServerEntity.ID], childColumns = [SERVER_ID]),
     ],
 )
 data class UserEntity(

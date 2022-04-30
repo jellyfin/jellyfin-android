@@ -48,7 +48,7 @@ import org.koin.core.component.inject
 class AudioNotificationManager(
     private val context: Context,
     sessionToken: MediaSessionCompat.Token,
-    notificationListener: PlayerNotificationManager.NotificationListener
+    notificationListener: PlayerNotificationManager.NotificationListener,
 ) : KoinComponent {
     private val imageLoader: ImageLoader by inject()
 
@@ -92,7 +92,7 @@ class AudioNotificationManager(
     }
 
     private inner class DescriptionAdapter(
-        private val controller: MediaControllerCompat
+        private val controller: MediaControllerCompat,
     ) : PlayerNotificationManager.MediaDescriptionAdapter {
 
         var currentIconUri: Uri? = null

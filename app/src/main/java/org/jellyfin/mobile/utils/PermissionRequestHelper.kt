@@ -22,7 +22,7 @@ class PermissionRequestHelper {
     fun handleRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         // Change to a map
         val permissionsMap = permissions

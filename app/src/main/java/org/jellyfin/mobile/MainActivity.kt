@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
                                 replaceFragment<WebViewFragment>(
                                     Bundle().apply {
                                         putParcelable(Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER, state.server)
-                                    }
+                                    },
                                 )
                             }
                         }
@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 

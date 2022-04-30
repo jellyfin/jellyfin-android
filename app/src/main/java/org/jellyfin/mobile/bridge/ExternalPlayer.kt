@@ -114,7 +114,7 @@ class ExternalPlayer(
                 JSONObject().apply {
                     put("method", profile.method)
                     put("format", profile.format)
-                }
+                },
             )
         }
         return subtitleProfiles.toString()

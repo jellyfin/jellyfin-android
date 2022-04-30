@@ -116,7 +116,7 @@ class MediaService : MediaBrowserServiceCompat() {
         notificationManager = AudioNotificationManager(
             this,
             mediaSession.sessionToken,
-            PlayerNotificationListener()
+            PlayerNotificationListener(),
         )
 
         mediaController = MediaControllerCompat(this, mediaSession)
@@ -139,7 +139,7 @@ class MediaService : MediaBrowserServiceCompat() {
 
         switchToPlayer(
             previousPlayer = null,
-            newPlayer = if (castPlayerProvider.isCastSessionAvailable) castPlayerProvider.get()!! else exoPlayer
+            newPlayer = if (castPlayerProvider.isCastSessionAvailable) castPlayerProvider.get()!! else exoPlayer,
         )
         notificationManager.showNotificationForPlayer(currentPlayer)
     }
@@ -164,7 +164,7 @@ class MediaService : MediaBrowserServiceCompat() {
     override fun onGetRoot(
         clientPackageName: String,
         clientUid: Int,
-        rootHints: Bundle?
+        rootHints: Bundle?,
     ): BrowserRoot = libraryBrowser.getRoot(rootHints)
 
     override fun onLoadChildren(parentId: String, result: Result<List<MediaItem>>) {
@@ -196,7 +196,7 @@ class MediaService : MediaBrowserServiceCompat() {
         metadataList: List<MediaMetadataCompat>,
         initialPlaybackIndex: Int = 0,
         playWhenReady: Boolean,
-        playbackStartPositionMs: Long = 0
+        playbackStartPositionMs: Long = 0,
     ) {
         currentPlaylistItems = metadataList
 
@@ -249,7 +249,7 @@ class MediaService : MediaBrowserServiceCompat() {
                     metadataList = currentPlaylistItems,
                     initialPlaybackIndex = previousPlayer.currentMediaItemIndex,
                     playWhenReady = previousPlayer.playWhenReady,
-                    playbackStartPositionMs = previousPlayer.currentPosition
+                    playbackStartPositionMs = previousPlayer.currentPosition,
                 )
             }
         }
@@ -375,7 +375,8 @@ class MediaService : MediaBrowserServiceCompat() {
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) {
                 Player.STATE_BUFFERING,
-                Player.STATE_READY -> {
+                Player.STATE_READY,
+                -> {
                     notificationManager.showNotificationForPlayer(currentPlayer)
                     if (playbackState == Player.STATE_READY) {
                         // TODO: When playing/paused save the current media item in persistent storage

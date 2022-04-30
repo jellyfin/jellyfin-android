@@ -133,7 +133,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     skipBackLength = customPrefs[Constants.DISPLAY_PREFERENCES_SKIP_BACK_LENGTH]?.toLongOrNull()
                         ?: Constants.DEFAULT_SEEK_TIME_MS,
                     skipForwardLength = customPrefs[Constants.DISPLAY_PREFERENCES_SKIP_FORWARD_LENGTH]?.toLongOrNull()
-                        ?: Constants.DEFAULT_SEEK_TIME_MS
+                        ?: Constants.DEFAULT_SEEK_TIME_MS,
                 )
             } catch (e: ApiClientException) {
                 Timber.e(e, "Failed to load display preferences")
@@ -239,7 +239,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     positionTicks = mediaSource.startTimeMs * Constants.TICKS_PER_MILLISECOND,
                     volumeLevel = audioManager.getVolumeLevelPercent(),
                     repeatMode = RepeatMode.REPEAT_NONE,
-                )
+                ),
             )
         } catch (e: ApiClientException) {
             Timber.e(e, "Failed to report playback start")
@@ -267,7 +267,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         positionTicks = playbackPositionMillis * Constants.TICKS_PER_MILLISECOND,
                         volumeLevel = (currentVolume - volumeRange.first) * Constants.PERCENT_MAX / volumeRange.width,
                         repeatMode = RepeatMode.REPEAT_NONE,
-                    )
+                    ),
                 )
             } catch (e: ApiClientException) {
                 Timber.e(e, "Failed to report playback progress")
@@ -294,7 +294,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         positionTicks = lastPositionTicks,
                         playSessionId = mediaSource.playSessionId,
                         failed = false,
-                    )
+                    ),
                 )
 
                 // Mark video as watched if playback finished
@@ -306,7 +306,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 if (mediaSource.playMethod == PlayMethod.TRANSCODE) {
                     hlsSegmentApi.stopEncodingProcess(
                         deviceId = apiClient.deviceInfo.id,
-                        playSessionId = mediaSource.playSessionId
+                        playSessionId = mediaSource.playSessionId,
                     )
                 }
             } catch (e: ApiClientException) {

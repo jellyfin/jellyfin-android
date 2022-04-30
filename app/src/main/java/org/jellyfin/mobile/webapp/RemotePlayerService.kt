@@ -379,7 +379,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                         val canSeek = (currentState.actions and PlaybackState.ACTION_SEEK_TO) != 0L
                         setPlaybackState(isPlaying, pos, canSeek)
                     }
-                }
+                },
             )
         }
     }

@@ -55,7 +55,7 @@ sealed class DeviceCodec(
                     else -> maxSampleRate
                 }
                 else -> codecToMerge.maxSampleRate
-            }
+            },
         )
     }
 

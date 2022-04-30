@@ -138,8 +138,8 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                         0,
                         verticalCenter - offset,
                         exclusionWidth,
-                        verticalCenter + offset
-                    )
+                        verticalCenter + offset,
+                    ),
                 )
             }
         }
@@ -230,7 +230,8 @@ class WebViewFragment : Fragment(), NativePlayerHost {
                     ERROR_TIMEOUT,
                     ERROR_REDIRECT_LOOP,
                     ERROR_UNSUPPORTED_SCHEME,
-                    ERROR_FAILED_SSL_HANDSHAKE -> onErrorReceived()
+                    ERROR_FAILED_SSL_HANDSHAKE,
+                    -> onErrorReceived()
                     else -> if (request.url == Uri.parse(view.url)) onErrorReceived()
                 }
             }
@@ -244,21 +245,23 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         // Workaround for service worker breaking script injections
         if (WebViewFeature.isFeatureSupported(WebViewFeature.SERVICE_WORKER_BASIC_USAGE)) {
             val swController = ServiceWorkerControllerCompat.getInstance()
-            swController.setServiceWorkerClient(object : ServiceWorkerClientCompat() {
-                override fun shouldInterceptRequest(request: WebResourceRequest): WebResourceResponse? {
-                    val path = request.url.path?.lowercase(Locale.ROOT) ?: return null
-                    return when {
-                        path.endsWith(Constants.SERVICE_WORKER_PATH) -> {
-                            WebResourceResponse("application/javascript", "utf-8", null).apply {
-                                with(HttpStatusCode.NotFound) {
-                                    setStatusCodeAndReasonPhrase(value, description)
+            swController.setServiceWorkerClient(
+                object : ServiceWorkerClientCompat() {
+                    override fun shouldInterceptRequest(request: WebResourceRequest): WebResourceResponse? {
+                        val path = request.url.path?.lowercase(Locale.ROOT) ?: return null
+                        return when {
+                            path.endsWith(Constants.SERVICE_WORKER_PATH) -> {
+                                WebResourceResponse("application/javascript", "utf-8", null).apply {
+                                    with(HttpStatusCode.NotFound) {
+                                        setStatusCodeAndReasonPhrase(value, description)
+                                    }
                                 }
                             }
+                            else -> null
                         }
-                        else -> null
                     }
-                }
-            })
+                },
+            )
         }
         webChromeClient = object : WebChromeClient() {
             override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {

@@ -78,7 +78,7 @@ val applicationModule = module {
                 when {
                     !context.isLowRamDevice -> TS_SEARCH_PACKETS * TsExtractor.TS_PACKET_SIZE // 3x default
                     else -> TsExtractor.DEFAULT_TIMESTAMP_SEARCH_BYTES
-                }
+                },
             )
         }
         DefaultMediaSourceFactory(get<DataSource.Factory>(), extractorsFactory)

@@ -204,7 +204,7 @@ class QueueManager(
      */
     @CheckResult
     private fun createSubtitleMediaSources(
-        source: JellyfinMediaSource
+        source: JellyfinMediaSource,
     ): Array<MediaSource> {
         val factory = get<SingleSampleMediaSource.Factory>()
         return source.getExternalSubtitleStreams().map { stream ->
