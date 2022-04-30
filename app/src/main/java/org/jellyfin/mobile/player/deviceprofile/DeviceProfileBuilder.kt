@@ -49,7 +49,7 @@ class DeviceProfileBuilder {
                         container = SUPPORTED_CONTAINER_FORMATS[i],
                         videoCodec = supportedVideoCodecs[i].joinToString(","),
                         audioCodec = supportedAudioCodecs[i].joinToString(","),
-                    )
+                    ),
                 )
             }
             if (supportedAudioCodecs[i].isNotEmpty()) {
@@ -59,7 +59,7 @@ class DeviceProfileBuilder {
                         type = DlnaProfileType.AUDIO,
                         container = SUPPORTED_CONTAINER_FORMATS[i],
                         audioCodec = supportedAudioCodecs[i].joinToString(","),
-                    )
+                    ),
                 )
             }
         }
@@ -163,7 +163,7 @@ class DeviceProfileBuilder {
                 minSegments = 0,
                 segmentLength = 0,
                 breakOnNonKeyFrames = false,
-            )
+            ),
         )
         add(
             TranscodingProfile(
@@ -183,7 +183,7 @@ class DeviceProfileBuilder {
                 minSegments = 0,
                 segmentLength = 0,
                 breakOnNonKeyFrames = false,
-            )
+            ),
         )
         add(
             TranscodingProfile(
@@ -202,7 +202,7 @@ class DeviceProfileBuilder {
                 minSegments = 0,
                 segmentLength = 0,
                 breakOnNonKeyFrames = false,
-            )
+            ),
         )
     }
 
@@ -301,7 +301,7 @@ class DeviceProfileBuilder {
         private val EXO_EMBEDDED_SUBTITLES = arrayOf("srt", "subrip", "ttml")
         private val EXO_EXTERNAL_SUBTITLES = arrayOf("srt", "subrip", "ttml", "vtt", "webvtt")
         private val EXTERNAL_PLAYER_SUBTITLES = arrayOf(
-            "ssa", "ass", "srt", "subrip", "idx", "sub", "vtt", "webvtt", "ttml", "pgs", "pgssub", "smi", "smil"
+            "ssa", "ass", "srt", "subrip", "idx", "sub", "vtt", "webvtt", "ttml", "pgs", "pgssub", "smi", "smil",
         )
     }
 }

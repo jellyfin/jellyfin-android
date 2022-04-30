@@ -263,7 +263,7 @@ class LibraryBrowser(
                         Bundle().apply {
                             putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_BROWSABLE, MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM)
                             putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_PLAYABLE, MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM)
-                        }
+                        },
                     )
                 }
             }.build()
@@ -291,7 +291,7 @@ class LibraryBrowser(
     private suspend fun getAlbums(
         libraryId: UUID,
         filterArtist: UUID? = null,
-        filterGenre: UUID? = null
+        filterGenre: UUID? = null,
     ): List<MediaBrowserCompat.MediaItem>? {
         val result by itemsApi.getItemsByUserId(
             parentId = libraryId,
@@ -359,7 +359,7 @@ class LibraryBrowser(
 
     private suspend fun getPlaylist(playlistId: UUID): List<MediaMetadataCompat>? {
         val result by playlistsApi.getPlaylistItems(
-            playlistId = playlistId
+            playlistId = playlistId,
         )
 
         return result.extractItems("${LibraryPage.PLAYLIST}|$playlistId")
@@ -403,7 +403,7 @@ class LibraryBrowser(
                     "webma",
                     "webm",
                     "wav",
-                    "ogg"
+                    "ogg",
                 ),
                 transcodingProtocol = "hls",
                 transcodingContainer = "ts",

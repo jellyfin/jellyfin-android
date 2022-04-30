@@ -22,7 +22,7 @@ import java.util.Locale
 class PlayerMenus(
     private val fragment: PlayerFragment,
     private val playerBinding: FragmentPlayerBinding,
-    private val playerControlsBinding: ExoPlayerControlViewBinding
+    private val playerControlsBinding: ExoPlayerControlViewBinding,
 ) : PopupMenu.OnDismissListener {
     private val context = playerBinding.root.context
     private val previousButton: View by playerControlsBinding::previousButton
@@ -131,7 +131,7 @@ class PlayerMenus(
         "\n",
         "${fragment.getString(prefix)}:\n",
         limit = maxStreams,
-        truncated = fragment.getString(R.string.playback_info_and_x_more, mediaStreams.size - maxStreams)
+        truncated = fragment.getString(R.string.playback_info_and_x_more, mediaStreams.size - maxStreams),
     ) { stream ->
         val title = stream.displayTitle?.takeUnless(String::isEmpty) ?: fragment.getString(R.string.playback_info_stream_unknown_title)
         val suffix = streamSuffix(stream)

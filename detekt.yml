@@ -30,6 +30,10 @@ formatting:
   PackageName:
     # Already handled by detekt itself
     active: false
+  TrailingComma:
+    active: true
+    allowTrailingComma: true
+    allowTrailingCommaOnCallSite: true
 
 naming:
   PackageNaming:

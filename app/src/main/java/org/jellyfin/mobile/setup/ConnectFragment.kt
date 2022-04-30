@@ -57,7 +57,7 @@ class ConnectFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _connectServerBinding = FragmentConnectBinding.inflate(inflater, container, false)
         return serverSetupLayout.apply { applyWindowInsetsAsMargins() }
@@ -183,7 +183,8 @@ class ConnectFragment : Fragment() {
                     false
                 }
                 RecommendedServerInfoScore.OK,
-                RecommendedServerInfoScore.BAD -> {
+                RecommendedServerInfoScore.BAD,
+                -> {
                     badServers += recommendedServer
                     false
                 }
