@@ -47,9 +47,18 @@ import org.jellyfin.mobile.utils.extensions.isLandscape
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaStream
 
-class PlayerFragment : Fragment(R.layout.fragment_player) {
-
+class PlayerFragment : Fragment() {
     private val viewModel: PlayerViewModel by viewModels()
+    private var _playerBinding: FragmentPlayerBinding? = null
+    private val playerBinding: FragmentPlayerBinding get() = _playerBinding!!
+    private val playerView: PlayerView get() = playerBinding.playerView
+    private val playerOverlay: View get() = playerBinding.playerOverlay
+    private val loadingIndicator: View get() = playerBinding.loadingIndicator
+    private var _playerControlsBinding: ExoPlayerControlViewBinding? = null
+    private val playerControlsBinding: ExoPlayerControlViewBinding get() = _playerControlsBinding!!
+    private val playerControlsView: View get() = playerControlsBinding.root
+    private val titleTextView: TextView get() = playerControlsBinding.trackTitle
+    private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
     private var playerMenus: PlayerMenus? = null
 
     lateinit var playerLockScreenHelper: PlayerLockScreenHelper
@@ -68,29 +77,15 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
      */
     private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(requireActivity()) }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _playerBinding = FragmentPlayerBinding.inflate(layoutInflater)
-        _playerControlsBinding = ExoPlayerControlViewBinding.bind(playerBinding.root.findViewById(R.id.player_controls))
-        return playerBinding.root
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    @Suppress("DEPRECATION")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val binding = FragmentPlayerBinding.bind(view)
-        binding.setUpViews()
-        binding.observeViewModel()
-
-    }
-
-    private fun FragmentPlayerBinding.observeViewModel() {
         // Observe ViewModel
-        viewModel.player.observe(viewLifecycleOwner) { player ->
+        viewModel.player.observe(this) { player ->
             playerView.player = player
             if (player == null) parentFragmentManager.popBackStack()
         }
-        viewModel.playerState.observe(viewLifecycleOwner) { playerState ->
+        viewModel.playerState.observe(this) { playerState ->
             val isPlaying = viewModel.playerOrNull?.isPlaying == true
             val window = requireActivity().window
             if (isPlaying) {
@@ -100,7 +95,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             }
             loadingIndicator.isVisible = playerState == Player.STATE_BUFFERING
         }
-        viewModel.mediaQueueManager.mediaQueue.observe(viewLifecycleOwner) { queueItem ->
+        viewModel.mediaQueueManager.mediaQueue.observe(this) { queueItem ->
             val jellyfinMediaSource = queueItem.jellyfinMediaSource
 
             // On playback start, switch to landscape for landscape videos, and (only) enable fullscreen for portrait videos
@@ -135,7 +130,15 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
     }
 
-    private fun FragmentPlayerBinding.setUpViews() {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _playerBinding = FragmentPlayerBinding.inflate(layoutInflater)
+        _playerControlsBinding = ExoPlayerControlViewBinding.bind(playerBinding.root.findViewById(R.id.player_controls))
+        return playerBinding.root
+    }
+
+    @Suppress("DEPRECATION")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // Handle system window insets
         ViewCompat.setOnApplyWindowInsetsListener(playerBinding.root) { _, insets ->
