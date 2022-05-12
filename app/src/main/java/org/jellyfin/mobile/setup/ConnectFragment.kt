@@ -3,14 +3,9 @@ package org.jellyfin.mobile.setup
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.core.content.getSystemService
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
@@ -37,39 +32,27 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import timber.log.Timber
 
-class ConnectFragment : Fragment() {
+class ConnectFragment : Fragment(R.layout.fragment_connect) {
+
     private val mainViewModel: MainViewModel by sharedViewModel()
     private val jellyfin: Jellyfin by inject()
     private val apiClientController: ApiClientController by inject()
 
-    // UI
-    private var _connectServerBinding: FragmentConnectBinding? = null
-    private val connectServerBinding get() = _connectServerBinding!!
-    private val serverSetupLayout: View get() = connectServerBinding.root
-    private val hostInput: EditText get() = connectServerBinding.hostInput
-    private val connectionErrorText: TextView get() = connectServerBinding.connectionErrorText
-    private val connectButton: Button get() = connectServerBinding.connectButton
-    private val chooseServerButton: Button get() = connectServerBinding.chooseServerButton
-    private val connectionProgress: View get() = connectServerBinding.connectionProgress
-
     private val serverList = ArrayList<ServerDiscoveryInfo>(LocalServerDiscovery.DISCOVERY_MAX_SERVERS)
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        _connectServerBinding = FragmentConnectBinding.inflate(inflater, container, false)
-        return serverSetupLayout.apply { applyWindowInsetsAsMargins() }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Apply window insets
-        ViewCompat.requestApplyInsets(serverSetupLayout)
+        view.applyWindowInsetsAsMargins()
 
-        hostInput.setText(mainViewModel.serverState.value.server?.hostname)
+        FragmentConnectBinding.bind(view).setUpViews()
+    }
+
+    private fun FragmentConnectBinding.setUpViews() {
+
+        ViewCompat.requestApplyInsets(root)
+
+        hostInput.setText(  mainViewModel.serverState.value.server?.hostname)
         hostInput.setSelection(hostInput.length())
         hostInput.setOnEditorActionListener { _, action, event ->
             when {
@@ -91,7 +74,7 @@ class ConnectFragment : Fragment() {
             showConnectionError()
 
         // Show keyboard
-        serverSetupLayout.doOnNextLayout {
+        root.doOnNextLayout {
             @Suppress("MagicNumber")
             hostInput.postDelayed(25) {
                 hostInput.requestFocus()
@@ -103,12 +86,7 @@ class ConnectFragment : Fragment() {
         discoverServers()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _connectServerBinding = null
-    }
-
-    private fun connect(enteredUrl: String = hostInput.text.toString()) {
+    private fun FragmentConnectBinding.connect(enteredUrl: String = hostInput.text.toString()) {
         hostInput.isEnabled = false
         connectButton.isVisible = false
         connectionProgress.isVisible = true
@@ -128,7 +106,7 @@ class ConnectFragment : Fragment() {
         }
     }
 
-    private fun discoverServers() {
+    private fun FragmentConnectBinding.discoverServers() {
         lifecycleScope.launch {
             jellyfin.discovery
                 .discoverLocalServers(maxServers = LocalServerDiscovery.DISCOVERY_MAX_SERVERS)
@@ -141,7 +119,7 @@ class ConnectFragment : Fragment() {
         }
     }
 
-    private fun chooseServer() {
+    private fun FragmentConnectBinding.chooseServer() {
         AlertDialog.Builder(activity).apply {
             setTitle(R.string.available_servers_title)
             setItems(serverList.map { "${it.name}\n${it.address}" }.toTypedArray()) { _, index ->
@@ -150,21 +128,21 @@ class ConnectFragment : Fragment() {
         }.show()
     }
 
-    private fun showConnectionError(error: String? = null) {
+    private fun FragmentConnectBinding.showConnectionError(error: String? = null) {
         connectionErrorText.apply {
             text = error ?: getText(R.string.connection_error_cannot_connect)
             isVisible = true
         }
     }
 
-    private fun clearConnectionError() {
+    private fun FragmentConnectBinding.clearConnectionError() {
         connectionErrorText.apply {
             text = null
             isVisible = false
         }
     }
 
-    private suspend fun checkServerUrlAndConnection(enteredUrl: String): String? {
+    private suspend fun FragmentConnectBinding.checkServerUrlAndConnection(enteredUrl: String): String? {
         Timber.i("checkServerUrlAndConnection $enteredUrl")
 
         val candidates = jellyfin.discovery.getAddressCandidates(enteredUrl)
