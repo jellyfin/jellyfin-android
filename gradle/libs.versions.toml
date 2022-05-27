@@ -8,7 +8,7 @@ android-junit5 = "1.8.2.0"
 dependencyupdates = "0.42.0"
 
 # KotlinX
-coroutines = "1.6.1"
+coroutines = "1.6.2"
 
 # Core
 koin = "3.2.0"
