@@ -1,1 +1,1 @@
-Mobilklient för Jellyfin, gratis media server
+Mobilklient för Jellyfin, den fria mjukvaran för mediasystem
