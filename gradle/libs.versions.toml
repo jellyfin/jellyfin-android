@@ -25,7 +25,7 @@ androidx-lifecycle = "2.4.1"
 androidx-constraintlayout = "2.1.4"
 google-material = "1.6.1"
 androidx-webkit = "1.4.0"
-modernandroidpreferences = "2.3.0"
+modernandroidpreferences = "2.3.1"
 
 # Network
 jellyfin-sdk = "1.2.0"
