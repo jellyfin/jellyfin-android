@@ -1,1 +1,1 @@
-Mobiililaitteen asiakassovellus vapaalle Jellyfin-mediajärjestelmälle
+Mobiilisovellus ilmaiselle Jellyfin-mediajärjestelmälle
