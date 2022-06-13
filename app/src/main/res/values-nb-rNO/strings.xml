@@ -94,4 +94,5 @@
     <string name="toast_reopen_after_change">Vennligst åpne applikasjonen på nytt etter endringene er gjort</string>
     <string name="dialog_button_ignore">Ignorer</string>
     <string name="dialog_button_open_settings">Åpne innstillinger</string>
+    <string name="playback_info_stream_unknown_title">Ukjent tittel</string>
 </resources>
