@@ -1,8 +1,8 @@
 [versions]
 # Plugins
 android-plugin = "7.2.1"
-kotlin = "1.6.21"
-kotlin-ksp = "1.6.21-1.0.5"
+kotlin = "1.7.0"
+kotlin-ksp = "1.7.0-1.0.6"
 detekt = "1.20.0"
 android-junit5 = "1.8.2.0"
 dependencyupdates = "0.42.0"
