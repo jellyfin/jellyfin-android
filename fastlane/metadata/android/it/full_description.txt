@@ -7,8 +7,8 @@ Per usare l'app, devi essere in possesso di un server Jellyfin funzionante. Scop
 Con un server Jellyfin potrai:
 
 * Guardare Live TV e programmi registrati direttamente dal tuo server Jellyfin (necessari hardware/servizi ausiliari)
-* Streammare al tuo dispositivo Chromecast nel tuo network
-* Streammare i tuoi media ai tuoi dispositivi Android
+* Condividere su una Chromecast nel tuo network
+* Vedere i tuoi media sui tuoi dispositivi Android
 * Visualizzare le tue collezioni in un'interfaccia semplice ed intuitiva
 
 Questa è l'app ufficiale Jellyfin per Android. Grazie per utilizzare Jellyfin!
