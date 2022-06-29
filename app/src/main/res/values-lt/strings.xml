@@ -53,4 +53,18 @@
     <string name="video_player_integrated">Integruotas grotuvas</string>
     <string name="video_player_external">Išorinis grotuvas</string>
     <string name="dialog_button_ignore">Ignoruoti</string>
+    <string name="connection_error_unable_to_reach_sever">Nepavyksta pasiekti serverio</string>
+    <string name="connect_button_text">Prisijungti</string>
+    <string name="choose_server_button_text">Pasirinkite serverį</string>
+    <string name="connect_to_server_title">Prisijungti prie serverio</string>
+    <string name="toast_reopen_after_change">Atlikę pakeitimus iš naujo atidarykite programą</string>
+    <string name="dialog_button_open_settings">Atidaryti nustatymus</string>
+    <string name="dialog_button_close_app">Uždaryti programą</string>
+    <string name="dialog_button_check_for_updates">Tikrinti, ar yra atnaujinimų</string>
+    <string name="dialog_web_view_outdated_message">Jūsų prietaise naudojama WebView realizacija yra pasenusi
+\nAtnaujinkite ją į suderinamą versiją.</string>
+    <string name="dialog_web_view_outdated">WebView pasenęs</string>
+    <string name="dialog_web_view_not_supported_message">Šis prietaisas nepalaiko WebViews.
+\nĮdiekite suderinamą WebView realizaciją arba pereikite prie palaikomo įrenginio.</string>
+    <string name="dialog_web_view_not_supported">WebView nepalaikomas</string>
 </resources>
