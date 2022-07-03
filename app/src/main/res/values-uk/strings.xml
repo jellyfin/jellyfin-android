@@ -11,7 +11,7 @@
     <string name="connect_button_text">Підключитись</string>
     <string name="host_input_hint">Сервер</string>
     <string name="connect_to_server_title">Підключення до сервера</string>
-    <string name="playback_info_play_method">Метод програвання: %s</string>
+    <string name="playback_info_play_method">Метод відтворення: %s</string>
     <string name="menu_item_none">Нічого</string>
     <string name="notification_action_stop">Зупинити</string>
     <string name="notification_action_next">Наступний</string>
