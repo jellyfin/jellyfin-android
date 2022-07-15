@@ -4,11 +4,11 @@
     <string name="video_player_native_description">Baseret på ExoPlayer understøtter flere videoformater og codecs og er mere integreret i operativsystemet</string>
     <string name="video_player_web_description">Standard HTML-videoafspiller fra webgrænsefladen</string>
     <string name="video_player_external">Ekstern afspiller</string>
-    <string name="video_player_web">Web afspiller</string>
+    <string name="video_player_web">Webafspiller</string>
     <string name="pref_video_player_type_title">Video afspiller type</string>
-    <string name="pref_category_video_player">Video afspiller</string>
-    <string name="pref_music_notification_always_dismissible_title">Lad musikafspillerunderretninger altid være afviselige</string>
-    <string name="pref_category_music_player">Musik afspiller</string>
+    <string name="pref_category_video_player">Videoafspiller</string>
+    <string name="pref_music_notification_always_dismissible_title">Afviselig notifikation fra afspiller</string>
+    <string name="pref_category_music_player">Musikafspiller</string>
     <string name="activity_name_settings">Jellyfin Indstillinger</string>
     <string name="external_player_unknown_error">Ukendt fejl i den eksterne afspiller. Afspilningssporing er deaktiveret.</string>
     <string name="external_player_invalid_player">Den valgte eksterne afspiller er ikke understøttet. Afspilningssporing er deaktiveret.</string>
@@ -65,18 +65,18 @@
     <string name="external_player_mx_player_free_description">Kraftig videoafspiller med avanceret hardwareacceleration og understøttelse af undertekster.</string>
     <string name="external_player_mx_player_free">MX Player Free</string>
     <string name="external_player_mpv_description">En simpel, lille og letvægtig gratis (Som i frihed) video afspiller. Den understøtter en lang række mediefilformater.</string>
-    <string name="external_player_mpv">MPV Player</string>
+    <string name="external_player_mpv">MPV-afspiller</string>
     <string name="external_player_app">Ekstern afspiller app</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Tillad lys- og lydbevægelser i den oprindelige afspiller</string>
-    <string name="pref_exoplayer_allow_background_audio">Tillad afspilning af musik i baggrunden i den oprindelige afspiller</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Håndbevægelser til lys- og lyd</string>
+    <string name="pref_exoplayer_allow_background_audio">Baggrundslyd</string>
     <string name="dialog_button_close_app">Luk app</string>
-    <string name="dialog_button_check_for_updates">Tjek for opdateringer</string>
-    <string name="dialog_web_view_not_supported_message">Webvisning er ikke understøttet på denne enhed.
-\nInstaller en kompatibel Webvisnings implementering eller skift til en understøttet enhed.</string>
-    <string name="dialog_web_view_outdated_message">Webvisnings implementeringen som er brugt af din enhed er forældet.
-\nOpdater venligst til en kompatibel version.</string>
-    <string name="dialog_web_view_outdated">Webvisning er forældet</string>
-    <string name="dialog_web_view_not_supported">Webvisning er ikke understøttet</string>
+    <string name="dialog_button_check_for_updates">Søg efter opdateringer</string>
+    <string name="dialog_web_view_not_supported_message">WebViews er understøttes ikke af denne enhed.
+\nInstallér en kompatibel WebView implementering eller skift til en understøttet enhed.</string>
+    <string name="dialog_web_view_outdated_message">WebView-implementeringen, som din enhed anvender, er forældet.
+\nOpdatér venligst til en kompatibel version.</string>
+    <string name="dialog_web_view_outdated">WebView er forældet</string>
+    <string name="dialog_web_view_not_supported">WebView understøttes ikke</string>
     <string name="player_error_invalid_play_options">Kan ikke afgøre afspilningsoplysninger</string>
     <string name="connection_error_unsupported_version_or_product">Ikke understøttet version eller produkt</string>
     <string name="connection_error_unable_to_reach_sever">Kan ikke nå serveren</string>
@@ -85,9 +85,14 @@
         <item quantity="other">Forsøgte %d kandidater for input, uden succes.</item>
     </plurals>
     <string name="toast_reopen_after_change">Venligst genåben applikationen efter at ændringerne er lavet</string>
-    <string name="dialog_button_ignore">Ignorer</string>
+    <string name="dialog_button_ignore">Ignorér</string>
     <string name="dialog_button_open_settings">Åben indstillinger</string>
     <string name="playback_info_stream_unknown_title">Ukendt titel</string>
     <string name="player_error_unsupported_content">Mediet kan ikke afspilles af denne enhed</string>
     <string name="player_error_network_failure">Ude af stand til at hente medieoplysninger fra server</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Tillad lyd fra videoer, der afspilles i baggrunden</string>
+    <string name="pref_exoplayer_remember_brightness">Husk lysstyrke på skærmen</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">Notifikationen kan kun afvises når afspilning er sat på pause</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Notifikationen kan altid afvises - også imens et medie afspilles</string>
+    <string name="video_player_integrated">Integreret afspiller</string>
 </resources>
