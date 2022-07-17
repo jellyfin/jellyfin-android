@@ -6,7 +6,7 @@ Sovelluksen käyttö edellyttää Jellyfin-palvelimen asennusta ja suoritusta. L
 
 Jellyfin-palvelimella voit:
 
-* Katsella suoria televisiolähetyksiä ja -tallenteita (vaatii lisälaitteita/-palveluita)
+* Katsoa suoria televisiolähetyksiä ja -tallenteita (vaatii lisälaitteita/-palveluita)
 * Suoratoistaa lähiverkon Chromecast-laitteisiin
 * Suoratoistaa Android-laitteisiin
 * Selata kokoelmaa helppokäyttöisessä käyttöliittymässä
