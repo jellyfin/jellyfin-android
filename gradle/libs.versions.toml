@@ -102,6 +102,7 @@ exoplayer-ui = { group = "com.google.android.exoplayer", name = "exoplayer-ui", 
 exoplayer-mediaSession = { group = "com.google.android.exoplayer", name = "extension-mediasession", version.ref = "exoplayer" }
 exoplayer-hls = { group = "com.google.android.exoplayer", name = "exoplayer-hls", version.ref = "exoplayer" }
 exoplayer-cast = { group = "com.google.android.exoplayer", name = "extension-cast", version.ref = "exoplayer" }
+exoplayer-cronet = { group = "com.google.android.exoplayer", name = "extension-cronet", version.ref = "exoplayer" }
 playservices-cast = { group = "com.google.android.gms", name = "play-services-cast", version.ref = "playservices" }
 playservices-castframework = { group = "com.google.android.gms", name = "play-services-cast-framework", version.ref = "playservices" }
 jellyfin-exoplayer-ffmpegextension = { group = "org.jellyfin.exoplayer", name = "exoplayer-ffmpeg-extension", version.ref = "jellyfin-exoplayer-ffmpegextension" }
@@ -144,6 +145,7 @@ exoplayer = [
     "exoplayer-ui",
     "exoplayer-mediaSession",
     "exoplayer-hls",
+    "exoplayer-cronet",
 ]
 playservices = [
     "playservices-cast",

@@ -12,9 +12,13 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.exoplayer2.ext.cronet.CronetDataSource
 import com.google.android.exoplayer2.util.Util
+import com.google.android.gms.net.CronetProviderInstaller
 import kotlinx.coroutines.channels.Channel
 import okhttp3.OkHttpClient
+import org.chromium.net.CronetEngine
+import org.chromium.net.CronetProvider
 import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.player.audio.car.LibraryBrowser
@@ -34,6 +38,7 @@ import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import java.util.concurrent.Executors
 
 const val PLAYER_EVENT_CHANNEL = "PlayerEventChannel"
 private const val TS_SEARCH_PACKETS = 1800
@@ -67,7 +72,23 @@ val applicationModule = module {
     // ExoPlayer factories
     single<DataSource.Factory> {
         val context: Context = get()
-        val baseDataSourceFactory = DefaultHttpDataSource.Factory().setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
+
+        val provider = CronetProvider.getAllProviders(context).firstOrNull { provider: CronetProvider ->
+            (provider.name == CronetProviderInstaller.PROVIDER_NAME) && provider.isEnabled
+        }
+
+        val baseDataSourceFactory = if (provider != null) {
+            val cronetEngine = provider.createBuilder()
+                .enableHttp2(true)
+                .enableQuic(true)
+                .enableBrotli(true)
+                .enableHttpCache(CronetEngine.Builder.HTTP_CACHE_IN_MEMORY, 16 * 1024 * 1024)
+                .build()
+            CronetDataSource.Factory(cronetEngine, Executors.newCachedThreadPool()).setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
+        } else {
+            DefaultHttpDataSource.Factory().setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
+        }
+
         DefaultDataSource.Factory(context, baseDataSourceFactory)
     }
     single<MediaSource.Factory> {
