@@ -31,6 +31,8 @@ modernandroidpreferences = "2.3.1"
 jellyfin-sdk = "1.2.0"
 okhttp = "4.10.0"
 coil = "2.1.0"
+cronetembedded = "102.5005.125"
+cronetokhttp = "0.1.0"
 
 # Media
 androidx-media = "1.6.0"
@@ -93,6 +95,8 @@ modernandroidpreferences = { group = "de.maxr1998", name = "modernandroidprefere
 jellyfin-sdk = { group = "org.jellyfin.sdk", name = "jellyfin-core", version.ref = "jellyfin-sdk" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 coil = { group = "io.coil-kt", name = "coil-base", version.ref = "coil" }
+cronetembedded = { group = "org.chromium.net", name = "cronet-embedded", version.ref = "cronetembedded" }
+cronetokhttp = { group = "com.google.net.cronet", name = "cronet-okhttp", version.ref = "cronetokhttp"}
 
 # Media
 androidx-media = { group = "androidx.media", name = "media", version.ref = "androidx-media" }
@@ -102,7 +106,7 @@ exoplayer-ui = { group = "com.google.android.exoplayer", name = "exoplayer-ui", 
 exoplayer-mediaSession = { group = "com.google.android.exoplayer", name = "extension-mediasession", version.ref = "exoplayer" }
 exoplayer-hls = { group = "com.google.android.exoplayer", name = "exoplayer-hls", version.ref = "exoplayer" }
 exoplayer-cast = { group = "com.google.android.exoplayer", name = "extension-cast", version.ref = "exoplayer" }
-exoplayer-cronet = { group = "com.google.android.exoplayer", name = "extension-cronet", version.ref = "exoplayer" }
+exoplayer-okhttp = { group = "com.google.android.exoplayer", name = "extension-okhttp", version.ref = "exoplayer" }
 playservices-cast = { group = "com.google.android.gms", name = "play-services-cast", version.ref = "playservices" }
 playservices-castframework = { group = "com.google.android.gms", name = "play-services-cast-framework", version.ref = "playservices" }
 jellyfin-exoplayer-ffmpegextension = { group = "org.jellyfin.exoplayer", name = "exoplayer-ffmpeg-extension", version.ref = "jellyfin-exoplayer-ffmpegextension" }
@@ -145,7 +149,7 @@ exoplayer = [
     "exoplayer-ui",
     "exoplayer-mediaSession",
     "exoplayer-hls",
-    "exoplayer-cronet",
+    "exoplayer-okhttp",
 ]
 playservices = [
     "playservices-cast",

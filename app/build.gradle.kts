@@ -136,13 +136,15 @@ dependencies {
     }
     implementation(libs.okhttp)
     implementation(libs.coil)
+    implementation(libs.cronetembedded)
+    implementation(libs.cronetokhttp)
 
     // Media
     implementation(libs.androidx.media)
     implementation(libs.androidx.mediarouter)
     implementation(libs.bundles.exoplayer)
     implementation(libs.jellyfin.exoplayer.ffmpegextension)
-    implementation(libs.exoplayer.cronet)
+    implementation(libs.exoplayer.okhttp)
     @Suppress("UnstableApiUsage")
     proprietaryImplementation(libs.exoplayer.cast)
     @Suppress("UnstableApiUsage")

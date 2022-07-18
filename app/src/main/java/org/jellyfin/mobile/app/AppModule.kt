@@ -11,10 +11,9 @@ import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.ext.cronet.CronetDataSource
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
 import com.google.android.exoplayer2.util.Util
-import com.google.android.gms.net.CronetProviderInstaller
+import com.google.net.cronet.okhttptransport.CronetCallFactory
 import kotlinx.coroutines.channels.Channel
 import okhttp3.OkHttpClient
 import org.chromium.net.CronetEngine
@@ -38,7 +37,6 @@ import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import java.util.concurrent.Executors
 
 const val PLAYER_EVENT_CHANNEL = "PlayerEventChannel"
 private const val TS_SEARCH_PACKETS = 1800
@@ -73,21 +71,21 @@ val applicationModule = module {
     single<DataSource.Factory> {
         val context: Context = get()
 
-        val provider = CronetProvider.getAllProviders(context).firstOrNull { provider: CronetProvider ->
-            (provider.name == CronetProviderInstaller.PROVIDER_NAME) && provider.isEnabled
+        val cronetProvider = CronetProvider.getAllProviders(context).first { provider: CronetProvider ->
+            (provider.name == CronetProvider.PROVIDER_NAME_APP_PACKAGED) && provider.isEnabled
         }
 
-        val baseDataSourceFactory = if (provider != null) {
-            val cronetEngine = provider.createBuilder()
-                .enableHttp2(true)
-                .enableQuic(true)
-                .enableBrotli(true)
-                .enableHttpCache(CronetEngine.Builder.HTTP_CACHE_IN_MEMORY, 16 * 1024 * 1024)
-                .build()
-            CronetDataSource.Factory(cronetEngine, Executors.newCachedThreadPool()).setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
-        } else {
-            DefaultHttpDataSource.Factory().setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
-        }
+        val cronetEngine = cronetProvider.createBuilder()
+            .enableHttp2(true)
+            .enableQuic(true)
+            .enableBrotli(true)
+            .enableHttpCache(CronetEngine.Builder.HTTP_CACHE_IN_MEMORY, 16 * 1024 * 1024)
+            .build()
+
+        val callFactory = CronetCallFactory.newBuilder(cronetEngine).build()
+
+        val baseDataSourceFactory = OkHttpDataSource.Factory(callFactory)
+            .setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
 
         DefaultDataSource.Factory(context, baseDataSourceFactory)
     }
