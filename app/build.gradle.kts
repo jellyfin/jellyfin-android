@@ -142,6 +142,7 @@ dependencies {
     implementation(libs.androidx.mediarouter)
     implementation(libs.bundles.exoplayer)
     implementation(libs.jellyfin.exoplayer.ffmpegextension)
+    implementation(libs.exoplayer.cronet)
     @Suppress("UnstableApiUsage")
     proprietaryImplementation(libs.exoplayer.cast)
     @Suppress("UnstableApiUsage")
