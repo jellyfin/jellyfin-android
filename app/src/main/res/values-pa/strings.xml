@@ -70,4 +70,16 @@
     <string name="pref_download_location">ਡਾਉਨਲੋਡ ਟਿਕਾਣਾ</string>
     <string name="pref_category_downloads">ਡਾਉਨਲੋਡਸ</string>
     <string name="dialog_web_view_not_supported">ਵੈਬਵਿਯੂ ਸਮਰਥਿਤ ਨਹੀਂ ਹੈ</string>
+    <string name="connection_error_unsupported_version_or_product">ਗ਼ਲਤ ਵਰਜਨ ਆ ਮਸ਼ੀਨ</string>
+    <string name="connection_error_unable_to_reach_sever">ਸਰਵਰ ਨਾਲ ਸੰਪਰਕ ਨਹੀਂ ਹੋ ਰਿਹਾ</string>
+    <string name="toast_reopen_after_change">ਬਦਲਣ ਤੋਂ ਬਾਅਦ ਐਪ ਬੰਦ ਕਰਕੇ ਖੋਲੋ</string>
+    <string name="dialog_button_ignore">ਇਗਨੋਰ</string>
+    <string name="dialog_button_open_settings">ਸੈਟਿੰਗਜ਼ ਖੋਲੋ</string>
+    <string name="dialog_button_close_app">ਐਪ ਬੰਦ ਕਰੋ</string>
+    <string name="dialog_button_check_for_updates">ਅਪਡੇਟ ਕਰੋ</string>
+    <string name="dialog_web_view_outdated_message">ਵੈੱਬਵਿਊ ਪੁਰਾਣਾ ਹੈ.
+\nਕਿਰਪਾ ਕਰਕੇ ਅਪਡੇਟ ਕਰੋ.</string>
+    <string name="dialog_web_view_outdated">ਵੈੱਬਵਿਊ ਪੁਰਾਣਾ ਹੈ</string>
+    <string name="dialog_web_view_not_supported_message">ਇਸ ਮਸ਼ੀਨ ਵੈੱਬਵਿਊ ਸੁਪੋਰਟੇਡ ਨਹੀਂ ਹੈ.
+\nਕੰਪੈਟੀਬਲ ਵੈੱਬਵਿਊ ਇੰਸਟਾਲ ਕਰੋ ਯਾਂ ਫਿਰ ਹੋਰ ਮਸ਼ੀਨ ਵਰਤੋ.</string>
 </resources>
