@@ -44,16 +44,16 @@
     <string name="mobile_data">Mobil netværk</string>
     <string name="wifi_only">Kun trådløs</string>
     <string name="network_message">Vil du tillade overførelser fra mobilnetværk eller roaming på andre netværk\? Der kan blive pålagt gebyr fra dit teleselskab.</string>
-    <string name="network_title">Tilladte netværkstyper</string>
+    <string name="network_title">Tilladte typer af netværk</string>
     <string name="battery_optimizations_message">Deaktiver venligst batteri optimering for medieafspilning i baggrunden.</string>
     <string name="available_servers_title">Tilgængelige servere</string>
     <string name="choose_server_button_text">Vælg en server</string>
-    <string name="connect_button_text">Forbind</string>
-    <string name="connection_error_cannot_connect">Der kunne ikke oprettes forbindelse.
-\nUndersøg venligst værtsnavnet og din internet forbindelse.</string>
+    <string name="connect_button_text">Tilslut</string>
+    <string name="connection_error_cannot_connect">Der kan ikke oprettes forbindelse.
+\nUndersøg venligst værtsnavnet og din Netværksforbindelse.</string>
     <string name="host_input_hint">Vært</string>
-    <string name="connect_to_server_title">Forbind til server</string>
-    <string name="connection_error_invalid_format">Værten har et ugyldigt format</string>
+    <string name="connect_to_server_title">Tilslut til serveren</string>
+    <string name="connection_error_invalid_format">Værten er i et ugyldigt format</string>
     <string name="pref_download_location">Overførelse placering</string>
     <string name="pref_category_downloads">Overførelser</string>
     <string name="external_player_system_default_description">Lad systemet håndtere afspillerens valgmuligheder, nogle afspillere er muligvis ikke fuldt kompatible.</string>
@@ -71,20 +71,20 @@
     <string name="pref_exoplayer_allow_background_audio">Baggrundslyd</string>
     <string name="dialog_button_close_app">Luk app</string>
     <string name="dialog_button_check_for_updates">Søg efter opdateringer</string>
-    <string name="dialog_web_view_not_supported_message">WebViews er understøttes ikke af denne enhed.
-\nInstallér en kompatibel WebView implementering eller skift til en understøttet enhed.</string>
+    <string name="dialog_web_view_not_supported_message">WebViews er ikke understøttet af denne enhed.
+\nInstallér en kompatibel WebView implementering eller skift til en enhed som er understøttet.</string>
     <string name="dialog_web_view_outdated_message">WebView-implementeringen, som din enhed anvender, er forældet.
 \nOpdatér venligst til en kompatibel version.</string>
     <string name="dialog_web_view_outdated">WebView er forældet</string>
-    <string name="dialog_web_view_not_supported">WebView understøttes ikke</string>
+    <string name="dialog_web_view_not_supported">WebView er ikke understøttet</string>
     <string name="player_error_invalid_play_options">Kan ikke afgøre afspilningsoplysninger</string>
-    <string name="connection_error_unsupported_version_or_product">Ikke understøttet version eller produkt</string>
-    <string name="connection_error_unable_to_reach_sever">Kan ikke nå serveren</string>
+    <string name="connection_error_unsupported_version_or_product">Produktet eller versionen er ikke understøttet</string>
+    <string name="connection_error_unable_to_reach_sever">Kan ikke tilgå serveren</string>
     <plurals name="connection_error_prefix">
-        <item quantity="one">Forsøgte %d kandidat for input, uden succes.</item>
+        <item quantity="one">Forsøgte %d kandidater for indgange, men uden succes.</item>
         <item quantity="other">Forsøgte %d kandidater for input, uden succes.</item>
     </plurals>
-    <string name="toast_reopen_after_change">Venligst genåben applikationen efter at ændringerne er lavet</string>
+    <string name="toast_reopen_after_change">Genåben venligst appen så de ny ændringer kan træde i kraft</string>
     <string name="dialog_button_ignore">Ignorér</string>
     <string name="dialog_button_open_settings">Åben indstillinger</string>
     <string name="playback_info_stream_unknown_title">Ukendt titel</string>
