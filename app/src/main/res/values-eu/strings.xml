@@ -2,15 +2,15 @@
 <resources>
     <string name="pref_download_location">Deskargaren kokapena</string>
     <string name="pref_category_downloads">Deskargak</string>
-    <string name="external_player_system_default_description">Sistemak kanpoko bideo-erreproduzitzailea hautatzeko aukera ematen du, baliteke batzuk erabat bateragarriak ez izatea</string>
+    <string name="external_player_system_default_description">Sistemak kanpoko bideo-erreproduzitzailea hautatzeko aukera ematen du, baliteke batzuk erabat bateragarriak ez izatea.</string>
     <string name="external_player_system_default">Sistemaren lehenetsia</string>
-    <string name="external_player_vlc_player_description">Plataforma anitzeko multimedia erreproduzitzailea, doakoa eta kode irekikoa, multimedia fitxategi gehienak erreproduzitzen dituena</string>
+    <string name="external_player_vlc_player_description">Plataforma anitzeko multimedia erreproduzitzailea, doakoa eta kode irekikoa, multimedia fitxategi gehienak erreproduzitzen dituena.</string>
     <string name="external_player_vlc_player">VLC multimedia erreproduzitzailea</string>
     <string name="external_player_mx_player_pro_description">MX erreproduzitzailearen ordainpeko bertsioa, etenik gabeko bideo-esperientzia ematen duena.</string>
     <string name="external_player_mx_player_pro">MX Pro erreproduzitzailea</string>
-    <string name="external_player_mx_player_free_description">Bideo-erreproduzitzaile ahaltsua, azpititulu eta hardware bidezko azeleraziorako euskarri aurreratuarekin</string>
+    <string name="external_player_mx_player_free_description">Bideo-erreproduzitzaile ahaltsua, azpititulu eta hardware bidezko azeleraziorako euskarri aurreratuarekin.</string>
     <string name="external_player_mx_player_free">Doako MX erreproduzitzailea</string>
-    <string name="external_player_mpv_description">Bideo-irakurgailu sinple, txiki, arin eta askea. Multimedia formatu ugari onartzen ditu</string>
+    <string name="external_player_mpv_description">Bideo-irakurgailu sinple, txiki, arin eta askea. Multimedia formatu ugari onartzen ditu.</string>
     <string name="external_player_mpv">MPV erreproduzitzailea</string>
     <string name="external_player_app">Kanpoko bideo-irakurgailua</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Bigarren planoko bideoetatik datorren soinua erreproduzitzeko aukera ematea</string>
@@ -25,15 +25,15 @@
     <string name="video_player_web">Web erreproduzitzailea</string>
     <string name="pref_video_player_type_title">Bideo-erreproduzitzaile mota</string>
     <string name="pref_category_video_player">Bideo-erreproduzitzailea</string>
-    <string name="pref_music_notification_always_dismissible_summary_on">Jakinarazpena baztertu egin daiteke edukia kopiatzen ari denean ere.</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Jakinarazpena baztertu egin daiteke edukia kopiatzen ari denean ere</string>
     <string name="pref_music_notification_always_dismissible_summary_off">Jakinarazpena erreprodukzioa geldituta dagoen bitartean bakarrik ezaba daiteke</string>
     <string name="pref_music_notification_always_dismissible_title">Erreproduzigailu baztergarriaren jakinarazpena</string>
     <string name="pref_category_music_player">Musika-erreproduzitzailea</string>
     <string name="activity_name_settings">Jellyfinen ezarpenak</string>
-    <string name="external_player_unknown_error">Errore ezezaguna kanpo-erreproduzitzailea. Erreprodukzioaren jarraipena desaktibatuta dago</string>
-    <string name="external_player_invalid_player">Ez da kanpoko erreproduzigailu baliozkorik hautatu. Erreprodukzioaren jarraipena desaktibatu da</string>
-    <string name="external_player_not_supported_yet">Hautatutako kanpo-erreproduzitzaileak ez du erreprodukzioaren jarraipena jasaten. Jar zaitez harremanetan garatzaileekin</string>
-    <string name="external_player_invalid_play_method">Erreprodukzio-metodoa ez da baliozkoa</string>
+    <string name="external_player_unknown_error">Errore ezezaguna kanpo-erreproduzitzailea. Erreprodukzioaren jarraipena desaktibatuta dago.</string>
+    <string name="external_player_invalid_player">Ez da kanpoko erreproduzigailu baliozkorik hautatu. Erreprodukzioaren jarraipena desaktibatu da.</string>
+    <string name="external_player_not_supported_yet">Hautatutako kanpo-erreproduzitzaileak ez du erreprodukzioaren jarraipena jasaten. Jar zaitez harremanetan garatzaileekin.</string>
+    <string name="external_player_invalid_play_method">Erreprodukzio-metodoa ez da baliozkoa.</string>
     <string name="playback_info_and_x_more">... eta %d gehiago</string>
     <string name="playback_info_stream_unknown_title">Titulu ezezaguna</string>
     <string name="playback_info_audio_streams">Audio-streaminga</string>
@@ -67,9 +67,9 @@
     <string name="mobile_data_and_roaming">Datu mugikorrak eta ibiltaritza</string>
     <string name="mobile_data">Datu mugikorrak</string>
     <string name="wifi_only">WiFi bakarrik</string>
-    <string name="network_message">Datu mugikorren edo ibiltaritzaren bidez deskargatzeko aukera eman nahi duzu\? Zure operadoreak kargu gehigarriak egin ditzake</string>
+    <string name="network_message">Datu mugikorren edo ibiltaritzaren bidez deskargatzeko aukera eman nahi duzu\? Zure operadoreak kargu gehigarriak egin ditzake.</string>
     <string name="network_title">Baimendutako sare-motak</string>
-    <string name="battery_optimizations_message">Desaktibatu Jellyfinentzat aurreztutako energia sistemaren ezarpenetan, pantaila itzalita dagoen bitartean edukia erreproduzitu ahal izateko</string>
+    <string name="battery_optimizations_message">Desaktibatu Jellyfinentzat aurreztutako energia sistemaren ezarpenetan, pantaila itzalita dagoen bitartean edukia erreproduzitu ahal izateko.</string>
     <string name="available_servers_title">Zerbitzari erabilgarriak</string>
     <string name="choose_server_button_text">Hautatu zerbitzaria</string>
     <string name="connect_button_text">Konektatu</string>
@@ -79,7 +79,8 @@
         <item quantity="one">Sartzeko %d hautagaiaren saiakera, arrakastarik gabe.</item>
         <item quantity="other">Sartzeko %d hautagaien saiakera, arrakastarik gabe.</item>
     </plurals>
-    <string name="connection_error_cannot_connect">Konexioa ezin izan zen ezarri. Mesedez, egiaztatu ostalari izena eta sarerako konexioa</string>
+    <string name="connection_error_cannot_connect">Konexioa ezin izan zen ezarri.
+\nMesedez, egiaztatu ostalari izena eta sarerako konexioa.</string>
     <string name="connection_error_invalid_format">Host-ak formatu baliogabea du</string>
     <string name="host_input_hint">Host</string>
     <string name="connect_to_server_title">Zerbitzariarekin konektatu</string>
@@ -88,8 +89,10 @@
     <string name="dialog_button_open_settings">Ezarpenak ireki</string>
     <string name="dialog_button_close_app">Aplikazioa itxi</string>
     <string name="dialog_button_check_for_updates">Eguneraketak bilatu</string>
-    <string name="dialog_web_view_outdated_message">Zure gailuak erabiltzen duen WebViewren inplementazioa ez dago eguneratuta. Bertsio bateragarri batera eguneratu</string>
+    <string name="dialog_web_view_outdated_message">Zure gailuak erabiltzen duen WebViewren inplementazioa ez dago eguneratuta.
+\nBertsio bateragarri batera eguneratu.</string>
     <string name="dialog_web_view_outdated">WebView deseguneratua</string>
-    <string name="dialog_web_view_not_supported_message">WebView ez dago euskarri honetan. Instalatu WebViewren inplementazio bateragarri bat edo aldatu gailu bateragarri batera</string>
+    <string name="dialog_web_view_not_supported_message">WebView ez dago euskarri honetan.
+\nInstalatu WebViewren inplementazio bateragarri bat edo aldatu gailu bateragarri batera.</string>
     <string name="dialog_web_view_not_supported">WebView ezin da jasan</string>
 </resources>
