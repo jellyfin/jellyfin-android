@@ -1,6 +1,6 @@
 Din media med dina vilkor.
 
-Jellyfin är ett kostnadsfritt mediaserverprojekt med öppen källkod. Inga avgifter, gömda motiv eller spårning. Ta del av detta projekt och ladda ner din gratisserver för att samla dina videor, ljudspår, foton och mer på ett och samma ställe.
+Jellyfin är ett kostnadsfritt mediaserverprojekt med öppen källkod. Inga avgifter, ingen spårning och inga dolda motiv. Ta del av detta projekt och ladda ner din gratisserver för att samla dina videor, ljudspår, foton och mer på ett och samma ställe.
 
 För att kunna använda appen krävs det att du har konfigurerat och kör en server. Få reda på mer hos <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>
 
