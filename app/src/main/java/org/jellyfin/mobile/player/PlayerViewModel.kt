@@ -17,7 +17,7 @@ import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.analytics.AnalyticsCollector
+import com.google.android.exoplayer2.analytics.DefaultAnalyticsCollector
 import com.google.android.exoplayer2.mediacodec.MediaCodecDecoderException
 import com.google.android.exoplayer2.util.Clock
 import com.google.android.exoplayer2.util.EventLogger
@@ -88,8 +88,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private val _playerState = MutableLiveData<Int>()
     val player: LiveData<ExoPlayer?> get() = _player
     val playerState: LiveData<Int> get() = _playerState
-    private val eventLogger = EventLogger(mediaQueueManager.trackSelector)
-    private val analyticsCollector = AnalyticsCollector(Clock.DEFAULT).apply {
+    private val eventLogger = EventLogger()
+    private val analyticsCollector = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
         addListener(eventLogger)
     }
     private val initialTracksSelected = AtomicBoolean(false)
@@ -174,7 +174,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             setAnalyticsCollector(analyticsCollector)
         }.build().apply {
             addListener(this@PlayerViewModel)
-            applyDefaultAudioAttributes(C.CONTENT_TYPE_MOVIE)
+            applyDefaultAudioAttributes(C.AUDIO_CONTENT_TYPE_MOVIE)
         }
     }
 
