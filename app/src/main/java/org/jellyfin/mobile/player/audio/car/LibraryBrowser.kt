@@ -39,6 +39,7 @@ import org.jellyfin.sdk.api.operations.UniversalAudioApi
 import org.jellyfin.sdk.api.operations.UserViewsApi
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.BaseItemDtoQueryResult
+import org.jellyfin.sdk.model.api.BaseItemKind
 import org.jellyfin.sdk.model.api.ImageType
 import org.jellyfin.sdk.model.api.ItemFields
 import org.jellyfin.sdk.model.api.ItemFilter
@@ -46,7 +47,7 @@ import org.jellyfin.sdk.model.api.SortOrder
 import org.jellyfin.sdk.model.serializer.toUUID
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
-import java.util.UUID
+import java.util.*
 
 @Suppress("TooManyFunctions")
 class LibraryBrowser(
@@ -156,7 +157,7 @@ class LibraryBrowser(
                 // Search for specific album
                 extras.getString(MediaStore.EXTRA_MEDIA_ALBUM)?.let { albumQuery ->
                     Timber.d("Searching for album $albumQuery")
-                    searchItems(albumQuery, "MusicAlbum")
+                    searchItems(albumQuery, BaseItemKind.MUSIC_ALBUM)
                 }?.let { albumId ->
                     getAlbum(albumId)
                 }?.let { albumContent ->
@@ -168,11 +169,11 @@ class LibraryBrowser(
                 // Search for specific artist
                 extras.getString(MediaStore.EXTRA_MEDIA_ARTIST)?.let { artistQuery ->
                     Timber.d("Searching for artist $artistQuery")
-                    searchItems(artistQuery, "MusicArtist")
+                    searchItems(artistQuery, BaseItemKind.MUSIC_ARTIST)
                 }?.let { artistId ->
                     itemsApi.getItemsByUserId(
                         artistIds = listOf(artistId),
-                        includeItemTypes = listOf("Audio"),
+                        includeItemTypes = listOf(BaseItemKind.AUDIO),
                         sortBy = listOf("Random"),
                         recursive = true,
                         imageTypeLimit = 1,
@@ -191,7 +192,7 @@ class LibraryBrowser(
         Timber.d("Searching for '$searchQuery'")
         val result by itemsApi.getItemsByUserId(
             searchTerm = searchQuery,
-            includeItemTypes = listOf("Audio"),
+            includeItemTypes = listOf(BaseItemKind.AUDIO),
             recursive = true,
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
@@ -205,7 +206,7 @@ class LibraryBrowser(
     /**
      * Find a single specific item for the given [searchQuery] with a specific [type]
      */
-    private suspend fun searchItems(searchQuery: String, type: String): UUID? {
+    private suspend fun searchItems(searchQuery: String, type: BaseItemKind): UUID? {
         val result by itemsApi.getItemsByUserId(
             searchTerm = searchQuery,
             includeItemTypes = listOf(type),
@@ -274,7 +275,7 @@ class LibraryBrowser(
     private suspend fun getRecents(libraryId: UUID): List<MediaMetadataCompat>? {
         val result by itemsApi.getItemsByUserId(
             parentId = libraryId,
-            includeItemTypes = listOf("Audio"),
+            includeItemTypes = listOf(BaseItemKind.AUDIO),
             filters = listOf(ItemFilter.IS_PLAYED),
             sortBy = listOf("DatePlayed"),
             sortOrder = listOf(SortOrder.DESCENDING),
@@ -297,7 +298,7 @@ class LibraryBrowser(
             parentId = libraryId,
             artistIds = filterArtist?.let(::listOf),
             genreIds = filterGenre?.let(::listOf),
-            includeItemTypes = listOf("MusicAlbum"),
+            includeItemTypes = listOf(BaseItemKind.MUSIC_ALBUM),
             sortBy = listOf(ItemFields.SORT_NAME.serialName),
             recursive = true,
             imageTypeLimit = 1,
@@ -311,7 +312,7 @@ class LibraryBrowser(
     private suspend fun getArtists(libraryId: UUID): List<MediaBrowserCompat.MediaItem>? {
         val result by itemsApi.getItemsByUserId(
             parentId = libraryId,
-            includeItemTypes = listOf("MusicArtist"),
+            includeItemTypes = listOf(BaseItemKind.MUSIC_ARTIST),
             sortBy = listOf(ItemFields.SORT_NAME.serialName),
             recursive = true,
             imageTypeLimit = 1,
@@ -337,7 +338,7 @@ class LibraryBrowser(
     private suspend fun getPlaylists(libraryId: UUID): List<MediaBrowserCompat.MediaItem>? {
         val result by itemsApi.getItemsByUserId(
             parentId = libraryId,
-            includeItemTypes = listOf("Playlist"),
+            includeItemTypes = listOf(BaseItemKind.PLAYLIST),
             sortBy = listOf(ItemFields.SORT_NAME.serialName),
             recursive = true,
             imageTypeLimit = 1,
@@ -387,7 +388,7 @@ class LibraryBrowser(
             )
         }
 
-        if (item.type.equals("audio", ignoreCase = true)) {
+        if (item.type == BaseItemKind.AUDIO) {
             val uri = universalAudioApi.getUniversalAudioStreamUrl(
                 itemId = item.id,
                 userId = apiClient.userId,
@@ -426,11 +427,11 @@ class LibraryBrowser(
     }
 
     private fun buildMediaId(item: BaseItemDto, extra: String?) = when (item.type) {
-        "MusicArtist" -> "${LibraryPage.ARTIST_ALBUMS}|$extra|${item.id}"
-        "MusicGenre" -> "${LibraryPage.GENRE_ALBUMS}|$extra|${item.id}"
-        "MusicAlbum" -> "${LibraryPage.ALBUM}|${item.id}"
-        "Playlist" -> "${LibraryPage.PLAYLIST}|${item.id}"
-        "Audio" -> "$extra|${item.id}"
+        BaseItemKind.MUSIC_ARTIST -> "${LibraryPage.ARTIST_ALBUMS}|$extra|${item.id}"
+        BaseItemKind.MUSIC_GENRE -> "${LibraryPage.GENRE_ALBUMS}|$extra|${item.id}"
+        BaseItemKind.MUSIC_ALBUM -> "${LibraryPage.ALBUM}|${item.id}"
+        BaseItemKind.PLAYLIST -> "${LibraryPage.PLAYLIST}|${item.id}"
+        BaseItemKind.AUDIO -> "$extra|${item.id}"
         else -> throw IllegalArgumentException("Unhandled item type ${item.type}")
     }
 

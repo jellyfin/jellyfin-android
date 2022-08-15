@@ -145,7 +145,7 @@ class ConnectFragment : Fragment() {
         AlertDialog.Builder(activity).apply {
             setTitle(R.string.available_servers_title)
             setItems(serverList.map { "${it.name}\n${it.address}" }.toTypedArray()) { _, index ->
-                connect(serverList[index].address!!)
+                connect(serverList[index].address)
             }
         }.show()
     }

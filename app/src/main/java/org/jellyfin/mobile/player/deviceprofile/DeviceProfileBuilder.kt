@@ -83,6 +83,9 @@ class DeviceProfileBuilder {
             requiresPlainVideoItems = false,
             enableMsMediaReceiverRegistrar = false,
             ignoreTranscodeByteRangeRequests = false,
+            responseProfiles = emptyList(),
+            supportedMediaTypes = "",
+            xmlRootAttributes = emptyList(),
         )
     }
 
@@ -108,6 +111,9 @@ class DeviceProfileBuilder {
         requiresPlainVideoItems = false,
         enableMsMediaReceiverRegistrar = false,
         ignoreTranscodeByteRangeRequests = false,
+        responseProfiles = emptyList(),
+        supportedMediaTypes = "",
+        xmlRootAttributes = emptyList(),
     )
 
     @Suppress("NestedBlockDepth")
@@ -163,6 +169,7 @@ class DeviceProfileBuilder {
                 minSegments = 0,
                 segmentLength = 0,
                 breakOnNonKeyFrames = false,
+                conditions = emptyList(),
             ),
         )
         add(
@@ -183,6 +190,7 @@ class DeviceProfileBuilder {
                 minSegments = 0,
                 segmentLength = 0,
                 breakOnNonKeyFrames = false,
+                conditions = emptyList(),
             ),
         )
         add(
@@ -202,6 +210,8 @@ class DeviceProfileBuilder {
                 minSegments = 0,
                 segmentLength = 0,
                 breakOnNonKeyFrames = false,
+                conditions = emptyList(),
+                videoCodec = "",
             ),
         )
     }
