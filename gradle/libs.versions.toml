@@ -13,7 +13,7 @@ coroutines = "1.6.4"
 # Core
 koin = "3.2.0"
 androidx-core = "1.8.0"
-androidx-appcompat = "1.4.2"
+androidx-appcompat = "1.5.0"
 androidx-activity = "1.5.1"
 androidx-fragment = "1.5.2"
 androiddesugarlibs = "1.1.5"
