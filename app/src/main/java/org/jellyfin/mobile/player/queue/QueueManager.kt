@@ -30,7 +30,7 @@ import org.jellyfin.sdk.model.api.PlayMethod
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
-import java.util.UUID
+import java.util.*
 
 class QueueManager(
     private val viewModel: PlayerViewModel,
@@ -210,12 +210,13 @@ class QueueManager(
         return source.getExternalSubtitleStreams().map { stream ->
             val uri = Uri.parse(apiClient.createUrl(stream.deliveryUrl))
             val mediaItem = MediaItem.SubtitleConfiguration.Builder(uri).apply {
+                setId(stream.index.toString())
                 setLabel(stream.displayTitle)
                 setMimeType(stream.mimeType)
                 setLanguage(stream.language)
                 setSelectionFlags(C.SELECTION_FLAG_AUTOSELECT)
             }.build()
-            factory.setTrackId(stream.index.toString()).createMediaSource(mediaItem, source.runTimeMs)
+            factory.createMediaSource(mediaItem, source.runTimeMs)
         }.toTypedArray()
     }
 

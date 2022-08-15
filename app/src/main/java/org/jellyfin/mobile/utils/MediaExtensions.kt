@@ -90,5 +90,5 @@ fun Player.seekToOffset(offsetMs: Long) {
 }
 
 fun Player.logTracks(analyticsCollector: AnalyticsCollector) {
-    analyticsCollector.onTracksInfoChanged(currentTracksInfo)
+    analyticsCollector.onTracksChanged(currentTracks)
 }

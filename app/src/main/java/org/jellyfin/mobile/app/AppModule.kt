@@ -5,7 +5,7 @@ import coil.ImageLoader
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.extractor.ts.TsExtractor
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
-import com.google.android.exoplayer2.source.MediaSourceFactory
+import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
@@ -70,7 +70,7 @@ val applicationModule = module {
         val baseDataSourceFactory = DefaultHttpDataSource.Factory().setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
         DefaultDataSource.Factory(context, baseDataSourceFactory)
     }
-    single<MediaSourceFactory> {
+    single<MediaSource.Factory> {
         val context: Context = get()
         val extractorsFactory = DefaultExtractorsFactory().apply {
             // https://github.com/google/ExoPlayer/issues/8571

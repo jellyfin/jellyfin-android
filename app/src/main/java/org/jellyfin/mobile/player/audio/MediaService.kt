@@ -28,7 +28,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
-import com.google.android.exoplayer2.source.MediaSourceFactory
+import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -76,7 +76,7 @@ class MediaService : MediaBrowserServiceCompat() {
     private var currentPlaylistItems: List<MediaMetadataCompat> = emptyList()
 
     private val playerAudioAttributes = AudioAttributes.Builder()
-        .setContentType(C.CONTENT_TYPE_MUSIC)
+        .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
         .setUsage(C.USAGE_MEDIA)
         .build()
 
@@ -84,7 +84,7 @@ class MediaService : MediaBrowserServiceCompat() {
     val playerListener: Player.Listener = PlayerEventListener()
 
     private val exoPlayer: Player by lazy {
-        ExoPlayer.Builder(this, get<MediaSourceFactory>()).build().apply {
+        ExoPlayer.Builder(this, get<MediaSource.Factory>()).build().apply {
             setAudioAttributes(playerAudioAttributes, true)
             setHandleAudioBecomingNoisy(true)
             addListener(playerListener)
