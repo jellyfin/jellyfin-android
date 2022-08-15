@@ -109,7 +109,7 @@ class ExternalPlayer(
     @JavascriptInterface
     fun getSubtitleProfiles(): String {
         val subtitleProfiles = JSONArray()
-        externalPlayerProfile.subtitleProfiles?.forEach { profile ->
+        externalPlayerProfile.subtitleProfiles.forEach { profile ->
             subtitleProfiles.put(
                 JSONObject().apply {
                     put("method", profile.method)

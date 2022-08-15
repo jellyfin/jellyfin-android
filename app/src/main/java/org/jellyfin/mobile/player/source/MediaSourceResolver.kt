@@ -11,7 +11,7 @@ import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.PlaybackInfoDto
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
-import java.util.UUID
+import java.util.*
 
 class MediaSourceResolver(private val apiClient: ApiClient) {
     private val mediaInfoApi: MediaInfoApi = apiClient.mediaInfoApi
@@ -43,7 +43,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
 
             playSessionId = response.playSessionId ?: return Result.failure(PlayerException.UnsupportedContent())
 
-            response.mediaSources?.let { sources ->
+            response.mediaSources.let { sources ->
                 sources.find { source -> source.id?.toUUIDOrNull() == itemId } ?: sources.firstOrNull()
             } ?: return Result.failure(PlayerException.UnsupportedContent())
         } catch (e: ApiClientException) {
