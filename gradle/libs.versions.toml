@@ -30,7 +30,7 @@ modernandroidpreferences = "2.3.1"
 # Network
 jellyfin-sdk = "1.3.5"
 okhttp = "4.10.0"
-coil = "2.1.0"
+coil = "2.2.0"
 
 # Media
 androidx-media = "1.6.0"
