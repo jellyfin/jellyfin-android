@@ -11,4 +11,4 @@ Se serverem Jellyfin můžete:
 * Streamovat vaše vlastní média do vašeho zařízení s Androidem
 * Zobrazit svou sbírku médií pomocí snadno použitelného rozhraní
 
-Toto je oficiální aplikace Jellyfin pro systém Android. Děkujeme, že používat Jellyfin!
+Toto je oficiální aplikace Jellyfin pro systém Android. Děkujeme, že používáte Jellyfin!
