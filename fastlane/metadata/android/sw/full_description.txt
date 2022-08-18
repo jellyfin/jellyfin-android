@@ -1,0 +1,14 @@
+Vyombo vya habari vyako, kwa masharti yako.
+
+Mradi wa Jellyfin ni chanzo wazi, seva ya media ya programu huria. Hakuna ada, hakuna ufuatiliaji, hakuna ajenda iliyofichwa. Pata seva yetu isiyolipishwa ili kukusanya sauti, video, picha zako zote na zaidi katika sehemu moja.
+
+Ili kutumia programu, lazima uwe na seva ya Jellyfin iliyosanidiwa na kufanya kazi. Pata maelezo zaidi katika <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
+
+Ukiwa na seva ya Jellyfin, unaweza:
+
+Tazama TV ya Moja kwa Moja na vipindi vilivyorekodiwa kutoka kwa seva yako ya Jellyfin (vifaa/huduma za ziada zinahitajika)
+Tiririsha kwenye kifaa cha Chromecast kwenye mtandao wako
+Tiririsha midia yako kwenye kifaa chako cha Android
+Tazama mkusanyiko wako katika kiolesura rahisi kutumia
+
+Hii ndio programu rasmi ya Jellyfin ya Android. Asante kwa kutumia!
