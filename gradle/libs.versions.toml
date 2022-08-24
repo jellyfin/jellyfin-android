@@ -16,7 +16,7 @@ androidx-core = "1.8.0"
 androidx-appcompat = "1.5.0"
 androidx-activity = "1.5.1"
 androidx-fragment = "1.5.2"
-androiddesugarlibs = "1.1.5"
+androiddesugarlibs = "1.1.8"
 
 # Lifecycle extensions
 androidx-lifecycle = "2.5.1"
