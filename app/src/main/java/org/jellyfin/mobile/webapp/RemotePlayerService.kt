@@ -60,6 +60,7 @@ import org.jellyfin.mobile.utils.Constants.SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIO
 import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
 import org.jellyfin.mobile.utils.createMediaNotificationChannel
 import org.jellyfin.mobile.utils.setPlaybackState
+import org.jellyfin.mobile.utils.stripHtmlChars
 import org.koin.android.ext.android.inject
 import kotlin.coroutines.CoroutineContext
 
@@ -258,8 +259,8 @@ class RemotePlayerService : Service(), CoroutineScope {
                 } else {
                     setPriority(Notification.PRIORITY_LOW)
                 }
-                setContentTitle(title)
-                setContentText(artist)
+                setContentTitle(stripHtmlChars(title))
+                setContentText(stripHtmlChars(artist))
                 setSubText(album)
                 if (position != PlaybackState.PLAYBACK_POSITION_UNKNOWN) {
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
