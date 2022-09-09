@@ -26,6 +26,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.text.HtmlCompat
 import coil.ImageLoader
 import coil.request.ImageRequest
 import kotlinx.coroutines.CoroutineScope
@@ -60,7 +61,6 @@ import org.jellyfin.mobile.utils.Constants.SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIO
 import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
 import org.jellyfin.mobile.utils.createMediaNotificationChannel
 import org.jellyfin.mobile.utils.setPlaybackState
-import org.jellyfin.mobile.utils.stripHtmlChars
 import org.koin.android.ext.android.inject
 import kotlin.coroutines.CoroutineContext
 
@@ -259,8 +259,8 @@ class RemotePlayerService : Service(), CoroutineScope {
                 } else {
                     setPriority(Notification.PRIORITY_LOW)
                 }
-                setContentTitle(stripHtmlChars(title))
-                setContentText(stripHtmlChars(artist))
+                setContentTitle(title?.let { title -> HtmlCompat.fromHtml(title, HtmlCompat.FROM_HTML_MODE_LEGACY) })
+                setContentText(artist?.let { artist -> HtmlCompat.fromHtml(artist, HtmlCompat.FROM_HTML_MODE_LEGACY) })
                 setSubText(album)
                 if (position != PlaybackState.PLAYBACK_POSITION_UNKNOWN) {
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
