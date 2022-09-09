@@ -259,8 +259,8 @@ class RemotePlayerService : Service(), CoroutineScope {
                 } else {
                     setPriority(Notification.PRIORITY_LOW)
                 }
-                setContentTitle(title?.let { title -> HtmlCompat.fromHtml(title, HtmlCompat.FROM_HTML_MODE_LEGACY) })
-                setContentText(artist?.let { artist -> HtmlCompat.fromHtml(artist, HtmlCompat.FROM_HTML_MODE_LEGACY) })
+                setContentTitle(title?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) })
+                setContentText(artist?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) })
                 setSubText(album)
                 if (position != PlaybackState.PLAYBACK_POSITION_UNKNOWN) {
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
