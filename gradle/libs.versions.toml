@@ -11,7 +11,7 @@ dependencyupdates = "0.42.0"
 coroutines = "1.6.4"
 
 # Core
-koin = "3.2.0"
+koin = "3.2.1"
 androidx-core = "1.8.0"
 androidx-appcompat = "1.5.1"
 androidx-activity = "1.5.1"
