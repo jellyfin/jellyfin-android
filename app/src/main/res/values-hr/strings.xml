@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_exoplayer_allow_background_audio">Omogući reprodukciju zvuka u pozadini u ugrađenom playeru</string>
+    <string name="pref_exoplayer_allow_background_audio">Zvuk u pozadini</string>
     <string name="video_player_external_description">Vanjske aplikacije za reproduciranje medija kao MXPlayer i VLC</string>
     <string name="video_player_native_description">Zasnovan na ExoPlayeru, podržava više video formata i kodeka i više je integriran u OS</string>
     <string name="video_player_web_description">Zadani HTML video player iz Web sučelja</string>
@@ -8,7 +8,7 @@
     <string name="video_player_web">Web player</string>
     <string name="pref_video_player_type_title">Tip video playera</string>
     <string name="pref_category_video_player">Video player</string>
-    <string name="pref_music_notification_always_dismissible_title">Neka se obavijesti o izvođaču glazbe uvijek mogu odbaciti</string>
+    <string name="pref_music_notification_always_dismissible_title">Obavijesti aplikacije koje se mogu odbaciti</string>
     <string name="pref_category_music_player">Izvođač Glazbe</string>
     <string name="activity_name_settings">Jellyfin Postavke</string>
     <string name="external_player_unknown_error">Nepoznata greška u vanjskom programu za reprodukciju. Praćenje reprodukcije onemogućeno.</string>
@@ -22,7 +22,7 @@
     <string name="playback_info_play_method">Metoda pokretanja: %s</string>
     <string name="menu_item_none">Ništa</string>
     <string name="notification_action_stop">Zaustavi</string>
-    <string name="notification_action_next">Slijedeći</string>
+    <string name="notification_action_next">Sljedeći</string>
     <string name="notification_action_fast_forward">Premotaj unaprijed</string>
     <string name="notification_action_pause">Pauziraj</string>
     <string name="notification_action_play">Pokreni</string>
@@ -30,17 +30,17 @@
     <string name="notification_action_previous">Prethodni</string>
     <string name="download_no_storage_permission">Nije moguće preuzeti datoteke bez dozvole za pohranu</string>
     <string name="downloading">Preuzimanje</string>
-    <string name="mobile_data_and_roaming">Mobilni Podatci i Roaming</string>
-    <string name="mobile_data">Mobilni Podatci</string>
+    <string name="mobile_data_and_roaming">Mobilni Podaci i Roaming</string>
+    <string name="mobile_data">Mobilni Podaci</string>
     <string name="wifi_only">Samo WiFi</string>
-    <string name="network_message">Želite li dopustiti da se preuzimanje izvršava preko mobilne podatkovne veze ili roaming servisa\? Vaš davatelj mobilnih usluga to može dodatno naplatiti.</string>
-    <string name="network_title">Dopuštene Vrste Mreže</string>
+    <string name="network_message">Želite li dopustiti preuzimanje putem mobilne podatkovne veze ili roaming mreža\? Vaš davatelj mobilnih usluga može naplatiti dodatne troškove.</string>
+    <string name="network_title">Dopuštene Vrste Mreža</string>
     <string name="battery_optimizations_message">Molimo onemogućite optimizaciju baterije za reprodukciju medija dok je zaslon isključen.</string>
     <string name="available_servers_title">Dostupni poslužitelji</string>
-    <string name="choose_server_button_text">Odaberi poslužitelja</string>
+    <string name="choose_server_button_text">Odaberi poslužitelj</string>
     <string name="connect_button_text">Spoji se</string>
-    <string name="connection_error_cannot_connect">Nije moguće ostvariti vezu. 
-\nMolimo vas da provjerite ime poslužitelja i vašu internetsku vezu.</string>
+    <string name="connection_error_cannot_connect">Nije moguće ostvariti vezu.
+\nMolimo vas provjerite ime poslužitelja i vašu mrežnu vezu.</string>
     <string name="connection_error_invalid_format">Lokacija poslužitelja je neispravna</string>
     <string name="host_input_hint">Poslužitelj</string>
     <string name="connect_to_server_title">Spoji se na poslužitelj</string>
@@ -52,7 +52,7 @@
     <string name="external_player_mpv_description">Mali, lagani, jednostavni i slobodni video player. Podržava širok spektar formata medijskih datoteka.</string>
     <string name="external_player_mpv">MPV Player</string>
     <string name="external_player_app">Vanjska aplikacija za izvođenje</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">Dopusti geste za mijenjanje svjetline i glasnoće u ugrađenom playeru</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Pokreti za mijenjanje svjetline i glasnoće</string>
     <string name="music_notification_channel_description">Koristi se za kontrole reprodukcije glazbe</string>
     <string name="media_service_item_not_found">Medijsku stavku nije moguće pronaći</string>
     <string name="external_player_system_default">Zadano sustavom</string>
@@ -69,4 +69,31 @@
     <string name="media_service_generic_error">Dogodila se greška</string>
     <string name="pref_download_location">Lokacija preuzimanja</string>
     <string name="pref_category_downloads">Preuzimanja</string>
+    <string name="video_player_integrated">Ugrađeni player</string>
+    <string name="dialog_web_view_outdated_message">Implementacija WebViewa koju koristi vaš uređaj je zastarjela.
+\nAžurirajte ga na odgovarajuću verziju.</string>
+    <string name="dialog_web_view_outdated">Zastarjeli WebView</string>
+    <string name="dialog_web_view_not_supported_message">Ovaj uređaj ne podržava WebViews.
+\nInstalirajte odgovarajuću implementaciju WebViewa ili koristite podržani uređaj.</string>
+    <string name="dialog_web_view_not_supported">WebView nije podržan</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Dopusti reprodukciju zvuka videozapisa u pozadini</string>
+    <string name="pref_exoplayer_remember_brightness">Zapamti svjetlinu zaslona</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Obavijest uvijek može biti odbačena, čak i tijekom reprodukcije medija</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">Obavijest može biti odbačena samo kada je reprodukcija pauzirana</string>
+    <string name="playback_info_stream_unknown_title">Nepoznat naslov</string>
+    <string name="player_error_network_failure">Nije moguće učitati informacije o medijskim sadržajima s poslužitelja</string>
+    <string name="player_error_unsupported_content">Ovaj uređaj ne može reproducirati medijske sadržaje</string>
+    <string name="player_error_invalid_play_options">Nije moguće odrediti informacije o reprodukciji</string>
+    <string name="connection_error_unsupported_version_or_product">Nepodržana verzija ili proizvod</string>
+    <string name="connection_error_unable_to_reach_sever">Nije moguće pristupiti poslužitelju</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Pokušan %d kandidat za unos, bez uspjeha.</item>
+        <item quantity="few">Pokušano %d kandidata za unos, bez uspjeha.</item>
+        <item quantity="other">Pokušano %d kandidata za unos, bez uspjeha.</item>
+    </plurals>
+    <string name="toast_reopen_after_change">Ponovno otvorite aplikaciju nakon što se izvrše promjene</string>
+    <string name="dialog_button_ignore">Zanemari</string>
+    <string name="dialog_button_open_settings">Otvori postavke</string>
+    <string name="dialog_button_close_app">Zatvori aplikaciju</string>
+    <string name="dialog_button_check_for_updates">Provjeri nadogradnje</string>
 </resources>
