@@ -136,13 +136,16 @@ dependencies {
     }
     implementation(libs.okhttp)
     implementation(libs.coil)
+    implementation(libs.cronet.embedded)
 
     // Media
     implementation(libs.androidx.media)
     implementation(libs.androidx.mediarouter)
-    implementation(libs.bundles.exoplayer)
+    implementation(libs.bundles.exoplayer) {
+        // Exclude Play Services cronet provider library
+        exclude("com.google.android.gms", "play-services-cronet")
+    }
     implementation(libs.jellyfin.exoplayer.ffmpegextension)
-    implementation(libs.exoplayer.cronet)
     @Suppress("UnstableApiUsage")
     proprietaryImplementation(libs.exoplayer.cast)
     @Suppress("UnstableApiUsage")
