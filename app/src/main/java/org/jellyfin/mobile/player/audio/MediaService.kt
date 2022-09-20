@@ -84,7 +84,9 @@ class MediaService : MediaBrowserServiceCompat() {
     val playerListener: Player.Listener = PlayerEventListener()
 
     private val exoPlayer: Player by lazy {
-        ExoPlayer.Builder(this, get<MediaSource.Factory>()).build().apply {
+        ExoPlayer.Builder(this, get<MediaSource.Factory>()).apply {
+            setUsePlatformDiagnostics(false)
+        }.build().apply {
             setAudioAttributes(playerAudioAttributes, true)
             setHandleAudioBecomingNoisy(true)
             addListener(playerListener)
