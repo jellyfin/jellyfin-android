@@ -170,6 +170,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             setExtensionRendererMode(rendererMode)
         }
         _player.value = ExoPlayer.Builder(getApplication(), renderersFactory, get()).apply {
+            setUsePlatformDiagnostics(false)
             setTrackSelector(mediaQueueManager.trackSelector)
             setAnalyticsCollector(analyticsCollector)
         }.build().apply {
