@@ -31,6 +31,7 @@ modernandroidpreferences = "2.3.1"
 jellyfin-sdk = "1.3.5"
 okhttp = "4.10.0"
 coil = "2.2.1"
+cronet-embedded = "102.5005.125"
 
 # Media
 androidx-media = "1.6.0"
@@ -93,6 +94,7 @@ modernandroidpreferences = { group = "de.maxr1998", name = "modernandroidprefere
 jellyfin-sdk = { group = "org.jellyfin.sdk", name = "jellyfin-core", version.ref = "jellyfin-sdk" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 coil = { group = "io.coil-kt", name = "coil-base", version.ref = "coil" }
+cronet-embedded = { group = "org.chromium.net", name = "cronet-embedded", version.ref = "cronet-embedded" }
 
 # Media
 androidx-media = { group = "androidx.media", name = "media", version.ref = "androidx-media" }

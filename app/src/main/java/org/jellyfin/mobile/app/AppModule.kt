@@ -2,6 +2,7 @@ package org.jellyfin.mobile.app
 
 import android.content.Context
 import coil.ImageLoader
+import com.google.android.exoplayer2.ext.cronet.CronetDataSource
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.extractor.ts.TsExtractor
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
@@ -12,9 +13,7 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.ext.cronet.CronetDataSource
 import com.google.android.exoplayer2.util.Util
-import com.google.android.gms.net.CronetProviderInstaller
 import kotlinx.coroutines.channels.Channel
 import okhttp3.OkHttpClient
 import org.chromium.net.CronetEngine
@@ -74,7 +73,7 @@ val applicationModule = module {
         val context: Context = get()
 
         val provider = CronetProvider.getAllProviders(context).firstOrNull { provider: CronetProvider ->
-            (provider.name == CronetProviderInstaller.PROVIDER_NAME) && provider.isEnabled
+            (provider.name == CronetProvider.PROVIDER_NAME_APP_PACKAGED) && provider.isEnabled
         }
 
         val baseDataSourceFactory = if (provider != null) {
