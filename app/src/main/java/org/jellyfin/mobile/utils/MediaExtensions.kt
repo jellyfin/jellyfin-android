@@ -50,7 +50,7 @@ fun MediaSession.setPlaybackState(player: Player, playbackActions: Long) {
         Player.STATE_IDLE, Player.STATE_ENDED -> PlaybackState.STATE_NONE
         Player.STATE_READY -> if (player.isPlaying) PlaybackState.STATE_PLAYING else PlaybackState.STATE_PAUSED
         Player.STATE_BUFFERING -> PlaybackState.STATE_BUFFERING
-        else -> throw IllegalStateException("Invalid player playbackState $playerState")
+        else -> error("Invalid player playbackState $playerState")
     }
     setPlaybackState(playbackState, player.currentPosition, playbackActions)
 }

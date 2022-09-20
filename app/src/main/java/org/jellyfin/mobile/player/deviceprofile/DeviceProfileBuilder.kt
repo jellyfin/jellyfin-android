@@ -20,6 +20,7 @@ class DeviceProfileBuilder {
         require(SUPPORTED_CONTAINER_FORMATS.size == AVAILABLE_VIDEO_CODECS.size && SUPPORTED_CONTAINER_FORMATS.size == AVAILABLE_AUDIO_CODECS.size)
     }
 
+    @Suppress("LongMethod")
     fun getDeviceProfile(): DeviceProfile {
         val containerProfiles = ArrayList<ContainerProfile>()
         val directPlayProfiles = ArrayList<DirectPlayProfile>()

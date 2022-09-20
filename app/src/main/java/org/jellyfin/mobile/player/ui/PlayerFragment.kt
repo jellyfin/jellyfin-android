@@ -98,11 +98,12 @@ class PlayerFragment : Fragment() {
         viewModel.mediaQueueManager.mediaQueue.observe(this) { queueItem ->
             val jellyfinMediaSource = queueItem.jellyfinMediaSource
 
-            // On playback start, switch to landscape for landscape videos, and (only) enable fullscreen for portrait videos
             with(requireActivity()) {
                 if (jellyfinMediaSource.selectedVideoStream?.isLandscape != false) {
+                    // Switch to landscape for landscape videos
                     requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                 } else {
+                    // For portrait videos, immediately enable fullscreen
                     enableFullscreen()
                     updateFullscreenSwitcher(isFullscreen())
                 }
