@@ -136,7 +136,8 @@ class PlayerGestureHelper(
                     return false
 
                 // Check whether swipe was started in excluded region
-                if (firstEvent.y < playerView.resources.dip(Constants.GESTURE_EXCLUSION_AREA_TOP))
+                val exclusionSize = playerView.resources.dip(Constants.SWIPE_GESTURE_EXCLUSION_SIZE_VERTICAL)
+                if (firstEvent.y < exclusionSize || firstEvent.y > playerView.height - exclusionSize)
                     return false
 
                 // Check whether swipe was oriented vertically
