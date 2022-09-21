@@ -125,7 +125,6 @@ class DeviceProfileBuilder {
         )
     }
 
-    @Suppress("LongMethod")
     fun getDeviceProfile(): DeviceProfile {
         val containerProfiles = ArrayList<ContainerProfile>()
         val directPlayProfiles = ArrayList<DirectPlayProfile>()
@@ -163,6 +162,9 @@ class DeviceProfileBuilder {
             containerProfiles = containerProfiles,
             codecProfiles = codecProfiles,
             subtitleProfiles = getSubtitleProfiles(EXO_EMBEDDED_SUBTITLES, EXO_EXTERNAL_SUBTITLES),
+            maxStreamingBitrate = MAX_STREAMING_BITRATE,
+            maxStaticBitrate = MAX_STATIC_BITRATE,
+            musicStreamingTranscodingBitrate = MAX_MUSIC_TRANSCODING_BITRATE,
 
             // TODO: remove redundant defaults after API/SDK is fixed
             timelineOffsetSeconds = 0,
@@ -301,5 +303,23 @@ class DeviceProfileBuilder {
         private val EXTERNAL_PLAYER_SUBTITLES = arrayOf(
             "ssa", "ass", "srt", "subrip", "idx", "sub", "vtt", "webvtt", "ttml", "pgs", "pgssub", "smi", "smil",
         )
+
+        /**
+         * Taken from Jellyfin Web:
+         * https://github.com/jellyfin/jellyfin-web/blob/de690740f03c0568ba3061c4c586bd78b375d882/src/scripts/browserDeviceProfile.js#L276
+         */
+        private const val MAX_STREAMING_BITRATE = 120000000
+
+        /**
+         * Taken from Jellyfin Web:
+         * https://github.com/jellyfin/jellyfin-web/blob/de690740f03c0568ba3061c4c586bd78b375d882/src/scripts/browserDeviceProfile.js#L372
+         */
+        private const val MAX_STATIC_BITRATE = 100000000
+
+        /**
+         * Taken from Jellyfin Web:
+         * https://github.com/jellyfin/jellyfin-web/blob/de690740f03c0568ba3061c4c586bd78b375d882/src/scripts/browserDeviceProfile.js#L373
+         */
+        private const val MAX_MUSIC_TRANSCODING_BITRATE = 384000
     }
 }

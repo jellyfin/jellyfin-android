@@ -122,7 +122,7 @@ class PlayerFragment : Fragment() {
                 context.toast(R.string.player_error_invalid_play_options)
                 return@launch
             }
-            when (viewModel.mediaQueueManager.startPlayback(playOptions)) {
+            when (viewModel.mediaQueueManager.startPlayback(playOptions, playWhenReady = true)) {
                 is PlayerException.InvalidPlayOptions -> context.toast(R.string.player_error_invalid_play_options)
                 is PlayerException.NetworkFailure -> context.toast(R.string.player_error_network_failure)
                 is PlayerException.UnsupportedContent -> context.toast(R.string.player_error_unsupported_content)
@@ -268,6 +268,10 @@ class PlayerFragment : Fragment() {
      */
     fun toggleSubtitles(): Boolean {
         return viewModel.mediaQueueManager.toggleSubtitles()
+    }
+
+    fun onBitrateChanged(bitrate: Int?) {
+        viewModel.changeBitrate(bitrate)
     }
 
     /**

@@ -11,7 +11,7 @@ import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.PlaybackInfoDto
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
-import java.util.*
+import java.util.UUID
 
 class MediaSourceResolver(private val apiClient: ApiClient) {
     private val mediaInfoApi: MediaInfoApi = apiClient.mediaInfoApi
@@ -21,6 +21,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
     suspend fun resolveMediaSource(
         itemId: UUID,
         deviceProfile: DeviceProfile,
+        maxStreamingBitrate: Int? = null,
         startTimeTicks: Long? = null,
         audioStreamIndex: Int? = null,
         subtitleStreamIndex: Int? = null,
@@ -33,10 +34,10 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
                 data = PlaybackInfoDto(
                     userId = apiClient.userId,
                     deviceProfile = deviceProfile,
+                    maxStreamingBitrate = maxStreamingBitrate ?: deviceProfile.maxStreamingBitrate,
                     startTimeTicks = startTimeTicks,
                     audioStreamIndex = audioStreamIndex,
                     subtitleStreamIndex = subtitleStreamIndex,
-                    maxStreamingBitrate = /* 1 GB/s */ 1_000_000_000,
                     autoOpenLiveStream = true,
                 ),
             )

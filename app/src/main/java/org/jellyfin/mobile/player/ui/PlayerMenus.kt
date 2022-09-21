@@ -12,8 +12,11 @@ import androidx.core.view.isVisible
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
+import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.queue.QueueManager
 import org.jellyfin.sdk.model.api.MediaStream
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.Locale
 
 /**
@@ -23,19 +26,24 @@ class PlayerMenus(
     private val fragment: PlayerFragment,
     private val playerBinding: FragmentPlayerBinding,
     private val playerControlsBinding: ExoPlayerControlViewBinding,
-) : PopupMenu.OnDismissListener {
+) : PopupMenu.OnDismissListener,
+    KoinComponent {
+
     private val context = playerBinding.root.context
+    private val qualityOptionsProvider: QualityOptionsProvider by inject()
     private val previousButton: View by playerControlsBinding::previousButton
     private val nextButton: View by playerControlsBinding::nextButton
     private val lockScreenButton: View by playerControlsBinding::lockScreenButton
     private val audioStreamsButton: View by playerControlsBinding::audioStreamsButton
     private val subtitlesButton: ImageButton by playerControlsBinding::subtitlesButton
     private val speedButton: View by playerControlsBinding::speedButton
+    private val qualityButton: View by playerControlsBinding::qualityButton
     private val infoButton: View by playerControlsBinding::infoButton
     private val playbackInfo: TextView by playerBinding::playbackInfo
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
     private val speedMenu: PopupMenu = createSpeedMenu()
+    private val qualityMenu: PopupMenu = createQualityMenu()
 
     private var subtitleCount = 0
     private var subtitlesOn = false
@@ -71,6 +79,10 @@ class PlayerMenus(
             fragment.suppressControllerAutoHide(true)
             speedMenu.show()
         }
+        qualityButton.setOnClickListener {
+            fragment.suppressControllerAutoHide(true)
+            qualityMenu.show()
+        }
         infoButton.setOnClickListener {
             playbackInfo.isVisible = !playbackInfo.isVisible
         }
@@ -91,19 +103,21 @@ class PlayerMenus(
 
         updateSubtitlesButton()
 
+        val height = mediaSource.selectedVideoStream?.height
+        val width = mediaSource.selectedVideoStream?.width
+        if (height != null && width != null) {
+            buildQualityMenu(qualityMenu.menu, width, height)
+        } else {
+            qualityButton.isVisible = false
+        }
+
         val playMethod = context.getString(R.string.playback_info_play_method, mediaSource.playMethod)
         val videoTracksInfo = buildMediaStreamsInfo(
             mediaStreams = mediaSource.videoStreams,
             prefix = R.string.playback_info_video_streams,
             maxStreams = MAX_VIDEO_STREAMS_DISPLAY,
             streamSuffix = { stream ->
-                val bitrate = stream.bitRate
-                when {
-                    bitrate == null -> ""
-                    bitrate > BITRATE_MEGA_BIT -> " (%.2f Mbps)".format(Locale.getDefault(), bitrate.toDouble() / BITRATE_MEGA_BIT)
-                    bitrate > BITRATE_KILO_BIT -> " (%.2f Kbps)".format(Locale.getDefault(), bitrate.toDouble() / BITRATE_KILO_BIT)
-                    else -> " (%d bps)".format(bitrate)
-                }
+                stream.bitRate?.let { bitrate -> " (${formatBitrate(bitrate.toDouble())})" }.orEmpty()
             },
         )
         val audioTracksInfo = buildMediaStreamsInfo(
@@ -189,6 +203,18 @@ class PlayerMenus(
         setOnDismissListener(this@PlayerMenus)
     }
 
+    private fun createQualityMenu() = PopupMenu(context, qualityButton).apply {
+        setOnMenuItemClickListener { clickedItem: MenuItem ->
+            fragment.onBitrateChanged(clickedItem.itemId.takeUnless { bitrate -> bitrate == 0 })
+            menu.forEach { item ->
+                item.isChecked = false
+            }
+            clickedItem.isChecked = true
+            true
+        }
+        setOnDismissListener(this@PlayerMenus)
+    }
+
     private fun buildMenuItems(
         menu: Menu,
         groupId: Int,
@@ -217,6 +243,18 @@ class PlayerMenus(
         subtitlesButton.setImageState(stateSet, true)
     }
 
+    private fun buildQualityMenu(menu: Menu, videoWidth: Int, videoHeight: Int) {
+        menu.clear()
+        val options = qualityOptionsProvider.getApplicableQualityOptions(videoWidth, videoHeight)
+        options.map { option ->
+            val title = when (val bitrate = option.bitrate) {
+                0 -> context.getString(R.string.menu_item_auto)
+                else -> "${option.maxHeight}p - ${formatBitrate(bitrate.toDouble())}"
+            }
+            menu.add(QUALITY_MENU_GROUP, option.bitrate, Menu.NONE, title)
+        }
+    }
+
     fun dismissPlaybackInfo() {
         playbackInfo.isVisible = false
     }
@@ -225,10 +263,23 @@ class PlayerMenus(
         fragment.suppressControllerAutoHide(false)
     }
 
+    private fun formatBitrate(bitrate: Double): String {
+        val (value, unit) = when {
+            bitrate > BITRATE_MEGA_BIT -> bitrate / BITRATE_MEGA_BIT to " Mbps"
+            bitrate > BITRATE_KILO_BIT -> bitrate / BITRATE_KILO_BIT to " kbps"
+            else -> bitrate to " bps"
+        }
+
+        // Remove unnecessary trailing zeros
+        val formatted = "%.2f".format(Locale.getDefault(), value).removeSuffix(".00")
+        return formatted + unit
+    }
+
     companion object {
         private const val SUBTITLES_MENU_GROUP = 0
         private const val AUDIO_MENU_GROUP = 1
         private const val SPEED_MENU_GROUP = 2
+        private const val QUALITY_MENU_GROUP = 3
 
         private const val MAX_VIDEO_STREAMS_DISPLAY = 3
         private const val MAX_AUDIO_STREAMS_DISPLAY = 5
