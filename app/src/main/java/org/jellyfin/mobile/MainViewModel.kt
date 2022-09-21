@@ -18,14 +18,18 @@ class MainViewModel(
 
     init {
         viewModelScope.launch {
-            apiClientController.migrateFromPreferences()
             refreshServer()
         }
     }
 
-    suspend fun refreshServer() {
-        val server = apiClientController.loadSavedServer()
-        _serverState.value = server?.let { ServerState.Available(it) } ?: ServerState.Unset
+    suspend fun switchServer(hostname: String) {
+        apiClientController.setupServer(hostname)
+        refreshServer()
+    }
+
+    private suspend fun refreshServer() {
+        val serverEntity = apiClientController.loadSavedServer()
+        _serverState.value = serverEntity?.let { entity -> ServerState.Available(entity) } ?: ServerState.Unset
     }
 }
 
