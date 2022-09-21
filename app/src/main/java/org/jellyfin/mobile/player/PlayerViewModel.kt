@@ -193,7 +193,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         _player.value = null
     }
 
-    fun play(queueItem: QueueManager.QueueItem.Loaded) {
+    fun load(queueItem: QueueManager.QueueItem.Loaded, playWhenReady: Boolean) {
         val player = playerOrNull ?: return
 
         player.setMediaSource(queueItem.exoMediaSource)
@@ -203,7 +203,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
         val startTime = queueItem.jellyfinMediaSource.startTimeMs
         if (startTime > 0) player.seekTo(startTime)
-        player.playWhenReady = true
+        player.playWhenReady = playWhenReady
 
         mediaSession.setMetadata(queueItem.jellyfinMediaSource.toMediaMetadata())
 
@@ -319,11 +319,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     // Player controls
 
     fun play() {
-        playerOrNull?.playWhenReady = true
+        playerOrNull?.play()
     }
 
     fun pause() {
-        playerOrNull?.playWhenReady = false
+        playerOrNull?.pause()
     }
 
     fun rewind() {
@@ -369,6 +369,17 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
      */
     fun selectSubtitle(streamIndex: Int): Boolean = mediaQueueManager.selectSubtitle(streamIndex).also { success ->
         if (success) playerOrNull?.logTracks(analyticsCollector)
+    }
+
+    fun changeBitrate(bitrate: Int?) {
+        val player = playerOrNull ?: return
+
+        val playWhenReady = player.playWhenReady
+        pause()
+        val position = player.contentPosition
+        viewModelScope.launch {
+            mediaQueueManager.changeBitrate(bitrate, position, playWhenReady)
+        }
     }
 
     /**

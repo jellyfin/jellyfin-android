@@ -19,6 +19,7 @@ import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceResolver
+import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.clearSelectionAndDisableRendererByType
 import org.jellyfin.mobile.utils.selectTrackByTypeAndGroup
 import org.jellyfin.sdk.api.client.ApiClient
@@ -52,19 +53,21 @@ class QueueManager(
      *
      * @return an error of type [PlayerException] or null on success.
      */
-    suspend fun startPlayback(playOptions: PlayOptions): PlayerException? {
+    suspend fun startPlayback(playOptions: PlayOptions, playWhenReady: Boolean): PlayerException? {
         if (playOptions != currentPlayOptions) {
             val itemId = playOptions.run { mediaSourceId ?: ids[playOptions.startIndex] }
             mediaSourceResolver.resolveMediaSource(
                 itemId = itemId,
                 deviceProfile = deviceProfile,
+                maxStreamingBitrate = playOptions.maxBitrate,
                 startTimeTicks = playOptions.startPositionTicks,
                 audioStreamIndex = playOptions.audioStreamIndex,
                 subtitleStreamIndex = playOptions.subtitleStreamIndex,
             ).onSuccess { jellyfinMediaSource ->
                 val previous = QueueItem.Stub(playOptions.ids.take(playOptions.startIndex))
                 val next = QueueItem.Stub(playOptions.ids.drop(playOptions.startIndex + 1))
-                createQueueItem(jellyfinMediaSource, previous, next).play()
+                createQueueItem(jellyfinMediaSource, previous, next).play(playWhenReady)
+                currentPlayOptions = playOptions
             }.onFailure { error ->
                 // Should always be of this type, other errors are silently dropped
                 return error as? PlayerException
@@ -73,8 +76,30 @@ class QueueManager(
         return null
     }
 
+    /**
+     * Reinitialize current media source without changing settings
+     */
     fun tryRestartPlayback() {
         _mediaQueue.value?.play()
+    }
+
+    /**
+     * Change the maximum bitrate to the specified value.
+     *
+     * @param positionMs the current stream position to return to after reloading the source.
+     * @param playWhenReady whether the stream should play after the source was reloaded.
+     */
+    suspend fun changeBitrate(bitrate: Int?, positionMs: Long, playWhenReady: Boolean) {
+        val currentPlayOptions = currentPlayOptions ?: return
+
+        // Bitrate didn't change, ignore
+        if (currentPlayOptions.maxBitrate == bitrate) return
+
+        val playOptions = currentPlayOptions.copy(
+            startPositionTicks = positionMs * Constants.TICKS_PER_MILLISECOND,
+            maxBitrate = bitrate,
+        )
+        startPlayback(playOptions, playWhenReady)
     }
 
     @CheckResult
@@ -329,8 +354,8 @@ class QueueManager(
         ) : QueueItem()
     }
 
-    private fun QueueItem.Loaded.play() {
+    private fun QueueItem.Loaded.play(playWhenReady: Boolean = true) {
         _mediaQueue.value = this
-        viewModel.play(this)
+        viewModel.load(this, playWhenReady)
     }
 }
