@@ -76,7 +76,7 @@ class PlayerGestureHelper(
     private val unlockDetector = GestureDetector(
         playerView.context,
         object : GestureDetector.SimpleOnGestureListener() {
-            override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+            override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
                 playerLockScreenHelper.peekUnlockButton()
                 return true
             }
@@ -119,7 +119,7 @@ class PlayerGestureHelper(
                 return true
             }
 
-            override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+            override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
                 playerView.apply {
                     if (!isControllerVisible) showController() else hideController()
                 }
