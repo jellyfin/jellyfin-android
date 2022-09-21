@@ -20,7 +20,6 @@
     <string name="connect_button_text">התחבר</string>
     <string name="connection_error_cannot_connect">החיבור לא הצליח.
 \nאנא בדוק את כתובת השרת ואת החיבור לרשת.</string>
-    <string name="connection_error_invalid_format">כתובת שרת לא תקינה</string>
     <string name="host_input_hint">שרת</string>
     <string name="connect_to_server_title">חיבור לשרת</string>
     <string name="external_player_invalid_play_method">שיטת ניגון לא חוקית.</string>

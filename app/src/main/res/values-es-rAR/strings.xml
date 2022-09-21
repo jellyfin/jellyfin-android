@@ -8,7 +8,6 @@
     <string name="network_title">Tipos de red permitidos</string>
     <string name="battery_optimizations_message">Por favor deshabilite las optimizaciones de batería para la reproducción de medios mientras la pantalla está apagada.</string>
     <string name="connect_to_server_title">Conectar al servidor</string>
-    <string name="connection_error_invalid_format">El Servidor tiene un formato no válido</string>
     <string name="connect_button_text">Conectar</string>
     <string name="host_input_hint">Servidor</string>
     <string name="pref_category_video_player">Reproductor de video</string>

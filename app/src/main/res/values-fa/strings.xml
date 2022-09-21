@@ -78,7 +78,6 @@
     </plurals>
     <string name="connection_error_cannot_connect">اتصال برقرار نیست.
 \nلطفاً نام میزبان و اتصال شبکه خود را بررسی کنید.</string>
-    <string name="connection_error_invalid_format">قالب میزبان نامعتبر است</string>
     <string name="host_input_hint">میزبان</string>
     <string name="connect_to_server_title">اتصال به سرور</string>
     <string name="toast_reopen_after_change">لطفاً پس از ایجاد تغییرات ، برنامه را دوباره باز کنید</string>

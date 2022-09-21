@@ -20,7 +20,6 @@
     <string name="connect_button_text">Свързване</string>
     <string name="connection_error_cannot_connect">Връзката не може да бъде осъществена. 
 \nМоля,проверете името на хоста и вашата връзка с интернет.</string>
-    <string name="connection_error_invalid_format">Неправилен формат на името на сървъра</string>
     <string name="host_input_hint">Хост</string>
     <string name="connect_to_server_title">Свързване към сървър</string>
     <string name="external_player_mx_player_pro">MX Player Prо</string>

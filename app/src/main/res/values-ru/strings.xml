@@ -12,7 +12,6 @@
     <string name="pref_category_music_player">Музыкальный проигрыватель</string>
     <string name="activity_name_settings">Параметры Jellyfin</string>
     <string name="menu_item_none">Ничего</string>
-    <string name="connection_error_invalid_format">Хост имеет недопустимый формат</string>
     <string name="connect_button_text">Соединение</string>
     <string name="host_input_hint">Узел</string>
     <string name="pref_exoplayer_allow_background_audio">Фоновое аудио</string>

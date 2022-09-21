@@ -16,7 +16,6 @@
     <string name="connect_to_server_title">Conectar ao Servidor</string>
     <string name="connection_error_cannot_connect">Conexão não pode ser estabelecida. 
 \nPor favor confira o hostname e sua conexão com a rede.</string>
-    <string name="connection_error_invalid_format">Host possui formato inválido</string>
     <string name="host_input_hint">Host</string>
     <string name="pref_music_notification_always_dismissible_title">Notificação do reprodutor de música descartável</string>
     <string name="pref_category_video_player">Reprodutor de vídeo nativo</string>

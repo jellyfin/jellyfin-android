@@ -7,7 +7,6 @@
     <string name="network_message">¿Deseas permitir la descarga a través de datos móviles o itinerancia\? Tu operador puede realizar cargos adicionales.</string>
     <string name="network_title">Tipo de redes permitidas</string>
     <string name="battery_optimizations_message">Desactiva el ahorro de energía para Jellyfin en los ajustes del sistema a fin de poder reproducir contenido mientras la pantalla está apagada.</string>
-    <string name="connection_error_invalid_format">El host tiene un formato inválido</string>
     <string name="connect_button_text">Conectar</string>
     <string name="connect_to_server_title">Conectarse al servidor</string>
     <string name="playback_info_transcoding">Conversión: %b</string>

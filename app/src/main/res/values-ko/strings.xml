@@ -6,7 +6,6 @@
     <string name="mobile_data">모바일 데이터</string>
     <string name="network_message">모바일 데이터 혹은 로밍 네트워크를 사용하여 다운로드하는 것을 허용하겠습니까\? 요금이 부과될 수 있습니다.</string>
     <string name="network_title">허용된 네트워크 종류</string>
-    <string name="connection_error_invalid_format">올바르지 않은 호스트 형식 입니다</string>
     <string name="connect_button_text">연결</string>
     <string name="host_input_hint">호스트</string>
     <string name="connect_to_server_title">서버 연결</string>

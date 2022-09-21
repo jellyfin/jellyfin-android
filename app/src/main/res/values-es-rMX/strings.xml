@@ -10,7 +10,6 @@
     <string name="connect_button_text">Conectar</string>
     <string name="connection_error_cannot_connect">No se puede establecer una conexión con el servidor.
 \nFavor de revisar la dirección de este y la conexión de red.</string>
-    <string name="connection_error_invalid_format">La dirección del servidor tiene un formato inválido</string>
     <string name="host_input_hint">Dirección del Servidor</string>
     <string name="connect_to_server_title">Conectar al Servidor</string>
     <string name="pref_exoplayer_allow_background_audio">Reproducción de audio en segundo plano</string>

@@ -27,7 +27,6 @@
     <string name="connect_button_text">接続</string>
     <string name="connection_error_cannot_connect">接続が確立できませんでした。
 \nホスト名とネットワーク接続を確認してください。</string>
-    <string name="connection_error_invalid_format">ホストのフォーマットが無効です</string>
     <string name="host_input_hint">ホスト</string>
     <string name="connect_to_server_title">サーバーへ接続</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">輝度と音量のジェスチャー</string>

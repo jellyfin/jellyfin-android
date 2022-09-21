@@ -53,7 +53,6 @@
 \nUndersøg venligst værtsnavnet og din Netværksforbindelse.</string>
     <string name="host_input_hint">Vært</string>
     <string name="connect_to_server_title">Tilslut til serveren</string>
-    <string name="connection_error_invalid_format">Værten er i et ugyldigt format</string>
     <string name="pref_download_location">Overførelse placering</string>
     <string name="pref_category_downloads">Overførelser</string>
     <string name="external_player_system_default_description">Lad systemet håndtere afspillerens valgmuligheder, nogle afspillere er muligvis ikke fuldt kompatible.</string>

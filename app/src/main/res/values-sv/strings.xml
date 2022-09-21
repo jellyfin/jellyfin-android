@@ -26,7 +26,6 @@
     <string name="available_servers_title">Tillgängliga servrar</string>
     <string name="choose_server_button_text">Välj server</string>
     <string name="connect_button_text">Anslut</string>
-    <string name="connection_error_invalid_format">Fel format för värd</string>
     <string name="host_input_hint">Värd</string>
     <string name="connect_to_server_title">Anslut till server</string>
     <string name="external_player_unknown_error">Okänt fel i extern spelare. Uppspelningsspårning är inaktiverad.</string>

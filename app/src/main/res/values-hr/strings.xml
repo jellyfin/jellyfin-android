@@ -41,7 +41,6 @@
     <string name="connect_button_text">Spoji se</string>
     <string name="connection_error_cannot_connect">Nije moguće ostvariti vezu.
 \nMolimo vas provjerite ime poslužitelja i vašu mrežnu vezu.</string>
-    <string name="connection_error_invalid_format">Lokacija poslužitelja je neispravna</string>
     <string name="host_input_hint">Poslužitelj</string>
     <string name="connect_to_server_title">Spoji se na poslužitelj</string>
     <string name="external_player_system_default_description">Neka sustav odabere player. Neki playeri nisu u potpunosti podržani.</string>

@@ -41,7 +41,6 @@
     <string name="connection_error_unable_to_reach_sever">Nie można odnaleźć serwera</string>
     <string name="connection_error_cannot_connect">Nie można nawiązać połączenia.
 \nSprawdź nazwę hosta i połączenie sieciowe.</string>
-    <string name="connection_error_invalid_format">Host ma nieprawidłowy format</string>
     <string name="connect_to_server_title">Połącz z serwerem</string>
     <string name="toast_reopen_after_change">Uruchom ponownie aplikację po dokonaniu zmian</string>
     <string name="dialog_button_ignore">Ignoruj</string>

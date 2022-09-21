@@ -48,7 +48,6 @@
     <string name="connect_to_server_title">Serverge qosylu</string>
     <string name="connection_error_cannot_connect">Bailanys ornatu mümkın emes. 
 \nTüiın atauy men jelі bailanysyn tekserіñіz.</string>
-    <string name="connection_error_invalid_format">Tüiın pışımı jaramsyz</string>
     <string name="video_player_external_description">MX Player jäne VLC siaqty syrtqy beine oinatqyş qoldanbalar</string>
     <string name="media_service_item_not_found">Tasyğyşderekter tarmağyn tabu mümkın bolmady</string>
     <string name="external_player_unknown_error">Syrtqy oinatqyşta belgısız qate . Oinatudy qadağalau öşırılgen.</string>

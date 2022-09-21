@@ -84,7 +84,6 @@
     <string name="connection_error_unable_to_reach_sever">تعذر الوصول إلى الخادم</string>
     <string name="connection_error_cannot_connect">لا يمكن إنشاء الاتصال.
 \nيرجى التحقق من عنوان المضيف وإتصال الشبكة.</string>
-    <string name="connection_error_invalid_format">المضيف لديه تنسيق غير صالح</string>
     <string name="host_input_hint">المضيف</string>
     <string name="connect_to_server_title">إتصل بالخادم</string>
     <string name="toast_reopen_after_change">يرجى إعادة فتح التطبيق بعد إجراء التغييرات</string>

@@ -11,7 +11,6 @@
     <string name="pref_music_notification_always_dismissible_title">Notifiche del player rimovibili</string>
     <string name="pref_category_music_player">Player Musicale</string>
     <string name="activity_name_settings">Impostazioni Jellyfin</string>
-    <string name="connection_error_invalid_format">L\'Host non ha un formato valido</string>
     <string name="connect_button_text">Connetti</string>
     <string name="host_input_hint">Host</string>
     <string name="connect_to_server_title">Connetti al Server</string>

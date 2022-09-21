@@ -40,7 +40,6 @@
     <string name="connect_button_text">Kết nối</string>
     <string name="connection_error_cannot_connect">Không thể thiết lập kết nối.
 \nVui lòng kiểm tra tên máy chủ và kết nối mạng của bạn.</string>
-    <string name="connection_error_invalid_format">Máy chủ có định dạng không hợp lệ</string>
     <string name="connect_to_server_title">Kết nối đến Máy chủ</string>
     <string name="available_servers_title">Máy chủ hiện có</string>
     <string name="choose_server_button_text">Chọn máy chủ</string>

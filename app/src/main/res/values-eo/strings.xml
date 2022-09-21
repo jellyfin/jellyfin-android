@@ -62,7 +62,6 @@
     <string name="download_no_storage_permission">Ne povas elŝuti dosierojn sen konservejaj permesoj</string>
     <string name="player_error_invalid_play_options">Ne eblas preni ludadajn informojn</string>
     <string name="music_notification_channel_description">Uzita por kontroli muzikan ludadon</string>
-    <string name="connection_error_invalid_format">Gastigo havas nevalidan formaton</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Helecaj kaj laŭtecaj gestoj</string>
     <string name="mobile_data_and_roaming">Poŝfonaj Datenoj kaj Retmigrado</string>
     <string name="connection_error_unsupported_version_or_product">Nesubtenata versio aŭ produkto</string>

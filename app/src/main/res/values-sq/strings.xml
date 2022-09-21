@@ -28,7 +28,6 @@
     <string name="connect_button_text">Lidhu</string>
     <string name="connection_error_cannot_connect">Lidhja nuk mund te realizohet.
 \nJu lutemi të kontrolloni emrin e hostit si dhe lidhjen tuaj të internetit.</string>
-    <string name="connection_error_invalid_format">Host-i ka një format të pavlefshëm</string>
     <string name="host_input_hint">Host</string>
     <string name="connect_to_server_title">Lidhu me Server</string>
     <string name="pref_exoplayer_allow_background_audio">Audio në sfond</string>

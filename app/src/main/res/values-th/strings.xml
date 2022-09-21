@@ -28,7 +28,6 @@
     <string name="connect_button_text">เชื่อมต่อ</string>
     <string name="connection_error_cannot_connect">ไม่สามารถสร้างการเชื่อมต่อได้
 \nโปรดตรวจสอบชื่อโฮสต์และการเชื่อมต่อเครือข่ายของคุณ</string>
-    <string name="connection_error_invalid_format">โฮสต์มีรูปแบบที่ไม่ถูกต้อง</string>
     <string name="host_input_hint">โฮสต์</string>
     <string name="connect_to_server_title">เชื่อมต่อกับเซิร์ฟเวอร์</string>
     <string name="pref_video_player_type_title">ประเภทเครื่องเล่นวีดีโอ</string>

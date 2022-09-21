@@ -7,7 +7,6 @@
     <string name="network_message">Engedélyezed a letöltést mobil adatforgalom és roaming esetén\? Az internetszolgáltató további díjat számíthat fel.</string>
     <string name="network_title">Engedélyezett hálózat típusok</string>
     <string name="battery_optimizations_message">Ahhoz, hogy a lejátszás kikapcsolt képernyő mellett is működhessen, kapcsold ki az akkumulátor optimalizálást.</string>
-    <string name="connection_error_invalid_format">A hoszt formátuma helytelen</string>
     <string name="connect_button_text">Kapcsolódás</string>
     <string name="host_input_hint">Hoszt</string>
     <string name="connect_to_server_title">Kapcsolódás a szerverhez</string>

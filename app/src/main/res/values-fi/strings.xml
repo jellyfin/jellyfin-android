@@ -10,7 +10,6 @@
     <string name="pref_music_notification_always_dismissible_title">Hylättävä soittimen ilmoitus</string>
     <string name="pref_category_music_player">Musiikkisoitin</string>
     <string name="activity_name_settings">Jellyfinin asetukset</string>
-    <string name="connection_error_invalid_format">Isäntäpalvelimen muoto on virheellinen</string>
     <string name="host_input_hint">Isäntä</string>
     <string name="connect_button_text">Yhdistä</string>
     <string name="connect_to_server_title">Yhdistä palvelimeen</string>

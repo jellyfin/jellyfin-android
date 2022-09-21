@@ -40,7 +40,6 @@
     <string name="connect_to_server_title">Savienoties ar Serveri</string>
     <string name="connection_error_cannot_connect">Savienojums nav izdevies.
 \nLūdzu, pārbaudiet \"hostname\" un jūsu tīkla savienojumu.</string>
-    <string name="connection_error_invalid_format">Ierīcei ir nepareizs ievades formāts</string>
     <string name="toast_reopen_after_change">Lūdzu atver programmu vēlreiz, pēc tam kad izmaiņas ir veiktas</string>
     <string name="dialog_button_ignore">Ignorēt</string>
     <string name="dialog_button_open_settings">Atvērt iestatījumus</string>

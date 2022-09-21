@@ -10,7 +10,6 @@
     <string name="connect_button_text">Verbinden</string>
     <string name="host_input_hint">Adresse</string>
     <string name="connect_to_server_title">Serververbindung herstellen</string>
-    <string name="connection_error_invalid_format">Adressformat ungültig</string>
     <string name="pref_music_notification_always_dismissible_title">Musikwiedergabe-Benachrichtigung verwerfbar</string>
     <string name="pref_category_video_player">Videoplayer</string>
     <string name="pref_category_music_player">Musikplayer</string>

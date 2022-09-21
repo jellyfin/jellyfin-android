@@ -30,7 +30,6 @@
     <string name="available_servers_title">Mevcut sunucular</string>
     <string name="player_error_invalid_play_options">Oynatma bilgisi çözümlenemedi</string>
     <string name="playback_info_transcoding">Dönüştürülüyor: %b</string>
-    <string name="connection_error_invalid_format">Sunucu adresi geçersiz bir biçimde</string>
     <string name="host_input_hint">Sunucu adı</string>
     <string name="external_player_mx_player_pro">MX Player Pro</string>
     <string name="external_player_mx_player_free">MX Player Free</string>

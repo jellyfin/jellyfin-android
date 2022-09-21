@@ -33,7 +33,6 @@
     <string name="notification_action_previous">Anterior</string>
     <string name="download_no_storage_permission">Não é possível descarregar ficheiros sem permissões para armazenamento</string>
     <string name="connect_button_text">Ligar</string>
-    <string name="connection_error_invalid_format">O nome do servidor tem um formato inválido</string>
     <string name="connect_to_server_title">Ligar ao Servidor</string>
     <string name="notification_action_rewind">Recuar</string>
     <string name="connection_error_cannot_connect">A ligação não pôde ser estabelecida.

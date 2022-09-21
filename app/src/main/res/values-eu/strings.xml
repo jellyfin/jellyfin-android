@@ -81,7 +81,6 @@
     </plurals>
     <string name="connection_error_cannot_connect">Konexioa ezin izan zen ezarri.
 \nMesedez, egiaztatu ostalari izena eta sarerako konexioa.</string>
-    <string name="connection_error_invalid_format">Host-ak formatu baliogabea du</string>
     <string name="host_input_hint">Host</string>
     <string name="connect_to_server_title">Zerbitzariarekin konektatu</string>
     <string name="toast_reopen_after_change">Berriro ireki aplikazioa aldaketak egin ondoren</string>

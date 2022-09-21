@@ -7,7 +7,6 @@
     <string name="network_message">Tillat nedlasting over mobildata eller roaming-nettverk\? Kostnader fra din mobiloperatør kan påløpe.</string>
     <string name="network_title">Tillatte nettverkstyper</string>
     <string name="battery_optimizations_message">Deaktiver batterioptimaliseringer for avspilling mens skjermen er av.</string>
-    <string name="connection_error_invalid_format">Tjeneren har et ugyldig format</string>
     <string name="connect_button_text">Koble til</string>
     <string name="host_input_hint">Tjener</string>
     <string name="connect_to_server_title">Koble til tjener</string>

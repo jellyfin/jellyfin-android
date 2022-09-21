@@ -7,7 +7,6 @@
     <string name="network_message">Doriți să permiteți descărcarea să continua peste rețele de date mobile sau roaming\? Se pot aplica taxe de la furnizorul dvs.</string>
     <string name="network_title">Tipuri de rețea permise</string>
     <string name="battery_optimizations_message">Vă rugăm să dezactivați optimizările bateriei pentru redarea media cand ecranul e stins.</string>
-    <string name="connection_error_invalid_format">Server are un format invalid</string>
     <string name="connect_button_text">Conectați</string>
     <string name="host_input_hint">Server</string>
     <string name="connect_to_server_title">Conectați-vă la server</string>

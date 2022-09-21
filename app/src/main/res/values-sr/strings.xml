@@ -8,7 +8,6 @@
     </plurals>
     <string name="connection_error_cannot_connect">Конекција није успешно успостављена.
 \nПроверите име домаћина и вашу интернет конекцију.</string>
-    <string name="connection_error_invalid_format">Домаћин има неправилан формат</string>
     <string name="host_input_hint">Домаћин</string>
     <string name="connect_to_server_title">Повежите се на сервер</string>
     <string name="toast_reopen_after_change">Молимо вас да поново отворите апликацију након завршене промене</string>

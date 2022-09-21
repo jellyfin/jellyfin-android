@@ -7,7 +7,6 @@
     <string name="mobile_data">Mobiele data</string>
     <string name="wifi_only">Alleen op WiFi</string>
     <string name="battery_optimizations_message">Zet batterijoptimalisatie uit om media af te spelen wanneer het scherm uit is.</string>
-    <string name="connection_error_invalid_format">Host heeft een ongeldig formaat</string>
     <string name="host_input_hint">Host</string>
     <string name="connect_button_text">Verbind</string>
     <string name="connect_to_server_title">Verbind met server</string>

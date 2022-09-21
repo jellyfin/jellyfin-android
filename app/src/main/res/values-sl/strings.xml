@@ -7,7 +7,6 @@
     <string name="network_message">Ali želite omogočiti prenos prek mobilnih podatkov ali v gostovanju\? Vaš ponudnik vam to lahko dodatno zaračuna.</string>
     <string name="network_title">Dovoljene vrste omrežja</string>
     <string name="battery_optimizations_message">Prosimo onemogočite optimizacijo baterije za predvajanje predstavnosti pri izklopljenem zaslonu.</string>
-    <string name="connection_error_invalid_format">Napačen format naslova</string>
     <string name="connect_button_text">Poveži</string>
     <string name="host_input_hint">Naslov</string>
     <string name="connect_to_server_title">Poveži s strežnikom</string>
