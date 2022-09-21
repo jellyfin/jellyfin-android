@@ -9,7 +9,6 @@ import org.jellyfin.sdk.Jellyfin
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.model.DeviceInfo
 import org.jellyfin.sdk.model.serializer.toUUID
-import java.util.*
 
 class ApiClientController(
     private val appPreferences: AppPreferences,
@@ -22,16 +21,8 @@ class ApiClientController(
         get() = jellyfin.options.deviceInfo!!
 
     /**
-     * Migrate from preferences if necessary
+     * Store server with [hostname] in the database.
      */
-    @Suppress("DEPRECATION")
-    suspend fun migrateFromPreferences() {
-        appPreferences.instanceUrl?.let { url ->
-            setupServer(url)
-            appPreferences.instanceUrl = null
-        }
-    }
-
     suspend fun setupServer(hostname: String) {
         appPreferences.currentServerId = withContext(Dispatchers.IO) {
             serverDao.getServerByHostname(hostname)?.id ?: serverDao.insert(hostname)

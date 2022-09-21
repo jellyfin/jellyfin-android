@@ -81,10 +81,14 @@ android {
     @Suppress("UnstableApiUsage")
     buildFeatures {
         viewBinding = true
+        compose = true
     }
     kotlinOptions {
         @Suppress("SuspiciousCollectionReassignment")
         freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
@@ -108,7 +112,7 @@ dependencies {
     implementation(libs.bundles.coroutines)
 
     // Core
-    implementation(libs.koin)
+    implementation(libs.bundles.koin)
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.activity)
@@ -123,6 +127,9 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.webkit)
     implementation(libs.modernandroidpreferences)
+
+    // Jetpack Compose
+    implementation(libs.bundles.compose)
 
     // Network
     val sdkVersion = findProperty("sdk.version")?.toString()

@@ -25,7 +25,7 @@ import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.player.ui.PlayerFragment
-import org.jellyfin.mobile.setup.ConnectFragment
+import org.jellyfin.mobile.setup.ConnectionHelper
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
 import org.jellyfin.mobile.utils.isLowRamDevice
@@ -58,9 +58,11 @@ val applicationModule = module {
     viewModel { MainViewModel(get(), get()) }
 
     // Fragments
-    fragment { ConnectFragment() }
     fragment { WebViewFragment() }
     fragment { PlayerFragment() }
+
+    // Connection helper
+    single { ConnectionHelper(get(), get()) }
 
     // Media player helpers
     single { MediaSourceResolver(get()) }
