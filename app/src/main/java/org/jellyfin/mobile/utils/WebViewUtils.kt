@@ -21,11 +21,17 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.webkit.CookieManager
+import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
 import android.webkit.WebView
+import androidx.webkit.ServiceWorkerClientCompat
+import androidx.webkit.ServiceWorkerControllerCompat
 import androidx.webkit.WebViewAssetLoader
+import androidx.webkit.WebViewFeature
+import io.ktor.http.HttpStatusCode
 import timber.log.Timber
+import java.util.Locale
 
 fun Context.isWebViewSupported(): Boolean {
     @Suppress("TooGenericExceptionCaught")
@@ -66,6 +72,31 @@ private fun WebView.getDefaultUserAgentString(): String {
     settings.userAgentString = originalUA
 
     return defaultUserAgentString
+}
+
+/**
+ * Workaround for service worker breaking script injections
+ */
+fun enableServiceWorkerWorkaround() {
+    if (!WebViewFeature.isFeatureSupported(WebViewFeature.SERVICE_WORKER_BASIC_USAGE)) {
+        return
+    }
+
+    val serviceWorkerClient = object : ServiceWorkerClientCompat() {
+        override fun shouldInterceptRequest(request: WebResourceRequest): WebResourceResponse? {
+            val path = request.url.path?.lowercase(Locale.ROOT) ?: return null
+            return when {
+                path.endsWith(Constants.SERVICE_WORKER_PATH) -> {
+                    WebResourceResponse("application/javascript", "utf-8", null).apply {
+                        with(HttpStatusCode.NotFound) { setStatusCodeAndReasonPhrase(value, description) }
+                    }
+                }
+                else -> null
+            }
+        }
+    }
+
+    ServiceWorkerControllerCompat.getInstance().setServiceWorkerClient(serviceWorkerClient)
 }
 
 @SuppressLint("SetJavaScriptEnabled")

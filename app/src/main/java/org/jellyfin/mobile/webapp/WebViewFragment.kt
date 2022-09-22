@@ -3,19 +3,12 @@ package org.jellyfin.mobile.webapp
 import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
-import android.net.http.SslError
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.ConsoleMessage
-import android.webkit.SslErrorHandler
-import android.webkit.WebChromeClient
-import android.webkit.WebResourceRequest
-import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.widget.Toast
 import androidx.activity.addCallback
@@ -27,14 +20,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.webkit.ServiceWorkerClientCompat
-import androidx.webkit.ServiceWorkerControllerCompat
-import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebViewAssetLoader.AssetsPathHandler
-import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewCompat
-import androidx.webkit.WebViewFeature
-import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.ApiClientController
@@ -53,37 +40,29 @@ import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER
 import org.jellyfin.mobile.utils.applyDefault
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.dip
+import org.jellyfin.mobile.utils.enableServiceWorkerWorkaround
 import org.jellyfin.mobile.utils.extensions.addFragment
 import org.jellyfin.mobile.utils.extensions.getParcelableCompat
 import org.jellyfin.mobile.utils.extensions.replaceFragment
 import org.jellyfin.mobile.utils.fadeIn
-import org.jellyfin.mobile.utils.initLocale
-import org.jellyfin.mobile.utils.inject
 import org.jellyfin.mobile.utils.isOutdated
 import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
 import org.jellyfin.mobile.utils.runOnUiThread
-import org.json.JSONException
-import org.json.JSONObject
 import org.koin.android.ext.android.inject
-import timber.log.Timber
-import java.io.Reader
-import java.util.Locale
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 class WebViewFragment : Fragment(), NativePlayerHost {
     val appPreferences: AppPreferences by inject()
     private val apiClientController: ApiClientController by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private lateinit var assetsPathHandler: AssetsPathHandler
+    private lateinit var jellyfinWebViewClient: JellyfinWebViewClient
     private lateinit var externalPlayer: ExternalPlayer
 
     lateinit var server: ServerEntity
         private set
     private var connected = false
     private val timeoutRunnable = Runnable {
-        onErrorReceived()
+        handleError()
     }
     private val showProgressIndicatorRunnable = Runnable {
         webViewBinding?.progressIndicator?.isVisible = true
@@ -92,6 +71,10 @@ class WebViewFragment : Fragment(), NativePlayerHost {
     // UI
     private var webViewBinding: FragmentWebviewBinding? = null
 
+    init {
+        enableServiceWorkerWorkaround()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         server = requireNotNull(requireArguments().getParcelableCompat(FRAGMENT_WEB_VIEW_EXTRA_SERVER)) {
@@ -99,6 +82,29 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         }
 
         assetsPathHandler = AssetsPathHandler(requireContext())
+        jellyfinWebViewClient = object : JellyfinWebViewClient(
+            lifecycleScope,
+            server,
+            assetsPathHandler,
+            apiClientController,
+        ) {
+            override fun onConnectedToWebapp() {
+                val webViewBinding = webViewBinding ?: return
+                val webView = webViewBinding.webView
+                webView.removeCallbacks(timeoutRunnable)
+                webView.removeCallbacks(showProgressIndicatorRunnable)
+                connected = true
+                runOnUiThread {
+                    webViewBinding.progressIndicator.isVisible = false
+                    webView.fadeIn()
+                }
+                requestNoBatteryOptimizations(webViewBinding.root)
+            }
+
+            override fun onErrorReceived() {
+                handleError()
+            }
+        }
         externalPlayer = ExternalPlayer(requireContext(), this, requireActivity().activityResultRegistry)
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
@@ -168,125 +174,8 @@ class WebViewFragment : Fragment(), NativePlayerHost {
             showOutdatedWebViewDialog(this)
             return
         }
-        webViewClient = object : WebViewClientCompat() {
-            override fun shouldInterceptRequest(webView: WebView, request: WebResourceRequest): WebResourceResponse? {
-                val url = request.url
-                val path = url.path?.lowercase(Locale.ROOT) ?: return null
-                return when {
-                    path.matches(Constants.MAIN_BUNDLE_PATH_REGEX) && "deferred" !in url.query.orEmpty() -> {
-                        onConnectedToWebapp()
-                        assetsPathHandler.inject("native/injectionScript.js")
-                    }
-                    // Load injected scripts from application assets
-                    path.contains("/native/") -> assetsPathHandler.inject("native/${url.lastPathSegment}")
-                    // Load the chrome.cast.js library instead
-                    path.endsWith(Constants.CAST_SDK_PATH) -> assetsPathHandler.inject("native/chrome.cast.js")
-                    path.endsWith(Constants.SESSION_CAPABILITIES_PATH) -> {
-                        lifecycleScope.launch {
-                            val credentials = suspendCoroutine<JSONObject> { continuation ->
-                                webView.evaluateJavascript("JSON.parse(window.localStorage.getItem('jellyfin_credentials'))") { result ->
-                                    try {
-                                        continuation.resume(JSONObject(result))
-                                    } catch (e: JSONException) {
-                                        val message = "Failed to extract credentials"
-                                        Timber.e(e, message)
-                                        continuation.resumeWithException(Exception(message, e))
-                                    }
-                                }
-                            }
-                            val storedServer = credentials.getJSONArray("Servers").getJSONObject(0)
-                            val user = storedServer.getString("UserId")
-                            val token = storedServer.getString("AccessToken")
-                            apiClientController.setupUser(server.id, user, token)
-                            webView.initLocale(user)
-                        }
-                        null
-                    }
-                    else -> null
-                }
-            }
-
-            override fun onReceivedHttpError(
-                view: WebView,
-                request: WebResourceRequest,
-                errorResponse: WebResourceResponse,
-            ) {
-                val errorMessage = errorResponse.data?.run { bufferedReader().use(Reader::readText) }
-                Timber.e("Received WebView HTTP %d error: %s", errorResponse.statusCode, errorMessage)
-
-                if (request.url == Uri.parse(view.url)) onErrorReceived()
-            }
-
-            override fun onReceivedError(
-                view: WebView,
-                request: WebResourceRequest,
-                error: WebResourceErrorCompat,
-            ) {
-                val description = if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_RESOURCE_ERROR_GET_DESCRIPTION)) error.description else null
-                val errorCode = if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_RESOURCE_ERROR_GET_CODE)) error.errorCode else ERROR_UNKNOWN
-                Timber.e("Received WebView error %d at %s: %s", errorCode, request.url.toString(), description)
-
-                // Abort on some specific error codes or when the request url matches the server url
-                when (errorCode) {
-                    ERROR_HOST_LOOKUP,
-                    ERROR_CONNECT,
-                    ERROR_TIMEOUT,
-                    ERROR_REDIRECT_LOOP,
-                    ERROR_UNSUPPORTED_SCHEME,
-                    ERROR_FAILED_SSL_HANDSHAKE,
-                    -> onErrorReceived()
-                    else -> if (request.url == Uri.parse(view.url)) onErrorReceived()
-                }
-            }
-
-            override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
-                Timber.e("Received SSL error: %s", error.toString())
-                handler.cancel()
-                onErrorReceived()
-            }
-        }
-        // Workaround for service worker breaking script injections
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.SERVICE_WORKER_BASIC_USAGE)) {
-            val swController = ServiceWorkerControllerCompat.getInstance()
-            swController.setServiceWorkerClient(
-                object : ServiceWorkerClientCompat() {
-                    override fun shouldInterceptRequest(request: WebResourceRequest): WebResourceResponse? {
-                        val path = request.url.path?.lowercase(Locale.ROOT) ?: return null
-                        return when {
-                            path.endsWith(Constants.SERVICE_WORKER_PATH) -> {
-                                WebResourceResponse("application/javascript", "utf-8", null).apply {
-                                    with(HttpStatusCode.NotFound) {
-                                        setStatusCodeAndReasonPhrase(value, description)
-                                    }
-                                }
-                            }
-                            else -> null
-                        }
-                    }
-                },
-            )
-        }
-        webChromeClient = object : WebChromeClient() {
-            override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
-                val logLevel = when (consoleMessage.messageLevel()) {
-                    ConsoleMessage.MessageLevel.ERROR -> Log.ERROR
-                    ConsoleMessage.MessageLevel.WARNING -> Log.WARN
-                    ConsoleMessage.MessageLevel.DEBUG -> Log.DEBUG
-                    ConsoleMessage.MessageLevel.TIP -> Log.VERBOSE
-                    else -> Log.INFO
-                }
-
-                Timber.tag("WebView").log(
-                    logLevel,
-                    "%s, %s (%d)",
-                    consoleMessage.message(),
-                    consoleMessage.sourceId(),
-                    consoleMessage.lineNumber(),
-                )
-
-                return true
-            }
-        }
+        webViewClient = jellyfinWebViewClient
+        webChromeClient = LoggingWebChromeClient()
         settings.applyDefault()
         addJavascriptInterface(NativeInterface(this@WebViewFragment), "NativeInterface")
         addJavascriptInterface(NativePlayer(this@WebViewFragment), "NativePlayer")
@@ -343,19 +232,6 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         }.show()
     }
 
-    private fun onConnectedToWebapp() {
-        val webViewBinding = webViewBinding ?: return
-        val webView = webViewBinding.webView
-        webView.removeCallbacks(timeoutRunnable)
-        webView.removeCallbacks(showProgressIndicatorRunnable)
-        connected = true
-        runOnUiThread {
-            webViewBinding.progressIndicator.isVisible = false
-            webView.fadeIn()
-        }
-        requestNoBatteryOptimizations(webViewBinding.root)
-    }
-
     fun onSelectServer(error: Boolean = false) = runOnUiThread {
         val activity = activity
         if (activity != null && activity.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
@@ -370,7 +246,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         }
     }
 
-    private fun onErrorReceived() {
+    private fun handleError() {
         connected = false
         onSelectServer(error = true)
     }
