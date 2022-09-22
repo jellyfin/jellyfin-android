@@ -177,7 +177,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         webViewClient = jellyfinWebViewClient
         webChromeClient = LoggingWebChromeClient()
         settings.applyDefault()
-        addJavascriptInterface(NativeInterface(this@WebViewFragment), "NativeInterface")
+        addJavascriptInterface(NativeInterface(requireContext()), "NativeInterface")
         addJavascriptInterface(NativePlayer(this@WebViewFragment), "NativePlayer")
         addJavascriptInterface(externalPlayer, "ExternalPlayer")
 

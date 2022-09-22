@@ -25,6 +25,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeout
 import org.jellyfin.mobile.BuildConfig
+import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
@@ -57,28 +58,28 @@ fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     }
 }
 
-suspend fun WebViewFragment.requestDownload(uri: Uri, title: String, filename: String) {
+suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: String) {
     val appPreferences: AppPreferences = get()
 
     // Storage permission for downloads isn't necessary from Android 10 onwards
     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
         @Suppress("MagicNumber")
         val granted = withTimeout(2 * 60 * 1000 /* 2 minutes */) {
-            suspendCoroutine<Boolean> { continuation ->
-                requireActivity().requestPermission(WRITE_EXTERNAL_STORAGE) { requestPermissionsResult ->
+            suspendCoroutine { continuation ->
+                requestPermission(WRITE_EXTERNAL_STORAGE) { requestPermissionsResult ->
                     continuation.resume(requestPermissionsResult[WRITE_EXTERNAL_STORAGE] == PERMISSION_GRANTED)
                 }
             }
         }
 
         if (!granted) {
-            requireContext().toast(R.string.download_no_storage_permission)
+            toast(R.string.download_no_storage_permission)
             return
         }
     }
 
     val downloadMethod = appPreferences.downloadMethod ?: suspendCancellableCoroutine { continuation ->
-        AlertDialog.Builder(requireContext())
+        AlertDialog.Builder(this)
             .setTitle(R.string.network_title)
             .setMessage(R.string.network_message)
             .setNegativeButton(R.string.wifi_only) { _, _ ->
@@ -109,7 +110,7 @@ suspend fun WebViewFragment.requestDownload(uri: Uri, title: String, filename: S
         .setDestinationUri(Uri.fromFile(File(appPreferences.downloadLocation, filename)))
         .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
 
-    requireContext().downloadFile(downloadRequest, downloadMethod)
+    downloadFile(downloadRequest, downloadMethod)
 }
 
 private fun Context.downloadFile(request: DownloadManager.Request, @DownloadMethod downloadMethod: Int) {
