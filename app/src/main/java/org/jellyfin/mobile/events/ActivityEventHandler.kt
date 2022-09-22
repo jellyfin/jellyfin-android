@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.add
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -59,13 +58,10 @@ class ActivityEventHandler(
                 }
             }
             is ActivityEvent.LaunchNativePlayer -> {
-                supportFragmentManager.beginTransaction().apply {
-                    val args = Bundle().apply {
-                        putParcelable(Constants.EXTRA_MEDIA_PLAY_OPTIONS, event.playOptions)
-                    }
-                    add<PlayerFragment>(R.id.fragment_container, args = args)
-                    addToBackStack(null)
-                }.commit()
+                val args = Bundle().apply {
+                    putParcelable(Constants.EXTRA_MEDIA_PLAY_OPTIONS, event.playOptions)
+                }
+                supportFragmentManager.addFragment<PlayerFragment>(args)
             }
             is ActivityEvent.OpenUrl -> {
                 try {
