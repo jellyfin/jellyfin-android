@@ -54,6 +54,7 @@ import org.jellyfin.mobile.utils.applyDefault
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.dip
 import org.jellyfin.mobile.utils.extensions.addFragment
+import org.jellyfin.mobile.utils.extensions.getParcelableCompat
 import org.jellyfin.mobile.utils.extensions.replaceFragment
 import org.jellyfin.mobile.utils.fadeIn
 import org.jellyfin.mobile.utils.initLocale
@@ -93,7 +94,9 @@ class WebViewFragment : Fragment(), NativePlayerHost {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        server = requireNotNull(requireArguments().getParcelable(FRAGMENT_WEB_VIEW_EXTRA_SERVER)) { "Server entity has not been supplied!" }
+        server = requireNotNull(requireArguments().getParcelableCompat(FRAGMENT_WEB_VIEW_EXTRA_SERVER)) {
+            "Server entity has not been supplied!"
+        }
 
         assetsPathHandler = AssetsPathHandler(requireContext())
         externalPlayer = ExternalPlayer(requireContext(), this, requireActivity().activityResultRegistry)
