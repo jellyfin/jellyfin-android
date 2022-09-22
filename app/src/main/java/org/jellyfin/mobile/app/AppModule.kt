@@ -19,6 +19,7 @@ import okhttp3.OkHttpClient
 import org.chromium.net.CronetEngine
 import org.chromium.net.CronetProvider
 import org.jellyfin.mobile.MainViewModel
+import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.audio.car.LibraryBrowser
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
@@ -57,6 +58,9 @@ val applicationModule = module {
     // Event handlers and channels
     single { ActivityEventHandler(get()) }
     single { WebappFunctionChannel() }
+
+    // Bridge interfaces
+    single { NativePlayer(get(), get(), get(named(PLAYER_EVENT_CHANNEL))) }
 
     // ViewModels
     viewModel { MainViewModel(get(), get()) }

@@ -3,20 +3,20 @@ package org.jellyfin.mobile.bridge
 import android.webkit.JavascriptInterface
 import kotlinx.coroutines.channels.Channel
 import org.jellyfin.mobile.app.AppPreferences
-import org.jellyfin.mobile.app.PLAYER_EVENT_CHANNEL
+import org.jellyfin.mobile.events.ActivityEvent
+import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 import org.json.JSONObject
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import org.koin.core.qualifier.named
 
-class NativePlayer(private val host: NativePlayerHost) : KoinComponent {
-
-    private val appPreferences: AppPreferences by inject()
-    private val playerEventChannel: Channel<PlayerEvent> by inject(named(PLAYER_EVENT_CHANNEL))
+@Suppress("unused")
+class NativePlayer(
+    private val appPreferences: AppPreferences,
+    private val activityEventHandler: ActivityEventHandler,
+    private val playerEventChannel: Channel<PlayerEvent>,
+) {
 
     @JavascriptInterface
     fun isEnabled() = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
@@ -24,7 +24,7 @@ class NativePlayer(private val host: NativePlayerHost) : KoinComponent {
     @JavascriptInterface
     fun loadPlayer(args: String) {
         PlayOptions.fromJson(JSONObject(args))?.let { options ->
-            host.loadNativePlayer(options)
+            activityEventHandler.emit(ActivityEvent.LaunchNativePlayer(options))
         }
     }
 

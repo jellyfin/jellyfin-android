@@ -17,7 +17,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.add
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.webkit.WebViewAssetLoader.AssetsPathHandler
@@ -29,11 +28,8 @@ import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.bridge.NativeInterface
 import org.jellyfin.mobile.bridge.NativePlayer
-import org.jellyfin.mobile.bridge.NativePlayerHost
 import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.mobile.databinding.FragmentWebviewBinding
-import org.jellyfin.mobile.player.interaction.PlayOptions
-import org.jellyfin.mobile.player.ui.PlayerFragment
 import org.jellyfin.mobile.setup.ConnectFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER
@@ -50,12 +46,13 @@ import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
 import org.jellyfin.mobile.utils.runOnUiThread
 import org.koin.android.ext.android.inject
 
-class WebViewFragment : Fragment(), NativePlayerHost {
+class WebViewFragment : Fragment() {
     val appPreferences: AppPreferences by inject()
     private val apiClientController: ApiClientController by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private lateinit var assetsPathHandler: AssetsPathHandler
     private lateinit var jellyfinWebViewClient: JellyfinWebViewClient
+    private val nativePlayer: NativePlayer by inject()
     private lateinit var externalPlayer: ExternalPlayer
 
     lateinit var server: ServerEntity
@@ -178,7 +175,7 @@ class WebViewFragment : Fragment(), NativePlayerHost {
         webChromeClient = LoggingWebChromeClient()
         settings.applyDefault()
         addJavascriptInterface(NativeInterface(requireContext()), "NativeInterface")
-        addJavascriptInterface(NativePlayer(this@WebViewFragment), "NativePlayer")
+        addJavascriptInterface(nativePlayer, "NativePlayer")
         addJavascriptInterface(externalPlayer, "ExternalPlayer")
 
         loadUrl(server.hostname)
@@ -249,15 +246,5 @@ class WebViewFragment : Fragment(), NativePlayerHost {
     private fun handleError() {
         connected = false
         onSelectServer(error = true)
-    }
-
-    override fun loadNativePlayer(playOptions: PlayOptions) = runOnUiThread {
-        parentFragmentManager.beginTransaction().apply {
-            val args = Bundle().apply {
-                putParcelable(Constants.EXTRA_MEDIA_PLAY_OPTIONS, playOptions)
-            }
-            add<PlayerFragment>(R.id.fragment_container, args = args)
-            addToBackStack(null)
-        }.commit()
     }
 }

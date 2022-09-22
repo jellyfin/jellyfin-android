@@ -4,6 +4,8 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.net.Uri
+import android.os.Bundle
+import androidx.fragment.app.add
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -13,7 +15,9 @@ import kotlinx.coroutines.launch
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.bridge.JavascriptCallback
+import org.jellyfin.mobile.player.ui.PlayerFragment
 import org.jellyfin.mobile.settings.SettingsFragment
+import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.extensions.addFragment
 import org.jellyfin.mobile.utils.extensions.disableFullscreen
 import org.jellyfin.mobile.utils.extensions.enableFullscreen
@@ -53,6 +57,15 @@ class ActivityEventHandler(
                     // Reset window background color
                     window.setBackgroundDrawableResource(R.color.theme_background)
                 }
+            }
+            is ActivityEvent.LaunchNativePlayer -> {
+                supportFragmentManager.beginTransaction().apply {
+                    val args = Bundle().apply {
+                        putParcelable(Constants.EXTRA_MEDIA_PLAY_OPTIONS, event.playOptions)
+                    }
+                    add<PlayerFragment>(R.id.fragment_container, args = args)
+                    addToBackStack(null)
+                }.commit()
             }
             is ActivityEvent.OpenUrl -> {
                 try {
