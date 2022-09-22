@@ -1,17 +1,13 @@
 package org.jellyfin.mobile.bridge
 
 import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.media.session.PlaybackState
 import android.net.Uri
 import android.webkit.JavascriptInterface
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import org.jellyfin.mobile.R
-import org.jellyfin.mobile.settings.SettingsFragment
+import org.jellyfin.mobile.events.ActivityEvent
+import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.EXTRA_ALBUM
 import org.jellyfin.mobile.utils.Constants.EXTRA_ARTIST
@@ -24,16 +20,8 @@ import org.jellyfin.mobile.utils.Constants.EXTRA_ITEM_ID
 import org.jellyfin.mobile.utils.Constants.EXTRA_PLAYER_ACTION
 import org.jellyfin.mobile.utils.Constants.EXTRA_POSITION
 import org.jellyfin.mobile.utils.Constants.EXTRA_TITLE
-import org.jellyfin.mobile.utils.extensions.addFragment
-import org.jellyfin.mobile.utils.extensions.disableFullscreen
-import org.jellyfin.mobile.utils.extensions.enableFullscreen
-import org.jellyfin.mobile.utils.extensions.requireMainActivity
-import org.jellyfin.mobile.utils.requestDownload
-import org.jellyfin.mobile.utils.runOnUiThread
 import org.jellyfin.mobile.webapp.RemotePlayerService
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
-import org.jellyfin.mobile.webapp.WebViewFragment
-import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.util.AuthorizationHeaderBuilder
 import org.json.JSONArray
@@ -44,9 +32,9 @@ import org.koin.core.component.get
 import org.koin.core.component.inject
 import timber.log.Timber
 
-class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
-    private val context: Context = fragment.requireContext()
-    private val webappFunctionChannel: WebappFunctionChannel by inject()
+@Suppress("unused")
+class NativeInterface(private val context: Context) : KoinComponent {
+    private val activityEventHandler: ActivityEventHandler = get()
     private val remoteVolumeProvider: RemoteVolumeProvider by inject()
 
     @SuppressLint("HardwareIds")
@@ -72,38 +60,20 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
 
     @JavascriptInterface
     fun enableFullscreen(): Boolean {
-        fragment.runOnUiThread {
-            fragment.activity?.apply {
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                enableFullscreen()
-                window.setBackgroundDrawable(null)
-            }
-        }
+        emitEvent(ActivityEvent.ChangeFullscreen(true))
         return true
     }
 
     @JavascriptInterface
     fun disableFullscreen(): Boolean {
-        fragment.runOnUiThread {
-            fragment.activity?.apply {
-                // Reset screen orientation
-                requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-                disableFullscreen(true)
-                // Reset window background color
-                window.setBackgroundDrawableResource(R.color.theme_background)
-            }
-        }
+        emitEvent(ActivityEvent.ChangeFullscreen(false))
         return true
     }
 
     @JavascriptInterface
-    fun openUrl(uri: String): Boolean = try {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-        context.startActivity(intent)
-        true
-    } catch (e: ActivityNotFoundException) {
-        Timber.e("openIntent: %s", e.message)
-        false
+    fun openUrl(uri: String): Boolean {
+        emitEvent(ActivityEvent.OpenUrl(uri))
+        return true
     }
 
     @JavascriptInterface
@@ -161,44 +131,33 @@ class NativeInterface(private val fragment: WebViewFragment) : KoinComponent {
             Timber.e("Download failed: %s", e.message)
             return false
         }
-        runBlocking(Dispatchers.Main) {
-            fragment.requestDownload(Uri.parse(url), title, filename)
-        }
+
+        emitEvent(ActivityEvent.DownloadFile(Uri.parse(url), title, filename))
         return true
     }
 
     @JavascriptInterface
     fun openClientSettings() {
-        fragment.runOnUiThread {
-            fragment.parentFragmentManager.addFragment<SettingsFragment>()
-        }
+        emitEvent(ActivityEvent.OpenSettings)
     }
 
     @JavascriptInterface
     fun openServerSelection() {
-        fragment.onSelectServer()
+        emitEvent(ActivityEvent.SelectServer)
     }
 
     @JavascriptInterface
     fun exitApp() {
-        val activity = fragment.requireMainActivity()
-        if (activity.serviceBinder?.isPlaying == true) {
-            activity.moveTaskToBack(false)
-        } else {
-            activity.finish()
-        }
+        emitEvent(ActivityEvent.ExitApp)
     }
 
     @JavascriptInterface
     fun execCast(action: String, args: String) {
-        fragment.requireMainActivity().chromecast.execute(
-            action,
-            JSONArray(args),
-            object : JavascriptCallback() {
-                override fun callback(keep: Boolean, err: String?, result: String?) {
-                    webappFunctionChannel.call("""window.NativeShell.castCallback("$action", $keep, $err, $result);""")
-                }
-            },
-        )
+        emitEvent(ActivityEvent.CastMessage(action, JSONArray(args)))
+    }
+
+    @Suppress("NOTHING_TO_INLINE")
+    private inline fun emitEvent(event: ActivityEvent) {
+        activityEventHandler.emit(event)
     }
 }

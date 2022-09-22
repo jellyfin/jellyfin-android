@@ -31,6 +31,13 @@ class MainViewModel(
         val serverEntity = apiClientController.loadSavedServer()
         _serverState.value = serverEntity?.let { entity -> ServerState.Available(entity) } ?: ServerState.Unset
     }
+
+    /**
+     * Temporarily unset the selected server to be able to connect to a different one
+     */
+    fun resetServer() {
+        _serverState.value = ServerState.Unset
+    }
 }
 
 sealed class ServerState {
