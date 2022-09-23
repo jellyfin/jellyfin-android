@@ -157,7 +157,7 @@ class DeviceProfileBuilder {
                 type = DlnaProfileType.VIDEO,
                 container = "ts",
                 videoCodec = "h264",
-                audioCodec = "mp1,mp2,mp3,aac,ac3,eac3,dts,mlp,truehd",
+                audioCodec = "mp1,mp3,aac,ac3,eac3,dts,mlp,truehd",
                 context = EncodingContext.STREAMING,
                 protocol = "hls",
 
@@ -278,13 +278,13 @@ class DeviceProfileBuilder {
          */
         private val AVAILABLE_AUDIO_CODECS = arrayOf(
             // mp4
-            arrayOf("mp1", "mp2", "mp3", "aac", "alac", "ac3"),
+            arrayOf("mp1", "mp3", "aac", "alac", "ac3"),
             // fmp4
             arrayOf("mp3", "aac", "ac3", "eac3"),
             // webm
             arrayOf("vorbis", "opus"),
             // mkv
-            arrayOf(*PCM_CODECS, "mp1", "mp2", "mp3", "aac", "vorbis", "opus", "flac", "alac", "ac3", "eac3", "dts", "mlp", "truehd"),
+            arrayOf(*PCM_CODECS, "mp1", "mp3", "aac", "vorbis", "opus", "flac", "alac", "ac3", "eac3", "dts", "mlp", "truehd"),
             // mp3
             arrayOf("mp3"),
             // ogg
@@ -292,7 +292,7 @@ class DeviceProfileBuilder {
             // wav
             PCM_CODECS,
             // mpegts
-            arrayOf(*PCM_CODECS, "mp1", "mp2", "mp3", "aac", "ac3", "eac3", "dts", "mlp", "truehd"),
+            arrayOf(*PCM_CODECS, "mp1", "mp3", "aac", "ac3", "eac3", "dts", "mlp", "truehd"),
             // flv
             arrayOf("mp3", "aac"),
             // aac
