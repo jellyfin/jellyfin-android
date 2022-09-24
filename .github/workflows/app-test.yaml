@@ -1,4 +1,4 @@
-name: App Test
+name: App / Test
 
 on:
   push:
@@ -7,9 +7,13 @@ on:
       - release-*
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    name: Test
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3
@@ -17,7 +21,8 @@ jobs:
         uses: actions/setup-java@d854b6da19cdadd9a010605529e522c2393ebd38 # tag=v3
         with:
           distribution: temurin
-          java-version: 11
-          cache: gradle
-      - name: Run test and assemble tasks
-        run: ./gradlew --no-daemon --build-cache test
+          java-version: 17
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@c295a4096e1d2c453eaf1f65c6f96686e26bd8be # tag=v2
+      - name: Run test task
+        run: ./gradlew test
