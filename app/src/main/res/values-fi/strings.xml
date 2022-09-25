@@ -94,4 +94,5 @@
 \nPäivitä yhteensopivaan versioon.</string>
     <string name="dialog_web_view_not_supported_message">WebViews ei ole tuettu tällä laitteella.
 \nAsenna yhteensopiva WebView-sovellus tai käytä tuettua laitetta.</string>
+    <string name="menu_item_auto">Automaattinen</string>
 </resources>
