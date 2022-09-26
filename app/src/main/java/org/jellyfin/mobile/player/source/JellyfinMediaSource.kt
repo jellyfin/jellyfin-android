@@ -62,7 +62,8 @@ class JellyfinMediaSource(
                     if (mediaStream.index == subtitleStreamIndex ?: sourceInfo.defaultSubtitleStreamIndex)
                         selectedSubtitleStream = mediaStream
                 }
-                MediaStreamType.EMBEDDED_IMAGE -> Unit // ignore
+                MediaStreamType.EMBEDDED_IMAGE,
+                MediaStreamType.DATA -> Unit // ignore
             }
         }
 
