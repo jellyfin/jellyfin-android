@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.player.deviceprofile
 
 import android.media.MediaCodecList
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.model.api.CodecProfile
@@ -13,8 +14,11 @@ import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
 import org.jellyfin.sdk.model.api.SubtitleProfile
 import org.jellyfin.sdk.model.api.TranscodeSeekInfo
 import org.jellyfin.sdk.model.api.TranscodingProfile
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class DeviceProfileBuilder {
+class DeviceProfileBuilder : KoinComponent {
+    private val appPreferences: AppPreferences by inject()
     private val supportedVideoCodecs: Array<Array<String>>
     private val supportedAudioCodecs: Array<Array<String>>
 
@@ -155,13 +159,17 @@ class DeviceProfileBuilder {
             }
         }
 
+        var subtitleProfiles = if (appPreferences.exoPlayerDirectPlayAss)
+            getSubtitleProfiles(EXO_EMBEDDED_SUBTITLES_ASS, EXO_EXTERNAL_SUBTITLES_ASS)
+        else getSubtitleProfiles(EXO_EMBEDDED_SUBTITLES, EXO_EXTERNAL_SUBTITLES);
+
         return DeviceProfile(
             name = Constants.APP_INFO_NAME,
             directPlayProfiles = directPlayProfiles,
             transcodingProfiles = transcodingProfiles,
             containerProfiles = containerProfiles,
             codecProfiles = codecProfiles,
-            subtitleProfiles = getSubtitleProfiles(EXO_EMBEDDED_SUBTITLES, EXO_EXTERNAL_SUBTITLES),
+            subtitleProfiles = subtitleProfiles,
             maxStreamingBitrate = MAX_STREAMING_BITRATE,
             maxStaticBitrate = MAX_STATIC_BITRATE,
             musicStreamingTranscodingBitrate = MAX_MUSIC_TRANSCODING_BITRATE,
@@ -299,7 +307,9 @@ class DeviceProfileBuilder {
         private val FORCED_AUDIO_CODECS = arrayOf(*PCM_CODECS, "alac", "aac", "ac3", "eac3", "dts", "mlp", "truehd")
 
         private val EXO_EMBEDDED_SUBTITLES = arrayOf("srt", "subrip", "ttml")
+        private val EXO_EMBEDDED_SUBTITLES_ASS = arrayOf("srt", "subrip", "ttml", "ssa", "ass")
         private val EXO_EXTERNAL_SUBTITLES = arrayOf("srt", "subrip", "ttml", "vtt", "webvtt")
+        private val EXO_EXTERNAL_SUBTITLES_ASS = arrayOf("srt", "subrip", "ttml", "vtt", "webvtt", "ssa", "ass")
         private val EXTERNAL_PLAYER_SUBTITLES = arrayOf(
             "ssa", "ass", "srt", "subrip", "idx", "sub", "vtt", "webvtt", "ttml", "pgs", "pgssub", "smi", "smil",
         )
