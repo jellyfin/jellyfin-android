@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.player.deviceprofile
 
 import android.media.MediaCodecList
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.model.api.CodecProfile
@@ -14,7 +15,9 @@ import org.jellyfin.sdk.model.api.SubtitleProfile
 import org.jellyfin.sdk.model.api.TranscodeSeekInfo
 import org.jellyfin.sdk.model.api.TranscodingProfile
 
-class DeviceProfileBuilder {
+class DeviceProfileBuilder(
+    private val appPreferences: AppPreferences,
+) {
     private val supportedVideoCodecs: Array<Array<String>>
     private val supportedAudioCodecs: Array<Array<String>>
 
@@ -155,13 +158,18 @@ class DeviceProfileBuilder {
             }
         }
 
+        val subtitleProfiles = when {
+            appPreferences.exoPlayerDirectPlayAss -> getSubtitleProfiles(EXO_EMBEDDED_SUBTITLES + SUBTITLES_SSA, EXO_EXTERNAL_SUBTITLES + SUBTITLES_SSA)
+            else -> getSubtitleProfiles(EXO_EMBEDDED_SUBTITLES, EXO_EXTERNAL_SUBTITLES)
+        }
+
         return DeviceProfile(
             name = Constants.APP_INFO_NAME,
             directPlayProfiles = directPlayProfiles,
             transcodingProfiles = transcodingProfiles,
             containerProfiles = containerProfiles,
             codecProfiles = codecProfiles,
-            subtitleProfiles = getSubtitleProfiles(EXO_EMBEDDED_SUBTITLES, EXO_EXTERNAL_SUBTITLES),
+            subtitleProfiles = subtitleProfiles,
             maxStreamingBitrate = MAX_STREAMING_BITRATE,
             maxStaticBitrate = MAX_STATIC_BITRATE,
             musicStreamingTranscodingBitrate = MAX_MUSIC_TRANSCODING_BITRATE,
@@ -300,6 +308,7 @@ class DeviceProfileBuilder {
 
         private val EXO_EMBEDDED_SUBTITLES = arrayOf("srt", "subrip", "ttml")
         private val EXO_EXTERNAL_SUBTITLES = arrayOf("srt", "subrip", "ttml", "vtt", "webvtt")
+        private val SUBTITLES_SSA = arrayOf("ssa", "ass")
         private val EXTERNAL_PLAYER_SUBTITLES = arrayOf(
             "ssa", "ass", "srt", "subrip", "idx", "sub", "vtt", "webvtt", "ttml", "pgs", "pgssub", "smi", "smil",
         )

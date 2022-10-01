@@ -34,6 +34,7 @@ class SettingsFragment : Fragment() {
     private lateinit var swipeGesturesPreference: CheckBoxPreference
     private lateinit var rememberBrightnessPreference: Preference
     private lateinit var backgroundAudioPreference: Preference
+    private lateinit var directPlayAssPreference: Preference
     private lateinit var externalPlayerChoicePreference: Preference
 
     init {
@@ -84,6 +85,7 @@ class SettingsFragment : Fragment() {
                 swipeGesturesPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 rememberBrightnessPreference.enabled = selection == VideoPlayerType.EXO_PLAYER && swipeGesturesPreference.checked
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                directPlayAssPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
         }
@@ -105,6 +107,11 @@ class SettingsFragment : Fragment() {
         backgroundAudioPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO) {
             titleRes = R.string.pref_exoplayer_allow_background_audio
             summaryRes = R.string.pref_exoplayer_allow_background_audio_summary
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+        }
+        directPlayAssPreference = checkBox(Constants.PREF_EXOPLAYER_DIRECT_PLAY_ASS) {
+            titleRes = R.string.pref_exoplayer_direct_play_ass
+            summaryRes = R.string.pref_exoplayer_direct_play_ass_summary
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
         }
 
