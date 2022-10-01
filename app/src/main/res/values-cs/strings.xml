@@ -95,4 +95,7 @@
     <string name="pref_exoplayer_remember_brightness">Zapamatovat jas displeje</string>
     <string name="video_player_integrated">Integrovaný přehrávač</string>
     <string name="playback_info_stream_unknown_title">Neznámý název</string>
+    <string name="menu_item_auto">Auto</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Nedovolit překódování a zobrazit titulky pouze v základním stylu. Pokud je povoleno, pokročilé stylování titulků nebude k dispozici.</string>
+    <string name="pref_exoplayer_direct_play_ass">Povolit SSA/ASS titulky v přímém přehrávání</string>
 </resources>
