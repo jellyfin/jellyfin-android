@@ -95,4 +95,6 @@
         <item quantity="other">Försökte nå %d kandidater för inmatning, utan större framgång.</item>
     </plurals>
     <string name="menu_item_auto">Automatisk</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Förhindra omkodning och visa undertexter endast i simpel stil. Avancerad stilering av undertext ej tillgänglig om aktiverad.</string>
+    <string name="pref_exoplayer_direct_play_ass">Tillåt SSA/ASS undertexter vid direktuppspelning</string>
 </resources>
