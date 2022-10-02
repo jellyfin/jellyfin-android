@@ -95,4 +95,6 @@
     <string name="dialog_web_view_not_supported_message">WebViews ei ole tuettu tällä laitteella.
 \nAsenna yhteensopiva WebView-sovellus tai käytä tuettua laitetta.</string>
     <string name="menu_item_auto">Automaattinen</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Estä transkoodaus ja näytä tekstitykset ilman erityisiä tyyliasetuksia. Tekstitysten lisäasetukset eivät toimi asetuksen kanssa.</string>
+    <string name="pref_exoplayer_direct_play_ass">Salli SSA-/ASS-tekstitykset toistettaessa ilman muuntoa</string>
 </resources>
