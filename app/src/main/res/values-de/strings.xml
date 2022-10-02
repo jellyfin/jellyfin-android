@@ -94,4 +94,7 @@
     <string name="pref_exoplayer_remember_brightness">Displayhelligkeit merken</string>
     <string name="video_player_integrated">Integrierter Player</string>
     <string name="playback_info_stream_unknown_title">Unbekannter Titel</string>
+    <string name="menu_item_auto">Automatisch</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Transkodieren vermeiden und Untertitel nur mit einfachem Erscheinungsbild anzeigen. Erweiterte Untertitelgestaltung ist nicht verfügbar, wenn aktiviert.</string>
+    <string name="pref_exoplayer_direct_play_ass">Direktwiedergabe von SSA/ASS Untertiteln zulassen</string>
 </resources>
