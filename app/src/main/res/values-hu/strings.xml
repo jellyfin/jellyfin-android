@@ -95,4 +95,6 @@
     <string name="video_player_integrated">Integrált lejátszó</string>
     <string name="playback_info_stream_unknown_title">Ismeretlen cím</string>
     <string name="menu_item_auto">Automata</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Akadályozza meg az transzkódolást, és csak alapvető stílussal jelenítse meg a feliratokat. A speciális feliratstílus nem elérhető, ha engedélyezve van.</string>
+    <string name="pref_exoplayer_direct_play_ass">SSA/ASS feliratok engedélyezése a közvetlen lejátszásban</string>
 </resources>
