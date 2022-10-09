@@ -93,4 +93,7 @@
     <string name="pref_exoplayer_remember_brightness">记住显示亮度</string>
     <string name="video_player_integrated">综合播放器</string>
     <string name="playback_info_stream_unknown_title">未知标题</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">防止转码并仅显示具有基本样式的字幕。 如果启用，高级字幕样式将不可用。</string>
+    <string name="pref_exoplayer_direct_play_ass">允许直接播放 SSA/ASS字幕</string>
+    <string name="menu_item_auto">自动</string>
 </resources>
