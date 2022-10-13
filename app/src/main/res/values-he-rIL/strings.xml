@@ -68,4 +68,24 @@
     <string name="external_player_mx_player_pro">נגן MX גרסה מלאה</string>
     <string name="pref_download_location">מיקום הורדה</string>
     <string name="pref_category_downloads">הורדות</string>
+    <string name="dialog_button_ignore">התעלם</string>
+    <string name="connection_error_unsupported_version_or_product">גרסה או מוצר לא נתמכים</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">תמיד ניתן לבטל את ההתראה, גם בעת ניגון מדיה</string>
+    <string name="dialog_web_view_outdated">WebView מיושן</string>
+    <string name="dialog_web_view_outdated_message">גרסת ה WebVIew המשומשת במכשיר שלך מיושנת.
+\nאנא עדכן אותה לגרסה תואמת.</string>
+    <string name="dialog_button_check_for_updates">בדוק עדכונים</string>
+    <string name="dialog_button_close_app">סגור אפליקציה</string>
+    <string name="dialog_button_open_settings">פתח הגדרות</string>
+    <string name="toast_reopen_after_change">אנא פתח מחדש את האפליקציה לאחר ביצוע שינויים</string>
+    <string name="connection_error_unable_to_reach_sever">לא מצליח להתחבר לשרת</string>
+    <string name="player_error_network_failure">לא ניתן לטעון נתוני מדיה מהשרת</string>
+    <string name="player_error_unsupported_content">לא ניתן להפעיל מדיה ממכשיר זה</string>
+    <string name="playback_info_stream_unknown_title">כותרת לא ידועה</string>
+    <string name="menu_item_auto">אוטומטי</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">ניתן לבטל את ההתראה רק כאשר ההשמעה מושהית</string>
+    <string name="pref_exoplayer_remember_brightness">שמור את בהירות התצוגה</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">אפשר הפעלת סרטונים ברקע עם אודיו בלבד</string>
+    <string name="pref_exoplayer_direct_play_ass">אפשר שימוש בכתוביות מסוג SSA/ASS בניגון ישיר</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">מנע המרת קידוד והצג כתוביות עם עיצוב בסיסי בלבד. עיצוב כתוביות מתקדם לא יהיה זמין אם מופעל.</string>
 </resources>
