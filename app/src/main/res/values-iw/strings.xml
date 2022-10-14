@@ -1,2 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="notification_action_stop">עצור</string>
+    <string name="host_input_hint">מארח</string>
+    <string name="connect_button_text">התחבר</string>
+    <string name="dialog_button_close_app">סגור אפליקציה</string>
+    <string name="dialog_button_open_settings">פתח הגדרות</string>
+    <string name="choose_server_button_text">בחר שרת</string>
+    <string name="downloading">מוריד</string>
+    <string name="media_service_car_section_artists">אומנים</string>
+    <string name="notification_action_previous">קודם</string>
+    <string name="notification_action_fast_forward">הרץ קדימה</string>
+    <string name="menu_item_none">ללא</string>
+    <string name="pref_download_location">מיקום הורדה</string>
+    <string name="pref_category_video_player">נגן וידיאו</string>
+    <string name="dialog_web_view_not_supported">WebView לא נתמך</string>
+    <string name="dialog_button_ignore">התעלם</string>
+    <string name="available_servers_title">שרתים זמינים</string>
+    <string name="download_no_storage_permission">לא ניתן להוריד קבצים ללא הרשאות אחסון</string>
+    <string name="media_service_car_section_songs">שירים</string>
+    <string name="dialog_web_view_not_supported_message">WebView לא מתמך במכשיר זה. 
+\nהתקן גרסה תואמת או החלף למכשיר נתמך.</string>
+    <string name="toast_reopen_after_change">אנא פתח מחדש את האפליקציה לאחר ביצוע שינויים</string>
+    <string name="network_title">סוגי רשת מותרים</string>
+    <string name="media_service_generic_error">התרחשה שגיאה</string>
+    <string name="media_service_car_section_genres">ז\'אנרים</string>
+    <string name="notification_action_rewind">החזר לאחור</string>
+    <string name="notification_action_next">הבא</string>
+    <string name="menu_item_auto">אוטומטי</string>
+    <string name="activity_name_settings">הגדרות Jellyfin</string>
+    <string name="video_player_external">נגן חיצוני</string>
+    <string name="dialog_web_view_outdated">WebView מיושן</string>
+    <string name="media_service_car_section_playlists">פלייליסטים</string>
+    <string name="connect_to_server_title">התחבר לשרת</string>
+    <string name="wifi_only">WiFi בלבד</string>
+    <string name="media_service_car_section_recents">נוגן לאחרונה</string>
+    <string name="notification_action_play">נגן</string>
+    <string name="player_error_unsupported_content">לא ניתן לנגן מדיה ממכשיר זה</string>
+    <string name="dialog_web_view_outdated_message">גרסת ה WebView המשומשת במכשירך מיושנת. 
+\nאנא עשכן לגרסה תואמת.</string>
+    <string name="connection_error_unable_to_reach_sever">לא ניתן לגשת לשרת</string>
+    <string name="dialog_button_check_for_updates">בדוק עדכונים</string>
+    <string name="connection_error_unsupported_version_or_product">גרסה או מוצר לא נתמכים</string>
+    <string name="mobile_data">מתונים ניידים</string>
+    <string name="media_service_car_section_albums">אלבומים</string>
+    <string name="media_service_car_item_no_title">אין כותרת</string>
+    <string name="notification_action_pause">השהה</string>
+    <string name="playback_info_stream_unknown_title">כותרת לא ידועה</string>
+    <string name="pref_category_music_player">נגן מוזיקה</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">מחוות בהירות ועוצמת קול</string>
+</resources>
