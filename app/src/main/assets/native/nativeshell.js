@@ -60,7 +60,11 @@ window.NativeShell = {
     },
 
     downloadFile(downloadInfo) {
-        window.NativeInterface.downloadFile(JSON.stringify(downloadInfo));
+        window.NativeInterface.downloadFiles(JSON.stringify([downloadInfo]));
+    },
+
+    downloadFiles(downloadInfo) {
+        window.NativeInterface.downloadFiles(JSON.stringify(downloadInfo));
     },
 
     openClientSettings() {

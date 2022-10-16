@@ -118,21 +118,24 @@ class NativeInterface(private val context: Context) : KoinComponent {
     }
 
     @JavascriptInterface
-    fun downloadFile(args: String): Boolean {
-        val title: String
-        val filename: String
-        val url: String
+    fun downloadFiles(args: String): Boolean {
         try {
-            val options = JSONObject(args)
-            title = options.getString("title")
-            filename = options.getString("filename")
-            url = options.getString("url")
+            val files = JSONArray(args)
+
+            repeat(files.length()) { index ->
+                val file = files.getJSONObject(index)
+
+                val title: String = file.getString("title")
+                val filename: String = file.getString("filename")
+                val url: String = file.getString("url")
+
+                emitEvent(ActivityEvent.DownloadFile(Uri.parse(url), title, filename))
+            }
         } catch (e: JSONException) {
             Timber.e("Download failed: %s", e.message)
             return false
         }
 
-        emitEvent(ActivityEvent.DownloadFile(Uri.parse(url), title, filename))
         return true
     }
 
