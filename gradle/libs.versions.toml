@@ -5,7 +5,7 @@ kotlin = "1.7.20"
 kotlin-ksp = "1.7.20-1.0.7"
 detekt = "1.21.0"
 android-junit5 = "1.8.2.1"
-dependencyupdates = "0.42.0"
+dependencyupdates = "0.43.0"
 
 # KotlinX
 coroutines = "1.6.4"
