@@ -36,7 +36,7 @@ compose-compiler = "1.3.2"
 jellyfin-sdk = "1.3.7"
 okhttp = "4.10.0"
 coil = "2.2.2"
-cronet-embedded = "105.5195.68"
+cronet-embedded = "106.5249.126"
 
 # Media
 androidx-media = "1.6.0"
