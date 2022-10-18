@@ -96,4 +96,7 @@
     <string name="pref_exoplayer_remember_brightness">Помнить яркость дисплея</string>
     <string name="video_player_integrated">Встроенный проигрыватель</string>
     <string name="playback_info_stream_unknown_title">Неизвестное название</string>
+    <string name="menu_item_auto">Авто</string>
+    <string name="pref_exoplayer_direct_play_ass">Разрешить субтитры SSA/ASS в прямом воспроизведении</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Предотвратить перекодирование и показывать субтитры только с базовой стилизацией. При включении этой функции расширенная стилизация субтитров будет недоступна.</string>
 </resources>
