@@ -94,4 +94,7 @@
     <string name="playback_info_stream_unknown_title">Onbekende titel</string>
     <string name="player_error_network_failure">Kan media-info niet laden van de server</string>
     <string name="player_error_invalid_play_options">Kan afspeel info niet oplossen</string>
+    <string name="menu_item_auto">Auto</string>
+    <string name="pref_exoplayer_direct_play_ass">SSA/ASS ondertitels in direct spel toestaan</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Voorkom transcodering en toon ondertitels met alleen basis styling. Geavanceerde styling van ondertitels is niet beschikbaar indien ingeschakeld.</string>
 </resources>
