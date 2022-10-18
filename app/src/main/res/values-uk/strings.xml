@@ -96,4 +96,7 @@
     <string name="dialog_web_view_not_supported_message">WebView не підтримується цим пристроєм.
 \nУстановіть сумісну реалізацію WebView або використайте на підтримуваний пристрій.</string>
     <string name="dialog_web_view_not_supported">WebView не підтримується</string>
+    <string name="menu_item_auto">Автоматичний</string>
+    <string name="pref_exoplayer_direct_play_ass">Дозволити субтитри SSA/ASS у прямому відтворенні</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Заборонити перекодування та показувати субтитри лише з базовим стилем. Розширений стиль субтитрів буде недоступний, якщо цей параметр увімкнено.</string>
 </resources>
