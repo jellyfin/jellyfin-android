@@ -94,4 +94,7 @@
     <string name="dialog_web_view_not_supported_message">WebView ez dago euskarri honetan.
 \nInstalatu WebViewren inplementazio bateragarri bat edo aldatu gailu bateragarri batera.</string>
     <string name="dialog_web_view_not_supported">WebView ezin da jasan</string>
+    <string name="menu_item_auto">Automatikoa</string>
+    <string name="pref_exoplayer_direct_play_ass">Onartu SSA/ASS azpitituluak zuzeneko erreprodukzioan</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Transkodetzea saihesten du eta oinarrizko estiloko azpitituluak bakarrik erakusten ditu. Azpititulu aurreratuaren estiloa ez da erabilgarri egongo gaituta badago.</string>
 </resources>
