@@ -4,11 +4,11 @@ package org.jellyfin.mobile.settings;
 import androidx.annotation.StringDef;
 
 @StringDef({
-        ExternalPlayerPackage.MPV_PLAYER,
-        ExternalPlayerPackage.MX_PLAYER_FREE,
-        ExternalPlayerPackage.MX_PLAYER_PRO,
-        ExternalPlayerPackage.VLC_PLAYER,
-        ExternalPlayerPackage.SYSTEM_DEFAULT
+    ExternalPlayerPackage.MPV_PLAYER,
+    ExternalPlayerPackage.MX_PLAYER_FREE,
+    ExternalPlayerPackage.MX_PLAYER_PRO,
+    ExternalPlayerPackage.VLC_PLAYER,
+    ExternalPlayerPackage.SYSTEM_DEFAULT
 })
 public @interface ExternalPlayerPackage {
     String MPV_PLAYER = "is.xyz.mpv";

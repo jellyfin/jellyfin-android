@@ -41,9 +41,9 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|uiMode"
+            android:exported="true"
             android:launchMode="singleTask"
-            android:supportsPictureInPicture="true"
-            android:exported="true">
+            android:supportsPictureInPicture="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
