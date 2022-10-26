@@ -7,8 +7,6 @@ import org.jellyfin.mobile.player.deviceprofile.CodecHelpers.getAudioProfile
 import org.jellyfin.mobile.player.deviceprofile.CodecHelpers.getVideoCodec
 import org.jellyfin.mobile.player.deviceprofile.CodecHelpers.getVideoLevel
 import org.jellyfin.mobile.player.deviceprofile.CodecHelpers.getVideoProfile
-import java.util.*
-import kotlin.collections.HashSet
 import kotlin.math.max
 
 sealed class DeviceCodec(
