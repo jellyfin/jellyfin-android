@@ -1,0 +1,49 @@
+name: Repo / Auto-apply milestone
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  milestone:
+    name: Apply milestone
+    runs-on: ubuntu-22.04
+    if: ${{ contains(github.repository_owner, 'jellyfin') }}
+    steps:
+      - uses: actions/github-script@d556feaca394842dc55e4734bf3bb9f685482fa0 # tag=v6.3.3
+        with:
+          github-token: ${{ secrets.JF_BOT_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const pr_id = context.issue.number;
+            const response = await github.rest.issues.listMilestones({
+              owner,
+              repo,
+              state: 'open',
+            });
+            const milestones = response.data; 
+            
+            // Find first open milestone
+            const milestone = milestones.reduce(
+              (prev, current) => prev?.number < current.number ? prev : current, 
+              null,
+            );
+
+            if (milestone === null) {
+              console.warn('No suitable milestone found, aborting.');
+              return;
+            }
+
+            console.log('Found milestone to apply: ' + milestone.title);
+
+            github.rest.issues.update({
+              owner,
+              repo,
+              issue_number: pr_id,
+              milestone: milestone.number,
+            });
+            
+            console.log('Successfully applied milestone ' + milestone.title + ' to PR #' + pr_id);
