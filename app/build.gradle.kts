@@ -21,10 +21,10 @@ detekt {
 }
 
 android {
+    namespace = "org.jellyfin.mobile"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "org.jellyfin.mobile"
         minSdk = 21
         targetSdk = 32
         versionName = project.getVersionName()
