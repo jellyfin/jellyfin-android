@@ -25,7 +25,7 @@ jobs:
               state: 'open',
             });
             const milestones = response.data; 
-            
+
             // Find first open milestone
             const milestone = milestones.reduce(
               (prev, current) => prev?.number < current.number ? prev : current, 
@@ -37,13 +37,13 @@ jobs:
               return;
             }
 
-            console.log('Found milestone to apply: ' + milestone.title);
+            console.log(`Found milestone to apply: ${milestone.title}`);
 
-            github.rest.issues.update({
+            await github.rest.issues.update({
               owner,
               repo,
               issue_number: pr_id,
               milestone: milestone.number,
             });
-            
-            console.log('Successfully applied milestone ' + milestone.title + ' to PR #' + pr_id);
+
+            console.log(`Successfully applied milestone ${milestone.title} to PR #${pr_id}`);
