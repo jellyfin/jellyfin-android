@@ -52,10 +52,10 @@
     <string name="external_player_mx_player_pro">MX Player Pro (wersja płatna)</string>
     <string name="external_player_mx_player_free">MX Player Free (wersja darmowa)</string>
     <plurals name="connection_error_prefix">
-        <item quantity="one">Próbowano %d próba do wejścia, bez powodzenia.</item>
-        <item quantity="few">Próbowano %d prób do wejścia, bez powodzenia.</item>
-        <item quantity="many">Próbowano %d prób do wejścia, bez powodzenia.</item>
-        <item quantity="other">Próbowano %d prób do wejścia, bez powodzenia.</item>
+        <item quantity="one">Wypróbowano %d kandydata, bez powodzenia.</item>
+        <item quantity="few">Wypróbowano %d kandydatów, bez powodzenia.</item>
+        <item quantity="many">Wypróbowano %d kandydatów, bez powodzenia.</item>
+        <item quantity="other">Wypróbowano %d kandydatów, bez powodzenia.</item>
     </plurals>
     <string name="external_player_system_default_description">Niech system poradzi sobie z wyborem odtwarzacza , niektóre odtwarzacze mogą nie być w pełni kompatybilne.</string>
     <string name="external_player_vlc_player_description">Darmowy i otwarto-źródłowy, wieloplatformowy odtwarzacz multimedialny, który odtwarza większość plików multimedialnych.</string>
@@ -96,4 +96,7 @@
     <string name="dialog_web_view_outdated">WebView przestarzałe</string>
     <string name="dialog_web_view_not_supported_message">WebViews nie jest obsługiwany na tym urządzeniu.
 \nZainstaluj kompatybilną implementację WebView lub zmień urządzenie na obsługiwane.</string>
+    <string name="menu_item_auto">Automatycznie</string>
+    <string name="pref_exoplayer_direct_play_ass">Zezwól na bezpośrednie odtwarzanie napisów SSA/ASS</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Zablokuje transkodowanie i pokaż napisy z podstawowym stylem. Zaawansowane style napisów nie będą dostępne jeśli ustawienie jest włączone.</string>
 </resources>
