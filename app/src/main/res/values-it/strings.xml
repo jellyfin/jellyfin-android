@@ -94,4 +94,6 @@
         <item quantity="one">Provato %d candidato per la connessione, ma senza successo.</item>
         <item quantity="other">Provati %d candidati per la connessione, ma senza successo.</item>
     </plurals>
+    <string name="pref_exoplayer_direct_play_ass">Permetti i sottotitoli SSA/ASS durante la Riproduzione Diretta</string>
+    <string name="menu_item_auto">Automatico</string>
 </resources>
