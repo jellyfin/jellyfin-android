@@ -19,6 +19,7 @@ import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.analytics.DefaultAnalyticsCollector
 import com.google.android.exoplayer2.mediacodec.MediaCodecDecoderException
+import com.google.android.exoplayer2.mediacodec.MediaCodecSelector
 import com.google.android.exoplayer2.util.Clock
 import com.google.android.exoplayer2.util.EventLogger
 import kotlinx.coroutines.CoroutineScope
@@ -68,6 +69,12 @@ import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
+enum class DecoderType {
+    HARDWARE,
+    SOFTWARE,
+    AUTO
+}
+
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
     private val apiClient: ApiClient = get()
     private val displayPreferencesApi: DisplayPreferencesApi = apiClient.displayPreferencesApi
@@ -115,6 +122,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private val mediaSessionCallback = PlayerMediaSessionCallback(this)
 
     private var displayPreferences = DisplayPreferences()
+    private var decoderType = DecoderType.AUTO
 
     init {
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
@@ -168,6 +176,20 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 else -> DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON
             }
             setExtensionRendererMode(rendererMode)
+            // set the media selector
+            setMediaCodecSelector { mimeType, requiresSecureDecoder, requiresTunnelingDecoder ->
+                val decoderInfoList = MediaCodecSelector.DEFAULT.getDecoderInfos(mimeType, requiresSecureDecoder, requiresTunnelingDecoder)
+                when (decoderType) {
+                    DecoderType.HARDWARE -> {
+                        // only get the hardware decoder
+                        decoderInfoList.filter { it.hardwareAccelerated }
+                    }
+                    DecoderType.SOFTWARE -> {
+                        decoderInfoList.filter { !it.hardwareAccelerated }
+                    }
+                    DecoderType.AUTO -> decoderInfoList
+                }
+            }
         }
         _player.value = ExoPlayer.Builder(getApplication(), renderersFactory, get()).apply {
             setUsePlatformDiagnostics(false)
