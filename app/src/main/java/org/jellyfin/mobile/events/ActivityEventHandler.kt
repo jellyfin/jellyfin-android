@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.bridge.JavascriptCallback
-import org.jellyfin.mobile.player.ui.PlayerFragment
+import org.jellyfin.mobile.player.ui.PlayerContainerFragment
 import org.jellyfin.mobile.settings.SettingsFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.extensions.addFragment
@@ -61,7 +61,7 @@ class ActivityEventHandler(
                 val args = Bundle().apply {
                     putParcelable(Constants.EXTRA_MEDIA_PLAY_OPTIONS, event.playOptions)
                 }
-                supportFragmentManager.addFragment<PlayerFragment>(args)
+                supportFragmentManager.addFragment<PlayerContainerFragment>(args)
             }
             is ActivityEvent.OpenUrl -> {
                 try {

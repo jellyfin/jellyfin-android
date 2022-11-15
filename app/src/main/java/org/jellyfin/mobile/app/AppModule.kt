@@ -26,6 +26,7 @@ import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.source.MediaSourceResolver
+import org.jellyfin.mobile.player.ui.PlayerContainerFragment
 import org.jellyfin.mobile.player.ui.PlayerFragment
 import org.jellyfin.mobile.setup.ConnectionHelper
 import org.jellyfin.mobile.utils.Constants
@@ -68,6 +69,7 @@ val applicationModule = module {
     // Fragments
     fragment { WebViewFragment() }
     fragment { PlayerFragment() }
+    fragment { PlayerContainerFragment() }
 
     // Connection helper
     single { ConnectionHelper(get(), get()) }

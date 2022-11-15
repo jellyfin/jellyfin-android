@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
+import org.jellyfin.mobile.player.DecoderType
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.queue.QueueManager
 import org.jellyfin.sdk.model.api.MediaStream
@@ -228,7 +229,12 @@ class PlayerMenus(
         menu.setGroupCheckable(DECODER_MENU_GROUP, true, true)
 
         setOnMenuItemClickListener { clickedItem: MenuItem ->
-//            fragment.onBitrateChanged(clickedItem.itemId.takeUnless { bitrate -> bitrate == 0 })
+            val type = when (clickedItem.itemId) {
+                1 -> DecoderType.HARDWARE
+                2 -> DecoderType.SOFTWARE
+                else -> DecoderType.AUTO
+            }
+            fragment.onDecoderSelected(type)
             menu.forEach { item ->
                 item.isChecked = false
             }

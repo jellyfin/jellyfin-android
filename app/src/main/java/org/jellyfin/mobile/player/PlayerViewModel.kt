@@ -6,11 +6,13 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
+import android.util.Log
 import androidx.core.content.getSystemService
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.DefaultRenderersFactory
@@ -68,6 +70,7 @@ import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.math.log
 
 enum class DecoderType {
     HARDWARE,
@@ -75,11 +78,12 @@ enum class DecoderType {
     AUTO
 }
 
-class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
+class PlayerViewModel(application: Application, savedStateHandle: SavedStateHandle) : AndroidViewModel(application), KoinComponent, Player.Listener {
     private val apiClient: ApiClient = get()
     private val displayPreferencesApi: DisplayPreferencesApi = apiClient.displayPreferencesApi
     private val playStateApi: PlayStateApi = apiClient.playStateApi
     private val hlsSegmentApi: HlsSegmentApi = apiClient.hlsSegmentApi
+    private val decoderType = savedStateHandle.get<String>("DECODER")?.let { DecoderType.valueOf(it) } ?: DecoderType.AUTO
 
     private val lifecycleObserver = PlayerLifecycleObserver(this)
     private val audioManager: AudioManager by lazy { getApplication<Application>().getSystemService()!! }
@@ -96,7 +100,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     val player: LiveData<ExoPlayer?> get() = _player
     val playerState: LiveData<Int> get() = _playerState
     private val eventLogger = EventLogger()
-    private val analyticsCollector = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
+    private var analyticsCollector = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
         addListener(eventLogger)
     }
     private val initialTracksSelected = AtomicBoolean(false)
@@ -122,7 +126,6 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private val mediaSessionCallback = PlayerMediaSessionCallback(this)
 
     private var displayPreferences = DisplayPreferences()
-    private var decoderType = DecoderType.AUTO
 
     init {
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
@@ -204,15 +207,20 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     /**
      * Release the current ExoPlayer and stop/release the current MediaSession
      */
-    private fun releasePlayer() {
+    private fun releasePlayer(trigger: Boolean = true) {
         notificationHelper.dismissNotification()
         mediaSession.isActive = false
         mediaSession.release()
+        analyticsCollector = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
+            addListener(eventLogger)
+        }
         playerOrNull?.run {
             removeListener(this@PlayerViewModel)
             release()
         }
-        _player.value = null
+        if (trigger) {
+            _player.value = null
+        }
     }
 
     fun load(queueItem: QueueManager.QueueItem.Loaded, playWhenReady: Boolean) {
@@ -228,6 +236,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         player.playWhenReady = playWhenReady
 
         mediaSession.setMetadata(queueItem.jellyfinMediaSource.toMediaMetadata())
+        Timber.d("decoder info: ${playerOrNull}")
 
         viewModelScope.launch {
             player.reportPlaybackStart(queueItem.jellyfinMediaSource)
@@ -495,6 +504,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     override fun onCleared() {
+        Timber.d("PlayerViewModel onCleared")
         reportPlaybackStop()
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
         releasePlayer()

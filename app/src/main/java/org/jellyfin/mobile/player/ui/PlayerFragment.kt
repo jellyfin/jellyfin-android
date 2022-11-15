@@ -23,6 +23,8 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerView
@@ -30,6 +32,7 @@ import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
+import org.jellyfin.mobile.player.DecoderType
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.interaction.PlayOptions
@@ -279,6 +282,13 @@ class PlayerFragment : Fragment() {
      */
     fun onSpeedSelected(speed: Float): Boolean {
         return viewModel.setPlaybackSpeed(speed)
+    }
+
+    fun onDecoderSelected(type: DecoderType) {
+        val parent = parentFragment
+        if (parent is PlayerContainerFragment) {
+            parent.setDecoder(type)
+        }
     }
 
     fun onSkipToPrevious() {
