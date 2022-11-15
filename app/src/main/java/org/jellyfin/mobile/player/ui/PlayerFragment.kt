@@ -285,10 +285,7 @@ class PlayerFragment : Fragment() {
     }
 
     fun onDecoderSelected(type: DecoderType) {
-        val parent = parentFragment
-        if (parent is PlayerContainerFragment) {
-            parent.setDecoder(type)
-        }
+        viewModel.updateDecoderType(type)
     }
 
     fun onSkipToPrevious() {

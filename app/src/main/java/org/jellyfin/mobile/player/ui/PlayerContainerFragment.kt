@@ -23,11 +23,11 @@ class PlayerContainerFragment : Fragment() {
         setFragment(true)
     }
 
-    private fun setFragment(isReplace: Boolean = false) {
+    private fun setFragment(shouldReplace: Boolean = false) {
         childFragmentManager.beginTransaction().apply {
             val args = arguments ?: Bundle()
             args.putString("DECODER", decoderType.name)
-            if (isReplace) {
+            if (shouldReplace) {
                 replace(fragmentContainer.id, PlayerFragment::class.java, args)
             } else {
                 add(fragmentContainer.id, PlayerFragment::class.java, args)

@@ -6,7 +6,6 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
-import android.util.Log
 import androidx.core.content.getSystemService
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -70,7 +69,6 @@ import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
-import kotlin.math.log
 
 enum class DecoderType {
     HARDWARE,
@@ -83,7 +81,7 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
     private val displayPreferencesApi: DisplayPreferencesApi = apiClient.displayPreferencesApi
     private val playStateApi: PlayStateApi = apiClient.playStateApi
     private val hlsSegmentApi: HlsSegmentApi = apiClient.hlsSegmentApi
-    private val decoderType = savedStateHandle.get<String>("DECODER")?.let { DecoderType.valueOf(it) } ?: DecoderType.AUTO
+    private var decoderType = DecoderType.AUTO
 
     private val lifecycleObserver = PlayerLifecycleObserver(this)
     private val audioManager: AudioManager by lazy { getApplication<Application>().getSystemService()!! }
@@ -107,6 +105,7 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
     private var fallbackPreferExtensionRenderers = false
 
     private var progressUpdateJob: Job? = null
+    private var isHotReloading = false
 
     /**
      * Returns the current ExoPlayer instance or null
@@ -211,9 +210,6 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
         notificationHelper.dismissNotification()
         mediaSession.isActive = false
         mediaSession.release()
-        analyticsCollector = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
-            addListener(eventLogger)
-        }
         playerOrNull?.run {
             removeListener(this@PlayerViewModel)
             release()
@@ -254,6 +250,21 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
 
     private fun stopProgressUpdates() {
         progressUpdateJob?.cancel()
+    }
+
+    fun updateDecoderType(type: DecoderType) {
+        decoderType = type
+        // soft stop the player
+        analyticsCollector.release()
+        analyticsCollector = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
+            addListener(eventLogger)
+        }
+        playerOrNull?.run {
+            removeListener(this@PlayerViewModel)
+            release()
+        }
+        setupPlayer()
+        mediaQueueManager.tryRestartPlayback()
     }
 
     private suspend fun Player.reportPlaybackStart(mediaSource: JellyfinMediaSource) {
@@ -504,7 +515,6 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
     }
 
     override fun onCleared() {
-        Timber.d("PlayerViewModel onCleared")
         reportPlaybackStop()
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
         releasePlayer()
