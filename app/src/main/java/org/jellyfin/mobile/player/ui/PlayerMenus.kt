@@ -223,17 +223,15 @@ class PlayerMenus(
     }
 
     private fun createDecoderMenu() = PopupMenu(context, qualityButton).apply {
-        menu.add(DECODER_MENU_GROUP, 0, Menu.NONE, "Auto").isChecked = true
-        menu.add(DECODER_MENU_GROUP, 1, Menu.NONE, "Hardware Decoding")
-        menu.add(DECODER_MENU_GROUP, 2, Menu.NONE, "Software Decoding")
+        menu.add(DECODER_MENU_GROUP, DecoderType.AUTO.ordinal, Menu.NONE, "Auto")
+        menu.add(DECODER_MENU_GROUP, DecoderType.HARDWARE.ordinal, Menu.NONE, "Hardware Decoding")
+        menu.add(DECODER_MENU_GROUP, DecoderType.SOFTWARE.ordinal, Menu.NONE, "Software Decoding")
         menu.setGroupCheckable(DECODER_MENU_GROUP, true, true)
+        val activeDecoder = fragment.arguments?.getString("DECODER")?.let { DecoderType.valueOf(it) } ?: DecoderType.AUTO
+        menu.findItem(activeDecoder.ordinal).isChecked = true
 
         setOnMenuItemClickListener { clickedItem: MenuItem ->
-            val type = when (clickedItem.itemId) {
-                1 -> DecoderType.HARDWARE
-                2 -> DecoderType.SOFTWARE
-                else -> DecoderType.AUTO
-            }
+            val type = DecoderType.values()[clickedItem.itemId]
             fragment.onDecoderSelected(type)
             menu.forEach { item ->
                 item.isChecked = false
