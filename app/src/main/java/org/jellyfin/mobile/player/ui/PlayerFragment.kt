@@ -88,6 +88,9 @@ class PlayerFragment : Fragment() {
             playerView.player = player
             if (player == null) parentFragmentManager.popBackStack()
         }
+        viewModel.error.observe(this) {
+            requireContext().toast(it)
+        }
         viewModel.playerState.observe(this) { playerState ->
             val isPlaying = viewModel.playerOrNull?.isPlaying == true
             val window = requireActivity().window

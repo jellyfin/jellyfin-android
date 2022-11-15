@@ -23,6 +23,7 @@ import com.google.android.exoplayer2.mediacodec.MediaCodecDecoderException
 import com.google.android.exoplayer2.mediacodec.MediaCodecSelector
 import com.google.android.exoplayer2.util.Clock
 import com.google.android.exoplayer2.util.EventLogger
+import com.google.android.exoplayer2.util.MimeTypes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -97,6 +98,10 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
     private val _playerState = MutableLiveData<Int>()
     val player: LiveData<ExoPlayer?> get() = _player
     val playerState: LiveData<Int> get() = _playerState
+
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> = _error
+
     private val eventLogger = EventLogger()
     private var analyticsCollector = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
         addListener(eventLogger)
@@ -105,7 +110,6 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
     private var fallbackPreferExtensionRenderers = false
 
     private var progressUpdateJob: Job? = null
-    private var isHotReloading = false
 
     /**
      * Returns the current ExoPlayer instance or null
@@ -181,6 +185,10 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
             // set the media selector
             setMediaCodecSelector { mimeType, requiresSecureDecoder, requiresTunnelingDecoder ->
                 val decoderInfoList = MediaCodecSelector.DEFAULT.getDecoderInfos(mimeType, requiresSecureDecoder, requiresTunnelingDecoder)
+                if (!MimeTypes.isVideo(mimeType)) {
+                    return@setMediaCodecSelector decoderInfoList
+                }
+                // only for video
                 when (decoderType) {
                     DecoderType.HARDWARE -> {
                         // only get the hardware decoder
@@ -232,7 +240,7 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
         player.playWhenReady = playWhenReady
 
         mediaSession.setMetadata(queueItem.jellyfinMediaSource.toMediaMetadata())
-        Timber.d("decoder info: ${playerOrNull}")
+        Timber.d("decoder info: $playerOrNull")
 
         viewModelScope.launch {
             player.reportPlaybackStart(queueItem.jellyfinMediaSource)
@@ -513,6 +521,8 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
             fallbackPreferExtensionRenderers = true
             setupPlayer()
             mediaQueueManager.tryRestartPlayback()
+        } else {
+            _error.postValue(error.localizedMessage ?: "Something went wrong with the player")
         }
     }
 
