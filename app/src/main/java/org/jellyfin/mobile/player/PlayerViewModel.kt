@@ -259,11 +259,13 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
         analyticsCollector = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
             addListener(eventLogger)
         }
+        val playedTime = playerOrNull?.currentPosition ?: 0L
         playerOrNull?.run {
             removeListener(this@PlayerViewModel)
             release()
         }
         setupPlayer()
+        mediaQueueManager.mediaQueue.value?.jellyfinMediaSource?.updateStartTimeTicks(playedTime)
         mediaQueueManager.tryRestartPlayback()
     }
 
