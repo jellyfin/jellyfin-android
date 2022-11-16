@@ -91,6 +91,9 @@ class PlayerFragment : Fragment() {
         viewModel.error.observe(this) {
             requireContext().toast(it)
         }
+        viewModel.decoderType.observe(this) {
+            playerMenus?.updatedSelectedDecoder(it)
+        }
         viewModel.playerState.observe(this) { playerState ->
             val isPlaying = viewModel.playerOrNull?.isPlaying == true
             val window = requireActivity().window

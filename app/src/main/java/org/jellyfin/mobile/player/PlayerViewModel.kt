@@ -25,6 +25,7 @@ import com.google.android.exoplayer2.mediacodec.MediaCodecSelector
 import com.google.android.exoplayer2.util.Clock
 import com.google.android.exoplayer2.util.EventLogger
 import com.google.android.exoplayer2.util.MimeTypes
+import com.google.android.exoplayer2.video.MediaCodecVideoRenderer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -75,7 +76,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 enum class DecoderType {
     HARDWARE,
     SOFTWARE,
-    AUTO
 }
 
 class PlayerViewModel(application: Application, savedStateHandle: SavedStateHandle) : AndroidViewModel(application), KoinComponent, Player.Listener {
@@ -83,7 +83,8 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
     private val displayPreferencesApi: DisplayPreferencesApi = apiClient.displayPreferencesApi
     private val playStateApi: PlayStateApi = apiClient.playStateApi
     private val hlsSegmentApi: HlsSegmentApi = apiClient.hlsSegmentApi
-    private var decoderType = DecoderType.AUTO
+    private val _decoderType = MutableLiveData<DecoderType>()
+    val decoderType: LiveData<DecoderType> = _decoderType
 
     private val lifecycleObserver = PlayerLifecycleObserver(this)
     private val audioManager: AudioManager by lazy { getApplication<Application>().getSystemService()!! }
@@ -188,7 +189,7 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
                     return@setMediaCodecSelector decoderInfoList
                 }
                 // only for video
-                when (decoderType) {
+                val filteredDecoderList = when (decoderType.value) {
                     DecoderType.HARDWARE -> {
                         // only get the hardware decoder
                         decoderInfoList.filter { it.hardwareAccelerated }
@@ -196,8 +197,14 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
                     DecoderType.SOFTWARE -> {
                         decoderInfoList.filter { !it.hardwareAccelerated }
                     }
-                    DecoderType.AUTO -> decoderInfoList
+                    else -> decoderInfoList
                 }
+                // update the decoderType based on the first decoder selected
+                if (filteredDecoderList.isNotEmpty()) {
+                    _decoderType.postValue(if (filteredDecoderList[0].hardwareAccelerated) DecoderType.HARDWARE else DecoderType.SOFTWARE)
+                }
+
+                filteredDecoderList
             }
         }
         _player.value = ExoPlayer.Builder(getApplication(), renderersFactory, get()).apply {
@@ -264,7 +271,7 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
     }
 
     fun updateDecoderType(type: DecoderType) {
-        decoderType = type
+        _decoderType.postValue(type)
         analyticsCollector.release()
         analyticsCollector = getAnalyticsCollector()
         val playedTime = playerOrNull?.currentPosition ?: 0L

@@ -223,12 +223,9 @@ class PlayerMenus(
     }
 
     private fun createDecoderMenu() = PopupMenu(context, qualityButton).apply {
-        menu.add(DECODER_MENU_GROUP, DecoderType.AUTO.ordinal, Menu.NONE, "Auto")
         menu.add(DECODER_MENU_GROUP, DecoderType.HARDWARE.ordinal, Menu.NONE, "Hardware Decoding")
         menu.add(DECODER_MENU_GROUP, DecoderType.SOFTWARE.ordinal, Menu.NONE, "Software Decoding")
         menu.setGroupCheckable(DECODER_MENU_GROUP, true, true)
-        val activeDecoder = fragment.arguments?.getString("DECODER")?.let { DecoderType.valueOf(it) } ?: DecoderType.AUTO
-        menu.findItem(activeDecoder.ordinal).isChecked = true
 
         setOnMenuItemClickListener { clickedItem: MenuItem ->
             val type = DecoderType.values()[clickedItem.itemId]
@@ -240,6 +237,10 @@ class PlayerMenus(
             true
         }
         setOnDismissListener(this@PlayerMenus)
+    }
+
+    fun updatedSelectedDecoder(type: DecoderType) {
+        decoderMenu.menu.findItem(type.ordinal).isChecked = true
     }
 
     private fun buildMenuItems(
