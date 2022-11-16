@@ -18,6 +18,7 @@ import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.analytics.AnalyticsCollector
 import com.google.android.exoplayer2.analytics.DefaultAnalyticsCollector
 import com.google.android.exoplayer2.mediacodec.MediaCodecDecoderException
 import com.google.android.exoplayer2.mediacodec.MediaCodecSelector
@@ -103,9 +104,7 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
     val error: LiveData<String> = _error
 
     private val eventLogger = EventLogger()
-    private var analyticsCollector = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
-        addListener(eventLogger)
-    }
+    private var analyticsCollector = getAnalyticsCollector()
     private val initialTracksSelected = AtomicBoolean(false)
     private var fallbackPreferExtensionRenderers = false
 
@@ -227,6 +226,10 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
         }
     }
 
+    private fun getAnalyticsCollector() = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
+        addListener(eventLogger)
+    }
+
     fun load(queueItem: QueueManager.QueueItem.Loaded, playWhenReady: Boolean) {
         val player = playerOrNull ?: return
 
@@ -262,12 +265,10 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
 
     fun updateDecoderType(type: DecoderType) {
         decoderType = type
-        // soft stop the player
         analyticsCollector.release()
-        analyticsCollector = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
-            addListener(eventLogger)
-        }
+        analyticsCollector = getAnalyticsCollector()
         val playedTime = playerOrNull?.currentPosition ?: 0L
+        // soft stop the player
         playerOrNull?.run {
             removeListener(this@PlayerViewModel)
             release()
