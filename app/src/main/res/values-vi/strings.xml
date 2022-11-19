@@ -93,4 +93,7 @@
     <string name="pref_exoplayer_remember_brightness">Ghi nhớ độ sáng màn hình</string>
     <string name="video_player_integrated">Trình phát tích hợp</string>
     <string name="playback_info_stream_unknown_title">Không rõ tiêu đề</string>
+    <string name="menu_item_auto">Tự động</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Ngăn chuyển mã và chỉ hiển thị phụ đề với kiểu dáng cơ bản. Kiểu phụ đề nâng cao sẽ không khả dụng nếu được bật.</string>
+    <string name="pref_exoplayer_direct_play_ass">Cho phép phụ đề SSA/ASS khi phát trực tiếp</string>
 </resources>
