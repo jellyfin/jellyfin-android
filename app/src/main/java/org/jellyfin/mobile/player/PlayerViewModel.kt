@@ -11,21 +11,18 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.analytics.AnalyticsCollector
 import com.google.android.exoplayer2.analytics.DefaultAnalyticsCollector
 import com.google.android.exoplayer2.mediacodec.MediaCodecDecoderException
 import com.google.android.exoplayer2.mediacodec.MediaCodecSelector
 import com.google.android.exoplayer2.util.Clock
 import com.google.android.exoplayer2.util.EventLogger
 import com.google.android.exoplayer2.util.MimeTypes
-import com.google.android.exoplayer2.video.MediaCodecVideoRenderer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -73,18 +70,19 @@ import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
+/**
+ * Represents the type of decoder
+ */
 enum class DecoderType {
     HARDWARE,
     SOFTWARE,
 }
 
-class PlayerViewModel(application: Application, savedStateHandle: SavedStateHandle) : AndroidViewModel(application), KoinComponent, Player.Listener {
+class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
     private val apiClient: ApiClient = get()
     private val displayPreferencesApi: DisplayPreferencesApi = apiClient.displayPreferencesApi
     private val playStateApi: PlayStateApi = apiClient.playStateApi
     private val hlsSegmentApi: HlsSegmentApi = apiClient.hlsSegmentApi
-    private val _decoderType = MutableLiveData<DecoderType>()
-    val decoderType: LiveData<DecoderType> = _decoderType
 
     private val lifecycleObserver = PlayerLifecycleObserver(this)
     private val audioManager: AudioManager by lazy { getApplication<Application>().getSystemService()!! }
@@ -100,6 +98,8 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
     private val _playerState = MutableLiveData<Int>()
     val player: LiveData<ExoPlayer?> get() = _player
     val playerState: LiveData<Int> get() = _playerState
+    private val _decoderType = MutableLiveData<DecoderType>()
+    val decoderType: LiveData<DecoderType> = _decoderType
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
@@ -185,10 +185,10 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
             // set the media selector
             setMediaCodecSelector { mimeType, requiresSecureDecoder, requiresTunnelingDecoder ->
                 val decoderInfoList = MediaCodecSelector.DEFAULT.getDecoderInfos(mimeType, requiresSecureDecoder, requiresTunnelingDecoder)
+                // allow decoder selection only for video
                 if (!MimeTypes.isVideo(mimeType)) {
                     return@setMediaCodecSelector decoderInfoList
                 }
-                // only for video
                 val filteredDecoderList = when (decoderType.value) {
                     DecoderType.HARDWARE -> {
                         // only get the hardware decoder
@@ -220,7 +220,7 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
     /**
      * Release the current ExoPlayer and stop/release the current MediaSession
      */
-    private fun releasePlayer(trigger: Boolean = true) {
+    private fun releasePlayer() {
         notificationHelper.dismissNotification()
         mediaSession.isActive = false
         mediaSession.release()
@@ -228,9 +228,7 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
             removeListener(this@PlayerViewModel)
             release()
         }
-        if (trigger) {
-            _player.value = null
-        }
+        _player.value = null
     }
 
     private fun getAnalyticsCollector() = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
@@ -250,7 +248,6 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
         player.playWhenReady = playWhenReady
 
         mediaSession.setMetadata(queueItem.jellyfinMediaSource.toMediaMetadata())
-        Timber.d("decoder info: $playerOrNull")
 
         viewModelScope.launch {
             player.reportPlaybackStart(queueItem.jellyfinMediaSource)
@@ -270,10 +267,15 @@ class PlayerViewModel(application: Application, savedStateHandle: SavedStateHand
         progressUpdateJob?.cancel()
     }
 
+    /**
+     * Updates the decoder of the [Player]. This will destroy the current player and
+     * recreate the player with the selected decoder type
+     */
     fun updateDecoderType(type: DecoderType) {
         _decoderType.postValue(type)
         analyticsCollector.release()
         analyticsCollector = getAnalyticsCollector()
+        // get the player position so that we can resume it
         val playedTime = playerOrNull?.currentPosition ?: 0L
         // soft stop the player
         playerOrNull?.run {
