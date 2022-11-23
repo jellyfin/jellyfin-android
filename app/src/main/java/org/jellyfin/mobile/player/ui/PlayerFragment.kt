@@ -16,8 +16,8 @@ import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
@@ -57,7 +57,8 @@ class PlayerFragment : Fragment() {
     private var _playerControlsBinding: ExoPlayerControlViewBinding? = null
     private val playerControlsBinding: ExoPlayerControlViewBinding get() = _playerControlsBinding!!
     private val playerControlsView: View get() = playerControlsBinding.root
-    private val titleTextView: TextView get() = playerControlsBinding.trackTitle
+
+    private val toolbar: Toolbar get() = playerControlsBinding.toolbar
     private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
     private var playerMenus: PlayerMenus? = null
 
@@ -110,7 +111,7 @@ class PlayerFragment : Fragment() {
             }
 
             // Update title and player menus
-            titleTextView.text = jellyfinMediaSource.name
+            toolbar.title = jellyfinMediaSource.name
             playerMenus?.onQueueItemChanged(queueItem)
         }
 
@@ -129,11 +130,13 @@ class PlayerFragment : Fragment() {
                 null -> Unit // success
             }
         }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _playerBinding = FragmentPlayerBinding.inflate(layoutInflater)
         _playerControlsBinding = ExoPlayerControlViewBinding.bind(playerBinding.root.findViewById(R.id.player_controls))
+        toolbar.setNavigationOnClickListener { parentFragmentManager.popBackStack() }
         return playerBinding.root
     }
 
