@@ -134,7 +134,6 @@ class PlayerFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _playerBinding = FragmentPlayerBinding.inflate(layoutInflater)
         _playerControlsBinding = ExoPlayerControlViewBinding.bind(playerBinding.root.findViewById(R.id.player_controls))
-        toolbar.setNavigationOnClickListener { parentFragmentManager.popBackStack() }
         return playerBinding.root
     }
 
@@ -158,6 +157,9 @@ class PlayerFragment : Fragment() {
             )
             insets
         }
+
+        // Handle toolbar back button
+        toolbar.setNavigationOnClickListener { parentFragmentManager.popBackStack() }
 
         // Create playback menus
         playerMenus = PlayerMenus(this, playerBinding, playerControlsBinding)
