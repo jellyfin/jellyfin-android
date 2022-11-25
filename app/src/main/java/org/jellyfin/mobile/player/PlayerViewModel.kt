@@ -532,7 +532,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             setupPlayer()
             mediaQueueManager.tryRestartPlayback()
         } else {
-            _error.postValue(error.localizedMessage ?: "Something went wrong with the player")
+            _error.postValue(error.localizedMessage.orEmpty())
         }
     }
 

@@ -100,7 +100,8 @@ class PlayerFragment : Fragment() {
             playerMenus?.updatedSelectedDecoder(type)
         }
         viewModel.error.observe(this) { message ->
-            requireContext().toast(message)
+            val safeMessage = message.ifEmpty { requireContext().getString(R.string.player_error_unspecific_exception) }
+            requireContext().toast(safeMessage)
         }
         viewModel.mediaQueueManager.mediaQueue.observe(this) { queueItem ->
             val jellyfinMediaSource = queueItem.jellyfinMediaSource
