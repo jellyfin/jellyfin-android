@@ -96,10 +96,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     // ExoPlayer
     private val _player = MutableLiveData<ExoPlayer?>()
     private val _playerState = MutableLiveData<Int>()
+    private val _decoderType = MutableLiveData<DecoderType>()
     val player: LiveData<ExoPlayer?> get() = _player
     val playerState: LiveData<Int> get() = _playerState
-    private val _decoderType = MutableLiveData<DecoderType>()
-    val decoderType: LiveData<DecoderType> = _decoderType
+    val decoderType: LiveData<DecoderType> get() = _decoderType
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
