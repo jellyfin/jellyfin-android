@@ -15,6 +15,6 @@
 
     <!-- Theme Overlays -->
     <style name="ThemeOverlay.App.BackButton" parent="">
-        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlNormal">?android:textColorPrimary</item>
     </style>
 </resources>
