@@ -223,8 +223,8 @@ class PlayerMenus(
     }
 
     private fun createDecoderMenu() = PopupMenu(context, qualityButton).apply {
-        menu.add(DECODER_MENU_GROUP, DecoderType.HARDWARE.ordinal, Menu.NONE, "Hardware Decoding")
-        menu.add(DECODER_MENU_GROUP, DecoderType.SOFTWARE.ordinal, Menu.NONE, "Software Decoding")
+        menu.add(DECODER_MENU_GROUP, DecoderType.HARDWARE.ordinal, Menu.NONE, context.getString(R.string.menu_item_hardware_decoding))
+        menu.add(DECODER_MENU_GROUP, DecoderType.SOFTWARE.ordinal, Menu.NONE, context.getString(R.string.menu_item_software_decoding))
         menu.setGroupCheckable(DECODER_MENU_GROUP, true, true)
 
         setOnMenuItemClickListener { clickedItem: MenuItem ->
