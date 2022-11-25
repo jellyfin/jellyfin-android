@@ -16,6 +16,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
+import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.utils.Constants
@@ -132,17 +133,20 @@ class PlayerGestureHelper(
                 distanceX: Float,
                 distanceY: Float,
             ): Boolean {
-                if (!appPreferences.exoPlayerAllowSwipeGestures)
+                if (!appPreferences.exoPlayerAllowSwipeGestures) {
                     return false
+                }
 
                 // Check whether swipe was started in excluded region
                 val exclusionSize = playerView.resources.dip(Constants.SWIPE_GESTURE_EXCLUSION_SIZE_VERTICAL)
-                if (firstEvent.y < exclusionSize || firstEvent.y > playerView.height - exclusionSize)
+                if (firstEvent.y < exclusionSize || firstEvent.y > playerView.height - exclusionSize) {
                     return false
+                }
 
                 // Check whether swipe was oriented vertically
-                if (abs(distanceY / distanceX) < 2)
+                if (abs(distanceY / distanceX) < 2) {
                     return false
+                }
 
                 val viewCenterX = playerView.measuredWidth / 2
 
@@ -163,7 +167,7 @@ class PlayerGestureHelper(
                     val toSet = swipeGestureValueTracker.toInt().coerceIn(0, maxVolume)
                     audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, toSet, 0)
 
-                    gestureIndicatorOverlayImage.setImageResource(org.jellyfin.mobile.R.drawable.ic_volume_white_24dp)
+                    gestureIndicatorOverlayImage.setImageResource(R.drawable.ic_volume_white_24dp)
                     gestureIndicatorOverlayProgress.max = maxVolume
                     gestureIndicatorOverlayProgress.progress = toSet
                 } else {
@@ -177,7 +181,12 @@ class PlayerGestureHelper(
                         val brightness = window.brightness
                         swipeGestureValueTracker = when (brightness) {
                             in brightnessRange -> brightness
-                            else -> Settings.System.getFloat(fragment.requireActivity().contentResolver, Settings.System.SCREEN_BRIGHTNESS) / Constants.SCREEN_BRIGHTNESS_MAX
+                            else -> {
+                                Settings.System.getFloat(
+                                    fragment.requireActivity().contentResolver,
+                                    Settings.System.SCREEN_BRIGHTNESS,
+                                ) / Constants.SCREEN_BRIGHTNESS_MAX
+                            }
                         }
                     }
 
@@ -187,7 +196,7 @@ class PlayerGestureHelper(
                         appPreferences.exoPlayerBrightness = swipeGestureValueTracker
                     }
 
-                    gestureIndicatorOverlayImage.setImageResource(org.jellyfin.mobile.R.drawable.ic_brightness_white_24dp)
+                    gestureIndicatorOverlayImage.setImageResource(R.drawable.ic_brightness_white_24dp)
                     gestureIndicatorOverlayProgress.max = Constants.PERCENT_MAX
                     gestureIndicatorOverlayProgress.progress = (swipeGestureValueTracker * Constants.PERCENT_MAX).toInt()
                 }
@@ -227,13 +236,18 @@ class PlayerGestureHelper(
                     1 -> gestureDetector.onTouchEvent(event)
                     2 -> zoomGestureDetector.onTouchEvent(event)
                 }
-            } else unlockDetector.onTouchEvent(event)
+            } else {
+                unlockDetector.onTouchEvent(event)
+            }
             if (event.action == MotionEvent.ACTION_UP) {
                 // Hide gesture indicator after timeout, if shown
                 gestureIndicatorOverlayLayout.apply {
                     if (isVisible) {
                         removeCallbacks(hideGestureIndicatorOverlayAction)
-                        postDelayed(hideGestureIndicatorOverlayAction, Constants.DEFAULT_CENTER_OVERLAY_TIMEOUT_MS.toLong())
+                        postDelayed(
+                            hideGestureIndicatorOverlayAction,
+                            Constants.DEFAULT_CENTER_OVERLAY_TIMEOUT_MS.toLong(),
+                        )
                     }
                 }
                 swipeGestureValueTracker = -1f

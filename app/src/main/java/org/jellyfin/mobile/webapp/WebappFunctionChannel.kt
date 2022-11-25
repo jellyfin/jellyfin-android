@@ -15,7 +15,12 @@ class WebappFunctionChannel {
 
     // Web component helpers
     fun callPlaybackManagerAction(action: String) = call("$PLAYBACK_MANAGER.$action();")
-    fun setVolume(volume: Int) = call("$PLAYBACK_MANAGER.sendCommand({ Name: 'SetVolume', Arguments: { Volume: $volume } });")
+    fun setVolume(volume: Int) = call(
+        "$PLAYBACK_MANAGER.sendCommand({" +
+            "Name: 'SetVolume', Arguments: { Volume: $volume }" +
+            "});",
+    )
+
     fun seekTo(pos: Long) = call("$PLAYBACK_MANAGER.seekMs($pos);")
     fun goBack() = call("$NAVIGATION_HELPER.goBack();")
 

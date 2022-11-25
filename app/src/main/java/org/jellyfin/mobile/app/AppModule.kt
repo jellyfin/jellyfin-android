@@ -93,9 +93,13 @@ val applicationModule = module {
                 .enableBrotli(true)
                 .enableHttpCache(CronetEngine.Builder.HTTP_CACHE_IN_MEMORY, HTTP_CACHE_SIZE)
                 .build()
-            CronetDataSource.Factory(cronetEngine, Executors.newCachedThreadPool()).setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
+            CronetDataSource.Factory(cronetEngine, Executors.newCachedThreadPool()).apply {
+                setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
+            }
         } else {
-            DefaultHttpDataSource.Factory().setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
+            DefaultHttpDataSource.Factory().apply {
+                setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
+            }
         }
 
         DefaultDataSource.Factory(context, baseDataSourceFactory)

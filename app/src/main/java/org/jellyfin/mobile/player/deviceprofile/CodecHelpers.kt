@@ -4,7 +4,7 @@ import android.media.MediaCodecInfo.CodecProfileLevel
 import android.media.MediaFormat
 import com.google.android.exoplayer2.util.MimeTypes
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "CyclomaticComplexMethod")
 object CodecHelpers {
     fun getVideoCodec(mimeType: String): String? = when (mimeType) {
         MediaFormat.MIMETYPE_VIDEO_MPEG2 -> "mpeg2video"

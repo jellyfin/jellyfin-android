@@ -42,7 +42,11 @@ fun MediaSession.setPlaybackState(playbackState: Int, position: Long, playbackAc
 }
 
 fun MediaSession.setPlaybackState(isPlaying: Boolean, position: Long, playbackActions: Long) {
-    setPlaybackState(if (isPlaying) PlaybackState.STATE_PLAYING else PlaybackState.STATE_PAUSED, position, playbackActions)
+    setPlaybackState(
+        if (isPlaying) PlaybackState.STATE_PLAYING else PlaybackState.STATE_PAUSED,
+        position,
+        playbackActions,
+    )
 }
 
 fun MediaSession.setPlaybackState(player: Player, playbackActions: Long) {

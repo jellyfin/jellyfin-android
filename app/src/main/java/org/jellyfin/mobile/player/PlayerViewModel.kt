@@ -68,6 +68,7 @@ import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
+@Suppress("TooManyFunctions")
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
     private val apiClient: ApiClient = get()
     private val displayPreferencesApi: DisplayPreferencesApi = apiClient.displayPreferencesApi
@@ -105,7 +106,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private val playerEventChannel: Channel<PlayerEvent> by inject(named(PLAYER_EVENT_CHANNEL))
 
     val mediaSession: MediaSession by lazy {
-        MediaSession(getApplication<Application>().applicationContext, javaClass.simpleName.removePrefix(BuildConfig.APPLICATION_ID)).apply {
+        MediaSession(
+            getApplication<Application>().applicationContext,
+            javaClass.simpleName.removePrefix(BuildConfig.APPLICATION_ID),
+        ).apply {
             @Suppress("DEPRECATION")
             setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS or MediaSession.FLAG_HANDLES_MEDIA_BUTTONS)
             setCallback(mediaSessionCallback)
@@ -451,9 +455,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 }
                 Player.STATE_ENDED -> {
                     reportPlaybackStop()
-
-                    if (!mediaQueueManager.next())
+                    if (!mediaQueueManager.next()) {
                         releasePlayer()
+                    }
                 }
             }
         }

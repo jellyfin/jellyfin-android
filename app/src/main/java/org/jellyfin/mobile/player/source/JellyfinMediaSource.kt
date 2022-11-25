@@ -54,13 +54,15 @@ class JellyfinMediaSource(
                 MediaStreamType.VIDEO -> video += mediaStream
                 MediaStreamType.AUDIO -> {
                     audio += mediaStream
-                    if (mediaStream.index == audioStreamIndex ?: sourceInfo.defaultAudioStreamIndex)
+                    if (mediaStream.index == audioStreamIndex ?: sourceInfo.defaultAudioStreamIndex) {
                         selectedAudioStream = mediaStream
+                    }
                 }
                 MediaStreamType.SUBTITLE -> {
                     subtitle += mediaStream
-                    if (mediaStream.index == subtitleStreamIndex ?: sourceInfo.defaultSubtitleStreamIndex)
+                    if (mediaStream.index == subtitleStreamIndex ?: sourceInfo.defaultSubtitleStreamIndex) {
                         selectedSubtitleStream = mediaStream
+                    }
                 }
                 MediaStreamType.EMBEDDED_IMAGE,
                 MediaStreamType.DATA,
@@ -83,8 +85,9 @@ class JellyfinMediaSource(
 
     fun selectAudioStream(sourceIndex: Int): Boolean {
         // Ensure selected index exists in audio streams
-        if (sourceIndex !in audioStreams.indices)
+        if (sourceIndex !in audioStreams.indices) {
             return false
+        }
 
         selectedAudioStream = audioStreams[sourceIndex]
         return true
@@ -106,6 +109,8 @@ class JellyfinMediaSource(
                 displayTitle = stream.displayTitle.orEmpty(),
                 language = stream.language ?: Constants.LANGUAGE_UNDEFINED,
             )
-        } else null
+        } else {
+            null
+        }
     }
 }

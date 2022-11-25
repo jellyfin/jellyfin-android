@@ -81,7 +81,9 @@ class ActivityEventHandler(
                     event.args,
                     object : JavascriptCallback() {
                         override fun callback(keep: Boolean, err: String?, result: String?) {
-                            webappFunctionChannel.call("""window.NativeShell.castCallback("$action", $keep, $err, $result);""")
+                            webappFunctionChannel.call(
+                                """window.NativeShell.castCallback("$action", $keep, $err, $result);""",
+                            )
                         }
                     },
                 )

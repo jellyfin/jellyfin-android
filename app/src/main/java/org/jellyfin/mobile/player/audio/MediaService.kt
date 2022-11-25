@@ -265,7 +265,10 @@ class MediaService : MediaBrowserServiceCompat() {
     private fun setPlaybackError() {
         val errorState = PlaybackStateCompat.Builder()
             .setState(PlaybackStateCompat.STATE_ERROR, 0, 1f)
-            .setErrorMessage(PlaybackStateCompat.ERROR_CODE_NOT_SUPPORTED, getString(R.string.media_service_item_not_found))
+            .setErrorMessage(
+                PlaybackStateCompat.ERROR_CODE_NOT_SUPPORTED,
+                getString(R.string.media_service_item_not_found),
+            )
             .build()
         mediaSession.setPlaybackState(errorState)
     }
@@ -305,7 +308,9 @@ class MediaService : MediaBrowserServiceCompat() {
                 }
                 if (recents != null) {
                     preparePlaylist(recents, 0, playWhenReady)
-                } else setPlaybackError()
+                } else {
+                    setPlaybackError()
+                }
             }
         }
 
@@ -313,12 +318,16 @@ class MediaService : MediaBrowserServiceCompat() {
             if (mediaId == LibraryPage.RESUME) {
                 // Requested recents
                 onPrepare(playWhenReady)
-            } else serviceScope.launch {
-                val result = libraryBrowser.buildPlayQueue(mediaId)
-                if (result != null) {
-                    val (playbackQueue, initialPlaybackIndex) = result
-                    preparePlaylist(playbackQueue, initialPlaybackIndex, playWhenReady)
-                } else setPlaybackError()
+            } else {
+                serviceScope.launch {
+                    val result = libraryBrowser.buildPlayQueue(mediaId)
+                    if (result != null) {
+                        val (playbackQueue, initialPlaybackIndex) = result
+                        preparePlaylist(playbackQueue, initialPlaybackIndex, playWhenReady)
+                    } else {
+                        setPlaybackError()
+                    }
+                }
             }
         }
 
@@ -326,16 +335,20 @@ class MediaService : MediaBrowserServiceCompat() {
             if (query.isEmpty()) {
                 // No search provided, fallback to recents
                 onPrepare(playWhenReady)
-            } else serviceScope.launch {
-                val results = try {
-                    libraryBrowser.getSearchResults(query, extras)
-                } catch (e: ApiClientException) {
-                    Timber.e(e)
-                    null
+            } else {
+                serviceScope.launch {
+                    val results = try {
+                        libraryBrowser.getSearchResults(query, extras)
+                    } catch (e: ApiClientException) {
+                        Timber.e(e)
+                        null
+                    }
+                    if (results != null) {
+                        preparePlaylist(results, 0, playWhenReady)
+                    } else {
+                        setPlaybackError()
+                    }
                 }
-                if (results != null) {
-                    preparePlaylist(results, 0, playWhenReady)
-                } else setPlaybackError()
             }
         }
 

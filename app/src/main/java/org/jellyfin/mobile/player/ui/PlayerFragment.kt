@@ -212,8 +212,9 @@ class PlayerFragment : Fragment() {
     private fun updateFullscreenState(configuration: Configuration) {
         with(requireActivity()) {
             // Do not handle any orientation changes while being in Picture-in-Picture mode
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInPictureInPictureMode)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInPictureInPictureMode) {
                 return
+            }
 
             if (isLandscape(configuration)) {
                 // Landscape orientation is always fullscreen
