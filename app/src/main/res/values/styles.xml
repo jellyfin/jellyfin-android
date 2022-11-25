@@ -13,7 +13,7 @@
     <!-- Settings theme -->
     <style name="AppTheme.Settings" />
 
-    <!--    Theme Overlays-->
+    <!-- Theme Overlays -->
     <style name="ThemeOverlay.App.BackButton" parent="">
         <item name="colorControlNormal">@android:color/white</item>
     </style>
