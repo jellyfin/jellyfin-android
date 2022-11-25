@@ -327,7 +327,12 @@ class QueueManager(
      */
     fun toggleSubtitles(): Boolean {
         val mediaSource = _mediaQueue.value?.jellyfinMediaSource ?: return false
-        selectSubtitle(if (mediaSource.selectedSubtitleStream == null) mediaSource.subtitleStreams.firstOrNull()?.index ?: -1 else -1)
+        selectSubtitle(
+            when (mediaSource.selectedSubtitleStream) {
+                null -> mediaSource.subtitleStreams.firstOrNull()?.index ?: -1
+                else -> -1
+            },
+        )
         return mediaSource.selectedSubtitleStream != null
     }
 

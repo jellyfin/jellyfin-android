@@ -96,8 +96,19 @@ class PlayerMenus(
 
         val mediaSource = queueItem.jellyfinMediaSource
         val selectedSubtitleStream = mediaSource.selectedSubtitleStream
-        buildMenuItems(subtitlesMenu.menu, SUBTITLES_MENU_GROUP, mediaSource.subtitleStreams, selectedSubtitleStream, true)
-        buildMenuItems(audioStreamsMenu.menu, AUDIO_MENU_GROUP, mediaSource.audioStreams, mediaSource.selectedAudioStream)
+        buildMenuItems(
+            subtitlesMenu.menu,
+            SUBTITLES_MENU_GROUP,
+            mediaSource.subtitleStreams,
+            selectedSubtitleStream,
+            true,
+        )
+        buildMenuItems(
+            audioStreamsMenu.menu,
+            AUDIO_MENU_GROUP,
+            mediaSource.audioStreams,
+            mediaSource.selectedAudioStream,
+        )
         subtitleCount = mediaSource.subtitleStreams.size
         subtitlesOn = selectedSubtitleStream != null
 
@@ -147,7 +158,8 @@ class PlayerMenus(
         limit = maxStreams,
         truncated = fragment.getString(R.string.playback_info_and_x_more, mediaStreams.size - maxStreams),
     ) { stream ->
-        val title = stream.displayTitle?.takeUnless(String::isEmpty) ?: fragment.getString(R.string.playback_info_stream_unknown_title)
+        val title = stream.displayTitle?.takeUnless(String::isEmpty)
+            ?: fragment.getString(R.string.playback_info_stream_unknown_title)
         val suffix = streamSuffix(stream)
         "- $title$suffix"
     }
@@ -228,7 +240,10 @@ class PlayerMenus(
             menu.add(groupId, mediaStream.index, Menu.NONE, mediaStream.displayTitle)
         }
         menu.setGroupCheckable(groupId, true, true)
-        val selected = if (selectedStream != null) mediaStreams.binarySearch(selectedStream, compareBy(MediaStream::index)) else -1
+        val selected = when {
+            selectedStream != null -> mediaStreams.binarySearch(selectedStream, compareBy(MediaStream::index))
+            else -> -1
+        }
         if (selected >= 0) {
             menuItems[selected].isChecked = true
         } else {

@@ -13,7 +13,7 @@ import kotlin.coroutines.suspendCoroutine
 
 suspend fun WebView.initLocale(userId: String) {
     // Try to set locale via user settings
-    val userSettings = suspendCoroutine<String?> { continuation ->
+    val userSettings = suspendCoroutine { continuation ->
         evaluateJavascript("window.localStorage.getItem('$userId-language')") { result ->
             try {
                 continuation.resume(JSONObject("{locale:$result}").getString("locale"))
@@ -22,16 +22,15 @@ suspend fun WebView.initLocale(userId: String) {
             }
         }
     }
-    if (context.setLocale(userSettings))
-        return
+
+    if (context.setLocale(userSettings)) return
 
     // Fallback to device locale
     Timber.i("Couldn't acquire locale from config, keeping current")
 }
 
 private fun Context.setLocale(localeString: String?): Boolean {
-    if (localeString.isNullOrEmpty())
-        return false
+    if (localeString.isNullOrEmpty()) return false
 
     val localeSplit = localeString.split('-')
     val locale = when (localeSplit.size) {

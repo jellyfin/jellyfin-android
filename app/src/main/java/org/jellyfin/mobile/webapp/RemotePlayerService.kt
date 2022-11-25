@@ -218,7 +218,9 @@ class RemotePlayerService : Service(), CoroutineScope {
                 imageLoader.execute(request).drawable?.toBitmap()?.also { bitmap ->
                     largeItemIcon = bitmap // Cache bitmap for later use
                 }
-            } else null
+            } else {
+                null
+            }
 
             // Set/update media metadata if item changed
             if (itemId != currentItemId) {
@@ -281,20 +283,58 @@ class RemotePlayerService : Service(), CoroutineScope {
                 if (bitmap != null) setLargeIcon(bitmap)
 
                 // Setup actions
-                addAction(generateAction(R.drawable.ic_skip_previous_black_32dp, R.string.notification_action_previous, Constants.ACTION_PREVIOUS))
+                addAction(
+                    generateAction(
+                        R.drawable.ic_skip_previous_black_32dp,
+                        R.string.notification_action_previous,
+                        Constants.ACTION_PREVIOUS,
+                    ),
+                )
                 if (!supportsNativeSeek) {
-                    addAction(generateAction(R.drawable.ic_rewind_black_32dp, R.string.notification_action_rewind, Constants.ACTION_REWIND))
+                    addAction(
+                        generateAction(
+                            R.drawable.ic_rewind_black_32dp,
+                            R.string.notification_action_rewind,
+                            Constants.ACTION_REWIND,
+                        ),
+                    )
                 }
                 val playbackAction = when {
-                    isPaused -> generateAction(R.drawable.ic_play_black_42dp, R.string.notification_action_play, Constants.ACTION_PLAY)
-                    else -> generateAction(R.drawable.ic_pause_black_42dp, R.string.notification_action_pause, Constants.ACTION_PAUSE)
+                    isPaused -> generateAction(
+                        R.drawable.ic_play_black_42dp,
+                        R.string.notification_action_play,
+                        Constants.ACTION_PLAY,
+                    )
+                    else -> generateAction(
+                        R.drawable.ic_pause_black_42dp,
+                        R.string.notification_action_pause,
+                        Constants.ACTION_PAUSE,
+                    )
                 }
                 addAction(playbackAction)
                 if (!supportsNativeSeek) {
-                    addAction(generateAction(R.drawable.ic_fast_forward_black_32dp, R.string.notification_action_fast_forward, Constants.ACTION_FAST_FORWARD))
+                    addAction(
+                        generateAction(
+                            R.drawable.ic_fast_forward_black_32dp,
+                            R.string.notification_action_fast_forward,
+                            Constants.ACTION_FAST_FORWARD,
+                        ),
+                    )
                 }
-                addAction(generateAction(R.drawable.ic_skip_next_black_32dp, R.string.notification_action_next, Constants.ACTION_NEXT))
-                addAction(generateAction(R.drawable.ic_stop_black_32dp, R.string.notification_action_stop, Constants.ACTION_STOP))
+                addAction(
+                    generateAction(
+                        R.drawable.ic_skip_next_black_32dp,
+                        R.string.notification_action_next,
+                        Constants.ACTION_NEXT,
+                    ),
+                )
+                addAction(
+                    generateAction(
+                        R.drawable.ic_stop_black_32dp,
+                        R.string.notification_action_stop,
+                        Constants.ACTION_STOP,
+                    ),
+                )
             }.build()
 
             // Post notification
@@ -306,9 +346,10 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     private fun setPlaybackState(isPlaying: Boolean, position: Long, canSeek: Boolean) {
-        val playbackActions = if (canSeek) {
-            SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS or PlaybackState.ACTION_SEEK_TO
-        } else SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS
+        val playbackActions = when {
+            canSeek -> SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS or PlaybackState.ACTION_SEEK_TO
+            else -> SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS
+        }
         mediaSession!!.setPlaybackState(isPlaying, position, playbackActions)
     }
 
@@ -324,14 +365,24 @@ class RemotePlayerService : Service(), CoroutineScope {
             action = Constants.ACTION_SHOW_PLAYER
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
-        return PendingIntent.getActivity(this, Constants.REMOTE_PLAYER_CONTENT_INTENT_REQUEST_CODE, intent, Constants.PENDING_INTENT_FLAGS)
+        return PendingIntent.getActivity(
+            this,
+            Constants.REMOTE_PLAYER_CONTENT_INTENT_REQUEST_CODE,
+            intent,
+            Constants.PENDING_INTENT_FLAGS,
+        )
     }
 
     private fun generateAction(icon: Int, @StringRes title: Int, intentAction: String): Notification.Action {
         val intent = Intent(applicationContext, RemotePlayerService::class.java).apply {
             action = intentAction
         }
-        val pendingIntent = PendingIntent.getService(applicationContext, MEDIA_PLAYER_NOTIFICATION_ID, intent, Constants.PENDING_INTENT_FLAGS)
+        val pendingIntent = PendingIntent.getService(
+            applicationContext,
+            MEDIA_PLAYER_NOTIFICATION_ID,
+            intent,
+            Constants.PENDING_INTENT_FLAGS,
+        )
         @Suppress("DEPRECATION")
         return Notification.Action.Builder(icon, getString(title), pendingIntent).build()
     }

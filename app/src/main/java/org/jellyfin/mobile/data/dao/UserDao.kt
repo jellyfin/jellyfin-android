@@ -23,11 +23,13 @@ interface UserDao {
 
     @Transaction
     fun upsert(serverId: Long, userId: String, accessToken: String?): Long {
-        val user = getByUserId(serverId, userId)
-        return if (user != null) {
-            update(user.id, accessToken)
-            user.id
-        } else insert(serverId, userId, accessToken)
+        return when (val user = getByUserId(serverId, userId)) {
+            null -> insert(serverId, userId, accessToken)
+            else -> {
+                update(user.id, accessToken)
+                user.id
+            }
+        }
     }
 
     @Transaction

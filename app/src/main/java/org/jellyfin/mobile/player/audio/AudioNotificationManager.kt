@@ -109,18 +109,21 @@ class AudioNotificationManager(
 
         override fun getCurrentLargeIcon(player: Player, callback: PlayerNotificationManager.BitmapCallback): Bitmap? {
             val iconUri = controller.metadata.description.iconUri
-            return if (currentIconUri != iconUri || currentBitmap == null) {
-                // Cache the bitmap for the current song so that successive calls to
-                // `getCurrentLargeIcon` don't cause the bitmap to be recreated.
-                currentIconUri = iconUri
-                serviceScope.launch {
-                    currentBitmap = iconUri?.let {
-                        resolveUriAsBitmap(it)
+            return when {
+                currentIconUri != iconUri || currentBitmap == null -> {
+                    // Cache the bitmap for the current song so that successive calls to
+                    // `getCurrentLargeIcon` don't cause the bitmap to be recreated.
+                    currentIconUri = iconUri
+                    serviceScope.launch {
+                        currentBitmap = iconUri?.let {
+                            resolveUriAsBitmap(it)
+                        }
+                        currentBitmap?.let { callback.onBitmap(it) }
                     }
-                    currentBitmap?.let { callback.onBitmap(it) }
+                    null
                 }
-                null
-            } else currentBitmap
+                else -> currentBitmap
+            }
         }
 
         private suspend fun resolveUriAsBitmap(uri: Uri): Bitmap? = withContext(Dispatchers.IO) {
