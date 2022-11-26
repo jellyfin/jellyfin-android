@@ -12,7 +12,7 @@ import androidx.core.view.isVisible
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
-import org.jellyfin.mobile.player.DecoderType
+import org.jellyfin.mobile.player.interaction.DecoderType
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.queue.QueueManager
 import org.jellyfin.sdk.model.api.MediaStream

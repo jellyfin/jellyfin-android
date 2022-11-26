@@ -19,6 +19,7 @@ import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.analytics.DefaultAnalyticsCollector
 import com.google.android.exoplayer2.mediacodec.MediaCodecDecoderException
+import com.google.android.exoplayer2.mediacodec.MediaCodecInfo
 import com.google.android.exoplayer2.mediacodec.MediaCodecSelector
 import com.google.android.exoplayer2.util.Clock
 import com.google.android.exoplayer2.util.EventLogger
@@ -31,6 +32,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.app.PLAYER_EVENT_CHANNEL
+import org.jellyfin.mobile.player.interaction.DecoderType
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.player.interaction.PlayerLifecycleObserver
 import org.jellyfin.mobile.player.interaction.PlayerMediaSessionCallback
@@ -70,14 +72,6 @@ import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
-/**
- * Represents the type of decoder
- */
-enum class DecoderType {
-    HARDWARE,
-    SOFTWARE,
-}
-
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
     private val apiClient: ApiClient = get()
     private val displayPreferencesApi: DisplayPreferencesApi = apiClient.displayPreferencesApi
@@ -105,7 +99,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     val error: LiveData<String> = _error
 
     private val eventLogger = EventLogger()
-    private var analyticsCollector = getAnalyticsCollector()
+    private var analyticsCollector = buildAnalyticsCollector()
     private val initialTracksSelected = AtomicBoolean(false)
     private var fallbackPreferExtensionRenderers = false
 
@@ -182,7 +176,6 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 else -> DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON
             }
             setExtensionRendererMode(rendererMode)
-            // set the media selector
             setMediaCodecSelector { mimeType, requiresSecureDecoder, requiresTunnelingDecoder ->
                 val decoderInfoList = MediaCodecSelector.DEFAULT.getDecoderInfos(mimeType, requiresSecureDecoder, requiresTunnelingDecoder)
                 // allow decoder selection only for video
@@ -192,10 +185,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 val filteredDecoderList = when (decoderType.value) {
                     DecoderType.HARDWARE -> {
                         // only get the hardware decoder
-                        decoderInfoList.filter { it.hardwareAccelerated }
+                        decoderInfoList.filter(MediaCodecInfo::hardwareAccelerated)
                     }
                     DecoderType.SOFTWARE -> {
-                        decoderInfoList.filter { !it.hardwareAccelerated }
+                        decoderInfoList.filterNot(MediaCodecInfo::hardwareAccelerated)
                     }
                     else -> decoderInfoList
                 }
@@ -231,7 +224,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         _player.value = null
     }
 
-    private fun getAnalyticsCollector() = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
+    private fun buildAnalyticsCollector() = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
         addListener(eventLogger)
     }
 
@@ -274,16 +267,15 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     fun updateDecoderType(type: DecoderType) {
         _decoderType.postValue(type)
         analyticsCollector.release()
-        analyticsCollector = getAnalyticsCollector()
-        // get the player position so that we can resume it
         val playedTime = playerOrNull?.currentPosition ?: 0L
-        // soft stop the player
+        // Stop and release the player without ending playback
         playerOrNull?.run {
             removeListener(this@PlayerViewModel)
             release()
         }
+        analyticsCollector = buildAnalyticsCollector()
         setupPlayer()
-        mediaQueueManager.mediaQueue.value?.jellyfinMediaSource?.updateStartTimeTicks(playedTime)
+        mediaQueueManager.mediaQueue.value?.jellyfinMediaSource?.updateStartTime(playedTime)
         mediaQueueManager.tryRestartPlayback()
     }
 

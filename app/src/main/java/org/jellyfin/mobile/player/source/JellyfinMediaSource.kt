@@ -110,7 +110,7 @@ class JellyfinMediaSource(
         } else null
     }
 
-    fun updateStartTimeTicks(startTime: Long) {
+    fun updateStartTime(startTime: Long) {
         startTimeTicks = startTime * Constants.TICKS_PER_MILLISECOND
     }
 }
