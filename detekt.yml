@@ -2,7 +2,7 @@ build:
   maxIssues: 0
 
 complexity:
-  ComplexMethod:
+  CyclomaticComplexMethod:
     ignoreSimpleWhenEntries: true
   LongParameterList:
     constructorThreshold: 10
@@ -30,10 +30,12 @@ formatting:
   PackageName:
     # Already handled by detekt itself
     active: false
-  TrailingComma:
+  TrailingCommaOnCallSite:
     active: true
-    allowTrailingComma: true
-    allowTrailingCommaOnCallSite: true
+    useTrailingCommaOnCallSite: true
+  TrailingCommaOnDeclarationSite:
+    active: true
+    useTrailingCommaOnDeclarationSite: true
 
 naming:
   FunctionNaming:

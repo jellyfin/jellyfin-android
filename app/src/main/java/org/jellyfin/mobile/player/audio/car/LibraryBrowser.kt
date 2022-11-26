@@ -71,15 +71,22 @@ class LibraryBrowser(
 
         val rootExtras = Bundle().apply {
             putBoolean(MediaService.CONTENT_STYLE_SUPPORTED, true)
-            putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_BROWSABLE, MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_LIST_ITEM)
-            putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_PLAYABLE, MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_LIST_ITEM)
+            putInt(
+                MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_BROWSABLE,
+                MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_LIST_ITEM,
+            )
+            putInt(
+                MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_PLAYABLE,
+                MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_LIST_ITEM,
+            )
         }
         return MediaBrowserServiceCompat.BrowserRoot(browserRoot, rootExtras)
     }
 
     suspend fun loadLibrary(parentId: String): List<MediaBrowserCompat.MediaItem>? {
-        if (parentId == LibraryPage.RESUME)
+        if (parentId == LibraryPage.RESUME) {
             return getDefaultRecents()?.browsable()
+        }
 
         val split = parentId.split('|')
 
@@ -262,8 +269,14 @@ class LibraryBrowser(
                 if (item.first == LibraryPage.ALBUMS) {
                     setExtras(
                         Bundle().apply {
-                            putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_BROWSABLE, MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM)
-                            putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_PLAYABLE, MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM)
+                            putInt(
+                                MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_BROWSABLE,
+                                MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM,
+                            )
+                            putInt(
+                                MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_PLAYABLE,
+                                MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM,
+                            )
                         },
                     )
                 }

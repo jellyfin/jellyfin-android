@@ -24,7 +24,9 @@ class DeviceProfileBuilder(
     private val transcodingProfiles: List<TranscodingProfile>
 
     init {
-        require(SUPPORTED_CONTAINER_FORMATS.size == AVAILABLE_VIDEO_CODECS.size && SUPPORTED_CONTAINER_FORMATS.size == AVAILABLE_AUDIO_CODECS.size)
+        require(
+            SUPPORTED_CONTAINER_FORMATS.size == AVAILABLE_VIDEO_CODECS.size && SUPPORTED_CONTAINER_FORMATS.size == AVAILABLE_AUDIO_CODECS.size,
+        )
 
         // Load Android-supported codecs
         val videoCodecs: MutableMap<String, DeviceCodec.Video> = HashMap()
@@ -159,7 +161,9 @@ class DeviceProfileBuilder(
         }
 
         val subtitleProfiles = when {
-            appPreferences.exoPlayerDirectPlayAss -> getSubtitleProfiles(EXO_EMBEDDED_SUBTITLES + SUBTITLES_SSA, EXO_EXTERNAL_SUBTITLES + SUBTITLES_SSA)
+            appPreferences.exoPlayerDirectPlayAss -> {
+                getSubtitleProfiles(EXO_EMBEDDED_SUBTITLES + SUBTITLES_SSA, EXO_EXTERNAL_SUBTITLES + SUBTITLES_SSA)
+            }
             else -> getSubtitleProfiles(EXO_EMBEDDED_SUBTITLES, EXO_EXTERNAL_SUBTITLES)
         }
 
@@ -267,7 +271,16 @@ class DeviceProfileBuilder(
         /**
          * List of PCM codecs supported by ExoPlayer by default
          */
-        private val PCM_CODECS = arrayOf("pcm_s8", "pcm_s16be", "pcm_s16le", "pcm_s24le", "pcm_s32le", "pcm_f32le", "pcm_alaw", "pcm_mulaw")
+        private val PCM_CODECS = arrayOf(
+            "pcm_s8",
+            "pcm_s16be",
+            "pcm_s16le",
+            "pcm_s24le",
+            "pcm_s32le",
+            "pcm_f32le",
+            "pcm_alaw",
+            "pcm_mulaw",
+        )
 
         /**
          * IMPORTANT: Must have same length as [SUPPORTED_CONTAINER_FORMATS],

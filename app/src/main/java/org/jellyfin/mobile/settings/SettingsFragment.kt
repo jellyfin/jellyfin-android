@@ -31,6 +31,7 @@ class SettingsFragment : Fragment() {
 
     private val appPreferences: AppPreferences by inject()
     private val settingsAdapter: PreferencesAdapter by lazy { PreferencesAdapter(buildSettingsScreen()) }
+    private lateinit var startLandscapeVideoInLandscapePreference: CheckBoxPreference
     private lateinit var swipeGesturesPreference: CheckBoxPreference
     private lateinit var rememberBrightnessPreference: Preference
     private lateinit var backgroundAudioPreference: Preference
@@ -75,19 +76,32 @@ class SettingsFragment : Fragment() {
         }
         val videoPlayerOptions = listOf(
             SelectionItem(VideoPlayerType.WEB_PLAYER, R.string.video_player_web, R.string.video_player_web_description),
-            SelectionItem(VideoPlayerType.EXO_PLAYER, R.string.video_player_integrated, R.string.video_player_native_description),
-            SelectionItem(VideoPlayerType.EXTERNAL_PLAYER, R.string.video_player_external, R.string.video_player_external_description),
+            SelectionItem(
+                VideoPlayerType.EXO_PLAYER,
+                R.string.video_player_integrated,
+                R.string.video_player_native_description,
+            ),
+            SelectionItem(
+                VideoPlayerType.EXTERNAL_PLAYER,
+                R.string.video_player_external,
+                R.string.video_player_external_description,
+            ),
         )
         singleChoice(Constants.PREF_VIDEO_PLAYER_TYPE, videoPlayerOptions) {
             titleRes = R.string.pref_video_player_type_title
             initialSelection = VideoPlayerType.WEB_PLAYER
             defaultOnSelectionChange { selection ->
+                startLandscapeVideoInLandscapePreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 swipeGesturesPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 rememberBrightnessPreference.enabled = selection == VideoPlayerType.EXO_PLAYER && swipeGesturesPreference.checked
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 directPlayAssPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
+        }
+        startLandscapeVideoInLandscapePreference = checkBox(Constants.PREF_EXOPLAYER_START_LANDSCAPE_VIDEO_IN_LANDSCAPE) {
+            titleRes = R.string.pref_exoplayer_start_landscape_video_in_landscape
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
         }
         swipeGesturesPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_SWIPE_GESTURES) {
             titleRes = R.string.pref_exoplayer_allow_brightness_volume_gesture
@@ -118,11 +132,31 @@ class SettingsFragment : Fragment() {
         // Generate available external player options
         val packageManager = requireContext().packageManager
         val externalPlayerOptions = listOf(
-            SelectionItem(ExternalPlayerPackage.SYSTEM_DEFAULT, R.string.external_player_system_default, R.string.external_player_system_default_description),
-            SelectionItem(ExternalPlayerPackage.MPV_PLAYER, R.string.external_player_mpv, R.string.external_player_mpv_description),
-            SelectionItem(ExternalPlayerPackage.MX_PLAYER_FREE, R.string.external_player_mx_player_free, R.string.external_player_mx_player_free_description),
-            SelectionItem(ExternalPlayerPackage.MX_PLAYER_PRO, R.string.external_player_mx_player_pro, R.string.external_player_mx_player_pro_description),
-            SelectionItem(ExternalPlayerPackage.VLC_PLAYER, R.string.external_player_vlc_player, R.string.external_player_vlc_player_description),
+            SelectionItem(
+                ExternalPlayerPackage.SYSTEM_DEFAULT,
+                R.string.external_player_system_default,
+                R.string.external_player_system_default_description,
+            ),
+            SelectionItem(
+                ExternalPlayerPackage.MPV_PLAYER,
+                R.string.external_player_mpv,
+                R.string.external_player_mpv_description,
+            ),
+            SelectionItem(
+                ExternalPlayerPackage.MX_PLAYER_FREE,
+                R.string.external_player_mx_player_free,
+                R.string.external_player_mx_player_free_description,
+            ),
+            SelectionItem(
+                ExternalPlayerPackage.MX_PLAYER_PRO,
+                R.string.external_player_mx_player_pro,
+                R.string.external_player_mx_player_pro_description,
+            ),
+            SelectionItem(
+                ExternalPlayerPackage.VLC_PLAYER,
+                R.string.external_player_vlc_player,
+                R.string.external_player_vlc_player_description,
+            ),
         ).filter { item ->
             item.key == ExternalPlayerPackage.SYSTEM_DEFAULT || packageManager.isPackageInstalled(item.key)
         }

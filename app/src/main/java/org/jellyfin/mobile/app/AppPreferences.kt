@@ -30,15 +30,6 @@ class AppPreferences(context: Context) {
             }
         }
 
-    @Deprecated(message = "Deprecated in favor of SQLite database - only kept for migration reasons")
-    var instanceUrl: String?
-        get() = sharedPreferences.getString(Constants.PREF_INSTANCE_URL, null)
-        set(value) {
-            sharedPreferences.edit {
-                if (value != null) putString(Constants.PREF_INSTANCE_URL, value) else remove(Constants.PREF_INSTANCE_URL)
-            }
-        }
-
     var ignoreBatteryOptimizations: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_IGNORE_BATTERY_OPTIMIZATIONS, false)
         set(value) {
@@ -58,8 +49,10 @@ class AppPreferences(context: Context) {
     var downloadMethod: Int?
         get() = sharedPreferences.getInt(Constants.PREF_DOWNLOAD_METHOD, -1).takeIf { it >= 0 }
         set(value) {
-            if (value != null) sharedPreferences.edit {
-                putInt(Constants.PREF_DOWNLOAD_METHOD, value)
+            if (value != null) {
+                sharedPreferences.edit {
+                    putInt(Constants.PREF_DOWNLOAD_METHOD, value)
+                }
             }
         }
 
@@ -91,6 +84,9 @@ class AppPreferences(context: Context) {
     @VideoPlayerType
     val videoPlayerType: String
         get() = sharedPreferences.getString(Constants.PREF_VIDEO_PLAYER_TYPE, VideoPlayerType.WEB_PLAYER)!!
+
+    val exoPlayerStartLandscapeVideoInLandscape: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_START_LANDSCAPE_VIDEO_IN_LANDSCAPE, false)
 
     val exoPlayerAllowSwipeGestures: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_ALLOW_SWIPE_GESTURES, true)

@@ -16,8 +16,8 @@ import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
@@ -28,6 +28,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerView
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.PlayerException
@@ -47,8 +48,10 @@ import org.jellyfin.mobile.utils.extensions.isFullscreen
 import org.jellyfin.mobile.utils.extensions.isLandscape
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaStream
+import org.koin.android.ext.android.inject
 
 class PlayerFragment : Fragment() {
+    private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
     private var _playerBinding: FragmentPlayerBinding? = null
     private val playerBinding: FragmentPlayerBinding get() = _playerBinding!!
@@ -58,7 +61,7 @@ class PlayerFragment : Fragment() {
     private var _playerControlsBinding: ExoPlayerControlViewBinding? = null
     private val playerControlsBinding: ExoPlayerControlViewBinding get() = _playerControlsBinding!!
     private val playerControlsView: View get() = playerControlsBinding.root
-    private val titleTextView: TextView get() = playerControlsBinding.trackTitle
+    private val toolbar: Toolbar get() = playerControlsBinding.toolbar
     private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
     private var playerMenus: PlayerMenus? = null
 
@@ -107,18 +110,18 @@ class PlayerFragment : Fragment() {
             val jellyfinMediaSource = queueItem.jellyfinMediaSource
 
             with(requireActivity()) {
-                if (jellyfinMediaSource.selectedVideoStream?.isLandscape != false) {
-                    // Switch to landscape for landscape videos
-                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                } else {
+                if (jellyfinMediaSource.selectedVideoStream?.isLandscape == false) {
                     // For portrait videos, immediately enable fullscreen
                     enableFullscreen()
                     updateFullscreenSwitcher(isFullscreen())
+                } else if (appPreferences.exoPlayerStartLandscapeVideoInLandscape) {
+                    // Auto-switch to landscape for landscape videos if enabled
+                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                 }
             }
 
             // Update title and player menus
-            titleTextView.text = jellyfinMediaSource.name
+            toolbar.title = jellyfinMediaSource.name
             playerMenus?.onQueueItemChanged(queueItem)
         }
 
@@ -165,6 +168,9 @@ class PlayerFragment : Fragment() {
             )
             insets
         }
+
+        // Handle toolbar back button
+        toolbar.setNavigationOnClickListener { parentFragmentManager.popBackStack() }
 
         // Create playback menus
         playerMenus = PlayerMenus(this, playerBinding, playerControlsBinding)
@@ -217,8 +223,9 @@ class PlayerFragment : Fragment() {
     private fun updateFullscreenState(configuration: Configuration) {
         with(requireActivity()) {
             // Do not handle any orientation changes while being in Picture-in-Picture mode
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInPictureInPictureMode)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInPictureInPictureMode) {
                 return
+            }
 
             if (isLandscape(configuration)) {
                 // Landscape orientation is always fullscreen

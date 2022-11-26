@@ -39,7 +39,10 @@ import kotlin.coroutines.suspendCoroutine
 fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         val powerManager: PowerManager = requireContext().getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
-        if (!appPreferences.ignoreBatteryOptimizations && !powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) {
+        if (
+            !appPreferences.ignoreBatteryOptimizations &&
+            !powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)
+        ) {
             Snackbar.make(rootView, R.string.battery_optimizations_message, Snackbar.LENGTH_INDEFINITE).apply {
                 setAction(android.R.string.ok) {
                     try {
@@ -132,7 +135,11 @@ fun PackageManager.isPackageInstalled(@ExternalPlayerPackage packageName: String
 
 fun Context.createMediaNotificationChannel(notificationManager: NotificationManager) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val notificationChannel = NotificationChannel(Constants.MEDIA_NOTIFICATION_CHANNEL_ID, getString(R.string.app_name), NotificationManager.IMPORTANCE_LOW).apply {
+        val notificationChannel = NotificationChannel(
+            Constants.MEDIA_NOTIFICATION_CHANNEL_ID,
+            getString(R.string.app_name),
+            NotificationManager.IMPORTANCE_LOW,
+        ).apply {
             description = "Media notifications"
         }
         notificationManager.createNotificationChannel(notificationChannel)

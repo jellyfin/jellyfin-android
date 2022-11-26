@@ -42,6 +42,7 @@ import org.koin.dsl.module
 import java.util.concurrent.Executors
 
 const val PLAYER_EVENT_CHANNEL = "PlayerEventChannel"
+private const val HTTP_CACHE_SIZE: Long = 16 * 1024 * 1024
 private const val TS_SEARCH_PACKETS = 1800
 
 val applicationModule = module {
@@ -90,11 +91,15 @@ val applicationModule = module {
                 .enableHttp2(true)
                 .enableQuic(true)
                 .enableBrotli(true)
-                .enableHttpCache(CronetEngine.Builder.HTTP_CACHE_IN_MEMORY, 16 * 1024 * 1024)
+                .enableHttpCache(CronetEngine.Builder.HTTP_CACHE_IN_MEMORY, HTTP_CACHE_SIZE)
                 .build()
-            CronetDataSource.Factory(cronetEngine, Executors.newCachedThreadPool()).setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
+            CronetDataSource.Factory(cronetEngine, Executors.newCachedThreadPool()).apply {
+                setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
+            }
         } else {
-            DefaultHttpDataSource.Factory().setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
+            DefaultHttpDataSource.Factory().apply {
+                setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
+            }
         }
 
         DefaultDataSource.Factory(context, baseDataSourceFactory)

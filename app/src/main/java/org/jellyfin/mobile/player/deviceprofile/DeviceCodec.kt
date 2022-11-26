@@ -93,7 +93,8 @@ sealed class DeviceCodec(
                         profiles = profiles,
                         maxBitrate = codecCapabilities.audioCapabilities.bitrateRange.upper,
                         maxChannels = codecCapabilities.audioCapabilities.maxInputChannelCount,
-                        maxSampleRate = codecCapabilities.audioCapabilities.supportedSampleRateRanges.maxOfOrNull(Range<Int>::getUpper),
+                        maxSampleRate = codecCapabilities.audioCapabilities.supportedSampleRateRanges
+                            .maxOfOrNull(Range<Int>::getUpper),
                     )
                 }
                 else -> return null

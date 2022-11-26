@@ -11,8 +11,7 @@ import android.view.OrientationEventListener
  */
 class SmartOrientationListener(private val activity: Activity) : OrientationEventListener(activity) {
     override fun onOrientationChanged(orientation: Int) {
-        if (!activity.isAutoRotateOn())
-            return
+        if (!activity.isAutoRotateOn()) return
 
         val isAtTarget = when (activity.requestedOrientation) {
             ActivityInfo.SCREEN_ORIENTATION_PORTRAIT -> orientation in Constants.ORIENTATION_PORTRAIT_RANGE

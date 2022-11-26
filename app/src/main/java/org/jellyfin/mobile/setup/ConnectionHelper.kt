@@ -48,7 +48,8 @@ class ConnectionHelper(
         val server = greatServer ?: goodServers.firstOrNull()
         if (server != null) {
             val systemInfo = requireNotNull(server.systemInfo)
-            Timber.i("Found valid server at ${server.address} with rating ${server.score} and version ${systemInfo.getOrNull()?.version}")
+            val serverVersion = systemInfo.getOrNull()?.version
+            Timber.i("Found valid server at ${server.address} with rating ${server.score} and version $serverVersion")
             return CheckUrlState.Success(server.address)
         }
 
@@ -56,25 +57,32 @@ class ConnectionHelper(
         val loggedServers = badServers.joinToString { "${it.address}/${it.systemInfo}" }
         Timber.i("No valid servers found, invalid candidates were: $loggedServers")
 
-        val error = if (badServers.isNotEmpty()) {
-            val count = badServers.size
-            val (unreachableServers, incompatibleServers) = badServers.partition { result -> result.systemInfo.getOrNull() == null }
+        val error = when {
+            badServers.isNotEmpty() -> {
+                val count = badServers.size
+                val (unreachableServers, incompatibleServers) = badServers.partition { result -> result.systemInfo.getOrNull() == null }
 
-            StringBuilder(context.resources.getQuantityString(R.plurals.connection_error_prefix, count, count)).apply {
-                if (unreachableServers.isNotEmpty()) {
-                    append("\n\n")
-                    append(context.getString(R.string.connection_error_unable_to_reach_sever))
-                    append(":\n")
-                    append(unreachableServers.joinToString(separator = "\n") { result -> "\u00b7 ${result.address}" })
-                }
-                if (incompatibleServers.isNotEmpty()) {
-                    append("\n\n")
-                    append(context.getString(R.string.connection_error_unsupported_version_or_product))
-                    append(":\n")
-                    append(incompatibleServers.joinToString(separator = "\n") { result -> "\u00b7 ${result.address}" })
-                }
-            }.toString()
-        } else null
+                StringBuilder(context.resources.getQuantityString(R.plurals.connection_error_prefix, count, count)).apply {
+                    if (unreachableServers.isNotEmpty()) {
+                        append("\n\n")
+                        append(context.getString(R.string.connection_error_unable_to_reach_sever))
+                        append(":\n")
+                        append(
+                            unreachableServers.joinToString(separator = "\n") { result -> "\u00b7 ${result.address}" },
+                        )
+                    }
+                    if (incompatibleServers.isNotEmpty()) {
+                        append("\n\n")
+                        append(context.getString(R.string.connection_error_unsupported_version_or_product))
+                        append(":\n")
+                        append(
+                            incompatibleServers.joinToString(separator = "\n") { result -> "\u00b7 ${result.address}" },
+                        )
+                    }
+                }.toString()
+            }
+            else -> null
+        }
 
         return CheckUrlState.Error(error)
     }

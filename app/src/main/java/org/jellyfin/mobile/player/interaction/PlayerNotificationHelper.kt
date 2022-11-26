@@ -92,19 +92,51 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                 setStyle(style)
                 setVisibility(Notification.VISIBILITY_PUBLIC)
                 if (queueItem.hasPrevious()) {
-                    addAction(generateAction(R.drawable.ic_skip_previous_black_32dp, R.string.notification_action_previous, Constants.ACTION_PREVIOUS))
+                    addAction(
+                        generateAction(
+                            R.drawable.ic_skip_previous_black_32dp,
+                            R.string.notification_action_previous,
+                            Constants.ACTION_PREVIOUS,
+                        ),
+                    )
                 } else {
-                    addAction(generateAction(R.drawable.ic_rewind_black_32dp, R.string.notification_action_rewind, Constants.ACTION_REWIND))
+                    addAction(
+                        generateAction(
+                            R.drawable.ic_rewind_black_32dp,
+                            R.string.notification_action_rewind,
+                            Constants.ACTION_REWIND,
+                        ),
+                    )
                 }
                 val playbackAction = when {
-                    !player.playWhenReady -> generateAction(R.drawable.ic_play_black_42dp, R.string.notification_action_play, Constants.ACTION_PLAY)
-                    else -> generateAction(R.drawable.ic_pause_black_42dp, R.string.notification_action_pause, Constants.ACTION_PAUSE)
+                    !player.playWhenReady -> generateAction(
+                        R.drawable.ic_play_black_42dp,
+                        R.string.notification_action_play,
+                        Constants.ACTION_PLAY,
+                    )
+                    else -> generateAction(
+                        R.drawable.ic_pause_black_42dp,
+                        R.string.notification_action_pause,
+                        Constants.ACTION_PAUSE,
+                    )
                 }
                 addAction(playbackAction)
                 if (queueItem.hasNext()) {
-                    addAction(generateAction(R.drawable.ic_skip_next_black_32dp, R.string.notification_action_next, Constants.ACTION_NEXT))
+                    addAction(
+                        generateAction(
+                            R.drawable.ic_skip_next_black_32dp,
+                            R.string.notification_action_next,
+                            Constants.ACTION_NEXT,
+                        ),
+                    )
                 } else {
-                    addAction(generateAction(R.drawable.ic_fast_forward_black_32dp, R.string.notification_action_fast_forward, Constants.ACTION_FAST_FORWARD))
+                    addAction(
+                        generateAction(
+                            R.drawable.ic_fast_forward_black_32dp,
+                            R.string.notification_action_fast_forward,
+                            Constants.ACTION_FAST_FORWARD,
+                        ),
+                    )
                 }
                 setContentIntent(buildContentIntent())
                 setDeleteIntent(buildDeleteIntent())
@@ -131,8 +163,9 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
 
     fun dismissNotification() {
         notificationManager?.cancel(VIDEO_PLAYER_NOTIFICATION_ID)
-        if (receiverRegistered.compareAndSet(true, false))
+        if (receiverRegistered.compareAndSet(true, false)) {
             context.unregisterReceiver(notificationActionReceiver)
+        }
     }
 
     private fun generateAction(icon: Int, @StringRes title: Int, intentAction: String): Notification.Action {

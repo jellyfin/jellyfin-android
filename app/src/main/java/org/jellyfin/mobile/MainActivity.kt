@@ -145,7 +145,9 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()
-        } else super.onBackPressed()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onDestroy() {

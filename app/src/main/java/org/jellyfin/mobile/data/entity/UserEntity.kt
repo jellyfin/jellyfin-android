@@ -19,13 +19,20 @@ import org.jellyfin.mobile.data.entity.UserEntity.Key.USER_ID
     ],
 )
 data class UserEntity(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = ID) val id: Long,
-    @ColumnInfo(name = SERVER_ID) val serverId: Long,
-    @ColumnInfo(name = USER_ID) val userId: String,
-    @ColumnInfo(name = ACCESS_TOKEN) val accessToken: String?,
-    @ColumnInfo(name = LAST_LOGIN_TIMESTAMP) val lastLoginTimestamp: Long,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = ID)
+    val id: Long,
+    @ColumnInfo(name = SERVER_ID)
+    val serverId: Long,
+    @ColumnInfo(name = USER_ID)
+    val userId: String,
+    @ColumnInfo(name = ACCESS_TOKEN)
+    val accessToken: String?,
+    @ColumnInfo(name = LAST_LOGIN_TIMESTAMP)
+    val lastLoginTimestamp: Long,
 ) {
-    constructor(serverId: Long, userId: String, accessToken: String?) : this(0, serverId, userId, accessToken, System.currentTimeMillis())
+    constructor(serverId: Long, userId: String, accessToken: String?) :
+        this(0, serverId, userId, accessToken, System.currentTimeMillis())
 
     companion object Key {
         const val TABLE_NAME = "User"
