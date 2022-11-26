@@ -28,6 +28,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerView
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.PlayerException
@@ -46,8 +47,10 @@ import org.jellyfin.mobile.utils.extensions.isFullscreen
 import org.jellyfin.mobile.utils.extensions.isLandscape
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaStream
+import org.koin.android.ext.android.inject
 
 class PlayerFragment : Fragment() {
+    private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
     private var _playerBinding: FragmentPlayerBinding? = null
     private val playerBinding: FragmentPlayerBinding get() = _playerBinding!!
@@ -103,6 +106,9 @@ class PlayerFragment : Fragment() {
                     // For portrait videos, immediately enable fullscreen
                     enableFullscreen()
                     updateFullscreenSwitcher(isFullscreen())
+                } else if (appPreferences.exoPlayerStartLandscapeVideoInLandscape) {
+                    // Auto-switch to landscape for landscape videos if enabled
+                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                 }
             }
 
