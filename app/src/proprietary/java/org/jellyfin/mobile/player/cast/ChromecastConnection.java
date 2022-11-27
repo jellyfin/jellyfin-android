@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import timber.log.Timber;
+
 public class ChromecastConnection {
 
     /**
@@ -432,7 +434,11 @@ public class ChromecastConnection {
                 // remove the callback after timeout ms, and notify caller
                 new Handler().postDelayed(() -> {
                     // And stop the scan for routes
-                    getMediaRouter().removeCallback(callback);
+                    try {
+                        getMediaRouter().removeCallback(callback);
+                    } catch (Exception e) {
+                        Timber.w(e);
+                    }
                     // Notify
                     if (onTimeout != null) {
                         onTimeout.run();

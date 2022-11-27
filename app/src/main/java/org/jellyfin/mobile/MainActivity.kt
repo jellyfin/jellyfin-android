@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import org.jellyfin.mobile.databinding.ActivityMainBinding
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.cast.Chromecast
 import org.jellyfin.mobile.player.cast.IChromecast
@@ -32,6 +33,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
     private val activityEventHandler: ActivityEventHandler = get()
+    private lateinit var binding: ActivityMainBinding
     val mainViewModel: MainViewModel by viewModel()
     val chromecast: IChromecast = Chromecast()
     private val permissionRequestHelper: PermissionRequestHelper by inject()
@@ -53,7 +55,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setupKoinFragmentFactory()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Bind player service
         bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
@@ -86,9 +89,7 @@ class MainActivity : AppCompatActivity() {
             mainViewModel.serverState.collect { state ->
                 with(supportFragmentManager) {
                     when (state) {
-                        ServerState.Pending -> {
-                            // TODO add loading indicator
-                        }
+                        is ServerState.Pending -> binding.progressIndicator.show()
                         is ServerState.Unset -> replaceFragment<ConnectFragment>()
                         is ServerState.Available -> {
                             val currentFragment = findFragmentById(R.id.fragment_container)
@@ -101,6 +102,9 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                     }
+                }
+                if (state != ServerState.Pending) {
+                    binding.progressIndicator.hide()
                 }
             }
         }
