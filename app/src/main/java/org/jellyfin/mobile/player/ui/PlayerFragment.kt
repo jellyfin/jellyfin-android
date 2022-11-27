@@ -98,6 +98,13 @@ class PlayerFragment : Fragment() {
             }
             loadingIndicator.isVisible = playerState == Player.STATE_BUFFERING
         }
+        viewModel.decoderType.observe(this) { type ->
+            playerMenus?.updatedSelectedDecoder(type)
+        }
+        viewModel.error.observe(this) { message ->
+            val safeMessage = message.ifEmpty { requireContext().getString(R.string.player_error_unspecific_exception) }
+            requireContext().toast(safeMessage)
+        }
         viewModel.mediaQueueManager.mediaQueue.observe(this) { queueItem ->
             val jellyfinMediaSource = queueItem.jellyfinMediaSource
 
@@ -286,6 +293,10 @@ class PlayerFragment : Fragment() {
      */
     fun onSpeedSelected(speed: Float): Boolean {
         return viewModel.setPlaybackSpeed(speed)
+    }
+
+    fun onDecoderSelected(type: DecoderType) {
+        viewModel.updateDecoderType(type)
     }
 
     fun onSkipToPrevious() {

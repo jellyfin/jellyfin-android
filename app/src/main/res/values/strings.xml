@@ -56,6 +56,7 @@
     <string name="player_error_invalid_play_options">Unable to resolve playback info</string>
     <string name="player_error_network_failure">Unable to load media info from server</string>
     <string name="player_error_unsupported_content">Media cannot be played by this device</string>
+    <string name="player_error_unspecific_exception">Something went wrong with the player</string>
     <string name="playback_info_play_method">Play method: %s</string>
     <string name="playback_info_transcoding">Transcoding: %b</string>
     <string name="playback_info_video_streams">Video streams</string>
@@ -64,6 +65,8 @@
     <string name="playback_info_and_x_more">…and %d more</string>
     <string name="menu_item_none">None</string>
     <string name="menu_item_auto">Auto</string>
+    <string name="menu_item_hardware_decoding">Hardware Decoding</string>
+    <string name="menu_item_software_decoding">Software Decoding</string>
 
     <string name="external_player_invalid_play_method">Invalid play method.</string>
     <string name="external_player_not_supported_yet">Playback tracking not supported in selected external player yet. Contact developers to try to add support for it.</string>

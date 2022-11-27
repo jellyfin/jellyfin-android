@@ -14,7 +14,7 @@ class JellyfinMediaSource(
     val item: BaseItemDto?,
     val sourceInfo: MediaSourceInfo,
     val playSessionId: String,
-    startTimeTicks: Long? = null,
+    private var startTimeTicks: Long? = null,
     audioStreamIndex: Int? = null,
     subtitleStreamIndex: Int? = null,
 ) {
@@ -28,7 +28,11 @@ class JellyfinMediaSource(
         else -> throw IllegalArgumentException("No play method found for $name ($itemId)")
     }
 
-    val startTimeMs = (startTimeTicks ?: 0L) / Constants.TICKS_PER_MILLISECOND
+    var startTimeMs: Long
+        get() = (startTimeTicks ?: 0L) / Constants.TICKS_PER_MILLISECOND
+        set(value) {
+            startTimeTicks = value * Constants.TICKS_PER_MILLISECOND
+        }
     val runTimeTicks: Long = sourceInfo.runTimeTicks ?: 0
     val runTimeMs: Long = runTimeTicks / Constants.TICKS_PER_MILLISECOND
 

@@ -175,6 +175,17 @@
         app:layout_constraintStart_toEndOf="@id/speed_button" />
 
     <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/decoder_button"
+        android:layout_width="@dimen/exo_bottom_controls_size"
+        android:layout_height="@dimen/exo_bottom_controls_size"
+        android:layout_marginBottom="@dimen/exo_bottom_controls_margin"
+        android:background="@drawable/ripple_background_circular"
+        android:padding="@dimen/exo_bottom_controls_padding"
+        android:src="@drawable/ic_video_settings_white_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/quality_button" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/info_button"
         android:layout_width="@dimen/exo_bottom_controls_size"
         android:layout_height="@dimen/exo_bottom_controls_size"
@@ -183,7 +194,7 @@
         android:padding="@dimen/exo_bottom_controls_padding"
         android:src="@drawable/ic_info_white_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/quality_button" />
+        app:layout_constraintStart_toEndOf="@id/decoder_button" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/fullscreen_switcher"

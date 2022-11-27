@@ -19,8 +19,11 @@ import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.analytics.DefaultAnalyticsCollector
 import com.google.android.exoplayer2.mediacodec.MediaCodecDecoderException
+import com.google.android.exoplayer2.mediacodec.MediaCodecInfo
+import com.google.android.exoplayer2.mediacodec.MediaCodecSelector
 import com.google.android.exoplayer2.util.Clock
 import com.google.android.exoplayer2.util.EventLogger
+import com.google.android.exoplayer2.util.MimeTypes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -29,6 +32,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.app.PLAYER_EVENT_CHANNEL
+import org.jellyfin.mobile.player.ui.DecoderType
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.player.interaction.PlayerLifecycleObserver
 import org.jellyfin.mobile.player.interaction.PlayerMediaSessionCallback
@@ -87,12 +91,16 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     // ExoPlayer
     private val _player = MutableLiveData<ExoPlayer?>()
     private val _playerState = MutableLiveData<Int>()
+    private val _decoderType = MutableLiveData<DecoderType>()
     val player: LiveData<ExoPlayer?> get() = _player
     val playerState: LiveData<Int> get() = _playerState
+    val decoderType: LiveData<DecoderType> get() = _decoderType
+
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> = _error
+
     private val eventLogger = EventLogger()
-    private val analyticsCollector = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
-        addListener(eventLogger)
-    }
+    private var analyticsCollector = buildAnalyticsCollector()
     private val initialTracksSelected = AtomicBoolean(false)
     private var fallbackPreferExtensionRenderers = false
 
@@ -161,6 +169,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
     }
 
+    private fun buildAnalyticsCollector() = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
+        addListener(eventLogger)
+    }
+
     /**
      * Setup a new [ExoPlayer] for video playback, register callbacks and set attributes
      */
@@ -172,6 +184,24 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 else -> DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON
             }
             setExtensionRendererMode(rendererMode)
+            setMediaCodecSelector { mimeType, requiresSecureDecoder, requiresTunnelingDecoder ->
+                val decoderInfoList = MediaCodecSelector.DEFAULT.getDecoderInfos(mimeType, requiresSecureDecoder, requiresTunnelingDecoder)
+                // Allow decoder selection only for video track
+                if (!MimeTypes.isVideo(mimeType)) {
+                    return@setMediaCodecSelector decoderInfoList
+                }
+                val filteredDecoderList = when (decoderType.value) {
+                    DecoderType.HARDWARE -> decoderInfoList.filter(MediaCodecInfo::hardwareAccelerated)
+                    DecoderType.SOFTWARE -> decoderInfoList.filterNot(MediaCodecInfo::hardwareAccelerated)
+                    else -> decoderInfoList
+                }
+                // Update the decoderType based on the first decoder selected
+                if (filteredDecoderList.isNotEmpty()) {
+                    _decoderType.postValue(if (filteredDecoderList[0].hardwareAccelerated) DecoderType.HARDWARE else DecoderType.SOFTWARE)
+                }
+
+                filteredDecoderList
+            }
         }
         _player.value = ExoPlayer.Builder(getApplication(), renderersFactory, get()).apply {
             setUsePlatformDiagnostics(false)
@@ -227,6 +257,25 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
     private fun stopProgressUpdates() {
         progressUpdateJob?.cancel()
+    }
+
+    /**
+     * Updates the decoder of the [Player]. This will destroy the current player and
+     * recreate the player with the selected decoder type
+     */
+    fun updateDecoderType(type: DecoderType) {
+        _decoderType.postValue(type)
+        analyticsCollector.release()
+        val playedTime = playerOrNull?.currentPosition ?: 0L
+        // Stop and release the player without ending playback
+        playerOrNull?.run {
+            removeListener(this@PlayerViewModel)
+            release()
+        }
+        analyticsCollector = buildAnalyticsCollector()
+        setupPlayer()
+        mediaQueueManager.mediaQueue.value?.jellyfinMediaSource?.startTimeMs = playedTime
+        mediaQueueManager.tryRestartPlayback()
     }
 
     private suspend fun Player.reportPlaybackStart(mediaSource: JellyfinMediaSource) {
@@ -473,6 +522,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             fallbackPreferExtensionRenderers = true
             setupPlayer()
             mediaQueueManager.tryRestartPlayback()
+        } else {
+            _error.postValue(error.localizedMessage.orEmpty())
         }
     }
 

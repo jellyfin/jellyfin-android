@@ -38,12 +38,14 @@ class PlayerMenus(
     private val subtitlesButton: ImageButton by playerControlsBinding::subtitlesButton
     private val speedButton: View by playerControlsBinding::speedButton
     private val qualityButton: View by playerControlsBinding::qualityButton
+    private val decoderButton: View by playerControlsBinding::decoderButton
     private val infoButton: View by playerControlsBinding::infoButton
     private val playbackInfo: TextView by playerBinding::playbackInfo
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
     private val speedMenu: PopupMenu = createSpeedMenu()
     private val qualityMenu: PopupMenu = createQualityMenu()
+    private val decoderMenu: PopupMenu = createDecoderMenu()
 
     private var subtitleCount = 0
     private var subtitlesOn = false
@@ -82,6 +84,10 @@ class PlayerMenus(
         qualityButton.setOnClickListener {
             fragment.suppressControllerAutoHide(true)
             qualityMenu.show()
+        }
+        decoderButton.setOnClickListener {
+            fragment.suppressControllerAutoHide(true)
+            decoderMenu.show()
         }
         infoButton.setOnClickListener {
             playbackInfo.isVisible = !playbackInfo.isVisible
@@ -227,6 +233,27 @@ class PlayerMenus(
         setOnDismissListener(this@PlayerMenus)
     }
 
+    private fun createDecoderMenu() = PopupMenu(context, qualityButton).apply {
+        menu.add(DECODER_MENU_GROUP, DecoderType.HARDWARE.ordinal, Menu.NONE, context.getString(R.string.menu_item_hardware_decoding))
+        menu.add(DECODER_MENU_GROUP, DecoderType.SOFTWARE.ordinal, Menu.NONE, context.getString(R.string.menu_item_software_decoding))
+        menu.setGroupCheckable(DECODER_MENU_GROUP, true, true)
+
+        setOnMenuItemClickListener { clickedItem: MenuItem ->
+            val type = DecoderType.values()[clickedItem.itemId]
+            fragment.onDecoderSelected(type)
+            menu.forEach { item ->
+                item.isChecked = false
+            }
+            clickedItem.isChecked = true
+            true
+        }
+        setOnDismissListener(this@PlayerMenus)
+    }
+
+    fun updatedSelectedDecoder(type: DecoderType) {
+        decoderMenu.menu.findItem(type.ordinal).isChecked = true
+    }
+
     private fun buildMenuItems(
         menu: Menu,
         groupId: Int,
@@ -295,6 +322,7 @@ class PlayerMenus(
         private const val AUDIO_MENU_GROUP = 1
         private const val SPEED_MENU_GROUP = 2
         private const val QUALITY_MENU_GROUP = 3
+        private const val DECODER_MENU_GROUP = 4
 
         private const val MAX_VIDEO_STREAMS_DISPLAY = 3
         private const val MAX_AUDIO_STREAMS_DISPLAY = 5
