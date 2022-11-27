@@ -32,7 +32,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.app.PLAYER_EVENT_CHANNEL
-import org.jellyfin.mobile.player.interaction.DecoderType
+import org.jellyfin.mobile.player.ui.DecoderType
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.player.interaction.PlayerLifecycleObserver
 import org.jellyfin.mobile.player.interaction.PlayerMediaSessionCallback
@@ -169,6 +169,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
     }
 
+    private fun buildAnalyticsCollector() = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
+        addListener(eventLogger)
+    }
+
     /**
      * Setup a new [ExoPlayer] for video playback, register callbacks and set attributes
      */
@@ -182,21 +186,16 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             setExtensionRendererMode(rendererMode)
             setMediaCodecSelector { mimeType, requiresSecureDecoder, requiresTunnelingDecoder ->
                 val decoderInfoList = MediaCodecSelector.DEFAULT.getDecoderInfos(mimeType, requiresSecureDecoder, requiresTunnelingDecoder)
-                // allow decoder selection only for video
+                // Allow decoder selection only for video track
                 if (!MimeTypes.isVideo(mimeType)) {
                     return@setMediaCodecSelector decoderInfoList
                 }
                 val filteredDecoderList = when (decoderType.value) {
-                    DecoderType.HARDWARE -> {
-                        // only get the hardware decoder
-                        decoderInfoList.filter(MediaCodecInfo::hardwareAccelerated)
-                    }
-                    DecoderType.SOFTWARE -> {
-                        decoderInfoList.filterNot(MediaCodecInfo::hardwareAccelerated)
-                    }
+                    DecoderType.HARDWARE -> decoderInfoList.filter(MediaCodecInfo::hardwareAccelerated)
+                    DecoderType.SOFTWARE -> decoderInfoList.filterNot(MediaCodecInfo::hardwareAccelerated)
                     else -> decoderInfoList
                 }
-                // update the decoderType based on the first decoder selected
+                // Update the decoderType based on the first decoder selected
                 if (filteredDecoderList.isNotEmpty()) {
                     _decoderType.postValue(if (filteredDecoderList[0].hardwareAccelerated) DecoderType.HARDWARE else DecoderType.SOFTWARE)
                 }
@@ -226,10 +225,6 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             release()
         }
         _player.value = null
-    }
-
-    private fun buildAnalyticsCollector() = DefaultAnalyticsCollector(Clock.DEFAULT).apply {
-        addListener(eventLogger)
     }
 
     fun load(queueItem: QueueManager.QueueItem.Loaded, playWhenReady: Boolean) {
@@ -279,7 +274,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
         analyticsCollector = buildAnalyticsCollector()
         setupPlayer()
-        mediaQueueManager.mediaQueue.value?.jellyfinMediaSource?.updateStartTime(playedTime)
+        mediaQueueManager.mediaQueue.value?.jellyfinMediaSource?.startTimeMs = playedTime
         mediaQueueManager.tryRestartPlayback()
     }
 

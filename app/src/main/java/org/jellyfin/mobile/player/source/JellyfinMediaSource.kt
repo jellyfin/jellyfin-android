@@ -28,8 +28,11 @@ class JellyfinMediaSource(
         else -> throw IllegalArgumentException("No play method found for $name ($itemId)")
     }
 
-    val startTimeMs: Long
+    var startTimeMs: Long
         get() = (startTimeTicks ?: 0L) / Constants.TICKS_PER_MILLISECOND
+        set(value) {
+            startTimeTicks = value * Constants.TICKS_PER_MILLISECOND
+        }
     val runTimeTicks: Long = sourceInfo.runTimeTicks ?: 0
     val runTimeMs: Long = runTimeTicks / Constants.TICKS_PER_MILLISECOND
 
@@ -113,9 +116,5 @@ class JellyfinMediaSource(
         } else {
             null
         }
-    }
-
-    fun updateStartTime(startTime: Long) {
-        startTimeTicks = startTime * Constants.TICKS_PER_MILLISECOND
     }
 }
