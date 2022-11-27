@@ -168,11 +168,14 @@ class SettingsFragment : Fragment() {
             titleRes = R.string.external_player_app
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXTERNAL_PLAYER
         }
-        pref(Constants.PREF_SUBTITLE_STYLE) {
-            titleRes = R.string.pref_subtitle_style
-            summaryRes = R.string.pref_subtitle_style_summary
-            defaultOnClick {
-                startActivity(Intent(Settings.ACTION_CAPTIONING_SETTINGS))
+        val subtitleSettingsIntent = Intent(Settings.ACTION_CAPTIONING_SETTINGS)
+        if (subtitleSettingsIntent.resolveActivity(requireContext().packageManager) != null) {
+            pref(Constants.PREF_SUBTITLE_STYLE) {
+                titleRes = R.string.pref_subtitle_style
+                summaryRes = R.string.pref_subtitle_style_summary
+                defaultOnClick {
+                    startActivity(subtitleSettingsIntent)
+                }
             }
         }
         categoryHeader(PREF_CATEGORY_DOWNLOADS) {
