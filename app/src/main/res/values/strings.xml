@@ -106,6 +106,9 @@
     <string name="external_player_system_default">System default</string>
     <string name="external_player_system_default_description">Let the system handle the player choice, some players may not be fully compatible.</string>
 
+    <string name="pref_subtitle_style">Customize subtitle style</string>
+    <string name="pref_subtitle_style_summary">You can change the subtitle style in the Android settings</string>
+
     <string name="pref_category_downloads">Downloads</string>
     <string name="pref_download_location">Download location</string>
 </resources>

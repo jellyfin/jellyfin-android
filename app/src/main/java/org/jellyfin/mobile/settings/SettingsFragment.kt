@@ -1,6 +1,8 @@
 package org.jellyfin.mobile.settings
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +13,9 @@ import de.Maxr1998.modernpreferences.PreferencesAdapter
 import de.Maxr1998.modernpreferences.helpers.categoryHeader
 import de.Maxr1998.modernpreferences.helpers.checkBox
 import de.Maxr1998.modernpreferences.helpers.defaultOnCheckedChange
+import de.Maxr1998.modernpreferences.helpers.defaultOnClick
 import de.Maxr1998.modernpreferences.helpers.defaultOnSelectionChange
+import de.Maxr1998.modernpreferences.helpers.pref
 import de.Maxr1998.modernpreferences.helpers.screen
 import de.Maxr1998.modernpreferences.helpers.singleChoice
 import de.Maxr1998.modernpreferences.preferences.CheckBoxPreference
@@ -169,6 +173,16 @@ class SettingsFragment : Fragment() {
         externalPlayerChoicePreference = singleChoice(Constants.PREF_EXTERNAL_PLAYER_APP, externalPlayerOptions) {
             titleRes = R.string.external_player_app
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXTERNAL_PLAYER
+        }
+        val subtitleSettingsIntent = Intent(Settings.ACTION_CAPTIONING_SETTINGS)
+        if (subtitleSettingsIntent.resolveActivity(requireContext().packageManager) != null) {
+            pref(Constants.PREF_SUBTITLE_STYLE) {
+                titleRes = R.string.pref_subtitle_style
+                summaryRes = R.string.pref_subtitle_style_summary
+                defaultOnClick {
+                    startActivity(subtitleSettingsIntent)
+                }
+            }
         }
         categoryHeader(PREF_CATEGORY_DOWNLOADS) {
             titleRes = R.string.pref_category_downloads
