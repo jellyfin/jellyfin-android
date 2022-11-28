@@ -98,4 +98,8 @@
     <string name="menu_item_auto">Auto</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Nedovolit překódování a zobrazit titulky pouze v základním stylu. Pokud je povoleno, pokročilé stylování titulků nebude k dispozici.</string>
     <string name="pref_exoplayer_direct_play_ass">Povolit SSA/ASS titulky v přímém přehrávání</string>
+    <string name="player_error_unspecific_exception">S přehrávačem se stalo něco špatného</string>
+    <string name="menu_item_hardware_decoding">Hardwarové překódování</string>
+    <string name="menu_item_software_decoding">Softwarové překódování</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Spustit režim na šířku u videí s orientací na šířku</string>
 </resources>
