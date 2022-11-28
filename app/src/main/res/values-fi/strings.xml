@@ -98,4 +98,7 @@
     <string name="pref_exoplayer_direct_play_ass_summary">Estä transkoodaus ja näytä tekstitykset ilman erityisiä tyyliasetuksia. Tekstitysten lisäasetukset eivät toimi asetuksen kanssa.</string>
     <string name="pref_exoplayer_direct_play_ass">Salli SSA-/ASS-tekstitykset toistettaessa ilman muuntoa</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Aloita vaakasuorien videoiden toisto vaakasuorassa</string>
+    <string name="player_error_unspecific_exception">Jotain soittimessa meni pieleen</string>
+    <string name="menu_item_hardware_decoding">Laitteistodekoodaus</string>
+    <string name="menu_item_software_decoding">Ohjelmistodekoodaus</string>
 </resources>
