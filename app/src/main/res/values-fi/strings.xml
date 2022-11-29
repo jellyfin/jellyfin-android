@@ -101,4 +101,6 @@
     <string name="player_error_unspecific_exception">Jotain soittimessa meni pieleen</string>
     <string name="menu_item_hardware_decoding">Laitteistodekoodaus</string>
     <string name="menu_item_software_decoding">Ohjelmistodekoodaus</string>
+    <string name="pref_subtitle_style">Mukauta tekstityksen tyyliä</string>
+    <string name="pref_subtitle_style_summary">Voit muuttaa tekstityksen tyyliä Androidin asetuksista</string>
 </resources>
