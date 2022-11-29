@@ -96,4 +96,5 @@
     </plurals>
     <string name="pref_exoplayer_direct_play_ass">Permetti i sottotitoli SSA/ASS durante la Riproduzione Diretta</string>
     <string name="menu_item_auto">Automatico</string>
+    <string name="player_error_unspecific_exception">Qualcosa è andato storto con il lettore</string>
 </resources>
