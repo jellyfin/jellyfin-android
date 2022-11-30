@@ -98,4 +98,10 @@
     <string name="pref_exoplayer_direct_play_ass_summary">Empêcher le transcodage et afficher les sous-titres avec un style de base uniquement. Le style de sous-titre avancé ne sera pas disponible s\'il est activé.</string>
     <string name="menu_item_auto">Auto</string>
     <string name="pref_exoplayer_direct_play_ass">Autoriser les sous-titres SSA/ASS en lecture directe</string>
+    <string name="pref_subtitle_style">Personnaliser les sous-titres</string>
+    <string name="menu_item_hardware_decoding">Décodage matériel</string>
+    <string name="player_error_unspecific_exception">Un problème est survenu avec le lecteur</string>
+    <string name="menu_item_software_decoding">Décodage logiciel</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Démarrer les vidéos en mode paysage en orientation paysage</string>
+    <string name="pref_subtitle_style_summary">Vous pouvez customiser les sous-titres dans les paramètres d\'Android</string>
 </resources>
