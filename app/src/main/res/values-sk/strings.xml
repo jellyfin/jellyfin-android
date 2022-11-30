@@ -98,4 +98,9 @@
     <string name="pref_exoplayer_direct_play_ass_summary">Zabráni prekódovaniu a zobrazujte titulky iba v základnom štýle. Ak je povolené, pokročilé štýly titulkov nebudú dostupné.</string>
     <string name="pref_exoplayer_direct_play_ass">Povoliť SSA/ASS titulky v priamom prehrávaní</string>
     <string name="menu_item_auto">Auto</string>
+    <string name="player_error_unspecific_exception">Vyskytol sa problém s prehrávačom</string>
+    <string name="menu_item_hardware_decoding">Hardvérové dekódovanie</string>
+    <string name="menu_item_software_decoding">Softvérové dekódovanie</string>
+    <string name="pref_subtitle_style">Prispôsobenie štýlu titulkov</string>
+    <string name="pref_subtitle_style_summary">Štýl titulkov môžete zmeniť v nastaveniach systému Android</string>
 </resources>
