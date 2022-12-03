@@ -18,6 +18,7 @@ androidx-appcompat = "1.5.1"
 androidx-activity = "1.6.1"
 androidx-fragment = "1.5.4"
 androiddesugarlibs = "1.2.2"
+androidx-splashscreen = "1.0.0"
 
 # Lifecycle extensions
 androidx-lifecycle = "2.5.1"
@@ -82,6 +83,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidx-activity" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidx-fragment" }
 androiddesugarlibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androiddesugarlibs" }
+androidx-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-splashscreen" }
 
 # Lifecycle Extensions
 androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
