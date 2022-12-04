@@ -9,6 +9,9 @@
     <!-- Launcher icon background -->
     <color name="ic_launcher_background">#000b25</color>
 
+    <!-- Splash logo color for API < 24. API >= 24 will have the default gradient. -->
+    <color name="splash_fill">#fafafa</color>
+
     <!-- App colors -->
     <color name="theme_background">#101010</color>
     <color name="playback_controls_background">#60000000</color>
