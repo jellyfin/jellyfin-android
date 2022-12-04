@@ -10,6 +10,12 @@
 
     <style name="AppTheme" parent="AppTheme.V21" />
 
+    <style name="AppTheme.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/theme_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+    </style>
+
     <!-- Settings theme -->
     <style name="AppTheme.Settings" />
 

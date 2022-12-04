@@ -12,6 +12,7 @@ import android.view.OrientationEventListener
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.cast.Chromecast
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
     private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         setupKoinFragmentFactory()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

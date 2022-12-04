@@ -114,6 +114,7 @@ dependencies {
     // Core
     implementation(libs.bundles.koin)
     implementation(libs.androidx.core)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.fragment)

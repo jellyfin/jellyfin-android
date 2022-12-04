@@ -14,6 +14,7 @@ coroutines = "1.6.4"
 koin = "3.3.0"
 koin-compose = "3.3.0"
 androidx-core = "1.9.0"
+androidx-core-splashscreen = "1.0.0"
 androidx-appcompat = "1.5.1"
 androidx-activity = "1.6.1"
 androidx-fragment = "1.5.4"
@@ -78,6 +79,7 @@ coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutin
 koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin-compose" }
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-core-splashscreen" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidx-activity" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidx-fragment" }
