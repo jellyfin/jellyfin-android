@@ -97,4 +97,9 @@
     <string name="pref_exoplayer_direct_play_ass">允许直接播放 SSA/ASS字幕</string>
     <string name="menu_item_auto">自动</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">以横向启动横向模式视频</string>
+    <string name="player_error_unspecific_exception">播放器出了点问题</string>
+    <string name="pref_subtitle_style">自定义字幕样式</string>
+    <string name="pref_subtitle_style_summary">您可以在 Android 设置中更改字幕样式</string>
+    <string name="menu_item_hardware_decoding">硬件解码</string>
+    <string name="menu_item_software_decoding">软件解码</string>
 </resources>
