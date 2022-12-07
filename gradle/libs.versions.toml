@@ -17,7 +17,7 @@ androidx-core = "1.9.0"
 androidx-core-splashscreen = "1.0.0"
 androidx-appcompat = "1.5.1"
 androidx-activity = "1.6.1"
-androidx-fragment = "1.5.4"
+androidx-fragment = "1.5.5"
 androiddesugarlibs = "1.2.2"
 
 # Lifecycle extensions
