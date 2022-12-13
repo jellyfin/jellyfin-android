@@ -102,4 +102,6 @@
     <string name="menu_item_hardware_decoding">Hardwarové překódování</string>
     <string name="menu_item_software_decoding">Softwarové překódování</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Spustit režim na šířku u videí s orientací na šířku</string>
+    <string name="pref_subtitle_style">Přizpůsobit vzhled titulků</string>
+    <string name="pref_subtitle_style_summary">V nastavení Androidu můžete změnit vzhled titulků</string>
 </resources>
