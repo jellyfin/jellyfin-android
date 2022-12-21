@@ -17,7 +17,6 @@ detekt {
     allRules = false
     config = files("${rootProject.projectDir}/detekt.yml")
     autoCorrect = true
-    ignoreFailures = true
 }
 
 android {
