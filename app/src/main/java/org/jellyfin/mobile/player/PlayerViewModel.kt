@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.analytics.DefaultAnalyticsCollector
 import com.google.android.exoplayer2.mediacodec.MediaCodecDecoderException
 import com.google.android.exoplayer2.mediacodec.MediaCodecInfo
 import com.google.android.exoplayer2.mediacodec.MediaCodecSelector
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.util.Clock
 import com.google.android.exoplayer2.util.EventLogger
 import com.google.android.exoplayer2.util.MimeTypes
@@ -40,6 +41,7 @@ import org.jellyfin.mobile.player.queue.QueueManager
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.ui.DecoderType
 import org.jellyfin.mobile.player.ui.DisplayPreferences
+import org.jellyfin.mobile.player.ui.PlayState
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
 import org.jellyfin.mobile.utils.applyDefaultAudioAttributes
@@ -84,7 +86,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     val notificationHelper: PlayerNotificationHelper by lazy { PlayerNotificationHelper(this) }
 
     // Media source handling
-    val mediaQueueManager = QueueManager(this)
+    private val trackSelector = DefaultTrackSelector(getApplication())
+    val mediaQueueManager = QueueManager(this, trackSelector)
     val mediaSourceOrNull: JellyfinMediaSource?
         get() = mediaQueueManager.mediaQueue.value?.jellyfinMediaSource
 
@@ -213,7 +216,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
         _player.value = ExoPlayer.Builder(getApplication(), renderersFactory, get()).apply {
             setUsePlatformDiagnostics(false)
-            setTrackSelector(mediaQueueManager.trackSelector)
+            setTrackSelector(trackSelector)
             setAnalyticsCollector(analyticsCollector)
         }.build().apply {
             addListener(this@PlayerViewModel)
@@ -365,15 +368,19 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 }
 
                 // Stop active encoding if transcoding
-                if (mediaSource.playMethod == PlayMethod.TRANSCODE) {
-                    hlsSegmentApi.stopEncodingProcess(
-                        deviceId = apiClient.deviceInfo.id,
-                        playSessionId = mediaSource.playSessionId,
-                    )
-                }
+                stopTranscoding(mediaSource)
             } catch (e: ApiClientException) {
                 Timber.e(e, "Failed to report playback stop")
             }
+        }
+    }
+
+    suspend fun stopTranscoding(mediaSource: JellyfinMediaSource) {
+        if (mediaSource.playMethod == PlayMethod.TRANSCODE) {
+            hlsSegmentApi.stopEncodingProcess(
+                deviceId = apiClient.deviceInfo.id,
+                playSessionId = mediaSource.playSessionId,
+            )
         }
     }
 
@@ -418,29 +425,36 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
     }
 
+    fun getStateAndPause(): PlayState? {
+        val player = playerOrNull ?: return null
+
+        val playWhenReady = player.playWhenReady
+        player.pause()
+        val position = player.contentPosition
+
+        return PlayState(playWhenReady, position)
+    }
+
     /**
      * @see QueueManager.selectAudioTrack
      */
-    fun selectAudioTrack(streamIndex: Int): Boolean = mediaQueueManager.selectAudioTrack(streamIndex).also { success ->
-        if (success) playerOrNull?.logTracks(analyticsCollector)
+    suspend fun selectAudioTrack(streamIndex: Int): Boolean {
+        return mediaQueueManager.selectAudioTrack(streamIndex).also { success ->
+            if (success) playerOrNull?.logTracks(analyticsCollector)
+        }
     }
 
     /**
      * @see QueueManager.selectSubtitle
      */
-    fun selectSubtitle(streamIndex: Int): Boolean = mediaQueueManager.selectSubtitle(streamIndex).also { success ->
-        if (success) playerOrNull?.logTracks(analyticsCollector)
+    suspend fun selectSubtitle(streamIndex: Int): Boolean {
+        return mediaQueueManager.selectSubtitle(streamIndex).also { success ->
+            if (success) playerOrNull?.logTracks(analyticsCollector)
+        }
     }
 
-    fun changeBitrate(bitrate: Int?) {
-        val player = playerOrNull ?: return
-
-        val playWhenReady = player.playWhenReady
-        pause()
-        val position = player.contentPosition
-        viewModelScope.launch {
-            mediaQueueManager.changeBitrate(bitrate, position, playWhenReady)
-        }
+    suspend fun changeBitrate(bitrate: Int?): Boolean {
+        return mediaQueueManager.changeBitrate(bitrate)
     }
 
     /**

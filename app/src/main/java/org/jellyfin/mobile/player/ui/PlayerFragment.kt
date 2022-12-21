@@ -26,6 +26,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerView
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
@@ -43,6 +44,7 @@ import org.jellyfin.mobile.utils.brightness
 import org.jellyfin.mobile.utils.extensions.aspectRational
 import org.jellyfin.mobile.utils.extensions.disableFullscreen
 import org.jellyfin.mobile.utils.extensions.enableFullscreen
+import org.jellyfin.mobile.utils.extensions.getParcelableCompat
 import org.jellyfin.mobile.utils.extensions.isFullscreen
 import org.jellyfin.mobile.utils.extensions.isLandscape
 import org.jellyfin.mobile.utils.toast
@@ -127,7 +129,7 @@ class PlayerFragment : Fragment() {
         // Handle fragment arguments, extract playback options and start playback
         lifecycleScope.launch {
             val context = requireContext()
-            val playOptions = requireArguments().getParcelable<PlayOptions>(Constants.EXTRA_MEDIA_PLAY_OPTIONS)
+            val playOptions = requireArguments().getParcelableCompat<PlayOptions>(Constants.EXTRA_MEDIA_PLAY_OPTIONS)
             if (playOptions == null) {
                 context.toast(R.string.player_error_invalid_play_options)
                 return@launch
@@ -262,17 +264,21 @@ class PlayerFragment : Fragment() {
     fun onFastForward() = viewModel.fastForward()
 
     /**
-     * @return true if the audio track was changed
+     * @param callback called if track selection was successful and UI needs to be updated
      */
-    fun onAudioTrackSelected(index: Int): Boolean {
-        return viewModel.selectAudioTrack(index)
+    fun onAudioTrackSelected(index: Int, callback: TrackSelectionCallback): Job = lifecycleScope.launch {
+        if (viewModel.selectAudioTrack(index)) {
+            callback.onTrackSelected(true)
+        }
     }
 
     /**
-     * @return true if the subtitle was changed
+     * @param callback called if track selection was successful and UI needs to be updated
      */
-    fun onSubtitleSelected(index: Int): Boolean {
-        return viewModel.selectSubtitle(index)
+    fun onSubtitleSelected(index: Int, callback: TrackSelectionCallback): Job = lifecycleScope.launch {
+        if (viewModel.selectSubtitle(index)) {
+            callback.onTrackSelected(true)
+        }
     }
 
     /**
@@ -280,12 +286,12 @@ class PlayerFragment : Fragment() {
      *
      * @return true if subtitles are enabled now, false if not
      */
-    fun toggleSubtitles(): Boolean {
-        return viewModel.mediaQueueManager.toggleSubtitles()
+    fun toggleSubtitles(callback: TrackSelectionCallback) = lifecycleScope.launch {
+        callback.onTrackSelected(viewModel.mediaQueueManager.toggleSubtitles())
     }
 
-    fun onBitrateChanged(bitrate: Int?) {
-        viewModel.changeBitrate(bitrate)
+    fun onBitrateChanged(bitrate: Int?, callback: TrackSelectionCallback) = lifecycleScope.launch {
+        callback.onTrackSelected(viewModel.changeBitrate(bitrate))
     }
 
     /**
