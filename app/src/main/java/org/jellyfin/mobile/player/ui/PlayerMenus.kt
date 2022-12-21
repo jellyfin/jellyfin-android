@@ -48,7 +48,7 @@ class PlayerMenus(
     private val decoderMenu: PopupMenu = createDecoderMenu()
 
     private var subtitleCount = 0
-    private var subtitlesOn = false
+    private var subtitlesEnabled = false
 
     init {
         previousButton.setOnClickListener {
@@ -68,8 +68,10 @@ class PlayerMenus(
             when (subtitleCount) {
                 0 -> return@setOnClickListener
                 1 -> {
-                    subtitlesOn = fragment.toggleSubtitles()
-                    updateSubtitlesButton()
+                    fragment.toggleSubtitles { enabled ->
+                        subtitlesEnabled = enabled
+                        updateSubtitlesButton()
+                    }
                 }
                 else -> {
                     fragment.suppressControllerAutoHide(true)
@@ -116,7 +118,7 @@ class PlayerMenus(
             mediaSource.selectedAudioStream,
         )
         subtitleCount = mediaSource.subtitleStreams.size
-        subtitlesOn = selectedSubtitleStream != null
+        subtitlesEnabled = selectedSubtitleStream != null
 
         updateSubtitlesButton()
 
@@ -173,16 +175,15 @@ class PlayerMenus(
     private fun createSubtitlesMenu() = PopupMenu(context, subtitlesButton).apply {
         setOnMenuItemClickListener { clickedItem ->
             val selected = clickedItem.itemId
-            fragment.onSubtitleSelected(selected).also { success ->
-                if (success) {
-                    menu.forEach { item ->
-                        item.isChecked = false
-                    }
-                    clickedItem.isChecked = true
-                    subtitlesOn = selected >= 0
-                    updateSubtitlesButton()
+            fragment.onSubtitleSelected(selected) {
+                menu.forEach { item ->
+                    item.isChecked = false
                 }
+                clickedItem.isChecked = true
+                subtitlesEnabled = selected >= 0
+                updateSubtitlesButton()
             }
+            true
         }
         setOnDismissListener(this@PlayerMenus)
     }
@@ -190,14 +191,13 @@ class PlayerMenus(
     private fun createAudioStreamsMenu() = PopupMenu(context, audioStreamsButton).apply {
         setOnMenuItemClickListener { clickedItem: MenuItem ->
             // The itemId is the MediaStream.index of the track
-            fragment.onAudioTrackSelected(clickedItem.itemId).also { success ->
-                if (success) {
-                    menu.forEach { item ->
-                        item.isChecked = false
-                    }
-                    clickedItem.isChecked = true
+            fragment.onAudioTrackSelected(clickedItem.itemId) {
+                menu.forEach { item ->
+                    item.isChecked = false
                 }
+                clickedItem.isChecked = true
             }
+            true
         }
         setOnDismissListener(this@PlayerMenus)
     }
@@ -223,11 +223,13 @@ class PlayerMenus(
 
     private fun createQualityMenu() = PopupMenu(context, qualityButton).apply {
         setOnMenuItemClickListener { clickedItem: MenuItem ->
-            fragment.onBitrateChanged(clickedItem.itemId.takeUnless { bitrate -> bitrate == 0 })
-            menu.forEach { item ->
-                item.isChecked = false
+            val newBitrate = clickedItem.itemId.takeUnless { bitrate -> bitrate == 0 }
+            fragment.onBitrateChanged(newBitrate) {
+                menu.forEach { item ->
+                    item.isChecked = false
+                }
+                clickedItem.isChecked = true
             }
-            clickedItem.isChecked = true
             true
         }
         setOnDismissListener(this@PlayerMenus)
@@ -278,7 +280,7 @@ class PlayerMenus(
         }
         menu.setGroupCheckable(groupId, true, true)
         val selected = when {
-            selectedStream != null -> mediaStreams.binarySearch(selectedStream, compareBy(MediaStream::index))
+            selectedStream != null -> mediaStreams.indexOfFirst { stream -> stream.index == selectedStream.index }
             else -> -1
         }
         if (selected >= 0) {
@@ -291,7 +293,7 @@ class PlayerMenus(
 
     private fun updateSubtitlesButton() {
         subtitlesButton.isVisible = subtitleCount > 0
-        val stateSet = intArrayOf(android.R.attr.state_checked * if (subtitlesOn) 1 else -1)
+        val stateSet = intArrayOf(android.R.attr.state_checked * if (subtitlesEnabled) 1 else -1)
         subtitlesButton.setImageState(stateSet, true)
     }
 
@@ -305,6 +307,7 @@ class PlayerMenus(
             }
             menu.add(QUALITY_MENU_GROUP, option.bitrate, Menu.NONE, title)
         }
+        menu.setGroupCheckable(QUALITY_MENU_GROUP, true, true)
     }
 
     fun dismissPlaybackInfo() {

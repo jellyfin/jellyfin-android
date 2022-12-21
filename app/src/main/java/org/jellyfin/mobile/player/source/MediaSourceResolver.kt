@@ -33,6 +33,10 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
                 itemId = itemId,
                 data = PlaybackInfoDto(
                     userId = apiClient.userId,
+                    // We need to remove the dashes so that the server can find the correct media source.
+                    // And if we didn't pass the mediaSourceId, our stream indices would silently get ignored.
+                    // https://github.com/jellyfin/jellyfin/blob/9a35fd673203cfaf0098138b2768750f4818b3ab/Jellyfin.Api/Helpers/MediaInfoHelper.cs#L196-L201
+                    mediaSourceId = itemId.toString().replace("-", ""),
                     deviceProfile = deviceProfile,
                     maxStreamingBitrate = maxStreamingBitrate ?: deviceProfile.maxStreamingBitrate,
                     startTimeTicks = startTimeTicks,
