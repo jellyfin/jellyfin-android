@@ -98,4 +98,10 @@
     <string name="menu_item_auto">Automático</string>
     <string name="pref_exoplayer_direct_play_ass">Permitir los subtítulos SSA/ASS en la reproducción directa</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Evita la transcodificación y muestra los subtítulos sólo con un estilo básico. El estilo avanzado de los subtítulos no estará disponible si se activa.</string>
+    <string name="player_error_unspecific_exception">Algo ha fallado en el reproductor</string>
+    <string name="pref_subtitle_style">Personalizar el estilo de los subtítulos</string>
+    <string name="pref_subtitle_style_summary">Puedes cambiar el estilo de los subtítulos en los ajustes de Android</string>
+    <string name="menu_item_hardware_decoding">Decodificación por Hardware</string>
+    <string name="menu_item_software_decoding">Decodificación por Software</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Iniciar vídeos en orientación horizontal</string>
 </resources>
