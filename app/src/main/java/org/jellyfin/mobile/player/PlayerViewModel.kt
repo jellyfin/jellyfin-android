@@ -32,13 +32,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.app.PLAYER_EVENT_CHANNEL
-import org.jellyfin.mobile.player.ui.DecoderType
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.player.interaction.PlayerLifecycleObserver
 import org.jellyfin.mobile.player.interaction.PlayerMediaSessionCallback
 import org.jellyfin.mobile.player.interaction.PlayerNotificationHelper
 import org.jellyfin.mobile.player.queue.QueueManager
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.ui.DecoderType
 import org.jellyfin.mobile.player.ui.DisplayPreferences
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
@@ -185,7 +185,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             }
             setExtensionRendererMode(rendererMode)
             setMediaCodecSelector { mimeType, requiresSecureDecoder, requiresTunnelingDecoder ->
-                val decoderInfoList = MediaCodecSelector.DEFAULT.getDecoderInfos(mimeType, requiresSecureDecoder, requiresTunnelingDecoder)
+                val decoderInfoList = MediaCodecSelector.DEFAULT.getDecoderInfos(
+                    mimeType,
+                    requiresSecureDecoder,
+                    requiresTunnelingDecoder,
+                )
                 // Allow decoder selection only for video track
                 if (!MimeTypes.isVideo(mimeType)) {
                     return@setMediaCodecSelector decoderInfoList
@@ -196,8 +200,12 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     else -> decoderInfoList
                 }
                 // Update the decoderType based on the first decoder selected
-                if (filteredDecoderList.isNotEmpty()) {
-                    _decoderType.postValue(if (filteredDecoderList[0].hardwareAccelerated) DecoderType.HARDWARE else DecoderType.SOFTWARE)
+                filteredDecoderList.firstOrNull()?.let { decoder ->
+                    val decoderType = when {
+                        decoder.hardwareAccelerated -> DecoderType.HARDWARE
+                        else -> DecoderType.SOFTWARE
+                    }
+                    _decoderType.postValue(decoderType)
                 }
 
                 filteredDecoderList
