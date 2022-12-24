@@ -6,20 +6,36 @@
     android:layout_height="match_parent"
     android:background="@color/theme_background">
 
-    <FrameLayout
-        android:id="@+id/progress_indicator"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loading_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
         tools:visibility="visible">
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:indeterminate="true"
-            app:indicatorColor="@color/jellyfin_accent" />
-    </FrameLayout>
+            app:indicatorColor="@color/jellyfin_accent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/cancel_loading_button"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_cancel_loading"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/progress_indicator" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <WebView
         android:id="@+id/web_view"

@@ -37,7 +37,6 @@ import org.jellyfin.mobile.utils.applyDefault
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.dip
 import org.jellyfin.mobile.utils.enableServiceWorkerWorkaround
-import org.jellyfin.mobile.utils.extensions.addFragment
 import org.jellyfin.mobile.utils.extensions.getParcelableCompat
 import org.jellyfin.mobile.utils.extensions.replaceFragment
 import org.jellyfin.mobile.utils.fadeIn
@@ -61,8 +60,8 @@ class WebViewFragment : Fragment() {
     private val timeoutRunnable = Runnable {
         handleError()
     }
-    private val showProgressIndicatorRunnable = Runnable {
-        webViewBinding?.progressIndicator?.isVisible = true
+    private val showLoadingContainerRunnable = Runnable {
+        webViewBinding?.loadingContainer?.isVisible = true
     }
 
     // UI
@@ -89,10 +88,10 @@ class WebViewFragment : Fragment() {
                 val webViewBinding = webViewBinding ?: return
                 val webView = webViewBinding.webView
                 webView.removeCallbacks(timeoutRunnable)
-                webView.removeCallbacks(showProgressIndicatorRunnable)
+                webView.removeCallbacks(showLoadingContainerRunnable)
                 connected = true
                 runOnUiThread {
-                    webViewBinding.progressIndicator.isVisible = false
+                    webViewBinding.loadingContainer.isVisible = false
                     webView.fadeIn()
                 }
                 requestNoBatteryOptimizations(webViewBinding.root)
@@ -153,6 +152,13 @@ class WebViewFragment : Fragment() {
         // Setup WebView
         webView.initialize()
 
+        webViewBinding!!.cancelLoadingButton.setOnClickListener {
+            webView.removeCallbacks(timeoutRunnable)
+            webView.stopLoading()
+            webViewBinding!!.loadingContainer.isVisible = false
+            onSelectServer(error = false)
+        }
+
         // Process JS functions called from other components (e.g. the PlayerActivity)
         lifecycleScope.launch {
             for (function in webappFunctionChannel) {
@@ -180,7 +186,7 @@ class WebViewFragment : Fragment() {
 
         loadUrl(server.hostname)
         postDelayed(timeoutRunnable, Constants.INITIAL_CONNECTION_TIMEOUT)
-        postDelayed(showProgressIndicatorRunnable, Constants.SHOW_PROGRESS_BAR_DELAY)
+        postDelayed(showLoadingContainerRunnable, Constants.SHOW_PROGRESS_BAR_DELAY)
     }
 
     private fun showOutdatedWebViewDialog(webView: WebView) {
@@ -229,17 +235,16 @@ class WebViewFragment : Fragment() {
         }.show()
     }
 
-    fun onSelectServer(error: Boolean = false) = runOnUiThread {
+    private fun onSelectServer(error: Boolean = false) = runOnUiThread {
         val activity = activity
         if (activity != null && activity.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-            if (error) {
-                val extras = Bundle().apply {
+            val extras = when {
+                error -> Bundle().apply {
                     putBoolean(Constants.FRAGMENT_CONNECT_EXTRA_ERROR, true)
                 }
-                parentFragmentManager.replaceFragment<ConnectFragment>(extras)
-            } else {
-                parentFragmentManager.addFragment<ConnectFragment>()
+                else -> null
             }
+            parentFragmentManager.replaceFragment<ConnectFragment>(extras)
         }
     }
 
