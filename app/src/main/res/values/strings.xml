@@ -21,7 +21,7 @@
     <string name="connect_button_text">Connect</string>
     <string name="choose_server_button_text">Choose server</string>
     <string name="available_servers_title">Available servers</string>
-    <string name="button_cancel_loading">Cancel loading</string>
+    <string name="button_use_different_server">Use a different server</string>
 
     <string name="battery_optimizations_message">Please disable battery optimizations for media playback while the screen is off.</string>
     <string name="network_title">Allowed Network Types</string>

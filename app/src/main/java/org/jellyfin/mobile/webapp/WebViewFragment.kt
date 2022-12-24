@@ -152,7 +152,7 @@ class WebViewFragment : Fragment() {
         // Setup WebView
         webView.initialize()
 
-        webViewBinding!!.cancelLoadingButton.setOnClickListener {
+        webViewBinding!!.useDifferentServerButton.setOnClickListener {
             webView.removeCallbacks(timeoutRunnable)
             webView.stopLoading()
             webViewBinding!!.loadingContainer.isVisible = false
