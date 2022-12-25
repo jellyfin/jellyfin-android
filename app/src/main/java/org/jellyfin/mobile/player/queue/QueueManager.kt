@@ -27,6 +27,7 @@ import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.model.api.MediaProtocol
 import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.PlayMethod
+import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -57,9 +58,13 @@ class QueueManager(
      */
     suspend fun startPlayback(playOptions: PlayOptions, playWhenReady: Boolean): PlayerException? {
         if (playOptions != currentPlayOptions) {
-            val itemId = playOptions.run { mediaSourceId ?: ids[playOptions.startIndex] }
+            val itemId = playOptions.run {
+                ids.getOrNull(startIndex) ?: mediaSourceId?.toUUIDOrNull() // fallback if ids is empty
+            } ?: return PlayerException.InvalidPlayOptions()
+
             mediaSourceResolver.resolveMediaSource(
                 itemId = itemId,
+                mediaSourceId = playOptions.mediaSourceId,
                 deviceProfile = deviceProfile,
                 maxStreamingBitrate = playOptions.maxBitrate,
                 startTimeTicks = playOptions.startPositionTicks,
@@ -124,7 +129,10 @@ class QueueManager(
             }
             is QueueItem.Stub -> {
                 val previousId = previous.ids.lastOrNull() ?: return false
-                val jellyfinMediaSource = mediaSourceResolver.resolveMediaSource(previousId, deviceProfile).getOrNull() ?: return false
+                val jellyfinMediaSource = mediaSourceResolver.resolveMediaSource(
+                    itemId = previousId,
+                    deviceProfile = deviceProfile,
+                ).getOrNull() ?: return false
 
                 val previousPrevious = QueueItem.Stub(previous.ids.dropLast(1))
                 createQueueItem(jellyfinMediaSource, previousPrevious, current).play()
@@ -141,7 +149,10 @@ class QueueManager(
             }
             is QueueItem.Stub -> {
                 val nextId = next.ids.firstOrNull() ?: return false
-                val jellyfinMediaSource = mediaSourceResolver.resolveMediaSource(nextId, deviceProfile).getOrNull() ?: return false
+                val jellyfinMediaSource = mediaSourceResolver.resolveMediaSource(
+                    itemId = nextId,
+                    deviceProfile = deviceProfile,
+                ).getOrNull() ?: return false
 
                 val nextNext = QueueItem.Stub(next.ids.drop(1))
                 createQueueItem(jellyfinMediaSource, current, nextNext).play()

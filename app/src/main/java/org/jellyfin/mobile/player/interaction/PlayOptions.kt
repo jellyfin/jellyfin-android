@@ -11,8 +11,8 @@ import java.util.UUID
 
 @Parcelize
 data class PlayOptions(
-    val mediaSourceId: UUID?,
     val ids: List<UUID>,
+    val mediaSourceId: String?,
     val startIndex: Int,
     val startPositionTicks: Long?,
     val audioStreamIndex: Int?,
@@ -22,7 +22,6 @@ data class PlayOptions(
     companion object {
         fun fromJson(json: JSONObject): PlayOptions? = try {
             PlayOptions(
-                mediaSourceId = json.optString("mediaSourceId").toUUIDOrNull(),
                 ids = json.optJSONArray("ids")?.let { array ->
                     ArrayList<UUID>().apply {
                         for (i in 0 until array.size) {
@@ -30,6 +29,7 @@ data class PlayOptions(
                         }
                     }
                 } ?: emptyList(),
+                mediaSourceId = json.optString("mediaSourceId"),
                 startIndex = json.optInt("startIndex"),
                 startPositionTicks = json.optLong("startPositionTicks").takeIf { it > 0 },
                 audioStreamIndex = json.optString("audioStreamIndex").toIntOrNull(),
