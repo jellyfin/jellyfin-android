@@ -32,6 +32,7 @@ import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.PlayMethod
+import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
@@ -85,7 +86,9 @@ class ExternalPlayer(
     @JavascriptInterface
     fun initPlayer(args: String) {
         val playOptions = PlayOptions.fromJson(JSONObject(args))
-        val itemId = playOptions?.run { mediaSourceId ?: ids.firstOrNull() }
+        val itemId = playOptions?.run {
+            ids.firstOrNull() ?: mediaSourceId?.toUUIDOrNull() // fallback if ids is empty
+        }
         if (playOptions == null || itemId == null) {
             context.toast(R.string.player_error_invalid_play_options)
             return
@@ -94,6 +97,7 @@ class ExternalPlayer(
         coroutinesScope.launch {
             mediaSourceResolver.resolveMediaSource(
                 itemId = itemId,
+                mediaSourceId = playOptions.mediaSourceId,
                 deviceProfile = externalPlayerProfile,
                 startTimeTicks = playOptions.startPositionTicks,
                 audioStreamIndex = playOptions.audioStreamIndex,
