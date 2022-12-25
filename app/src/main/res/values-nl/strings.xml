@@ -102,4 +102,6 @@
     <string name="player_error_unspecific_exception">Er is iets misgegaan met de speler</string>
     <string name="menu_item_hardware_decoding">Hardware-decoderen</string>
     <string name="menu_item_software_decoding">Software-decoderen</string>
+    <string name="button_use_different_server">Gebruik een andere server</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Start horizontale videos in horizontale orientatie</string>
 </resources>
