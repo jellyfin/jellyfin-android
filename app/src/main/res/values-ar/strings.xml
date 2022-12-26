@@ -101,4 +101,11 @@
     <string name="pref_exoplayer_direct_play_ass_summary">منع تحويل الشفرة وإظهار الترجمات مع النمط الأساسي فقط. لن يكون نمط الترجمة المتقدم متاحًا إذا تم تمكينه.</string>
     <string name="pref_exoplayer_direct_play_ass">السماح بترجمات SSA / ASS في التشغيل المباشر</string>
     <string name="menu_item_auto">تلقاءي</string>
+    <string name="button_use_different_server">استخدم خادم آخر</string>
+    <string name="player_error_unspecific_exception">حدث خطأ مع المشغل</string>
+    <string name="menu_item_hardware_decoding">يفك الترميز باستخدام كرت الشاشة</string>
+    <string name="menu_item_software_decoding">يفك الترميز باستخدام المعالج</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">استخدم الوضع العرضي في الشاشة أثناء المقطع عندما تكون الشاشة على وضع الأفقي</string>
+    <string name="pref_subtitle_style">تعديل كيفية ظهور الترجمة</string>
+    <string name="pref_subtitle_style_summary">بإمكان تغيير إعدادات كيفية ظهور الترجمة في إعدادات الـ Android</string>
 </resources>
