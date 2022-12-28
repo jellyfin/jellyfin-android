@@ -15,11 +15,10 @@ import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.bridge.JavascriptCallback
 import org.jellyfin.mobile.player.ui.PlayerFragment
+import org.jellyfin.mobile.player.ui.PlayerFullscreenHelper
 import org.jellyfin.mobile.settings.SettingsFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.extensions.addFragment
-import org.jellyfin.mobile.utils.extensions.disableFullscreen
-import org.jellyfin.mobile.utils.extensions.enableFullscreen
 import org.jellyfin.mobile.utils.requestDownload
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import timber.log.Timber
@@ -45,14 +44,15 @@ class ActivityEventHandler(
     private suspend fun MainActivity.handleEvent(event: ActivityEvent) {
         when (event) {
             is ActivityEvent.ChangeFullscreen -> {
+                val fullscreenHelper = PlayerFullscreenHelper(window)
                 if (event.isFullscreen) {
                     requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                    enableFullscreen()
+                    fullscreenHelper.enableFullscreen()
                     window.setBackgroundDrawable(null)
                 } else {
                     // Reset screen orientation
                     requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-                    disableFullscreen(true)
+                    fullscreenHelper.disableFullscreen()
                     // Reset window background color
                     window.setBackgroundDrawableResource(R.color.theme_background)
                 }
