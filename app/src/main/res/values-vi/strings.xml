@@ -96,4 +96,11 @@
     <string name="menu_item_auto">Tự động</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Ngăn chuyển mã và chỉ hiển thị phụ đề với kiểu dáng cơ bản. Kiểu phụ đề nâng cao sẽ không khả dụng nếu được bật.</string>
     <string name="pref_exoplayer_direct_play_ass">Cho phép phụ đề SSA/ASS khi phát trực tiếp</string>
+    <string name="button_use_different_server">Sử dụng một máy chủ khác</string>
+    <string name="player_error_unspecific_exception">Đã xảy ra sự cố với trình phát</string>
+    <string name="pref_subtitle_style">Tùy chỉnh kiểu dáng phụ đề</string>
+    <string name="pref_subtitle_style_summary">Bạn có thể thay đổi kiểu dáng phụ đề trong cài đặt Android</string>
+    <string name="menu_item_hardware_decoding">Giải Mã Phần Cứng</string>
+    <string name="menu_item_software_decoding">Giải Mã Phần Mềm</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Bắt đầu video ở chế độ ngang theo hướng ngang</string>
 </resources>
