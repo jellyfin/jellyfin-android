@@ -8,7 +8,9 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.view.forEach
+import androidx.core.view.get
 import androidx.core.view.isVisible
+import androidx.core.view.size
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
@@ -125,7 +127,7 @@ class PlayerMenus(
         val height = mediaSource.selectedVideoStream?.height
         val width = mediaSource.selectedVideoStream?.width
         if (height != null && width != null) {
-            buildQualityMenu(qualityMenu.menu, width, height)
+            buildQualityMenu(qualityMenu.menu, mediaSource.maxStreamingBitrate, width, height)
         } else {
             qualityButton.isVisible = false
         }
@@ -222,13 +224,10 @@ class PlayerMenus(
     }
 
     private fun createQualityMenu() = PopupMenu(context, qualityButton).apply {
-        setOnMenuItemClickListener { clickedItem: MenuItem ->
-            val newBitrate = clickedItem.itemId.takeUnless { bitrate -> bitrate == 0 }
+        setOnMenuItemClickListener { item: MenuItem ->
+            val newBitrate = item.itemId.takeUnless { bitrate -> bitrate == 0 }
             fragment.onBitrateChanged(newBitrate) {
-                menu.forEach { item ->
-                    item.isChecked = false
-                }
-                clickedItem.isChecked = true
+                // Ignore callback - menu will be recreated if bitrate changes
             }
             true
         }
@@ -274,7 +273,10 @@ class PlayerMenus(
         showNone: Boolean = false,
     ) {
         menu.clear()
-        val itemNone = if (showNone) menu.add(groupId, -1, Menu.NONE, fragment.getString(R.string.menu_item_none)) else null
+        val itemNone = when {
+            showNone -> menu.add(groupId, -1, Menu.NONE, fragment.getString(R.string.menu_item_none))
+            else -> null
+        }
         val menuItems = mediaStreams.map { mediaStream ->
             menu.add(groupId, mediaStream.index, Menu.NONE, mediaStream.displayTitle)
         }
@@ -297,10 +299,10 @@ class PlayerMenus(
         subtitlesButton.setImageState(stateSet, true)
     }
 
-    private fun buildQualityMenu(menu: Menu, videoWidth: Int, videoHeight: Int) {
+    private fun buildQualityMenu(menu: Menu, maxStreamingBitrate: Int?, videoWidth: Int, videoHeight: Int) {
         menu.clear()
         val options = qualityOptionsProvider.getApplicableQualityOptions(videoWidth, videoHeight)
-        options.map { option ->
+        options.forEach { option ->
             val title = when (val bitrate = option.bitrate) {
                 0 -> context.getString(R.string.menu_item_auto)
                 else -> "${option.maxHeight}p - ${formatBitrate(bitrate.toDouble())}"
@@ -308,6 +310,9 @@ class PlayerMenus(
             menu.add(QUALITY_MENU_GROUP, option.bitrate, Menu.NONE, title)
         }
         menu.setGroupCheckable(QUALITY_MENU_GROUP, true, true)
+
+        val selection = maxStreamingBitrate?.let(menu::findItem) ?: menu[menu.size - 1] // Last element is "auto"
+        selection.isChecked = true
     }
 
     fun dismissPlaybackInfo() {
