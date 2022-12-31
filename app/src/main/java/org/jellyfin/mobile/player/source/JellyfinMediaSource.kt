@@ -14,6 +14,7 @@ class JellyfinMediaSource(
     val item: BaseItemDto?,
     val sourceInfo: MediaSourceInfo,
     val playSessionId: String,
+    val maxStreamingBitrate: Int?,
     private var startTimeTicks: Long? = null,
     audioStreamIndex: Int? = null,
     subtitleStreamIndex: Int? = null,
