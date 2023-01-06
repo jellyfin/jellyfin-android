@@ -97,4 +97,7 @@
     <string name="menu_item_auto">Automatisk</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Förhindra omkodning och visa undertexter endast i simpel stil. Avancerad stilering av undertext ej tillgänglig om aktiverad.</string>
     <string name="pref_exoplayer_direct_play_ass">Tillåt SSA/ASS undertexter vid direktuppspelning</string>
+    <string name="player_error_unspecific_exception">Någonting gick fel med spelaren</string>
+    <string name="button_use_different_server">Använd en annan server</string>
+    <string name="menu_item_hardware_decoding">Hårdvaruavkodning</string>
 </resources>
