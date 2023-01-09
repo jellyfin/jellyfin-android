@@ -93,4 +93,7 @@
     <string name="dialog_web_view_not_supported_message">WebViews tidak didukung oleh perangkat ini.
 \nInstal komponen WebView yang cocok, atau ganti dengan perangkat yang didukung.</string>
     <string name="dialog_web_view_not_supported">WebView tidak didukung</string>
+    <string name="menu_item_auto">Otomatis</string>
+    <string name="player_error_unspecific_exception">Terjadi kesalahan dengan pemutar media</string>
+    <string name="button_use_different_server">Gunakan server lain</string>
 </resources>
