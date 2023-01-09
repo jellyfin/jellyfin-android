@@ -105,4 +105,5 @@
     <string name="pref_subtitle_style">Изменить стиль субтитров</string>
     <string name="pref_subtitle_style_summary">Вы можете изменить стиль субтитров в настройках Android системы</string>
     <string name="menu_item_hardware_decoding">Аппаратное декодирование</string>
+    <string name="button_use_different_server">Использовать другой сервер</string>
 </resources>
