@@ -95,4 +95,14 @@
     <string name="toast_reopen_after_change">Vă rugăm să redeschideți aplicația după ce sa facut modificări</string>
     <string name="dialog_button_ignore">Ignora</string>
     <string name="dialog_button_open_settings">Deschide setările</string>
+    <string name="pref_subtitle_style">Customizează stilul subtitrării</string>
+    <string name="pref_subtitle_style_summary">Puteți modifica stilul de subtitrare în setările Android</string>
+    <string name="menu_item_auto">Auto</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Pornește videoclipurile de tip peisaj în modul peisaj</string>
+    <string name="menu_item_hardware_decoding">Decodare Hardware</string>
+    <string name="player_error_unspecific_exception">A apărut o problemă cu player-ul</string>
+    <string name="pref_exoplayer_direct_play_ass">Permite subtitrări SSA/ASS în redarea directă</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Previne transcodare și afișează subtitrările doar cu styling de bază. Styling-ul avansat de subtitrări nu va fi valabil dacă această opțiune este pornită.</string>
+    <string name="button_use_different_server">Folosiți un alt server</string>
+    <string name="menu_item_software_decoding">Decodare Software</string>
 </resources>
