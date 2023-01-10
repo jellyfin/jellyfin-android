@@ -66,14 +66,14 @@
     <string name="media_service_car_section_songs">الأغاني</string>
     <string name="media_service_car_section_artists">الفنانين</string>
     <string name="media_service_car_section_albums">الألبومات</string>
-    <string name="media_service_car_section_recents">تم تشغيله مؤخرًا</string>
+    <string name="media_service_car_section_recents">شُغل مؤخرا</string>
     <string name="media_service_item_not_found">تعذر العثور على الوسائط</string>
     <string name="media_service_generic_error">حدث خطأ</string>
     <string name="download_no_storage_permission">لا يمكن تحميل الملفات بدون صلاحيات التخزين</string>
     <string name="downloading">جاري التحميل</string>
     <string name="mobile_data_and_roaming">بيانات الهاتف والتجوال</string>
     <string name="mobile_data">بيانات الهاتف</string>
-    <string name="network_message">هل تريد السماح بالتحميل عبر بيانات الهاتف أو شبكات التجوال؟ قد يتم تطبيق رسوم من مزودك.</string>
+    <string name="network_message">هل تريد السماح بالتحميل عبر بيانات الهاتف أو شبكات التجوال؟ قد تُضاف رسوما إضافية من مزودك.</string>
     <string name="wifi_only">واي فاي فقط</string>
     <string name="network_title">أنواع الشبكات المسموحة</string>
     <string name="battery_optimizations_message">يرجى تعطيل تحسين البطارية لتشغيل الوسائط عندما تكون الشاشة منطفئة.</string>
