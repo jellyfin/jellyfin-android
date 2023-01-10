@@ -98,4 +98,11 @@
     <string name="menu_item_auto">Automático</string>
     <string name="pref_exoplayer_direct_play_ass">Permitir legendas SSA/ASS em reprodução direta</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Impedir transcodificação e exibir legendas com estilo básico. Estilos avançados para legendas não estarão disponíveis se ativado.</string>
+    <string name="pref_subtitle_style">Personalizar estilo de legenda</string>
+    <string name="pref_subtitle_style_summary">Você pode alterar o estilo da legenda nas configurações do Android</string>
+    <string name="player_error_unspecific_exception">Algo deu errado com o player</string>
+    <string name="menu_item_software_decoding">Decodificação de Software</string>
+    <string name="menu_item_hardware_decoding">Decodificação de Hardware</string>
+    <string name="button_use_different_server">Usar um servidor diferente</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Iniciar vídeos no modo paisagem na orientação paisagem</string>
 </resources>
