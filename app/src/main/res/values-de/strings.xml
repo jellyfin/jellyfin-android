@@ -103,4 +103,5 @@
     <string name="pref_subtitle_style">Untertitel Stil anpassen</string>
     <string name="player_error_unspecific_exception">Beim Abspielen ist ein Fehler aufgetreten</string>
     <string name="menu_item_hardware_decoding">Hardware Dekodierung</string>
+    <string name="button_use_different_server">Verwende einen anderen Server</string>
 </resources>
