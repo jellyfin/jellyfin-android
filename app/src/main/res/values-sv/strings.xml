@@ -100,4 +100,8 @@
     <string name="player_error_unspecific_exception">Någonting gick fel med spelaren</string>
     <string name="button_use_different_server">Använd en annan server</string>
     <string name="menu_item_hardware_decoding">Hårdvaruavkodning</string>
+    <string name="pref_subtitle_style_summary">Du kan ändra på utseendet för undertexter i Android-inställningar</string>
+    <string name="pref_subtitle_style">Anpassa utseende för undertexter</string>
+    <string name="menu_item_software_decoding">Mjukvaruavkodning</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Starta videor i landskapsformat i landskapsläge</string>
 </resources>
