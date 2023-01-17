@@ -41,7 +41,7 @@
     <string name="video_player_external">外部播放器</string>
     <string name="video_player_web">网页播放器</string>
     <string name="pref_video_player_type_title">视频播放器类型</string>
-    <string name="available_servers_title">现存服务器</string>
+    <string name="available_servers_title">现有服务器</string>
     <string name="choose_server_button_text">选择服务器</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">亮度和音量调节手势</string>
     <string name="external_player_system_default_description">让系统处理播放器的选择，某些播放器可能不完全兼容。</string>
@@ -87,7 +87,7 @@
     <string name="player_error_unsupported_content">该媒体无法在本设备上播放</string>
     <string name="player_error_network_failure">无法从服务器加载媒体信息</string>
     <string name="player_error_invalid_play_options">无法解析播放信息</string>
-    <string name="toast_reopen_after_change">进行更改设置后重新打开应用</string>
+    <string name="toast_reopen_after_change">进行更改后请重新打开应用</string>
     <string name="dialog_button_ignore">忽略</string>
     <string name="dialog_button_open_settings">打开设置</string>
     <string name="pref_exoplayer_remember_brightness">记住显示亮度</string>
@@ -102,4 +102,5 @@
     <string name="pref_subtitle_style_summary">您可以在 Android 设置中更改字幕样式</string>
     <string name="menu_item_hardware_decoding">硬件解码</string>
     <string name="menu_item_software_decoding">软件解码</string>
+    <string name="button_use_different_server">使用不同的服务器</string>
 </resources>
