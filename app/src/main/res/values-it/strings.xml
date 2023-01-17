@@ -97,4 +97,8 @@
     <string name="pref_exoplayer_direct_play_ass">Permetti i sottotitoli SSA/ASS durante la Riproduzione Diretta</string>
     <string name="menu_item_auto">Automatico</string>
     <string name="player_error_unspecific_exception">Qualcosa è andato storto con il lettore</string>
+    <string name="button_use_different_server">Usa un altro server</string>
+    <string name="menu_item_hardware_decoding">Decodifica Hardware</string>
+    <string name="menu_item_software_decoding">Decodifica Software</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Avvia i video in modalità orizzontale</string>
 </resources>
