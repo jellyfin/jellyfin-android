@@ -1,1 +1,1 @@
-Mobilklient for Jellyfin, det gratis programvaremediesystemet
+Mobilklient for Jellyfin, et gratis multimediasenter
