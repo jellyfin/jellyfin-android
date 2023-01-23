@@ -101,4 +101,7 @@
     <string name="menu_item_hardware_decoding">Decodifica Hardware</string>
     <string name="menu_item_software_decoding">Decodifica Software</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Avvia i video in modalità orizzontale</string>
+    <string name="pref_subtitle_style_summary">È possibile modificare lo stile dei sottotitoli nelle impostazioni di Android</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Impedisci la transcodifica e mostra i sottotitoli solo con lo stile di base. Lo stile avanzato dei sottotitoli non sarà disponibile se abilitato.</string>
+    <string name="pref_subtitle_style">Personalizza lo stile dei sottotitoli</string>
 </resources>
