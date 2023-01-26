@@ -8,7 +8,7 @@
     <string name="choose_server_button_text">בחר שרת</string>
     <string name="downloading">מוריד</string>
     <string name="media_service_car_section_artists">אומנים</string>
-    <string name="notification_action_previous">קודם</string>
+    <string name="notification_action_previous">הקודם</string>
     <string name="notification_action_fast_forward">הרץ קדימה</string>
     <string name="menu_item_none">ללא</string>
     <string name="pref_download_location">מיקום הורדה</string>
@@ -21,7 +21,7 @@
     <string name="dialog_web_view_not_supported_message">WebView לא מתמך במכשיר זה. 
 \nהתקן גרסה תואמת או החלף למכשיר נתמך.</string>
     <string name="toast_reopen_after_change">אנא פתח מחדש את האפליקציה לאחר ביצוע שינויים</string>
-    <string name="network_title">סוגי רשת מותרים</string>
+    <string name="network_title">סוגי רשת מאופשרים</string>
     <string name="media_service_generic_error">התרחשה שגיאה</string>
     <string name="media_service_car_section_genres">ז\'אנרים</string>
     <string name="notification_action_rewind">החזר לאחור</string>
@@ -41,11 +41,22 @@
     <string name="connection_error_unable_to_reach_sever">לא ניתן לגשת לשרת</string>
     <string name="dialog_button_check_for_updates">בדוק עדכונים</string>
     <string name="connection_error_unsupported_version_or_product">גרסה או מוצר לא נתמכים</string>
-    <string name="mobile_data">מתונים ניידים</string>
+    <string name="mobile_data">נתונים ניידים</string>
     <string name="media_service_car_section_albums">אלבומים</string>
     <string name="media_service_car_item_no_title">אין כותרת</string>
     <string name="notification_action_pause">השהה</string>
     <string name="playback_info_stream_unknown_title">כותרת לא ידועה</string>
     <string name="pref_category_music_player">נגן מוזיקה</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">מחוות בהירות ועוצמת קול</string>
+    <string name="mobile_data_and_roaming">נתונים ניידים ורשתות נדידה</string>
+    <string name="music_notification_channel">ג\'ליפין נגן מדיה</string>
+    <string name="media_service_item_not_found">פריט מדיה לא נמצא</string>
+    <string name="player_error_unspecific_exception">משהו השתבש עם הנגן</string>
+    <string name="button_use_different_server">השתמש בשרת אחר</string>
+    <string name="network_message">האם אתה מעוניין לאפשר הורדה על גבי נתונים סלולרים או רשתות נדידה\? יכולים להיות חיובים נוספים.</string>
+    <string name="playback_info_play_method">צורת ניגון %s</string>
+    <string name="playback_info_video_streams">שידור וידאו</string>
+    <string name="playback_info_audio_streams">שידור שמע</string>
+    <string name="connection_error_cannot_connect">אין יכולת ליצור חיבור.
+\nבדוק בבקשה את שם המארח ואת החיבור לרשת.</string>
 </resources>
