@@ -103,4 +103,6 @@
     <string name="menu_item_software_decoding">Softvérové dekódovanie</string>
     <string name="pref_subtitle_style">Prispôsobenie štýlu titulkov</string>
     <string name="pref_subtitle_style_summary">Štýl titulkov môžete zmeniť v nastaveniach systému Android</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Spustiť horizontálne videá v v orientácii na šírku</string>
+    <string name="button_use_different_server">Použiť iný server</string>
 </resources>
