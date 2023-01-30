@@ -39,7 +39,7 @@
     <string name="external_player_mx_player_pro_description">Платна версія MX Player, яка забезпечує якісне відтворення відео.</string>
     <string name="external_player_mx_player_pro">MX Player Pro</string>
     <string name="external_player_mx_player_free_description">Потужний відеоплеєр з розширеним апаратним прискоренням і підтримкою субтитрів.</string>
-    <string name="external_player_mx_player_free">MX Player Free</string>
+    <string name="external_player_mx_player_free">MX Player безкоштовно</string>
     <string name="external_player_mpv_description">Простий, невеликий і легкий безкоштовний (вільний) відеопрогравач. Він підтримує широкий спектр форматів медіафайлів.</string>
     <string name="external_player_mpv">MPV Player</string>
     <string name="external_player_app">Зовнішній програвач</string>
@@ -99,4 +99,11 @@
     <string name="menu_item_auto">Автоматичний</string>
     <string name="pref_exoplayer_direct_play_ass">Дозволити субтитри SSA/ASS у прямому відтворенні</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Заборонити перекодування та показувати субтитри лише з базовим стилем. Розширений стиль субтитрів буде недоступний, якщо цей параметр увімкнено.</string>
+    <string name="pref_subtitle_style">Налаштувати стиль субтитрів</string>
+    <string name="menu_item_hardware_decoding">Апаратне декодування</string>
+    <string name="player_error_unspecific_exception">Щось трапилось з сервером</string>
+    <string name="menu_item_software_decoding">Програмне декодування</string>
+    <string name="button_use_different_server">Використовувати інший сервер</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Почніть відео в ландшафтному режимі в альбомній орієнтації</string>
+    <string name="pref_subtitle_style_summary">Ви можете змінити стиль субтитрів у налаштуваннях Android</string>
 </resources>
