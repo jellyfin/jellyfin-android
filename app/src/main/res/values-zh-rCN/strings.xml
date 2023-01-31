@@ -102,5 +102,5 @@
     <string name="pref_subtitle_style_summary">您可以在 Android 设置中更改字幕样式</string>
     <string name="menu_item_hardware_decoding">硬件解码</string>
     <string name="menu_item_software_decoding">软件解码</string>
-    <string name="button_use_different_server">使用不同的服务器</string>
+    <string name="button_use_different_server">使用其它服务器</string>
 </resources>
