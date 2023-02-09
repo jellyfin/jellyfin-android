@@ -51,7 +51,7 @@ class ExternalPlayer(
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private val mediaSourceResolver: MediaSourceResolver by inject()
     private val deviceProfileBuilder: DeviceProfileBuilder by inject()
-    private val externalPlayerProfile: DeviceProfile = deviceProfileBuilder.getExternalPlayerProfile()
+    private val externalPlayerProfile: DeviceProfile = deviceProfileBuilder.getDeviceProfile()
     private val apiClient: ApiClient = get()
     private val videosApi: VideosApi = apiClient.videosApi
 
