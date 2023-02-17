@@ -44,7 +44,7 @@
     <string name="available_servers_title">Beschikbare servers</string>
     <string name="choose_server_button_text">Server kiezen</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Gebaren voor helderheid en volume</string>
-    <string name="external_player_mpv_description">Een simpele, kleine en gratis videospeler. Het ondersteunt een groot aantal media formaten.</string>
+    <string name="external_player_mpv_description">Een simpele, kleine en vrije videospeler, die een groot aantal mediaformaten ondersteunt.</string>
     <string name="external_player_mpv">MPV Player</string>
     <string name="external_player_app">Externe afspeelapplicatie</string>
     <string name="external_player_mx_player_pro_description">De betaalde versie van de MX Player die een ongestoorde video-ervaring aanbiedt.</string>
