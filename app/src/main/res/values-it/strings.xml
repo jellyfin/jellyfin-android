@@ -92,6 +92,7 @@
     <string name="playback_info_stream_unknown_title">Titolo sconosciuto</string>
     <plurals name="connection_error_prefix">
         <item quantity="one">Provato %d candidato per la connessione, ma senza successo.</item>
+        <item quantity="many">Provati %d candidati per la connessione, ma senza successo.</item>
         <item quantity="other">Provati %d candidati per la connessione, ma senza successo.</item>
     </plurals>
     <string name="pref_exoplayer_direct_play_ass">Permetti i sottotitoli SSA/ASS durante la Riproduzione Diretta</string>
