@@ -47,7 +47,7 @@
     <string name="external_player_mpv_description">Een simpele, kleine en vrije videospeler, die een groot aantal mediaformaten ondersteunt.</string>
     <string name="external_player_mpv">MPV Player</string>
     <string name="external_player_app">Externe afspeelapplicatie</string>
-    <string name="external_player_mx_player_pro_description">De betaalde versie van de MX Player die een ongestoorde video-ervaring aanbiedt.</string>
+    <string name="external_player_mx_player_pro_description">De betaalde versie van MX Player die een ongestoorde video-ervaring aanbiedt.</string>
     <string name="external_player_mx_player_pro">MX Player Pro</string>
     <string name="external_player_mx_player_free">MX Player Free</string>
     <string name="external_player_system_default_description">Laat het systeem kiezen welke speler te gebruiken; sommige spelers zijn niet volledig compatibel.</string>
