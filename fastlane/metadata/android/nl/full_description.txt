@@ -1,14 +1,14 @@
 Jouw media, op jouw voorwaarden.
 
-Het Jellyfin project is een open source, gratis software mediaserver. Geen kosten, geen tracking, geen verborgen doelen. Gebruik de gratis server om al je audio, video, foto's en meer op één plek op te slaan.
+Het Jellyfin-project is een open source, gratis software mediaserver. Geen kosten, geen tracking, geen verborgen agenda. Gebruik onze gratis server om al je audio, video, foto's en meer op één plek te verzamelen.
 
-Om de app te gebruiken, moet je een Jellyfin server draaiend hebben. Voor meer informatie ga naar <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
+Om de app te gebruiken, moet je een Jellyfin-server hebben opgezet en draaiend hebben. Meer informatie vind je op <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
 
-Met een Jellyfin server kan je:
+Met een Jellyfin-server kun je:
 
-* Live TV en opgenomen programma's bekijken vanaf je Jellyfin server (extra hardware / diensten nodig)
-* Streamen naar een Chromecast apparaat in je netwerk
-* Jouw media streamen naar je Android toestel
-* Jouw mediacollectie in een overzichtelijke interface bekijken
+* Live-tv kijken en opgenomen shows bekijken vanaf jouw Jellyfin-server (extra hardware/diensten vereist)
+* Streamen naar een Chromecast-apparaat op jouw netwerk
+* Je media streamen naar je Android-apparaat
+* Je collectie bekijken in een eenvoudig te gebruiken interface
 
-Dit is de officiële Jellyfin app voor Android. Bedankt voor het gebruiken van Jellyfin!
+Dit is de officiële Jellyfin-app voor Android. Bedankt voor het gebruiken van Jellyfin!
