@@ -94,4 +94,10 @@
     <string name="pref_exoplayer_remember_brightness">Recordar el brillo del display</string>
     <string name="playback_info_stream_unknown_title">Título desconocido</string>
     <string name="video_player_integrated">Reproductor Integrado</string>
+    <string name="menu_item_hardware_decoding">Decodificación por hardware</string>
+    <string name="menu_item_auto">Automático</string>
+    <string name="button_use_different_server">Usar un servidor diferente</string>
+    <string name="player_error_unspecific_exception">Algo salió mal con el reproductor</string>
+    <string name="menu_item_software_decoding">Decodificación por software</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Iniciar videos horizontales en orientación horizontal</string>
 </resources>
