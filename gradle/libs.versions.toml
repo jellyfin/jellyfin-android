@@ -61,7 +61,7 @@ junit = "5.9.2"
 kotest = "5.5.4"
 mockk = "1.13.3"
 androidx-test-runner = "1.5.2"
-androidx-test-espresso = "3.5.0"
+androidx-test-espresso = "3.5.1"
 
 [plugins]
 android-app = { id = "com.android.application", version.ref = "android-plugin" }
