@@ -35,6 +35,7 @@ object Constants {
     const val PREF_VIDEO_PLAYER_TYPE = "pref_video_player_type"
     const val PREF_EXOPLAYER_START_LANDSCAPE_VIDEO_IN_LANDSCAPE = "pref_exoplayer_start_landscape_video_in_landscape"
     const val PREF_EXOPLAYER_ALLOW_SWIPE_GESTURES = "pref_exoplayer_allow_swipe_gestures"
+    const val PREF_EXOPLAYER_SWIPE_GESTURE_EXCLUSION_SIZE_VERTICAL = "pref_exoplayer_swipe_exclusion_size_vertical"
     const val PREF_EXOPLAYER_REMEMBER_BRIGHTNESS = "pref_exoplayer_remember_brightness"
     const val PREF_EXOPLAYER_BRIGHTNESS = "pref_exoplayer_brightness"
     const val PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO = "pref_exoplayer_allow_background_audio"
@@ -101,7 +102,6 @@ object Constants {
     const val TICKS_PER_MILLISECOND = 10000
     const val PLAYER_TIME_UPDATE_RATE = 10000L
     const val DEFAULT_CONTROLS_TIMEOUT_MS = 2500
-    const val SWIPE_GESTURE_EXCLUSION_SIZE_VERTICAL = 64
     const val DEFAULT_CENTER_OVERLAY_TIMEOUT_MS = 250
     const val DISPLAY_PREFERENCES_ID_USER_SETTINGS = "usersettings"
     const val DISPLAY_PREFERENCES_CLIENT_EMBY = "emby"
