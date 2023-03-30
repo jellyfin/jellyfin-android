@@ -1,1 +1,1 @@
-Client mobil pentru Jellyfin, sistemul software media gratuit
+Aplicația pentru mobil Jellyfin, sistemul de conținut media gratuit
