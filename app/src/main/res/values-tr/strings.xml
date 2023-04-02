@@ -94,4 +94,10 @@
     <string name="connect_to_server_title">Sunucuya Bağlan</string>
     <string name="toast_reopen_after_change">Değişikliklerin ardından uygulamayı kapatıp açın</string>
     <string name="dialog_button_ignore">Göz ardı et</string>
+    <string name="player_error_unspecific_exception">Oynatıcıda bir şeyler yanlış gitti.</string>
+    <string name="menu_item_hardware_decoding">Donanım tabanlı kod çözme</string>
+    <string name="menu_item_software_decoding">Yazılım tabanlı kod çözme</string>
+    <string name="button_use_different_server">Farklı bir sunucu kullanın</string>
+    <string name="menu_item_auto">Otomatik</string>
+    <string name="pref_exoplayer_direct_play_ass">Direkt oynatma için SSA/ASS altyazıları kabul et</string>
 </resources>
