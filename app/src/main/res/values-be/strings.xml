@@ -1,2 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="dialog_button_open_settings">Адкрыйце налады</string>
+    <string name="toast_reopen_after_change">Калі ласка, зноў адкрыйце праграму пасля ўнясення змяненняў</string>
+    <string name="dialog_button_check_for_updates">Праверце наяўнасць абнаўленняў</string>
+    <string name="connection_error_unable_to_reach_sever">Немагчыма звязацца з серверам</string>
+    <string name="connection_error_unsupported_version_or_product">Версія або прадукт не падтрымліваецца</string>
+    <string name="choose_server_button_text">Выберыце сервер</string>
+    <string name="button_use_different_server">Выкарыстоўвайце іншы сервер</string>
+    <string name="battery_optimizations_message">Калі ласка, адключыце аптымізацыю батарэі для прайгравання мультымедыя пры выключаным экране.</string>
+    <string name="network_message">Вы хочаце дазволіць спампоўку праз мабільную перадачу даных або сетку ў роўмінгу\? Ваш правайдэр можа спаганяць плату.</string>
+    <string name="mobile_data">Мабільныя дадзеныя</string>
+    <string name="download_no_storage_permission">Немагчыма загрузіць файлы без дазволу на захоўванне</string>
+    <string name="media_service_car_section_recents">Нядаўна прайгравалася</string>
+    <string name="media_service_car_section_songs">Песні</string>
+    <string name="music_notification_channel">Музычны прайгравальнік Jellyfin</string>
+    <string name="media_service_car_section_artists">Выканаўцы</string>
+    <string name="notification_action_next">Далей</string>
+    <string name="external_player_mx_player_pro">MX Player Pro</string>
+    <string name="external_player_mpv">MPV Player</string>
+    <string name="pref_subtitle_style">Наладзьце стыль субтытраў</string>
+    <string name="external_player_vlc_player_description">Бясплатны мультымедыйны прайгравальнік з адкрытым зыходным кросплатформенным кодам, які прайгравае большасць мультымедыйных файлаў.</string>
+    <string name="pref_exoplayer_allow_background_audio">Фонавае аўдыё</string>
+    <string name="playback_info_stream_unknown_title">Невядомая назва</string>
+    <string name="playback_info_play_method">Спосаб прайгравання: %s</string>
+    <string name="playback_info_audio_streams">Аўдыё патокі</string>
+    <string name="menu_item_none">Няма</string>
+    <string name="menu_item_hardware_decoding">Апаратнае дэкадаванне</string>
+    <string name="external_player_invalid_play_method">Няправільны метад прайгравання.</string>
+    <string name="video_player_web">Вэб-плэер</string>
+    <string name="video_player_integrated">Інтэграваны плэер</string>
+    <string name="video_player_web_description">Відэаплэер HTML па змаўчанні з вэб-інтэрфейсу</string>
+    <string name="video_player_native_description">Заснаваны на ExoPlayer, падтрымлівае больш відэафарматаў і кодэкаў і больш інтэграваны ў АС</string>
+    <string name="video_player_external_description">Знешнія праграмы для прайгравання відэа, такія як MX Player і VLC</string>
+    <string name="pref_exoplayer_remember_brightness">Запомніць яркасць дысплея</string>
+    <string name="dialog_web_view_not_supported">WebView не падтрымліваецца</string>
+    <string name="dialog_web_view_not_supported_message">WebViews не падтрымліваюцца гэтай прыладай.
+\nУсталюйце сумяшчальную рэалізацыю WebView або пераключыцеся на прыладу, якая падтрымліваецца.</string>
+    <string name="dialog_web_view_outdated_message">Рэалізацыя WebView, якая выкарыстоўваецца вашай прыладай, састарэла.
+\nКалі ласка, абнавіце яго да сумяшчальнай версіі.</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Спрабаваў %d кандыдат для ўводу, але беспаспяхова.</item>
+        <item quantity="few">Спрабаваў %d кандыдатаў для ўводу, але беспаспяхова.</item>
+        <item quantity="many">Спрабаваў %d кандыдатаў для ўводу, але беспаспяхова.</item>
+        <item quantity="other">Спрабаваў %d кандыдатаў для ўводу, але беспаспяхова.</item>
+    </plurals>
+    <string name="connection_error_cannot_connect">Немагчыма ўсталяваць злучэнне.
+\nКалі ласка, праверце імя вузла і падключэнне да сеткі.</string>
+    <string name="notification_action_rewind">Перамотаць назад</string>
+    <string name="player_error_invalid_play_options">Немагчыма атрымаць інфармацыю аб прайграванні</string>
+    <string name="player_error_unsupported_content">Медыя не можа прайгравацца на гэтай прыладзе</string>
+    <string name="dialog_web_view_outdated">WebView састарэў</string>
+    <string name="dialog_button_ignore">Ігнараваць</string>
+    <string name="dialog_button_close_app">Зачыніце праграму</string>
+    <string name="connect_to_server_title">Падлучыцца да сервера</string>
+    <string name="host_input_hint">Хост</string>
+    <string name="connect_button_text">Злучыцца</string>
+    <string name="available_servers_title">Даступныя серверы</string>
+    <string name="network_title">Дазволеныя тыпы сетак</string>
+    <string name="wifi_only">Толькі WiFi</string>
+    <string name="mobile_data_and_roaming">Мабільныя дадзеныя і роўмінг</string>
+    <string name="downloading">Ідзе загрузка</string>
+    <string name="media_service_generic_error">Адбылася памылка</string>
+    <string name="media_service_item_not_found">Медыяэлемент не знойдзены</string>
+    <string name="media_service_car_section_albums">Альбомы</string>
+    <string name="media_service_car_section_genres">Жанры</string>
+    <string name="media_service_car_section_playlists">Плэйлісты</string>
+    <string name="media_service_car_item_no_title">Без назвы</string>
+    <string name="music_notification_channel_description">Выкарыстоўваецца для кіравання прайграваннем музыкі</string>
+    <string name="notification_action_previous">Папярэдні</string>
+    <string name="notification_action_play">Прайграць</string>
+    <string name="notification_action_pause">Паўза</string>
+    <string name="notification_action_stop">Стоп</string>
+    <string name="notification_action_fast_forward">Перамотка наперад</string>
+    <string name="player_error_network_failure">Немагчыма загрузіць медыя-інфармацыю з сервера</string>
+    <string name="player_error_unspecific_exception">Нешта пайшло не так з прайгравальнікам</string>
+    <string name="playback_info_transcoding">Транскадзіроўка: %b</string>
+    <string name="playback_info_video_streams">Відэа патокі</string>
+    <string name="playback_info_and_x_more">…і яшчэ %d</string>
+    <string name="menu_item_auto">Аўто</string>
+    <string name="menu_item_software_decoding">Праграмнае дэкадаванне</string>
+    <string name="video_player_external">Знешні плэер</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Рэгулявання яркасці і гучнасці</string>
+    <string name="external_player_mx_player_free">MX Player Free</string>
+    <string name="external_player_vlc_player">VLC Player</string>
+    <string name="external_player_system_default">Сістэма па змаўчанні</string>
+    <string name="pref_download_location">Месца загрузкі</string>
+    <string name="pref_category_downloads">Загрузкі</string>
+    <string name="pref_subtitle_style_summary">Вы можаце змяніць стыль субтытраў у наладах Android</string>
+</resources>
