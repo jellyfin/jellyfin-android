@@ -4,28 +4,26 @@ import android.net.Uri
 import androidx.annotation.CheckResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.MergingMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayOptions
+import org.jellyfin.mobile.player.source.ExternalSubtitleStream
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.utils.Constants
-import org.jellyfin.mobile.utils.clearSelectionAndDisableRendererByType
-import org.jellyfin.mobile.utils.selectTrackByTypeAndGroup
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.videosApi
 import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.model.api.MediaProtocol
 import org.jellyfin.sdk.model.api.MediaStream
+import org.jellyfin.sdk.model.api.MediaStreamType
 import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import org.koin.core.component.KoinComponent
@@ -35,7 +33,6 @@ import java.util.UUID
 
 class QueueManager(
     private val viewModel: PlayerViewModel,
-    private val trackSelector: DefaultTrackSelector,
 ) : KoinComponent {
     private val apiClient: ApiClient = get()
     private val videosApi: VideosApi = apiClient.videosApi
@@ -171,7 +168,7 @@ class QueueManager(
     @CheckResult
     private fun prepareStreams(source: JellyfinMediaSource): MediaSource {
         val videoSource = createVideoMediaSource(source)
-        val subtitleSources = createSubtitleMediaSources(source)
+        val subtitleSources = createExternalSubtitleMediaSources(source)
         return when {
             subtitleSources.isNotEmpty() -> MergingMediaSource(videoSource, *subtitleSources)
             else -> videoSource
@@ -248,150 +245,39 @@ class QueueManager(
      * @return The parsed MediaSources for the subtitles.
      */
     @CheckResult
-    private fun createSubtitleMediaSources(
+    private fun createExternalSubtitleMediaSources(
         source: JellyfinMediaSource,
     ): Array<MediaSource> {
         val factory = get<SingleSampleMediaSource.Factory>()
-        return source.getExternalSubtitleStreams().map { stream ->
+        return source.externalSubtitleStreams.map { stream ->
             val uri = Uri.parse(apiClient.createUrl(stream.deliveryUrl))
             val mediaItem = MediaItem.SubtitleConfiguration.Builder(uri).apply {
-                setId(stream.index.toString())
+                setId("${ExternalSubtitleStream.ID_PREFIX}${stream.index}")
                 setLabel(stream.displayTitle)
                 setMimeType(stream.mimeType)
                 setLanguage(stream.language)
-                setSelectionFlags(C.SELECTION_FLAG_AUTOSELECT)
             }.build()
             factory.createMediaSource(mediaItem, source.runTimeMs)
         }.toTypedArray()
     }
 
-    fun selectInitialTracks() {
-        val mediaSource = currentMediaSource ?: return
-        selectAudioTrack(mediaSource, mediaSource.selectedAudioStream?.index ?: -1, initial = true)
-        selectSubtitle(mediaSource, mediaSource.selectedSubtitleStream?.index ?: -1, initial = true)
-    }
-
     /**
-     * Select an audio track in the media source and apply changes to the current player.
+     * Switch to the specified [audio stream][stream] and restart playback, for example while transcoding.
      *
-     * @param streamIndex the [MediaStream.index] that should be selected
-     * @return true if the audio track was changed
+     * @return true if playback was restarted with the new selection.
      */
-    suspend fun selectAudioTrack(streamIndex: Int): Boolean {
-        val mediaSource = currentMediaSource ?: return false
+    suspend fun selectAudioStreamAndRestartPlayback(stream: MediaStream): Boolean {
+        require(stream.type == MediaStreamType.AUDIO)
+        val currentPlayOptions = currentPlayOptions ?: return false
+        val currentPlayState = viewModel.getStateAndPause() ?: return false
 
-        return when (mediaSource.playMethod) {
-            // For transcoding playback, special handling is required
-            PlayMethod.TRANSCODE -> {
-                val currentPlayOptions = currentPlayOptions ?: return false
-                val currentPlayState = viewModel.getStateAndPause() ?: return false
+        val playOptions = currentPlayOptions.copy(
+            startPositionTicks = currentPlayState.position * Constants.TICKS_PER_MILLISECOND,
+            audioStreamIndex = stream.index,
+        )
 
-                val playOptions = currentPlayOptions.copy(
-                    startPositionTicks = currentPlayState.position * Constants.TICKS_PER_MILLISECOND,
-                    audioStreamIndex = streamIndex,
-                )
-                startPlayback(playOptions, currentPlayState.playWhenReady)
-
-                // Player menus will be updated after playback started
-                false
-            }
-            else -> selectAudioTrack(mediaSource, streamIndex, initial = false)
-        }
-    }
-
-    /**
-     * @param initial whether this is an initial selection and checks for re-selection should be skipped.
-     * @see selectAudioTrack
-     */
-    @Suppress("ReturnCount")
-    private fun selectAudioTrack(mediaSource: JellyfinMediaSource, streamIndex: Int, initial: Boolean): Boolean {
-        if (mediaSource.playMethod == PlayMethod.TRANSCODE) {
-            return when {
-                initial -> true
-                else -> error("Selecting audio tracks in ExoPlayer isn't supported while transcoding")
-            }
-        }
-        val sourceIndex = mediaSource.audioStreams.indexOfFirst { stream -> stream.index == streamIndex }
-
-        when {
-            // Fast-pass: Skip execution on subsequent calls with the correct selection or if only one track exists
-            mediaSource.audioStreams.size == 1 || !initial && streamIndex == mediaSource.selectedAudioStream?.index -> return true
-            // Apply selection in media source, abort on failure
-            !mediaSource.selectAudioStream(sourceIndex) -> return false
-        }
-
-        return trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_AUDIO, sourceIndex)
-    }
-
-    /**
-     * Select a subtitle track in the media source and apply changes to the current player.
-     *
-     * @param streamIndex the [MediaStream.index] that should be selected
-     * @return true if the subtitle was changed
-     */
-    suspend fun selectSubtitle(streamIndex: Int): Boolean {
-        val mediaSource = currentMediaSource ?: return false
-
-        return when (mediaSource.playMethod) {
-            // For transcoding playback, special handling is required
-            PlayMethod.TRANSCODE -> {
-                val currentPlayOptions = currentPlayOptions ?: return false
-                val currentPlayState = viewModel.getStateAndPause() ?: return false
-
-                val playOptions = currentPlayOptions.copy(
-                    startPositionTicks = currentPlayState.position * Constants.TICKS_PER_MILLISECOND,
-                    subtitleStreamIndex = streamIndex,
-                )
-                startPlayback(playOptions, currentPlayState.playWhenReady)
-
-                // Player menus will be updated after playback started
-                false
-            }
-            else -> selectSubtitle(mediaSource, streamIndex, initial = false)
-        }
-    }
-
-    /**
-     * @param initial whether this is an initial selection and checks for re-selection should be skipped.
-     * @see selectSubtitle
-     */
-    private fun selectSubtitle(mediaSource: JellyfinMediaSource, streamIndex: Int, initial: Boolean): Boolean {
-        if (mediaSource.playMethod == PlayMethod.TRANSCODE) {
-            return when {
-                initial -> true
-                else -> error("Selecting subtitle tracks in ExoPlayer isn't supported while transcoding")
-            }
-        }
-        val sourceIndex = mediaSource.subtitleStreams.indexOfFirst { stream -> stream.index == streamIndex }
-
-        when {
-            // Fast-pass: Skip execution on subsequent calls with the correct selection
-            !initial && streamIndex == mediaSource.selectedSubtitleStream?.index -> return true
-            // Apply selection in media source, abort on failure
-            !mediaSource.selectSubtitleStream(sourceIndex) -> return false
-        }
-
-        return when {
-            // Select new subtitle with suitable renderer
-            sourceIndex >= 0 -> trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_TEXT, sourceIndex)
-            // No subtitle selected, clear selection overrides and disable all subtitle renderers
-            else -> trackSelector.clearSelectionAndDisableRendererByType(C.TRACK_TYPE_TEXT)
-        }
-    }
-
-    /**
-     * Toggle subtitles, selecting the first by [MediaStream.index] if there are multiple.
-     *
-     * @return true if subtitles are enabled now, false if not
-     */
-    suspend fun toggleSubtitles(): Boolean {
-        val mediaSource = currentMediaSource ?: return false
-        val newSubtitleIndex = when (mediaSource.selectedSubtitleStream) {
-            null -> mediaSource.subtitleStreams.firstOrNull()?.index ?: -1
-            else -> -1
-        }
-        selectSubtitle(newSubtitleIndex)
-        return mediaSource.selectedSubtitleStream != null
+        startPlayback(playOptions, currentPlayState.playWhenReady)
+        return true
     }
 
     sealed class QueueItem {

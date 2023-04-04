@@ -105,27 +105,33 @@ class PlayerMenus(
         nextButton.isEnabled = queueItem.hasNext()
 
         val mediaSource = queueItem.jellyfinMediaSource
+
+        val videoStream = mediaSource.selectedVideoStream
+
+        val audioStreams = mediaSource.audioStreams
+        buildMenuItems(
+            audioStreamsMenu.menu,
+            AUDIO_MENU_GROUP,
+            audioStreams,
+            mediaSource.selectedAudioStream,
+        )
+
+        val subtitleStreams = mediaSource.subtitleStreams
         val selectedSubtitleStream = mediaSource.selectedSubtitleStream
         buildMenuItems(
             subtitlesMenu.menu,
             SUBTITLES_MENU_GROUP,
-            mediaSource.subtitleStreams,
+            subtitleStreams,
             selectedSubtitleStream,
             true,
         )
-        buildMenuItems(
-            audioStreamsMenu.menu,
-            AUDIO_MENU_GROUP,
-            mediaSource.audioStreams,
-            mediaSource.selectedAudioStream,
-        )
-        subtitleCount = mediaSource.subtitleStreams.size
+        subtitleCount = subtitleStreams.size
         subtitlesEnabled = selectedSubtitleStream != null
 
         updateSubtitlesButton()
 
-        val height = mediaSource.selectedVideoStream?.height
-        val width = mediaSource.selectedVideoStream?.width
+        val height = videoStream?.height
+        val width = videoStream?.width
         if (height != null && width != null) {
             buildQualityMenu(qualityMenu.menu, mediaSource.maxStreamingBitrate, width, height)
         } else {
@@ -134,7 +140,7 @@ class PlayerMenus(
 
         val playMethod = context.getString(R.string.playback_info_play_method, mediaSource.playMethod)
         val videoTracksInfo = buildMediaStreamsInfo(
-            mediaStreams = mediaSource.videoStreams,
+            mediaStreams = listOfNotNull(videoStream),
             prefix = R.string.playback_info_video_streams,
             maxStreams = MAX_VIDEO_STREAMS_DISPLAY,
             streamSuffix = { stream ->
@@ -142,7 +148,7 @@ class PlayerMenus(
             },
         )
         val audioTracksInfo = buildMediaStreamsInfo(
-            mediaStreams = mediaSource.audioStreams,
+            mediaStreams = audioStreams,
             prefix = R.string.playback_info_audio_streams,
             maxStreams = MAX_AUDIO_STREAMS_DISPLAY,
             streamSuffix = { stream ->
@@ -277,20 +283,18 @@ class PlayerMenus(
             showNone -> menu.add(groupId, -1, Menu.NONE, fragment.getString(R.string.menu_item_none))
             else -> null
         }
+        var selectedItem: MenuItem? = itemNone
         val menuItems = mediaStreams.map { mediaStream ->
-            menu.add(groupId, mediaStream.index, Menu.NONE, mediaStream.displayTitle)
+            val title = mediaStream.displayTitle ?: "${mediaStream.language} (${mediaStream.codec})"
+            menu.add(groupId, mediaStream.index, Menu.NONE, title).also { item ->
+                if (mediaStream === selectedStream) {
+                    selectedItem = item
+                }
+            }
         }
         menu.setGroupCheckable(groupId, true, true)
-        val selected = when {
-            selectedStream != null -> mediaStreams.indexOfFirst { stream -> stream.index == selectedStream.index }
-            else -> -1
-        }
-        if (selected >= 0) {
-            menuItems[selected].isChecked = true
-        } else {
-            // No selection, check "none" or first item if possible
-            (itemNone ?: menuItems.firstOrNull())?.isChecked = true
-        }
+        // Check selected item or first item if possible
+        (selectedItem ?: menuItems.firstOrNull())?.isChecked = true
     }
 
     private fun updateSubtitlesButton() {

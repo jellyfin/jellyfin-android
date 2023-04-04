@@ -30,7 +30,6 @@ import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.videosApi
 import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.model.api.DeviceProfile
-import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import org.json.JSONArray
@@ -159,11 +158,10 @@ class ExternalPlayer(
         }
 
         // Select correct subtitle
-        val selectedSubtitleIndex = source.subtitleStreams.binarySearchBy(
-            playOptions.subtitleStreamIndex,
-            selector = MediaStream::index,
-        )
-        source.selectSubtitleStream(selectedSubtitleIndex)
+        val selectedSubtitleStream = playOptions.subtitleStreamIndex?.let { index ->
+            source.mediaStreams.getOrNull(index)
+        }
+        source.selectSubtitleStream(selectedSubtitleStream)
 
         // Build playback intent
         val playerIntent = Intent(Intent.ACTION_VIEW).apply {
@@ -176,7 +174,7 @@ class ExternalPlayer(
             putExtra("return_result", true)
             putExtra("secure_uri", true)
 
-            val externalSubs = source.getExternalSubtitleStreams()
+            val externalSubs = source.externalSubtitleStreams
             val enabledSubUrl = when {
                 source.selectedSubtitleStream != null -> {
                     externalSubs.find { stream -> stream.index == source.selectedSubtitleStream?.index }?.let { sub ->
