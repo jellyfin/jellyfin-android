@@ -7,6 +7,7 @@ import org.jellyfin.sdk.model.api.MediaSourceInfo
 import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.MediaStreamType
 import org.jellyfin.sdk.model.api.PlayMethod
+import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
 import java.util.UUID
 
 class JellyfinMediaSource(
@@ -37,10 +38,10 @@ class JellyfinMediaSource(
     val runTimeTicks: Long = sourceInfo.runTimeTicks ?: 0
     val runTimeMs: Long = runTimeTicks / Constants.TICKS_PER_MILLISECOND
 
-    private val mediaStreams: List<MediaStream> = sourceInfo.mediaStreams.orEmpty()
-    val videoStreams: List<MediaStream>
+    val mediaStreams: List<MediaStream> = sourceInfo.mediaStreams.orEmpty()
     val audioStreams: List<MediaStream>
     val subtitleStreams: List<MediaStream>
+    val externalSubtitleStreams: List<ExternalSubtitleStream>
 
     var selectedVideoStream: MediaStream? = null
         private set
@@ -51,71 +52,106 @@ class JellyfinMediaSource(
 
     init {
         // Classify MediaStreams
-        val video = ArrayList<MediaStream>()
         val audio = ArrayList<MediaStream>()
-        val subtitle = ArrayList<MediaStream>()
+        val subtitles = ArrayList<MediaStream>()
+        val externalSubtitles = ArrayList<ExternalSubtitleStream>()
         for (mediaStream in mediaStreams) {
             when (mediaStream.type) {
-                MediaStreamType.VIDEO -> video += mediaStream
+                MediaStreamType.VIDEO -> {
+                    // Always select the first available video stream
+                    if (selectedVideoStream == null) {
+                        selectedVideoStream = mediaStream
+                    }
+                }
                 MediaStreamType.AUDIO -> {
                     audio += mediaStream
-                    if (mediaStream.index == audioStreamIndex ?: sourceInfo.defaultAudioStreamIndex) {
+                    if (mediaStream.index == (audioStreamIndex ?: sourceInfo.defaultAudioStreamIndex)) {
                         selectedAudioStream = mediaStream
                     }
                 }
                 MediaStreamType.SUBTITLE -> {
-                    subtitle += mediaStream
-                    if (mediaStream.index == subtitleStreamIndex ?: sourceInfo.defaultSubtitleStreamIndex) {
+                    subtitles += mediaStream
+                    if (mediaStream.index == (subtitleStreamIndex ?: sourceInfo.defaultSubtitleStreamIndex)) {
                         selectedSubtitleStream = mediaStream
                     }
+
+                    // External subtitles as specified by the deliveryMethod.
+                    // It is set to external either for external subtitle files or when transcoding.
+                    // In the latter case, subtitles are extracted from the source file by the server.
+                    if (mediaStream.deliveryMethod == SubtitleDeliveryMethod.EXTERNAL) {
+                        val deliveryUrl = mediaStream.deliveryUrl
+                        val mimeType = CodecHelpers.getSubtitleMimeType(mediaStream.codec)
+                        if (deliveryUrl != null && mimeType != null) {
+                            externalSubtitles += ExternalSubtitleStream(
+                                index = mediaStream.index,
+                                deliveryUrl = deliveryUrl,
+                                mimeType = mimeType,
+                                displayTitle = mediaStream.displayTitle.orEmpty(),
+                                language = mediaStream.language ?: Constants.LANGUAGE_UNDEFINED,
+                            )
+                        }
+                    }
                 }
-                MediaStreamType.EMBEDDED_IMAGE,
                 MediaStreamType.DATA,
+                MediaStreamType.EMBEDDED_IMAGE,
                 -> Unit // ignore
             }
         }
 
-        // Sort results
-        video.sortBy(MediaStream::index)
-        audio.sortBy(MediaStream::index)
-        subtitle.sortBy(MediaStream::index)
-
-        // Apply
-        videoStreams = video
         audioStreams = audio
-        subtitleStreams = subtitle
-
-        selectedVideoStream = videoStreams.firstOrNull()
+        subtitleStreams = subtitles
+        externalSubtitleStreams = externalSubtitles
     }
 
-    fun selectAudioStream(sourceIndex: Int): Boolean {
-        // Ensure selected index exists in audio streams
-        if (sourceIndex !in audioStreams.indices) {
+    /**
+     * Select the specified [audio stream][stream] in the source.
+     *
+     * @param stream The stream to select.
+     * @return true if the stream was found and selected, false otherwise.
+     */
+    fun selectAudioStream(stream: MediaStream): Boolean {
+        require(stream.type == MediaStreamType.AUDIO)
+        if (mediaStreams[stream.index] !== stream) {
             return false
         }
 
-        selectedAudioStream = audioStreams[sourceIndex]
+        selectedAudioStream = stream
         return true
     }
 
-    fun selectSubtitleStream(sourceIndex: Int): Boolean {
-        // "Illegal" selections disable subtitles
-        selectedSubtitleStream = subtitleStreams.getOrNull(sourceIndex)
-        return true
-    }
-
-    fun getExternalSubtitleStreams(): List<ExternalSubtitleStream> = subtitleStreams.mapNotNull { stream ->
-        val mimeType = CodecHelpers.getSubtitleMimeType(stream.codec)
-        if (stream.isExternal && stream.deliveryUrl != null && mimeType != null) {
-            ExternalSubtitleStream(
-                index = stream.index,
-                deliveryUrl = stream.deliveryUrl!!,
-                mimeType = mimeType,
-                displayTitle = stream.displayTitle.orEmpty(),
-                language = stream.language ?: Constants.LANGUAGE_UNDEFINED,
-            )
-        } else {
-            null
+    /**
+     * Select the specified [subtitle stream][stream] in the source.
+     *
+     * @param stream The stream to select, or null to disable subtitles.
+     * @return true if the stream was found and selected, false otherwise.
+     */
+    fun selectSubtitleStream(stream: MediaStream?): Boolean {
+        if (stream == null) {
+            selectedSubtitleStream = null
+            return true
         }
+
+        require(stream.type == MediaStreamType.SUBTITLE)
+        if (mediaStreams[stream.index] !== stream) {
+            return false
+        }
+
+        selectedSubtitleStream = stream
+        return true
+    }
+
+    /**
+     * Returns the index of the media stream within the embedded streams.
+     * Useful for handling track selection in ExoPlayer, where embedded streams are mapped first.
+     */
+    fun getEmbeddedStreamIndex(mediaStream: MediaStream): Int {
+        var index = 0
+        for (stream in mediaStreams) {
+            when {
+                stream === mediaStream -> return index
+                !stream.isExternal -> index++
+            }
+        }
+        throw IllegalArgumentException("Invalid media stream")
     }
 }

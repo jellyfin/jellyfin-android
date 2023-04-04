@@ -256,7 +256,7 @@ class PlayerFragment : Fragment() {
      * @param callback called if track selection was successful and UI needs to be updated
      */
     fun onAudioTrackSelected(index: Int, callback: TrackSelectionCallback): Job = lifecycleScope.launch {
-        if (viewModel.selectAudioTrack(index)) {
+        if (viewModel.trackSelectionHelper.selectAudioTrack(index)) {
             callback.onTrackSelected(true)
         }
     }
@@ -265,7 +265,7 @@ class PlayerFragment : Fragment() {
      * @param callback called if track selection was successful and UI needs to be updated
      */
     fun onSubtitleSelected(index: Int, callback: TrackSelectionCallback): Job = lifecycleScope.launch {
-        if (viewModel.selectSubtitle(index)) {
+        if (viewModel.trackSelectionHelper.selectSubtitleTrack(index)) {
             callback.onTrackSelected(true)
         }
     }
@@ -276,7 +276,7 @@ class PlayerFragment : Fragment() {
      * @return true if subtitles are enabled now, false if not
      */
     fun toggleSubtitles(callback: TrackSelectionCallback) = lifecycleScope.launch {
-        callback.onTrackSelected(viewModel.mediaQueueManager.toggleSubtitles())
+        callback.onTrackSelected(viewModel.trackSelectionHelper.toggleSubtitles())
     }
 
     fun onBitrateChanged(bitrate: Int?, callback: TrackSelectionCallback) = lifecycleScope.launch {

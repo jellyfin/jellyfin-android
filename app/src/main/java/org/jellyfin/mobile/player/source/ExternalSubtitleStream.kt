@@ -6,4 +6,8 @@ data class ExternalSubtitleStream(
     val mimeType: String,
     val displayTitle: String,
     val language: String,
-)
+) {
+    companion object {
+        const val ID_PREFIX = "external:"
+    }
+}

@@ -87,7 +87,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
     // Media source handling
     private val trackSelector = DefaultTrackSelector(getApplication())
-    val mediaQueueManager = QueueManager(this, trackSelector)
+    val trackSelectionHelper = TrackSelectionHelper(this, trackSelector)
+    val mediaQueueManager = QueueManager(this)
     val mediaSourceOrNull: JellyfinMediaSource?
         get() = mediaQueueManager.mediaQueue.value?.jellyfinMediaSource
 
@@ -435,22 +436,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         return PlayState(playWhenReady, position)
     }
 
-    /**
-     * @see QueueManager.selectAudioTrack
-     */
-    suspend fun selectAudioTrack(streamIndex: Int): Boolean {
-        return mediaQueueManager.selectAudioTrack(streamIndex).also { success ->
-            if (success) playerOrNull?.logTracks(analyticsCollector)
-        }
-    }
-
-    /**
-     * @see QueueManager.selectSubtitle
-     */
-    suspend fun selectSubtitle(streamIndex: Int): Boolean {
-        return mediaQueueManager.selectSubtitle(streamIndex).also { success ->
-            if (success) playerOrNull?.logTracks(analyticsCollector)
-        }
+    fun logTracks() {
+        playerOrNull?.logTracks(analyticsCollector)
     }
 
     suspend fun changeBitrate(bitrate: Int?): Boolean {
@@ -497,7 +484,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         // Initialise various components
         if (playbackState == Player.STATE_READY) {
             if (!initialTracksSelected.getAndSet(true)) {
-                mediaQueueManager.selectInitialTracks()
+                trackSelectionHelper.selectInitialTracks()
             }
             mediaSession.isActive = true
             notificationHelper.postNotification()
