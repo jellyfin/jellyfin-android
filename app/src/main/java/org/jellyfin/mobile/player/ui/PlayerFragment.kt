@@ -290,6 +290,10 @@ class PlayerFragment : Fragment() {
         return viewModel.setPlaybackSpeed(speed)
     }
 
+    fun onPressSpeedUp(isPressing: Boolean): Boolean {
+        return viewModel.setPressSpeedUp(isPressing, 3f)
+    }
+
     fun onDecoderSelected(type: DecoderType) {
         viewModel.updateDecoderType(type)
     }
