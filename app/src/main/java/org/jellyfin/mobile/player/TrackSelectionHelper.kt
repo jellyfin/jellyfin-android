@@ -86,6 +86,15 @@ class TrackSelectionHelper(
         val selectedMediaStream = mediaSource.mediaStreams.getOrNull(mediaStreamIndex)
         require(selectedMediaStream == null || selectedMediaStream.type == MediaStreamType.SUBTITLE)
 
+        // If the selected subtitle stream requires encoding or the current subtitle is baked into the stream,
+        // we need to restart playback
+        if (
+            selectedMediaStream?.deliveryMethod == SubtitleDeliveryMethod.ENCODE ||
+            mediaSource.selectedSubtitleStream?.deliveryMethod == SubtitleDeliveryMethod.ENCODE
+        ) {
+            return viewModel.mediaQueueManager.selectSubtitleStreamAndRestartPlayback(selectedMediaStream)
+        }
+
         return selectSubtitleTrack(mediaSource, selectedMediaStream, initial = false).also { success ->
             if (success) viewModel.logTracks()
         }
@@ -115,6 +124,11 @@ class TrackSelectionHelper(
 
         val player = viewModel.playerOrNull ?: return false
         when (subtitleStream.deliveryMethod) {
+            SubtitleDeliveryMethod.ENCODE -> {
+                // Normally handled in selectSubtitleTrack(int) by restarting playback,
+                // initial selection is always considered successful
+                return true
+            }
             SubtitleDeliveryMethod.EMBED -> {
                 // For embedded subtitles, we can match by the index of this stream in all embedded streams.
                 val embeddedStreamIndex = mediaSource.getEmbeddedStreamIndex(subtitleStream)
@@ -147,6 +161,7 @@ class TrackSelectionHelper(
             else -> -1
         }
         selectSubtitleTrack(newSubtitleIndex)
-        return mediaSource.selectedSubtitleStream != null
+        // Media source may have changed by now
+        return mediaSourceOrNull?.selectedSubtitleStream != null
     }
 }
