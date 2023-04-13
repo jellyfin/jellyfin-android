@@ -280,6 +280,27 @@ class QueueManager(
         return true
     }
 
+    /**
+     * Switch to the specified [subtitle stream][stream] and restart playback,
+     * for example because the selected subtitle has to be encoded into the video.
+     *
+     * @param stream The subtitle stream to select, or null to disable subtitles.
+     * @return true if playback was restarted with the new selection.
+     */
+    suspend fun selectSubtitleStreamAndRestartPlayback(stream: MediaStream?): Boolean {
+        require(stream == null || stream.type == MediaStreamType.SUBTITLE)
+        val currentPlayOptions = currentPlayOptions ?: return false
+        val currentPlayState = viewModel.getStateAndPause() ?: return false
+
+        val playOptions = currentPlayOptions.copy(
+            startPositionTicks = currentPlayState.position * Constants.TICKS_PER_MILLISECOND,
+            subtitleStreamIndex = stream?.index ?: -1, // -1 disables subtitles, null would select the default subtitle
+        )
+
+        startPlayback(playOptions, currentPlayState.playWhenReady)
+        return true
+    }
+
     sealed class QueueItem {
         class Loaded(
             val jellyfinMediaSource: JellyfinMediaSource,
