@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="connect_button_text">Ühenda</string>
+    <string name="connect_to_server_title">Ühendu serveriga</string>
+    <string name="downloading">Allalaadimine</string>
+    <string name="menu_item_hardware_decoding">Riistvaraline dekodeerimine</string>
+    <string name="menu_item_software_decoding">Tarkvaraline dekodeerimine</string>
+    <string name="notification_action_stop">Peata</string>
+    <string name="notification_action_pause">Paus</string>
+    <string name="notification_action_next">Järgmine</string>
+    <string name="notification_action_play">Esita</string>
+    <string name="notification_action_previous">Eelmine</string>
+    <string name="dialog_button_open_settings">Ava sätted</string>
+</resources>
