@@ -70,9 +70,12 @@ class TrackSelectionHelper(
 
         val player = viewModel.playerOrNull ?: return false
         val embeddedStreamIndex = mediaSource.getEmbeddedStreamIndex(audioStream)
-        val audioGroup = player.currentTracks.groups.getOrNull(embeddedStreamIndex)?.mediaTrackGroup ?: return false
+        val sortedTrackGroups = player.currentTracks.groups.sortedBy { group ->
+            group.mediaTrackGroup.getFormat(0).id
+        }
+        val audioGroup = sortedTrackGroups.getOrNull(embeddedStreamIndex) ?: return false
 
-        return trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_AUDIO, audioGroup)
+        return trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_AUDIO, audioGroup.mediaTrackGroup)
     }
 
     /**
@@ -132,9 +135,9 @@ class TrackSelectionHelper(
             SubtitleDeliveryMethod.EMBED -> {
                 // For embedded subtitles, we can match by the index of this stream in all embedded streams.
                 val embeddedStreamIndex = mediaSource.getEmbeddedStreamIndex(subtitleStream)
-                val subtitleGroup = player.currentTracks.groups.getOrNull(embeddedStreamIndex)?.mediaTrackGroup ?: return false
+                val subtitleGroup = player.currentTracks.groups.getOrNull(embeddedStreamIndex) ?: return false
 
-                return trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_TEXT, subtitleGroup)
+                return trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_TEXT, subtitleGroup.mediaTrackGroup)
             }
             SubtitleDeliveryMethod.EXTERNAL -> {
                 // For external subtitles, we can simply match the ID that we set when creating the player media source.
