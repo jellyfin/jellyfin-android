@@ -4,4 +4,15 @@
     <string name="dialog_web_view_not_supported_message">ಈ ಸಾಧನವು ವೆಬ್‌ವೀಕ್ಷಣೆಗಳನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ.
 \nಹೊಂದಾಣಿಕೆಯ ವೆಬ್‌ವೀಕ್ಷಣೆ ಅನುಷ್ಠಾನವನ್ನು ಸ್ಥಾಪಿಸಿ ಅಥವಾ ಬೆಂಬಲಿತ ಸಾಧನಕ್ಕೆ ಬದಲಾಯಿಸಿ.</string>
     <string name="dialog_web_view_not_supported">ವೆಬ್‌ವೀಕ್ಷಣೆ ಬೆಂಬಲಿಸುವುದಿಲ್ಲ</string>
+    <string name="dialog_button_ignore">ನಿರ್ಲಕ್ಷಿಸಿ</string>
+    <string name="dialog_web_view_outdated_message">ನಿಮ್ಮ ಸಾಧನದಿಂದ ಬಳಸಲಾದ ವೆಬ್ ವೀಕ್ಷಣೆ ಅನುಷ್ಠಾನವು ಹಳೆಯದಾಗಿದೆ.
+\nದಯವಿಟ್ಟು ಅದನ್ನು ಹೊಂದಾಣಿಕೆಯ ಆವೃತ್ತಿಗೆ ನವೀಕರಿಸಿ.</string>
+    <string name="dialog_button_open_settings">ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ</string>
+    <string name="toast_reopen_after_change">ಬದಲಾವಣೆಗಳನ್ನು ಮಾಡಿದ ನಂತರ ದಯವಿಟ್ಟು ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಪುನಃ ತೆರೆಯಿರಿ</string>
+    <string name="connection_error_cannot_connect">ಸಂಪರ್ಕವನ್ನು ಸ್ಥಾಪಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.
+\nದಯವಿಟ್ಟು ಹೋಸ್ಟ್ ಹೆಸರು ಮತ್ತು ನಿಮ್ಮ ನೆಟ್‌ವರ್ಕ್ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ.</string>
+    <string name="host_input_hint">ಹೊಸ್ಟ್</string>
+    <string name="connect_to_server_title">ಸರ್ವರ್‌ಗೆ ಸಂಪರ್ಕಪಡಿಸಿ</string>
+    <string name="dialog_button_check_for_updates">ನವೀಕರಣಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಿ</string>
+    <string name="dialog_button_close_app">ಅಪ್ಲಿಕೇಶನ್ ಮುಚ್ಚಿ</string>
 </resources>
