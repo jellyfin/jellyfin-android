@@ -11,4 +11,37 @@
     <string name="notification_action_play">Esita</string>
     <string name="notification_action_previous">Eelmine</string>
     <string name="dialog_button_open_settings">Ava sätted</string>
+    <string name="dialog_button_close_app">Sulge rakendus</string>
+    <string name="host_input_hint">Peremeesmasin</string>
+    <string name="connection_error_cannot_connect">Ühendumine nurjus.
+\nKontrolli masinanime ja oma võrguühendust.</string>
+    <string name="choose_server_button_text">Vali server</string>
+    <string name="media_service_car_section_recents">Viimati esitatud</string>
+    <string name="media_service_car_section_albums">Albumid</string>
+    <string name="media_service_car_section_songs">Laulud</string>
+    <string name="media_service_car_section_genres">Žanrid</string>
+    <string name="media_service_car_section_playlists">Esitusloendid</string>
+    <string name="notification_action_rewind">Keri tagasi</string>
+    <string name="notification_action_fast_forward">Keri edasi</string>
+    <string name="playback_info_play_method">Esitusviis: %s</string>
+    <string name="playback_info_video_streams">Videovood</string>
+    <string name="playback_info_audio_streams">Helivood</string>
+    <string name="menu_item_none">Puudub</string>
+    <string name="menu_item_auto">Automaatne</string>
+    <string name="pref_category_music_player">Muusikapleier</string>
+    <string name="activity_name_settings">Jellyfini sätted</string>
+    <string name="pref_category_video_player">Videopleier</string>
+    <string name="pref_video_player_type_title">Videopleieri tüüp</string>
+    <string name="video_player_web">Veebi pleier</string>
+    <string name="video_player_external">Väline pleier</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Heleduse ja helitugevuse käeliigutused</string>
+    <string name="pref_exoplayer_remember_brightness">Jäta meelde ekraani heledus</string>
+    <string name="external_player_app">Välise pleieri rakendus</string>
+    <string name="pref_category_downloads">Allalaadimised</string>
+    <string name="video_player_integrated">Integreeritud pleier</string>
+    <string name="media_service_car_section_artists">Artistid</string>
+    <string name="external_player_system_default">Süsteemi vaikeväärtus</string>
+    <string name="pref_subtitle_style">Kohanda subtiitrite stiili</string>
+    <string name="video_player_native_description">Põhineb ExoPlayeril, toetab rohkem video formaate ja koodekeid ning on rohkem integreeritud operatsioonisüsteemi</string>
+    <string name="video_player_external_description">Välised video taasesituse rakendused nagu MX Player ja VLC</string>
 </resources>
