@@ -185,7 +185,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     }
 
     private fun buildDeleteIntent(): PendingIntent {
-        val intent = Intent(Constants.ACTION_PAUSE).apply {
+        val intent = Intent(Constants.ACTION_STOP).apply {
             `package` = BuildConfig.APPLICATION_ID
         }
         return PendingIntent.getBroadcast(context, 0, intent, Constants.PENDING_INTENT_FLAGS)
