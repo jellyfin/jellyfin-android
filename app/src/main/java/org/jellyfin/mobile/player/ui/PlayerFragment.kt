@@ -101,10 +101,8 @@ class PlayerFragment : Fragment() {
             val safeMessage = message.ifEmpty { requireContext().getString(R.string.player_error_unspecific_exception) }
             requireContext().toast(safeMessage)
         }
-        viewModel.mediaQueueManager.mediaQueue.observe(this) { queueItem ->
-            val jellyfinMediaSource = queueItem.jellyfinMediaSource
-
-            if (jellyfinMediaSource.selectedVideoStream?.isLandscape == false) {
+        viewModel.queueManager.currentMediaSource.observe(this) { mediaSource ->
+            if (mediaSource.selectedVideoStream?.isLandscape == false) {
                 // For portrait videos, immediately enable fullscreen
                 playerFullscreenHelper.enableFullscreen()
             } else if (appPreferences.exoPlayerStartLandscapeVideoInLandscape) {
@@ -113,8 +111,8 @@ class PlayerFragment : Fragment() {
             }
 
             // Update title and player menus
-            toolbar.title = jellyfinMediaSource.name
-            playerMenus?.onQueueItemChanged(queueItem)
+            toolbar.title = mediaSource.name
+            playerMenus?.onQueueItemChanged(mediaSource, viewModel.queueManager.hasNext())
         }
 
         // Handle fragment arguments, extract playback options and start playback
@@ -125,7 +123,7 @@ class PlayerFragment : Fragment() {
                 context.toast(R.string.player_error_invalid_play_options)
                 return@launch
             }
-            when (viewModel.mediaQueueManager.startPlayback(playOptions, playWhenReady = true)) {
+            when (viewModel.queueManager.initializePlaybackQueue(playOptions)) {
                 is PlayerException.InvalidPlayOptions -> context.toast(R.string.player_error_invalid_play_options)
                 is PlayerException.NetworkFailure -> context.toast(R.string.player_error_network_failure)
                 is PlayerException.UnsupportedContent -> context.toast(R.string.player_error_unsupported_content)

@@ -66,8 +66,9 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     fun postNotification() {
         val nm = notificationManager ?: return
         val player = viewModel.playerOrNull ?: return
-        val queueItem = viewModel.mediaQueueManager.mediaQueue.value ?: return
-        val mediaSource = queueItem.jellyfinMediaSource
+        val currentMediaSource = viewModel.queueManager.currentMediaSourceOrNull ?: return
+        val hasPrevious = viewModel.queueManager.hasPrevious()
+        val hasNext = viewModel.queueManager.hasNext()
         val playbackState = player.playbackState
         if (playbackState != Player.STATE_READY && playbackState != Player.STATE_BUFFERING) return
 
@@ -76,7 +77,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
 
         viewModel.viewModelScope.launch {
             val mediaIcon: Bitmap? = withContext(Dispatchers.IO) {
-                loadImage(mediaSource)
+                loadImage(currentMediaSource)
             }
 
             val style = Notification.MediaStyle().apply {
@@ -93,12 +94,12 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                 }
                 setSmallIcon(R.drawable.ic_notification)
                 mediaIcon?.let(::setLargeIcon)
-                setContentTitle(mediaSource.name)
-                mediaSource.item?.artists?.joinToString()?.let(::setContentText)
+                setContentTitle(currentMediaSource.name)
+                currentMediaSource.item?.artists?.joinToString()?.let(::setContentText)
                 setStyle(style)
                 setVisibility(Notification.VISIBILITY_PUBLIC)
                 when {
-                    queueItem.hasPrevious() -> addAction(generateAction(PlayerNotificationAction.PREVIOUS))
+                    hasPrevious -> addAction(generateAction(PlayerNotificationAction.PREVIOUS))
                     else -> addAction(generateAction(PlayerNotificationAction.REWIND))
                 }
                 val playbackAction = when {
@@ -107,7 +108,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                 }
                 addAction(generateAction(playbackAction))
                 when {
-                    queueItem.hasNext() -> addAction(generateAction(PlayerNotificationAction.NEXT))
+                    hasNext -> addAction(generateAction(PlayerNotificationAction.NEXT))
                     else -> addAction(generateAction(PlayerNotificationAction.FAST_FORWARD))
                 }
                 setContentIntent(buildContentIntent())

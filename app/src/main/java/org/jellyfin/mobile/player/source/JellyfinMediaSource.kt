@@ -50,6 +50,13 @@ class JellyfinMediaSource(
     var selectedSubtitleStream: MediaStream? = null
         private set
 
+    val selectedAudioStreamIndex: Int?
+        get() = selectedAudioStream?.index
+    val selectedSubtitleStreamIndex: Int
+        // -1 disables subtitles, null would select the default subtitle
+        // If the default should be played, it would be explicitly set above
+        get() = selectedSubtitleStream?.index ?: -1
+
     init {
         // Classify MediaStreams
         val audio = ArrayList<MediaStream>()

@@ -15,7 +15,7 @@ import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
-import org.jellyfin.mobile.player.queue.QueueManager
+import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -101,10 +101,9 @@ class PlayerMenus(
         }
     }
 
-    fun onQueueItemChanged(queueItem: QueueManager.QueueItem.Loaded) {
-        nextButton.isEnabled = queueItem.hasNext()
-
-        val mediaSource = queueItem.jellyfinMediaSource
+    fun onQueueItemChanged(mediaSource: JellyfinMediaSource, hasNext: Boolean) {
+        // previousButton is always enabled and will rewind if at the start of the queue
+        nextButton.isEnabled = hasNext
 
         val videoStream = mediaSource.selectedVideoStream
 
