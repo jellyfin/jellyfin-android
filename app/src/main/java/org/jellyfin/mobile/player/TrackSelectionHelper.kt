@@ -40,7 +40,7 @@ class TrackSelectionHelper(
 
         // For transcoding and external streams, we need to restart playback
         if (mediaSource.playMethod == PlayMethod.TRANSCODE || selectedMediaStream.isExternal) {
-            return viewModel.mediaQueueManager.selectAudioStreamAndRestartPlayback(selectedMediaStream)
+            return viewModel.queueManager.selectAudioStreamAndRestartPlayback(selectedMediaStream)
         }
 
         return selectPlayerAudioTrack(mediaSource, selectedMediaStream, initial = false).also { success ->
@@ -95,7 +95,7 @@ class TrackSelectionHelper(
             selectedMediaStream?.deliveryMethod == SubtitleDeliveryMethod.ENCODE ||
             mediaSource.selectedSubtitleStream?.deliveryMethod == SubtitleDeliveryMethod.ENCODE
         ) {
-            return viewModel.mediaQueueManager.selectSubtitleStreamAndRestartPlayback(selectedMediaStream)
+            return viewModel.queueManager.selectSubtitleStreamAndRestartPlayback(selectedMediaStream)
         }
 
         return selectSubtitleTrack(mediaSource, selectedMediaStream, initial = false).also { success ->
