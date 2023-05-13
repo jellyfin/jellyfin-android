@@ -7,7 +7,6 @@ import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.annotation.StringRes
-import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.view.size
@@ -181,13 +180,14 @@ class PlayerMenus(
 
     private fun createSubtitlesMenu() = PopupMenu(context, subtitlesButton).apply {
         setOnMenuItemClickListener { clickedItem ->
-            val selected = clickedItem.itemId
-            fragment.onSubtitleSelected(selected) {
-                menu.forEach { item ->
-                    item.isChecked = false
-                }
-                clickedItem.isChecked = true
-                subtitlesEnabled = selected >= 0
+            // Immediately apply changes to the menu, necessary when direct playing
+            // When transcoding, the updated media source will cause the menu to be rebuilt
+            clickedItem.isChecked = true
+
+            // The itemId is the MediaStream.index of the track
+            val selectedSubtitleStreamIndex = clickedItem.itemId
+            fragment.onSubtitleSelected(selectedSubtitleStreamIndex) {
+                subtitlesEnabled = selectedSubtitleStreamIndex >= 0
                 updateSubtitlesButton()
             }
             true
@@ -197,13 +197,12 @@ class PlayerMenus(
 
     private fun createAudioStreamsMenu() = PopupMenu(context, audioStreamsButton).apply {
         setOnMenuItemClickListener { clickedItem: MenuItem ->
+            // Immediately apply changes to the menu, necessary when direct playing
+            // When transcoding, the updated media source will cause the menu to be rebuilt
+            clickedItem.isChecked = true
+
             // The itemId is the MediaStream.index of the track
-            fragment.onAudioTrackSelected(clickedItem.itemId) {
-                menu.forEach { item ->
-                    item.isChecked = false
-                }
-                clickedItem.isChecked = true
-            }
+            fragment.onAudioTrackSelected(clickedItem.itemId) {}
             true
         }
         setOnDismissListener(this@PlayerMenus)
@@ -217,12 +216,7 @@ class PlayerMenus(
         menu.setGroupCheckable(SPEED_MENU_GROUP, true, true)
         setOnMenuItemClickListener { clickedItem: MenuItem ->
             fragment.onSpeedSelected(clickedItem.itemId * SPEED_MENU_STEP_SIZE).also { success ->
-                if (success) {
-                    menu.forEach { item ->
-                        item.isChecked = false
-                    }
-                    clickedItem.isChecked = true
-                }
+                if (success) clickedItem.isChecked = true
             }
         }
         setOnDismissListener(this@PlayerMenus)
@@ -257,9 +251,6 @@ class PlayerMenus(
         setOnMenuItemClickListener { clickedItem: MenuItem ->
             val type = DecoderType.values()[clickedItem.itemId]
             fragment.onDecoderSelected(type)
-            menu.forEach { item ->
-                item.isChecked = false
-            }
             clickedItem.isChecked = true
             true
         }
