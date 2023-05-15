@@ -1,0 +1,3 @@
+Bedankt dat je Jellyfin voor Android gebruikt! Het wordt aangeraden om altijd de nieuwste versie van de Jellyfin Server te gebruiken.
+
+Voor meer informatie, bekijk onze blog op jellyfin.org of lees de volledige lijst met veranderingen op Github.
