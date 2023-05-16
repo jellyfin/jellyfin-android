@@ -4,7 +4,6 @@ import android.app.Service
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.provider.Settings
@@ -19,6 +18,7 @@ import org.jellyfin.mobile.player.cast.Chromecast
 import org.jellyfin.mobile.player.cast.IChromecast
 import org.jellyfin.mobile.player.ui.PlayerFragment
 import org.jellyfin.mobile.setup.ConnectFragment
+import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
 import org.jellyfin.mobile.utils.SmartOrientationListener
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                 setTitle(R.string.dialog_web_view_not_supported)
                 setMessage(R.string.dialog_web_view_not_supported_message)
                 setCancelable(false)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                if (AndroidVersion.isAtLeastN) {
                     setNeutralButton(R.string.dialog_button_open_settings) { _, _ ->
                         startActivity(Intent(Settings.ACTION_WEBVIEW_SETTINGS))
                         Toast.makeText(context, R.string.toast_reopen_after_change, Toast.LENGTH_LONG).show()

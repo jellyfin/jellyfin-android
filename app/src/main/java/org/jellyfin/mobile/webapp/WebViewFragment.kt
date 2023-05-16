@@ -3,7 +3,6 @@ package org.jellyfin.mobile.webapp
 import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -31,6 +30,7 @@ import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.mobile.databinding.FragmentWebviewBinding
 import org.jellyfin.mobile.setup.ConnectFragment
+import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER
 import org.jellyfin.mobile.utils.applyDefault
@@ -126,7 +126,7 @@ class WebViewFragment : Fragment() {
         ViewCompat.requestApplyInsets(webView)
 
         // Setup exclusion rects for gestures
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (AndroidVersion.isAtLeastQ) {
             @Suppress("MagicNumber")
             webView.doOnNextLayout {
                 // Maximum allowed exclusion rect height is 200dp,
@@ -220,7 +220,7 @@ class WebViewFragment : Fragment() {
                     }
                 }
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (AndroidVersion.isAtLeastN) {
                 setPositiveButton(R.string.dialog_button_open_settings) { _, _ ->
                     startActivity(Intent(Settings.ACTION_WEBVIEW_SETTINGS))
                     Toast.makeText(context, R.string.toast_reopen_after_change, Toast.LENGTH_LONG).show()

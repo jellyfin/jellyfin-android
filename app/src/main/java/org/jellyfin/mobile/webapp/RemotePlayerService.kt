@@ -19,7 +19,6 @@ import android.media.session.MediaController
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
 import android.os.Binder
-import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import androidx.annotation.StringRes
@@ -36,6 +35,7 @@ import kotlinx.coroutines.launch
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.EXTRA_ALBUM
 import org.jellyfin.mobile.utils.Constants.EXTRA_ARTIST
@@ -244,7 +244,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                 mediaSession.setPlaybackToRemote(remoteVolumeProvider)
             }
 
-            val supportsNativeSeek = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+            val supportsNativeSeek = AndroidVersion.isAtLeastQ
 
             val style = Notification.MediaStyle().apply {
                 setMediaSession(mediaSession.sessionToken)
@@ -255,7 +255,7 @@ class RemotePlayerService : Service(), CoroutineScope {
 
             @Suppress("DEPRECATION")
             val notification = Notification.Builder(this@RemotePlayerService).apply {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (AndroidVersion.isAtLeastO) {
                     setChannelId(MEDIA_NOTIFICATION_CHANNEL_ID) // Set Notification Channel on Android O and above
                     setColorized(true) // Color notification based on cover art
                 } else {
@@ -265,7 +265,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                 setContentText(artist?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) })
                 setSubText(album)
                 if (position != PlaybackState.PLAYBACK_POSITION_UNKNOWN) {
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                    if (!AndroidVersion.isAtLeastN) {
                         // Show current position in "when" field pre-N
                         setShowWhen(!isPaused)
                         setUsesChronometer(!isPaused)

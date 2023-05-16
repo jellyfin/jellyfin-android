@@ -35,6 +35,7 @@ import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.interaction.PlayOptions
+import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.PIP_MAX_RATIONAL
@@ -220,7 +221,7 @@ class PlayerFragment : Fragment() {
      */
     private fun updateFullscreenState(configuration: Configuration) {
         // Do not handle any orientation changes while being in Picture-in-Picture mode
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && requireActivity().isInPictureInPictureMode) {
+        if (AndroidVersion.isAtLeastN && requireActivity().isInPictureInPictureMode) {
             return
         }
 
@@ -301,7 +302,7 @@ class PlayerFragment : Fragment() {
     }
 
     fun onUserLeaveHint() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && viewModel.playerOrNull?.isPlaying == true) {
+        if (AndroidVersion.isAtLeastN && viewModel.playerOrNull?.isPlaying == true) {
             requireActivity().enterPictureInPicture()
         }
     }
@@ -309,7 +310,7 @@ class PlayerFragment : Fragment() {
     @Suppress("NestedBlockDepth")
     @RequiresApi(Build.VERSION_CODES.N)
     private fun Activity.enterPictureInPicture() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (AndroidVersion.isAtLeastO) {
             val params = PictureInPictureParams.Builder().apply {
                 val aspectRational = currentVideoStream?.aspectRational?.let { aspectRational ->
                     when {
