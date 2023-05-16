@@ -48,7 +48,7 @@ export class ExoPlayerPlugin {
     }
 
     canPlayItem(item, playOptions) {
-        return this._nativePlayer.isEnabled();
+        return this._nativePlayer.isEnabled() && playOptions.fullscreen;
     }
 
     async stop(destroyPlayer) {
