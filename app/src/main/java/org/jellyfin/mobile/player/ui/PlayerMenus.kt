@@ -315,6 +315,7 @@ class PlayerMenus(
 
     override fun onDismiss(menu: PopupMenu) {
         fragment.suppressControllerAutoHide(false)
+        fragment.onPopupDismissed()
     }
 
     private fun formatBitrate(bitrate: Double): String {
