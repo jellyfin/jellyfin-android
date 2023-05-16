@@ -19,6 +19,17 @@ jobs:
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const pr_id = context.issue.number;
+
+            const pr = await github.rest.issues.get({
+              owner,
+              repo,
+              issue_number: pr_id,
+            });
+
+            if (pr.milestone !== null) {
+              return;
+            }
+
             const response = await github.rest.issues.listMilestones({
               owner,
               repo,
