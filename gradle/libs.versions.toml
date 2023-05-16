@@ -59,7 +59,7 @@ redscreenofdeath = "0.1.3"
 # Testing
 junit = "5.9.3"
 kotest = "5.5.5"
-mockk = "1.13.4"
+mockk = "1.13.5"
 androidx-test-runner = "1.5.2"
 androidx-test-espresso = "3.5.1"
 
