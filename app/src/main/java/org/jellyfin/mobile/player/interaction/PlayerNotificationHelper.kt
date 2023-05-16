@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
-import android.os.Build
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.viewModelScope
@@ -25,6 +24,7 @@ import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.VIDEO_PLAYER_NOTIFICATION_ID
 import org.jellyfin.mobile.utils.createMediaNotificationChannel
@@ -86,7 +86,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
             }
 
             val notification = Notification.Builder(context).apply {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (AndroidVersion.isAtLeastO) {
                     setChannelId(Constants.MEDIA_NOTIFICATION_CHANNEL_ID) // Set Notification Channel on Android O and above
                     setColorized(true)
                 } else {

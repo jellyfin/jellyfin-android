@@ -13,7 +13,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
-import android.os.Build
 import android.os.Environment
 import android.os.PowerManager
 import android.provider.Settings
@@ -37,7 +36,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+    if (AndroidVersion.isAtLeastM) {
         val powerManager: PowerManager = requireContext().getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
         if (
             !appPreferences.ignoreBatteryOptimizations &&
@@ -65,7 +64,7 @@ suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: Stri
     val appPreferences: AppPreferences = get()
 
     // Storage permission for downloads isn't necessary from Android 10 onwards
-    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+    if (!AndroidVersion.isAtLeastQ) {
         @Suppress("MagicNumber")
         val granted = withTimeout(2 * 60 * 1000 /* 2 minutes */) {
             suspendCoroutine { continuation ->
@@ -134,7 +133,7 @@ fun PackageManager.isPackageInstalled(@ExternalPlayerPackage packageName: String
 }
 
 fun Context.createMediaNotificationChannel(notificationManager: NotificationManager) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    if (AndroidVersion.isAtLeastO) {
         val notificationChannel = NotificationChannel(
             Constants.MEDIA_NOTIFICATION_CHANNEL_ID,
             getString(R.string.app_name),

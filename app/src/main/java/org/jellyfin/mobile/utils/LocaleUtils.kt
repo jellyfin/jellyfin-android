@@ -2,7 +2,6 @@ package org.jellyfin.mobile.utils
 
 import android.content.Context
 import android.content.res.Configuration
-import android.os.Build
 import android.webkit.WebView
 import org.json.JSONException
 import org.json.JSONObject
@@ -53,4 +52,4 @@ private fun Context.setLocale(localeString: String?): Boolean {
 
 @Suppress("DEPRECATION")
 private val Configuration.primaryLocale: Locale
-    get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) locales[0] else locale
+    get() = if (AndroidVersion.isAtLeastN) locales[0] else locale
