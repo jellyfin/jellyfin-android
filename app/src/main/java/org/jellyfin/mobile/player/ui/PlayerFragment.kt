@@ -145,9 +145,12 @@ class PlayerFragment : Fragment() {
 
         // Insets handling
         ViewCompat.setOnApplyWindowInsetsListener(playerBinding.root) { _, insets ->
-            val systemInsets = insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
             playerFullscreenHelper.onWindowInsetsChanged(insets)
 
+            val systemInsets = when {
+                AndroidVersion.isAtLeastR -> insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
+                else -> insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            }
             playerControlsView.updatePadding(
                 top = systemInsets.top,
                 left = systemInsets.left,
@@ -299,6 +302,12 @@ class PlayerFragment : Fragment() {
 
     fun onSkipToNext() {
         viewModel.skipToNext()
+    }
+
+    fun onPopupDismissed() {
+        if (!AndroidVersion.isAtLeastR) {
+            updateFullscreenState(resources.configuration)
+        }
     }
 
     fun onUserLeaveHint() {
