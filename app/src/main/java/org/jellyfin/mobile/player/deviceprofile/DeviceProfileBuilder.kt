@@ -203,6 +203,7 @@ class DeviceProfileBuilder(
         containerProfiles = emptyList(),
         codecProfiles = emptyList(),
         subtitleProfiles = getSubtitleProfiles(EXTERNAL_PLAYER_SUBTITLES, EXTERNAL_PLAYER_SUBTITLES),
+        maxStreamingBitrate = MAX_STREAMING_BITRATE,
 
         // TODO: remove redundant defaults after API/SDK is fixed
         timelineOffsetSeconds = 0,
