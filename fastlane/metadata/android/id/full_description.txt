@@ -1,0 +1,14 @@
+Media Anda, dengan persyaratan Anda.
+
+Proyek Jellyfin adalah open source, server media perangkat lunak gratis. Tanpa biaya, tanpa pelacakan, tanpa agenda tersembunyi. Dapatkan server gratis kami untuk mengumpulkan semua audio, video, foto, dan lainnya di satu tempat.
+
+Untuk menggunakan aplikasi ini, Anda harus menyiapkan dan menjalankan server Jellyfin. Cari tahu lebih lanjut di <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
+
+Dengan server Jellyfin, Anda dapat:
+
+* Tonton TV Langsung dan rekaman acara dari server Jellyfin Anda (diperlukan perangkat keras/layanan tambahan)
+* Streaming ke perangkat Chromecast di jaringan Anda
+* Streaming media Anda ke perangkat Android Anda
+* Lihat koleksi Anda dengan antarmuka yang mudah digunakan
+
+Ini adalah aplikasi pendamping Jellyfin resmi untuk Android. Terima kasih telah menggunakan Jellyfin!
