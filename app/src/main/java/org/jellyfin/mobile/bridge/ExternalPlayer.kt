@@ -101,6 +101,7 @@ class ExternalPlayer(
                 startTimeTicks = playOptions.startPositionTicks,
                 audioStreamIndex = playOptions.audioStreamIndex,
                 subtitleStreamIndex = playOptions.subtitleStreamIndex,
+                maxStreamingBitrate = playOptions.maxBitrate,
             ).onSuccess { jellyfinMediaSource ->
                 playMediaSource(playOptions, jellyfinMediaSource)
             }.onFailure { error ->
