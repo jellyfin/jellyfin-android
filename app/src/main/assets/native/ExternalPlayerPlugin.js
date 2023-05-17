@@ -34,7 +34,7 @@ export class ExternalPlayerPlugin {
     }
 
     canPlayItem(item, playOptions) {
-        return this._externalPlayer.isEnabled();
+        return this._externalPlayer.isEnabled() && playOptions.fullscreen;
     }
 
     currentSrc() {
