@@ -12,6 +12,9 @@ plugins {
     alias(libs.plugins.dependencyupdates)
 }
 
+// Apply workaround
+apply("baselineWorkaround.gradle")
+
 detekt {
     buildUponDefaultConfig = true
     allRules = false
