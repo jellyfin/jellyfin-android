@@ -334,7 +334,7 @@ class ExternalPlayer(
                 ComponentName(packageName, "$packageName.ActivityScreen")
             }
             ExternalPlayerPackage.VLC_PLAYER -> {
-                ComponentName(packageName, "$packageName.gui.video.VideoPlayerActivity")
+                ComponentName(packageName, "$packageName.StartActivity")
             }
             else -> null
         }
