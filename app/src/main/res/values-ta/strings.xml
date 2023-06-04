@@ -94,4 +94,14 @@
     <string name="pref_exoplayer_remember_brightness">காட்சி பிரகாசத்தை நினைவில் கொள்க</string>
     <string name="video_player_integrated">ஒருங்கிணைந்த பிளேயர்</string>
     <string name="playback_info_stream_unknown_title">தெரியாத தலைப்பு</string>
+    <string name="pref_subtitle_style">வசன நடையைத் தனிப்பயனாக்கு</string>
+    <string name="pref_subtitle_style_summary">ஆண்ட்ராய்டு அமைப்புகளில் வசன நடையை மாற்றலாம்</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">டிரான்ஸ்கோடிங்கைத் தடுக்கவும் மற்றும் அடிப்படை ஸ்டைலிங் மூலம் வசனங்களைக் காட்டவும். இயக்கப்பட்டால், மேம்பட்ட வசன ஸ்டைலிங் கிடைக்காது.</string>
+    <string name="menu_item_auto">தானாக</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">லேண்ட்ஸ்கேப் மோட் வீடியோக்களை லேண்ட்ஸ்கேப் நோக்குநிலையில் தொடங்கவும்</string>
+    <string name="button_use_different_server">வேறு சேவையகத்தைப் பயன்படுத்தவும்</string>
+    <string name="player_error_unspecific_exception">பிளேயர் இல் ஏதோ தவறாகிவிட்டது</string>
+    <string name="menu_item_hardware_decoding">வன்பொருள் டிகோடிங்</string>
+    <string name="menu_item_software_decoding">மென்பொருள் டிகோடிங்</string>
+    <string name="pref_exoplayer_direct_play_ass">நேரடி இயக்கத்தில் SSA/ASS வசனங்களை அனுமதிக்கவும்</string>
 </resources>
