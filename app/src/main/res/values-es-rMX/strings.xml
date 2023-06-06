@@ -83,7 +83,8 @@
     <string name="player_error_network_failure">No se pudo resolver la información de reproducción desde el servidor</string>
     <string name="player_error_invalid_play_options">No se pudo resolver la información de reproducción</string>
     <plurals name="connection_error_prefix">
-        <item quantity="one">Se ha intentado con %d candidato de entrada, sin exito.</item>
+        <item quantity="one">Se ha intentado con %d candidato de entrada, sin éxito.</item>
+        <item quantity="many">Se ha intentado con %d candidatos de entrada, sin éxito.</item>
         <item quantity="other">Se ha intentado con %d candidatos de entrada, sin exito.</item>
     </plurals>
     <string name="connection_error_unsupported_version_or_product">Versión del producto no soportada</string>
