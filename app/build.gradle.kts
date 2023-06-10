@@ -82,6 +82,7 @@ android {
 
     @Suppress("UnstableApiUsage")
     buildFeatures {
+        buildConfig = true
         viewBinding = true
         compose = true
     }
@@ -156,9 +157,7 @@ dependencies {
         exclude("com.google.android.gms", "play-services-cronet")
     }
     implementation(libs.jellyfin.exoplayer.ffmpegextension)
-    @Suppress("UnstableApiUsage")
     proprietaryImplementation(libs.exoplayer.cast)
-    @Suppress("UnstableApiUsage")
     proprietaryImplementation(libs.bundles.playservices)
 
     // Room
