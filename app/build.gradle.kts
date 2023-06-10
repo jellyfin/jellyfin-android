@@ -1,5 +1,3 @@
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import com.github.benmanes.gradle.versions.updates.gradle.GradleReleaseChannel
 import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -10,7 +8,6 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.detekt)
     alias(libs.plugins.android.junit5)
-    alias(libs.plugins.dependencyupdates)
 }
 
 // Apply workaround
@@ -208,24 +205,6 @@ tasks {
         testLogging {
             outputs.upToDateWhen { false }
             showStandardStreams = true
-        }
-    }
-
-    // Configure dependency updates task
-    withType<DependencyUpdatesTask> {
-        gradleReleaseChannel = GradleReleaseChannel.CURRENT.id
-        rejectVersionIf {
-            val currentType = classifyVersion(currentVersion)
-            val candidateType = classifyVersion(candidate.version)
-
-            when (candidateType) {
-                // Always accept stable updates
-                VersionType.STABLE -> true
-                // Accept milestone updates for current milestone and unstable
-                VersionType.MILESTONE -> currentType != VersionType.STABLE
-                // Only accept unstable for current unstable
-                VersionType.UNSTABLE -> currentType == VersionType.UNSTABLE
-            }.not()
         }
     }
 
