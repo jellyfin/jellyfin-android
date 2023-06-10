@@ -1,14 +1,14 @@
 [versions]
 # Plugins
 android-plugin = "8.0.2"
-kotlin = "1.7.20"
-kotlin-ksp = "1.7.20-1.0.8"
+kotlin = "1.8.21"
+kotlin-ksp = "1.8.21-1.0.11"
 detekt = "1.22.0"
 android-junit5 = "1.9.3.0"
 dependencyupdates = "0.46.0"
 
 # KotlinX
-coroutines = "1.6.4"
+coroutines = "1.7.1"
 
 # Core
 koin = "3.4.2"
@@ -33,7 +33,7 @@ modernandroidpreferences = "2.3.2"
 compose = "1.4.3"
 compose-foundation = "1.4.3"
 compose-material = "1.4.3"
-compose-compiler = "1.3.2"
+compose-compiler = "1.4.7"
 
 # Network
 jellyfin-sdk = "1.4.2"
