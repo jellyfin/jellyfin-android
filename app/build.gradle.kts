@@ -134,6 +134,8 @@ dependencies {
 
     // Jetpack Compose
     implementation(libs.bundles.compose)
+    debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.tooling.preview)
 
     // Network
     val sdkVersion = findProperty("sdk.version")?.toString()
