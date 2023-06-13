@@ -2,14 +2,15 @@ package org.jellyfin.mobile.player.queue
 
 import android.net.Uri
 import androidx.annotation.CheckResult
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.MergingMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
@@ -43,9 +44,9 @@ class QueueManager(
     private var currentQueue: List<UUID> = emptyList()
     private var currentQueueIndex: Int = 0
 
-    private val _currentMediaSource: MutableLiveData<JellyfinMediaSource> = MutableLiveData()
-    val currentMediaSource: LiveData<JellyfinMediaSource>
-        get() = _currentMediaSource
+    private val _currentMediaSource: MutableStateFlow<JellyfinMediaSource?> = MutableStateFlow(null)
+    val currentMediaSource: StateFlow<JellyfinMediaSource?>
+        get() = _currentMediaSource.asStateFlow()
 
     inline val currentMediaSourceOrNull: JellyfinMediaSource?
         get() = currentMediaSource.value

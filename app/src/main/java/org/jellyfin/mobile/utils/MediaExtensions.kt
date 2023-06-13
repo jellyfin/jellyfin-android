@@ -82,6 +82,34 @@ inline fun ExoPlayer.applyDefaultAudioAttributes(@C.AudioContentType contentType
     setAudioAttributes(audioAttributes, true)
 }
 
+/**
+ * Whether the playback interface should show the pause button or not.
+ *
+ * This is different from [Player.isPlaying] because pausing should still be possible when the player is buffering.
+ */
+val Player.shouldShowPauseButton: Boolean
+    get() {
+        val state = playbackState
+        return state != Player.STATE_IDLE && state != Player.STATE_ENDED && playWhenReady
+    }
+
+val Player.shouldShowPreviousButton: Boolean
+    get() = isCommandAvailable(Player.COMMAND_SEEK_TO_PREVIOUS)
+
+val Player.shouldShowNextButton: Boolean
+    get() = isCommandAvailable(Player.COMMAND_SEEK_TO_NEXT)
+
+/**
+ * Dispatches a play or pause command to the player.
+ * Uses [shouldShowPauseButton] to determine the playback state.
+ */
+fun Player.dispatchPlayPause() {
+    when {
+        shouldShowPauseButton -> pause()
+        else -> play()
+    }
+}
+
 fun Player.seekToOffset(offsetMs: Long) {
     var positionMs = currentPosition + offsetMs
     val durationMs = duration

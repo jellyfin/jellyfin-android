@@ -58,6 +58,11 @@
     <string name="notification_action_next">Next</string>
     <string name="notification_action_stop">Stop</string>
 
+    <string name="player_controls_navigation_back_description">Go back</string>
+    <string name="player_controls_previous_description">Previous</string>
+    <string name="player_controls_play_description">Play</string>
+    <string name="player_controls_pause_description">Pause</string>
+    <string name="player_controls_next_description">Next</string>
     <string name="player_error_invalid_play_options">Unable to resolve playback info</string>
     <string name="player_error_network_failure">Unable to load media info from server</string>
     <string name="player_error_unsupported_content">Media cannot be played by this device</string>

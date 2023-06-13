@@ -136,6 +136,7 @@ dependencies {
     implementation(libs.bundles.compose)
     debugImplementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.seeker)
 
     // Network
     val sdkVersion = findProperty("sdk.version")?.toString()

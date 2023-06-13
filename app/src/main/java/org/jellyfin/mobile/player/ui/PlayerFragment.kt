@@ -4,7 +4,8 @@ import android.app.Activity
 import android.app.PictureInPictureParams
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import android.graphics.Rect
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -14,34 +15,30 @@ import android.view.OrientationEventListener
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
-import android.widget.ImageButton
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.PlayerView
+import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
-import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
-import org.jellyfin.mobile.databinding.FragmentPlayerBinding
+import org.jellyfin.mobile.databinding.FragmentComposeBinding
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.interaction.PlayOptions
+import org.jellyfin.mobile.ui.utils.AppTheme
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.BackPressInterceptor
 import org.jellyfin.mobile.utils.Constants
-import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.PIP_MAX_RATIONAL
 import org.jellyfin.mobile.utils.Constants.PIP_MIN_RATIONAL
 import org.jellyfin.mobile.utils.SmartOrientationListener
+import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.brightness
 import org.jellyfin.mobile.utils.extensions.aspectRational
 import org.jellyfin.mobile.utils.extensions.getParcelableCompat
@@ -50,21 +47,25 @@ import org.jellyfin.mobile.utils.extensions.keepScreenOn
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.android.ext.android.inject
-import com.google.android.exoplayer2.ui.R as ExoplayerR
+import timber.log.Timber
 
 class PlayerFragment : Fragment(), BackPressInterceptor {
     private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
-    private var _playerBinding: FragmentPlayerBinding? = null
-    private val playerBinding: FragmentPlayerBinding get() = _playerBinding!!
-    private val playerView: PlayerView get() = playerBinding.playerView
-    private val playerOverlay: View get() = playerBinding.playerOverlay
-    private val loadingIndicator: View get() = playerBinding.loadingIndicator
-    private var _playerControlsBinding: ExoPlayerControlViewBinding? = null
-    private val playerControlsBinding: ExoPlayerControlViewBinding get() = _playerControlsBinding!!
-    private val playerControlsView: View get() = playerControlsBinding.root
-    private val toolbar: Toolbar get() = playerControlsBinding.toolbar
-    private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
+    private var _viewBinding: FragmentComposeBinding? = null
+    private val viewBinding get() = _viewBinding!!
+    private val composeView: ComposeView get() = viewBinding.composeView
+
+    //private var _playerBinding: FragmentPlayerBinding? = null
+    //private val playerBinding: FragmentPlayerBinding get() = _playerBinding!!
+    //private val playerView: StyledPlayerView get() = playerBinding.playerView
+    //private val playerOverlay: View get() = playerBinding.playerOverlay
+    //private val loadingIndicator: View get() = playerBinding.loadingIndicator
+    //private var _playerControlsBinding: ExoPlayerControlViewBinding? = null
+    //private val playerControlsBinding: ExoPlayerControlViewBinding get() = _playerControlsBinding!!
+    //private val playerControlsView: View get() = playerControlsBinding.root
+    //private val toolbar: Toolbar get() = playerControlsBinding.toolbar
+    //private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
     private var playerMenus: PlayerMenus? = null
 
     private lateinit var playerFullscreenHelper: PlayerFullscreenHelper
@@ -88,14 +89,18 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         super.onCreate(savedInstanceState)
 
         // Observe ViewModel
-        viewModel.player.observe(this) { player ->
-            playerView.player = player
-            if (player == null) parentFragmentManager.popBackStack()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.player.collect { player ->
+                    Timber.d("Player changed: $player")
+                    if (player == null) parentFragmentManager.popBackStack()
+                }
+            }
         }
         viewModel.playerState.observe(this) { playerState ->
             val isPlaying = viewModel.playerOrNull?.isPlaying == true
             requireActivity().window.keepScreenOn = isPlaying
-            loadingIndicator.isVisible = playerState == Player.STATE_BUFFERING
+            //loadingIndicator.isVisible = playerState == Player.STATE_BUFFERING
         }
         viewModel.decoderType.observe(this) { type ->
             playerMenus?.updatedSelectedDecoder(type)
@@ -104,18 +109,22 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             val safeMessage = message.ifEmpty { requireContext().getString(R.string.player_error_unspecific_exception) }
             requireContext().toast(safeMessage)
         }
-        viewModel.queueManager.currentMediaSource.observe(this) { mediaSource ->
-            if (mediaSource.selectedVideoStream?.isLandscape == false) {
-                // For portrait videos, immediately enable fullscreen
-                playerFullscreenHelper.enableFullscreen()
-            } else if (appPreferences.exoPlayerStartLandscapeVideoInLandscape) {
-                // Auto-switch to landscape for landscape videos if enabled
-                requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-            }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.queueManager.currentMediaSource.filterNotNull().collect { mediaSource ->
+                    if (mediaSource.selectedVideoStream?.isLandscape == false) {
+                        // For portrait videos, immediately enable fullscreen
+                        //playerFullscreenHelper.enableFullscreen()
+                    } else if (appPreferences.exoPlayerStartLandscapeVideoInLandscape) {
+                        // Auto-switch to landscape for landscape videos if enabled
+                        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                    }
 
-            // Update title and player menus
-            toolbar.title = mediaSource.name
-            playerMenus?.onQueueItemChanged(mediaSource, viewModel.queueManager.hasNext())
+                    // Update title and player menus
+                    //toolbar.title = mediaSource.name
+                    playerMenus?.onQueueItemChanged(mediaSource, viewModel.queueManager.hasNext())
+                }
+            }
         }
 
         // Handle fragment arguments, extract playback options and start playback
@@ -136,13 +145,29 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _viewBinding = FragmentComposeBinding.inflate(inflater, container, false)
+        return composeView.apply {
+            background = ColorDrawable(Color.BLACK)
+            applyWindowInsetsAsMargins()
+        }
+    }
+
+    /*override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _playerBinding = FragmentPlayerBinding.inflate(layoutInflater)
         _playerControlsBinding = ExoPlayerControlViewBinding.bind(playerBinding.root.findViewById(R.id.player_controls))
         return playerBinding.root
-    }
+    }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        composeView.setContent {
+            AppTheme {
+                PlayerScreen(playerViewModel = viewModel)
+            }
+        }
+
+        /*
         val window = requireActivity().window
 
         // Insets handling
@@ -204,7 +229,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
                 // Portrait video, only handle fullscreen state
                 playerFullscreenHelper.toggleFullscreen()
             }
-        }
+        }*/
     }
 
     override fun onStart() {
@@ -217,7 +242,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
         // When returning from another app, fullscreen mode for landscape orientation has to be set again
         if (isLandscape()) {
-            playerFullscreenHelper.enableFullscreen()
+            //playerFullscreenHelper.enableFullscreen()
         }
     }
 
@@ -248,7 +273,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             }
             currentVideoStream?.isLandscape != false -> {
                 // Disable fullscreen for landscape video in portrait orientation
-                playerFullscreenHelper.disableFullscreen()
+                //playerFullscreenHelper.disableFullscreen()
             }
         }
     }
@@ -279,7 +304,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
      * If true, the player controls will show indefinitely
      */
     fun suppressControllerAutoHide(suppress: Boolean) {
-        playerView.controllerShowTimeoutMs = if (suppress) -1 else DEFAULT_CONTROLS_TIMEOUT_MS
+        //playerView.controllerShowTimeoutMs = if (suppress) -1 else DEFAULT_CONTROLS_TIMEOUT_MS
     }
 
     fun isLandscape(configuration: Configuration = resources.configuration) =
@@ -364,12 +389,12 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
                     }
                 }
                 setAspectRatio(aspectRational)
-                val contentFrame: View = playerView.findViewById(ExoplayerR.id.exo_content_frame)
+                /*val contentFrame: View = playerView.findViewById(ExoplayerR.id.exo_content_frame)
                 val contentRect = with(contentFrame) {
                     val (x, y) = intArrayOf(0, 0).also(::getLocationInWindow)
                     Rect(x, y, x + width, y + height)
                 }
-                setSourceRectHint(contentRect)
+                setSourceRectHint(contentRect)*/
             }.build()
             enterPictureInPictureMode(params)
         } else {
@@ -379,10 +404,10 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     }
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
-        playerView.useController = !isInPictureInPictureMode
+        //playerView.useController = !isInPictureInPictureMode
         if (isInPictureInPictureMode) {
             playerMenus?.dismissPlaybackInfo()
-            playerLockScreenHelper.hideUnlockButton()
+            //playerLockScreenHelper.hideUnlockButton()
         }
     }
 
@@ -390,7 +415,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         super.onConfigurationChanged(newConfig)
         Handler(Looper.getMainLooper()).post {
             updateFullscreenState(newConfig)
-            playerGestureHelper.handleConfiguration(newConfig)
+            //playerGestureHelper.handleConfiguration(newConfig)
         }
     }
 
@@ -401,12 +426,10 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Detach player from PlayerView
-        playerView.player = null
 
         // Set binding references to null
-        _playerBinding = null
-        _playerControlsBinding = null
+        _viewBinding = null
+
         playerMenus = null
     }
 
@@ -415,7 +438,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         with(requireActivity()) {
             // Reset screen orientation
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-            playerFullscreenHelper.disableFullscreen()
+            //playerFullscreenHelper.disableFullscreen()
             // Reset screen brightness
             window.brightness = BRIGHTNESS_OVERRIDE_NONE
         }

@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package org.jellyfin.mobile.ui.utils
 
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -7,12 +9,14 @@ import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun AppTheme(content: @Composable () -> Unit) {
     val colors = remember {
-        @Suppress("MagicNumber")
         darkColors(
             primary = Color(0xFF00A4DC),
             primaryVariant = Color(0xFF202020),
@@ -36,3 +40,12 @@ fun AppTheme(content: @Composable () -> Unit) {
         content = content,
     )
 }
+
+// Colors
+val PlayerAppBarHeight = 56.dp
+val PlayerControlsBackground = Color(0x60000000)
+val PlayerTimeTextStyle = TextStyle(
+    color = Color.White,
+    fontSize = 14.sp,
+    fontWeight = FontWeight.Normal,
+)

@@ -15,7 +15,7 @@ import androidx.core.content.getSystemService
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
-import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
@@ -33,7 +33,7 @@ class PlayerGestureHelper(
 ) : KoinComponent {
     private val appPreferences: AppPreferences by inject()
     private val audioManager: AudioManager by lazy { fragment.requireActivity().getSystemService()!! }
-    private val playerView: PlayerView by playerBinding::playerView
+    private val playerView: StyledPlayerView by playerBinding::playerView
     private val gestureIndicatorOverlayLayout: LinearLayout by playerBinding::gestureOverlayLayout
     private val gestureIndicatorOverlayImage: ImageView by playerBinding::gestureOverlayImage
     private val gestureIndicatorOverlayProgress: ProgressBar by playerBinding::gestureOverlayProgress
@@ -122,7 +122,7 @@ class PlayerGestureHelper(
 
             override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
                 playerView.apply {
-                    if (!isControllerVisible) showController() else hideController()
+                    if (!isControllerFullyVisible) showController() else hideController()
                 }
                 return true
             }

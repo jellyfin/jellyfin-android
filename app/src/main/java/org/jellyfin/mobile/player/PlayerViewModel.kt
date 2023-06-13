@@ -31,6 +31,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.app.PLAYER_EVENT_CHANNEL
@@ -94,10 +96,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         get() = queueManager.currentMediaSourceOrNull
 
     // ExoPlayer
-    private val _player = MutableLiveData<ExoPlayer?>()
+    private val _player = MutableStateFlow<ExoPlayer?>(null)
     private val _playerState = MutableLiveData<Int>()
     private val _decoderType = MutableLiveData<DecoderType>()
-    val player: LiveData<ExoPlayer?> get() = _player
+    val player: StateFlow<ExoPlayer?> get() = _player
     val playerState: LiveData<Int> get() = _playerState
     val decoderType: LiveData<DecoderType> get() = _decoderType
 
