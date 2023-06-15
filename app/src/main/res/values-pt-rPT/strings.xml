@@ -75,6 +75,7 @@
     <string name="connection_error_unable_to_reach_sever">Incapaz de chegar ao servidor</string>
     <plurals name="connection_error_prefix">
         <item quantity="one">Tentado %d candidato para input, sem êxito.</item>
+        <item quantity="many">Tentado %d candidatos para input, sem êxito.</item>
         <item quantity="other">Tentado %d candidatos para input, sem êxito.</item>
     </plurals>
     <string name="dialog_button_open_settings">Abrir definições</string>
@@ -102,4 +103,6 @@
     <string name="pref_exoplayer_direct_play_ass_summary">Prevenir a transcodificação e mostrar legendas apenas com estilo básico. O estilo de legendas avançado não estará disponível se este estiver ativado.</string>
     <string name="pref_subtitle_style">Personalizar o estilo das legendas</string>
     <string name="pref_subtitle_style_summary">Pode alterar o estilo das legendas nas definições do Android</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Iniciar vídeos com modo paisagem na orientação paisagem</string>
+    <string name="pref_exoplayer_direct_play_ass">Permitir legendas SSA/ASS no direct play</string>
 </resources>
