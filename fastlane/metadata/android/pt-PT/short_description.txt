@@ -1,1 +1,1 @@
-Cliente móvel para , o sistema software de mídia gratuito
+Cliente móvel para Jellyfin, o sistema software de média gratuito
