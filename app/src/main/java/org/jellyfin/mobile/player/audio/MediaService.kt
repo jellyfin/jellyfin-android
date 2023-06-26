@@ -5,15 +5,11 @@ package org.jellyfin.mobile.player.audio
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.os.ResultReceiver
 import android.support.v4.media.MediaBrowserCompat.MediaItem
-import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
-import android.support.v4.media.session.PlaybackStateCompat
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.media.MediaBrowserServiceCompat
@@ -36,7 +32,6 @@ import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.ApiClientController
 import org.jellyfin.mobile.player.audio.car.LibraryBrowser
-import org.jellyfin.mobile.player.audio.car.LibraryPage
 import org.jellyfin.mobile.player.cast.CastPlayerProvider
 import org.jellyfin.mobile.player.cast.ICastPlayerProvider
 import org.jellyfin.mobile.utils.Constants
@@ -66,7 +61,7 @@ class MediaService : MediaBrowserServiceCompat() {
     private lateinit var notificationManager: AudioNotificationManager
     private lateinit var mediaController: MediaControllerCompat
     private lateinit var mediaSession: MediaSessionCompat
-    private lateinit var mediaSessionConnector: MediaSessionConnector
+    // private lateinit var mediaSessionConnector: MediaSessionConnector
     private lateinit var mediaRouteSelector: MediaRouteSelector
     private lateinit var mediaRouter: MediaRouter
     private val mediaRouterCallback = MediaRouterCallback()
@@ -121,11 +116,11 @@ class MediaService : MediaBrowserServiceCompat() {
 
         mediaController = MediaControllerCompat(this, mediaSession)
 
-        mediaSessionConnector = MediaSessionConnector(mediaSession).apply {
-            setPlayer(exoPlayer)
-            setPlaybackPreparer(MediaPlaybackPreparer())
-            setQueueNavigator(MediaQueueNavigator(mediaSession))
-        }
+//        mediaSessionConnector = MediaSessionConnector(mediaSession).apply {
+//            setPlayer(exoPlayer)
+//            setPlaybackPreparer(MediaPlaybackPreparer())
+//            setQueueNavigator(MediaQueueNavigator(mediaSession))
+//        }
 
         mediaRouter = MediaRouter.getInstance(this)
         mediaRouter.setMediaSessionCompat(mediaSession)
@@ -253,23 +248,23 @@ class MediaService : MediaBrowserServiceCompat() {
                 )
             }
         }
-        mediaSessionConnector.setPlayer(newPlayer)
+//        mediaSessionConnector.setPlayer(newPlayer)
         previousPlayer?.run {
             stop()
             clearMediaItems()
         }
     }
 
-    private fun setPlaybackError() {
-        val errorState = PlaybackStateCompat.Builder()
-            .setState(PlaybackStateCompat.STATE_ERROR, 0, 1f)
-            .setErrorMessage(
-                PlaybackStateCompat.ERROR_CODE_NOT_SUPPORTED,
-                getString(R.string.media_service_item_not_found),
-            )
-            .build()
-        mediaSession.setPlaybackState(errorState)
-    }
+//    private fun setPlaybackError() {
+//        val errorState = PlaybackStateCompat.Builder()
+//            .setState(PlaybackStateCompat.STATE_ERROR, 0, 1f)
+//            .setErrorMessage(
+//                PlaybackStateCompat.ERROR_CODE_NOT_SUPPORTED,
+//                getString(R.string.media_service_item_not_found),
+//            )
+//            .build()
+//        mediaSession.setPlaybackState(errorState)
+//    }
 
     @Suppress("unused")
     fun onCastSessionAvailable() {
@@ -282,83 +277,83 @@ class MediaService : MediaBrowserServiceCompat() {
         switchToPlayer(currentPlayer, exoPlayer)
     }
 
-    private inner class MediaQueueNavigator(mediaSession: MediaSessionCompat) : TimelineQueueNavigator(mediaSession) {
-        override fun getMediaDescription(player: Player, windowIndex: Int): MediaDescriptionCompat =
-            currentPlaylistItems[windowIndex].description
-    }
+//    private inner class MediaQueueNavigator(mediaSession: MediaSessionCompat) : TimelineQueueNavigator(mediaSession) {
+//        override fun getMediaDescription(player: Player, windowIndex: Int): MediaDescriptionCompat =
+//            currentPlaylistItems[windowIndex].description
+//    }
 
-    private inner class MediaPlaybackPreparer : MediaSessionConnector.PlaybackPreparer {
-        override fun getSupportedPrepareActions(): Long = 0L or
-            PlaybackStateCompat.ACTION_PREPARE or
-            PlaybackStateCompat.ACTION_PLAY or
-            PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID or
-            PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID or
-            PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH or
-            PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH
-
-        override fun onPrepare(playWhenReady: Boolean) {
-            serviceScope.launch {
-                val recents = try {
-                    libraryBrowser.getDefaultRecents()
-                } catch (e: ApiClientException) {
-                    Timber.e(e)
-                    null
-                }
-                if (recents != null) {
-                    preparePlaylist(recents, 0, playWhenReady)
-                } else {
-                    setPlaybackError()
-                }
-            }
-        }
-
-        override fun onPrepareFromMediaId(mediaId: String, playWhenReady: Boolean, extras: Bundle?) {
-            if (mediaId == LibraryPage.RESUME) {
-                // Requested recents
-                onPrepare(playWhenReady)
-            } else {
-                serviceScope.launch {
-                    val result = libraryBrowser.buildPlayQueue(mediaId)
-                    if (result != null) {
-                        val (playbackQueue, initialPlaybackIndex) = result
-                        preparePlaylist(playbackQueue, initialPlaybackIndex, playWhenReady)
-                    } else {
-                        setPlaybackError()
-                    }
-                }
-            }
-        }
-
-        override fun onPrepareFromSearch(query: String, playWhenReady: Boolean, extras: Bundle?) {
-            if (query.isEmpty()) {
-                // No search provided, fallback to recents
-                onPrepare(playWhenReady)
-            } else {
-                serviceScope.launch {
-                    val results = try {
-                        libraryBrowser.getSearchResults(query, extras)
-                    } catch (e: ApiClientException) {
-                        Timber.e(e)
-                        null
-                    }
-                    if (results != null) {
-                        preparePlaylist(results, 0, playWhenReady)
-                    } else {
-                        setPlaybackError()
-                    }
-                }
-            }
-        }
-
-        override fun onPrepareFromUri(uri: Uri, playWhenReady: Boolean, extras: Bundle?) = Unit
-
-        override fun onCommand(
-            player: Player,
-            command: String,
-            extras: Bundle?,
-            cb: ResultReceiver?,
-        ): Boolean = false
-    }
+//    private inner class MediaPlaybackPreparer : MediaSessionConnector.PlaybackPreparer {
+//        override fun getSupportedPrepareActions(): Long = 0L or
+//            PlaybackStateCompat.ACTION_PREPARE or
+//            PlaybackStateCompat.ACTION_PLAY or
+//            PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID or
+//            PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID or
+//            PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH or
+//            PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH
+//
+//        override fun onPrepare(playWhenReady: Boolean) {
+//            serviceScope.launch {
+//                val recents = try {
+//                    libraryBrowser.getDefaultRecents()
+//                } catch (e: ApiClientException) {
+//                    Timber.e(e)
+//                    null
+//                }
+//                if (recents != null) {
+//                    preparePlaylist(recents, 0, playWhenReady)
+//                } else {
+//                    setPlaybackError()
+//                }
+//            }
+//        }
+//
+//        override fun onPrepareFromMediaId(mediaId: String, playWhenReady: Boolean, extras: Bundle?) {
+//            if (mediaId == LibraryPage.RESUME) {
+//                // Requested recents
+//                onPrepare(playWhenReady)
+//            } else {
+//                serviceScope.launch {
+//                    val result = libraryBrowser.buildPlayQueue(mediaId)
+//                    if (result != null) {
+//                        val (playbackQueue, initialPlaybackIndex) = result
+//                        preparePlaylist(playbackQueue, initialPlaybackIndex, playWhenReady)
+//                    } else {
+//                        setPlaybackError()
+//                    }
+//                }
+//            }
+//        }
+//
+//        override fun onPrepareFromSearch(query: String, playWhenReady: Boolean, extras: Bundle?) {
+//            if (query.isEmpty()) {
+//                // No search provided, fallback to recents
+//                onPrepare(playWhenReady)
+//            } else {
+//                serviceScope.launch {
+//                    val results = try {
+//                        libraryBrowser.getSearchResults(query, extras)
+//                    } catch (e: ApiClientException) {
+//                        Timber.e(e)
+//                        null
+//                    }
+//                    if (results != null) {
+//                        preparePlaylist(results, 0, playWhenReady)
+//                    } else {
+//                        setPlaybackError()
+//                    }
+//                }
+//            }
+//        }
+//
+//        override fun onPrepareFromUri(uri: Uri, playWhenReady: Boolean, extras: Bundle?) = Unit
+//
+//        override fun onCommand(
+//            player: Player,
+//            command: String,
+//            extras: Bundle?,
+//            cb: ResultReceiver?,
+//        ): Boolean = false
+//    }
 
     /**
      * Listen for notification events.
