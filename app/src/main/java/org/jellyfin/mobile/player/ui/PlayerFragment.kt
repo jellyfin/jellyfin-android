@@ -24,8 +24,8 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.PlayerView
+import androidx.media3.common.Player
+import androidx.media3.ui.PlayerView
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
@@ -49,7 +49,7 @@ import org.jellyfin.mobile.utils.extensions.keepScreenOn
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.android.ext.android.inject
-import com.google.android.exoplayer2.ui.R as ExoplayerR
+import androidx.media3.ui.R as Media3R
 
 class PlayerFragment : Fragment() {
     private val appPreferences: AppPreferences by inject()
@@ -330,7 +330,7 @@ class PlayerFragment : Fragment() {
                     }
                 }
                 setAspectRatio(aspectRational)
-                val contentFrame: View = playerView.findViewById(ExoplayerR.id.exo_content_frame)
+                val contentFrame: View = playerView.findViewById(Media3R.id.exo_content_frame)
                 val contentRect = with(contentFrame) {
                     val (x, y) = intArrayOf(0, 0).also(::getLocationInWindow)
                     Rect(x, y, x + width, y + height)

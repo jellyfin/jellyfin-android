@@ -11,4 +11,8 @@
         <!-- Weblate doesn't use ellipsis characters -->
         <ignore regexp="app/src/main/res/values-.*" />
     </issue>
+    <issue id="UnsafeOptInUsageError">
+        <!-- We use a lot of "unstable" media3 apis -->
+        <ignore regexp="\(markerClass = androidx\.media3\.common\.util\.UnstableApi\.class\)" />
+    </issue>
 </lint>

@@ -2,7 +2,7 @@ package org.jellyfin.mobile.player.deviceprofile
 
 import android.media.MediaCodecInfo.CodecProfileLevel
 import android.media.MediaFormat
-import com.google.android.exoplayer2.util.MimeTypes
+import androidx.media3.common.MimeTypes
 
 @Suppress("TooManyFunctions", "CyclomaticComplexMethod")
 object CodecHelpers {

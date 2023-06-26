@@ -1,7 +1,7 @@
 package org.jellyfin.mobile.player
 
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import androidx.media3.common.C
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import org.jellyfin.mobile.player.source.ExternalSubtitleStream
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.utils.clearSelectionAndDisableRendererByType

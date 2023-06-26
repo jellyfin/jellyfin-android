@@ -85,7 +85,7 @@
         app:layout_constraintTop_toTopOf="@id/exo_progress"
         tools:text="33:01" />
 
-    <com.google.android.exoplayer2.ui.DefaultTimeBar
+    <androidx.media3.ui.DefaultTimeBar
         android:id="@+id/exo_progress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

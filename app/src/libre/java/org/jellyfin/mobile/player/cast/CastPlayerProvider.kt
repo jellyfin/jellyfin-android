@@ -1,6 +1,6 @@
 package org.jellyfin.mobile.player.cast
 
-import com.google.android.exoplayer2.Player
+import androidx.media3.common.Player
 import org.jellyfin.mobile.player.audio.MediaService
 
 class CastPlayerProvider(@Suppress("UNUSED_PARAMETER") mediaService: MediaService) : ICastPlayerProvider {

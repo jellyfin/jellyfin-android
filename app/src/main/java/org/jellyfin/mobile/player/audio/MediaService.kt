@@ -17,19 +17,17 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.media.MediaBrowserServiceCompat
+import androidx.media3.common.AudioAttributes
+import androidx.media3.common.C
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.MediaSource
+import androidx.media3.ui.PlayerNotificationManager
 import androidx.mediarouter.media.MediaControlIntent
 import androidx.mediarouter.media.MediaRouteSelector
 import androidx.mediarouter.media.MediaRouter
 import androidx.mediarouter.media.MediaRouterParams
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.PlaybackException
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
-import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
@@ -49,7 +47,7 @@ import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import timber.log.Timber
-import com.google.android.exoplayer2.MediaItem as ExoPlayerMediaItem
+import androidx.media3.common.MediaItem as Media3Item
 
 class MediaService : MediaBrowserServiceCompat() {
     private val apiClientController: ApiClientController by inject()
@@ -203,7 +201,7 @@ class MediaService : MediaBrowserServiceCompat() {
         currentPlaylistItems = metadataList
 
         val mediaItems = metadataList.map { metadata ->
-            ExoPlayerMediaItem.Builder().apply {
+            Media3Item.Builder().apply {
                 setUri(metadata.mediaUri)
                 setTag(metadata)
             }.build()
