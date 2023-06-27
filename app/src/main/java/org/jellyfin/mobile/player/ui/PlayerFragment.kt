@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.player.ui
 
+import java.io.File
 import android.app.Activity
 import android.app.PictureInPictureParams
 import android.content.pm.ActivityInfo
@@ -130,6 +131,22 @@ class PlayerFragment : Fragment() {
                 is PlayerException.NetworkFailure -> context.toast(R.string.player_error_network_failure)
                 is PlayerException.UnsupportedContent -> context.toast(R.string.player_error_unsupported_content)
                 null -> Unit // success
+            }
+            var currentExoBitrate:Int = 4000000
+            val cfgFile = File(context.filesDir,"jellyexoplayer.rate")
+            if(cfgFile.exists()){
+                val rateString = cfgFile.readText()
+                currentExoBitrate = rateString.toIntOrNull()?: 0
+            }
+            if(currentExoBitrate > 120000000 || currentExoBitrate < 0)
+            {
+                currentExoBitrate = 0
+            }
+            if(currentExoBitrate == 0){
+                    viewModel.changeBitrate(null)
+            }
+            else {
+                viewModel.changeBitrate(currentExoBitrate)
             }
         }
     }
