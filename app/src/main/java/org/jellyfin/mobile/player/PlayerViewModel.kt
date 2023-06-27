@@ -1,5 +1,7 @@
 package org.jellyfin.mobile.player
 
+import java.io.File
+import android.content.Context 
 import android.annotation.SuppressLint
 import android.app.Application
 import android.media.AudioAttributes
@@ -442,6 +444,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     suspend fun changeBitrate(bitrate: Int?): Boolean {
+        val context: Context = get()
+        val cfgFile = File(context.filesDir,"jellyexoplayer.rate")
+        cfgFile.writeText(bitrate.toString())
         return queueManager.changeBitrate(bitrate)
     }
 
