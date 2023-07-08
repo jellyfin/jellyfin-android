@@ -13,7 +13,7 @@
     <string name="pref_music_notification_always_dismissible_title">Musikwiedergabe-Benachrichtigung verwerfbar</string>
     <string name="pref_category_video_player">Videoplayer</string>
     <string name="pref_category_music_player">Musikplayer</string>
-    <string name="activity_name_settings">Jellyfin Einstellungen</string>
+    <string name="activity_name_settings">Jellyfin-Einstellungen</string>
     <string name="menu_item_none">Keiner</string>
     <string name="playback_info_audio_streams">Audio-Streams</string>
     <string name="playback_info_video_streams">Video-Streams</string>
@@ -96,12 +96,12 @@
     <string name="playback_info_stream_unknown_title">Unbekannter Titel</string>
     <string name="menu_item_auto">Automatisch</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Transkodieren vermeiden und Untertitel nur mit einfachem Erscheinungsbild anzeigen. Erweiterte Untertitelgestaltung ist nicht verfügbar, wenn aktiviert.</string>
-    <string name="pref_exoplayer_direct_play_ass">Direktwiedergabe von SSA/ASS Untertiteln zulassen</string>
-    <string name="menu_item_software_decoding">Software Dekodierung</string>
+    <string name="pref_exoplayer_direct_play_ass">Direktwiedergabe von SSA-/ASS-Untertiteln zulassen</string>
+    <string name="menu_item_software_decoding">Software-Dekodierung</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Starte Querformat-Videos in der Querformat Ausrichtung</string>
     <string name="pref_subtitle_style_summary">Du kannst den Untertitel-Stil in den Android-Einstellungen anpassen</string>
     <string name="pref_subtitle_style">Untertitel-Stil anpassen</string>
     <string name="player_error_unspecific_exception">Beim Abspielen ist ein Fehler aufgetreten</string>
-    <string name="menu_item_hardware_decoding">Hardware Dekodierung</string>
+    <string name="menu_item_hardware_decoding">Hardware-Dekodierung</string>
     <string name="button_use_different_server">Verwende einen anderen Server</string>
 </resources>
