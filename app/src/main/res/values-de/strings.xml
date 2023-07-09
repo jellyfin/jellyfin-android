@@ -14,9 +14,9 @@
     <string name="pref_category_video_player">Videoplayer</string>
     <string name="pref_category_music_player">Musikplayer</string>
     <string name="activity_name_settings">Jellyfin-Einstellungen</string>
-    <string name="menu_item_none">Keiner</string>
-    <string name="playback_info_audio_streams">Audio-Streams</string>
-    <string name="playback_info_video_streams">Video-Streams</string>
+    <string name="menu_item_none">Nichts</string>
+    <string name="playback_info_audio_streams">Audiostreams</string>
+    <string name="playback_info_video_streams">Videostreams</string>
     <string name="playback_info_and_x_more">…und %d weitere</string>
     <string name="playback_info_transcoding">Transkodiert: %b</string>
     <string name="connection_error_cannot_connect">Es konnte keine Verbindung hergestellt werden.
@@ -25,7 +25,7 @@
     <string name="pref_exoplayer_allow_background_audio">Hintergrundwiedergabe</string>
     <string name="notification_action_stop">Stopp</string>
     <string name="notification_action_next">Nächstes</string>
-    <string name="notification_action_fast_forward">Vorwärts spulen</string>
+    <string name="notification_action_fast_forward">Vorspulen</string>
     <string name="notification_action_pause">Pause</string>
     <string name="notification_action_play">Abspielen</string>
     <string name="notification_action_rewind">Zurückspulen</string>
@@ -65,7 +65,7 @@
     <string name="media_service_car_section_artists">Künstler</string>
     <string name="media_service_car_section_albums">Alben</string>
     <string name="media_service_car_section_recents">Zuletzt abgespielt</string>
-    <string name="media_service_item_not_found">Medium konnte nicht gefunden werden</string>
+    <string name="media_service_item_not_found">Medieneintrag konnte nicht gefunden werden</string>
     <string name="pref_download_location">Speicherort</string>
     <string name="pref_category_downloads">Downloads</string>
     <string name="dialog_button_close_app">App beenden</string>
@@ -98,7 +98,7 @@
     <string name="pref_exoplayer_direct_play_ass_summary">Transkodieren vermeiden und Untertitel nur mit einfachem Erscheinungsbild anzeigen. Erweiterte Untertitelgestaltung ist nicht verfügbar, wenn aktiviert.</string>
     <string name="pref_exoplayer_direct_play_ass">Direktwiedergabe von SSA-/ASS-Untertiteln zulassen</string>
     <string name="menu_item_software_decoding">Software-Dekodierung</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Starte Querformat-Videos in der Querformat Ausrichtung</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Starte Querformat-Videos in Querformat-Ausrichtung</string>
     <string name="pref_subtitle_style_summary">Du kannst den Untertitel-Stil in den Android-Einstellungen anpassen</string>
     <string name="pref_subtitle_style">Untertitel-Stil anpassen</string>
     <string name="player_error_unspecific_exception">Beim Abspielen ist ein Fehler aufgetreten</string>
