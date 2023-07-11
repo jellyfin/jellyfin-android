@@ -52,7 +52,7 @@
     <string name="external_player_system_default">Systemstandard</string>
     <string name="external_player_vlc_player_description">Kostenloser und quelloffener, plattformübergreifender Multimedia-Player, der die meisten Multimedia-Dateien abspielt.</string>
     <string name="external_player_vlc_player">VLC Player</string>
-    <string name="external_player_mx_player_pro_description">Die kostenpflichtige Version des MX-Players, die ein unterbrechungsfreies Videoerlebnis bietet.</string>
+    <string name="external_player_mx_player_pro_description">Die kostenpflichtige Version des MX Players, die ein unterbrechungsfreies Videoerlebnis bietet.</string>
     <string name="external_player_mx_player_free_description">Leistungsstarker Videoplayer mit fortschrittlicher Hardwarebeschleunigung und Untertitelunterstützung.</string>
     <string name="external_player_mpv_description">Ein einfacher, leichter und freier Videoplayer. Er unterstützt eine Vielzahl von Medienformaten.</string>
     <string name="media_service_generic_error">Ein Fehler ist aufgetreten</string>
@@ -95,12 +95,12 @@
     <string name="video_player_integrated">Integrierter Player</string>
     <string name="playback_info_stream_unknown_title">Unbekannter Titel</string>
     <string name="menu_item_auto">Automatisch</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Transkodieren vermeiden und Untertitel nur mit einfachem Erscheinungsbild anzeigen. Erweiterte Untertitelgestaltung ist nicht verfügbar, wenn aktiviert.</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Transkodieren vermeiden und Untertitel nur mit einfachem Erscheinungsbild anzeigen. Wenn aktiviert, ist die erweiterte Untertitelgestaltung nicht verfügbar.</string>
     <string name="pref_exoplayer_direct_play_ass">Direktwiedergabe von SSA-/ASS-Untertiteln zulassen</string>
     <string name="menu_item_software_decoding">Software-Dekodierung</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Starte Querformat-Videos in Querformat-Ausrichtung</string>
-    <string name="pref_subtitle_style_summary">Du kannst den Untertitel-Stil in den Android-Einstellungen anpassen</string>
-    <string name="pref_subtitle_style">Untertitel-Stil anpassen</string>
+    <string name="pref_subtitle_style_summary">Du kannst den Untertitelstil in den Android-Einstellungen anpassen</string>
+    <string name="pref_subtitle_style">Untertitelstil anpassen</string>
     <string name="player_error_unspecific_exception">Beim Abspielen ist ein Fehler aufgetreten</string>
     <string name="menu_item_hardware_decoding">Hardware-Dekodierung</string>
     <string name="button_use_different_server">Verwende einen anderen Server</string>
