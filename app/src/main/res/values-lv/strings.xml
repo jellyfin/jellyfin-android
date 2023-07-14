@@ -51,4 +51,33 @@
     <string name="dialog_web_view_not_supported_message">\"WebView\" skats nav atbalstīts šajā ierīcē.
 \nUzinstalējiet nepieciešamo \"WebView\" implementāciju vai pārejat uz citu ierīci.</string>
     <string name="dialog_web_view_not_supported">Internta skats nav atbalstīts</string>
+    <string name="connection_error_unable_to_reach_sever">Nevar sansiegt serveri</string>
+    <string name="notification_action_fast_forward">Ātri uz priekšu</string>
+    <string name="player_error_invalid_play_options">Nevar noskaidrot atskaņošanas datus</string>
+    <string name="pref_exoplayer_remember_brightness">Atcerēties displaja spilgtuma</string>
+    <string name="player_error_unsupported_content">Saturs nevar tikt atskaņots šajā ierīce</string>
+    <string name="connection_error_unsupported_version_or_product">Neatbalstīta versija vai produkts</string>
+    <string name="menu_item_auto">Automātiksi</string>
+    <string name="playback_info_stream_unknown_title">Nezināms nosaukums</string>
+    <string name="video_player_integrated">Integrētais atskaņotājs</string>
+    <string name="pref_exoplayer_allow_background_audio">Fona audio</string>
+    <string name="button_use_different_server">Izmanojiet citu serveri</string>
+    <string name="player_error_network_failure">Nevar ielādēt satura datus no servera</string>
+    <string name="player_error_unspecific_exception">Ir notikusi kaut kāda kļūda ar atskaņotāju</string>
+    <string name="menu_item_hardware_decoding">Dekodēšana ar Aparatūru</string>
+    <string name="menu_item_software_decoding">Dekodēšana ar Programmatūru</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Uzsākt ainavas veida video ainavas orientācijā</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Atļaut atskaņot veido fonā tikai ar skaņu</string>
+    <string name="pref_exoplayer_direct_play_ass">Atļaut SSA/ASS subtitrus tiešā atskaņošaņā</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">Spilgtuma un skaļuma žesti</string>
+    <string name="video_player_native_description">Balstoties uz ExoPlayer atbalsta vairāk video formātus un kodekus, un ir labāk integrēts operētājsistēma</string>
+    <string name="video_player_web">Tīmekļa atskaņotājs</string>
+    <string name="pref_category_music_player">Mūzikas atskaņotājs</string>
+    <string name="pref_category_video_player">Video atskaņotājs</string>
+    <string name="video_player_web_description">Noklusējuma HTML video atskaņotājs no Web UI</string>
+    <string name="video_player_external">Ārējais atskaņotājs</string>
+    <string name="media_service_item_not_found">Saturs netika atrasts</string>
+    <string name="video_player_external_description">Ārējās video atskaņošanas lietotnes kā MX Player un VLC</string>
+    <string name="pref_video_player_type_title">Video atskaņotāja tips</string>
+    <string name="media_service_generic_error">Ir notikusi kļūda</string>
 </resources>
