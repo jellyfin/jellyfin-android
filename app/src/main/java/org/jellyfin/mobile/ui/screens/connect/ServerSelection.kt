@@ -58,13 +58,13 @@ import org.jellyfin.mobile.ui.state.CheckUrlState
 import org.jellyfin.mobile.ui.state.ServerSelectionType
 import org.jellyfin.mobile.ui.utils.CenterRow
 import org.jellyfin.sdk.model.api.ServerDiscoveryInfo
-import org.koin.androidx.compose.get
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ServerSelection(
     showExternalConnectionError: Boolean,
-    connectionHelper: ConnectionHelper = get(),
+    connectionHelper: ConnectionHelper = koinInject(),
     onConnected: suspend (String) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
