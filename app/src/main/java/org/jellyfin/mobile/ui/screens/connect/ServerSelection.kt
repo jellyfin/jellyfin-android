@@ -53,17 +53,19 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.app.ApiClientController
 import org.jellyfin.mobile.setup.ConnectionHelper
 import org.jellyfin.mobile.ui.state.CheckUrlState
 import org.jellyfin.mobile.ui.state.ServerSelectionType
 import org.jellyfin.mobile.ui.utils.CenterRow
-import org.jellyfin.sdk.model.api.ServerDiscoveryInfo
 import org.koin.compose.koinInject
 
 @OptIn(ExperimentalComposeUiApi::class)
+@Suppress("LongMethod")
 @Composable
 fun ServerSelection(
     showExternalConnectionError: Boolean,
+    apiClientController: ApiClientController = koinInject(),
     connectionHelper: ConnectionHelper = koinInject(),
     onConnected: suspend (String) -> Unit,
 ) {
@@ -71,13 +73,40 @@ fun ServerSelection(
     val keyboardController = LocalSoftwareKeyboardController.current
     var serverSelectionType by remember { mutableStateOf(ServerSelectionType.ADDRESS) }
     var hostname by remember { mutableStateOf("") }
+    val serverSuggestions = remember { mutableStateListOf<ServerSuggestion>() }
     var checkUrlState by remember<MutableState<CheckUrlState>> { mutableStateOf(CheckUrlState.Unchecked) }
     var externalError by remember { mutableStateOf(showExternalConnectionError) }
 
-    val discoveredServers = remember { mutableStateListOf<ServerDiscoveryInfo>() }
+    // Prefill currently selected server if available
+    LaunchedEffect(Unit) {
+        val server = apiClientController.loadSavedServer()
+        if (server != null) {
+            hostname = server.hostname
+        }
+    }
+
+    // Suggest saved servers
+    LaunchedEffect(Unit) {
+        apiClientController.loadPreviouslyUsedServers().mapTo(serverSuggestions) { server ->
+            ServerSuggestion(
+                name = server.hostname,
+                address = server.hostname,
+                lastUsedTimestamp = server.lastUsedTimestamp,
+            )
+        }
+    }
+
+    // Server discovery
     LaunchedEffect(Unit) {
         connectionHelper.discoverServersAsFlow().collect { serverInfo ->
-            discoveredServers.add(serverInfo)
+            serverSuggestions.add(
+                index = 0,
+                ServerSuggestion(
+                    name = serverInfo.name,
+                    address = serverInfo.address,
+                    lastUsedTimestamp = System.currentTimeMillis(),
+                ),
+            )
         }
     }
 
@@ -123,7 +152,7 @@ fun ServerSelection(
                     },
                 )
                 ServerSelectionType.AUTO_DISCOVERY -> ServerDiscoveryList(
-                    discoveredServers = discoveredServers,
+                    serverSuggestions = serverSuggestions,
                     onGoBack = {
                         serverSelectionType = ServerSelectionType.ADDRESS
                     },
@@ -257,7 +286,7 @@ private fun StyledTextButton(
 @Stable
 @Composable
 private fun ServerDiscoveryList(
-    discoveredServers: SnapshotStateList<ServerDiscoveryInfo>,
+    serverSuggestions: SnapshotStateList<ServerSuggestion>,
     onGoBack: () -> Unit,
     onSelectServer: (String) -> Unit,
 ) {
@@ -290,9 +319,9 @@ private fun ServerDiscoveryList(
                     shape = MaterialTheme.shapes.medium,
                 ),
         ) {
-            items(discoveredServers) { server ->
+            items(serverSuggestions) { server ->
                 ServerDiscoveryItem(
-                    serverInfo = server,
+                    serverSuggestion = server,
                     onClickServer = {
                         onSelectServer(server.address)
                     },
@@ -306,7 +335,7 @@ private fun ServerDiscoveryList(
 @Stable
 @Composable
 private fun ServerDiscoveryItem(
-    serverInfo: ServerDiscoveryInfo,
+    serverSuggestion: ServerSuggestion,
     onClickServer: () -> Unit,
 ) {
     ListItem(
@@ -314,10 +343,10 @@ private fun ServerDiscoveryItem(
             .clip(MaterialTheme.shapes.medium)
             .clickable(onClick = onClickServer),
         text = {
-            Text(text = serverInfo.name)
+            Text(text = serverSuggestion.name)
         },
         secondaryText = {
-            Text(text = serverInfo.address)
+            Text(text = serverSuggestion.address)
         },
     )
 }

@@ -62,6 +62,12 @@ class ApiClientController(
         }
     }
 
+    suspend fun loadPreviouslyUsedServers(): List<ServerEntity> = withContext(Dispatchers.IO) {
+        serverDao.getAllServers().filterNot { server ->
+            server.id == appPreferences.currentServerId
+        }
+    }
+
     private fun configureApiClientServer(server: ServerEntity?) {
         apiClient.baseUrl = server?.hostname
     }
