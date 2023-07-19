@@ -1,6 +1,8 @@
 package org.jellyfin.mobile.player.deviceprofile
 
 import android.media.MediaCodecList
+import android.os.Build
+import com.google.android.exoplayer2.util.MimeTypes
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.model.api.CodecProfile
@@ -57,7 +59,7 @@ class DeviceProfileBuilder(
         // Build map of supported codecs from device support and hardcoded data
         supportedVideoCodecs = Array(AVAILABLE_VIDEO_CODECS.size) { i ->
             AVAILABLE_VIDEO_CODECS[i].filter { codec ->
-                videoCodecs.containsKey(codec)
+                videoCodecs.containsKey(codec) && canHardwareDecode(codec)
             }.toTypedArray()
         }
         supportedAudioCodecs = Array(AVAILABLE_AUDIO_CODECS.size) { i ->
@@ -92,6 +94,19 @@ class DeviceProfileBuilder(
                 conditions = emptyList(),
             ),
         )
+    }
+
+    private fun canHardwareDecode(codec: String): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return true
+        val parsedCodec = when(codec) {
+            "av1" -> "av01"
+            else -> codec
+        }
+        val mimeType = MimeTypes.getMediaMimeType(parsedCodec) ?: return false
+        val hardwareCodec = MediaCodecList(MediaCodecList.REGULAR_CODECS).codecInfos
+            .filter { it.isHardwareAccelerated }
+            .find { it.supportedTypes.contains(mimeType) }
+        return hardwareCodec != null
     }
 
     fun getDeviceProfile(): DeviceProfile {
