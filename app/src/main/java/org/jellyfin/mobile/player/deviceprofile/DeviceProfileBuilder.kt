@@ -136,9 +136,14 @@ class DeviceProfileBuilder(
 
     @RequiresApi(Build.VERSION_CODES.Q)
     fun canHardwareDecode(codec: String): Boolean {
-        var parsedCodec = codec
-        if (parsedCodec == "av1") parsedCodec = "av01"
-        val mimeType = MimeTypes.getMediaMimeType(parsedCodec) ?: return false
+        val parsedCodec = when (codec) {
+            "mpeg4" -> "avc1"
+            "h264" -> "avc1"
+            "hevc" -> "hvc1"
+            "av1" -> "av01"
+            else -> codec
+        }
+        val mimeType = MimeTypes.getVideoMediaMimeType(parsedCodec) ?: return false
         val hardwareCodec = MediaCodecList(MediaCodecList.REGULAR_CODECS).codecInfos
             .filter { it.isHardwareAccelerated }
             .find { it.supportedTypes.contains(mimeType) }
