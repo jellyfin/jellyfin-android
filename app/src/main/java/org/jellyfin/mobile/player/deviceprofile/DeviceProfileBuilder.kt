@@ -99,6 +99,9 @@ class DeviceProfileBuilder(
     private fun canHardwareDecode(codec: String): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return true
         val parsedCodec = when(codec) {
+            "mpeg4" -> "avc1"
+            "h264" -> "avc1"
+            "hevc" -> "hvc1"
             "av1" -> "av01"
             else -> codec
         }
