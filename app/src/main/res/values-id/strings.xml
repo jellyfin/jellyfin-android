@@ -96,4 +96,9 @@
     <string name="menu_item_auto">Otomatis</string>
     <string name="player_error_unspecific_exception">Terjadi kesalahan dengan pemutar media</string>
     <string name="button_use_different_server">Gunakan server lain</string>
+    <string name="pref_subtitle_style">Kustomisasi model takarir</string>
+    <string name="pref_subtitle_style_summary">Anda dapat mengubah model takarir di pengaturan Android</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Memulai video mode lanskap di orientasi lanskap</string>
+    <string name="menu_item_hardware_decoding">Dekoding Perangkat Keras</string>
+    <string name="pref_exoplayer_direct_play_ass">Mengijinkan takarir SSA/ASS saat diputar langsung</string>
 </resources>
