@@ -24,7 +24,7 @@
     <string name="media_service_car_section_playlists">Playlisty</string>
     <string name="media_service_car_section_genres">Gatunki</string>
     <string name="media_service_car_section_songs">Piosenki</string>
-    <string name="media_service_car_section_artists">Artyści</string>
+    <string name="media_service_car_section_artists">Wykonawcy</string>
     <string name="media_service_car_section_albums">Albumy</string>
     <string name="media_service_car_section_recents">Ostatnio odtwarzane</string>
     <string name="media_service_item_not_found">Nie można znaleźć media</string>
