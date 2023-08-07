@@ -62,7 +62,7 @@
     <string name="external_player_mx_player_pro_description">Płatna wersja programu MX Player, która zapewnia nieprzerwane odtwarzanie wideo.</string>
     <string name="external_player_mx_player_free_description">Potężny odtwarzacz wideo z zaawansowaną akceleracją sprzętową i obsługą napisów.</string>
     <string name="external_player_mpv_description">Prosty, mały i lekki, darmowy odtwarzacz wideo. Obsługuje szeroką gamę formatów plików multimedialnych.</string>
-    <string name="external_player_mpv">Player MPV</string>
+    <string name="external_player_mpv">Odtwarzacz MPV</string>
     <string name="external_player_app">Aplikacja odtwarzacza zewnętrznego</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Umożliwienie odtwarzania filmów w tle tylko z dźwiękiem</string>
     <string name="pref_exoplayer_allow_background_audio">Dźwięk w tle</string>
@@ -104,6 +104,6 @@
     <string name="pref_subtitle_style_summary">Możesz zmienić styl napisów w ustawieniach Androida</string>
     <string name="button_use_different_server">Użyj innego serwera</string>
     <string name="menu_item_hardware_decoding">Dekodowanie sprzętowe</string>
-    <string name="menu_item_software_decoding">Dekodowanie Programowe</string>
+    <string name="menu_item_software_decoding">Dekodowanie programowe</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Rozpocznij film poziomy w orientacji poziomej</string>
 </resources>
