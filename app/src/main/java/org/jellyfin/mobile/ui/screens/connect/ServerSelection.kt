@@ -56,7 +56,7 @@ import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.ApiClientController
 import org.jellyfin.mobile.setup.ConnectionHelper
 import org.jellyfin.mobile.ui.state.CheckUrlState
-import org.jellyfin.mobile.ui.state.ServerSelectionType
+import org.jellyfin.mobile.ui.state.ServerSelectionMode
 import org.jellyfin.mobile.ui.utils.CenterRow
 import org.koin.compose.koinInject
 
@@ -71,7 +71,7 @@ fun ServerSelection(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
-    var serverSelectionType by remember { mutableStateOf(ServerSelectionType.ADDRESS) }
+    var serverSelectionMode by remember { mutableStateOf(ServerSelectionMode.ADDRESS) }
     var hostname by remember { mutableStateOf("") }
     val serverSuggestions = remember { mutableStateListOf<ServerSuggestion>() }
     var checkUrlState by remember<MutableState<CheckUrlState>> { mutableStateOf(CheckUrlState.Unchecked) }
@@ -87,11 +87,13 @@ fun ServerSelection(
 
     // Suggest saved servers
     LaunchedEffect(Unit) {
+        // Append saved servers to list, discovered servers will stay at the front
         apiClientController.loadPreviouslyUsedServers().mapTo(serverSuggestions) { server ->
             ServerSuggestion(
+                type = ServerSuggestion.Type.SAVED,
                 name = server.hostname,
                 address = server.hostname,
-                lastUsedTimestamp = server.lastUsedTimestamp,
+                timestamp = server.lastUsedTimestamp,
             )
         }
     }
@@ -99,12 +101,14 @@ fun ServerSelection(
     // Server discovery
     LaunchedEffect(Unit) {
         connectionHelper.discoverServersAsFlow().collect { serverInfo ->
+            serverSuggestions.removeIf { existing -> existing.address == serverInfo.address }
             serverSuggestions.add(
                 index = 0,
                 ServerSuggestion(
+                    type = ServerSuggestion.Type.DISCOVERED,
                     name = serverInfo.name,
                     address = serverInfo.address,
-                    lastUsedTimestamp = System.currentTimeMillis(),
+                    timestamp = System.currentTimeMillis(),
                 ),
             )
         }
@@ -128,9 +132,12 @@ fun ServerSelection(
             modifier = Modifier.padding(bottom = 8.dp),
             style = MaterialTheme.typography.h5,
         )
-        Crossfade(serverSelectionType) { selectionType ->
+        Crossfade(
+            targetState = serverSelectionMode,
+            label = "Server selection mode",
+        ) { selectionType ->
             when (selectionType) {
-                ServerSelectionType.ADDRESS -> AddressSelection(
+                ServerSelectionMode.ADDRESS -> AddressSelection(
                     text = hostname,
                     errorText = when {
                         externalError -> stringResource(R.string.connection_error_cannot_connect)
@@ -145,20 +152,20 @@ fun ServerSelection(
                     onDiscoveryClick = {
                         externalError = false
                         keyboardController?.hide()
-                        serverSelectionType = ServerSelectionType.AUTO_DISCOVERY
+                        serverSelectionMode = ServerSelectionMode.AUTO_DISCOVERY
                     },
                     onSubmit = {
                         onSubmit()
                     },
                 )
-                ServerSelectionType.AUTO_DISCOVERY -> ServerDiscoveryList(
+                ServerSelectionMode.AUTO_DISCOVERY -> ServerDiscoveryList(
                     serverSuggestions = serverSuggestions,
                     onGoBack = {
-                        serverSelectionType = ServerSelectionType.ADDRESS
+                        serverSelectionMode = ServerSelectionMode.ADDRESS
                     },
                     onSelectServer = { url ->
                         hostname = url
-                        serverSelectionType = ServerSelectionType.ADDRESS
+                        serverSelectionMode = ServerSelectionMode.ADDRESS
                         onSubmit()
                     },
                 )
