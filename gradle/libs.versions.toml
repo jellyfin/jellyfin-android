@@ -43,8 +43,8 @@ cronet-embedded = "113.5672.61"
 # Media
 androidx-media = "1.6.0"
 androidx-mediarouter = "1.4.0"
-exoplayer = "2.18.7"
-jellyfin-exoplayer-ffmpegextension = "2.18.7+1"
+exoplayer = "2.19.0"
+jellyfin-exoplayer-ffmpegextension = "2.19.0+1"
 playservices = "21.3.0"
 
 # Room
