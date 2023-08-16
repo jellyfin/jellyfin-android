@@ -24,6 +24,8 @@ import org.jellyfin.mobile.utils.dispatchPlayPause
 import org.jellyfin.mobile.utils.shouldShowNextButton
 import org.jellyfin.mobile.utils.shouldShowPauseButton
 import org.jellyfin.mobile.utils.shouldShowPreviousButton
+import org.jellyfin.sdk.model.api.MediaStream
+import org.jellyfin.sdk.model.api.MediaStreamType
 import timber.log.Timber
 
 @Composable
@@ -70,6 +72,10 @@ fun PlayerControls(
             contentPosition = contentPosition,
             bufferedPosition = bufferedPosition,
             duration = duration,
+            subtitleState = SubtitleControlsState(
+                subtitleStreams = emptyList(),
+                selectedSubtitle = null,
+            ),
             onGoBack = {},
             onPlayPause = {
                 player.dispatchPlayPause()
@@ -92,18 +98,19 @@ fun PlayerControls(
 @Composable
 private fun PlayerControlsLayout(
     title: String,
+    shouldShowPauseButton: Boolean,
     shouldShowPreviousButton: Boolean,
     shouldShowNextButton: Boolean,
     contentPosition: Long,
     bufferedPosition: Long,
     duration: Long,
+    subtitleState: SubtitleControlsState,
     onGoBack: () -> Unit,
     onPlayPause: () -> Unit,
     onSkipToPrevious: () -> Unit,
     onSkipToNext: () -> Unit,
     onSeek: (Long) -> Unit,
     modifier: Modifier = Modifier,
-    shouldShowPauseButton: Boolean,
 ) {
     Box(
         modifier = Modifier
@@ -136,6 +143,22 @@ private fun PlayerControlsLayout(
                 duration = duration,
                 onSeek = onSeek,
             )
+
+            PlayerOptions(
+                subtitleState = SubtitleControlsState(
+                    subtitleStreams = emptyList(),
+                    selectedSubtitle = null,
+                ),
+                isInFullscreen = false,
+                onLockControls = { /*TODO*/ },
+                onShowAudioTracks = { /*TODO*/ },
+                onSubtitleSelected = { /*TODO*/ },
+                onShowSpeedOptions = { /*TODO*/ },
+                onShowQualityOptions = { /*TODO*/ },
+                onShowDecoderOptions = { /*TODO*/ },
+                onShowInfo = { /*TODO*/ },
+                onToggleFullscreen = { /*TODO*/ },
+            )
         }
     }
 }
@@ -151,6 +174,24 @@ fun PlayerControlsPreview() {
         contentPosition = 28000,
         bufferedPosition = 60000,
         duration = 204000,
+        subtitleState = SubtitleControlsState(
+            subtitleStreams = listOf(
+                MediaStream(
+                    index = 1,
+                    type = MediaStreamType.SUBTITLE,
+                    codec = "srt",
+                    language = "English",
+                    isDefault = false,
+                    isInterlaced = false,
+                    isExternal = false,
+                    isForced = false,
+                    isAnamorphic = false,
+                    isTextSubtitleStream = true,
+                    supportsExternalStream = true,
+                ),
+            ),
+            selectedSubtitle = null,
+        ),
         onGoBack = {},
         onPlayPause = {},
         onSkipToPrevious = {},

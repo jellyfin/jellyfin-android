@@ -11,6 +11,7 @@ import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.analytics.AnalyticsCollector
+import com.google.android.exoplayer2.util.Util
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.utils.extensions.width
 import com.google.android.exoplayer2.audio.AudioAttributes as ExoPlayerAudioAttributes
@@ -105,8 +106,8 @@ val Player.shouldShowNextButton: Boolean
  */
 fun Player.dispatchPlayPause() {
     when {
-        shouldShowPauseButton -> pause()
-        else -> play()
+        shouldShowPauseButton -> Util.handlePauseButtonAction(this)
+        else -> Util.handlePlayButtonAction(this)
     }
 }
 

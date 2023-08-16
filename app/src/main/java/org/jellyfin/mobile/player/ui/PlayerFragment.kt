@@ -269,7 +269,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         when {
             isLandscape(configuration) -> {
                 // Landscape orientation is always fullscreen
-                playerFullscreenHelper.enableFullscreen()
+                //playerFullscreenHelper.enableFullscreen()
             }
             currentVideoStream?.isLandscape != false -> {
                 // Disable fullscreen for landscape video in portrait orientation

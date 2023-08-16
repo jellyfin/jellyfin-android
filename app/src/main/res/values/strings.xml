@@ -63,6 +63,16 @@
     <string name="player_controls_play_description">Play</string>
     <string name="player_controls_pause_description">Pause</string>
     <string name="player_controls_next_description">Next</string>
+    <string name="player_controls_lock_controls_description">Lock controls</string>
+    <string name="player_controls_audio_track_selection_description">Select audio track</string>
+    <string name="player_controls_subtitle_selection_description">Select subtitles</string>
+    <string name="player_controls_toggle_subtitles_description">Toggle subtitles</string>
+    <string name="player_controls_playback_speed_description">Playback speed</string>
+    <string name="player_controls_bitrate_selection_description">Quality selection</string>
+    <string name="player_controls_decoder_selection_description">Select decoder type</string>
+    <string name="player_controls_media_info_description">Media info</string>
+    <string name="player_controls_enter_fullscreen_description">Enter fullscreen</string>
+    <string name="player_controls_exit_fullscreen_description">Exit fullscreen</string>
     <string name="player_error_invalid_play_options">Unable to resolve playback info</string>
     <string name="player_error_network_failure">Unable to load media info from server</string>
     <string name="player_error_unsupported_content">Media cannot be played by this device</string>

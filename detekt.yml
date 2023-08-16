@@ -60,3 +60,5 @@ style:
   ReturnCount:
     excludeGuardClauses: true
     max: 3
+  UnusedPrivateMember:
+    ignoreAnnotated: [ 'Preview' ]
