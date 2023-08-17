@@ -85,9 +85,8 @@ fun ServerSelection(
         }
     }
 
-    // Suggest saved servers
     LaunchedEffect(Unit) {
-        // Append saved servers to list, discovered servers will stay at the front
+        // Suggest saved servers
         apiClientController.loadPreviouslyUsedServers().mapTo(serverSuggestions) { server ->
             ServerSuggestion(
                 type = ServerSuggestion.Type.SAVED,
@@ -96,10 +95,8 @@ fun ServerSelection(
                 timestamp = server.lastUsedTimestamp,
             )
         }
-    }
 
-    // Server discovery
-    LaunchedEffect(Unit) {
+        // Prepend discovered servers to suggestions
         connectionHelper.discoverServersAsFlow().collect { serverInfo ->
             serverSuggestions.removeIf { existing -> existing.address == serverInfo.address }
             serverSuggestions.add(
