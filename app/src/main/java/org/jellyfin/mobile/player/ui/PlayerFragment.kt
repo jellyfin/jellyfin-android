@@ -170,32 +170,19 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         val window = requireActivity().window
 
         // Insets handling
-        ViewCompat.setOnApplyWindowInsetsListener(composeView) { _, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
             playerFullscreenHelper.onWindowInsetsChanged(insets)
 
             /*val systemInsets = when {
                 AndroidVersion.isAtLeastR -> insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
                 else -> insets.getInsets(WindowInsetsCompat.Type.systemBars())
             }
-            playerControlsView.updatePadding(
-                top = systemInsets.top,
-                left = systemInsets.left,
-                right = systemInsets.right,
-                bottom = systemInsets.bottom,
-            )
             playerOverlay.updatePadding(
                 top = systemInsets.top,
                 left = systemInsets.left,
                 right = systemInsets.right,
                 bottom = systemInsets.bottom,
-            )
-
-            // Update fullscreen switcher icon
-            val fullscreenDrawable = when {
-                playerFullscreenHelper.isFullscreen -> R.drawable.ic_fullscreen_exit_white_32dp
-                else -> R.drawable.ic_fullscreen_enter_white_32dp
-            }
-            fullscreenSwitcher.setImageResource(fullscreenDrawable)*/
+            )*/
 
             insets
         }
