@@ -1,6 +1,6 @@
 package org.jellyfin.mobile.ui.state
 
-enum class ServerSelectionType {
+enum class ServerSelectionMode {
     ADDRESS,
     AUTO_DISCOVERY,
 }
