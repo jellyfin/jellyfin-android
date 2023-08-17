@@ -11,7 +11,11 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBarsIgnoringVisibility
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -48,6 +52,7 @@ fun PlayerScreen(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun Player(player: Player, mediaSource: JellyfinMediaSource?) {
     var showControls by remember { mutableStateOf(true) }
@@ -59,6 +64,7 @@ fun Player(player: Player, mediaSource: JellyfinMediaSource?) {
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
             ) {
+                Timber.d("Controls toggled")
                 showControls = !showControls
             },
     ) {
@@ -105,13 +111,16 @@ fun Player(player: Player, mediaSource: JellyfinMediaSource?) {
             PlayerControls(
                 player = player,
                 title = mediaSource?.name.orEmpty(),
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .windowInsetsPadding(WindowInsets.systemBarsIgnoringVisibility),
             )
         }
 
         if (showControls) {
             LaunchedEffect(Unit) {
                 delay(3000)
+                Timber.d("Controls timeout")
                 showControls = false
             }
         }

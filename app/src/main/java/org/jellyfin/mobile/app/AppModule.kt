@@ -27,6 +27,7 @@ import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.player.ui.PlayerFragment
+import org.jellyfin.mobile.player.ui.UiEventHandler
 import org.jellyfin.mobile.setup.ConnectionHelper
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
@@ -59,6 +60,7 @@ val applicationModule = module {
     // Event handlers and channels
     single { ActivityEventHandler(get()) }
     single { WebappFunctionChannel() }
+    single { UiEventHandler() }
 
     // Bridge interfaces
     single { NativePlayer(get(), get(), get(named(PLAYER_EVENT_CHANNEL))) }

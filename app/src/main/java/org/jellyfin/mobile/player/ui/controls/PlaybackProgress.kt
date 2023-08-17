@@ -30,8 +30,7 @@ val DraggedThumbSize = 12.dp
 @Composable
 fun PlaybackProgress(
     modifier: Modifier = Modifier,
-    contentPosition: Long,
-    bufferedPosition: Long,
+    position: PlayerPosition,
     duration: Long,
     onSeek: (Long) -> Unit,
 ) {
@@ -39,7 +38,10 @@ fun PlaybackProgress(
     var seekPosition by remember { mutableStateOf(0f) }
     val interactionSource = remember { MutableInteractionSource() }
     val isDragged by interactionSource.collectIsDraggedAsState()
-    val thumbRadius by animateDpAsState(if (isDragged) DraggedThumbSize else DefaultThumbSize)
+    val thumbRadius by animateDpAsState(
+        if (isDragged) DraggedThumbSize else DefaultThumbSize,
+        label = "Thumb radius",
+    )
 
     Column(
         modifier = modifier
@@ -52,7 +54,7 @@ fun PlaybackProgress(
                 .padding(horizontal = DefaultThumbSize),
         ) {
             Text(
-                text = formatter.format(contentPosition),
+                text = formatter.format(position.content),
                 color = LocalContentColor.current,
                 style = PlayerTimeTextStyle,
             )
@@ -68,8 +70,8 @@ fun PlaybackProgress(
 
         Seeker(
             modifier = Modifier.fillMaxWidth(),
-            value = if (isDragged) seekPosition else contentPosition.toFloat() / duration.toFloat(),
-            readAheadValue = bufferedPosition.toFloat() / duration.toFloat(),
+            value = if (isDragged) seekPosition else position.content.toFloat() / duration.toFloat(),
+            readAheadValue = position.buffer.toFloat() / duration.toFloat(),
             onValueChange = { value ->
                 seekPosition = value
             },

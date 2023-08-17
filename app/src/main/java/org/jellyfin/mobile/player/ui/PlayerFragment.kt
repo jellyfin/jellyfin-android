@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.platform.ComposeView
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -52,6 +53,7 @@ import timber.log.Timber
 class PlayerFragment : Fragment(), BackPressInterceptor {
     private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
+    private val uiEventHandler: UiEventHandler by inject()
     private var _viewBinding: FragmentComposeBinding? = null
     private val viewBinding get() = _viewBinding!!
     private val composeView: ComposeView get() = viewBinding.composeView
@@ -114,16 +116,20 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
                 viewModel.queueManager.currentMediaSource.filterNotNull().collect { mediaSource ->
                     if (mediaSource.selectedVideoStream?.isLandscape == false) {
                         // For portrait videos, immediately enable fullscreen
-                        //playerFullscreenHelper.enableFullscreen()
+                        playerFullscreenHelper.enableFullscreen()
                     } else if (appPreferences.exoPlayerStartLandscapeVideoInLandscape) {
                         // Auto-switch to landscape for landscape videos if enabled
                         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                     }
 
                     // Update title and player menus
-                    //toolbar.title = mediaSource.name
                     playerMenus?.onQueueItemChanged(mediaSource, viewModel.queueManager.hasNext())
                 }
+            }
+        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                uiEventHandler.handleEvents { event -> handleUiEvent(event) }
             }
         }
 
@@ -152,12 +158,6 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         }
     }
 
-    /*override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _playerBinding = FragmentPlayerBinding.inflate(layoutInflater)
-        _playerControlsBinding = ExoPlayerControlViewBinding.bind(playerBinding.root.findViewById(R.id.player_controls))
-        return playerBinding.root
-    }*/
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -167,14 +167,13 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             }
         }
 
-        /*
         val window = requireActivity().window
 
         // Insets handling
-        ViewCompat.setOnApplyWindowInsetsListener(playerBinding.root) { _, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(composeView) { _, insets ->
             playerFullscreenHelper.onWindowInsetsChanged(insets)
 
-            val systemInsets = when {
+            /*val systemInsets = when {
                 AndroidVersion.isAtLeastR -> insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
                 else -> insets.getInsets(WindowInsetsCompat.Type.systemBars())
             }
@@ -196,40 +195,21 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
                 playerFullscreenHelper.isFullscreen -> R.drawable.ic_fullscreen_exit_white_32dp
                 else -> R.drawable.ic_fullscreen_enter_white_32dp
             }
-            fullscreenSwitcher.setImageResource(fullscreenDrawable)
+            fullscreenSwitcher.setImageResource(fullscreenDrawable)*/
 
             insets
         }
         ViewCompat.requestApplyInsets(view)
 
-        // Handle toolbar back button
-        toolbar.setNavigationOnClickListener { parentFragmentManager.popBackStack() }
-
-        // Create playback menus
+        /*// Create playback menus
         playerMenus = PlayerMenus(this, playerBinding, playerControlsBinding)
 
         // Set controller timeout
-        suppressControllerAutoHide(false)
+        suppressControllerAutoHide(false)*/
 
         playerFullscreenHelper = PlayerFullscreenHelper(window)
-        playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
-        playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)
-
-        // Handle fullscreen switcher
-        fullscreenSwitcher.setOnClickListener {
-            val videoTrack = currentVideoStream
-            if (videoTrack == null || videoTrack.width!! >= videoTrack.height!!) {
-                // Landscape video, change orientation (which affects the fullscreen state)
-                val current = resources.configuration.orientation
-                requireActivity().requestedOrientation = when (current) {
-                    Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                    else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-                }
-            } else {
-                // Portrait video, only handle fullscreen state
-                playerFullscreenHelper.toggleFullscreen()
-            }
-        }*/
+        /*playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
+        playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)*/
     }
 
     override fun onStart() {
@@ -242,7 +222,29 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
         // When returning from another app, fullscreen mode for landscape orientation has to be set again
         if (isLandscape()) {
-            //playerFullscreenHelper.enableFullscreen()
+            playerFullscreenHelper.enableFullscreen()
+        }
+    }
+
+    private fun handleUiEvent(event: UiEvent) {
+        when (event) {
+            UiEvent.ExitPlayer -> {
+                parentFragmentManager.popBackStack()
+            }
+            UiEvent.ToggleFullscreen -> {
+                val videoTrack = currentVideoStream
+                if (videoTrack == null || videoTrack.width!! >= videoTrack.height!!) {
+                    // Landscape video, change orientation (which affects the fullscreen state)
+                    val current = resources.configuration.orientation
+                    requireActivity().requestedOrientation = when (current) {
+                        Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                        else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                    }
+                } else {
+                    // Portrait video, only handle fullscreen state
+                    playerFullscreenHelper.toggleFullscreen()
+                }
+            }
         }
     }
 
@@ -269,11 +271,11 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         when {
             isLandscape(configuration) -> {
                 // Landscape orientation is always fullscreen
-                //playerFullscreenHelper.enableFullscreen()
+                playerFullscreenHelper.enableFullscreen()
             }
             currentVideoStream?.isLandscape != false -> {
                 // Disable fullscreen for landscape video in portrait orientation
-                //playerFullscreenHelper.disableFullscreen()
+                playerFullscreenHelper.disableFullscreen()
             }
         }
     }
@@ -438,7 +440,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         with(requireActivity()) {
             // Reset screen orientation
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-            //playerFullscreenHelper.disableFullscreen()
+            playerFullscreenHelper.disableFullscreen()
             // Reset screen brightness
             window.brightness = BRIGHTNESS_OVERRIDE_NONE
         }

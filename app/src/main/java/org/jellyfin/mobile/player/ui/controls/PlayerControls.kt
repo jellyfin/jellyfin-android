@@ -2,8 +2,12 @@ package org.jellyfin.mobile.player.ui.controls
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.areStatusBarsVisible
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
@@ -17,28 +21,28 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.google.android.exoplayer2.Player
+import org.jellyfin.mobile.player.ui.UiEvent
+import org.jellyfin.mobile.player.ui.UiEventHandler
 import org.jellyfin.mobile.ui.utils.PlayerControlsBackground
 import org.jellyfin.mobile.utils.dispatchPlayPause
 import org.jellyfin.mobile.utils.shouldShowNextButton
 import org.jellyfin.mobile.utils.shouldShowPauseButton
 import org.jellyfin.mobile.utils.shouldShowPreviousButton
-import org.jellyfin.sdk.model.api.MediaStream
-import org.jellyfin.sdk.model.api.MediaStreamType
-import timber.log.Timber
+import org.koin.compose.koinInject
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PlayerControls(
     player: Player,
     title: String,
     modifier: Modifier = Modifier,
+    uiEventHandler: UiEventHandler = koinInject(),
 ) {
     var shouldShowPauseButton by remember { mutableStateOf(player.shouldShowPauseButton) }
     var shouldShowPreviousButton by remember { mutableStateOf(player.shouldShowPreviousButton) }
     var shouldShowNextButton by remember { mutableStateOf(player.shouldShowNextButton) }
-    var contentPosition by remember { mutableStateOf(player.currentPosition) }
-    var bufferedPosition by remember { mutableStateOf(player.bufferedPosition) }
+    var playerPosition by remember { mutableStateOf(player.position) }
     var duration by remember { mutableStateOf(player.duration) }
 
     PlayerEventsHandler(
@@ -51,9 +55,7 @@ fun PlayerControls(
             shouldShowNextButton = player.shouldShowNextButton
         },
         onProgressChanged = {
-            Timber.d("Progress changed: ${player.currentPosition} / ${player.duration}")
-            contentPosition = player.currentPosition
-            bufferedPosition = player.bufferedPosition
+            playerPosition = player.position
         },
         onTimelineChanged = {
             duration = player.duration
@@ -65,51 +67,70 @@ fun PlayerControls(
         LocalContentAlpha provides ContentAlpha.high,
     ) {
         PlayerControlsLayout(
-            title = title,
-            shouldShowPauseButton = shouldShowPauseButton,
-            shouldShowPreviousButton = shouldShowPreviousButton,
-            shouldShowNextButton = shouldShowNextButton,
-            contentPosition = contentPosition,
-            bufferedPosition = bufferedPosition,
-            duration = duration,
-            subtitleState = SubtitleControlsState(
-                subtitleStreams = emptyList(),
-                selectedSubtitle = null,
-            ),
-            onGoBack = {},
-            onPlayPause = {
-                player.dispatchPlayPause()
+            toolbar = {
+                PlayerToolbar(
+                    title = title,
+                    onGoBack = {
+                        uiEventHandler.emit(UiEvent.ExitPlayer)
+                    },
+                )
             },
-            onSkipToPrevious = {
-                player.seekToPrevious()
+            centerControls = {
+                CenterControls(
+                    showPauseButton = shouldShowPauseButton,
+                    hasPrevious = shouldShowPreviousButton,
+                    hasNext = shouldShowNextButton,
+                    onPlayPause = {
+                        player.dispatchPlayPause()
+                    },
+                    onSkipToPrevious = {
+                        player.seekToPrevious()
+                    },
+                    onSkipToNext = {
+                        player.seekToNext()
+                    },
+                    modifier = Modifier.align(Alignment.Center),
+                )
             },
-            onSkipToNext = {
-                player.seekToNext()
+            progress = {
+                PlaybackProgress(
+                    position = playerPosition,
+                    duration = duration,
+                    onSeek = { position ->
+                        player.seekTo(position)
+                    },
+                )
             },
-            onSeek = { position ->
-                player.seekTo(position)
+            options = {
+                PlayerOptions(
+                    subtitleState = SubtitleControlsState(
+                        subtitleStreams = emptyList(),
+                        selectedSubtitle = null,
+                    ),
+                    isInFullscreen = !WindowInsets.areStatusBarsVisible,
+                    onLockControls = { /*TODO*/ },
+                    onShowAudioTracks = { /*TODO*/ },
+                    onSubtitleSelected = { /*TODO*/ },
+                    onShowSpeedOptions = { /*TODO*/ },
+                    onShowQualityOptions = { /*TODO*/ },
+                    onShowDecoderOptions = { /*TODO*/ },
+                    onShowInfo = { /*TODO*/ },
+                    onToggleFullscreen = {
+                        uiEventHandler.emit(UiEvent.ToggleFullscreen)
+                    },
+                )
             },
             modifier = modifier,
         )
     }
 }
 
-@Suppress("LongParameterList")
 @Composable
 private fun PlayerControlsLayout(
-    title: String,
-    shouldShowPauseButton: Boolean,
-    shouldShowPreviousButton: Boolean,
-    shouldShowNextButton: Boolean,
-    contentPosition: Long,
-    bufferedPosition: Long,
-    duration: Long,
-    subtitleState: SubtitleControlsState,
-    onGoBack: () -> Unit,
-    onPlayPause: () -> Unit,
-    onSkipToPrevious: () -> Unit,
-    onSkipToNext: () -> Unit,
-    onSeek: (Long) -> Unit,
+    toolbar: @Composable (BoxScope.() -> Unit),
+    centerControls: @Composable (BoxScope.() -> Unit),
+    progress: @Composable (ColumnScope.() -> Unit),
+    options: @Composable (ColumnScope.() -> Unit),
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -117,86 +138,24 @@ private fun PlayerControlsLayout(
             .background(PlayerControlsBackground)
             .then(modifier),
     ) {
-        PlayerToolbar(
-            title = title,
-            onGoBack = onGoBack,
-        )
+        toolbar()
 
-        CenterControls(
-            showPauseButton = shouldShowPauseButton,
-            hasPrevious = shouldShowPreviousButton,
-            hasNext = shouldShowNextButton,
-            onPlayPause = onPlayPause,
-            onSkipToPrevious = onSkipToPrevious,
-            onSkipToNext = onSkipToNext,
-            modifier = Modifier.align(Alignment.Center),
-        )
+        centerControls()
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter),
         ) {
-            PlaybackProgress(
-                contentPosition = contentPosition,
-                bufferedPosition = bufferedPosition,
-                duration = duration,
-                onSeek = onSeek,
-            )
+            progress()
 
-            PlayerOptions(
-                subtitleState = SubtitleControlsState(
-                    subtitleStreams = emptyList(),
-                    selectedSubtitle = null,
-                ),
-                isInFullscreen = false,
-                onLockControls = { /*TODO*/ },
-                onShowAudioTracks = { /*TODO*/ },
-                onSubtitleSelected = { /*TODO*/ },
-                onShowSpeedOptions = { /*TODO*/ },
-                onShowQualityOptions = { /*TODO*/ },
-                onShowDecoderOptions = { /*TODO*/ },
-                onShowInfo = { /*TODO*/ },
-                onToggleFullscreen = { /*TODO*/ },
-            )
+            options()
         }
     }
 }
 
-@Preview
-@Composable
-fun PlayerControlsPreview() {
-    PlayerControlsLayout(
-        title = "Title",
-        shouldShowPauseButton = true,
-        shouldShowPreviousButton = true,
-        shouldShowNextButton = true,
-        contentPosition = 28000,
-        bufferedPosition = 60000,
-        duration = 204000,
-        subtitleState = SubtitleControlsState(
-            subtitleStreams = listOf(
-                MediaStream(
-                    index = 1,
-                    type = MediaStreamType.SUBTITLE,
-                    codec = "srt",
-                    language = "English",
-                    isDefault = false,
-                    isInterlaced = false,
-                    isExternal = false,
-                    isForced = false,
-                    isAnamorphic = false,
-                    isTextSubtitleStream = true,
-                    supportsExternalStream = true,
-                ),
-            ),
-            selectedSubtitle = null,
-        ),
-        onGoBack = {},
-        onPlayPause = {},
-        onSkipToPrevious = {},
-        onSkipToNext = {},
-        onSeek = {},
-        modifier = Modifier.fillMaxSize(),
+val Player.position: PlayerPosition
+    get() = PlayerPosition(
+        content = currentPosition,
+        buffer = bufferedPosition,
     )
-}
