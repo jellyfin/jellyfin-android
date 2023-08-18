@@ -1,5 +1,7 @@
 package org.jellyfin.mobile.player.ui
 
+import android.graphics.Rect
+import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.compose.foundation.clickable
@@ -21,6 +23,7 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 import kotlinx.coroutines.delay
 import org.jellyfin.mobile.player.PlayerViewModel
 import timber.log.Timber
+import com.google.android.exoplayer2.ui.R as ExoplayerR
 
 const val PlayerControlsTimeout = 3000L
 
@@ -28,6 +31,8 @@ const val PlayerControlsTimeout = 3000L
 @Composable
 fun PlayerScreen(
     playerViewModel: PlayerViewModel = viewModel(),
+    inhibitControls: Boolean,
+    onContentLocationUpdated: (Rect) -> Unit,
 ) {
     val player by playerViewModel.player.collectAsState()
     var showControls by remember { mutableStateOf(true) }
@@ -51,6 +56,15 @@ fun PlayerScreen(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT,
                     )
+
+                    // Track location of player content for PiP
+                    val contentFrame = findViewById<View>(ExoplayerR.id.exo_content_frame)
+                    contentFrame.addOnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
+                        with(view) {
+                            val (x, y) = intArrayOf(0, 0).also(::getLocationInWindow)
+                            onContentLocationUpdated(Rect(x, y, x + width, y + height))
+                        }
+                    }
                 }
             },
             modifier = Modifier.fillMaxSize(),
@@ -67,7 +81,7 @@ fun PlayerScreen(
         player?.let { player ->
             PlayerOverlay(
                 player = player,
-                showControls = showControls,
+                showControls = showControls && !inhibitControls,
                 viewModel = playerViewModel,
             )
         }

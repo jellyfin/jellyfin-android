@@ -5,6 +5,7 @@ import android.app.PictureInPictureParams
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
@@ -16,8 +17,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -57,6 +60,9 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     private var _viewBinding: FragmentComposeBinding? = null
     private val viewBinding get() = _viewBinding!!
     private val composeView: ComposeView get() = viewBinding.composeView
+
+    private val inhibitControlsState = mutableStateOf(false)
+    private var playerLocation = Rect()
 
     private var playerMenus: PlayerMenus? = null
 
@@ -151,28 +157,15 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        composeView.setContent {
-            AppTheme {
-                PlayerScreen(playerViewModel = viewModel)
-            }
-        }
-
         val window = requireActivity().window
+
+        // Allow the player to draw behind system bars
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.setBackgroundDrawable(null)
 
         // Insets handling
         ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
             playerFullscreenHelper.onWindowInsetsChanged(insets)
-
-            /*val systemInsets = when {
-                AndroidVersion.isAtLeastR -> insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
-                else -> insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            }
-            playerOverlay.updatePadding(
-                top = systemInsets.top,
-                left = systemInsets.left,
-                right = systemInsets.right,
-                bottom = systemInsets.bottom,
-            )*/
 
             insets
         }
@@ -187,6 +180,18 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         playerFullscreenHelper = PlayerFullscreenHelper(window)
         /*playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
         playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)*/
+
+        composeView.setContent {
+            AppTheme {
+                PlayerScreen(
+                    playerViewModel = viewModel,
+                    inhibitControls = inhibitControlsState.value,
+                    onContentLocationUpdated = { location ->
+                        playerLocation = location
+                    },
+                )
+            }
+        }
     }
 
     override fun onStart() {
@@ -353,6 +358,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     @Suppress("NestedBlockDepth")
     @RequiresApi(Build.VERSION_CODES.N)
     private fun Activity.enterPictureInPicture() {
+        inhibitControlsState.value = true
         if (AndroidVersion.isAtLeastO) {
             val params = PictureInPictureParams.Builder().apply {
                 val aspectRational = currentVideoStream?.aspectRational?.let { aspectRational ->
@@ -363,12 +369,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
                     }
                 }
                 setAspectRatio(aspectRational)
-                /*val contentFrame: View = playerView.findViewById(ExoplayerR.id.exo_content_frame)
-                val contentRect = with(contentFrame) {
-                    val (x, y) = intArrayOf(0, 0).also(::getLocationInWindow)
-                    Rect(x, y, x + width, y + height)
-                }
-                setSourceRectHint(contentRect)*/
+                setSourceRectHint(playerLocation)
             }.build()
             enterPictureInPictureMode(params)
         } else {
@@ -378,6 +379,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     }
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
+        inhibitControlsState.value = isInPictureInPictureMode
         if (isInPictureInPictureMode) {
             playerMenus?.dismissPlaybackInfo()
             //playerLockScreenHelper.hideUnlockButton()
@@ -407,11 +409,16 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     override fun onDestroy() {
         super.onDestroy()
         with(requireActivity()) {
-            // Reset screen orientation
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-            playerFullscreenHelper.disableFullscreen()
             // Reset screen brightness
             window.brightness = BRIGHTNESS_OVERRIDE_NONE
+
+            // Reset screen orientation
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            WindowCompat.setDecorFitsSystemWindows(window, true)
+            playerFullscreenHelper.disableFullscreen()
+
+            // Reset window background color
+            window.setBackgroundDrawableResource(R.color.theme_background)
         }
     }
 }

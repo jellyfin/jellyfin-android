@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -48,11 +49,13 @@ class ActivityEventHandler(
                 val fullscreenHelper = PlayerFullscreenHelper(window)
                 if (event.isFullscreen) {
                     requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                    WindowCompat.setDecorFitsSystemWindows(window, false)
                     fullscreenHelper.enableFullscreen()
                     window.setBackgroundDrawable(null)
                 } else {
                     // Reset screen orientation
                     requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+                    WindowCompat.setDecorFitsSystemWindows(window, true)
                     fullscreenHelper.disableFullscreen()
                     // Reset window background color
                     window.setBackgroundDrawableResource(R.color.theme_background)

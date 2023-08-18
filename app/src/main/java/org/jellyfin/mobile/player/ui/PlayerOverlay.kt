@@ -58,7 +58,8 @@ import org.jellyfin.mobile.utils.shouldShowPauseButton
 import org.jellyfin.mobile.utils.shouldShowPreviousButton
 import org.koin.compose.koinInject
 
-const val ToggleControlsAnimationDuration = 80
+const val ShowControlsAnimationDuration = 60
+const val HideControlsAnimationDuration = 120
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -77,13 +78,13 @@ fun PlayerOverlay(
             visible = showControls,
             enter = fadeIn(
                 animationSpec = tween(
-                    durationMillis = ToggleControlsAnimationDuration,
+                    durationMillis = ShowControlsAnimationDuration,
                     easing = LinearOutSlowInEasing,
                 ),
             ),
             exit = fadeOut(
                 animationSpec = tween(
-                    durationMillis = ToggleControlsAnimationDuration,
+                    durationMillis = HideControlsAnimationDuration,
                     easing = FastOutLinearInEasing,
                 ),
             ),
