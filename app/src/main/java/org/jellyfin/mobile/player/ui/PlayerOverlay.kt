@@ -21,13 +21,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsIgnoringVisibility
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.LockOpen
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,13 +36,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.exoplayer2.Player
+import org.jellyfin.mobile.R
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.ui.controls.CenterControls
+import org.jellyfin.mobile.player.ui.controls.ControlsState
 import org.jellyfin.mobile.player.ui.controls.PlaybackProgress
 import org.jellyfin.mobile.player.ui.controls.PlayerEventsHandler
 import org.jellyfin.mobile.player.ui.controls.PlayerOptions
@@ -65,17 +71,19 @@ const val HideControlsAnimationDuration = 120
 @Composable
 fun PlayerOverlay(
     player: Player,
-    showControls: Boolean,
+    controlsState: MutableState<ControlsState>,
     viewModel: PlayerViewModel = viewModel(),
 ) {
     val mediaSource by viewModel.queueManager.currentMediaSource.collectAsState()
 
-    Box {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+    ) {
         val insets = WindowInsets.systemBarsIgnoringVisibility
         var showInfo by remember { mutableStateOf(false) }
 
         AnimatedVisibility(
-            visible = showControls,
+            visible = controlsState.value == ControlsState.Visible,
             enter = fadeIn(
                 animationSpec = tween(
                     durationMillis = ShowControlsAnimationDuration,
@@ -92,6 +100,9 @@ fun PlayerOverlay(
             PlayerControls(
                 player = player,
                 mediaSource = mediaSource,
+                onLockControls = {
+                    controlsState.value = ControlsState.Locked
+                },
                 onToggleInfo = {
                     showInfo = !showInfo
                 },
@@ -107,14 +118,57 @@ fun PlayerOverlay(
                 onCloseInfo = {
                     showInfo = false
                 },
-                modifier = Modifier.windowInsetsPadding(insets),
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .windowInsetsPadding(insets),
+            )
+        }
+
+        if (controlsState.value == ControlsState.IndicateLocked) {
+            UnlockButton(
+                onUnlock = {
+                    controlsState.value = ControlsState.Visible
+                },
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .windowInsetsPadding(insets),
             )
         }
     }
 }
 
 @Composable
-fun PlaybackInfo(
+private fun UnlockButton(
+    onUnlock: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val indication = rememberRipple(bounded = true, radius = Dp.Unspecified)
+
+    Box(
+        modifier = modifier
+            .padding(vertical = 48.dp, horizontal = 12.dp)
+            .background(
+                color = PlaybackInfoBackground,
+                shape = MaterialTheme.shapes.small,
+            )
+            .clip(MaterialTheme.shapes.small) // ensure the ripple is clipped
+            .clickable(
+                interactionSource = interactionSource,
+                indication = indication,
+                onClick = onUnlock,
+            )
+            .padding(16.dp),
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.LockOpen,
+            contentDescription = stringResource(R.string.player_controls_unlock_controls_description),
+        )
+    }
+}
+
+@Composable
+private fun PlaybackInfo(
     mediaSource: JellyfinMediaSource?,
     onCloseInfo: () -> Unit,
     modifier: Modifier = Modifier,
@@ -124,27 +178,23 @@ fun PlaybackInfo(
         mediaSource?.let { PlaybackInfoHelper.buildPlaybackInfo(resources, mediaSource) }.orEmpty()
     }
 
-    Box(
-        modifier = modifier,
-    ) {
-        Text(
-            text = playbackInfo,
-            modifier = Modifier
-                .padding(top = 48.dp, bottom = 96.dp)
-                .padding(horizontal = 12.dp)
-                .background(
-                    color = PlaybackInfoBackground,
-                    shape = MaterialTheme.shapes.medium,
-                )
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = onCloseInfo,
-                )
-                .padding(16.dp),
-            style = PlaybackInfoTextStyle,
-        )
-    }
+    Text(
+        text = playbackInfo,
+        modifier = modifier
+            .padding(top = 48.dp, bottom = 96.dp)
+            .padding(horizontal = 12.dp)
+            .background(
+                color = PlaybackInfoBackground,
+                shape = MaterialTheme.shapes.medium,
+            )
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onCloseInfo,
+            )
+            .padding(16.dp),
+        style = PlaybackInfoTextStyle,
+    )
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -153,6 +203,7 @@ fun PlaybackInfo(
 fun PlayerControls(
     player: Player,
     mediaSource: JellyfinMediaSource?,
+    onLockControls: () -> Unit,
     onToggleInfo: () -> Unit,
     modifier: Modifier = Modifier,
     uiEventHandler: UiEventHandler = koinInject(),
@@ -180,78 +231,73 @@ fun PlayerControls(
         },
     )
 
-    CompositionLocalProvider(
-        LocalContentColor provides MaterialTheme.colors.onSurface,
-        LocalContentAlpha provides ContentAlpha.high,
-    ) {
-        PlayerOverlayLayout(
-            toolbar = {
-                PlayerToolbar(
-                    title = mediaSource?.name.orEmpty(),
-                    onGoBack = {
-                        uiEventHandler.emit(UiEvent.ExitPlayer)
-                    },
-                )
-            },
-            centerControls = {
-                CenterControls(
-                    showPauseButton = shouldShowPauseButton,
-                    hasPrevious = shouldShowPreviousButton,
-                    hasNext = shouldShowNextButton,
-                    onPlayPause = {
-                        player.dispatchPlayPause()
-                    },
-                    onSkipToPrevious = {
-                        player.seekToPrevious()
-                    },
-                    onSkipToNext = {
-                        player.seekToNext()
-                    },
-                    modifier = Modifier.align(Alignment.Center),
-                )
-            },
-            progress = {
-                PlaybackProgress(
-                    position = playerPosition,
-                    duration = duration,
-                    onSeek = { position ->
-                        player.seekTo(position)
-                    },
-                )
-            },
-            options = {
-                PlayerOptions(
-                    subtitleState = SubtitleControlsState(
-                        subtitleStreams = emptyList(),
-                        selectedSubtitle = null,
-                    ),
-                    isInFullscreen = !WindowInsets.areStatusBarsVisible,
-                    onLockControls = { /*TODO*/ },
-                    onShowAudioTracks = { /*TODO*/ },
-                    onSubtitleSelected = { /*TODO*/ },
-                    onShowSpeedOptions = { /*TODO*/ },
-                    onShowQualityOptions = { /*TODO*/ },
-                    onShowDecoderOptions = { /*TODO*/ },
-                    onToggleInfo = onToggleInfo,
-                    onToggleFullscreen = {
-                        val videoTrack = mediaSource?.selectedVideoStream
-                        if (videoTrack?.isLandscape != false) {
-                            // Landscape video, change orientation (which affects the fullscreen state)
-                            uiEventHandler.emit(UiEvent.ToggleOrientation)
-                        } else {
-                            // Portrait video, only handle fullscreen state
-                            uiEventHandler.emit(UiEvent.ToggleFullscreen)
-                        }
-                    },
-                )
-            },
-            modifier = modifier,
-        )
-    }
+    PlayerControlsLayout(
+        toolbar = {
+            PlayerToolbar(
+                title = mediaSource?.name.orEmpty(),
+                onGoBack = {
+                    uiEventHandler.emit(UiEvent.ExitPlayer)
+                },
+            )
+        },
+        centerControls = {
+            CenterControls(
+                showPauseButton = shouldShowPauseButton,
+                hasPrevious = shouldShowPreviousButton,
+                hasNext = shouldShowNextButton,
+                onPlayPause = {
+                    player.dispatchPlayPause()
+                },
+                onSkipToPrevious = {
+                    player.seekToPrevious()
+                },
+                onSkipToNext = {
+                    player.seekToNext()
+                },
+                modifier = Modifier.align(Alignment.Center),
+            )
+        },
+        progress = {
+            PlaybackProgress(
+                position = playerPosition,
+                duration = duration,
+                onSeek = { position ->
+                    player.seekTo(position)
+                },
+            )
+        },
+        options = {
+            PlayerOptions(
+                subtitleState = SubtitleControlsState(
+                    subtitleStreams = emptyList(),
+                    selectedSubtitle = null,
+                ),
+                isInFullscreen = !WindowInsets.areStatusBarsVisible,
+                onLockControls = onLockControls,
+                onShowAudioTracks = { /*TODO*/ },
+                onSubtitleSelected = { /*TODO*/ },
+                onShowSpeedOptions = { /*TODO*/ },
+                onShowQualityOptions = { /*TODO*/ },
+                onShowDecoderOptions = { /*TODO*/ },
+                onToggleInfo = onToggleInfo,
+                onToggleFullscreen = {
+                    val videoTrack = mediaSource?.selectedVideoStream
+                    if (videoTrack?.isLandscape != false) {
+                        // Landscape video, change orientation (which affects the fullscreen state)
+                        uiEventHandler.emit(UiEvent.ToggleOrientation)
+                    } else {
+                        // Portrait video, only handle fullscreen state
+                        uiEventHandler.emit(UiEvent.ToggleFullscreen)
+                    }
+                },
+            )
+        },
+        modifier = modifier,
+    )
 }
 
 @Composable
-private fun PlayerOverlayLayout(
+private fun PlayerControlsLayout(
     toolbar: @Composable (BoxScope.() -> Unit),
     centerControls: @Composable (BoxScope.() -> Unit),
     progress: @Composable (ColumnScope.() -> Unit),

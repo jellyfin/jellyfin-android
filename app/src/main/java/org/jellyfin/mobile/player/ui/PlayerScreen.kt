@@ -8,13 +8,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.LocalContentColor
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
@@ -22,20 +26,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import kotlinx.coroutines.delay
 import org.jellyfin.mobile.player.PlayerViewModel
+import org.jellyfin.mobile.player.ui.controls.ControlsState
 import timber.log.Timber
 import com.google.android.exoplayer2.ui.R as ExoplayerR
 
 const val PlayerControlsTimeout = 3000L
+const val LockButtonTimeout = 1000L
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PlayerScreen(
     playerViewModel: PlayerViewModel = viewModel(),
-    inhibitControls: Boolean,
+    controlsState: MutableState<ControlsState>,
     onContentLocationUpdated: (Rect) -> Unit,
 ) {
     val player by playerViewModel.player.collectAsState()
-    var showControls by remember { mutableStateOf(true) }
 
     Box(
         modifier = Modifier
@@ -44,8 +49,12 @@ fun PlayerScreen(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
             ) {
-                Timber.d("Controls toggled")
-                showControls = !showControls
+                when (controlsState.value) {
+                    ControlsState.Hidden -> controlsState.value = ControlsState.Visible
+                    ControlsState.Locked -> controlsState.value = ControlsState.IndicateLocked
+                    ControlsState.Visible -> controlsState.value = ControlsState.Hidden
+                    else -> Unit // do nothing
+                }
             },
     ) {
         AndroidView(
@@ -79,18 +88,29 @@ fun PlayerScreen(
         )
 
         player?.let { player ->
-            PlayerOverlay(
-                player = player,
-                showControls = showControls && !inhibitControls,
-                viewModel = playerViewModel,
-            )
+            CompositionLocalProvider(
+                LocalContentColor provides MaterialTheme.colors.onSurface,
+                LocalContentAlpha provides ContentAlpha.high,
+            ) {
+                PlayerOverlay(
+                    player = player,
+                    controlsState = controlsState,
+                    viewModel = playerViewModel,
+                )
+            }
         }
 
-        LaunchedEffect(showControls) {
-            if (showControls) {
-                delay(PlayerControlsTimeout)
-                Timber.d("Controls timeout")
-                showControls = false
+        LaunchedEffect(controlsState.value) {
+            when (controlsState.value) {
+                ControlsState.Visible -> {
+                    delay(PlayerControlsTimeout)
+                    controlsState.value = ControlsState.Hidden
+                }
+                ControlsState.IndicateLocked -> {
+                    delay(LockButtonTimeout)
+                    controlsState.value = ControlsState.Locked
+                }
+                else -> Unit // do nothing
             }
         }
     }

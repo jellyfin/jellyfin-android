@@ -64,6 +64,7 @@
     <string name="player_controls_pause_description">Pause</string>
     <string name="player_controls_next_description">Next</string>
     <string name="player_controls_lock_controls_description">Lock controls</string>
+    <string name="player_controls_unlock_controls_description">Unlock controls</string>
     <string name="player_controls_audio_track_selection_description">Select audio track</string>
     <string name="player_controls_subtitle_selection_description">Select subtitles</string>
     <string name="player_controls_toggle_subtitles_description">Toggle subtitles</string>

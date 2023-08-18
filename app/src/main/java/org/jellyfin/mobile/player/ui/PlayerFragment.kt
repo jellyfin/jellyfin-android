@@ -35,6 +35,7 @@ import org.jellyfin.mobile.databinding.FragmentComposeBinding
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.interaction.PlayOptions
+import org.jellyfin.mobile.player.ui.controls.ControlsState
 import org.jellyfin.mobile.ui.utils.AppTheme
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.BackPressInterceptor
@@ -61,6 +62,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     private val viewBinding get() = _viewBinding!!
     private val composeView: ComposeView get() = viewBinding.composeView
 
+    private val controlsState = mutableStateOf(ControlsState.Hidden)
     private val inhibitControlsState = mutableStateOf(false)
     private var playerLocation = Rect()
 
@@ -185,7 +187,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             AppTheme {
                 PlayerScreen(
                     playerViewModel = viewModel,
-                    inhibitControls = inhibitControlsState.value,
+                    controlsState = controlsState,
                     onContentLocationUpdated = { location ->
                         playerLocation = location
                     },
@@ -358,7 +360,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     @Suppress("NestedBlockDepth")
     @RequiresApi(Build.VERSION_CODES.N)
     private fun Activity.enterPictureInPicture() {
-        inhibitControlsState.value = true
+        controlsState.value = ControlsState.Inhibited
         if (AndroidVersion.isAtLeastO) {
             val params = PictureInPictureParams.Builder().apply {
                 val aspectRational = currentVideoStream?.aspectRational?.let { aspectRational ->
@@ -379,7 +381,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     }
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
-        inhibitControlsState.value = isInPictureInPictureMode
+        controlsState.value = if (isInPictureInPictureMode) ControlsState.Inhibited else ControlsState.Hidden
         if (isInPictureInPictureMode) {
             playerMenus?.dismissPlaybackInfo()
             //playerLockScreenHelper.hideUnlockButton()
