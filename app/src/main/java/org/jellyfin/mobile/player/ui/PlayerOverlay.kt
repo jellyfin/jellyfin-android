@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -156,6 +157,7 @@ private fun UnlockButton(
             .clickable(
                 interactionSource = interactionSource,
                 indication = indication,
+                role = Role.Button,
                 onClick = onUnlock,
             )
             .padding(16.dp),
