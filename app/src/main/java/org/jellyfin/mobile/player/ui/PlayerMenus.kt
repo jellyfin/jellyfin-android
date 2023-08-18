@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
-import androidx.annotation.StringRes
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.view.size
@@ -18,7 +17,6 @@ import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.Locale
 
 /**
  *  Provides a menu UI for audio, subtitle and video stream selection
@@ -136,46 +134,7 @@ class PlayerMenus(
             qualityButton.isVisible = false
         }
 
-        val playMethod = context.getString(R.string.playback_info_play_method, mediaSource.playMethod)
-        val videoTracksInfo = buildMediaStreamsInfo(
-            mediaStreams = listOfNotNull(videoStream),
-            prefix = R.string.playback_info_video_streams,
-            maxStreams = MAX_VIDEO_STREAMS_DISPLAY,
-            streamSuffix = { stream ->
-                stream.bitRate?.let { bitrate -> " (${formatBitrate(bitrate.toDouble())})" }.orEmpty()
-            },
-        )
-        val audioTracksInfo = buildMediaStreamsInfo(
-            mediaStreams = audioStreams,
-            prefix = R.string.playback_info_audio_streams,
-            maxStreams = MAX_AUDIO_STREAMS_DISPLAY,
-            streamSuffix = { stream ->
-                stream.language?.let { lang -> " ($lang)" }.orEmpty()
-            },
-        )
-
-        playbackInfo.text = listOf(
-            playMethod,
-            videoTracksInfo,
-            audioTracksInfo,
-        ).joinToString("\n\n")
-    }
-
-    private fun buildMediaStreamsInfo(
-        mediaStreams: List<MediaStream>,
-        @StringRes prefix: Int,
-        maxStreams: Int,
-        streamSuffix: (MediaStream) -> String,
-    ): String = mediaStreams.joinToString(
-        "\n",
-        "${fragment.getString(prefix)}:\n",
-        limit = maxStreams,
-        truncated = fragment.getString(R.string.playback_info_and_x_more, mediaStreams.size - maxStreams),
-    ) { stream ->
-        val title = stream.displayTitle?.takeUnless(String::isEmpty)
-            ?: fragment.getString(R.string.playback_info_stream_unknown_title)
-        val suffix = streamSuffix(stream)
-        "- $title$suffix"
+        playbackInfo.text = PlaybackInfoHelper.buildPlaybackInfo(fragment.resources, mediaSource)
     }
 
     private fun createSubtitlesMenu() = PopupMenu(context, subtitlesButton).apply {
@@ -299,7 +258,7 @@ class PlayerMenus(
         options.forEach { option ->
             val title = when (val bitrate = option.bitrate) {
                 0 -> context.getString(R.string.menu_item_auto)
-                else -> "${option.maxHeight}p - ${formatBitrate(bitrate.toDouble())}"
+                else -> "${option.maxHeight}p - ${PlaybackInfoHelper.formatBitrate(bitrate.toDouble())}"
             }
             menu.add(QUALITY_MENU_GROUP, option.bitrate, Menu.NONE, title)
         }
@@ -318,30 +277,12 @@ class PlayerMenus(
         fragment.onPopupDismissed()
     }
 
-    private fun formatBitrate(bitrate: Double): String {
-        val (value, unit) = when {
-            bitrate > BITRATE_MEGA_BIT -> bitrate / BITRATE_MEGA_BIT to " Mbps"
-            bitrate > BITRATE_KILO_BIT -> bitrate / BITRATE_KILO_BIT to " kbps"
-            else -> bitrate to " bps"
-        }
-
-        // Remove unnecessary trailing zeros
-        val formatted = "%.2f".format(Locale.getDefault(), value).removeSuffix(".00")
-        return formatted + unit
-    }
-
     companion object {
         private const val SUBTITLES_MENU_GROUP = 0
         private const val AUDIO_MENU_GROUP = 1
         private const val SPEED_MENU_GROUP = 2
         private const val QUALITY_MENU_GROUP = 3
         private const val DECODER_MENU_GROUP = 4
-
-        private const val MAX_VIDEO_STREAMS_DISPLAY = 3
-        private const val MAX_AUDIO_STREAMS_DISPLAY = 5
-
-        private const val BITRATE_MEGA_BIT = 1_000_000
-        private const val BITRATE_KILO_BIT = 1_000
 
         private const val SPEED_MENU_STEP_SIZE = 0.25f
         private const val SPEED_MENU_STEP_MIN = 2 // → 0.5x

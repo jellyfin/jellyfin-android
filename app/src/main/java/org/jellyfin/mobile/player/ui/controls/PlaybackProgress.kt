@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -55,7 +54,6 @@ fun PlaybackProgress(
         ) {
             Text(
                 text = formatter.format(position.content),
-                color = LocalContentColor.current,
                 style = PlayerTimeTextStyle,
             )
 
@@ -63,7 +61,6 @@ fun PlaybackProgress(
 
             Text(
                 text = formatter.format(duration),
-                color = LocalContentColor.current,
                 style = PlayerTimeTextStyle,
             )
         }

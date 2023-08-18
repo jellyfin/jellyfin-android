@@ -46,7 +46,7 @@ fun PlayerOptions(
     onShowSpeedOptions: () -> Unit,
     onShowQualityOptions: () -> Unit,
     onShowDecoderOptions: () -> Unit,
-    onShowInfo: () -> Unit,
+    onToggleInfo: () -> Unit,
     onToggleFullscreen: () -> Unit,
 ) {
     Row(
@@ -113,7 +113,7 @@ fun PlayerOptions(
         PlayerOptionButton(
             icon = Icons.Outlined.Info,
             contentDescription = R.string.player_controls_media_info_description,
-            onClick = onShowInfo,
+            onClick = onToggleInfo,
         )
         Spacer(modifier = Modifier.weight(1f))
         PlayerOptionButton(
@@ -192,7 +192,7 @@ private fun PlayerOptionsPreview() {
         onShowSpeedOptions = {},
         onShowQualityOptions = {},
         onShowDecoderOptions = {},
-        onShowInfo = {},
+        onToggleInfo = {},
         onToggleFullscreen = {},
     )
 }

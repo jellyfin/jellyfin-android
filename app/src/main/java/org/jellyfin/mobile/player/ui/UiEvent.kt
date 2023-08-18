@@ -5,5 +5,6 @@ package org.jellyfin.mobile.player.ui
  */
 sealed class UiEvent {
     data object ExitPlayer : UiEvent()
+    data object ToggleOrientation : UiEvent()
     data object ToggleFullscreen : UiEvent()
 }

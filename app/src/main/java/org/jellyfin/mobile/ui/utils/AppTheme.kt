@@ -43,7 +43,15 @@ fun AppTheme(content: @Composable () -> Unit) {
 
 // Colors
 val PlayerAppBarHeight = 56.dp
+val PlaybackInfoBackground = Color(0xCC000000)
 val PlayerControlsBackground = Color(0x60000000)
+
+// Text styles
+val PlaybackInfoTextStyle = TextStyle(
+    color = Color.White,
+    fontSize = 14.sp,
+    fontWeight = FontWeight.Normal,
+)
 val PlayerTimeTextStyle = TextStyle(
     color = Color.White,
     fontSize = 14.sp,

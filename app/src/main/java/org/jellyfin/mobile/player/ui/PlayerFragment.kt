@@ -58,16 +58,6 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     private val viewBinding get() = _viewBinding!!
     private val composeView: ComposeView get() = viewBinding.composeView
 
-    //private var _playerBinding: FragmentPlayerBinding? = null
-    //private val playerBinding: FragmentPlayerBinding get() = _playerBinding!!
-    //private val playerView: StyledPlayerView get() = playerBinding.playerView
-    //private val playerOverlay: View get() = playerBinding.playerOverlay
-    //private val loadingIndicator: View get() = playerBinding.loadingIndicator
-    //private var _playerControlsBinding: ExoPlayerControlViewBinding? = null
-    //private val playerControlsBinding: ExoPlayerControlViewBinding get() = _playerControlsBinding!!
-    //private val playerControlsView: View get() = playerControlsBinding.root
-    //private val toolbar: Toolbar get() = playerControlsBinding.toolbar
-    //private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
     private var playerMenus: PlayerMenus? = null
 
     private lateinit var playerFullscreenHelper: PlayerFullscreenHelper
@@ -218,19 +208,14 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             UiEvent.ExitPlayer -> {
                 parentFragmentManager.popBackStack()
             }
-            UiEvent.ToggleFullscreen -> {
-                val videoTrack = currentVideoStream
-                if (videoTrack == null || videoTrack.width!! >= videoTrack.height!!) {
-                    // Landscape video, change orientation (which affects the fullscreen state)
-                    val current = resources.configuration.orientation
-                    requireActivity().requestedOrientation = when (current) {
-                        Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                        else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-                    }
-                } else {
-                    // Portrait video, only handle fullscreen state
-                    playerFullscreenHelper.toggleFullscreen()
+            UiEvent.ToggleOrientation -> {
+                requireActivity().requestedOrientation = when (resources.configuration.orientation) {
+                    Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                    else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
                 }
+            }
+            UiEvent.ToggleFullscreen -> {
+                playerFullscreenHelper.toggleFullscreen()
             }
         }
     }
@@ -393,7 +378,6 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     }
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
-        //playerView.useController = !isInPictureInPictureMode
         if (isInPictureInPictureMode) {
             playerMenus?.dismissPlaybackInfo()
             //playerLockScreenHelper.hideUnlockButton()
@@ -418,8 +402,6 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
         // Set binding references to null
         _viewBinding = null
-
-        playerMenus = null
     }
 
     override fun onDestroy() {
