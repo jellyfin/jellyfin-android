@@ -128,7 +128,7 @@ class PlayerGestureHelper(
             }
 
             override fun onScroll(
-                firstEvent: MotionEvent,
+                firstEvent: MotionEvent?,
                 currentEvent: MotionEvent,
                 distanceX: Float,
                 distanceY: Float,
@@ -139,7 +139,11 @@ class PlayerGestureHelper(
 
                 // Check whether swipe was started in excluded region
                 val exclusionSize = playerView.resources.dip(Constants.SWIPE_GESTURE_EXCLUSION_SIZE_VERTICAL)
-                if (firstEvent.y < exclusionSize || firstEvent.y > playerView.height - exclusionSize) {
+                if (
+                    firstEvent == null ||
+                    firstEvent.y < exclusionSize ||
+                    firstEvent.y > playerView.height - exclusionSize
+                ) {
                     return false
                 }
 
