@@ -10,8 +10,8 @@ android-junit5 = "1.9.3.0"
 coroutines = "1.7.3"
 
 # Core
-koin = "3.4.2"
-koin-compose = "3.4.5"
+koin = "3.4.3"
+koin-compose = "3.4.6"
 androidx-core = "1.10.1"
 androidx-core-splashscreen = "1.0.1"
 androidx-appcompat = "1.6.1"
