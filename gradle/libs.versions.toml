@@ -31,7 +31,7 @@ modernandroidpreferences = "2.3.2"
 # Compose
 compose = "1.5.0"
 compose-foundation = "1.5.0"
-compose-material = "1.4.3"
+compose-material = "1.5.0"
 compose-compiler = "1.5.1"
 
 # Network
