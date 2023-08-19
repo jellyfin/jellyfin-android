@@ -18,6 +18,7 @@ import de.Maxr1998.modernpreferences.helpers.defaultOnSelectionChange
 import de.Maxr1998.modernpreferences.helpers.pref
 import de.Maxr1998.modernpreferences.helpers.screen
 import de.Maxr1998.modernpreferences.helpers.singleChoice
+import de.Maxr1998.modernpreferences.helpers.seekBar
 import de.Maxr1998.modernpreferences.preferences.CheckBoxPreference
 import de.Maxr1998.modernpreferences.preferences.choice.SelectionItem
 import org.jellyfin.mobile.R
@@ -37,6 +38,7 @@ class SettingsFragment : Fragment() {
     private val settingsAdapter: PreferencesAdapter by lazy { PreferencesAdapter(buildSettingsScreen()) }
     private lateinit var startLandscapeVideoInLandscapePreference: CheckBoxPreference
     private lateinit var swipeGesturesPreference: CheckBoxPreference
+    private lateinit var swipeExclusionZoneVertical: Preference
     private lateinit var rememberBrightnessPreference: Preference
     private lateinit var backgroundAudioPreference: Preference
     private lateinit var directPlayAssPreference: Preference
@@ -97,6 +99,7 @@ class SettingsFragment : Fragment() {
             defaultOnSelectionChange { selection ->
                 startLandscapeVideoInLandscapePreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 swipeGesturesPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                swipeExclusionZoneVertical.enabled = selection == VideoPlayerType.EXO_PLAYER
                 rememberBrightnessPreference.enabled = selection == VideoPlayerType.EXO_PLAYER && swipeGesturesPreference.checked
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 directPlayAssPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
@@ -113,8 +116,18 @@ class SettingsFragment : Fragment() {
             defaultValue = true
             defaultOnCheckedChange { checked ->
                 rememberBrightnessPreference.enabled = checked
+                swipeExclusionZoneVertical.enabled = checked
             }
         }
+        swipeExclusionZoneVertical = seekBar(Constants.PREF_EXOPLAYER_SWIPE_GESTURE_EXCLUSION_SIZE_VERTICAL){
+            titleRes = R.string.pref_exoplayer_swipe_exclusion_size_vertical
+            min = 0
+            default = 64
+            max = 128
+            step = 8
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER && appPreferences.exoPlayerAllowSwipeGestures
+        }
+
         rememberBrightnessPreference = checkBox(Constants.PREF_EXOPLAYER_REMEMBER_BRIGHTNESS) {
             titleRes = R.string.pref_exoplayer_remember_brightness
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER && appPreferences.exoPlayerAllowSwipeGestures
