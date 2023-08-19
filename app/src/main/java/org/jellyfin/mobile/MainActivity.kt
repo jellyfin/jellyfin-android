@@ -12,7 +12,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.cast.Chromecast
 import org.jellyfin.mobile.player.cast.IChromecast
@@ -84,25 +87,10 @@ class MainActivity : AppCompatActivity() {
         with(activityEventHandler) { subscribe() }
 
         // Load UI
-        lifecycleScope.launchWhenStarted {
-            mainViewModel.serverState.collect { state ->
-                with(supportFragmentManager) {
-                    when (state) {
-                        ServerState.Pending -> {
-                            // TODO add loading indicator
-                        }
-                        is ServerState.Unset -> replaceFragment<ConnectFragment>()
-                        is ServerState.Available -> {
-                            val currentFragment = findFragmentById(R.id.fragment_container)
-                            if (currentFragment !is WebViewFragment || currentFragment.server != state.server) {
-                                replaceFragment<WebViewFragment>(
-                                    Bundle().apply {
-                                        putParcelable(Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER, state.server)
-                                    },
-                                )
-                            }
-                        }
-                    }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mainViewModel.serverState.collect { state ->
+                    handleServerState(state)
                 }
             }
         }
@@ -114,6 +102,31 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         orientationListener.enable()
+    }
+
+    private fun handleServerState(state: ServerState) {
+        with(supportFragmentManager) {
+            val currentFragment = findFragmentById(R.id.fragment_container)
+            when (state) {
+                ServerState.Pending -> {
+                    // TODO add loading indicator
+                }
+                is ServerState.Unset -> {
+                    if (currentFragment !is ConnectFragment) {
+                        replaceFragment<ConnectFragment>()
+                    }
+                }
+                is ServerState.Available -> {
+                    if (currentFragment !is WebViewFragment || currentFragment.server != state.server) {
+                        replaceFragment<WebViewFragment>(
+                            Bundle().apply {
+                                putParcelable(Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER, state.server)
+                            },
+                        )
+                    }
+                }
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(
