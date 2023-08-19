@@ -28,7 +28,7 @@ android {
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 32
+        targetSdk = 33
         versionName = project.getVersionName()
         versionCode = getVersionCode(versionName!!)
         setProperty("archivesBaseName", "jellyfin-android-v$versionName")
