@@ -25,4 +25,9 @@ enum class ControlsState {
      * The controls are visible and should be hidden after a timeout.
      */
     Visible,
+
+    /**
+     * The controls are visible and won't hide after the timeout.
+     */
+    ForceVisible,
 }

@@ -20,7 +20,7 @@ class QualityOptionsProvider {
         QualityOption(maxHeight = 480, bitrate = 1500000),
         QualityOption(maxHeight = 480, bitrate = 720000),
         QualityOption(maxHeight = 360, bitrate = 420000),
-        QualityOption(maxHeight = 0, bitrate = 0), // auto
+        QualityOption(maxHeight = 0, bitrate = null), // auto
     )
 
     @Suppress("MagicNumber")

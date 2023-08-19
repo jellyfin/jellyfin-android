@@ -3,15 +3,14 @@ package org.jellyfin.mobile.player.ui
 import android.content.res.Resources
 import androidx.annotation.StringRes
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.sdk.model.api.MediaStream
 import java.util.Locale
 
-object PlaybackInfoHelper {
-    private const val MAX_AUDIO_STREAMS_DISPLAY = 5
-
-    private const val BITRATE_MEGA_BIT = 1_000_000
-    private const val BITRATE_KILO_BIT = 1_000
+class PlaybackInfoHelper(
+    private val qualityOptionsProvider: QualityOptionsProvider,
+) {
 
     fun buildPlaybackInfo(
         resources: Resources,
@@ -65,6 +64,27 @@ object PlaybackInfoHelper {
         "- $title$suffix"
     }
 
+    fun buildQualityOptions(
+        resources: Resources,
+        jellyfinMediaSource: JellyfinMediaSource,
+    ): List<UiQualityOption> {
+        val videoStream = jellyfinMediaSource.selectedVideoStream ?: return emptyList()
+        val videoWidth = videoStream.width ?: 0
+        val videoHeight = videoStream.height ?: 0
+
+        if (videoWidth == 0 || videoHeight == 0) {
+            return emptyList()
+        }
+
+        return qualityOptionsProvider.getApplicableQualityOptions(videoWidth, videoHeight).map { option ->
+            val title = when (val bitrate = option.bitrate) {
+                null -> resources.getString(R.string.menu_item_auto)
+                else -> "${option.maxHeight}p - ${formatBitrate(bitrate.toDouble())}"
+            }
+            UiQualityOption(title, option.bitrate)
+        }
+    }
+
     fun formatBitrate(bitrate: Double): String {
         val (value, unit) = when {
             bitrate > BITRATE_MEGA_BIT -> bitrate / BITRATE_MEGA_BIT to " Mbps"
@@ -75,5 +95,12 @@ object PlaybackInfoHelper {
         // Remove unnecessary trailing zeros
         val formatted = "%.2f".format(Locale.getDefault(), value).removeSuffix(".00")
         return formatted + unit
+    }
+
+    companion object {
+        private const val MAX_AUDIO_STREAMS_DISPLAY = 5
+
+        private const val BITRATE_MEGA_BIT = 1_000_000
+        private const val BITRATE_KILO_BIT = 1_000
     }
 }

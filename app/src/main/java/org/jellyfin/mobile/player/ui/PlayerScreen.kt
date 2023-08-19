@@ -52,7 +52,7 @@ fun PlayerScreen(
                 when (controlsState.value) {
                     ControlsState.Hidden -> controlsState.value = ControlsState.Visible
                     ControlsState.Locked -> controlsState.value = ControlsState.IndicateLocked
-                    ControlsState.Visible -> controlsState.value = ControlsState.Hidden
+                    ControlsState.Visible, ControlsState.ForceVisible -> controlsState.value = ControlsState.Hidden
                     else -> Unit // do nothing
                 }
             },

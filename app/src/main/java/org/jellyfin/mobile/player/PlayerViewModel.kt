@@ -443,8 +443,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         playerOrNull?.logTracks(analyticsCollector)
     }
 
-    suspend fun changeBitrate(bitrate: Int?): Boolean {
-        return queueManager.changeBitrate(bitrate)
+    fun changeBitrate(bitrate: Int?) {
+        viewModelScope.launch {
+            queueManager.changeBitrate(bitrate)
+        }
     }
 
     /**

@@ -94,6 +94,9 @@ val Player.shouldShowPauseButton: Boolean
         return state != Player.STATE_IDLE && state != Player.STATE_ENDED && playWhenReady
     }
 
+val Player.isBuffering: Boolean
+    get() = playbackState == Player.STATE_BUFFERING
+
 val Player.shouldShowPreviousButton: Boolean
     get() = isCommandAvailable(Player.COMMAND_SEEK_TO_PREVIOUS)
 

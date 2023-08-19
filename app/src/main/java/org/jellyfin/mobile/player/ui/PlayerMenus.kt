@@ -29,6 +29,7 @@ class PlayerMenus(
     KoinComponent {
 
     private val context = playerBinding.root.context
+    private val playbackInfoHelper: PlaybackInfoHelper by inject()
     private val qualityOptionsProvider: QualityOptionsProvider by inject()
     private val previousButton: View by playerControlsBinding::previousButton
     private val nextButton: View by playerControlsBinding::nextButton
@@ -134,7 +135,7 @@ class PlayerMenus(
             qualityButton.isVisible = false
         }
 
-        playbackInfo.text = PlaybackInfoHelper.buildPlaybackInfo(fragment.resources, mediaSource)
+        playbackInfo.text = playbackInfoHelper.buildPlaybackInfo(fragment.resources, mediaSource)
     }
 
     private fun createSubtitlesMenu() = PopupMenu(context, subtitlesButton).apply {
@@ -256,11 +257,11 @@ class PlayerMenus(
         menu.clear()
         val options = qualityOptionsProvider.getApplicableQualityOptions(videoWidth, videoHeight)
         options.forEach { option ->
-            val title = when (val bitrate = option.bitrate) {
+            val title = when (val bitrate = option.bitrate ?: 0) {
                 0 -> context.getString(R.string.menu_item_auto)
-                else -> "${option.maxHeight}p - ${PlaybackInfoHelper.formatBitrate(bitrate.toDouble())}"
+                else -> "${option.maxHeight}p - ${playbackInfoHelper.formatBitrate(bitrate.toDouble())}"
             }
-            menu.add(QUALITY_MENU_GROUP, option.bitrate, Menu.NONE, title)
+            menu.add(QUALITY_MENU_GROUP, option.bitrate ?: 0, Menu.NONE, title)
         }
         menu.setGroupCheckable(QUALITY_MENU_GROUP, true, true)
 

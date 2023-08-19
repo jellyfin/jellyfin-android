@@ -323,7 +323,8 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     }
 
     fun onBitrateChanged(bitrate: Int?, callback: TrackSelectionCallback) = lifecycleScope.launch {
-        callback.onTrackSelected(viewModel.changeBitrate(bitrate))
+        viewModel.changeBitrate(bitrate)
+        callback.onTrackSelected(true)
     }
 
     /**
