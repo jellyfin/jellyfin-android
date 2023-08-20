@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -41,27 +42,34 @@ import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.ui.ControlsTimeout
 import org.jellyfin.mobile.player.ui.DoubleTapRippleDurationMs
 import org.jellyfin.mobile.player.ui.LockButtonTimeout
+import org.jellyfin.mobile.player.ui.SwipeGestureExclusionSizeVertical
 import org.jellyfin.mobile.player.ui.ZoomScaleBase
 import org.jellyfin.mobile.player.ui.ZoomScaleThreshold
 import org.jellyfin.mobile.player.ui.components.controls.ControlsState
+import org.jellyfin.mobile.player.ui.config.GestureIndicatorState
+import org.jellyfin.mobile.player.ui.utils.SwipeGestureHelper
 import org.jellyfin.mobile.ui.utils.detectMultipleGestures
 import org.jellyfin.mobile.utils.extensions.isLandscape
-import timber.log.Timber
 import kotlin.math.abs
 import com.google.android.exoplayer2.ui.R as ExoplayerR
 
-@Suppress("LongMethod")
+@Suppress("LongMethod", "ComplexMethod")
 @Composable
 fun PlayerScreen(
-    playerViewModel: PlayerViewModel = viewModel(),
     controlsState: MutableState<ControlsState>,
     onContentLocationUpdated: (Rect) -> Unit,
+    swipeGestureHelper: SwipeGestureHelper,
+    playerViewModel: PlayerViewModel = viewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
     val isLandscape by rememberUpdatedState(LocalConfiguration.current.isLandscape)
     val player by playerViewModel.player.collectAsState()
     val rippleInteractionSource = remember { MutableInteractionSource() }
     var contentSize by remember { mutableStateOf(IntSize.Zero) }
+    var gestureIndicatorState by remember { mutableStateOf<GestureIndicatorState>(GestureIndicatorState.Hidden) }
+    val gestureExclusionSizePx by rememberUpdatedState(
+        with(LocalDensity.current) { SwipeGestureExclusionSizeVertical.toPx() },
+    )
     var isZoomEnabled by remember { mutableStateOf(false) }
 
     Box(
@@ -85,6 +93,10 @@ fun PlayerScreen(
                         }
                     },
                     onDoubleTap = { event ->
+                        if (controlsState.value.isLocked) {
+                            return@detectTapGestures
+                        }
+
                         val tapX = event.x.toInt()
                         val (contentWidth, contentHeight) = contentSize
                         val fastForwardZone = contentWidth / 3
@@ -115,26 +127,41 @@ fun PlayerScreen(
                     },
                 )
             }
-            .pointerInput(Unit) {
+            .pointerInput(controlsState.value.isLocked, swipeGestureHelper) {
+                if (controlsState.value.isLocked) {
+                    return@pointerInput
+                }
+
+                // TODO: make this cancelable?
                 detectMultipleGestures(
                     onGestureStart = {
                         controlsState.value = ControlsState.Inhibited
+                        swipeGestureHelper.onStart()
                     },
                     onGestureEnd = {
+                        gestureIndicatorState = GestureIndicatorState.Hidden
+                        swipeGestureHelper.onEnd()
                         controlsState.value = ControlsState.Hidden
                     },
                     onGestureCancel = {
+                        gestureIndicatorState = GestureIndicatorState.Hidden
+                        swipeGestureHelper.onEnd()
                         controlsState.value = ControlsState.Hidden
                     },
                     onGesture = { pointerCount, centroid, pan, zoom ->
                         when (pointerCount) {
-                            1 -> {
-                                // Swiping
-                                Timber.d("Swiping: $pan")
-                                // TODO: implement vertical swipe gestures
+                            1 -> { // Swiping
+                                val result = swipeGestureHelper.onSwipe(
+                                    contentSize = contentSize,
+                                    verticalExclusionZonePx = gestureExclusionSizePx,
+                                    centroid = centroid,
+                                    pan = pan,
+                                )
+                                if (result != null) {
+                                    gestureIndicatorState = result
+                                }
                             }
-                            2 -> {
-                                // Zooming
+                            2 -> { // Zooming
                                 if (isLandscape && abs(zoom - ZoomScaleBase) > ZoomScaleThreshold) {
                                     isZoomEnabled = zoom > 1
                                 }
@@ -186,11 +213,13 @@ fun PlayerScreen(
                 PlayerOverlay(
                     player = player,
                     controlsState = controlsState,
+                    gestureIndicatorState = gestureIndicatorState,
                     viewModel = playerViewModel,
                 )
             }
         }
 
+        // Hide controls and lock indicator after timeout
         LaunchedEffect(controlsState.value) {
             when (controlsState.value) {
                 ControlsState.Visible -> {

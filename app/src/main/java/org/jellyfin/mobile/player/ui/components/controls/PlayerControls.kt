@@ -21,7 +21,7 @@ import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.ui.event.UiEvent
 import org.jellyfin.mobile.player.ui.event.UiEventHandler
-import org.jellyfin.mobile.ui.utils.PlayerControlsBackground
+import org.jellyfin.mobile.ui.utils.PlayerControlsBackgroundColor
 import org.jellyfin.mobile.utils.dispatchPlayPause
 import org.jellyfin.mobile.utils.extensions.isLandscape
 import org.koin.compose.koinInject
@@ -124,7 +124,7 @@ private fun PlayerControlsLayout(
 ) {
     Box(
         modifier = modifier
-            .background(PlayerControlsBackground)
+            .background(PlayerControlsBackgroundColor)
             .fillMaxSize(),
     ) {
         Box(

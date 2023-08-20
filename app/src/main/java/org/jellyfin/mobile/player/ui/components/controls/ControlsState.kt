@@ -30,4 +30,7 @@ enum class ControlsState {
      * The controls are visible and won't hide after the timeout.
      */
     ForceVisible,
+    ;
+
+    val isLocked get() = this == Locked || this == IndicateLocked
 }

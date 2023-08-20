@@ -45,6 +45,7 @@ import org.jellyfin.mobile.player.ui.legacy.PlayerLockScreenHelper
 import org.jellyfin.mobile.player.ui.legacy.PlayerMenus
 import org.jellyfin.mobile.player.ui.legacy.TrackSelectionCallback
 import org.jellyfin.mobile.player.ui.utils.FullscreenHelper
+import org.jellyfin.mobile.player.ui.utils.SwipeGestureHelper
 import org.jellyfin.mobile.ui.utils.AppTheme
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.BackPressInterceptor
@@ -188,15 +189,17 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         fullscreenHelper = FullscreenHelper(window)
         /*playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
         playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)*/
+        val swipeGestureHelper = SwipeGestureHelper(requireContext(), window, appPreferences)
 
         composeView.setContent {
             AppTheme {
                 PlayerScreen(
-                    playerViewModel = viewModel,
                     controlsState = controlsState,
                     onContentLocationUpdated = { location ->
                         playerLocation = location
                     },
+                    swipeGestureHelper = swipeGestureHelper,
+                    playerViewModel = viewModel,
                 )
             }
         }

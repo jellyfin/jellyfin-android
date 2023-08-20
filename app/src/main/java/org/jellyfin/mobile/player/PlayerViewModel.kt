@@ -49,10 +49,8 @@ import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
 import org.jellyfin.mobile.utils.applyDefaultAudioAttributes
 import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
-import org.jellyfin.mobile.utils.extensions.scaleInRange
-import org.jellyfin.mobile.utils.extensions.width
-import org.jellyfin.mobile.utils.getVolumeLevelPercent
-import org.jellyfin.mobile.utils.getVolumeRange
+import org.jellyfin.mobile.utils.extensions.getVolumeLevelPercent
+import org.jellyfin.mobile.utils.extensions.setVolumeLevelPercent
 import org.jellyfin.mobile.utils.logTracks
 import org.jellyfin.mobile.utils.seekToOffset
 import org.jellyfin.mobile.utils.setPlaybackState
@@ -319,9 +317,6 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val mediaSource = mediaSourceOrNull ?: return
         val playbackPositionMillis = currentPosition
         if (playbackState != Player.STATE_ENDED) {
-            val stream = AudioManager.STREAM_MUSIC
-            val volumeRange = audioManager.getVolumeRange(stream)
-            val currentVolume = audioManager.getStreamVolume(stream)
             try {
                 playStateApi.reportPlaybackProgress(
                     PlaybackProgressInfo(
@@ -334,7 +329,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         isMuted = false,
                         canSeek = true,
                         positionTicks = playbackPositionMillis * Constants.TICKS_PER_MILLISECOND,
-                        volumeLevel = (currentVolume - volumeRange.first) * Constants.PERCENT_MAX / volumeRange.width,
+                        volumeLevel = audioManager.getVolumeLevelPercent(),
                         repeatMode = RepeatMode.REPEAT_NONE,
                     ),
                 )
@@ -472,11 +467,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     private fun setVolume(percent: Int) {
-        if (audioManager.isVolumeFixed) return
-        val stream = AudioManager.STREAM_MUSIC
-        val volumeRange = audioManager.getVolumeRange(stream)
-        val scaled = volumeRange.scaleInRange(percent)
-        audioManager.setStreamVolume(stream, scaled, 0)
+        if (!audioManager.isVolumeFixed) audioManager.setVolumeLevelPercent(percent)
     }
 
     @SuppressLint("SwitchIntDef")

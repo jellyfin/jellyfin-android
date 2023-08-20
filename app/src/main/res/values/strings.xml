@@ -58,6 +58,8 @@
     <string name="notification_action_next">Next</string>
     <string name="notification_action_stop">Stop</string>
 
+    <string name="player_gesture_indicator_brightness_description">Brightness</string>
+    <string name="player_gesture_indicator_volume_description">Volume</string>
     <string name="player_controls_navigation_back_description">Go back</string>
     <string name="player_controls_previous_description">Previous</string>
     <string name="player_controls_play_description">Play</string>

@@ -21,10 +21,17 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BrightnessHigh
+import androidx.compose.material.icons.filled.BrightnessLow
+import androidx.compose.material.icons.filled.BrightnessMedium
 import androidx.compose.material.icons.outlined.LockOpen
+import androidx.compose.material.icons.outlined.VolumeDown
+import androidx.compose.material.icons.outlined.VolumeMute
+import androidx.compose.material.icons.outlined.VolumeUp
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
@@ -47,20 +54,38 @@ import org.jellyfin.mobile.player.ui.ShowControlsAnimationDuration
 import org.jellyfin.mobile.player.ui.components.controls.ControlsState
 import org.jellyfin.mobile.player.ui.components.controls.PlayerControls
 import org.jellyfin.mobile.player.ui.components.controls.PlayerPosition
+import org.jellyfin.mobile.player.ui.config.GestureIndicatorState
 import org.jellyfin.mobile.player.ui.event.UiEvent
 import org.jellyfin.mobile.player.ui.event.UiEventHandler
-import org.jellyfin.mobile.ui.utils.PlaybackInfoBackground
+import org.jellyfin.mobile.ui.utils.PlaybackInfoBackgroundColor
 import org.jellyfin.mobile.utils.isBuffering
 import org.jellyfin.mobile.utils.shouldShowNextButton
 import org.jellyfin.mobile.utils.shouldShowPauseButton
 import org.jellyfin.mobile.utils.shouldShowPreviousButton
 import org.koin.compose.koinInject
 
+@Stable
+val DefaultControlsEnterTransition = fadeIn(
+    animationSpec = tween(
+        durationMillis = ShowControlsAnimationDuration,
+        easing = LinearOutSlowInEasing,
+    ),
+)
+
+@Stable
+val DefaultControlsExitTransition = fadeOut(
+    animationSpec = tween(
+        durationMillis = HideControlsAnimationDuration,
+        easing = FastOutLinearInEasing,
+    ),
+)
+
 @Suppress("LongMethod")
 @Composable
 fun PlayerOverlay(
     player: Player,
     controlsState: MutableState<ControlsState>,
+    gestureIndicatorState: GestureIndicatorState,
     viewModel: PlayerViewModel = viewModel(),
     uiEventHandler: UiEventHandler = koinInject(),
 ) {
@@ -99,18 +124,8 @@ fun PlayerOverlay(
 
         AnimatedVisibility(
             visible = controlsState.value == ControlsState.Visible || controlsState.value == ControlsState.ForceVisible,
-            enter = fadeIn(
-                animationSpec = tween(
-                    durationMillis = ShowControlsAnimationDuration,
-                    easing = LinearOutSlowInEasing,
-                ),
-            ),
-            exit = fadeOut(
-                animationSpec = tween(
-                    durationMillis = HideControlsAnimationDuration,
-                    easing = FastOutLinearInEasing,
-                ),
-            ),
+            enter = DefaultControlsEnterTransition,
+            exit = DefaultControlsExitTransition,
         ) {
             PlayerControls(
                 player = player,
@@ -139,18 +154,8 @@ fun PlayerOverlay(
         AnimatedVisibility(
             visible = shouldShowLoadingIndicator,
             modifier = Modifier.align(Alignment.Center),
-            enter = fadeIn(
-                animationSpec = tween(
-                    durationMillis = ShowControlsAnimationDuration,
-                    easing = LinearOutSlowInEasing,
-                ),
-            ),
-            exit = fadeOut(
-                animationSpec = tween(
-                    durationMillis = HideControlsAnimationDuration,
-                    easing = FastOutLinearInEasing,
-                ),
-            ),
+            enter = DefaultControlsEnterTransition,
+            exit = DefaultControlsExitTransition,
         ) {
             CircularProgressIndicator(
                 strokeWidth = 6.dp,
@@ -158,28 +163,71 @@ fun PlayerOverlay(
             )
         }
 
-        if (shouldShowInfo) {
+        AnimatedVisibility(
+            visible = shouldShowInfo,
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .windowInsetsPadding(insets),
+            enter = DefaultControlsEnterTransition,
+            exit = DefaultControlsExitTransition,
+        ) {
             PlaybackInfo(
                 mediaSource = mediaSource,
                 onClose = {
                     shouldShowInfo = false
                 },
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .windowInsetsPadding(insets),
             )
         }
 
-        if (controlsState.value == ControlsState.IndicateLocked) {
+        AnimatedVisibility(
+            visible = controlsState.value == ControlsState.IndicateLocked,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .windowInsetsPadding(insets),
+            enter = DefaultControlsEnterTransition,
+            exit = DefaultControlsExitTransition,
+        ) {
             UnlockButton(
                 onUnlock = {
                     uiEventHandler.emit(UiEvent.UnlockOrientation)
                     controlsState.value = ControlsState.Visible
                 },
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .windowInsetsPadding(insets),
             )
+        }
+
+        AnimatedVisibility(
+            visible = gestureIndicatorState != GestureIndicatorState.Hidden,
+            modifier = Modifier.align(Alignment.Center),
+            enter = DefaultControlsEnterTransition,
+            exit = DefaultControlsExitTransition,
+        ) {
+            when (gestureIndicatorState) {
+                is GestureIndicatorState.Brightness -> {
+                    val brightness = gestureIndicatorState.brightness
+                    GestureIndicator(
+                        icon = when {
+                            brightness > 0.66f -> Icons.Filled.BrightnessHigh
+                            brightness > 0.33f -> Icons.Filled.BrightnessMedium
+                            else -> Icons.Filled.BrightnessLow
+                        },
+                        contentDescription = R.string.player_gesture_indicator_brightness_description,
+                        progress = brightness,
+                    )
+                }
+                is GestureIndicatorState.Volume -> {
+                    val volume = gestureIndicatorState.volume
+                    GestureIndicator(
+                        icon = when {
+                            volume > 0.66f -> Icons.Outlined.VolumeUp
+                            volume > 0.0f -> Icons.Outlined.VolumeDown
+                            else -> Icons.Outlined.VolumeMute
+                        },
+                        contentDescription = R.string.player_gesture_indicator_volume_description,
+                        progress = volume,
+                    )
+                }
+                else -> Unit // do nothing
+            }
         }
     }
 }
@@ -196,7 +244,7 @@ private fun UnlockButton(
         modifier = modifier
             .padding(vertical = 48.dp, horizontal = 12.dp)
             .background(
-                color = PlaybackInfoBackground,
+                color = PlaybackInfoBackgroundColor,
                 shape = MaterialTheme.shapes.small,
             )
             .clip(MaterialTheme.shapes.small) // ensure the ripple is clipped

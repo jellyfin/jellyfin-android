@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -13,8 +12,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.ui.utils.PlaybackInfoBuilder
-import org.jellyfin.mobile.ui.utils.PlaybackInfoBackground
+import org.jellyfin.mobile.ui.utils.PlaybackInfoBackgroundColor
 import org.jellyfin.mobile.ui.utils.PlaybackInfoTextStyle
+import org.jellyfin.mobile.ui.utils.PlayerBackInfoBackgroundShape
 import org.koin.compose.koinInject
 
 @Composable
@@ -35,8 +35,8 @@ fun PlaybackInfo(
             .padding(top = 48.dp, bottom = 96.dp)
             .padding(horizontal = 12.dp)
             .background(
-                color = PlaybackInfoBackground,
-                shape = MaterialTheme.shapes.medium,
+                color = PlaybackInfoBackgroundColor,
+                shape = PlayerBackInfoBackgroundShape,
             )
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },

@@ -3,7 +3,6 @@
 package org.jellyfin.mobile.utils
 
 import android.media.AudioAttributes
-import android.media.AudioManager
 import android.media.MediaMetadata
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
@@ -13,7 +12,6 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.analytics.AnalyticsCollector
 import com.google.android.exoplayer2.util.Util
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
-import org.jellyfin.mobile.utils.extensions.width
 import com.google.android.exoplayer2.audio.AudioAttributes as ExoPlayerAudioAttributes
 
 inline fun MediaSession.applyDefaultLocalAudioAttributes(contentType: Int) {
@@ -57,19 +55,6 @@ fun MediaSession.setPlaybackState(player: Player, playbackActions: Long) {
         else -> error("Invalid player playbackState $playerState")
     }
     setPlaybackState(playbackState, player.currentPosition, playbackActions)
-}
-
-fun AudioManager.getVolumeRange(streamType: Int): IntRange {
-    val minVolume = (if (AndroidVersion.isAtLeastP) getStreamMinVolume(streamType) else 0)
-    val maxVolume = getStreamMaxVolume(streamType)
-    return minVolume..maxVolume
-}
-
-fun AudioManager.getVolumeLevelPercent(): Int {
-    val stream = AudioManager.STREAM_MUSIC
-    val volumeRange = getVolumeRange(stream)
-    val currentVolume = getStreamVolume(stream)
-    return (currentVolume - volumeRange.first) * Constants.PERCENT_MAX / volumeRange.width
 }
 
 /**

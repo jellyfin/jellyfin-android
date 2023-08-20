@@ -43,8 +43,13 @@ fun AppTheme(content: @Composable () -> Unit) {
 
 // Colors
 val PlayerAppBarHeight = 56.dp
-val PlaybackInfoBackground = Color(0xCC000000)
-val PlayerControlsBackground = Color(0x60000000)
+val GestureIndicatorBackgroundColor = Color(0xCC000000)
+val PlaybackInfoBackgroundColor = Color(0xCC000000)
+val PlayerControlsBackgroundColor = Color(0x60000000)
+
+// Shapes
+val GestureIndicatorBackgroundShape = RoundedCornerShape(16.dp)
+val PlayerBackInfoBackgroundShape = RoundedCornerShape(16.dp)
 
 // Text styles
 val PlaybackInfoTextStyle = TextStyle(
