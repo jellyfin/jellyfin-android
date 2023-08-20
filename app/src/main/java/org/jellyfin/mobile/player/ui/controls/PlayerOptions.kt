@@ -43,13 +43,13 @@ import org.jellyfin.mobile.player.ui.PlaybackInfoHelper
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.compose.koinInject
 
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "LongMethod")
 @Composable
 fun PlayerOptions(
     mediaSource: JellyfinMediaSource?,
     subtitleState: SubtitleControlsState,
     isInFullscreen: Boolean,
-    onMenuVisibilityChanged: (Boolean) -> Unit,
+    onSuppressControlsTimeout: (suppressed: Boolean) -> Unit,
     onLockControls: () -> Unit,
     onShowAudioTracks: () -> Unit,
     onSubtitleSelected: (MediaStream) -> Unit,
@@ -113,7 +113,7 @@ fun PlayerOptions(
         if (mediaSource != null) {
             QualityOptionsButton(
                 jellyfinMediaSource = mediaSource,
-                onMenuVisibilityChanged = onMenuVisibilityChanged,
+                onMenuVisibilityChanged = onSuppressControlsTimeout,
                 onBitrateSelected = onBitrateSelected,
             )
         }
@@ -145,7 +145,7 @@ fun PlayerOptions(
 @Composable
 private fun QualityOptionsButton(
     jellyfinMediaSource: JellyfinMediaSource,
-    onMenuVisibilityChanged: (Boolean) -> Unit,
+    onMenuVisibilityChanged: (visible: Boolean) -> Unit,
     onBitrateSelected: (Int?) -> Unit,
     playbackInfoHelper: PlaybackInfoHelper = koinInject(),
 ) {

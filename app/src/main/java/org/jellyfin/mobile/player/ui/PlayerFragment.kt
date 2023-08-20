@@ -44,15 +44,14 @@ import org.jellyfin.mobile.utils.Constants.PIP_MAX_RATIONAL
 import org.jellyfin.mobile.utils.Constants.PIP_MIN_RATIONAL
 import org.jellyfin.mobile.utils.SmartOrientationListener
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
-import org.jellyfin.mobile.utils.brightness
 import org.jellyfin.mobile.utils.extensions.aspectRational
+import org.jellyfin.mobile.utils.extensions.brightness
 import org.jellyfin.mobile.utils.extensions.getParcelableCompat
 import org.jellyfin.mobile.utils.extensions.isLandscape
 import org.jellyfin.mobile.utils.extensions.keepScreenOn
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.android.ext.android.inject
-import timber.log.Timber
 
 class PlayerFragment : Fragment(), BackPressInterceptor {
     private val appPreferences: AppPreferences by inject()
@@ -63,7 +62,6 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     private val composeView: ComposeView get() = viewBinding.composeView
 
     private val controlsState = mutableStateOf(ControlsState.Hidden)
-    private val inhibitControlsState = mutableStateOf(false)
     private var playerLocation = Rect()
 
     private var playerMenus: PlayerMenus? = null
@@ -92,15 +90,12 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.player.collect { player ->
-                    Timber.d("Player changed: $player")
                     if (player == null) parentFragmentManager.popBackStack()
                 }
             }
         }
-        viewModel.playerState.observe(this) { playerState ->
-            val isPlaying = viewModel.playerOrNull?.isPlaying == true
-            requireActivity().window.keepScreenOn = isPlaying
-            //loadingIndicator.isVisible = playerState == Player.STATE_BUFFERING
+        viewModel.playerState.observe(this) {
+            requireActivity().window.keepScreenOn = viewModel.playerOrNull?.isPlaying == true
         }
         viewModel.decoderType.observe(this) { type ->
             playerMenus?.updatedSelectedDecoder(type)

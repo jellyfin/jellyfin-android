@@ -20,8 +20,8 @@ import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.utils.Constants
-import org.jellyfin.mobile.utils.brightness
 import org.jellyfin.mobile.utils.dip
+import org.jellyfin.mobile.utils.extensions.brightness
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.math.abs

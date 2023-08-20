@@ -11,8 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -31,16 +32,22 @@ fun PlaybackProgress(
     modifier: Modifier = Modifier,
     position: PlayerPosition,
     duration: Long,
+    onSuppressControlsTimeout: (suppressed: Boolean) -> Unit,
     onSeek: (Long) -> Unit,
 ) {
     val formatter = remember { TimeFormatter() }
-    var seekPosition by remember { mutableStateOf(0f) }
+    var seekPosition by remember { mutableFloatStateOf(0f) }
     val interactionSource = remember { MutableInteractionSource() }
     val isDragged by interactionSource.collectIsDraggedAsState()
     val thumbRadius by animateDpAsState(
         if (isDragged) DraggedThumbSize else DefaultThumbSize,
         label = "Thumb radius",
     )
+
+    // Suppress controls timeout while seeking
+    LaunchedEffect(isDragged) {
+        onSuppressControlsTimeout(isDragged)
+    }
 
     Column(
         modifier = modifier

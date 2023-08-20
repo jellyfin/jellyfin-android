@@ -36,7 +36,7 @@ fun PlayerControls(
     shouldShowNextButton: Boolean,
     playerPosition: PlayerPosition,
     duration: Long,
-    onMenuVisibilityChanged: (Boolean) -> Unit,
+    onSuppressControlsTimeout: (suppressed: Boolean) -> Unit,
     onLockControls: () -> Unit,
     onToggleInfo: () -> Unit,
     modifier: Modifier = Modifier,
@@ -73,6 +73,7 @@ fun PlayerControls(
             PlaybackProgress(
                 position = playerPosition,
                 duration = duration,
+                onSuppressControlsTimeout = onSuppressControlsTimeout,
                 onSeek = { position ->
                     player.seekTo(position)
                 },
@@ -86,7 +87,7 @@ fun PlayerControls(
                     selectedSubtitle = null,
                 ),
                 isInFullscreen = @OptIn(ExperimentalLayoutApi::class) !WindowInsets.areStatusBarsVisible,
-                onMenuVisibilityChanged = onMenuVisibilityChanged,
+                onSuppressControlsTimeout = onSuppressControlsTimeout,
                 onLockControls = onLockControls,
                 onShowAudioTracks = { /*TODO*/ },
                 onSubtitleSelected = { /*TODO*/ },

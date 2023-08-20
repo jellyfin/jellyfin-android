@@ -80,7 +80,7 @@ inline fun ExoPlayer.applyDefaultAudioAttributes(@C.AudioContentType contentType
         .setUsage(C.USAGE_MEDIA)
         .setContentType(contentType)
         .build()
-    setAudioAttributes(audioAttributes, true)
+    setAudioAttributes(audioAttributes, false) // TODO: set audio focus to true again
 }
 
 /**

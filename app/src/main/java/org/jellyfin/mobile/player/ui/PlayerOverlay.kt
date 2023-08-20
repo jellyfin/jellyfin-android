@@ -27,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -51,9 +52,6 @@ import org.jellyfin.mobile.utils.shouldShowNextButton
 import org.jellyfin.mobile.utils.shouldShowPauseButton
 import org.jellyfin.mobile.utils.shouldShowPreviousButton
 
-const val ShowControlsAnimationDuration = 60
-const val HideControlsAnimationDuration = 120
-
 @Suppress("LongMethod")
 @Composable
 fun PlayerOverlay(
@@ -68,7 +66,7 @@ fun PlayerOverlay(
     var shouldShowPreviousButton by remember { mutableStateOf(player.shouldShowPreviousButton) }
     var shouldShowNextButton by remember { mutableStateOf(player.shouldShowNextButton) }
     var playerPosition by remember { mutableStateOf(player.position) }
-    var duration by remember { mutableStateOf(player.duration) }
+    var duration by remember { mutableLongStateOf(player.duration) }
 
     PlayerEventsHandler(
         player = player,
@@ -117,8 +115,8 @@ fun PlayerOverlay(
                 shouldShowNextButton = shouldShowNextButton,
                 playerPosition = playerPosition,
                 duration = duration,
-                onMenuVisibilityChanged = { visible ->
-                    controlsState.value = if (visible) ControlsState.ForceVisible else ControlsState.Visible
+                onSuppressControlsTimeout = { suppressed ->
+                    controlsState.value = if (suppressed) ControlsState.ForceVisible else ControlsState.Visible
                 },
                 onLockControls = {
                     controlsState.value = ControlsState.Locked
@@ -131,12 +129,25 @@ fun PlayerOverlay(
             )
         }
 
-        if (shouldShowLoadingIndicator) {
+        AnimatedVisibility(
+            visible = shouldShowLoadingIndicator,
+            modifier = Modifier.align(Alignment.Center),
+            enter = fadeIn(
+                animationSpec = tween(
+                    durationMillis = ShowControlsAnimationDuration,
+                    easing = LinearOutSlowInEasing,
+                ),
+            ),
+            exit = fadeOut(
+                animationSpec = tween(
+                    durationMillis = HideControlsAnimationDuration,
+                    easing = FastOutLinearInEasing,
+                ),
+            ),
+        ) {
             CircularProgressIndicator(
                 strokeWidth = 6.dp,
-                modifier = Modifier
-                    .size(58.dp)
-                    .align(Alignment.Center),
+                modifier = Modifier.size(58.dp),
             )
         }
 

@@ -44,6 +44,10 @@ naming:
   PackageNaming:
     # Package names must be lowercase letters
     packagePattern: '[a-z]+(\.[a-z]+)*'
+  TopLevelPropertyNaming:
+    # Jetpack Compose API guidelines encourage PascalCase
+    # https://github.com/androidx/androidx/blob/androidx-main/compose/docs/compose-api-guidelines.md
+    constantPattern: '[A-Za-z][_A-Za-z0-9]*'
 
 performance:
   SpreadOperator:
