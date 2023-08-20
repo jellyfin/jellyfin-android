@@ -1,4 +1,4 @@
-package org.jellyfin.mobile.player.ui.controls
+package org.jellyfin.mobile.player.ui.components.controls
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

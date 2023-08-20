@@ -1,4 +1,4 @@
-package org.jellyfin.mobile.player.ui
+package org.jellyfin.mobile.player.ui.legacy
 
 import android.content.res.Configuration
 import android.media.AudioManager
@@ -19,6 +19,7 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
+import org.jellyfin.mobile.player.ui.PlayerFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.dip
 import org.jellyfin.mobile.utils.extensions.brightness

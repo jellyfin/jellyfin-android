@@ -1,4 +1,4 @@
-package org.jellyfin.mobile.player.ui
+package org.jellyfin.mobile.player.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.ui.utils.PlaybackInfoBuilder
 import org.jellyfin.mobile.ui.utils.PlaybackInfoBackground
 import org.jellyfin.mobile.ui.utils.PlaybackInfoTextStyle
 import org.koin.compose.koinInject
@@ -21,11 +22,11 @@ fun PlaybackInfo(
     mediaSource: JellyfinMediaSource?,
     onClose: () -> Unit,
     modifier: Modifier = Modifier,
-    playbackInfoHelper: PlaybackInfoHelper = koinInject(),
+    playbackInfoBuilder: PlaybackInfoBuilder = koinInject(),
 ) {
     val resources = LocalContext.current.resources
     val playbackInfo = remember(mediaSource) {
-        mediaSource?.let { playbackInfoHelper.buildPlaybackInfo(resources, mediaSource) }.orEmpty()
+        mediaSource?.let { playbackInfoBuilder.buildPlaybackInfo(resources, mediaSource) }.orEmpty()
     }
 
     Text(

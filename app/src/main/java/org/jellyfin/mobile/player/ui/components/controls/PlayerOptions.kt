@@ -1,4 +1,4 @@
-package org.jellyfin.mobile.player.ui.controls
+package org.jellyfin.mobile.player.ui.components.controls
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
-import org.jellyfin.mobile.player.ui.PlaybackInfoHelper
+import org.jellyfin.mobile.player.ui.utils.PlaybackInfoBuilder
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.compose.koinInject
 
@@ -147,11 +147,11 @@ private fun QualityOptionsButton(
     jellyfinMediaSource: JellyfinMediaSource,
     onMenuVisibilityChanged: (visible: Boolean) -> Unit,
     onBitrateSelected: (Int?) -> Unit,
-    playbackInfoHelper: PlaybackInfoHelper = koinInject(),
+    playbackInfoBuilder: PlaybackInfoBuilder = koinInject(),
 ) {
     val resources = LocalContext.current.resources
     val qualityOptions = remember(jellyfinMediaSource) {
-        playbackInfoHelper.buildQualityOptions(
+        playbackInfoBuilder.buildQualityOptions(
             resources = resources,
             jellyfinMediaSource = jellyfinMediaSource,
         )

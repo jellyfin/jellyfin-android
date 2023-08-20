@@ -16,7 +16,7 @@ import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.bridge.JavascriptCallback
 import org.jellyfin.mobile.player.ui.PlayerFragment
-import org.jellyfin.mobile.player.ui.PlayerFullscreenHelper
+import org.jellyfin.mobile.player.ui.utils.FullscreenHelper
 import org.jellyfin.mobile.settings.SettingsFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.extensions.addFragment
@@ -46,7 +46,7 @@ class ActivityEventHandler(
     private fun MainActivity.handleEvent(event: ActivityEvent) {
         when (event) {
             is ActivityEvent.ChangeFullscreen -> {
-                val fullscreenHelper = PlayerFullscreenHelper(window)
+                val fullscreenHelper = FullscreenHelper(window)
                 if (event.isFullscreen) {
                     requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                     WindowCompat.setDecorFitsSystemWindows(window, false)

@@ -1,4 +1,4 @@
-package org.jellyfin.mobile.player.ui.controls
+package org.jellyfin.mobile.player.ui.components.controls
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,8 +19,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.exoplayer2.Player
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
-import org.jellyfin.mobile.player.ui.UiEvent
-import org.jellyfin.mobile.player.ui.UiEventHandler
+import org.jellyfin.mobile.player.ui.event.UiEvent
+import org.jellyfin.mobile.player.ui.event.UiEventHandler
 import org.jellyfin.mobile.ui.utils.PlayerControlsBackground
 import org.jellyfin.mobile.utils.dispatchPlayPause
 import org.jellyfin.mobile.utils.extensions.isLandscape

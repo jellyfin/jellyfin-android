@@ -1,4 +1,4 @@
-package org.jellyfin.mobile.player.ui.controls
+package org.jellyfin.mobile.player.ui.components.controls
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.interaction.MutableInteractionSource

@@ -1,4 +1,4 @@
-package org.jellyfin.mobile.player.ui
+package org.jellyfin.mobile.player.ui.components
 
 import android.graphics.Rect
 import android.view.View
@@ -38,7 +38,12 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.player.PlayerViewModel
-import org.jellyfin.mobile.player.ui.controls.ControlsState
+import org.jellyfin.mobile.player.ui.ControlsTimeout
+import org.jellyfin.mobile.player.ui.DoubleTapRippleDurationMs
+import org.jellyfin.mobile.player.ui.LockButtonTimeout
+import org.jellyfin.mobile.player.ui.ZoomScaleBase
+import org.jellyfin.mobile.player.ui.ZoomScaleThreshold
+import org.jellyfin.mobile.player.ui.components.controls.ControlsState
 import org.jellyfin.mobile.ui.utils.detectMultipleGestures
 import org.jellyfin.mobile.utils.extensions.isLandscape
 import timber.log.Timber

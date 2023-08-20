@@ -1,4 +1,4 @@
-package org.jellyfin.mobile.player.ui
+package org.jellyfin.mobile.player.ui.config
 
 import org.jellyfin.mobile.utils.Constants
 

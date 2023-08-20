@@ -1,4 +1,4 @@
-package org.jellyfin.mobile.player.ui
+package org.jellyfin.mobile.player.ui.legacy
 
 import android.view.Menu
 import android.view.MenuItem
@@ -14,6 +14,9 @@ import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.ui.PlayerFragment
+import org.jellyfin.mobile.player.ui.config.DecoderType
+import org.jellyfin.mobile.player.ui.utils.PlaybackInfoBuilder
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -29,7 +32,7 @@ class PlayerMenus(
     KoinComponent {
 
     private val context = playerBinding.root.context
-    private val playbackInfoHelper: PlaybackInfoHelper by inject()
+    private val playbackInfoBuilder: PlaybackInfoBuilder by inject()
     private val qualityOptionsProvider: QualityOptionsProvider by inject()
     private val previousButton: View by playerControlsBinding::previousButton
     private val nextButton: View by playerControlsBinding::nextButton
@@ -135,7 +138,7 @@ class PlayerMenus(
             qualityButton.isVisible = false
         }
 
-        playbackInfo.text = playbackInfoHelper.buildPlaybackInfo(fragment.resources, mediaSource)
+        playbackInfo.text = playbackInfoBuilder.buildPlaybackInfo(fragment.resources, mediaSource)
     }
 
     private fun createSubtitlesMenu() = PopupMenu(context, subtitlesButton).apply {
@@ -196,13 +199,13 @@ class PlayerMenus(
     private fun createDecoderMenu() = PopupMenu(context, qualityButton).apply {
         menu.add(
             DECODER_MENU_GROUP,
-            DecoderType.HARDWARE.ordinal,
+            DecoderType.Hardware.ordinal,
             Menu.NONE,
             context.getString(R.string.menu_item_hardware_decoding),
         )
         menu.add(
             DECODER_MENU_GROUP,
-            DecoderType.SOFTWARE.ordinal,
+            DecoderType.Software.ordinal,
             Menu.NONE,
             context.getString(R.string.menu_item_software_decoding),
         )
@@ -259,7 +262,7 @@ class PlayerMenus(
         options.forEach { option ->
             val title = when (val bitrate = option.bitrate ?: 0) {
                 0 -> context.getString(R.string.menu_item_auto)
-                else -> "${option.maxHeight}p - ${playbackInfoHelper.formatBitrate(bitrate.toDouble())}"
+                else -> "${option.maxHeight}p - ${playbackInfoBuilder.formatBitrate(bitrate.toDouble())}"
             }
             menu.add(QUALITY_MENU_GROUP, option.bitrate ?: 0, Menu.NONE, title)
         }

@@ -1,4 +1,4 @@
-package org.jellyfin.mobile.player.ui.controls
+package org.jellyfin.mobile.player.ui.components.controls
 
 enum class ControlsState {
     /**

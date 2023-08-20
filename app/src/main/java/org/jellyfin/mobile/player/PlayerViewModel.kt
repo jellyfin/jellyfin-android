@@ -42,9 +42,9 @@ import org.jellyfin.mobile.player.interaction.PlayerMediaSessionCallback
 import org.jellyfin.mobile.player.interaction.PlayerNotificationHelper
 import org.jellyfin.mobile.player.queue.QueueManager
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
-import org.jellyfin.mobile.player.ui.DecoderType
-import org.jellyfin.mobile.player.ui.DisplayPreferences
-import org.jellyfin.mobile.player.ui.PlayState
+import org.jellyfin.mobile.player.ui.config.DecoderType
+import org.jellyfin.mobile.player.ui.config.DisplayPreferences
+import org.jellyfin.mobile.player.ui.config.PlayState
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
 import org.jellyfin.mobile.utils.applyDefaultAudioAttributes
@@ -202,15 +202,15 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     return@setMediaCodecSelector decoderInfoList
                 }
                 val filteredDecoderList = when (decoderType.value) {
-                    DecoderType.HARDWARE -> decoderInfoList.filter(MediaCodecInfo::hardwareAccelerated)
-                    DecoderType.SOFTWARE -> decoderInfoList.filterNot(MediaCodecInfo::hardwareAccelerated)
+                    DecoderType.Hardware -> decoderInfoList.filter(MediaCodecInfo::hardwareAccelerated)
+                    DecoderType.Software -> decoderInfoList.filterNot(MediaCodecInfo::hardwareAccelerated)
                     else -> decoderInfoList
                 }
                 // Update the decoderType based on the first decoder selected
                 filteredDecoderList.firstOrNull()?.let { decoder ->
                     val decoderType = when {
-                        decoder.hardwareAccelerated -> DecoderType.HARDWARE
-                        else -> DecoderType.SOFTWARE
+                        decoder.hardwareAccelerated -> DecoderType.Hardware
+                        else -> DecoderType.Software
                     }
                     _decoderType.postValue(decoderType)
                 }

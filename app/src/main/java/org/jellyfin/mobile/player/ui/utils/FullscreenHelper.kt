@@ -1,4 +1,4 @@
-package org.jellyfin.mobile.player.ui
+package org.jellyfin.mobile.player.ui.utils
 
 import android.view.View
 import android.view.Window
@@ -8,7 +8,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.extensions.hasFlag
 
-class PlayerFullscreenHelper(private val window: Window) {
+class FullscreenHelper(private val window: Window) {
     private val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
     private var isFullscreen: Boolean = false
 

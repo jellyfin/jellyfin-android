@@ -1,4 +1,4 @@
-package org.jellyfin.mobile.player.ui
+package org.jellyfin.mobile.player.ui.legacy
 
 import android.content.pm.ActivityInfo
 import android.view.OrientationEventListener
@@ -6,6 +6,7 @@ import android.widget.ImageButton
 import androidx.core.view.isVisible
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
+import org.jellyfin.mobile.player.ui.PlayerFragment
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.extensions.lockOrientation

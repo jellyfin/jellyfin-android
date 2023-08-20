@@ -1,17 +1,17 @@
-package org.jellyfin.mobile.player.ui
+package org.jellyfin.mobile.player.ui.utils
 
 import android.content.res.Resources
 import androidx.annotation.StringRes
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.ui.config.UiQualityOption
 import org.jellyfin.sdk.model.api.MediaStream
 import java.util.Locale
 
-class PlaybackInfoHelper(
+class PlaybackInfoBuilder(
     private val qualityOptionsProvider: QualityOptionsProvider,
 ) {
-
     fun buildPlaybackInfo(
         resources: Resources,
         mediaSource: JellyfinMediaSource,

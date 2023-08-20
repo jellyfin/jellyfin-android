@@ -26,9 +26,9 @@ import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.source.MediaSourceResolver
-import org.jellyfin.mobile.player.ui.PlaybackInfoHelper
 import org.jellyfin.mobile.player.ui.PlayerFragment
-import org.jellyfin.mobile.player.ui.UiEventHandler
+import org.jellyfin.mobile.player.ui.event.UiEventHandler
+import org.jellyfin.mobile.player.ui.utils.PlaybackInfoBuilder
 import org.jellyfin.mobile.setup.ConnectionHelper
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
@@ -80,7 +80,7 @@ val applicationModule = module {
     single { MediaSourceResolver(get()) }
     single { DeviceProfileBuilder(get()) }
     single { QualityOptionsProvider() }
-    single { PlaybackInfoHelper(get()) }
+    single { PlaybackInfoBuilder(get()) }
 
     // ExoPlayer factories
     single<DataSource.Factory> {

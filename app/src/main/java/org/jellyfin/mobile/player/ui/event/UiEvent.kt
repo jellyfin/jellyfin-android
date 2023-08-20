@@ -1,4 +1,4 @@
-package org.jellyfin.mobile.player.ui
+package org.jellyfin.mobile.player.ui.event
 
 /**
  * Events triggered in the compose UI, to be handled by the player fragment.

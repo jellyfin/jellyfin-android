@@ -1,4 +1,4 @@
-package org.jellyfin.mobile.player.ui
+package org.jellyfin.mobile.player.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutLinearInEasing
@@ -42,10 +42,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.exoplayer2.Player
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.player.PlayerViewModel
-import org.jellyfin.mobile.player.ui.controls.ControlsState
-import org.jellyfin.mobile.player.ui.controls.PlayerControls
-import org.jellyfin.mobile.player.ui.controls.PlayerEventsHandler
-import org.jellyfin.mobile.player.ui.controls.PlayerPosition
+import org.jellyfin.mobile.player.ui.HideControlsAnimationDuration
+import org.jellyfin.mobile.player.ui.ShowControlsAnimationDuration
+import org.jellyfin.mobile.player.ui.components.controls.ControlsState
+import org.jellyfin.mobile.player.ui.components.controls.PlayerControls
+import org.jellyfin.mobile.player.ui.components.controls.PlayerPosition
+import org.jellyfin.mobile.player.ui.event.UiEvent
+import org.jellyfin.mobile.player.ui.event.UiEventHandler
 import org.jellyfin.mobile.ui.utils.PlaybackInfoBackground
 import org.jellyfin.mobile.utils.isBuffering
 import org.jellyfin.mobile.utils.shouldShowNextButton

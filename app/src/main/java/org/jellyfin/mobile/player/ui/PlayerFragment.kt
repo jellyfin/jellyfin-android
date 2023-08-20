@@ -35,7 +35,16 @@ import org.jellyfin.mobile.databinding.FragmentComposeBinding
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.interaction.PlayOptions
-import org.jellyfin.mobile.player.ui.controls.ControlsState
+import org.jellyfin.mobile.player.ui.components.PlayerScreen
+import org.jellyfin.mobile.player.ui.components.controls.ControlsState
+import org.jellyfin.mobile.player.ui.config.DecoderType
+import org.jellyfin.mobile.player.ui.event.UiEvent
+import org.jellyfin.mobile.player.ui.event.UiEventHandler
+import org.jellyfin.mobile.player.ui.legacy.PlayerGestureHelper
+import org.jellyfin.mobile.player.ui.legacy.PlayerLockScreenHelper
+import org.jellyfin.mobile.player.ui.legacy.PlayerMenus
+import org.jellyfin.mobile.player.ui.legacy.TrackSelectionCallback
+import org.jellyfin.mobile.player.ui.utils.FullscreenHelper
 import org.jellyfin.mobile.ui.utils.AppTheme
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.BackPressInterceptor
@@ -68,7 +77,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     private var playerMenus: PlayerMenus? = null
 
-    private lateinit var playerFullscreenHelper: PlayerFullscreenHelper
+    private lateinit var fullscreenHelper: FullscreenHelper
     lateinit var playerLockScreenHelper: PlayerLockScreenHelper
     lateinit var playerGestureHelper: PlayerGestureHelper
 
@@ -111,7 +120,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
                 viewModel.queueManager.currentMediaSource.filterNotNull().collect { mediaSource ->
                     if (mediaSource.selectedVideoStream?.isLandscape == false) {
                         // For portrait videos, immediately enable fullscreen
-                        playerFullscreenHelper.enableFullscreen()
+                        fullscreenHelper.enableFullscreen()
                     } else if (appPreferences.exoPlayerStartLandscapeVideoInLandscape) {
                         // Auto-switch to landscape for landscape videos if enabled
                         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
@@ -164,7 +173,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
         // Insets handling
         ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
-            playerFullscreenHelper.onWindowInsetsChanged(insets)
+            fullscreenHelper.onWindowInsetsChanged(insets)
 
             insets
         }
@@ -176,7 +185,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         // Set controller timeout
         suppressControllerAutoHide(false)*/
 
-        playerFullscreenHelper = PlayerFullscreenHelper(window)
+        fullscreenHelper = FullscreenHelper(window)
         /*playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
         playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)*/
 
@@ -203,7 +212,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
         // When returning from another app, fullscreen mode for landscape orientation has to be set again
         if (isLandscape()) {
-            playerFullscreenHelper.enableFullscreen()
+            fullscreenHelper.enableFullscreen()
         }
     }
 
@@ -219,7 +228,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
                 }
             }
             UiEvent.ToggleFullscreen -> {
-                playerFullscreenHelper.toggleFullscreen()
+                fullscreenHelper.toggleFullscreen()
             }
             UiEvent.LockOrientation -> {
                 orientationListener.disable()
@@ -259,11 +268,11 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         when {
             isLandscape(configuration) -> {
                 // Landscape orientation is always fullscreen
-                playerFullscreenHelper.enableFullscreen()
+                fullscreenHelper.enableFullscreen()
             }
             currentVideoStream?.isLandscape != false -> {
                 // Disable fullscreen for landscape video in portrait orientation
-                playerFullscreenHelper.disableFullscreen()
+                fullscreenHelper.disableFullscreen()
             }
         }
     }
@@ -427,7 +436,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             // Reset screen orientation
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             WindowCompat.setDecorFitsSystemWindows(window, true)
-            playerFullscreenHelper.disableFullscreen()
+            fullscreenHelper.disableFullscreen()
 
             // Reset window background color
             window.setBackgroundDrawableResource(R.color.theme_background)

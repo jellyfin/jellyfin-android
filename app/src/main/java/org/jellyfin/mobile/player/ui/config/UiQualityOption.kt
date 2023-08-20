@@ -1,4 +1,4 @@
-package org.jellyfin.mobile.player.ui
+package org.jellyfin.mobile.player.ui.config
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
