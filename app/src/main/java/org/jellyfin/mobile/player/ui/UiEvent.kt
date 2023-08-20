@@ -7,4 +7,6 @@ sealed class UiEvent {
     data object ExitPlayer : UiEvent()
     data object ToggleOrientation : UiEvent()
     data object ToggleFullscreen : UiEvent()
+    data object LockOrientation : UiEvent()
+    data object UnlockOrientation : UiEvent()
 }

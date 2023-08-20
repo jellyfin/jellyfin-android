@@ -49,6 +49,8 @@ import org.jellyfin.mobile.utils.extensions.brightness
 import org.jellyfin.mobile.utils.extensions.getParcelableCompat
 import org.jellyfin.mobile.utils.extensions.isLandscape
 import org.jellyfin.mobile.utils.extensions.keepScreenOn
+import org.jellyfin.mobile.utils.extensions.lockOrientation
+import org.jellyfin.mobile.utils.isAutoRotateOn
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.android.ext.android.inject
@@ -218,6 +220,18 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             }
             UiEvent.ToggleFullscreen -> {
                 playerFullscreenHelper.toggleFullscreen()
+            }
+            UiEvent.LockOrientation -> {
+                orientationListener.disable()
+                requireActivity().lockOrientation()
+            }
+            UiEvent.UnlockOrientation -> {
+                with(requireActivity()) {
+                    if (isAutoRotateOn()) {
+                        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+                    }
+                }
+                orientationListener.enable()
             }
         }
     }

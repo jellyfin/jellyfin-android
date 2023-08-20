@@ -1,7 +1,7 @@
 package org.jellyfin.mobile.player.ui
 
 const val LockButtonTimeout = 1000L
-const val ControlsTimeout = 3000L
+const val ControlsTimeout = 2500L
 const val ShowControlsAnimationDuration = 60
 const val HideControlsAnimationDuration = 120
 

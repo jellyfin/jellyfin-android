@@ -51,6 +51,7 @@ import org.jellyfin.mobile.utils.isBuffering
 import org.jellyfin.mobile.utils.shouldShowNextButton
 import org.jellyfin.mobile.utils.shouldShowPauseButton
 import org.jellyfin.mobile.utils.shouldShowPreviousButton
+import org.koin.compose.koinInject
 
 @Suppress("LongMethod")
 @Composable
@@ -58,6 +59,7 @@ fun PlayerOverlay(
     player: Player,
     controlsState: MutableState<ControlsState>,
     viewModel: PlayerViewModel = viewModel(),
+    uiEventHandler: UiEventHandler = koinInject(),
 ) {
     val mediaSource by viewModel.queueManager.currentMediaSource.collectAsState()
     var shouldShowInfo by remember { mutableStateOf(false) }
@@ -119,13 +121,15 @@ fun PlayerOverlay(
                     controlsState.value = if (suppressed) ControlsState.ForceVisible else ControlsState.Visible
                 },
                 onLockControls = {
-                    controlsState.value = ControlsState.Locked
+                    controlsState.value = ControlsState.IndicateLocked
+                    uiEventHandler.emit(UiEvent.LockOrientation)
                 },
                 onToggleInfo = {
                     shouldShowInfo = !shouldShowInfo
                 },
                 modifier = Modifier.fillMaxSize(),
                 viewModel = viewModel,
+                uiEventHandler = uiEventHandler,
             )
         }
 
@@ -166,6 +170,7 @@ fun PlayerOverlay(
         if (controlsState.value == ControlsState.IndicateLocked) {
             UnlockButton(
                 onUnlock = {
+                    uiEventHandler.emit(UiEvent.UnlockOrientation)
                     controlsState.value = ControlsState.Visible
                 },
                 modifier = Modifier
