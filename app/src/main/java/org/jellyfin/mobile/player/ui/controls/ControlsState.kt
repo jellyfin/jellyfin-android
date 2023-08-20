@@ -2,7 +2,7 @@ package org.jellyfin.mobile.player.ui.controls
 
 enum class ControlsState {
     /**
-     * The controls are hidden and should not be shown, e.g. during PiP.
+     * The controls are hidden and should not be shown, e.g. during PiP or while using swipe gestures.
      */
     Inhibited,
 

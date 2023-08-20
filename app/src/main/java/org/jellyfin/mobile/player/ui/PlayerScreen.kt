@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
@@ -31,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -41,7 +39,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.ui.controls.ControlsState
+import org.jellyfin.mobile.ui.utils.detectMultipleGestures
 import org.jellyfin.mobile.utils.extensions.isLandscape
+import timber.log.Timber
 import kotlin.math.abs
 import com.google.android.exoplayer2.ui.R as ExoplayerR
 
@@ -67,12 +67,7 @@ fun PlayerScreen(
             }
             .indication(
                 interactionSource = rippleInteractionSource,
-                indication = rememberRipple(
-                    bounded = false,
-                    radius = with(LocalDensity.current) {
-                        (contentSize.width / 2).toDp()
-                    },
-                ),
+                indication = rememberRipple(),
             )
             .pointerInput(Unit) {
                 detectTapGestures(
@@ -85,10 +80,19 @@ fun PlayerScreen(
                         }
                     },
                     onDoubleTap = { event ->
+                        val tapX = event.x.toInt()
                         val (contentWidth, contentHeight) = contentSize
-                        val contentCenterX = contentWidth / 2
-                        val contentCenterY = contentHeight / 2
-                        val isFastForward = event.x.toInt() > contentCenterX
+                        val fastForwardZone = contentWidth / 3
+                        val rewindZone = contentWidth - fastForwardZone
+
+                        val isFastForward = tapX < fastForwardZone
+                        val isRewind = tapX > rewindZone
+
+                        if (!isFastForward && !isRewind) {
+                            return@detectTapGestures
+                        }
+
+                        // TODO: tweak ripple to only fill one side of the screen
 
                         // Show ripple effect
                         coroutineScope.launch {
@@ -107,13 +111,32 @@ fun PlayerScreen(
                 )
             }
             .pointerInput(Unit) {
-                detectTransformGestures(
-                    panZoomLock = true,
-                ) { _, _, zoom, _ ->
-                    if (isLandscape && abs(zoom - ZoomScaleBase) > ZoomScaleThreshold) {
-                        isZoomEnabled = zoom > 1
-                    }
-                }
+                detectMultipleGestures(
+                    onGestureStart = {
+                        controlsState.value = ControlsState.Inhibited
+                    },
+                    onGestureEnd = {
+                        controlsState.value = ControlsState.Hidden
+                    },
+                    onGestureCancel = {
+                        controlsState.value = ControlsState.Hidden
+                    },
+                    onGesture = { pointerCount, centroid, pan, zoom ->
+                        when (pointerCount) {
+                            1 -> {
+                                // Swiping
+                                Timber.d("Swiping: $pan")
+                                // TODO: implement vertical swipe gestures
+                            }
+                            2 -> {
+                                // Zooming
+                                if (isLandscape && abs(zoom - ZoomScaleBase) > ZoomScaleThreshold) {
+                                    isZoomEnabled = zoom > 1
+                                }
+                            }
+                        }
+                    },
+                )
             },
     ) {
         AndroidView(
