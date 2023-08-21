@@ -4,8 +4,10 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidthIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -13,6 +15,9 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.ListItem
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.RadioButton
+import androidx.compose.material.RadioButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Fullscreen
@@ -39,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.ui.config.DecoderType
 import org.jellyfin.mobile.player.ui.utils.PlaybackInfoBuilder
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.compose.koinInject
@@ -48,14 +54,16 @@ import org.koin.compose.koinInject
 fun PlayerOptions(
     mediaSource: JellyfinMediaSource?,
     subtitleState: SubtitleControlsState,
+    playbackSpeed: Float,
+    decoder: DecoderType,
     isInFullscreen: Boolean,
     onSuppressControlsTimeout: (suppressed: Boolean) -> Unit,
     onLockControls: () -> Unit,
     onShowAudioTracks: () -> Unit,
     onSubtitleSelected: (MediaStream) -> Unit,
-    onShowSpeedOptions: () -> Unit,
-    onBitrateSelected: (Int?) -> Unit,
-    onShowDecoderOptions: () -> Unit,
+    onSpeedSelected: (speed: Float) -> Unit,
+    onBitrateSelected: (bitrate: Int?) -> Unit,
+    onDecoderSelected: (decoder: DecoderType) -> Unit,
     onToggleInfo: () -> Unit,
     onToggleFullscreen: () -> Unit,
 ) {
@@ -105,22 +113,22 @@ fun PlayerOptions(
                 }
             },
         )
-        PlayerOptionButton(
-            icon = Icons.Outlined.SlowMotionVideo,
-            contentDescription = R.string.player_controls_playback_speed_description,
-            onClick = onShowSpeedOptions,
+        PlaybackSpeedMenu(
+            playbackSpeed = playbackSpeed,
+            onMenuVisibilityChanged = onSuppressControlsTimeout,
+            onSpeedSelected = onSpeedSelected,
         )
         if (mediaSource != null) {
-            QualityOptionsButton(
+            QualityOptionsMenu(
                 jellyfinMediaSource = mediaSource,
                 onMenuVisibilityChanged = onSuppressControlsTimeout,
                 onBitrateSelected = onBitrateSelected,
             )
         }
-        PlayerOptionButton(
-            icon = Icons.Outlined.VideoSettings,
-            contentDescription = R.string.player_controls_decoder_selection_description,
-            onClick = onShowDecoderOptions,
+        DecoderOptionsMenu(
+            currentDecoder = decoder,
+            onMenuVisibilityChanged = onSuppressControlsTimeout,
+            onDecoderSelected = onDecoderSelected,
         )
         PlayerOptionButton(
             icon = Icons.Outlined.Info,
@@ -143,7 +151,39 @@ fun PlayerOptions(
 }
 
 @Composable
-private fun QualityOptionsButton(
+private fun PlaybackSpeedMenu(
+    playbackSpeed: Float,
+    onMenuVisibilityChanged: (visible: Boolean) -> Unit,
+    onSpeedSelected: (Float) -> Unit,
+) {
+    val speedOptions = remember { listOf(0.25f, 0.5f, 0.75f, 1f, 1.25f, 1.5f, 2f) }
+
+    PlayerOptionMenu(
+        icon = Icons.Outlined.SlowMotionVideo,
+        contentDescription = R.string.player_controls_playback_speed_description,
+        items = speedOptions,
+        selectedItem = playbackSpeed,
+        onMenuVisibilityChanged = onMenuVisibilityChanged,
+        onItemSelected = onSpeedSelected,
+    ) { speed, isSelected ->
+        Text(text = remember(speed) { "%.2fx".format(speed) })
+
+        Spacer(
+            modifier = Modifier
+                .requiredWidthIn(min = 16.dp)
+                .weight(1f),
+        )
+
+        RadioButton(
+            selected = isSelected,
+            onClick = null,
+            colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colors.primary),
+        )
+    }
+}
+
+@Composable
+private fun QualityOptionsMenu(
     jellyfinMediaSource: JellyfinMediaSource,
     onMenuVisibilityChanged: (visible: Boolean) -> Unit,
     onBitrateSelected: (Int?) -> Unit,
@@ -171,8 +211,58 @@ private fun QualityOptionsButton(
         onItemSelected = { option ->
             onBitrateSelected(option.bitrate)
         },
-        itemContent = { option, _ ->
+        itemContent = { option, isSelected ->
             Text(text = option.label)
+
+            Spacer(
+                modifier = Modifier
+                    .requiredWidthIn(min = 16.dp)
+                    .weight(1f),
+            )
+
+            RadioButton(
+                selected = isSelected,
+                onClick = null,
+                colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colors.primary),
+            )
+        },
+    )
+}
+
+@Composable
+private fun DecoderOptionsMenu(
+    currentDecoder: DecoderType,
+    onMenuVisibilityChanged: (visible: Boolean) -> Unit,
+    onDecoderSelected: (decoder: DecoderType) -> Unit,
+) {
+    PlayerOptionMenu(
+        icon = Icons.Outlined.VideoSettings,
+        contentDescription = R.string.player_controls_decoder_selection_description,
+        items = DecoderType.entries,
+        selectedItem = currentDecoder,
+        onMenuVisibilityChanged = onMenuVisibilityChanged,
+        onItemSelected = onDecoderSelected,
+        itemContent = { decoder, isSelected ->
+            val labelRes = remember(decoder) {
+                when (decoder) {
+                    DecoderType.Hardware -> R.string.menu_item_hardware_decoding
+                    DecoderType.Software -> R.string.menu_item_software_decoding
+                }
+            }
+
+            Text(text = stringResource(labelRes))
+
+            Spacer(
+                modifier = Modifier
+                    .requiredWidthIn(min = 16.dp)
+                    .weight(1f),
+            )
+
+            RadioButton(
+                selected = isSelected,
+                onClick = null,
+                colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colors.primary),
+            )
         },
     )
 }
@@ -205,7 +295,7 @@ private fun <T> PlayerOptionMenu(
     onMenuVisibilityChanged: (Boolean) -> Unit,
     onItemSelected: (T) -> Unit,
     enabled: Boolean = true,
-    itemContent: @Composable (item: T, selected: Boolean) -> Unit,
+    itemContent: @Composable (RowScope.(item: T, isSelected: Boolean) -> Unit),
 ) {
     var expanded by remember { mutableStateOf(false) }
 

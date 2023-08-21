@@ -19,6 +19,7 @@ fun PlayerEventsHandler(
     onNavigationChanged: () -> Unit,
     onProgressChanged: () -> Unit,
     onTimelineChanged: () -> Unit,
+    onParametersChanged: () -> Unit,
 ) {
     DisposableEffect(key1 = player) {
         val listener = object : Player.Listener {
@@ -52,6 +53,9 @@ fun PlayerEventsHandler(
                 if (events.containsAny(Player.EVENT_POSITION_DISCONTINUITY, Player.EVENT_TIMELINE_CHANGED)) {
                     onTimelineChanged()
                     onProgressChanged()
+                }
+                if (events.containsAny(Player.EVENT_PLAYBACK_PARAMETERS_CHANGED)) {
+                    onParametersChanged()
                 }
             }
         }

@@ -34,6 +34,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -97,6 +98,7 @@ fun PlayerOverlay(
     var shouldShowNextButton by remember { mutableStateOf(player.shouldShowNextButton) }
     var playerPosition by remember { mutableStateOf(player.position) }
     var duration by remember { mutableLongStateOf(player.duration) }
+    var playbackSpeed by remember { mutableFloatStateOf(player.playbackParameters.speed) }
 
     PlayerEventsHandler(
         player = player,
@@ -113,6 +115,9 @@ fun PlayerOverlay(
         },
         onTimelineChanged = {
             duration = player.duration
+        },
+        onParametersChanged = {
+            playbackSpeed = player.playbackParameters.speed
         },
     )
 
@@ -135,6 +140,7 @@ fun PlayerOverlay(
                 shouldShowNextButton = shouldShowNextButton,
                 playerPosition = playerPosition,
                 duration = duration,
+                playbackSpeed = playbackSpeed,
                 onSuppressControlsTimeout = { suppressed ->
                     controlsState.value = if (suppressed) ControlsState.ForceVisible else ControlsState.Visible
                 },

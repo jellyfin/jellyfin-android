@@ -13,12 +13,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.systemBarsIgnoringVisibility
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.exoplayer2.Player
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.ui.config.DecoderType
 import org.jellyfin.mobile.player.ui.event.UiEvent
 import org.jellyfin.mobile.player.ui.event.UiEventHandler
 import org.jellyfin.mobile.ui.utils.PlayerControlsBackgroundColor
@@ -36,6 +39,7 @@ fun PlayerControls(
     shouldShowNextButton: Boolean,
     playerPosition: PlayerPosition,
     duration: Long,
+    playbackSpeed: Float,
     onSuppressControlsTimeout: (suppressed: Boolean) -> Unit,
     onLockControls: () -> Unit,
     onToggleInfo: () -> Unit,
@@ -43,6 +47,8 @@ fun PlayerControls(
     viewModel: PlayerViewModel = viewModel(),
     uiEventHandler: UiEventHandler = koinInject(),
 ) {
+    val decoder by viewModel.decoderType.observeAsState(initial = DecoderType.Hardware)
+
     PlayerControlsLayout(
         toolbar = {
             PlayerToolbar(
@@ -86,16 +92,22 @@ fun PlayerControls(
                     subtitleStreams = emptyList(),
                     selectedSubtitle = null,
                 ),
+                playbackSpeed = playbackSpeed,
+                decoder = decoder,
                 isInFullscreen = @OptIn(ExperimentalLayoutApi::class) !WindowInsets.areStatusBarsVisible,
                 onSuppressControlsTimeout = onSuppressControlsTimeout,
                 onLockControls = onLockControls,
                 onShowAudioTracks = { /*TODO*/ },
                 onSubtitleSelected = { /*TODO*/ },
-                onShowSpeedOptions = { /*TODO*/ },
+                onSpeedSelected = { speed ->
+                    viewModel.setPlaybackSpeed(speed)
+                },
                 onBitrateSelected = { bitrate ->
                     viewModel.changeBitrate(bitrate)
                 },
-                onShowDecoderOptions = { /*TODO*/ },
+                onDecoderSelected = { decoder ->
+                    viewModel.updateDecoderType(decoder)
+                },
                 onToggleInfo = onToggleInfo,
                 onToggleFullscreen = {
                     val videoTrack = mediaSource?.selectedVideoStream
