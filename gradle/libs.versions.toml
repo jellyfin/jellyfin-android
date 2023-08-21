@@ -52,7 +52,7 @@ androidx-room = "2.5.2"
 
 # Monitoring
 timber = "5.0.1"
-leakcanary = "2.11"
+leakcanary = "2.12"
 
 # Testing
 junit = "5.10.0"
