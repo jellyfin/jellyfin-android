@@ -167,8 +167,6 @@ dependencies {
     // Monitoring
     implementation(libs.timber)
     debugImplementation(libs.leakcanary)
-    debugImplementation(libs.redscreenofdeath.impl)
-    releaseImplementation(libs.redscreenofdeath.noop)
 
     // Testing
     testImplementation(libs.junit.api)
