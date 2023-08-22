@@ -74,7 +74,8 @@ fun PlaybackProgress(
 
         Seeker(
             modifier = Modifier.fillMaxWidth(),
-            value = if (isDragged) seekPosition else position.content.toFloat() / duration.toFloat(),
+            value = position.content.toFloat() / duration.toFloat(),
+            thumbValue = if (isDragged) seekPosition else position.content.toFloat() / duration.toFloat(),
             readAheadValue = position.buffer.toFloat() / duration.toFloat(),
             onValueChange = { value ->
                 seekPosition = value
@@ -83,10 +84,12 @@ fun PlaybackProgress(
                 onSeek((seekPosition * duration).toLong())
             },
             colors = SeekerDefaults.seekerColors(
-                trackColor = Color(0x33FFFFFF),
-                readAheadColor = Color(0xCCFFFFFF),
+                trackColor = Color(0x20FFFFFF),
+                readAheadColor = Color(0x80FFFFFF),
             ),
-            dimensions = SeekerDefaults.seekerDimensions(thumbRadius = thumbRadius),
+            dimensions = SeekerDefaults.seekerDimensions(
+                thumbRadius = thumbRadius,
+            ),
             interactionSource = interactionSource,
         )
     }
