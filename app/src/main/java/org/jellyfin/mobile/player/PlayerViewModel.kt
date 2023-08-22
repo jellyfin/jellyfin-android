@@ -405,7 +405,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val player = playerOrNull ?: return
         when {
             // Skip to previous element
-            player.currentPosition <= Constants.MAX_SKIP_TO_PREV_MS -> viewModelScope.launch {
+            player.currentPosition <= player.maxSeekToPreviousPosition -> viewModelScope.launch {
                 pause()
                 if (!queueManager.previous()) {
                     // Skip to previous failed, go to start of video anyway

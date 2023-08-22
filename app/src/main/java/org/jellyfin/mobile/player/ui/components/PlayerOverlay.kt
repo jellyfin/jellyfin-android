@@ -30,6 +30,7 @@ import androidx.compose.material.icons.outlined.VolumeMute
 import androidx.compose.material.icons.outlined.VolumeUp
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -101,8 +102,8 @@ fun PlayerOverlay(
             uiViewModel.onPlayStateChanged(player.shouldShowPauseButton)
         },
         onNavigationChanged = {
-            shouldShowPreviousButton = player.shouldShowPreviousButton
-            shouldShowNextButton = player.shouldShowNextButton
+            shouldShowPreviousButton = player.shouldShowPreviousButton || viewModel.queueManager.hasPrevious()
+            shouldShowNextButton = player.shouldShowNextButton || viewModel.queueManager.hasNext()
         },
         onProgressChanged = {
             playerPosition = player.position
@@ -114,6 +115,11 @@ fun PlayerOverlay(
             playbackSpeed = player.playbackParameters.speed
         },
     )
+
+    LaunchedEffect(mediaSource) {
+        shouldShowPreviousButton = player.shouldShowPreviousButton || viewModel.queueManager.hasPrevious()
+        shouldShowNextButton = player.shouldShowNextButton || viewModel.queueManager.hasNext()
+    }
 
     Box(
         modifier = Modifier.fillMaxSize(),

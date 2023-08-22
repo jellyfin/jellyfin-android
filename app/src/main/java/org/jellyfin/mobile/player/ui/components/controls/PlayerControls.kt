@@ -67,10 +67,10 @@ fun PlayerControls(
                     player.dispatchPlayPause()
                 },
                 onSkipToPrevious = {
-                    player.seekToPrevious()
+                    viewModel.skipToPrevious()
                 },
                 onSkipToNext = {
-                    player.seekToNext()
+                    viewModel.skipToNext()
                 },
                 modifier = Modifier.align(Alignment.Center),
             )
