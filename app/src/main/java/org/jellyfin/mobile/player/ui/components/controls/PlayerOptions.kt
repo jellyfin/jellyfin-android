@@ -57,7 +57,7 @@ fun PlayerOptions(
     playbackSpeed: Float,
     decoder: DecoderType,
     isInFullscreen: Boolean,
-    onSuppressControlsTimeout: (suppressed: Boolean) -> Unit,
+    onSuppressControlsTimeoutChanged: (isSuppressed: Boolean) -> Unit,
     onLockControls: () -> Unit,
     onShowAudioTracks: () -> Unit,
     onSubtitleSelected: (MediaStream) -> Unit,
@@ -115,19 +115,19 @@ fun PlayerOptions(
         )
         PlaybackSpeedMenu(
             playbackSpeed = playbackSpeed,
-            onMenuVisibilityChanged = onSuppressControlsTimeout,
+            onMenuVisibilityChanged = onSuppressControlsTimeoutChanged,
             onSpeedSelected = onSpeedSelected,
         )
         if (mediaSource != null) {
             QualityOptionsMenu(
                 jellyfinMediaSource = mediaSource,
-                onMenuVisibilityChanged = onSuppressControlsTimeout,
+                onMenuVisibilityChanged = onSuppressControlsTimeoutChanged,
                 onBitrateSelected = onBitrateSelected,
             )
         }
         DecoderOptionsMenu(
             currentDecoder = decoder,
-            onMenuVisibilityChanged = onSuppressControlsTimeout,
+            onMenuVisibilityChanged = onSuppressControlsTimeoutChanged,
             onDecoderSelected = onDecoderSelected,
         )
         PlayerOptionButton(

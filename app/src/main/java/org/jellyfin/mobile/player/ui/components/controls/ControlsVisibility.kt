@@ -1,6 +1,6 @@
 package org.jellyfin.mobile.player.ui.components.controls
 
-enum class ControlsState {
+enum class ControlsVisibility {
     /**
      * The controls are hidden and should not be shown, e.g. during PiP or while using swipe gestures.
      */

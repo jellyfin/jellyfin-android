@@ -21,9 +21,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.exoplayer2.Player
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.ui.PlayerUiViewModel
 import org.jellyfin.mobile.player.ui.config.DecoderType
 import org.jellyfin.mobile.player.ui.event.UiEvent
-import org.jellyfin.mobile.player.ui.event.UiEventHandler
 import org.jellyfin.mobile.ui.utils.PlayerControlsBackgroundColor
 import org.jellyfin.mobile.utils.dispatchPlayPause
 import org.jellyfin.mobile.utils.extensions.isLandscape
@@ -40,12 +40,12 @@ fun PlayerControls(
     playerPosition: PlayerPosition,
     duration: Long,
     playbackSpeed: Float,
-    onSuppressControlsTimeout: (suppressed: Boolean) -> Unit,
+    onSuppressControlsTimeoutChanged: (isSuppressed: Boolean) -> Unit,
     onLockControls: () -> Unit,
     onToggleInfo: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PlayerViewModel = viewModel(),
-    uiEventHandler: UiEventHandler = koinInject(),
+    uiViewModel: PlayerUiViewModel = koinInject(),
 ) {
     val decoder by viewModel.decoderType.observeAsState(initial = DecoderType.Hardware)
 
@@ -54,7 +54,7 @@ fun PlayerControls(
             PlayerToolbar(
                 title = mediaSource?.name.orEmpty(),
                 onGoBack = {
-                    uiEventHandler.emit(UiEvent.ExitPlayer)
+                    uiViewModel.emitEvent(UiEvent.ExitPlayer)
                 },
             )
         },
@@ -79,7 +79,7 @@ fun PlayerControls(
             PlaybackProgress(
                 position = playerPosition,
                 duration = duration,
-                onSuppressControlsTimeout = onSuppressControlsTimeout,
+                onSuppressControlsTimeoutChanged = onSuppressControlsTimeoutChanged,
                 onSeek = { position ->
                     player.seekTo(position)
                 },
@@ -95,7 +95,7 @@ fun PlayerControls(
                 playbackSpeed = playbackSpeed,
                 decoder = decoder,
                 isInFullscreen = @OptIn(ExperimentalLayoutApi::class) !WindowInsets.areStatusBarsVisible,
-                onSuppressControlsTimeout = onSuppressControlsTimeout,
+                onSuppressControlsTimeoutChanged = onSuppressControlsTimeoutChanged,
                 onLockControls = onLockControls,
                 onShowAudioTracks = { /*TODO*/ },
                 onSubtitleSelected = { /*TODO*/ },
@@ -113,10 +113,10 @@ fun PlayerControls(
                     val videoTrack = mediaSource?.selectedVideoStream
                     if (videoTrack?.isLandscape != false) {
                         // Landscape video, change orientation (which affects the fullscreen state)
-                        uiEventHandler.emit(UiEvent.ToggleOrientation)
+                        uiViewModel.emitEvent(UiEvent.ToggleOrientation)
                     } else {
                         // Portrait video, only handle fullscreen state
-                        uiEventHandler.emit(UiEvent.ToggleFullscreen)
+                        uiViewModel.emitEvent(UiEvent.ToggleFullscreen)
                     }
                 },
             )

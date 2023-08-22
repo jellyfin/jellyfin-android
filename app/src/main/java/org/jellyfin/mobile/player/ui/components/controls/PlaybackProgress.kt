@@ -32,7 +32,7 @@ fun PlaybackProgress(
     modifier: Modifier = Modifier,
     position: PlayerPosition,
     duration: Long,
-    onSuppressControlsTimeout: (suppressed: Boolean) -> Unit,
+    onSuppressControlsTimeoutChanged: (isSuppressed: Boolean) -> Unit,
     onSeek: (Long) -> Unit,
 ) {
     val formatter = remember { TimeFormatter() }
@@ -46,7 +46,7 @@ fun PlaybackProgress(
 
     // Suppress controls timeout while seeking
     LaunchedEffect(isDragged) {
-        onSuppressControlsTimeout(isDragged)
+        onSuppressControlsTimeoutChanged(isDragged)
     }
 
     Column(

@@ -18,7 +18,6 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,32 +38,29 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.player.PlayerViewModel
-import org.jellyfin.mobile.player.ui.ControlsTimeout
 import org.jellyfin.mobile.player.ui.DoubleTapRippleDurationMs
-import org.jellyfin.mobile.player.ui.LockButtonTimeout
+import org.jellyfin.mobile.player.ui.PlayerUiViewModel
 import org.jellyfin.mobile.player.ui.SwipeGestureExclusionSizeVertical
 import org.jellyfin.mobile.player.ui.ZoomScaleBase
 import org.jellyfin.mobile.player.ui.ZoomScaleThreshold
-import org.jellyfin.mobile.player.ui.components.controls.ControlsState
 import org.jellyfin.mobile.player.ui.config.GestureIndicatorState
 import org.jellyfin.mobile.player.ui.utils.SwipeGestureHelper
 import org.jellyfin.mobile.ui.utils.detectMultipleGestures
 import org.jellyfin.mobile.utils.extensions.isLandscape
-import org.jellyfin.mobile.utils.shouldShowPauseButton
 import kotlin.math.abs
 import com.google.android.exoplayer2.ui.R as ExoplayerR
 
 @Suppress("LongMethod", "ComplexMethod")
 @Composable
 fun PlayerScreen(
-    controlsState: MutableState<ControlsState>,
     onContentLocationUpdated: (Rect) -> Unit,
     swipeGestureHelper: SwipeGestureHelper,
-    playerViewModel: PlayerViewModel = viewModel(),
+    viewModel: PlayerViewModel = viewModel(),
+    uiViewModel: PlayerUiViewModel = viewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
     val isLandscape by rememberUpdatedState(LocalConfiguration.current.isLandscape)
-    val player by playerViewModel.player.collectAsState()
+    val player by viewModel.player.collectAsState()
     val rippleInteractionSource = remember { MutableInteractionSource() }
     var contentSize by remember { mutableStateOf(IntSize.Zero) }
     var gestureIndicatorState by remember { mutableStateOf<GestureIndicatorState>(GestureIndicatorState.Hidden) }
@@ -86,22 +82,10 @@ fun PlayerScreen(
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = {
-                        when (controlsState.value) {
-                            ControlsState.Hidden -> when {
-                                player?.shouldShowPauseButton != true -> controlsState.value = ControlsState.VisiblePaused
-                                else -> controlsState.value = ControlsState.Visible
-                            }
-                            ControlsState.Locked -> controlsState.value = ControlsState.IndicateLocked
-
-                            ControlsState.Visible,
-                            ControlsState.VisiblePaused,
-                            ControlsState.ForceVisible,
-                            -> controlsState.value = ControlsState.Hidden
-                            else -> Unit // do nothing
-                        }
+                        uiViewModel.onPlayerTap()
                     },
                     onDoubleTap = { event ->
-                        if (controlsState.value.isLocked) {
+                        if (uiViewModel.areControlsLocked) {
                             return@detectTapGestures
                         }
 
@@ -129,32 +113,31 @@ fun PlayerScreen(
 
                         // Fast-forward/rewind
                         when {
-                            isFastForward -> playerViewModel.fastForward()
-                            else -> playerViewModel.rewind()
+                            isFastForward -> viewModel.fastForward()
+                            else -> viewModel.rewind()
                         }
                     },
                 )
             }
-            .pointerInput(controlsState.value.isLocked, swipeGestureHelper) {
-                if (controlsState.value.isLocked) {
+            .pointerInput(uiViewModel.areControlsLocked, swipeGestureHelper) {
+                if (uiViewModel.areControlsLocked) {
                     return@pointerInput
                 }
 
-                // TODO: make this cancelable?
                 detectMultipleGestures(
                     onGestureStart = {
-                        controlsState.value = ControlsState.Inhibited
+                        uiViewModel.onGesturesActiveChanged(true)
                         swipeGestureHelper.onStart()
                     },
                     onGestureEnd = {
                         gestureIndicatorState = GestureIndicatorState.Hidden
                         swipeGestureHelper.onEnd()
-                        controlsState.value = ControlsState.Hidden
+                        uiViewModel.onGesturesActiveChanged(false)
                     },
                     onGestureCancel = {
                         gestureIndicatorState = GestureIndicatorState.Hidden
                         swipeGestureHelper.onEnd()
-                        controlsState.value = ControlsState.Hidden
+                        uiViewModel.onGesturesActiveChanged(false)
                     },
                     onGesture = { pointerCount, centroid, pan, zoom ->
                         when (pointerCount) {
@@ -220,26 +203,16 @@ fun PlayerScreen(
             ) {
                 PlayerOverlay(
                     player = player,
-                    controlsState = controlsState,
                     gestureIndicatorState = gestureIndicatorState,
-                    viewModel = playerViewModel,
+                    viewModel = viewModel,
+                    uiViewModel = uiViewModel,
                 )
             }
         }
 
         // Hide controls and lock indicator after timeout
-        LaunchedEffect(controlsState.value) {
-            when (controlsState.value) {
-                ControlsState.Visible -> {
-                    delay(ControlsTimeout)
-                    controlsState.value = ControlsState.Hidden
-                }
-                ControlsState.IndicateLocked -> {
-                    delay(LockButtonTimeout)
-                    controlsState.value = ControlsState.Locked
-                }
-                else -> Unit // do nothing
-            }
+        LaunchedEffect(uiViewModel.controlsVisibilityState.value) {
+            uiViewModel.onControlsVisibilityChanged()
         }
     }
 }

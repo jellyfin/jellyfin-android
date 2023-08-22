@@ -17,7 +17,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -36,10 +35,8 @@ import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.ui.components.PlayerScreen
-import org.jellyfin.mobile.player.ui.components.controls.ControlsState
 import org.jellyfin.mobile.player.ui.config.DecoderType
 import org.jellyfin.mobile.player.ui.event.UiEvent
-import org.jellyfin.mobile.player.ui.event.UiEventHandler
 import org.jellyfin.mobile.player.ui.legacy.PlayerGestureHelper
 import org.jellyfin.mobile.player.ui.legacy.PlayerLockScreenHelper
 import org.jellyfin.mobile.player.ui.legacy.PlayerMenus
@@ -68,12 +65,11 @@ import org.koin.android.ext.android.inject
 class PlayerFragment : Fragment(), BackPressInterceptor {
     private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
-    private val uiEventHandler: UiEventHandler by inject()
+    private val uiViewModel: PlayerUiViewModel by viewModels()
     private var _viewBinding: FragmentComposeBinding? = null
     private val viewBinding get() = _viewBinding!!
     private val composeView: ComposeView get() = viewBinding.composeView
 
-    private val controlsState = mutableStateOf(ControlsState.Hidden)
     private var playerLocation = Rect()
 
     private var playerMenus: PlayerMenus? = null
@@ -134,7 +130,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                uiEventHandler.handleEvents { event -> handleUiEvent(event) }
+                uiViewModel.handleEvents { event -> handleUiEvent(event) }
             }
         }
 
@@ -194,12 +190,12 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         composeView.setContent {
             AppTheme {
                 PlayerScreen(
-                    controlsState = controlsState,
                     onContentLocationUpdated = { location ->
                         playerLocation = location
                     },
                     swipeGestureHelper = swipeGestureHelper,
-                    playerViewModel = viewModel,
+                    viewModel = viewModel,
+                    uiViewModel = uiViewModel,
                 )
             }
         }
@@ -382,7 +378,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     @Suppress("NestedBlockDepth")
     @RequiresApi(Build.VERSION_CODES.N)
     private fun Activity.enterPictureInPicture() {
-        controlsState.value = ControlsState.Inhibited
+        uiViewModel.onPictureInPictureModeChanged(true)
         if (AndroidVersion.isAtLeastO) {
             val params = PictureInPictureParams.Builder().apply {
                 val aspectRational = currentVideoStream?.aspectRational?.let { aspectRational ->
@@ -403,7 +399,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     }
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
-        controlsState.value = if (isInPictureInPictureMode) ControlsState.Inhibited else ControlsState.Hidden
+        uiViewModel.onPictureInPictureModeChanged(isInPictureInPictureMode)
         if (isInPictureInPictureMode) {
             playerMenus?.dismissPlaybackInfo()
             //playerLockScreenHelper.hideUnlockButton()

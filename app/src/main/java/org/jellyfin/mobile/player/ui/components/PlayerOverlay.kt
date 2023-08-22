@@ -30,7 +30,6 @@ import androidx.compose.material.icons.outlined.VolumeMute
 import androidx.compose.material.icons.outlined.VolumeUp
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -51,19 +50,16 @@ import com.google.android.exoplayer2.Player
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.ui.HideControlsAnimationDuration
+import org.jellyfin.mobile.player.ui.PlayerUiViewModel
 import org.jellyfin.mobile.player.ui.ShowControlsAnimationDuration
-import org.jellyfin.mobile.player.ui.components.controls.ControlsState
 import org.jellyfin.mobile.player.ui.components.controls.PlayerControls
 import org.jellyfin.mobile.player.ui.components.controls.PlayerPosition
 import org.jellyfin.mobile.player.ui.config.GestureIndicatorState
-import org.jellyfin.mobile.player.ui.event.UiEvent
-import org.jellyfin.mobile.player.ui.event.UiEventHandler
 import org.jellyfin.mobile.ui.utils.PlaybackInfoBackgroundColor
 import org.jellyfin.mobile.utils.isBuffering
 import org.jellyfin.mobile.utils.shouldShowNextButton
 import org.jellyfin.mobile.utils.shouldShowPauseButton
 import org.jellyfin.mobile.utils.shouldShowPreviousButton
-import org.koin.compose.koinInject
 
 @Stable
 val DefaultControlsEnterTransition = fadeIn(
@@ -85,14 +81,12 @@ val DefaultControlsExitTransition = fadeOut(
 @Composable
 fun PlayerOverlay(
     player: Player,
-    controlsState: MutableState<ControlsState>,
     gestureIndicatorState: GestureIndicatorState,
     viewModel: PlayerViewModel = viewModel(),
-    uiEventHandler: UiEventHandler = koinInject(),
+    uiViewModel: PlayerUiViewModel = viewModel(),
 ) {
     val mediaSource by viewModel.queueManager.currentMediaSource.collectAsState()
     var shouldShowInfo by remember { mutableStateOf(false) }
-    var shouldShowPauseButton by remember { mutableStateOf(player.shouldShowPauseButton) }
     var shouldShowLoadingIndicator by remember { mutableStateOf(player.isBuffering) }
     var shouldShowPreviousButton by remember { mutableStateOf(player.shouldShowPreviousButton) }
     var shouldShowNextButton by remember { mutableStateOf(player.shouldShowNextButton) }
@@ -103,13 +97,8 @@ fun PlayerOverlay(
     PlayerEventsHandler(
         player = player,
         onPlayStateChanged = {
-            shouldShowPauseButton = player.shouldShowPauseButton
             shouldShowLoadingIndicator = player.isBuffering
-            if (!shouldShowPauseButton) {
-                controlsState.value = ControlsState.VisiblePaused
-            } else if (controlsState.value == ControlsState.VisiblePaused) {
-                controlsState.value = ControlsState.Visible
-            }
+            uiViewModel.onPlayStateChanged(player.shouldShowPauseButton)
         },
         onNavigationChanged = {
             shouldShowPreviousButton = player.shouldShowPreviousButton
@@ -133,36 +122,31 @@ fun PlayerOverlay(
         val insets = WindowInsets.systemBarsIgnoringVisibility
 
         AnimatedVisibility(
-            visible = controlsState.value.isVisible,
+            visible = uiViewModel.areControlsVisible,
             enter = DefaultControlsEnterTransition,
             exit = DefaultControlsExitTransition,
         ) {
             PlayerControls(
                 player = player,
                 mediaSource = mediaSource,
-                shouldShowPauseButton = shouldShowPauseButton,
+                shouldShowPauseButton = uiViewModel.shouldShowPauseButton,
                 shouldShowPreviousButton = shouldShowPreviousButton,
                 shouldShowNextButton = shouldShowNextButton,
                 playerPosition = playerPosition,
                 duration = duration,
                 playbackSpeed = playbackSpeed,
-                onSuppressControlsTimeout = { suppressed ->
-                    controlsState.value = when {
-                        suppressed -> ControlsState.ForceVisible
-                        !shouldShowPauseButton -> ControlsState.VisiblePaused
-                        else -> ControlsState.Visible
-                    }
+                onSuppressControlsTimeoutChanged = { isSuppressed ->
+                    uiViewModel.onSuppressControlsTimeoutChanged(isSuppressed)
                 },
                 onLockControls = {
-                    controlsState.value = ControlsState.IndicateLocked
-                    uiEventHandler.emit(UiEvent.LockOrientation)
+                    uiViewModel.onLockControlsChanged(true)
                 },
                 onToggleInfo = {
                     shouldShowInfo = !shouldShowInfo
                 },
                 modifier = Modifier.fillMaxSize(),
                 viewModel = viewModel,
-                uiEventHandler = uiEventHandler,
+                uiViewModel = uiViewModel,
             )
         }
 
@@ -195,7 +179,7 @@ fun PlayerOverlay(
         }
 
         AnimatedVisibility(
-            visible = controlsState.value == ControlsState.IndicateLocked,
+            visible = uiViewModel.shouldIndicateLocked,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .windowInsetsPadding(insets),
@@ -204,8 +188,7 @@ fun PlayerOverlay(
         ) {
             UnlockButton(
                 onUnlock = {
-                    uiEventHandler.emit(UiEvent.UnlockOrientation)
-                    controlsState.value = ControlsState.Visible
+                    uiViewModel.onLockControlsChanged(false)
                 },
             )
         }
