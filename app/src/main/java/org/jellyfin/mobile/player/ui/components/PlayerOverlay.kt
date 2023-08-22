@@ -164,8 +164,8 @@ fun PlayerOverlay(
             exit = DefaultControlsExitTransition,
         ) {
             CircularProgressIndicator(
-                strokeWidth = 6.dp,
-                modifier = Modifier.size(58.dp),
+                strokeWidth = 4.dp,
+                modifier = Modifier.size(56.dp),
             )
         }
 
