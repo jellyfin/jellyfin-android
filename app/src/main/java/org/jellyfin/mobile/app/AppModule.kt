@@ -23,7 +23,9 @@ import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.audio.car.LibraryBrowser
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
-import org.jellyfin.mobile.player.interaction.PlayerEvent
+import org.jellyfin.mobile.player.interaction.ApiHelper
+import org.jellyfin.mobile.player.interaction.WebAppCommand
+import org.jellyfin.mobile.player.interaction.WebAppCommandHandler
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.player.ui.PlayerFragment
@@ -52,7 +54,7 @@ val applicationModule = module {
     single { ImageLoader(androidApplication()) }
     single { PermissionRequestHelper() }
     single { RemoteVolumeProvider(get()) }
-    single(named(PLAYER_EVENT_CHANNEL)) { Channel<PlayerEvent>() }
+    single(named(PLAYER_EVENT_CHANNEL)) { Channel<WebAppCommand>() }
 
     // Controllers
     single { ApiClientController(get(), get(), get(), get(), get()) }
@@ -60,6 +62,7 @@ val applicationModule = module {
     // Event handlers and channels
     single { ActivityEventHandler(get()) }
     single { WebappFunctionChannel() }
+    factory { WebAppCommandHandler(get(named(PLAYER_EVENT_CHANNEL))) }
 
     // Bridge interfaces
     single { NativePlayer(get(), get(), get(named(PLAYER_EVENT_CHANNEL))) }
@@ -75,6 +78,7 @@ val applicationModule = module {
     single { ConnectionHelper(get(), get()) }
 
     // Media player helpers
+    factory { ApiHelper(get(), get()) }
     single { MediaSourceResolver(get()) }
     single { DeviceProfileBuilder(get()) }
     single { QualityOptionsProvider() }

@@ -6,7 +6,7 @@ import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.interaction.PlayOptions
-import org.jellyfin.mobile.player.interaction.PlayerEvent
+import org.jellyfin.mobile.player.interaction.WebAppCommand
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 import org.json.JSONObject
@@ -15,7 +15,7 @@ import org.json.JSONObject
 class NativePlayer(
     private val appPreferences: AppPreferences,
     private val activityEventHandler: ActivityEventHandler,
-    private val playerEventChannel: Channel<PlayerEvent>,
+    private val webAppCommandChannel: Channel<WebAppCommand>,
 ) {
 
     @JavascriptInterface
@@ -30,36 +30,36 @@ class NativePlayer(
 
     @JavascriptInterface
     fun pausePlayer() {
-        playerEventChannel.trySend(PlayerEvent.Pause)
+        webAppCommandChannel.trySend(WebAppCommand.Pause)
     }
 
     @JavascriptInterface
     fun resumePlayer() {
-        playerEventChannel.trySend(PlayerEvent.Resume)
+        webAppCommandChannel.trySend(WebAppCommand.Resume)
     }
 
     @JavascriptInterface
     fun stopPlayer() {
-        playerEventChannel.trySend(PlayerEvent.Stop)
+        webAppCommandChannel.trySend(WebAppCommand.Stop)
     }
 
     @JavascriptInterface
     fun destroyPlayer() {
-        playerEventChannel.trySend(PlayerEvent.Destroy)
+        webAppCommandChannel.trySend(WebAppCommand.Destroy)
     }
 
     @JavascriptInterface
     fun seek(ticks: Long) {
-        playerEventChannel.trySend(PlayerEvent.Seek(ticks / Constants.TICKS_PER_MILLISECOND))
+        webAppCommandChannel.trySend(WebAppCommand.Seek(ticks / Constants.TICKS_PER_MILLISECOND))
     }
 
     @JavascriptInterface
     fun seekMs(ms: Long) {
-        playerEventChannel.trySend(PlayerEvent.Seek(ms))
+        webAppCommandChannel.trySend(WebAppCommand.Seek(ms))
     }
 
     @JavascriptInterface
     fun setVolume(volume: Int) {
-        playerEventChannel.trySend(PlayerEvent.SetVolume(volume))
+        webAppCommandChannel.trySend(WebAppCommand.SetVolume(volume))
     }
 }

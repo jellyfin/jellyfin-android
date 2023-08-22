@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package org.jellyfin.mobile.player
 
 import android.annotation.SuppressLint
@@ -26,20 +28,17 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.util.Clock
 import com.google.android.exoplayer2.util.EventLogger
 import com.google.android.exoplayer2.util.MimeTypes
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.BuildConfig
-import org.jellyfin.mobile.app.PLAYER_EVENT_CHANNEL
-import org.jellyfin.mobile.player.interaction.PlayerEvent
+import org.jellyfin.mobile.player.interaction.ApiHelper
 import org.jellyfin.mobile.player.interaction.PlayerLifecycleObserver
 import org.jellyfin.mobile.player.interaction.PlayerMediaSessionCallback
 import org.jellyfin.mobile.player.interaction.PlayerNotificationHelper
+import org.jellyfin.mobile.player.interaction.WebAppCommandHandler
 import org.jellyfin.mobile.player.queue.QueueManager
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.ui.config.DecoderType
@@ -49,37 +48,25 @@ import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
 import org.jellyfin.mobile.utils.applyDefaultAudioAttributes
 import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
-import org.jellyfin.mobile.utils.extensions.getVolumeLevelPercent
 import org.jellyfin.mobile.utils.extensions.setVolumeLevelPercent
 import org.jellyfin.mobile.utils.logTracks
 import org.jellyfin.mobile.utils.seekToOffset
 import org.jellyfin.mobile.utils.setPlaybackState
 import org.jellyfin.mobile.utils.toMediaMetadata
 import org.jellyfin.sdk.api.client.ApiClient
-import org.jellyfin.sdk.api.client.exception.ApiClientException
-import org.jellyfin.sdk.api.client.extensions.displayPreferencesApi
 import org.jellyfin.sdk.api.client.extensions.hlsSegmentApi
-import org.jellyfin.sdk.api.client.extensions.playStateApi
-import org.jellyfin.sdk.api.operations.DisplayPreferencesApi
 import org.jellyfin.sdk.api.operations.HlsSegmentApi
-import org.jellyfin.sdk.api.operations.PlayStateApi
 import org.jellyfin.sdk.model.api.PlayMethod
-import org.jellyfin.sdk.model.api.PlaybackProgressInfo
-import org.jellyfin.sdk.model.api.PlaybackStartInfo
-import org.jellyfin.sdk.model.api.PlaybackStopInfo
-import org.jellyfin.sdk.model.api.RepeatMode
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
-import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
 @Suppress("TooManyFunctions")
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
     private val apiClient: ApiClient = get()
-    private val displayPreferencesApi: DisplayPreferencesApi = apiClient.displayPreferencesApi
-    private val playStateApi: PlayStateApi = apiClient.playStateApi
+    private val apiHelper: ApiHelper = get()
     private val hlsSegmentApi: HlsSegmentApi = apiClient.hlsSegmentApi
 
     private val lifecycleObserver = PlayerLifecycleObserver(this)
@@ -116,7 +103,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
      */
     val playerOrNull: ExoPlayer? get() = _player.value
 
-    private val playerEventChannel: Channel<PlayerEvent> by inject(named(PLAYER_EVENT_CHANNEL))
+    private val webAppCommandHandler: WebAppCommandHandler by inject()
 
     val mediaSession: MediaSession by lazy {
         MediaSession(
@@ -138,39 +125,12 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
         // Load display preferences
         viewModelScope.launch {
-            try {
-                val displayPreferencesDto by displayPreferencesApi.getDisplayPreferences(
-                    displayPreferencesId = Constants.DISPLAY_PREFERENCES_ID_USER_SETTINGS,
-                    client = Constants.DISPLAY_PREFERENCES_CLIENT_EMBY,
-                )
-
-                val customPrefs = displayPreferencesDto.customPrefs
-
-                displayPreferences = DisplayPreferences(
-                    skipBackLength = customPrefs[Constants.DISPLAY_PREFERENCES_SKIP_BACK_LENGTH]?.toLongOrNull()
-                        ?: Constants.DEFAULT_SEEK_TIME_MS,
-                    skipForwardLength = customPrefs[Constants.DISPLAY_PREFERENCES_SKIP_FORWARD_LENGTH]?.toLongOrNull()
-                        ?: Constants.DEFAULT_SEEK_TIME_MS,
-                )
-            } catch (e: ApiClientException) {
-                Timber.e(e, "Failed to load display preferences")
-            }
+            displayPreferences = apiHelper.loadDisplayPreferences()
         }
 
         // Subscribe to player events from webapp
-        viewModelScope.launch {
-            for (event in playerEventChannel) {
-                when (event) {
-                    PlayerEvent.Pause -> mediaSessionCallback.onPause()
-                    PlayerEvent.Resume -> mediaSessionCallback.onPlay()
-                    PlayerEvent.Stop, PlayerEvent.Destroy -> mediaSessionCallback.onStop()
-                    is PlayerEvent.Seek -> playerOrNull?.seekTo(event.ms)
-                    is PlayerEvent.SetVolume -> {
-                        setVolume(event.volume)
-                        playerOrNull?.reportPlaybackState()
-                    }
-                }
-            }
+        with(webAppCommandHandler) {
+            subscribeWebAppCommands()
         }
     }
 
@@ -255,7 +215,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         mediaSession.setMetadata(jellyfinMediaSource.toMediaMetadata())
 
         viewModelScope.launch {
-            player.reportPlaybackStart(jellyfinMediaSource)
+            apiHelper.reportPlaybackStart(player, jellyfinMediaSource)
         }
     }
 
@@ -263,7 +223,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         progressUpdateJob = viewModelScope.launch {
             while (true) {
                 delay(Constants.PLAYER_TIME_UPDATE_RATE)
-                playerOrNull?.reportPlaybackState()
+                reportPlaybackState()
             }
         }
     }
@@ -291,87 +251,14 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         queueManager.tryRestartPlayback()
     }
 
-    private suspend fun Player.reportPlaybackStart(mediaSource: JellyfinMediaSource) {
-        try {
-            playStateApi.reportPlaybackStart(
-                PlaybackStartInfo(
-                    itemId = mediaSource.itemId,
-                    playMethod = mediaSource.playMethod,
-                    playSessionId = mediaSource.playSessionId,
-                    audioStreamIndex = mediaSource.selectedAudioStream?.index,
-                    subtitleStreamIndex = mediaSource.selectedSubtitleStream?.index,
-                    isPaused = !isPlaying,
-                    isMuted = false,
-                    canSeek = true,
-                    positionTicks = mediaSource.startTimeMs * Constants.TICKS_PER_MILLISECOND,
-                    volumeLevel = audioManager.getVolumeLevelPercent(),
-                    repeatMode = RepeatMode.REPEAT_NONE,
-                ),
-            )
-        } catch (e: ApiClientException) {
-            Timber.e(e, "Failed to report playback start")
-        }
-    }
-
-    private suspend fun Player.reportPlaybackState() {
+    suspend fun reportPlaybackState() {
+        val player = playerOrNull ?: return
         val mediaSource = mediaSourceOrNull ?: return
-        val playbackPositionMillis = currentPosition
-        if (playbackState != Player.STATE_ENDED) {
-            try {
-                playStateApi.reportPlaybackProgress(
-                    PlaybackProgressInfo(
-                        itemId = mediaSource.itemId,
-                        playMethod = mediaSource.playMethod,
-                        playSessionId = mediaSource.playSessionId,
-                        audioStreamIndex = mediaSource.selectedAudioStream?.index,
-                        subtitleStreamIndex = mediaSource.selectedSubtitleStream?.index,
-                        isPaused = !isPlaying,
-                        isMuted = false,
-                        canSeek = true,
-                        positionTicks = playbackPositionMillis * Constants.TICKS_PER_MILLISECOND,
-                        volumeLevel = audioManager.getVolumeLevelPercent(),
-                        repeatMode = RepeatMode.REPEAT_NONE,
-                    ),
-                )
-            } catch (e: ApiClientException) {
-                Timber.e(e, "Failed to report playback progress")
-            }
-        }
+        apiHelper.reportPlaybackState(player, mediaSource)
     }
 
     private fun reportPlaybackStop() {
-        val mediaSource = mediaSourceOrNull ?: return
-        val player = playerOrNull ?: return
-        val hasFinished = player.playbackState == Player.STATE_ENDED
-        val lastPositionTicks = when {
-            hasFinished -> mediaSource.runTimeTicks
-            else -> player.currentPosition * Constants.TICKS_PER_MILLISECOND
-        }
-
-        // viewModelScope may already be cancelled at this point, so we need to fallback
-        CoroutineScope(Dispatchers.Main).launch {
-            try {
-                // Report stopped playback
-                playStateApi.reportPlaybackStopped(
-                    PlaybackStopInfo(
-                        itemId = mediaSource.itemId,
-                        positionTicks = lastPositionTicks,
-                        playSessionId = mediaSource.playSessionId,
-                        failed = false,
-                    ),
-                )
-
-                // Mark video as watched if playback finished
-                if (hasFinished) {
-                    playStateApi.markPlayedItem(itemId = mediaSource.itemId)
-                }
-
-                // Stop active encoding if transcoding
-                stopTranscoding(mediaSource)
-            } catch (e: ApiClientException) {
-                Timber.e(e, "Failed to report playback stop")
-            }
-        }
+        apiHelper.reportPlaybackStop(playerOrNull ?: return, mediaSourceOrNull ?: return)
     }
 
     suspend fun stopTranscoding(mediaSource: JellyfinMediaSource) {
@@ -466,7 +353,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         releasePlayer()
     }
 
-    private fun setVolume(percent: Int) {
+    fun setVolume(percent: Int) {
         if (!audioManager.isVolumeFixed) audioManager.setVolumeLevelPercent(percent)
     }
 
@@ -507,7 +394,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         viewModelScope.launch {
             when (playbackState) {
                 Player.STATE_READY, Player.STATE_BUFFERING -> {
-                    player.reportPlaybackState()
+                    reportPlaybackState()
                 }
                 Player.STATE_ENDED -> {
                     reportPlaybackStop()

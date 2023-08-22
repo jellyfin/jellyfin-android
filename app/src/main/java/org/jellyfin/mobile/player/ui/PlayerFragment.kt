@@ -95,8 +95,8 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             requireActivity().window.keepScreenOn = uiViewModel.shouldShowPauseButton
         }
         viewModel.error.observe(this) { message ->
-            val safeMessage = message.ifEmpty { requireContext().getString(R.string.player_error_unspecific_exception) }
-            requireContext().toast(safeMessage)
+            val safeMessage = message.ifEmpty { getString(R.string.player_error_unspecific_exception) }
+            requireActivity().toast(safeMessage)
         }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -119,17 +119,20 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
         // Handle fragment arguments, extract playback options and start playback
         lifecycleScope.launch {
-            val context = requireContext()
             val playOptions = requireArguments().getParcelableCompat<PlayOptions>(Constants.EXTRA_MEDIA_PLAY_OPTIONS)
             if (playOptions == null) {
-                context.toast(R.string.player_error_invalid_play_options)
+                requireActivity().toast(R.string.player_error_invalid_play_options)
                 return@launch
             }
-            when (viewModel.queueManager.initializePlaybackQueue(playOptions)) {
-                is PlayerException.InvalidPlayOptions -> context.toast(R.string.player_error_invalid_play_options)
-                is PlayerException.NetworkFailure -> context.toast(R.string.player_error_network_failure)
-                is PlayerException.UnsupportedContent -> context.toast(R.string.player_error_unsupported_content)
-                null -> Unit // success
+
+            val playbackException = viewModel.queueManager.initializePlaybackQueue(playOptions)
+            if (playbackException != null) {
+                val context = requireActivity()
+                when (playbackException) {
+                    is PlayerException.InvalidPlayOptions -> context.toast(R.string.player_error_invalid_play_options)
+                    is PlayerException.NetworkFailure -> context.toast(R.string.player_error_network_failure)
+                    is PlayerException.UnsupportedContent -> context.toast(R.string.player_error_unsupported_content)
+                }
             }
         }
     }
@@ -159,15 +162,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         }
         ViewCompat.requestApplyInsets(view)
 
-        /*// Create playback menus
-        playerMenus = PlayerMenus(this, playerBinding, playerControlsBinding)
-
-        // Set controller timeout
-        suppressControllerAutoHide(false)*/
-
         fullscreenHelper = FullscreenHelper(window)
-        /*playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
-        playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)*/
         val swipeGestureHelper = SwipeGestureHelper(requireContext(), window, appPreferences)
 
         composeView.setContent {
