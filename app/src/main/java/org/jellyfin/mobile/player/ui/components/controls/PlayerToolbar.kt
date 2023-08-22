@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.ui.utils.PlayerAppBarHeight
+import org.jellyfin.mobile.player.ui.PlayerAppBarHeight
 
 @Composable
 fun PlayerToolbar(

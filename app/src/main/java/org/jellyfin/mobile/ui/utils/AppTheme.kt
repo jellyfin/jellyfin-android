@@ -42,10 +42,11 @@ fun AppTheme(content: @Composable () -> Unit) {
 }
 
 // Colors
-val PlayerAppBarHeight = 56.dp
 val GestureIndicatorBackgroundColor = Color(0xCC000000)
 val PlaybackInfoBackgroundColor = Color(0xCC000000)
 val PlayerControlsBackgroundColor = Color(0x60000000)
+val PlaybackProgressTrackColor = Color(0x20FFFFFF)
+val PlaybackProgressReadAheadColor = Color(0x80FFFFFF)
 
 // Shapes
 val GestureIndicatorBackgroundShape = RoundedCornerShape(16.dp)

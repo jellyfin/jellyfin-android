@@ -17,15 +17,15 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.vivvvek.seeker.Seeker
 import dev.vivvvek.seeker.SeekerDefaults
+import org.jellyfin.mobile.player.ui.DefaultThumbSize
+import org.jellyfin.mobile.player.ui.DraggedThumbSize
+import org.jellyfin.mobile.ui.utils.PlaybackProgressReadAheadColor
+import org.jellyfin.mobile.ui.utils.PlaybackProgressTrackColor
 import org.jellyfin.mobile.ui.utils.PlayerTimeTextStyle
 import org.jellyfin.mobile.utils.TimeFormatter
-
-val DefaultThumbSize = 8.dp
-val DraggedThumbSize = 12.dp
 
 @Composable
 fun PlaybackProgress(
@@ -84,8 +84,8 @@ fun PlaybackProgress(
                 onSeek((seekPosition * duration).toLong())
             },
             colors = SeekerDefaults.seekerColors(
-                trackColor = Color(0x20FFFFFF),
-                readAheadColor = Color(0x80FFFFFF),
+                trackColor = PlaybackProgressTrackColor,
+                readAheadColor = PlaybackProgressReadAheadColor,
             ),
             dimensions = SeekerDefaults.seekerDimensions(
                 thumbRadius = thumbRadius,
