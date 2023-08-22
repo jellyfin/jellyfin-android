@@ -61,8 +61,9 @@ fun PlayerScreen(
     val coroutineScope = rememberCoroutineScope()
     val isLandscape by rememberUpdatedState(LocalConfiguration.current.isLandscape)
     val player by viewModel.player.collectAsState()
-    val rippleInteractionSource = remember { MutableInteractionSource() }
+    val mediaSource by viewModel.queueManager.currentMediaSource.collectAsState()
     var contentSize by remember { mutableStateOf(IntSize.Zero) }
+    val rippleInteractionSource = remember { MutableInteractionSource() }
     var gestureIndicatorState by remember { mutableStateOf<GestureIndicatorState>(GestureIndicatorState.Hidden) }
     val gestureExclusionSizePx by rememberUpdatedState(
         with(LocalDensity.current) { SwipeGestureExclusionSizeVertical.toPx() },
@@ -203,6 +204,7 @@ fun PlayerScreen(
             ) {
                 PlayerOverlay(
                     player = player,
+                    mediaSource = mediaSource,
                     gestureIndicatorState = gestureIndicatorState,
                     viewModel = viewModel,
                     uiViewModel = uiViewModel,

@@ -8,27 +8,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import org.jellyfin.mobile.player.source.JellyfinMediaSource
-import org.jellyfin.mobile.player.ui.utils.PlaybackInfoBuilder
 import org.jellyfin.mobile.ui.utils.PlaybackInfoBackgroundColor
 import org.jellyfin.mobile.ui.utils.PlaybackInfoTextStyle
 import org.jellyfin.mobile.ui.utils.PlayerBackInfoBackgroundShape
-import org.koin.compose.koinInject
 
 @Composable
 fun PlaybackInfo(
-    mediaSource: JellyfinMediaSource?,
+    playbackInfo: String,
     onClose: () -> Unit,
     modifier: Modifier = Modifier,
-    playbackInfoBuilder: PlaybackInfoBuilder = koinInject(),
 ) {
-    val resources = LocalContext.current.resources
-    val playbackInfo = remember(mediaSource) {
-        mediaSource?.let { playbackInfoBuilder.buildPlaybackInfo(resources, mediaSource) }.orEmpty()
-    }
-
     Text(
         text = playbackInfo,
         modifier = modifier

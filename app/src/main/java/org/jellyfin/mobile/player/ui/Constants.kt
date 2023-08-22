@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package org.jellyfin.mobile.player.ui
 
 import androidx.compose.ui.unit.dp
@@ -11,6 +13,7 @@ const val ShowControlsAnimationDuration = 60
 const val HideControlsAnimationDuration = 120
 val DefaultThumbSize = 8.dp
 val DraggedThumbSize = 12.dp
+val PlaybackSpeedOptions = listOf(0.25f, 0.5f, 0.75f, 1f, 1.25f, 1.5f, 2f)
 
 // Player gestures
 const val DoubleTapRippleDurationMs = 100L

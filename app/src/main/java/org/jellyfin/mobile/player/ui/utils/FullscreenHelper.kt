@@ -10,7 +10,8 @@ import org.jellyfin.mobile.utils.extensions.hasFlag
 
 class FullscreenHelper(private val window: Window) {
     private val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-    private var isFullscreen: Boolean = false
+    var isFullscreen: Boolean = false
+        private set
 
     fun onWindowInsetsChanged(insets: WindowInsetsCompat) {
         isFullscreen = when {

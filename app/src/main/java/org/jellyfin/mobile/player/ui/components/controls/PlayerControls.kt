@@ -15,14 +15,18 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.exoplayer2.Player
+import kotlinx.coroutines.launch
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.ui.PlayerUiViewModel
 import org.jellyfin.mobile.player.ui.config.DecoderType
+import org.jellyfin.mobile.player.ui.config.UiAudioTrack
+import org.jellyfin.mobile.player.ui.config.UiQualityOption
 import org.jellyfin.mobile.player.ui.event.UiEvent
 import org.jellyfin.mobile.ui.utils.PlayerControlsBackgroundColor
 import org.jellyfin.mobile.utils.dispatchPlayPause
@@ -39,7 +43,9 @@ fun PlayerControls(
     shouldShowNextButton: Boolean,
     playerPosition: PlayerPosition,
     duration: Long,
+    audioTracks: List<UiAudioTrack>,
     playbackSpeed: Float,
+    qualityOptions: List<UiQualityOption>,
     onSuppressControlsTimeoutChanged: (isSuppressed: Boolean) -> Unit,
     onLockControls: () -> Unit,
     onToggleInfo: () -> Unit,
@@ -86,19 +92,26 @@ fun PlayerControls(
             )
         },
         options = {
+            val coroutineScope = rememberCoroutineScope()
+
             PlayerOptions(
-                mediaSource = mediaSource,
+                audioTracks = audioTracks,
                 subtitleState = SubtitleControlsState(
                     subtitleStreams = emptyList(),
                     selectedSubtitle = null,
                 ),
                 playbackSpeed = playbackSpeed,
+                qualityOptions = qualityOptions,
                 decoder = decoder,
                 isInFullscreen = @OptIn(ExperimentalLayoutApi::class) !WindowInsets.areStatusBarsVisible,
                 onSuppressControlsTimeoutChanged = onSuppressControlsTimeoutChanged,
                 onLockControls = onLockControls,
-                onShowAudioTracks = { /*TODO*/ },
-                onSubtitleSelected = { /*TODO*/ },
+                onAudioTrackSelected = { index ->
+                    coroutineScope.launch {
+                        viewModel.trackSelectionHelper.selectAudioTrack(index)
+                    }
+                },
+                onSubtitleTrackSelected = { /*TODO*/ },
                 onSpeedSelected = { speed ->
                     viewModel.setPlaybackSpeed(speed)
                 },

@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.ui.config.UiAudioTrack
 import org.jellyfin.mobile.player.ui.config.UiQualityOption
 import org.jellyfin.sdk.model.api.MediaStream
 import java.util.Locale
@@ -12,10 +13,39 @@ import java.util.Locale
 class PlaybackInfoBuilder(
     private val qualityOptionsProvider: QualityOptionsProvider,
 ) {
-    fun buildPlaybackInfo(
-        resources: Resources,
-        mediaSource: JellyfinMediaSource,
-    ): String {
+    fun buildAudioStreams(mediaSource: JellyfinMediaSource): List<UiAudioTrack> {
+        return mediaSource.audioStreams.map { mediaStream ->
+            UiAudioTrack(
+                label = mediaStream.displayTitle ?: "${mediaStream.language} (${mediaStream.codec})",
+                index = mediaStream.index,
+                isSelected = mediaStream === mediaSource.selectedAudioStream,
+            )
+        }
+    }
+
+    fun buildQualityOptions(resources: Resources, mediaSource: JellyfinMediaSource): List<UiQualityOption> {
+        val videoStream = mediaSource.selectedVideoStream ?: return emptyList()
+        val videoWidth = videoStream.width ?: 0
+        val videoHeight = videoStream.height ?: 0
+
+        if (videoWidth == 0 || videoHeight == 0) {
+            return emptyList()
+        }
+
+        return qualityOptionsProvider.getApplicableQualityOptions(videoWidth, videoHeight).map { option ->
+            val title = when (val bitrate = option.bitrate) {
+                null -> resources.getString(R.string.menu_item_auto)
+                else -> "${option.maxHeight}p - ${formatBitrate(bitrate.toDouble())}"
+            }
+            UiQualityOption(
+                label = title,
+                bitrate = option.bitrate,
+                isSelected = option.bitrate == mediaSource.maxStreamingBitrate,
+            )
+        }
+    }
+
+    fun buildPlaybackInfo(resources: Resources, mediaSource: JellyfinMediaSource): String {
         val videoStream = mediaSource.selectedVideoStream
         val audioStreams = mediaSource.audioStreams
 
@@ -64,28 +94,7 @@ class PlaybackInfoBuilder(
         "- $title$suffix"
     }
 
-    fun buildQualityOptions(
-        resources: Resources,
-        jellyfinMediaSource: JellyfinMediaSource,
-    ): List<UiQualityOption> {
-        val videoStream = jellyfinMediaSource.selectedVideoStream ?: return emptyList()
-        val videoWidth = videoStream.width ?: 0
-        val videoHeight = videoStream.height ?: 0
-
-        if (videoWidth == 0 || videoHeight == 0) {
-            return emptyList()
-        }
-
-        return qualityOptionsProvider.getApplicableQualityOptions(videoWidth, videoHeight).map { option ->
-            val title = when (val bitrate = option.bitrate) {
-                null -> resources.getString(R.string.menu_item_auto)
-                else -> "${option.maxHeight}p - ${formatBitrate(bitrate.toDouble())}"
-            }
-            UiQualityOption(title, option.bitrate)
-        }
-    }
-
-    fun formatBitrate(bitrate: Double): String {
+    private fun formatBitrate(bitrate: Double): String {
         val (value, unit) = when {
             bitrate > BITRATE_MEGA_BIT -> bitrate / BITRATE_MEGA_BIT to " Mbps"
             bitrate > BITRATE_KILO_BIT -> bitrate / BITRATE_KILO_BIT to " kbps"

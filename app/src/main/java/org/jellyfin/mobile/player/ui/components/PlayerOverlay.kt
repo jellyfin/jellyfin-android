@@ -32,7 +32,6 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableLongStateOf
@@ -42,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
@@ -50,17 +50,20 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.exoplayer2.Player
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.player.PlayerViewModel
+import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.ui.HideControlsAnimationDuration
 import org.jellyfin.mobile.player.ui.PlayerUiViewModel
 import org.jellyfin.mobile.player.ui.ShowControlsAnimationDuration
 import org.jellyfin.mobile.player.ui.components.controls.PlayerControls
 import org.jellyfin.mobile.player.ui.components.controls.PlayerPosition
 import org.jellyfin.mobile.player.ui.config.GestureIndicatorState
+import org.jellyfin.mobile.player.ui.utils.PlaybackInfoBuilder
 import org.jellyfin.mobile.ui.utils.PlaybackInfoBackgroundColor
 import org.jellyfin.mobile.utils.isBuffering
 import org.jellyfin.mobile.utils.shouldShowNextButton
 import org.jellyfin.mobile.utils.shouldShowPauseButton
 import org.jellyfin.mobile.utils.shouldShowPreviousButton
+import org.koin.compose.koinInject
 
 @Stable
 val DefaultControlsEnterTransition = fadeIn(
@@ -82,18 +85,29 @@ val DefaultControlsExitTransition = fadeOut(
 @Composable
 fun PlayerOverlay(
     player: Player,
+    mediaSource: JellyfinMediaSource?,
     gestureIndicatorState: GestureIndicatorState,
     viewModel: PlayerViewModel = viewModel(),
     uiViewModel: PlayerUiViewModel = viewModel(),
+    playbackInfoBuilder: PlaybackInfoBuilder = koinInject(),
 ) {
-    val mediaSource by viewModel.queueManager.currentMediaSource.collectAsState()
+    val resources = LocalContext.current.resources
     var shouldShowInfo by remember { mutableStateOf(false) }
     var shouldShowLoadingIndicator by remember { mutableStateOf(player.isBuffering) }
     var shouldShowPreviousButton by remember { mutableStateOf(player.shouldShowPreviousButton) }
     var shouldShowNextButton by remember { mutableStateOf(player.shouldShowNextButton) }
     var playerPosition by remember { mutableStateOf(player.position) }
     var duration by remember { mutableLongStateOf(player.duration) }
+    val audioStreams = remember(mediaSource, mediaSource?.selectedAudioStream) {
+        mediaSource?.let { playbackInfoBuilder.buildAudioStreams(mediaSource) }.orEmpty()
+    }
     var playbackSpeed by remember { mutableFloatStateOf(player.playbackParameters.speed) }
+    val qualityOptions = remember(mediaSource) {
+        mediaSource?.let { playbackInfoBuilder.buildQualityOptions(resources, mediaSource) }.orEmpty()
+    }
+    val playbackInfo = remember(mediaSource) {
+        mediaSource?.let { playbackInfoBuilder.buildPlaybackInfo(resources, mediaSource) }.orEmpty()
+    }
 
     PlayerEventsHandler(
         player = player,
@@ -140,7 +154,9 @@ fun PlayerOverlay(
                 shouldShowNextButton = shouldShowNextButton,
                 playerPosition = playerPosition,
                 duration = duration,
+                audioTracks = audioStreams,
                 playbackSpeed = playbackSpeed,
+                qualityOptions = qualityOptions,
                 onSuppressControlsTimeoutChanged = { isSuppressed ->
                     uiViewModel.onSuppressControlsTimeoutChanged(isSuppressed)
                 },
@@ -177,7 +193,7 @@ fun PlayerOverlay(
             exit = DefaultControlsExitTransition,
         ) {
             PlaybackInfo(
-                mediaSource = mediaSource,
+                playbackInfo = playbackInfo,
                 onClose = {
                     shouldShowInfo = false
                 },

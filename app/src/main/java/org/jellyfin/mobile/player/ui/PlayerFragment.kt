@@ -25,7 +25,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
@@ -35,12 +34,7 @@ import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.ui.components.PlayerScreen
-import org.jellyfin.mobile.player.ui.config.DecoderType
 import org.jellyfin.mobile.player.ui.event.UiEvent
-import org.jellyfin.mobile.player.ui.legacy.PlayerGestureHelper
-import org.jellyfin.mobile.player.ui.legacy.PlayerLockScreenHelper
-import org.jellyfin.mobile.player.ui.legacy.PlayerMenus
-import org.jellyfin.mobile.player.ui.legacy.TrackSelectionCallback
 import org.jellyfin.mobile.player.ui.utils.FullscreenHelper
 import org.jellyfin.mobile.player.ui.utils.SwipeGestureHelper
 import org.jellyfin.mobile.ui.utils.AppTheme
@@ -69,14 +63,9 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     private var _viewBinding: FragmentComposeBinding? = null
     private val viewBinding get() = _viewBinding!!
     private val composeView: ComposeView get() = viewBinding.composeView
-
     private var playerLocation = Rect()
 
-    private var playerMenus: PlayerMenus? = null
-
     private lateinit var fullscreenHelper: FullscreenHelper
-    lateinit var playerLockScreenHelper: PlayerLockScreenHelper
-    lateinit var playerGestureHelper: PlayerGestureHelper
 
     private val currentVideoStream: MediaStream?
         get() = viewModel.mediaSourceOrNull?.selectedVideoStream
@@ -103,10 +92,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             }
         }
         viewModel.playerState.observe(this) {
-            requireActivity().window.keepScreenOn = viewModel.playerOrNull?.isPlaying == true
-        }
-        viewModel.decoderType.observe(this) { type ->
-            playerMenus?.updatedSelectedDecoder(type)
+            requireActivity().window.keepScreenOn = uiViewModel.shouldShowPauseButton
         }
         viewModel.error.observe(this) { message ->
             val safeMessage = message.ifEmpty { requireContext().getString(R.string.player_error_unspecific_exception) }
@@ -122,9 +108,6 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
                         // Auto-switch to landscape for landscape videos if enabled
                         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                     }
-
-                    // Update title and player menus
-                    playerMenus?.onQueueItemChanged(mediaSource, viewModel.queueManager.hasNext())
                 }
             }
         }
@@ -248,7 +231,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
      * Exit fullscreen on first back-button press, otherwise exit directly
      */
     override fun onInterceptBackPressed(): Boolean = when {
-        playerFullscreenHelper.isFullscreen -> {
+        fullscreenHelper.isFullscreen -> {
             // TODO: exit fullscreen
             true
         }
@@ -276,98 +259,8 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         }
     }
 
-    /**
-     * Toggle fullscreen.
-     *
-     * If playing a portrait video, this just hides the status and navigation bars.
-     * For landscape videos, additionally the screen gets rotated.
-     */
-    private fun toggleFullscreen() {
-        val videoTrack = currentVideoStream
-        if (videoTrack == null || videoTrack.width!! >= videoTrack.height!!) {
-            val current = resources.configuration.orientation
-            requireActivity().requestedOrientation = when (current) {
-                Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            }
-            // No need to call playerFullscreenHelper in this case,
-            // since the configuration change triggers updateFullscreenState,
-            // which does it for us.
-        } else {
-            playerFullscreenHelper.toggleFullscreen()
-        }
-    }
-
-    /**
-     * If true, the player controls will show indefinitely
-     */
-    fun suppressControllerAutoHide(suppress: Boolean) {
-        //playerView.controllerShowTimeoutMs = if (suppress) -1 else DEFAULT_CONTROLS_TIMEOUT_MS
-    }
-
-    fun isLandscape(configuration: Configuration = resources.configuration) =
+    private fun isLandscape(configuration: Configuration = resources.configuration) =
         configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-
-    fun onRewind() = viewModel.rewind()
-
-    fun onFastForward() = viewModel.fastForward()
-
-    /**
-     * @param callback called if track selection was successful and UI needs to be updated
-     */
-    fun onAudioTrackSelected(index: Int, callback: TrackSelectionCallback): Job = lifecycleScope.launch {
-        if (viewModel.trackSelectionHelper.selectAudioTrack(index)) {
-            callback.onTrackSelected(true)
-        }
-    }
-
-    /**
-     * @param callback called if track selection was successful and UI needs to be updated
-     */
-    fun onSubtitleSelected(index: Int, callback: TrackSelectionCallback): Job = lifecycleScope.launch {
-        if (viewModel.trackSelectionHelper.selectSubtitleTrack(index)) {
-            callback.onTrackSelected(true)
-        }
-    }
-
-    /**
-     * Toggle subtitles, selecting the first by [MediaStream.index] if there are multiple.
-     *
-     * @return true if subtitles are enabled now, false if not
-     */
-    fun toggleSubtitles(callback: TrackSelectionCallback) = lifecycleScope.launch {
-        callback.onTrackSelected(viewModel.trackSelectionHelper.toggleSubtitles())
-    }
-
-    fun onBitrateChanged(bitrate: Int?, callback: TrackSelectionCallback) = lifecycleScope.launch {
-        viewModel.changeBitrate(bitrate)
-        callback.onTrackSelected(true)
-    }
-
-    /**
-     * @return true if the playback speed was changed
-     */
-    fun onSpeedSelected(speed: Float): Boolean {
-        return viewModel.setPlaybackSpeed(speed)
-    }
-
-    fun onDecoderSelected(type: DecoderType) {
-        viewModel.updateDecoderType(type)
-    }
-
-    fun onSkipToPrevious() {
-        viewModel.skipToPrevious()
-    }
-
-    fun onSkipToNext() {
-        viewModel.skipToNext()
-    }
-
-    fun onPopupDismissed() {
-        if (!AndroidVersion.isAtLeastR) {
-            updateFullscreenState(resources.configuration)
-        }
-    }
 
     fun onUserLeaveHint() {
         if (AndroidVersion.isAtLeastN && viewModel.playerOrNull?.isPlaying == true) {
@@ -400,17 +293,12 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
         uiViewModel.onPictureInPictureModeChanged(isInPictureInPictureMode)
-        if (isInPictureInPictureMode) {
-            playerMenus?.dismissPlaybackInfo()
-            //playerLockScreenHelper.hideUnlockButton()
-        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         Handler(Looper.getMainLooper()).post {
             updateFullscreenState(newConfig)
-            //playerGestureHelper.handleConfiguration(newConfig)
         }
     }
 

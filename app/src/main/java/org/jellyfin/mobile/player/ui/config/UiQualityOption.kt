@@ -8,4 +8,5 @@ import androidx.compose.runtime.Stable
 data class UiQualityOption(
     val label: String,
     val bitrate: Int?,
+    val isSelected: Boolean,
 )
