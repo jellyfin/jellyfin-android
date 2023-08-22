@@ -27,10 +27,17 @@ enum class ControlsState {
     Visible,
 
     /**
+     * The controls are visible but the player is paused, so they won't hide after the timeout.
+     */
+    VisiblePaused,
+
+    /**
      * The controls are visible and won't hide after the timeout.
      */
     ForceVisible,
     ;
 
     val isLocked get() = this == Locked || this == IndicateLocked
+
+    val isVisible get() = this == Visible || this == VisiblePaused || this == ForceVisible
 }

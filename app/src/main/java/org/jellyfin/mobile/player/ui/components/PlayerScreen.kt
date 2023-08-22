@@ -50,6 +50,7 @@ import org.jellyfin.mobile.player.ui.config.GestureIndicatorState
 import org.jellyfin.mobile.player.ui.utils.SwipeGestureHelper
 import org.jellyfin.mobile.ui.utils.detectMultipleGestures
 import org.jellyfin.mobile.utils.extensions.isLandscape
+import org.jellyfin.mobile.utils.shouldShowPauseButton
 import kotlin.math.abs
 import com.google.android.exoplayer2.ui.R as ExoplayerR
 
@@ -86,9 +87,16 @@ fun PlayerScreen(
                 detectTapGestures(
                     onTap = {
                         when (controlsState.value) {
-                            ControlsState.Hidden -> controlsState.value = ControlsState.Visible
+                            ControlsState.Hidden -> when {
+                                player?.shouldShowPauseButton != true -> controlsState.value = ControlsState.VisiblePaused
+                                else -> controlsState.value = ControlsState.Visible
+                            }
                             ControlsState.Locked -> controlsState.value = ControlsState.IndicateLocked
-                            ControlsState.Visible, ControlsState.ForceVisible -> controlsState.value = ControlsState.Hidden
+
+                            ControlsState.Visible,
+                            ControlsState.VisiblePaused,
+                            ControlsState.ForceVisible,
+                            -> controlsState.value = ControlsState.Hidden
                             else -> Unit // do nothing
                         }
                     },

@@ -105,6 +105,11 @@ fun PlayerOverlay(
         onPlayStateChanged = {
             shouldShowPauseButton = player.shouldShowPauseButton
             shouldShowLoadingIndicator = player.isBuffering
+            if (!shouldShowPauseButton) {
+                controlsState.value = ControlsState.VisiblePaused
+            } else if (controlsState.value == ControlsState.VisiblePaused) {
+                controlsState.value = ControlsState.Visible
+            }
         },
         onNavigationChanged = {
             shouldShowPreviousButton = player.shouldShowPreviousButton
@@ -128,7 +133,7 @@ fun PlayerOverlay(
         val insets = WindowInsets.systemBarsIgnoringVisibility
 
         AnimatedVisibility(
-            visible = controlsState.value == ControlsState.Visible || controlsState.value == ControlsState.ForceVisible,
+            visible = controlsState.value.isVisible,
             enter = DefaultControlsEnterTransition,
             exit = DefaultControlsExitTransition,
         ) {
@@ -142,7 +147,11 @@ fun PlayerOverlay(
                 duration = duration,
                 playbackSpeed = playbackSpeed,
                 onSuppressControlsTimeout = { suppressed ->
-                    controlsState.value = if (suppressed) ControlsState.ForceVisible else ControlsState.Visible
+                    controlsState.value = when {
+                        suppressed -> ControlsState.ForceVisible
+                        !shouldShowPauseButton -> ControlsState.VisiblePaused
+                        else -> ControlsState.Visible
+                    }
                 },
                 onLockControls = {
                     controlsState.value = ControlsState.IndicateLocked
