@@ -192,7 +192,18 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
         // Handle fullscreen switcher
         fullscreenSwitcher.setOnClickListener {
-            toggleFullscreen()
+            val videoTrack = currentVideoStream
+            if (videoTrack == null || videoTrack.width!! >= videoTrack.height!!) {
+                // Landscape video, change orientation (which affects the fullscreen state)
+                val current = resources.configuration.orientation
+                requireActivity().requestedOrientation = when (current) {
+                    Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                    else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
+            } else {
+                // Portrait video, only handle fullscreen state
+                playerFullscreenHelper.toggleFullscreen()
+            }
         }
     }
 
@@ -215,7 +226,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
      */
     override fun onInterceptBackPressed(): Boolean = when {
         playerFullscreenHelper.isFullscreen -> {
-            toggleFullscreen()
+            // TODO: exit fullscreen
             true
         }
         else -> super.onInterceptBackPressed()
