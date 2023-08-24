@@ -9,9 +9,12 @@ import android.os.IBinder
 import android.provider.Settings
 import android.view.OrientationEventListener
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -22,6 +25,7 @@ import org.jellyfin.mobile.player.cast.IChromecast
 import org.jellyfin.mobile.player.ui.PlayerFragment
 import org.jellyfin.mobile.setup.ConnectFragment
 import org.jellyfin.mobile.utils.AndroidVersion
+import org.jellyfin.mobile.utils.BackPressInterceptor
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
 import org.jellyfin.mobile.utils.SmartOrientationListener
@@ -53,6 +57,37 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(this) }
+
+    /**
+     * Passes back press events onto the currently visible [Fragment] if it implements the [BackPressInterceptor] interface.
+     *
+     * If the current fragment does not implement [BackPressInterceptor] or has decided not to intercept the event
+     * (see result of [BackPressInterceptor.onInterceptBackPressed]), the topmost backstack entry will be popped.
+     *
+     * If there is no topmost backstack entry, the event will be passed onto the dispatcher's fallback handler.
+     */
+    private val onBackPressedCallback: OnBackPressedCallback.() -> Unit = callback@{
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        if (currentFragment is BackPressInterceptor && currentFragment.onInterceptBackPressed()) {
+            // Top fragment handled back press
+            return@callback
+        }
+
+        // This is the same default action as in Activity.onBackPressed
+        if (!supportFragmentManager.isStateSaved && supportFragmentManager.popBackStackImmediate()) {
+            // Removed fragment from back stack
+            return@callback
+        }
+
+        // Let the system handle the back press
+        isEnabled = false
+        // Make sure that we *really* call the fallback handler
+        assert(!onBackPressedDispatcher.hasEnabledCallbacks()) {
+            "MainActivity should be the lowest onBackPressCallback"
+        }
+        onBackPressedDispatcher.onBackPressed()
+        isEnabled = true // re-enable callback in case activity isn't finished
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -94,6 +129,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // Handle back presses
+        onBackPressedDispatcher.addCallback(this, onBackPressed = onBackPressedCallback)
 
         // Setup Chromecast
         chromecast.initializePlugin(this)
@@ -140,7 +178,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 
@@ -155,14 +193,6 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         orientationListener.disable()
-    }
-
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            supportFragmentManager.popBackStack()
-        } else {
-            super.onBackPressed()
-        }
     }
 
     override fun onDestroy() {
