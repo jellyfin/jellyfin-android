@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
@@ -31,6 +30,7 @@ import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.mobile.databinding.FragmentWebviewBinding
 import org.jellyfin.mobile.setup.ConnectFragment
 import org.jellyfin.mobile.utils.AndroidVersion
+import org.jellyfin.mobile.utils.BackPressInterceptor
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER
 import org.jellyfin.mobile.utils.applyDefault
@@ -45,7 +45,7 @@ import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
 import org.jellyfin.mobile.utils.runOnUiThread
 import org.koin.android.ext.android.inject
 
-class WebViewFragment : Fragment() {
+class WebViewFragment : Fragment(), BackPressInterceptor {
     val appPreferences: AppPreferences by inject()
     private val apiClientController: ApiClientController by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
@@ -102,13 +102,6 @@ class WebViewFragment : Fragment() {
             }
         }
         externalPlayer = ExternalPlayer(requireContext(), this, requireActivity().activityResultRegistry)
-
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            if (!connected || !webappFunctionChannel.goBack()) {
-                isEnabled = false
-                activity?.onBackPressed()
-            }
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -165,6 +158,10 @@ class WebViewFragment : Fragment() {
                 webView.loadUrl("javascript:$function")
             }
         }
+    }
+
+    override fun onInterceptBackPressed(): Boolean {
+        return connected && webappFunctionChannel.goBack()
     }
 
     override fun onDestroyView() {

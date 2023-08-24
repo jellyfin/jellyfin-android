@@ -23,6 +23,7 @@ import de.Maxr1998.modernpreferences.preferences.choice.SelectionItem
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.databinding.FragmentSettingsBinding
+import org.jellyfin.mobile.utils.BackPressInterceptor
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.extensions.requireMainActivity
@@ -31,7 +32,7 @@ import org.jellyfin.mobile.utils.isPackageInstalled
 import org.jellyfin.mobile.utils.withThemedContext
 import org.koin.android.ext.android.inject
 
-class SettingsFragment : Fragment() {
+class SettingsFragment : Fragment(), BackPressInterceptor {
 
     private val appPreferences: AppPreferences by inject()
     private val settingsAdapter: PreferencesAdapter by lazy { PreferencesAdapter(buildSettingsScreen()) }
@@ -57,6 +58,10 @@ class SettingsFragment : Fragment() {
         }
         binding.recyclerView.adapter = settingsAdapter
         return binding.root
+    }
+
+    override fun onInterceptBackPressed(): Boolean {
+        return settingsAdapter.goBack()
     }
 
     override fun onDestroyView() {
