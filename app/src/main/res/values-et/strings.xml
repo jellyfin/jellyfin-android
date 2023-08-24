@@ -59,7 +59,6 @@
     <string name="dialog_web_view_outdated_message">Installitud WebView on liiga vana.
 \nUuenda WebView ühilduvale versioonile.</string>
     <string name="dialog_button_ignore">Ignoreeri</string>
-    <string name="external_player_mx_player_free"></string>
     <string name="pref_subtitle_style_summary">Sa saad muuta subtiirite stiili Android-i seadetes</string>
     <string name="dialog_web_view_not_supported_message">See seade ei toeta WebView-d.
 \nInstalli ühilduv WebView või vaheta toetatud seadmele.</string>
