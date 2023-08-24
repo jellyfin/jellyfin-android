@@ -36,6 +36,7 @@ import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.utils.AndroidVersion
+import org.jellyfin.mobile.utils.BackPressInterceptor
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.PIP_MAX_RATIONAL
@@ -51,7 +52,7 @@ import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.android.ext.android.inject
 import com.google.android.exoplayer2.ui.R as ExoplayerR
 
-class PlayerFragment : Fragment() {
+class PlayerFragment : Fragment(), BackPressInterceptor {
     private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
     private var _playerBinding: FragmentPlayerBinding? = null
@@ -191,18 +192,7 @@ class PlayerFragment : Fragment() {
 
         // Handle fullscreen switcher
         fullscreenSwitcher.setOnClickListener {
-            val videoTrack = currentVideoStream
-            if (videoTrack == null || videoTrack.width!! >= videoTrack.height!!) {
-                // Landscape video, change orientation (which affects the fullscreen state)
-                val current = resources.configuration.orientation
-                requireActivity().requestedOrientation = when (current) {
-                    Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                    else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-                }
-            } else {
-                // Portrait video, only handle fullscreen state
-                playerFullscreenHelper.toggleFullscreen()
-            }
+            toggleFullscreen()
         }
     }
 
@@ -218,6 +208,17 @@ class PlayerFragment : Fragment() {
         if (isLandscape()) {
             playerFullscreenHelper.enableFullscreen()
         }
+    }
+
+    /**
+     * Exit fullscreen on first back-button press, otherwise exit directly
+     */
+    override fun onInterceptBackPressed(): Boolean = when {
+        playerFullscreenHelper.isFullscreen -> {
+            toggleFullscreen()
+            true
+        }
+        else -> super.onInterceptBackPressed()
     }
 
     /**
@@ -238,6 +239,28 @@ class PlayerFragment : Fragment() {
                 // Disable fullscreen for landscape video in portrait orientation
                 playerFullscreenHelper.disableFullscreen()
             }
+        }
+    }
+
+    /**
+     * Toggle fullscreen.
+     *
+     * If playing a portrait video, this just hides the status and navigation bars.
+     * For landscape videos, additionally the screen gets rotated.
+     */
+    private fun toggleFullscreen() {
+        val videoTrack = currentVideoStream
+        if (videoTrack == null || videoTrack.width!! >= videoTrack.height!!) {
+            val current = resources.configuration.orientation
+            requireActivity().requestedOrientation = when (current) {
+                Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            }
+            // No need to call playerFullscreenHelper in this case,
+            // since the configuration change triggers updateFullscreenState,
+            // which does it for us.
+        } else {
+            playerFullscreenHelper.toggleFullscreen()
         }
     }
 
