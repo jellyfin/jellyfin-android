@@ -92,11 +92,11 @@ fun PlayerScreen(
 
                         val tapX = event.x.toInt()
                         val (contentWidth, contentHeight) = contentSize
-                        val fastForwardZone = contentWidth / 3
-                        val rewindZone = contentWidth - fastForwardZone
+                        val rewindZone = contentWidth / 3
+                        val fastForwardZone = contentWidth - rewindZone
 
-                        val isFastForward = tapX < fastForwardZone
-                        val isRewind = tapX > rewindZone
+                        val isFastForward = tapX > fastForwardZone
+                        val isRewind = tapX < rewindZone
 
                         if (!isFastForward && !isRewind) {
                             return@detectTapGestures
