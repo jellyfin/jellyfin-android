@@ -123,7 +123,11 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
             for (notificationAction in PlayerNotificationAction.values()) {
                 filter.addAction(notificationAction.action)
             }
-            context.registerReceiver(notificationActionReceiver, filter)
+            if (AndroidVersion.isAtLeastT) {
+                context.registerReceiver(notificationActionReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+            } else {
+                context.registerReceiver(notificationActionReceiver, filter)
+            }
         }
     }
 
