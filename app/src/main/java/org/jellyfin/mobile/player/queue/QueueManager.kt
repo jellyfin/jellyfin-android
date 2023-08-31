@@ -68,7 +68,7 @@ class QueueManager(
         startPlayback(
             itemId = itemId,
             mediaSourceId = playOptions.mediaSourceId,
-            maxStreamingBitrate = playOptions.maxBitrate,
+            maxStreamingBitrate = null,
             startTimeTicks = playOptions.startPositionTicks,
             audioStreamIndex = playOptions.audioStreamIndex,
             subtitleStreamIndex = playOptions.subtitleStreamIndex,
