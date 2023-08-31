@@ -21,11 +21,12 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
     suspend fun resolveMediaSource(
         itemId: UUID,
         mediaSourceId: String? = null,
-        deviceProfile: DeviceProfile,
+        deviceProfile: DeviceProfile? = null,
         maxStreamingBitrate: Int? = null,
         startTimeTicks: Long? = null,
         audioStreamIndex: Int? = null,
         subtitleStreamIndex: Int? = null,
+        autoOpenLiveStream: Boolean = true,
     ): Result<JellyfinMediaSource> {
         // Load media source info
         val playSessionId: String
@@ -39,11 +40,11 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
                     // https://github.com/jellyfin/jellyfin/blob/9a35fd673203cfaf0098138b2768750f4818b3ab/Jellyfin.Api/Helpers/MediaInfoHelper.cs#L196-L201
                     mediaSourceId = mediaSourceId ?: itemId.toString().replace("-", ""),
                     deviceProfile = deviceProfile,
-                    maxStreamingBitrate = maxStreamingBitrate ?: deviceProfile.maxStreamingBitrate,
+                    maxStreamingBitrate = maxStreamingBitrate,
                     startTimeTicks = startTimeTicks,
                     audioStreamIndex = audioStreamIndex,
                     subtitleStreamIndex = subtitleStreamIndex,
-                    autoOpenLiveStream = true,
+                    autoOpenLiveStream = autoOpenLiveStream,
                 ),
             )
 
