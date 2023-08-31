@@ -2,7 +2,6 @@ package org.jellyfin.mobile.player.deviceprofile
 
 import android.media.MediaCodecList
 import org.jellyfin.mobile.app.AppPreferences
-import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.model.api.CodecProfile
 import org.jellyfin.sdk.model.api.ContainerProfile
@@ -150,24 +149,6 @@ class DeviceProfileBuilder(
         )
     }
 
-    fun getExternalPlayerProfile(): DeviceProfile = DeviceProfile(
-        name = ExternalPlayer.DEVICE_PROFILE_NAME,
-        directPlayProfiles = listOf(
-            DirectPlayProfile(type = DlnaProfileType.VIDEO),
-            DirectPlayProfile(type = DlnaProfileType.AUDIO),
-        ),
-        transcodingProfiles = emptyList(),
-        containerProfiles = emptyList(),
-        codecProfiles = emptyList(),
-        subtitleProfiles = getSubtitleProfiles(EXTERNAL_PLAYER_SUBTITLES, EXTERNAL_PLAYER_SUBTITLES),
-        maxStreamingBitrate = MAX_STREAMING_BITRATE,
-
-        // TODO: remove redundant defaults after API/SDK is fixed
-        supportedMediaTypes = "",
-        xmlRootAttributes = emptyList(),
-        responseProfiles = emptyList(),
-    )
-
     private fun getSubtitleProfiles(embedded: Array<String>, external: Array<String>): List<SubtitleProfile> = ArrayList<SubtitleProfile>().apply {
         for (format in embedded) {
             add(SubtitleProfile(format = format, method = SubtitleDeliveryMethod.EMBED))
@@ -272,9 +253,6 @@ class DeviceProfileBuilder(
         private val EXO_EMBEDDED_SUBTITLES = arrayOf("dvbsub", "pgssub", "srt", "subrip", "ttml")
         private val EXO_EXTERNAL_SUBTITLES = arrayOf("srt", "subrip", "ttml", "vtt", "webvtt")
         private val SUBTITLES_SSA = arrayOf("ssa", "ass")
-        private val EXTERNAL_PLAYER_SUBTITLES = arrayOf(
-            "ass", "idx", "pgssub", "smi", "smil", "srt", "ssa", "sub", "subrip", "ttml", "vtt", "webvtt",
-        )
 
         /**
          * Taken from Jellyfin Web:

@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.player.PlayerException
-import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.source.ExternalSubtitleStream
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
@@ -30,10 +29,7 @@ import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.videosApi
 import org.jellyfin.sdk.api.operations.VideosApi
-import org.jellyfin.sdk.model.api.DeviceProfile
-import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
-import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -50,8 +46,6 @@ class ExternalPlayer(
     private val appPreferences: AppPreferences by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private val mediaSourceResolver: MediaSourceResolver by inject()
-    private val deviceProfileBuilder: DeviceProfileBuilder by inject()
-    private val externalPlayerProfile: DeviceProfile = deviceProfileBuilder.getExternalPlayerProfile()
     private val apiClient: ApiClient = get()
     private val videosApi: VideosApi = apiClient.videosApi
 
@@ -95,14 +89,15 @@ class ExternalPlayer(
         }
 
         coroutinesScope.launch {
+            // Resolve media source to query info about external (subtitle) streams
             mediaSourceResolver.resolveMediaSource(
                 itemId = itemId,
                 mediaSourceId = playOptions.mediaSourceId,
-                deviceProfile = externalPlayerProfile,
                 startTimeTicks = playOptions.startPositionTicks,
                 audioStreamIndex = playOptions.audioStreamIndex,
                 subtitleStreamIndex = playOptions.subtitleStreamIndex,
-                maxStreamingBitrate = null,
+                maxStreamingBitrate = Int.MAX_VALUE, // ensure we always direct play
+                autoOpenLiveStream = false,
             ).onSuccess { jellyfinMediaSource ->
                 playMediaSource(playOptions, jellyfinMediaSource)
             }.onFailure { error ->
@@ -116,48 +111,14 @@ class ExternalPlayer(
         }
     }
 
-    @JavascriptInterface
-    fun getSubtitleProfiles(): String {
-        val subtitleProfiles = JSONArray()
-        externalPlayerProfile.subtitleProfiles.forEach { profile ->
-            subtitleProfiles.put(
-                JSONObject().apply {
-                    put("method", profile.method)
-                    put("format", profile.format)
-                },
-            )
-        }
-        return subtitleProfiles.toString()
-    }
-
-    @Suppress("LongMethod")
     private fun playMediaSource(playOptions: PlayOptions, source: JellyfinMediaSource) {
-        val sourceInfo = source.sourceInfo
-        val url = when (source.playMethod) {
-            PlayMethod.DIRECT_PLAY -> {
-                videosApi.getVideoStreamUrl(
-                    itemId = source.itemId,
-                    static = true,
-                    mediaSourceId = source.id,
-                    playSessionId = source.playSessionId,
-                )
-            }
-            PlayMethod.DIRECT_STREAM -> {
-                val container = requireNotNull(sourceInfo.container) { "Missing direct stream container" }
-                videosApi.getVideoStreamByContainerUrl(
-                    itemId = source.itemId,
-                    container = container,
-                    mediaSourceId = source.id,
-                    playSessionId = source.playSessionId,
-                )
-            }
-            PlayMethod.TRANSCODE -> {
-                Timber.d("Transcoding is not supported for External Player, ignoring…")
-                notifyEvent(Constants.EVENT_CANCELED)
-                context.toast(R.string.external_player_invalid_play_method, Toast.LENGTH_LONG)
-                return
-            }
-        }
+        // Create direct play URL
+        val url = videosApi.getVideoStreamUrl(
+            itemId = source.itemId,
+            static = true,
+            mediaSourceId = source.id,
+            playSessionId = source.playSessionId,
+        )
 
         // Select correct subtitle
         val selectedSubtitleStream = playOptions.subtitleStreamIndex?.let { index ->
@@ -340,9 +301,5 @@ class ExternalPlayer(
             }
             else -> null
         }
-    }
-
-    companion object {
-        const val DEVICE_PROFILE_NAME = "Android External Player"
     }
 }

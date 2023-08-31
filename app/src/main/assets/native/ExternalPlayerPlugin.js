@@ -141,12 +141,11 @@ export class ExternalPlayerPlugin {
     async getDeviceProfile() {
         return {
             Name: 'Android External Player Stub',
-            MaxStreamingBitrate: 100000000,
-            MaxStaticBitrate: 100000000,
-            MusicStreamingTranscodingBitrate: 320000,
+            MaxStreamingBitrate: 1000000000,
+            MaxStaticBitrate: 1000000000,
             DirectPlayProfiles: [{Type: 'Video'}, {Type: 'Audio'}],
             CodecProfiles: [],
-            SubtitleProfiles: JSON.parse(this._externalPlayer.getSubtitleProfiles()),
+            SubtitleProfiles: [{Method: 'Embed'}, {Method: 'Drop'}],
             TranscodingProfiles: []
         };
     }
