@@ -9,6 +9,7 @@ import android.webkit.JavascriptInterface
 import android.widget.Toast
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -205,7 +206,8 @@ class ExternalPlayer(
     }
 
     private fun notifyEvent(event: String, parameters: String = "") {
-        if (event in arrayOf(Constants.EVENT_CANCELED, Constants.EVENT_ENDED, Constants.EVENT_TIME_UPDATE) && parameters == parameters.filter { it.isDigit() }) {
+        val allowedEvents = arrayOf(Constants.EVENT_CANCELED, Constants.EVENT_ENDED, Constants.EVENT_TIME_UPDATE)
+        if (event in allowedEvents && parameters.isDigitsOnly()) {
             webappFunctionChannel.call("window.ExtPlayer.notify$event($parameters)")
         }
     }
