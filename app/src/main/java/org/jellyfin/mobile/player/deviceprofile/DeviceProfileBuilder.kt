@@ -9,10 +9,8 @@ import org.jellyfin.sdk.model.api.ContainerProfile
 import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.DirectPlayProfile
 import org.jellyfin.sdk.model.api.DlnaProfileType
-import org.jellyfin.sdk.model.api.EncodingContext
 import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
 import org.jellyfin.sdk.model.api.SubtitleProfile
-import org.jellyfin.sdk.model.api.TranscodeSeekInfo
 import org.jellyfin.sdk.model.api.TranscodingProfile
 
 class DeviceProfileBuilder(
@@ -75,18 +73,7 @@ class DeviceProfileBuilder(
                 container = "ts",
                 videoCodec = "h264",
                 audioCodec = "mp1,mp2,mp3,aac,ac3,eac3,dts,mlp,truehd",
-                context = EncodingContext.STREAMING,
                 protocol = "hls",
-
-                // TODO: remove redundant defaults after API/SDK is fixed
-                estimateContentLength = false,
-                enableMpegtsM2TsMode = false,
-                transcodeSeekInfo = TranscodeSeekInfo.AUTO,
-                copyTimestamps = false,
-                enableSubtitlesInManifest = false,
-                minSegments = 0,
-                segmentLength = 0,
-                breakOnNonKeyFrames = false,
                 conditions = emptyList(),
             ),
             TranscodingProfile(
@@ -94,18 +81,7 @@ class DeviceProfileBuilder(
                 container = "mkv",
                 videoCodec = "h264",
                 audioCodec = AVAILABLE_AUDIO_CODECS[SUPPORTED_CONTAINER_FORMATS.indexOf("mkv")].joinToString(","),
-                context = EncodingContext.STREAMING,
                 protocol = "hls",
-
-                // TODO: remove redundant defaults after API/SDK is fixed
-                estimateContentLength = false,
-                enableMpegtsM2TsMode = false,
-                transcodeSeekInfo = TranscodeSeekInfo.AUTO,
-                copyTimestamps = false,
-                enableSubtitlesInManifest = false,
-                minSegments = 0,
-                segmentLength = 0,
-                breakOnNonKeyFrames = false,
                 conditions = emptyList(),
             ),
             TranscodingProfile(
@@ -113,18 +89,7 @@ class DeviceProfileBuilder(
                 container = "mp3",
                 videoCodec = "",
                 audioCodec = "mp3",
-                context = EncodingContext.STREAMING,
                 protocol = "http",
-
-                // TODO: remove redundant defaults after API/SDK is fixed
-                estimateContentLength = false,
-                enableMpegtsM2TsMode = false,
-                transcodeSeekInfo = TranscodeSeekInfo.AUTO,
-                copyTimestamps = false,
-                enableSubtitlesInManifest = false,
-                minSegments = 0,
-                segmentLength = 0,
-                breakOnNonKeyFrames = false,
                 conditions = emptyList(),
             ),
         )
@@ -179,15 +144,7 @@ class DeviceProfileBuilder(
             musicStreamingTranscodingBitrate = MAX_MUSIC_TRANSCODING_BITRATE,
 
             // TODO: remove redundant defaults after API/SDK is fixed
-            timelineOffsetSeconds = 0,
-            enableAlbumArtInDidl = false,
-            enableSingleAlbumArtLimit = false,
-            enableSingleSubtitleLimit = false,
             supportedMediaTypes = "",
-            requiresPlainFolders = false,
-            requiresPlainVideoItems = false,
-            enableMsMediaReceiverRegistrar = false,
-            ignoreTranscodeByteRangeRequests = false,
             xmlRootAttributes = emptyList(),
             responseProfiles = emptyList(),
         )
@@ -206,15 +163,7 @@ class DeviceProfileBuilder(
         maxStreamingBitrate = MAX_STREAMING_BITRATE,
 
         // TODO: remove redundant defaults after API/SDK is fixed
-        timelineOffsetSeconds = 0,
-        enableAlbumArtInDidl = false,
-        enableSingleAlbumArtLimit = false,
-        enableSingleSubtitleLimit = false,
         supportedMediaTypes = "",
-        requiresPlainFolders = false,
-        requiresPlainVideoItems = false,
-        enableMsMediaReceiverRegistrar = false,
-        ignoreTranscodeByteRangeRequests = false,
         xmlRootAttributes = emptyList(),
         responseProfiles = emptyList(),
     )
