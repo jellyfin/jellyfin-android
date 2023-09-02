@@ -167,8 +167,7 @@ class ExternalPlayer(
     }
 
     private fun notifyEvent(event: String, parameters: String = "") {
-        val allowedEvents = arrayOf(Constants.EVENT_CANCELED, Constants.EVENT_ENDED, Constants.EVENT_TIME_UPDATE)
-        if (event in allowedEvents && parameters.isDigitsOnly()) {
+        if (event in ALLOWED_EVENTS && parameters.isDigitsOnly()) {
             webappFunctionChannel.call("window.ExtPlayer.notify$event($parameters)")
         }
     }
@@ -301,5 +300,13 @@ class ExternalPlayer(
             }
             else -> null
         }
+    }
+
+    companion object {
+        private val ALLOWED_EVENTS = arrayOf(
+            Constants.EVENT_CANCELED,
+            Constants.EVENT_ENDED,
+            Constants.EVENT_TIME_UPDATE,
+        )
     }
 }
