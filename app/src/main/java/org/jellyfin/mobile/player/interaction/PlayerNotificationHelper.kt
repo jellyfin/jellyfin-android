@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
+import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.viewModelScope
@@ -61,7 +62,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
         }
     }
 
-    @Suppress("CyclomaticComplexMethod", "DEPRECATION", "LongMethod")
+    @Suppress("DEPRECATION", "LongMethod")
     fun postNotification() {
         val nm = notificationManager ?: return
         val player = viewModel.playerOrNull ?: return
@@ -123,11 +124,12 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
             for (notificationAction in PlayerNotificationAction.values()) {
                 filter.addAction(notificationAction.action)
             }
-            if (AndroidVersion.isAtLeastT) {
-                context.registerReceiver(notificationActionReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
-            } else {
-                context.registerReceiver(notificationActionReceiver, filter)
-            }
+            ContextCompat.registerReceiver(
+                context,
+                notificationActionReceiver,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED,
+            )
         }
     }
 
