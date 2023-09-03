@@ -1,6 +1,5 @@
 package org.jellyfin.mobile.player.interaction
 
-import android.app.Application
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -9,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
+import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.viewModelScope
@@ -38,7 +38,7 @@ import org.koin.core.component.inject
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinComponent {
-    private val context: Context = viewModel.getApplication<Application>()
+    private val context: Context = viewModel.getApplication()
     private val appPreferences: AppPreferences by inject()
     private val notificationManager: NotificationManager? by lazy { context.getSystemService() }
     private val imageApi: ImageApi = get<ApiClient>().imageApi
@@ -62,7 +62,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
         }
     }
 
-    @Suppress("DEPRECATION")
+    @Suppress("DEPRECATION", "LongMethod")
     fun postNotification() {
         val nm = notificationManager ?: return
         val player = viewModel.playerOrNull ?: return
@@ -87,7 +87,8 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
 
             val notification = Notification.Builder(context).apply {
                 if (AndroidVersion.isAtLeastO) {
-                    setChannelId(Constants.MEDIA_NOTIFICATION_CHANNEL_ID) // Set Notification Channel on Android O and above
+                    // Set notification channel on Android O and above
+                    setChannelId(Constants.MEDIA_NOTIFICATION_CHANNEL_ID)
                     setColorized(true)
                 } else {
                     setPriority(Notification.PRIORITY_LOW)
@@ -123,7 +124,12 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
             for (notificationAction in PlayerNotificationAction.values()) {
                 filter.addAction(notificationAction.action)
             }
-            context.registerReceiver(notificationActionReceiver, filter)
+            ContextCompat.registerReceiver(
+                context,
+                notificationActionReceiver,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED,
+            )
         }
     }
 
