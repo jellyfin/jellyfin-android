@@ -3,6 +3,7 @@ package org.jellyfin.mobile.player.deviceprofile
 import android.media.MediaCodecList
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.bridge.ExternalPlayer
+import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.model.api.CodecProfile
 import org.jellyfin.sdk.model.api.ContainerProfile
@@ -17,6 +18,7 @@ class DeviceProfileBuilder(
     private val appPreferences: AppPreferences,
 ) {
     private val supportedVideoCodecs: Array<Array<String>>
+    private val supportedHardwareVideoCodecs: Array<Array<String>>
     private val supportedAudioCodecs: Array<Array<String>>
 
     private val transcodingProfiles: List<TranscodingProfile>
@@ -28,6 +30,7 @@ class DeviceProfileBuilder(
 
         // Load Android-supported codecs
         val videoCodecs: MutableMap<String, DeviceCodec.Video> = HashMap()
+        val hardwareVideoCodecs: MutableMap<String, DeviceCodec.Video> = HashMap() // unused below Q
         val audioCodecs: MutableMap<String, DeviceCodec.Audio> = HashMap()
         val androidCodecs = MediaCodecList(MediaCodecList.REGULAR_CODECS)
         for (codecInfo in androidCodecs.codecInfos) {
@@ -42,6 +45,14 @@ class DeviceProfileBuilder(
                             videoCodecs[name] = videoCodecs[name]!!.mergeCodec(codec)
                         } else {
                             videoCodecs[name] = codec
+                        }
+                        // Also build map of hardware accelerated codecs on Q and above
+                        if (AndroidVersion.isAtLeastQ && codecInfo.isHardwareAccelerated) {
+                            if (hardwareVideoCodecs.containsKey(name)) {
+                                hardwareVideoCodecs[name] = hardwareVideoCodecs[name]!!.mergeCodec(codec)
+                            } else {
+                                hardwareVideoCodecs[name] = codec
+                            }
                         }
                     }
                     is DeviceCodec.Audio -> {
@@ -60,6 +71,15 @@ class DeviceProfileBuilder(
             AVAILABLE_VIDEO_CODECS[i].filter { codec ->
                 videoCodecs.containsKey(codec)
             }.toTypedArray()
+        }
+        supportedHardwareVideoCodecs = when {
+            AndroidVersion.isAtLeastQ -> Array(AVAILABLE_VIDEO_CODECS.size) { i ->
+                AVAILABLE_VIDEO_CODECS[i].filter { codec ->
+                    hardwareVideoCodecs.containsKey(codec)
+                }.toTypedArray()
+            }
+            // Below Android Q, we can't check hardware support, so we assume all codecs are supported
+            else -> supportedVideoCodecs
         }
         supportedAudioCodecs = Array(AVAILABLE_AUDIO_CODECS.size) { i ->
             AVAILABLE_AUDIO_CODECS[i].filter { codec ->
@@ -102,13 +122,18 @@ class DeviceProfileBuilder(
 
         for (i in SUPPORTED_CONTAINER_FORMATS.indices) {
             val container = SUPPORTED_CONTAINER_FORMATS[i]
-            if (supportedVideoCodecs[i].isNotEmpty()) {
+            // TODO: allow software only codecs if specified
+            val videoCodecs = when {
+                true -> supportedHardwareVideoCodecs[i]
+                else -> supportedVideoCodecs[i]
+            }
+            if (videoCodecs.isNotEmpty()) {
                 containerProfiles.add(ContainerProfile(type = DlnaProfileType.VIDEO, container = container))
                 directPlayProfiles.add(
                     DirectPlayProfile(
                         type = DlnaProfileType.VIDEO,
                         container = SUPPORTED_CONTAINER_FORMATS[i],
-                        videoCodec = supportedVideoCodecs[i].joinToString(","),
+                        videoCodec = videoCodecs.joinToString(","),
                         audioCodec = supportedAudioCodecs[i].joinToString(","),
                     ),
                 )
