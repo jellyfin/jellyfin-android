@@ -166,7 +166,9 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     private fun handleIntent(intent: Intent?) {
-        if (intent == null || intent.action == null) return
+        if (intent?.action == null) {
+            return
+        }
         val action = intent.action
         if (action == Constants.ACTION_REPORT) {
             notify(intent)

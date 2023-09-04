@@ -17,7 +17,6 @@ import android.os.Environment
 import android.os.PowerManager
 import android.provider.Settings
 import android.provider.Settings.System.ACCELEROMETER_ROTATION
-import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.getSystemService
 import com.google.android.material.snackbar.Snackbar
@@ -37,7 +36,7 @@ import kotlin.coroutines.suspendCoroutine
 
 fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     if (AndroidVersion.isAtLeastM) {
-        val powerManager: PowerManager = requireContext().getSystemService(AppCompatActivity.POWER_SERVICE) as PowerManager
+        val powerManager: PowerManager = requireContext().getSystemService(Activity.POWER_SERVICE) as PowerManager
         if (
             !appPreferences.ignoreBatteryOptimizations &&
             !powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)
@@ -145,7 +144,6 @@ fun Context.createMediaNotificationChannel(notificationManager: NotificationMana
     }
 }
 
-@Suppress("DEPRECATION")
 fun Context.getDownloadsPaths(): List<String> = ArrayList<String>().apply {
     for (directory in getExternalFilesDirs(null)) {
         // Ignore currently unavailable shared storage
