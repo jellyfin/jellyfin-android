@@ -99,6 +99,9 @@ class NativeInterface(private val context: Context) : KoinComponent {
             putExtra(EXTRA_IS_PAUSED, options.optBoolean(EXTRA_IS_PAUSED, true))
         }
         context.startService(intent)
+
+        // We may need to request bluetooth permission to react to bluetooth disconnect events
+        activityEventHandler.emit(ActivityEvent.RequestBluetoothPermission)
         return true
     }
 

@@ -23,6 +23,10 @@
     <string name="available_servers_title">Available servers</string>
     <string name="button_use_different_server">Use a different server</string>
 
+    <string name="bluetooth_permission_title">Allow Bluetooth access?</string>
+    <string name="bluetooth_permission_message">To detect when wireless headphones or speakers are disconnected, the app requires Bluetooth access. On Android, this permission is described as access to nearby devices, and warns that Bluetooth devices can be used to infer the current location. However, the Jellyfin app will never use this permission to detect your location.</string>
+    <string name="bluetooth_permission_continue">Continue</string>
+    <string name="bluetooth_permission_granted">Bluetooth permission was granted</string>
     <string name="battery_optimizations_message">Please disable battery optimizations for media playback while the screen is off.</string>
     <string name="network_title">Allowed Network Types</string>
     <string name="network_message">Do you want to allow the download to run over mobile data or roaming networks? Charges from your provider may apply.</string>
