@@ -41,6 +41,7 @@ class ActivityEventHandler(
         }
     }
 
+    @Suppress("CyclomaticComplexMethod", "LongMethod")
     private suspend fun MainActivity.handleEvent(event: ActivityEvent) {
         when (event) {
             is ActivityEvent.ChangeFullscreen -> {
@@ -87,6 +88,11 @@ class ActivityEventHandler(
                         }
                     },
                 )
+            }
+            ActivityEvent.RequestBluetoothPermission -> {
+                lifecycleScope.launch {
+                    bluetoothPermissionHelper.requestBluetoothPermissionIfNecessary()
+                }
             }
             ActivityEvent.OpenSettings -> {
                 supportFragmentManager.addFragment<SettingsFragment>()
