@@ -97,9 +97,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Bind player service
-        bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
-
         // Check WebView support
         if (!isWebViewSupported()) {
             AlertDialog.Builder(this).apply {
@@ -119,6 +116,9 @@ class MainActivity : AppCompatActivity() {
             }.show()
             return
         }
+
+        // Bind player service
+        bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
 
         // Subscribe to activity events
         with(activityEventHandler) { subscribe() }

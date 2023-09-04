@@ -42,7 +42,7 @@ class ActivityEventHandler(
     }
 
     @Suppress("CyclomaticComplexMethod", "LongMethod")
-    private suspend fun MainActivity.handleEvent(event: ActivityEvent) {
+    private fun MainActivity.handleEvent(event: ActivityEvent) {
         when (event) {
             is ActivityEvent.ChangeFullscreen -> {
                 val fullscreenHelper = PlayerFullscreenHelper(window)
@@ -73,7 +73,9 @@ class ActivityEventHandler(
                 }
             }
             is ActivityEvent.DownloadFile -> {
-                with(event) { requestDownload(uri, title, filename) }
+                lifecycleScope.launch {
+                    with(event) { requestDownload(uri, title, filename) }
+                }
             }
             is ActivityEvent.CastMessage -> {
                 val action = event.action
