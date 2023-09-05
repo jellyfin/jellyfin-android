@@ -106,4 +106,8 @@
     <string name="menu_item_hardware_decoding">Dekodowanie sprzętowe</string>
     <string name="menu_item_software_decoding">Dekodowanie programowe</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Rozpocznij film poziomy w orientacji poziomej</string>
+    <string name="bluetooth_permission_continue">Kontynuuj</string>
+    <string name="bluetooth_permission_granted">Zezwolenie na Bluetooth zostało udzielone</string>
+    <string name="bluetooth_permission_title">Zezwolić na dostęp Bluetooth\?</string>
+    <string name="bluetooth_permission_message">Aby wykryć, kiedy bezprzewodowe słuchawki lub głośniki są odłączone, aplikacja wymaga dostępu Bluetooth. W systemie Android to uprawnienie jest opisywane jako dostęp do pobliskich urządzeń i ostrzega, że urządzenia Bluetooth mogą służyć do określania bieżącej lokalizacji. Jednak aplikacja Jellyfin nigdy nie użyje tego uprawnienia do wykrycia Twojej lokalizacji.</string>
 </resources>
