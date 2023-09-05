@@ -106,4 +106,8 @@
     <string name="button_use_different_server">Використовувати інший сервер</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Почніть відео в ландшафтному режимі в альбомній орієнтації</string>
     <string name="pref_subtitle_style_summary">Ви можете змінити стиль субтитрів у налаштуваннях Android</string>
+    <string name="bluetooth_permission_continue">Продовжити</string>
+    <string name="bluetooth_permission_granted">Надано дозвіл на використання Bluetooth</string>
+    <string name="bluetooth_permission_title">Дозволити доступ по Bluetooth\?</string>
+    <string name="bluetooth_permission_message">Щоб виявити, коли бездротові навушники або динаміки від\'єднані, програмі потрібен доступ до Bluetooth. На Android цей дозвіл описується як доступ до пристроїв, розташованих поблизу, і попереджає, що Bluetooth-пристрої можуть бути використані для визначення поточного місцезнаходження. Однак додаток Jellyfin ніколи не використовуватиме цей дозвіл для визначення вашого місцезнаходження.</string>
 </resources>
