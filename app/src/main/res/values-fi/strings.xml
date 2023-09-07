@@ -104,4 +104,8 @@
     <string name="pref_subtitle_style">Mukauta tekstityksen tyyliä</string>
     <string name="pref_subtitle_style_summary">Voit muuttaa tekstityksen tyyliä Androidin asetuksista</string>
     <string name="button_use_different_server">Käytä eri palvelinta</string>
+    <string name="bluetooth_permission_granted">Bluetooth-käyttöoikeus myönnetty</string>
+    <string name="bluetooth_permission_message">Sovellus tarvitsee Bluetooth-käyttöoikeuden havaitakseen langattomien kuulokkeiden tai kaiuttimien irtikytkennän. Androidissa tätä käyttöoikeutta kuvataan pääsyksi lähellä oleviin laitteisiin ja se varoittaa, että Bluetooth-laitteita voidaan käyttää nykyisen sijainnin päättelemiseen. Jellyfin-sovellus ei kuitenkaan koskaan käytä sitä sijaintisi tunnistukseen.</string>
+    <string name="bluetooth_permission_continue">Jatka</string>
+    <string name="bluetooth_permission_title">Myönnetääkö Bluetooth-käyttöoikeus\?</string>
 </resources>
