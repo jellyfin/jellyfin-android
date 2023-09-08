@@ -1,8 +1,10 @@
 package org.jellyfin.mobile.bridge
 
 import android.annotation.SuppressLint
+import android.app.UiModeManager
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.media.session.PlaybackState
 import android.net.Uri
 import android.webkit.JavascriptInterface
@@ -165,5 +167,10 @@ class NativeInterface(private val context: Context) : KoinComponent {
     @Suppress("NOTHING_TO_INLINE")
     private inline fun emitEvent(event: ActivityEvent) {
         activityEventHandler.emit(event)
+    }
+
+    @JavascriptInterface
+    fun isAndroidTV(): Boolean{
+        return (context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager).currentModeType == Configuration.UI_MODE_TYPE_TELEVISION
     }
 }

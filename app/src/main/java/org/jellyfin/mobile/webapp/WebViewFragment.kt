@@ -1,6 +1,9 @@
 package org.jellyfin.mobile.webapp
 
+import android.app.UiModeManager
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
@@ -177,6 +180,9 @@ class WebViewFragment : Fragment(), BackPressInterceptor {
         webViewClient = jellyfinWebViewClient
         webChromeClient = LoggingWebChromeClient()
         settings.applyDefault()
+        // If running on Android TV
+        if((context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager).currentModeType == Configuration.UI_MODE_TYPE_TELEVISION)
+            settings.userAgentString = settings.userAgentString.replace("Mobile","TV")
         addJavascriptInterface(NativeInterface(requireContext()), "NativeInterface")
         addJavascriptInterface(nativePlayer, "NativePlayer")
         addJavascriptInterface(externalPlayer, "ExternalPlayer")

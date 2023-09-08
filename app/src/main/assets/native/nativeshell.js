@@ -12,7 +12,8 @@ const features = [
     "multiserver",
     "physicalvolumecontrol",
     "remotecontrol",
-    "castmenuhashchange"
+    "castmenuhashchange",
+    "displaymode"
 ];
 
 const plugins = [
@@ -175,7 +176,10 @@ window.NativeShell.AppHost = {
         }
     },
     getDefaultLayout() {
-        return "mobile";
+        if(window.NativeInterface.isAndroidTV())
+            return "tv";
+        else
+            return "mobile";
     },
     supports(command) {
         return features.includes(command.toLowerCase());
