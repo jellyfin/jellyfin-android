@@ -104,4 +104,7 @@
     <string name="pref_subtitle_style_summary">A felirat stílusát az Android beállításaiban módosíthatja</string>
     <string name="menu_item_software_decoding">Szoftveres dekódolás</string>
     <string name="button_use_different_server">Másik szerver használata</string>
+    <string name="bluetooth_permission_title">Engedélyezi a Bluetooth hozzáférést\?</string>
+    <string name="bluetooth_permission_continue">Folytatás</string>
+    <string name="bluetooth_permission_granted">Bluetooth hozzáférés engedélyezve</string>
 </resources>
