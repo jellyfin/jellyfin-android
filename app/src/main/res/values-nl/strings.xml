@@ -104,4 +104,8 @@
     <string name="menu_item_software_decoding">Software-decoderen</string>
     <string name="button_use_different_server">Andere server gebruiken</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Horizontale video\'s in horizontale oriëntatie starten</string>
+    <string name="bluetooth_permission_continue">Doorgaan</string>
+    <string name="bluetooth_permission_message">De app vereist Bluetooth-toegang om te detecteren of er een draadloze koptelefoon of luidspreker is aangesloten. Op Android wordt deze machtiging beschreven als \"toegang tot apparaten in de buurt\" met de waarschuwing dat deze kan worden gebruikt om de huidige locatie te achterhalen. De Jellyfin-app zal deze machtiging echter nooit met dat doel gebruiken.</string>
+    <string name="bluetooth_permission_title">Bluetooth-toegang toestaan\?</string>
+    <string name="bluetooth_permission_granted">Bluetooth-toestemming is verleend</string>
 </resources>
