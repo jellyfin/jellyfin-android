@@ -105,4 +105,8 @@
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Démarrer les vidéos en mode paysage en orientation paysage</string>
     <string name="pref_subtitle_style_summary">Vous pouvez customiser les sous-titres dans les paramètres d\'Android</string>
     <string name="button_use_different_server">Utiliser un serveur différent</string>
+    <string name="bluetooth_permission_message">Pour détecter lorsque des écouteurs ou des haut-parleurs sans fil sont déconnectés, l\'application nécessite un accès Bluetooth. Sur Android, cette autorisation est décrite comme l\'accès aux appareils à proximité et avertit que les appareils Bluetooth peuvent être utilisés pour déduire l\'emplacement actuel. Cependant, l\'application Jellyfin n\'utilisera jamais cette autorisation pour détecter votre position.</string>
+    <string name="bluetooth_permission_title">Autoriser l\'accès Bluetooth \?</string>
+    <string name="bluetooth_permission_continue">Continuer</string>
+    <string name="bluetooth_permission_granted">La permission Bluetooth a été attribuée</string>
 </resources>
