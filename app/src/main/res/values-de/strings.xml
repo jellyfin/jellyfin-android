@@ -104,4 +104,8 @@
     <string name="player_error_unspecific_exception">Beim Abspielen ist ein Fehler aufgetreten</string>
     <string name="menu_item_hardware_decoding">Hardware-Dekodierung</string>
     <string name="button_use_different_server">Verwende einen anderen Server</string>
+    <string name="bluetooth_permission_title">Bluetooth-Zugriff erlauben\?</string>
+    <string name="bluetooth_permission_continue">Weiter</string>
+    <string name="bluetooth_permission_granted">Bluetooth-Berechtigung wurde erteilt</string>
+    <string name="bluetooth_permission_message">Die App benötigt Bluetooth-Zugriff, um zu erkennen, wenn drahtlose Kopfsprecher oder Lautsprecher getrennt werden. In Android wird diese Berechtigung als Zugriff auf Geräte in der Nähe bezeichnet, und es wird gewarnt, dass Bluetooth-Geräte dazu verwendet werden können, den aktuellen Standort zu bestimmen. Allerdings wird die Jellyfin App diese Berechtigung nie dazu nutzen, deinen Standort zu bestimmen.</string>
 </resources>
