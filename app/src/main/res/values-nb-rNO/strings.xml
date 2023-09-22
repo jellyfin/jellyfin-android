@@ -104,4 +104,8 @@
     <string name="pref_subtitle_style">Tilpass undertekststil</string>
     <string name="pref_subtitle_style_summary">Du kan endre undertekststilen i Android-innstillingene</string>
     <string name="button_use_different_server">Bruk en annen tjener</string>
+    <string name="bluetooth_permission_continue">Fortsett</string>
+    <string name="bluetooth_permission_title">Tillate Bluetooth-tilgang\?</string>
+    <string name="bluetooth_permission_granted">Bluetooth-tillatelse ble gitt</string>
+    <string name="bluetooth_permission_message">For å oppdage når trådløse hodetelefoner eller høyttalere er frakoblet, krever appen Bluetooth-tilgang. På Android beskrives denne tillatelsen som tilgang til enheter i nærheten, og advarer om at Bluetooth-enheter kan brukes til å utlede gjeldende posisjon. Jellyfin-appen vil imidlertid aldri bruke denne tillatelsen til å oppdage posisjonen din.</string>
 </resources>
