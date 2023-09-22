@@ -106,4 +106,8 @@
     <string name="pref_subtitle_style_summary">Вы можете изменить стиль субтитров в настройках Android системы</string>
     <string name="menu_item_hardware_decoding">Аппаратное декодирование</string>
     <string name="button_use_different_server">Использовать другой сервер</string>
+    <string name="bluetooth_permission_continue">Продолжить</string>
+    <string name="bluetooth_permission_granted">Доступ к Bluetooth разрешён</string>
+    <string name="bluetooth_permission_title">Разрешить доступ к Bluetooth\?</string>
+    <string name="bluetooth_permission_message">Чтобы определить, что беспроводное аудио устройство отключилось, приложению нужен доступ к Bluetooth. На Android права доступа объясняются доступом к близлежащим устройствам, и предупреждают Вас о том, что устройства могут пытаться узнать Ваше местоположение. Однако Jellyfin не использует эти права для доступа к Вашему местоположению.</string>
 </resources>
