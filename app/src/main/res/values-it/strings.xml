@@ -105,4 +105,8 @@
     <string name="pref_subtitle_style_summary">È possibile modificare lo stile dei sottotitoli nelle impostazioni di Android</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Impedisci la transcodifica e mostra i sottotitoli solo con lo stile di base. Lo stile avanzato dei sottotitoli non sarà disponibile se abilitato.</string>
     <string name="pref_subtitle_style">Personalizza lo stile dei sottotitoli</string>
+    <string name="bluetooth_permission_message">Per rilevare quando le cuffie o gli speaker wireless si disconnettono l\'app necessita dell\'accesso Bluetooth. Su Android questo permesso è descritto come accesso ai dispositivi nelle vicinanze ed avvisa che i dispositivi Bluetooth possono essere usati per dedurre la posizione attuale. L\'app Jellyfin tuttavia non userà mai questo permesso per rilevare la tua posizione.</string>
+    <string name="bluetooth_permission_title">Consentire accesso Bluetooth\?</string>
+    <string name="bluetooth_permission_continue">Continua</string>
+    <string name="bluetooth_permission_granted">Il permesso Bluetooth è stato concesso</string>
 </resources>
