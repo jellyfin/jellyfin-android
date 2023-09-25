@@ -104,4 +104,8 @@
     <string name="pref_subtitle_style">Anpassa utseende för undertexter</string>
     <string name="menu_item_software_decoding">Mjukvaruavkodning</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Starta videor i landskapsformat i landskapsläge</string>
+    <string name="bluetooth_permission_title">Tillåt Bluetooth anslutning\?</string>
+    <string name="bluetooth_permission_message">För att göra det möjligt att upptäcka om hörlurar eller högtalare är anslutna behövs tillgång till Bluetooth. På Android ingår det i platsåtkomst och varnar för att Bluetoothenheter kan användas för att ta reda på användarens plats. Jellyfin-appen kommer aldrig att använda det för att ta reda på din plats.</string>
+    <string name="bluetooth_permission_continue">Fortsätt</string>
+    <string name="bluetooth_permission_granted">Åtkomst till Bluetooth tillåten</string>
 </resources>
