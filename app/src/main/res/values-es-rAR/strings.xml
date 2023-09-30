@@ -82,8 +82,9 @@
     <string name="connection_error_unsupported_version_or_product">Versión de producto no soportada</string>
     <string name="connection_error_unable_to_reach_sever">Incapaz de alcanzar el server</string>
     <plurals name="connection_error_prefix">
-        <item quantity="one">Probando %d candidato para entrada, sin exito.</item>
-        <item quantity="other">Probando %d candidatos para entrada, sin exito.</item>
+        <item quantity="one">Se ha probado %d entrada, sin éxito.</item>
+        <item quantity="many">Se han probado %d entradas, sin éxito.</item>
+        <item quantity="other"></item>
     </plurals>
     <string name="player_error_unsupported_content">El medio no puede ser reproducido en este dispositivo</string>
     <string name="player_error_network_failure">Incapaz de cargar la información del medio desde el server</string>
@@ -101,4 +102,11 @@
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Empezar videos de modo horizontal en orientación horizontal</string>
     <string name="pref_exoplayer_direct_play_ass">Permitir subtítulos SSA/ASS en preproducción directa</string>
     <string name="pref_subtitle_style_summary">Podes cambiar el estilo de los subtítulos en la configuración de Android</string>
+    <string name="menu_item_software_decoding">Decodificación por Software</string>
+    <string name="bluetooth_permission_title">¿Permitir acceso Bluetooth\?</string>
+    <string name="bluetooth_permission_continue">Continuar</string>
+    <string name="bluetooth_permission_granted">Permiso Bluetooth Otorgado</string>
+    <string name="menu_item_hardware_decoding">Decodificación por Hardware</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Evitae la transcodificación y mostrar los subtítulos sólo con un estilo básico. El estilo avanzado de los subtítulos no estará disponible si se activa.</string>
+    <string name="bluetooth_permission_message">Para detectar cuando tus auriculares o parlantes inalámbricos están desconectados la aplicación necesita acceso a Bluetooth. En Android este permiso se conoce como Acceso a Dispositivos Cercanos y alerta acerca de que los dispositivos Bluetooth pueden detectar tu ubicación actual. Sin embargo, la aplicación Jellyfin nunca va a usar estos permisos para conocer tu ubicación.</string>
 </resources>
