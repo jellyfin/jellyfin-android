@@ -105,4 +105,8 @@
     <string name="menu_item_software_decoding">Decodificación por Software</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Iniciar vídeos en orientación horizontal</string>
     <string name="button_use_different_server">Utiliza un servidor diferente</string>
+    <string name="bluetooth_permission_title">¿Permitir conexión Bluetooth\?</string>
+    <string name="bluetooth_permission_message">La aplicación necesita acceso Bluetooth para detectar cuándo los auriculares o altavoces inalámbricos están desconectados. En Android, este permiso se describe como acceso a dispositivos cercanos, y advierte que los dispositivos Bluetooth podrían ser usados para inferir la localización actual. Sin embargo, la aplicación Jellyfin nunca usará este permiso para detectar su ubicación.</string>
+    <string name="bluetooth_permission_continue">Continuar</string>
+    <string name="bluetooth_permission_granted">Se concedió el permiso Bluetooth</string>
 </resources>
