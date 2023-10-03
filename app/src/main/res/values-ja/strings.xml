@@ -93,4 +93,5 @@
 \n互換性のあるバージョンにアップデートしてください。</string>
     <string name="dialog_web_view_not_supported_message">このデバイスではWebViewはサポートされていません。
 \n互換性のあるWebViewの実装をインストールするか、サポートされているデバイスに切り替えてください。</string>
+    <string name="button_use_different_server">他のサーバーを使う</string>
 </resources>
