@@ -104,4 +104,7 @@
     <string name="menu_item_hardware_decoding">硬件解码</string>
     <string name="menu_item_software_decoding">软件解码</string>
     <string name="button_use_different_server">使用其它服务器</string>
+    <string name="bluetooth_permission_message">Jellyfin</string>
+    <string name="bluetooth_permission_title">允许使用蓝牙？</string>
+    <string name="bluetooth_permission_continue">继续</string>
 </resources>
