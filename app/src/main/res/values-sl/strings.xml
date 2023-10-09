@@ -101,4 +101,13 @@
     <string name="player_error_unspecific_exception">Nekaj je šlo narobe s predvajalnikom</string>
     <string name="menu_item_hardware_decoding">Dekodiranje s strojno opremo</string>
     <string name="menu_item_software_decoding">Dekodiranje s programsko opremo</string>
+    <string name="pref_subtitle_style">Prilagodi slog podnapisov</string>
+    <string name="pref_subtitle_style_summary">Slog podnapisov lahko spremenite v nastavitvah sistema Android</string>
+    <string name="bluetooth_permission_title">Dovolite dostop do Bluetooth\?</string>
+    <string name="bluetooth_permission_continue">Nadaljuj</string>
+    <string name="bluetooth_permission_granted">Dovoljenje Bluetooth je bilo odobreno</string>
+    <string name="pref_exoplayer_direct_play_ass">Dovoli SSA/ASS podnapise v neposrednem predvajanju</string>
+    <string name="bluetooth_permission_message">Aplikacija potrebuje dostop do Bluetooth za zaznavanje prekinjene povezave z brezžičnimi slušalkami ali zvočniki. Na sistemih Android je to dovoljenje opisano kot dostop do naprav v bližini in opozarja, da lahko to omogoči zaznavanje trenutne lokacije. Aplikacija Jellyfin ne bo nikoli uporabila tega dovoljenja za zaznavanje vaše lokacije.</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Začni predvajanje ležečih videov v ležečem načinu</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Prepreči prekodiranje in prikaže podnapise z osnovnimi slogi. Napredno oblikovanje podnapisov ne bo na voljo.</string>
 </resources>
