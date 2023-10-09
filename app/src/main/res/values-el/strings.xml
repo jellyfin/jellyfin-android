@@ -104,4 +104,8 @@
     <string name="external_player_system_default_description">Αφήστε το σύστημα να χειριστεί την επιλογή προγράμματος αναπαραγωγής, ορισμένα προγράμματα αναπαραγωγής ενδέχεται να μην είναι πλήρως συμβατά.</string>
     <string name="pref_category_downloads">Λήψεις</string>
     <string name="pref_download_location">Τοποθεσία Λήψεων</string>
+    <string name="bluetooth_permission_message">Για να εντοπίσετε πότε τα ασύρματα ακουστικά ή ηχεία είναι αποσυνδεδεμένα, η εφαρμογή απαιτεί πρόσβαση Bluetooth. Στο Android, αυτή η άδεια περιγράφεται ως πρόσβαση σε κοντινές συσκευές και προειδοποιεί ότι οι συσκευές Bluetooth μπορούν να χρησιμοποιηθούν για να συναχθεί η τρέχουσα τοποθεσία. Ωστόσο, η εφαρμογή Jellyfin δεν θα χρησιμοποιήσει ποτέ αυτήν την άδεια για να εντοπίσει την τοποθεσία σας.</string>
+    <string name="bluetooth_permission_granted">Η άδεια Bluetooth παραχωρήθηκε</string>
+    <string name="bluetooth_permission_title">Να επιτρέπεται η πρόσβαση Bluetooth;</string>
+    <string name="bluetooth_permission_continue">Συνέχεια</string>
 </resources>
