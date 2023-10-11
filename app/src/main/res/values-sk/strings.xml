@@ -105,4 +105,8 @@
     <string name="pref_subtitle_style_summary">Štýl titulkov môžete zmeniť v nastaveniach systému Android</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Spustiť horizontálne videá v v orientácii na šírku</string>
     <string name="button_use_different_server">Použiť iný server</string>
+    <string name="bluetooth_permission_message">Na detekovanie odpojenia bezdrôtových slúchadiel alebo reproduktorov vyžaduje aplikácia prístup cez Bluetooth. V systéme Android je toto povolenie opísané ako prístup k blízkym zariadeniam a upozorňuje, že zariadenia Bluetooth môžu byť použité na zistenie aktuálnej polohy. Aplikácia Jellyfin však toto povolenie nikdy nepoužije na zistenie vašej polohy.</string>
+    <string name="bluetooth_permission_continue">Pokračovať</string>
+    <string name="bluetooth_permission_title">Povoliť prístup cez Bluetooth\?</string>
+    <string name="bluetooth_permission_granted">Povolenie pre Bluetooth bolo udelené</string>
 </resources>
