@@ -108,4 +108,8 @@
     <string name="pref_exoplayer_start_landscape_video_in_landscape">استخدم الوضع العرضي في الشاشة أثناء المقطع عندما تكون الشاشة على وضع الأفقي</string>
     <string name="pref_subtitle_style">تعديل كيفية ظهور الترجمة</string>
     <string name="pref_subtitle_style_summary">بإمكان تغيير إعدادات كيفية ظهور الترجمة في إعدادات الـ Android</string>
+    <string name="bluetooth_permission_title">هل تسمح بتشغيل البلوتوث؟</string>
+    <string name="bluetooth_permission_continue">تابع</string>
+    <string name="bluetooth_permission_granted">تم السماح لتشغيل البلوتوث</string>
+    <string name="bluetooth_permission_message">للتنبه عند اقطاع الاتصال بالسماعات، التطبيق يحتاج للسماح بتشغيل البلوتوث. على الأندرويد هذه الخاصية تسمى السماح بالاتصال بالأجهزة القريبة Access to Nearby Devices و يحذر أن أجهزة البلوتوث ممكن أن تستخدم للحصول على معلومات الموقع الحالي. لكن Jellyfin لن يستخدم هذه الخاصية أبدا للحصول على موقعك.</string>
 </resources>
