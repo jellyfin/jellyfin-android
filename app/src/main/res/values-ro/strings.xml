@@ -105,4 +105,8 @@
     <string name="pref_exoplayer_direct_play_ass_summary">Previne transcodare și afișează subtitrările doar cu styling de bază. Styling-ul avansat de subtitrări nu va fi valabil dacă această opțiune este pornită.</string>
     <string name="button_use_different_server">Folosiți un alt server</string>
     <string name="menu_item_software_decoding">Decodare Software</string>
+    <string name="bluetooth_permission_message">Pentru a detecta când căștile sau difuzoarele fără fir sunt deconectate, aplicația necesită acces la Bluetooth. Pe Android, această permisiune este descrisă ca acces la dispozitivele din apropiere și avertizează că dispozitivele Bluetooth pot fi folosite pentru a deduce locația curentă. Cu toate acestea, aplicația Jellyfin nu va folosi niciodată această permisiune pentru a vă detecta locația.</string>
+    <string name="bluetooth_permission_title">Permiteți accesul la Bluetooth\?</string>
+    <string name="bluetooth_permission_continue">Continua</string>
+    <string name="bluetooth_permission_granted">Permisiunea Bluetooth a fost acordată</string>
 </resources>
