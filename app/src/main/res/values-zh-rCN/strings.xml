@@ -107,4 +107,5 @@
     <string name="bluetooth_permission_message">Jellyfin</string>
     <string name="bluetooth_permission_title">允许使用蓝牙？</string>
     <string name="bluetooth_permission_continue">继续</string>
+    <string name="bluetooth_permission_granted">已授予蓝牙权限</string>
 </resources>
