@@ -104,4 +104,8 @@
     <string name="pref_subtitle_style">সাবটাইটেল স্টাইল কাস্টমাইজ করুন</string>
     <string name="pref_subtitle_style_summary">আপনি অ্যান্ড্রয়েড সেটিংসে সাবটাইটেল স্টাইল পরিবর্তন করতে পারবেন</string>
     <string name="pref_download_location">ডাউনলোডের স্থান</string>
+    <string name="bluetooth_permission_title">ব্লুটুথ ব্যবহারের অনুমতি দিবেন\?</string>
+    <string name="bluetooth_permission_continue">চালিয়ে যান</string>
+    <string name="bluetooth_permission_granted">ব্লুটুথের অনুমতি দেওয়া হয়েছে</string>
+    <string name="bluetooth_permission_message">ওয়্যারলেস হেডফোন বা স্পিকারগুলি কখন সংযোগ বিচ্ছিন্ন হয়েছে তা সনাক্ত করতে অ্যাপটির ব্লুটুথ অ্যাক্সেসের প্রয়োজন। অ্যান্ড্রয়েডে, এই অনুমতিটি নিকটবর্তী ডিভাইসগুলিতে অ্যাক্সেস হিসাবে বর্ণনা করা হয় এবং সতর্ক করে দেয় যে ব্লুটুথ ডিভাইসগুলি বর্তমান অবস্থানটি অনুমান করতে ব্যবহার করা যেতে পারে। যাইহোক, জেলিফিন অ্যাপ্লিকেশন টি কখনই আপনার অবস্থান সনাক্ত করতে এই অনুমতিটি ব্যবহার করবে না।</string>
 </resources>
