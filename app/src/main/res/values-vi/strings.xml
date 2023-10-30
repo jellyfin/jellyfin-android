@@ -103,4 +103,8 @@
     <string name="menu_item_hardware_decoding">Giải Mã Phần Cứng</string>
     <string name="menu_item_software_decoding">Giải Mã Phần Mềm</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Bắt đầu video ở chế độ ngang theo hướng ngang</string>
+    <string name="bluetooth_permission_message">Để phát hiện khi tai nghe hoặc loa không dây bị ngắt kết nối, ứng dụng yêu cầu quyền truy cập Bluetooth. Trên Android, quyền này được mô tả là quyền truy cập vào các thiết bị ở gần và cảnh báo rằng các thiết bị Bluetooth có thể được sử dụng để suy ra vị trí hiện tại. Tuy nhiên, ứng dụng Jellyfin sẽ không bao giờ sử dụng quyền này để phát hiện vị trí của bạn.</string>
+    <string name="bluetooth_permission_title">Cho phép truy cập Bluetooth\?</string>
+    <string name="bluetooth_permission_continue">Tiếp tục</string>
+    <string name="bluetooth_permission_granted">Quyền Bluetooth đã được cấp</string>
 </resources>
