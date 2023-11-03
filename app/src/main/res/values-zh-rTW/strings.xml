@@ -96,4 +96,12 @@
     <string name="bluetooth_permission_continue">繼續</string>
     <string name="button_use_different_server">使用不同的伺服器</string>
     <string name="menu_item_auto">自動</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">在播放橫向影片時進入橫向模式</string>
+    <string name="bluetooth_permission_message">Jellyfin</string>
+    <string name="bluetooth_permission_title">允許存取藍牙？</string>
+    <string name="bluetooth_permission_granted">已獲得藍牙存取權限</string>
+    <string name="player_error_unspecific_exception">播放器發生了錯誤</string>
+    <string name="menu_item_hardware_decoding">硬體解碼</string>
+    <string name="menu_item_software_decoding">軟體解碼</string>
+    <string name="pref_exoplayer_direct_play_ass">在使用direct play時允許使用 SSA/ASS字幕</string>
 </resources>
