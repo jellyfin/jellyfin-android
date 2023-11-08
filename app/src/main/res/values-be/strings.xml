@@ -106,4 +106,8 @@
     <string name="external_player_mpv_description">Просты, маленькі і лёгкі бясплатны (свабодны) відэа прайгравальнік. Ён падтрымлівае шырокі спектр фарматаў медыяфайлаў.</string>
     <string name="external_player_mx_player_free_description">Магутны відэа прайгравальнік з удасканаленым апаратным паскарэннем і падтрымкай субтытраў.</string>
     <string name="external_player_mx_player_pro_description">Платная версія MX Player, якая забяспечвае бесперапыннае прайграванне відэа.</string>
+    <string name="bluetooth_permission_continue">Працягнуць</string>
+    <string name="bluetooth_permission_title">Дазволіць доступ па Bluetooth\?</string>
+    <string name="bluetooth_permission_message">Каб вызначыць, калі бесправадныя навушнікі або калонкі адключаны, праграме патрабуецца доступ па Bluetooth. На Android гэты дазвол апісваецца як доступ да прылад паблізу і папярэджвае, што прылады Bluetooth можна выкарыстоўваць для вызначэння бягучага месцазнаходжання. Аднак праграма Jellyfin ніколі не будзе выкарыстоўваць гэты дазвол для вызначэння вашага месцазнаходжання.</string>
+    <string name="bluetooth_permission_granted">Быў дадзены дазвол Bluetooth</string>
 </resources>
