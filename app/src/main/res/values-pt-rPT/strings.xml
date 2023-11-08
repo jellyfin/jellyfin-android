@@ -105,4 +105,8 @@
     <string name="pref_subtitle_style_summary">Pode alterar o estilo das legendas nas definições do Android</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Iniciar vídeos com modo paisagem na orientação paisagem</string>
     <string name="pref_exoplayer_direct_play_ass">Permitir legendas SSA/ASS no direct play</string>
+    <string name="bluetooth_permission_granted">Permissão do Bluetooth foi autorizada</string>
+    <string name="bluetooth_permission_title">Permitir acesso Bluetooth\?</string>
+    <string name="bluetooth_permission_continue">Continuar</string>
+    <string name="bluetooth_permission_message">Para detectar se os auscultadores ou colunas estão desconectados, a aplicação necessita de acesso ao Bluetooth. No android, esta permissão chama-se acesso a dispositivos nas redondezas, e avisa que dispositivos Bluetooth podem ser usados para uma localização mais precisa. No entanto, a aplicação Jellyfin nunca irá usar esta permissão para detectar a sua localização.</string>
 </resources>
