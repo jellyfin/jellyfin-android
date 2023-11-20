@@ -1,2 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="dialog_button_ignore">दुर्लक्ष करा</string>
+    <string name="toast_reopen_after_change">कृपया बदल केल्यानंतर अॅप पुन्हा उघडा</string>
+    <string name="host_input_hint">होस्ट</string>
+    <string name="connection_error_unable_to_reach_sever">सर्व्हरशी संपर्क साधण्यात अक्षम</string>
+    <string name="button_use_different_server">वेगळा सर्व्हर वापरा</string>
+    <string name="dialog_web_view_not_supported">वेबव्हिऊ समर्थित नाही</string>
+    <string name="dialog_button_check_for_updates">अद्यतनांसाठी तपासा</string>
+    <string name="dialog_button_close_app">अॅप बंद करा</string>
+    <string name="dialog_button_open_settings">सेटिंग्ज उघडा</string>
+    <string name="connect_to_server_title">सर्व्हरशी कनेक्ट करा</string>
+    <string name="connection_error_cannot_connect">कनेक्शन स्थापित केले जाऊ शकत नाही.
+\nकृपया होस्टनाव आणि तुमचे नेटवर्क कनेक्शन तपासा.</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">इनपुटसाठी %d उमेदवाराचा प्रयत्न केला, यश नाही.</item>
+        <item quantity="other">इनपुटसाठी %d उमेदवारांचे प्रयत्न केले, यश नाही.</item>
+    </plurals>
+    <string name="connection_error_unsupported_version_or_product">असमर्थित version किंवा product</string>
+    <string name="connect_button_text">कनेक्ट करा</string>
+    <string name="choose_server_button_text">सर्व्हर निवडा</string>
+    <string name="available_servers_title">उपलब्ध सर्व्हर</string>
+    <string name="bluetooth_permission_title">ब्लूटूथ ऍक्सेसला परवानगी द्यायची\?</string>
+    <string name="bluetooth_permission_message">वायरलेस हेडफोन किंवा स्पीकर कधी डिस्कनेक्ट होतात हे शोधण्यासाठी, अॅपला ब्लूटूथ वापरणे आवश्यक आहे. अँन्ड्रॉईड वर या परवानगीचे वर्णन \"access to nearby devices\" म्हणून केले जाते आणि चेतावणी देते की ब्लूटूथ डिव्हाइसेसचा वापर वर्तमान स्थानाचा अंदाज लावण्यासाठी केला जाऊ शकतो. परंतु, जेलीफिन अॅप तुमचे स्थान शोधण्यासाठी ही परवानगी कधीही वापरणार नाही.</string>
+    <string name="bluetooth_permission_granted">ब्लूटूथ परवानगी दिली गेली</string>
+</resources>
