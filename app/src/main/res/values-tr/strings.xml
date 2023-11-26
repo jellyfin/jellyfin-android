@@ -93,8 +93,8 @@
 \nLütfen ana makine adını ve ağ bağlantınızı kontrol edin.</string>
     <string name="connect_to_server_title">Sunucuya Bağlan</string>
     <string name="toast_reopen_after_change">Değişikliklerin ardından uygulamayı kapatıp açın</string>
-    <string name="dialog_button_ignore">Göz ardı et</string>
-    <string name="player_error_unspecific_exception">Oynatıcıda bir şeyler yanlış gitti.</string>
+    <string name="dialog_button_ignore">Yoksay</string>
+    <string name="player_error_unspecific_exception">Oynatıcıda bir şeyler yanlış gitti</string>
     <string name="menu_item_hardware_decoding">Donanım tabanlı kod çözme</string>
     <string name="menu_item_software_decoding">Yazılım tabanlı kod çözme</string>
     <string name="button_use_different_server">Farklı bir sunucu kullanın</string>
@@ -104,4 +104,8 @@
     <string name="pref_exoplayer_direct_play_ass_summary">Kod dönüştürmeyi önleyin ve altyazıları yalnızca temel stille gösterin. Etkinleştirilirse, gelişmiş altyazı stili kullanılamaz.</string>
     <string name="pref_subtitle_style">Altyazı biçimini özelleştir</string>
     <string name="pref_subtitle_style_summary">Altyazı stilini Android ayarlarından değiştirebilirsiniz</string>
+    <string name="bluetooth_permission_title">Bluetooth erişimine izin verilsin mi\?</string>
+    <string name="bluetooth_permission_message">Kablosuz kulaklıkların veya hoparlörlerin bağlantısının kesildiğini tespit etmek için uygulama Bluetooth erişimine ihtiyaç duyuyor. Android\'de bu izin, yakındaki cihazlara erişim olarak tanımlanır ve Bluetooth cihazlarının mevcut konumunu tespit etmek için kullanılabileceği konusunda uyarır. Ancak Jellyfin uygulaması konumunuzu tespit etmek için bu izni asla kullanmayacaktır.</string>
+    <string name="bluetooth_permission_continue">Devam et</string>
+    <string name="bluetooth_permission_granted">Bluetooth izni verildi</string>
 </resources>
