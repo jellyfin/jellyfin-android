@@ -105,4 +105,8 @@
     <string name="pref_subtitle_style">Přizpůsobit vzhled titulků</string>
     <string name="pref_subtitle_style_summary">V nastavení Androidu můžete změnit vzhled titulků</string>
     <string name="button_use_different_server">Použít jiný server</string>
+    <string name="bluetooth_permission_continue">Pokračovat</string>
+    <string name="bluetooth_permission_granted">Oprávnění k Bluetooth bylo uděleno</string>
+    <string name="bluetooth_permission_title">Povolit přístup přes Bluetooth\?</string>
+    <string name="bluetooth_permission_message">Aby bylo možné zjistit, zda jsou sluchátka nebo reproduktor odpojené, potřebuje aplikace přístup k Bluetooth. V Androidu je toto oprávnění označeno jako přístup k nedalekým zařízením a upozorňuje, že Bluetooth zařízení může být použito k odhadu aktuální polohy. Nicméně aplikace Jellyfin toto oprávnění nikdy nepoužije ke zjištění Vaší polohy.</string>
 </resources>
