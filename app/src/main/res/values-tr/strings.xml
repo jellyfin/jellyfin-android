@@ -14,7 +14,7 @@
     <string name="video_player_native_description">ExoPlayer tabanlı, daha fazla video formatı ve kodek destekler, işletim sistemine ile daha bütünleşiktir</string>
     <string name="pref_music_notification_always_dismissible_summary_on">Bildirim her zaman kapatılabilir (medya oynatılırken bile)</string>
     <string name="pref_music_notification_always_dismissible_summary_off">Bildirim sadece oynatma duraklatılmışken kapatılabilir</string>
-    <string name="pref_music_notification_always_dismissible_title">Kapatılabilir oynatıcı bildirimi</string>
+    <string name="pref_music_notification_always_dismissible_title">Kapatılabilir müzik çalar bildirimi</string>
     <string name="external_player_unknown_error">Harici oynatıcı uygulamasında bilinmeyen bir hata oluştu. Oynatma takibi özelliği devre dışı bırakıldı.</string>
     <string name="external_player_invalid_player">Geçerli bir harici oynatıcı seçilmediği için oynatma takibi özelliği devre dışı bırakıldı.</string>
     <string name="external_player_not_supported_yet">Seçilen harici oynatıcı, oynatma takibi özelliğini desteklemiyor. Uygulamanın geliştiricisi ile iletişime geçin.</string>
@@ -56,7 +56,7 @@
     <string name="video_player_web">Web oynatıcı</string>
     <string name="pref_video_player_type_title">Video oynatıcı türü</string>
     <string name="pref_category_video_player">Video oynatıcı</string>
-    <string name="pref_category_music_player">Müzik oynatıcı</string>
+    <string name="pref_category_music_player">Müzik çalar</string>
     <string name="activity_name_settings">Jellyfin Ayarları</string>
     <string name="external_player_invalid_play_method">Geçersiz oynatma yöntemi.</string>
     <string name="playback_info_audio_streams">Ses akışları</string>
@@ -70,9 +70,9 @@
     <string name="notification_action_fast_forward">İleri sar</string>
     <string name="notification_action_pause">Duraklat</string>
     <string name="notification_action_play">Oynat</string>
-    <string name="notification_action_rewind">İleri sar</string>
+    <string name="notification_action_rewind">Geri sar</string>
     <string name="notification_action_previous">Önceki</string>
-    <string name="music_notification_channel">Jellyfin Müzik Oynatıcı</string>
+    <string name="music_notification_channel">Jellyfin Müzik Çalar</string>
     <string name="media_service_car_item_no_title">Başlık yok</string>
     <string name="media_service_car_section_playlists">Oynatma Listeleri</string>
     <string name="media_service_car_section_genres">Türler</string>
@@ -89,14 +89,14 @@
     <string name="connect_button_text">Bağlan</string>
     <string name="connection_error_unsupported_version_or_product">Desteklenmeyen ürün ya da versiyon</string>
     <string name="connection_error_unable_to_reach_sever">Sunucuya bağlanılamadı</string>
-    <string name="connection_error_cannot_connect">Bağlantı kurulamadı
+    <string name="connection_error_cannot_connect">Bağlantı kurulamıyor
 \nLütfen ana makine adını ve ağ bağlantınızı kontrol edin.</string>
     <string name="connect_to_server_title">Sunucuya Bağlan</string>
     <string name="toast_reopen_after_change">Değişikliklerin ardından uygulamayı kapatıp açın</string>
     <string name="dialog_button_ignore">Yoksay</string>
     <string name="player_error_unspecific_exception">Oynatıcıda bir şeyler yanlış gitti</string>
-    <string name="menu_item_hardware_decoding">Donanım tabanlı kod çözme</string>
-    <string name="menu_item_software_decoding">Yazılım tabanlı kod çözme</string>
+    <string name="menu_item_hardware_decoding">Donanım Tabanlı Kod Çözme</string>
+    <string name="menu_item_software_decoding">Yazılım Tabanlı Kod Çözme</string>
     <string name="button_use_different_server">Farklı bir sunucu kullanın</string>
     <string name="menu_item_auto">Otomatik</string>
     <string name="pref_exoplayer_direct_play_ass">Direkt oynatma için SSA/ASS altyazıları kabul et</string>
