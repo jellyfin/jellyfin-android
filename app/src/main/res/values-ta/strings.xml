@@ -104,4 +104,8 @@
     <string name="menu_item_hardware_decoding">வன்பொருள் டிகோடிங்</string>
     <string name="menu_item_software_decoding">மென்பொருள் டிகோடிங்</string>
     <string name="pref_exoplayer_direct_play_ass">நேரடி இயக்கத்தில் SSA/ASS வசனங்களை அனுமதிக்கவும்</string>
+    <string name="bluetooth_permission_title">புளூடூத் அணுகலை அனுமதிக்கவா\?</string>
+    <string name="bluetooth_permission_message">வயர்லெஸ் ஹெட்ஃபோன்கள் அல்லது ஸ்பீக்கர்கள் எப்போது துண்டிக்கப்படுகின்றன என்பதைக் கண்டறிய, பயன்பாட்டிற்கு புளூடூத் அணுகல் தேவை. Android இல், இந்த அனுமதி அருகிலுள்ள சாதனங்களுக்கான அணுகலாக விவரிக்கப்படுகிறது, மேலும் தற்போதைய இருப்பிடத்தை ஊகிக்க புளூடூத் சாதனங்களைப் பயன்படுத்தலாம் என்று எச்சரிக்கிறது. இருப்பினும், உங்கள் இருப்பிடத்தைக் கண்டறிய Jellyfin ஆப்ஸ் இந்த அனுமதியைப் பயன்படுத்தாது.</string>
+    <string name="bluetooth_permission_continue">தொடரவும்</string>
+    <string name="bluetooth_permission_granted">புளூடூத் அனுமதி வழங்கப்பட்டது</string>
 </resources>
