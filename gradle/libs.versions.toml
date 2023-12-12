@@ -24,7 +24,7 @@ androidx-lifecycle = "2.6.1"
 
 # UI
 androidx-constraintlayout = "2.1.4"
-google-material = "1.9.0"
+google-material = "1.10.0"
 androidx-webkit = "1.7.0"
 modernandroidpreferences = "2.3.2"
 
