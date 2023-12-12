@@ -37,7 +37,7 @@ compose-compiler = "1.5.1"
 # Network
 jellyfin-sdk = "1.4.6"
 okhttp = "4.11.0"
-coil = "2.4.0"
+coil = "2.5.0"
 cronet-embedded = "113.5672.61"
 
 # Media
