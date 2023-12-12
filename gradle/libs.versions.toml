@@ -1,6 +1,6 @@
 [versions]
 # Plugins
-android-plugin = "8.1.1"
+android-plugin = "8.2.0"
 kotlin = "1.9.21"
 kotlin-ksp = "1.9.21-1.0.15"
 detekt = "1.22.0"
@@ -10,45 +10,45 @@ android-junit5 = "1.9.3.0"
 coroutines = "1.7.3"
 
 # Core
-koin = "3.4.3"
-koin-compose = "3.4.6"
-androidx-core = "1.10.1"
+koin = "3.5.0"
+koin-compose = "3.5.0"
+androidx-core = "1.12.0"
 androidx-core-splashscreen = "1.0.1"
 androidx-appcompat = "1.6.1"
-androidx-activity = "1.7.2"
-androidx-fragment = "1.6.1"
-androiddesugarlibs = "2.0.3"
+androidx-activity = "1.8.1"
+androidx-fragment = "1.6.2"
+androiddesugarlibs = "2.0.4"
 
 # Lifecycle extensions
-androidx-lifecycle = "2.6.1"
+androidx-lifecycle = "2.6.2"
 
 # UI
 androidx-constraintlayout = "2.1.4"
 google-material = "1.10.0"
-androidx-webkit = "1.7.0"
+androidx-webkit = "1.9.0"
 modernandroidpreferences = "2.3.2"
 
 # Compose
 compose = "1.5.4"
-compose-foundation = "1.5.0"
+compose-foundation = "1.5.4"
 compose-material = "1.5.4"
-compose-compiler = "1.5.1"
+compose-compiler = "1.5.6"
 
 # Network
 jellyfin-sdk = "1.4.6"
-okhttp = "4.11.0"
-coil = "2.4.0"
+okhttp = "4.12.0"
+coil = "2.5.0"
 cronet-embedded = "113.5672.61"
 
 # Media
-androidx-media = "1.6.0"
-androidx-mediarouter = "1.4.0"
+androidx-media = "1.7.0"
+androidx-mediarouter = "1.6.0"
 exoplayer = "2.19.1"
 jellyfin-exoplayer-ffmpegextension = "2.19.1+1"
-playservices = "21.3.0"
+playservices = "21.4.0"
 
 # Room
-androidx-room = "2.5.2"
+androidx-room = "2.6.1"
 
 # Monitoring
 timber = "5.0.1"
@@ -56,7 +56,7 @@ leakcanary = "2.12"
 
 # Testing
 junit = "5.10.0"
-kotest = "5.6.2"
+kotest = "5.8.0"
 mockk = "1.13.7"
 androidx-test-runner = "1.5.2"
 androidx-test-espresso = "3.5.1"
@@ -78,7 +78,7 @@ coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutin
 koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin-compose" }
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-plugin" }
-androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
+androidx-core = { group = "androidx.core", name = "core", version.ref = "androidx-core" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-core-splashscreen" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidx-activity" }
@@ -99,6 +99,7 @@ androidx-webkit = { group = "androidx.webkit", name = "webkit", version.ref = "a
 modernandroidpreferences = { group = "de.maxr1998", name = "modernandroidpreferences", version.ref = "modernandroidpreferences" }
 
 # Compose
+compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
 compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "compose" }
 compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
 compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "compose" }
