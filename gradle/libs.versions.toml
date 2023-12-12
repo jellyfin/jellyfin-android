@@ -41,7 +41,7 @@ coil = "2.4.0"
 cronet-embedded = "113.5672.61"
 
 # Media
-androidx-media = "1.6.0"
+androidx-media = "1.7.0"
 androidx-mediarouter = "1.4.0"
 exoplayer = "2.19.1"
 jellyfin-exoplayer-ffmpegextension = "2.19.1+1"
