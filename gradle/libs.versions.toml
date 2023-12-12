@@ -4,7 +4,7 @@ android-plugin = "8.2.0"
 kotlin = "1.9.21"
 kotlin-ksp = "1.9.21-1.0.15"
 detekt = "1.22.0"
-android-junit5 = "1.9.3.0"
+android-junit5 = "1.10.0.0"
 
 # KotlinX
 coroutines = "1.7.3"
