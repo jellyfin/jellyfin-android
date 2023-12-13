@@ -105,4 +105,8 @@
     <string name="menu_item_software_decoding">Softversko Dekodiranje</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Nemoj dopusiti transkodiranje i prikaži titlove samo s jednostavnim stiliziranjem. Napredno stiliziranje titlova neće biti dostupno ukoliko je ova opcija uključena.</string>
     <string name="pref_subtitle_style_summary">Možete promijeniti stil titlova u Androidovim postavkama</string>
+    <string name="bluetooth_permission_title">Dozvoli pristup Bluetoothu\?</string>
+    <string name="bluetooth_permission_message">Da bi detektirali kada su bežične slušalice ili zvučnici odspojeni, aplikacija zahtjeva pristup Bluetoothu. U Androidu, ova dozvola je opisana kao pristup bliskim uređajima, i upozorava da Bluetooth uređaji mogu biti korišteni da bi zaključili trenutnu lokaciju. Međutim, Jellyfin aplikacija nikad neće koristiti ovu dozvolu za otkriti vašu lokaciju.</string>
+    <string name="bluetooth_permission_granted">Bluetooth dozvola je odobrena</string>
+    <string name="bluetooth_permission_continue">Nastavi</string>
 </resources>
