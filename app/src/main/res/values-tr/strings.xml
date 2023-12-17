@@ -79,7 +79,7 @@
     <string name="media_service_car_section_songs">Şarkılar</string>
     <string name="media_service_car_section_artists">Sanatçılar</string>
     <string name="media_service_car_section_albums">Albümler</string>
-    <string name="media_service_car_section_recents">En son oynatılanlar</string>
+    <string name="media_service_car_section_recents">Son oynatılanlar</string>
     <string name="media_service_item_not_found">Medya ögesi bulunamadı</string>
     <string name="media_service_generic_error">Bir hata oluştu</string>
     <string name="mobile_data_and_roaming">Mobil Veri ve Dolaşım</string>
