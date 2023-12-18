@@ -106,4 +106,8 @@
     <string name="external_player_mpv">נגן MPV</string>
     <string name="external_player_mpv_description">נגן וידאו פשוט, קטן, קל וחופשי. תומך במספר רחב של פורמטים לקבצי מדיה.</string>
     <string name="external_player_mx_player_free">MX Player Free</string>
+    <string name="bluetooth_permission_title">לאפשר גישה בבלוטות׳\?</string>
+    <string name="bluetooth_permission_continue">המשך</string>
+    <string name="bluetooth_permission_granted">הוענקה גישה לבלוטות׳</string>
+    <string name="bluetooth_permission_message">כדי לזהות מתי אוזניות או רמקולים מנותקים, היישומון צריך גישה לבלוטות׳. ב־Android, ההרשאה הזאת מתוארת כגישה להתקנים סמוכים ומזהירה שהתקני בלוטות׳ יכולים לשמש להסקת המיקום הנוכחי שלך. עם זאת, היישומון של ג׳ליפין אף פעם לא ישתמש בהרשאה הזאת כדי לאתר את המקום שלך.</string>
 </resources>
