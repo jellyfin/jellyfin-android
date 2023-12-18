@@ -1,1 +1,1 @@
-Ücretsiz yazılım medya sistemi Jellyfin için mobil istemci
+Özgür yazılım medya sistemi Jellyfin için mobil istemci
