@@ -1,0 +1,3 @@
+Köszönjük, hogy a Jellyfin for Androidot használja! Mindig a legújabb kiadású Jellyfin Server használata ajánlott.
+
+További információkért kérjük, olvassa el a blogunkat a jellyfin.org oldalon, vagy a teljes changelogot a GitHubon.
