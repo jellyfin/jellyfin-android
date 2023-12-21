@@ -87,7 +87,7 @@ which can still be found [in the archives](https://github.com/jellyfin-archive/j
 
 ## Release Flavors
 
-Jellyfin have two flavors of the Android app
+There are two flavors (variants) of the Jellyfin Android app:
 
 - Proprietary version comes with Google Chromecast support
 - Libre version comes without Google Chromecast support
