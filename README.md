@@ -89,7 +89,7 @@ which can still be found [in the archives](https://github.com/jellyfin-archive/j
 
 There are two flavors (variants) of the Jellyfin Android app:
 
-- Proprietary version comes with Google Chromecast support
-- Libre version comes without Google Chromecast support
+- The **proprietary** version comes with Google Chromecast support
+- The **libre** version comes without Google Chromecast support
 
 The proprietary version is available on [Google Play](https://play.google.com/store/apps/details?id=org.jellyfin.mobile) and [Amazon Appstore](https://www.amazon.com/gp/aw/d/B081RFTTQ9), while the libre version is available on [F-Droid](https://f-droid.org/en/packages/org.jellyfin.mobile/). Additionally, we have `beta` releases for both flavors, but it is only published on [Google Play](https://play.google.com/store/apps/details?id=org.jellyfin.mobile).
