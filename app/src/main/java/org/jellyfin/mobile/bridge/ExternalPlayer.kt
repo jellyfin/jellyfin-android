@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.player.PlayerException
+import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.source.ExternalSubtitleStream
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
@@ -29,6 +30,7 @@ import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.videosApi
 import org.jellyfin.sdk.api.operations.VideosApi
+import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
@@ -46,6 +48,8 @@ class ExternalPlayer(
     private val appPreferences: AppPreferences by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private val mediaSourceResolver: MediaSourceResolver by inject()
+    private val deviceProfileBuilder: DeviceProfileBuilder by inject()
+    private val externalPlayerProfile: DeviceProfile = deviceProfileBuilder.getExternalPlayerProfile()
     private val apiClient: ApiClient = get()
     private val videosApi: VideosApi = apiClient.videosApi
 
@@ -93,6 +97,7 @@ class ExternalPlayer(
             mediaSourceResolver.resolveMediaSource(
                 itemId = itemId,
                 mediaSourceId = playOptions.mediaSourceId,
+                deviceProfile = externalPlayerProfile,
                 startTimeTicks = playOptions.startPositionTicks,
                 audioStreamIndex = playOptions.audioStreamIndex,
                 subtitleStreamIndex = playOptions.subtitleStreamIndex,

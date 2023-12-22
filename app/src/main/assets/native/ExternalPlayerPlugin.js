@@ -145,7 +145,7 @@ export class ExternalPlayerPlugin {
             MaxStaticBitrate: 1_000_000_000,
             DirectPlayProfiles: [{Type: 'Video'}, {Type: 'Audio'}],
             CodecProfiles: [],
-            SubtitleProfiles: [{Method: 'Embed'}, {Method: 'Drop'}],
+            SubtitleProfiles: [{Method: 'Embed'}, {Method: 'External'}, {Method: 'Drop'}],
             TranscodingProfiles: []
         };
     }
