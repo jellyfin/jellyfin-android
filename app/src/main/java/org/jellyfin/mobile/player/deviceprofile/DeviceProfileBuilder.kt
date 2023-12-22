@@ -2,6 +2,7 @@ package org.jellyfin.mobile.player.deviceprofile
 
 import android.media.MediaCodecList
 import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.model.api.CodecProfile
 import org.jellyfin.sdk.model.api.ContainerProfile
@@ -158,7 +159,36 @@ class DeviceProfileBuilder(
         }
     }
 
+    fun getExternalPlayerProfile(): DeviceProfile = DeviceProfile(
+        name = EXTERNAL_PLAYER_PROFILE_NAME,
+        directPlayProfiles = listOf(
+            DirectPlayProfile(type = DlnaProfileType.VIDEO),
+            DirectPlayProfile(type = DlnaProfileType.AUDIO),
+        ),
+        transcodingProfiles = emptyList(),
+        containerProfiles = emptyList(),
+        codecProfiles = emptyList(),
+        subtitleProfiles = buildList {
+            EXTERNAL_PLAYER_SUBTITLES.mapTo(this) { format ->
+                SubtitleProfile(format = format, method = SubtitleDeliveryMethod.EMBED)
+            }
+            EXTERNAL_PLAYER_SUBTITLES.mapTo(this) { format ->
+                SubtitleProfile(format = format, method = SubtitleDeliveryMethod.EXTERNAL)
+            }
+        },
+        maxStreamingBitrate = Int.MAX_VALUE,
+        maxStaticBitrate = Int.MAX_VALUE,
+        musicStreamingTranscodingBitrate = Int.MAX_VALUE,
+
+        // TODO: remove redundant defaults after API/SDK is fixed
+        supportedMediaTypes = "",
+        xmlRootAttributes = emptyList(),
+        responseProfiles = emptyList(),
+    )
+
     companion object {
+        private const val EXTERNAL_PLAYER_PROFILE_NAME = Constants.APP_INFO_NAME + " External Player"
+
         /**
          * List of container formats supported by ExoPlayer
          *
@@ -253,6 +283,7 @@ class DeviceProfileBuilder(
         private val EXO_EMBEDDED_SUBTITLES = arrayOf("dvbsub", "pgssub", "srt", "subrip", "ttml")
         private val EXO_EXTERNAL_SUBTITLES = arrayOf("srt", "subrip", "ttml", "vtt", "webvtt")
         private val SUBTITLES_SSA = arrayOf("ssa", "ass")
+        private val EXTERNAL_PLAYER_SUBTITLES = arrayOf("ass", "dvbsub", "pgssub", "srt", "srt", "ssa", "subrip", "subrip", "ttml", "ttml", "vtt", "webvtt")
 
         /**
          * Taken from Jellyfin Web:
