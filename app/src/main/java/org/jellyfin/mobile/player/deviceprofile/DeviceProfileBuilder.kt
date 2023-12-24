@@ -2,7 +2,6 @@ package org.jellyfin.mobile.player.deviceprofile
 
 import android.media.MediaCodecList
 import org.jellyfin.mobile.app.AppPreferences
-import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.model.api.CodecProfile
 import org.jellyfin.sdk.model.api.ContainerProfile
