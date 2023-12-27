@@ -107,4 +107,5 @@
     <string name="bluetooth_permission_title">Engedélyezi a Bluetooth hozzáférést\?</string>
     <string name="bluetooth_permission_continue">Folytatás</string>
     <string name="bluetooth_permission_granted">Bluetooth hozzáférés engedélyezve</string>
+    <string name="bluetooth_permission_message">A vezeték nélküli fejhallgató vagy hangszóró leválasztásának észleléséhez az alkalmazásnak Bluetooth-hozzáférésre van szüksége. Androidon ez az engedély a közeli eszközökhöz való hozzáférésként van leírva, és figyelmeztet arra, hogy a Bluetooth-eszközök felhasználhatók az aktuális hely megállapítására. A Jellyfin alkalmazás azonban soha nem használja ezt az engedélyt az Ön tartózkodási helyének észlelésére.</string>
 </resources>
