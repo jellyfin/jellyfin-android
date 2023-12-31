@@ -1,0 +1,1 @@
+Client mòbil per Jellyfin, el sistema multimèdia de programari lliure
