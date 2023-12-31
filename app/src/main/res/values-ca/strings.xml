@@ -104,4 +104,8 @@
     <string name="pref_subtitle_style">Personalitzar l\'estil dels subtítols</string>
     <string name="pref_subtitle_style_summary">Podeu canviar l\'estil dels subtítols a la configuració d\'Android</string>
     <string name="pref_download_location">Ubicació de les descàrregues</string>
+    <string name="bluetooth_permission_continue">Continuar</string>
+    <string name="bluetooth_permission_title">Pemetre connexió Bluetooth\?</string>
+    <string name="bluetooth_permission_granted">S\'ha concedit el permís Bluetooth</string>
+    <string name="bluetooth_permission_message">L\'aplicació necessita accés a Bluetooth per detectar quan els auriculars o altaveus sense fils estan desconnectat. A Android, aquest permís es descriu com a accés a dispositius propers, i adverteix que els dispositius Bluetooth podrien ser utilitzats per a inferir la localització actual. Però, l\'aplicació Jellyfin mai utilitzarà aquest permís per detectar la seva ubicació.</string>
 </resources>
