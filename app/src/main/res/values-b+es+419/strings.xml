@@ -105,4 +105,5 @@
     <string name="pref_exoplayer_direct_play_ass">Permitir subtítulos SSA/ASS en reproducción directa</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Evitar transcodificar y solo mostrar subtítulos con estilo básico. Estilos avanzados de subtítulos no estarán disponibles si se habilita.</string>
     <string name="pref_subtitle_style_summary">Puedes cambiar el estilo de subtítulos en las configuraciones de Android</string>
+    <string name="bluetooth_permission_title">¿Permitir acceso a Bluetooth\?</string>
 </resources>
