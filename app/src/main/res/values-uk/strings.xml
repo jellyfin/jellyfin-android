@@ -28,8 +28,8 @@
     <string name="download_no_storage_permission">Неможливо завантажити файли без дозволу на зберігання</string>
     <string name="available_servers_title">Доступні сервера</string>
     <string name="choose_server_button_text">Виберіть сервер</string>
-    <string name="connection_error_cannot_connect">Неможливо встановити з\'єднання.
-\nПеревірте, будь ласка, ім\'я сервера та ваше мережеве з\'єднання.</string>
+    <string name="connection_error_cannot_connect">Неможливо встановити з’єднання.
+\nПеревірте, будь ласка, ім’я сервера та ваше мережеве з’єднання.</string>
     <string name="pref_download_location">Тека завантажень</string>
     <string name="pref_category_downloads">Завантаження</string>
     <string name="external_player_system_default_description">Нехай система вирішує вибір плеєру, деякі програвачі можуть бути не повністю сумісними.</string>
@@ -45,7 +45,7 @@
     <string name="external_player_app">Зовнішній програвач</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Дозволити відтворення відео у фоновому режимі з лише аудіо</string>
     <string name="pref_exoplayer_allow_background_audio">Фонове аудіо</string>
-    <string name="pref_exoplayer_remember_brightness">Запам\'яти яскравість дисплею</string>
+    <string name="pref_exoplayer_remember_brightness">Запам’яти яскравість дисплею</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Жести для регулювання яскравості та гучності</string>
     <string name="video_player_external_description">Зовнішні програми для відтворення відео, такі як MX Player і VLC</string>
     <string name="video_player_native_description">Заснований на ExoPlayer, підтримує більше відеоформатів і кодеків і більш інтегрований в ОС</string>
@@ -78,7 +78,7 @@
     <string name="media_service_car_section_recents">Недавно відтворювалось</string>
     <string name="media_service_item_not_found">Не вдалося знайти медіа</string>
     <string name="connection_error_unsupported_version_or_product">Непідтримувана версія або продукт</string>
-    <string name="connection_error_unable_to_reach_sever">Неможливо зв\'язатись з сервером</string>
+    <string name="connection_error_unable_to_reach_sever">Неможливо зв’язатись з сервером</string>
     <plurals name="connection_error_prefix">
         <item quantity="one">Спробував %d кандидат для введення, але безуспішно.</item>
         <item quantity="few">Спробував %d кандидатів для введення, але безуспішно.</item>
@@ -109,5 +109,5 @@
     <string name="bluetooth_permission_continue">Продовжити</string>
     <string name="bluetooth_permission_granted">Надано дозвіл на використання Bluetooth</string>
     <string name="bluetooth_permission_title">Дозволити доступ по Bluetooth\?</string>
-    <string name="bluetooth_permission_message">Щоб виявити, коли бездротові навушники або динаміки від\'єднані, програмі потрібен доступ до Bluetooth. На Android цей дозвіл описується як доступ до пристроїв, розташованих поблизу, і попереджає, що Bluetooth-пристрої можуть бути використані для визначення поточного місцезнаходження. Однак додаток Jellyfin ніколи не використовуватиме цей дозвіл для визначення вашого місцезнаходження.</string>
+    <string name="bluetooth_permission_message">Щоб виявити, коли бездротові навушники або динаміки від’єднані, програмі потрібен доступ до Bluetooth. На Android цей дозвіл описується як доступ до пристроїв, розташованих поблизу, і попереджає, що Bluetooth-пристрої можуть бути використані для визначення поточного місцезнаходження. Однак додаток Jellyfin ніколи не використовуватиме цей дозвіл для визначення вашого місцезнаходження.</string>
 </resources>
