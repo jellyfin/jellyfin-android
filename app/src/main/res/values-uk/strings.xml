@@ -48,7 +48,7 @@
     <string name="pref_exoplayer_remember_brightness">Запам’яти яскравість дисплею</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Дозволити жести для регулювання яскравості та гучності</string>
     <string name="video_player_external_description">Зовнішні програми для відтворення відео, такі як MX Player і VLC</string>
-    <string name="video_player_native_description">Заснований на ExoPlayer, підтримує більше відеоформатів і кодеків і більш інтегрований в ОС</string>
+    <string name="video_player_native_description">Заснований на ExoPlayer, підтримує більше відеоформатів та кодеків, а також більш інтегрований в ОС</string>
     <string name="video_player_web_description">Відеоплеєр HTML за замовчуванням із веб-інтерфейсу</string>
     <string name="video_player_external">Зовнішний програвач</string>
     <string name="video_player_integrated">Вбудований плеєр</string>
