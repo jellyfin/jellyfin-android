@@ -1,4 +1,4 @@
-Din media med dina vilkor.
+Din media, på dina villkor.
 
 Jellyfin är ett kostnadsfritt mediaserverprojekt med öppen källkod. Inga avgifter, ingen spårning och inga dolda motiv. Ta del av detta projekt och ladda ner din gratisserver för att samla dina videor, ljudspår, foton och mer på ett och samma ställe.
 
@@ -6,7 +6,7 @@ För att kunna använda appen krävs det att du har konfigurerat och kör en ser
 
 Med en Jellyfin-server kan du:
 
-*Kolla på direktsänd TV och spela in dina shower från din Jellyfin-server (ytterligare hårdvara/tjänster krävs)
+*Kolla på direktsänd TV och spela dina sparade shower från din Jellyfin-server (ytterligare hårdvara/tjänster krävs)
 *Strömma till en Chromecast-enhet på ditt nätverk.
 *Strömma din media till din Android-enhet.
 *Ta del av din samling genom ett användarvänligt gränssnitt.
