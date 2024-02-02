@@ -7,8 +7,8 @@ Za korištenja aplikacije morate imati Jellyfin poslužitelj postavljen i pokren
 S Jellyfin poslužiteljem možete:
 
 * Gledati TV uživo i snimljene emisije s vašeg Jellyfin poslužitelja (potreban je dodatni hardver/usluge)
-* Streaming na Chromecast uređaj na vašoj mreži
-* Streaming svojih medijskih sadržaja na svoj Android uređaj
+* Strujanje na Chromecast uređaj na vašoj mreži
+* Strujanje svojih medijskih sadržaja na svoj Android uređaj
 * Pregledajte svoju zbirku u sučelju jednostavnom za korištenje
 
 Ovo je službena Jellyfin popratna aplikacija za Android. Hvala što koristite Jellyfin!
