@@ -114,6 +114,10 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                 }
                 setContentIntent(buildContentIntent())
                 setDeleteIntent(buildDeleteIntent())
+
+                //prevents the notification from being dismissed while playback is ongoing
+                //which causes video to stop. see #1284
+                setOngoing(player.isPlaying)
             }.build()
 
             nm.notify(VIDEO_PLAYER_NOTIFICATION_ID, notification)
