@@ -1,2 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="dialog_web_view_not_supported_message">Ang device na ito ay di supportado ang WebViews.
+\nMag install ng nakakaayong implementasyon ng WebViews o dikaya\'y lumipat sa isang supportadong device.</string>
+    <string name="dialog_web_view_outdated">Obsolitong WebView</string>
+    <string name="dialog_web_view_outdated_message">Ang ginagamit na Webview implementasyon ng iyong device ay obsolito na.
+\nPakiusap at e-update ito sa nakakaayong bersiyon.</string>
+    <string name="dialog_button_check_for_updates">Mag tsek ng mga updates</string>
+    <string name="dialog_button_close_app">Isara ang app</string>
+    <string name="dialog_button_open_settings">Buksan ang settings</string>
+    <string name="dialog_button_ignore">Balewalain</string>
+    <string name="connect_to_server_title">Komunekta sa Server</string>
+    <string name="bluetooth_permission_continue">Magpatuloy</string>
+    <string name="media_service_car_section_artists">Mga Artista</string>
+    <string name="media_service_car_section_songs">Mga Kanta</string>
+    <string name="media_service_car_section_genres">Mga Genre</string>
+    <string name="media_service_car_section_playlists">Mga Playlist</string>
+    <string name="media_service_car_item_no_title">Walang Pamagat</string>
+    <string name="music_notification_channel">Player pangkanta ng Jellyfin</string>
+</resources>
