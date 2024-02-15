@@ -188,7 +188,10 @@ class RemotePlayerService : Service(), CoroutineScope {
             Constants.ACTION_REWIND -> transportControls.rewind()
             Constants.ACTION_PREVIOUS -> transportControls.skipToPrevious()
             Constants.ACTION_NEXT -> transportControls.skipToNext()
-            Constants.ACTION_STOP -> transportControls.stop()
+            Constants.ACTION_STOP -> {
+                transportControls.stop()
+                stopWakelock()
+            }
         }
     }
 
