@@ -117,9 +117,6 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        // Bind player service
-        bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
-
         // Subscribe to activity events
         with(activityEventHandler) { subscribe() }
 
@@ -141,6 +138,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        // Bind player service
+        bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
+
         orientationListener.enable()
     }
 
@@ -194,11 +194,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
+        if (serviceBinder != null) unbindService(serviceConnection);
         orientationListener.disable()
     }
 
     override fun onDestroy() {
-        unbindService(serviceConnection)
         chromecast.destroy()
         super.onDestroy()
     }
