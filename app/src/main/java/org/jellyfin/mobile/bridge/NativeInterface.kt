@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.media.session.PlaybackState
 import android.net.Uri
-import android.os.Build
 import android.webkit.JavascriptInterface
+import androidx.core.content.ContextCompat
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.utils.Constants
