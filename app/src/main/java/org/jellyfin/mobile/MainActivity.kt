@@ -194,7 +194,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if (serviceBinder != null) unbindService(serviceConnection);
+        if (serviceBinder != null) unbindService(serviceConnection)
         orientationListener.disable()
     }
 

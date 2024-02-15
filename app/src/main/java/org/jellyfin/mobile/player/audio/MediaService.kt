@@ -371,7 +371,7 @@ class MediaService : MediaBrowserServiceCompat() {
                 ContextCompat.startForegroundService(
                     applicationContext,
                     Intent(applicationContext, this@MediaService.javaClass),
-                );
+                )
 
                 startForeground(notificationId, notification)
                 isForegroundService = true

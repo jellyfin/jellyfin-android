@@ -484,6 +484,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                         stopSelf()
                     }
                 },
+                @Suppress("MagicNumber")
                 15000,
             )
         }
