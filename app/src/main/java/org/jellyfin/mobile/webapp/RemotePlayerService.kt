@@ -361,14 +361,14 @@ class RemotePlayerService : Service(), CoroutineScope {
             } else {
                 Timber.d("RemotePlayerService stopping foreground")
                 if (AndroidVersion.isAtLeastN) {
-                    stopForeground(STOP_FOREGROUND_DETACH);
+                    stopForeground(STOP_FOREGROUND_DETACH)
                 } else {
                     stopForeground(false)
                 }
             }
             // Activate MediaSession
             mediaSession.isActive = true
-            shutdownTimer?.cancel();
+            shutdownTimer?.cancel()
         }
     }
 
@@ -467,7 +467,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         Timber.d("RemotePlayerService onStopped")
         // wait for 15 seconds
         // if after 15 seconds there has been no new notify, shut down
-        shutdownTimer?.cancel();
+        shutdownTimer?.cancel()
         shutdownTimer = Timer()
         if (instant) {
             notificationManager.cancel(MEDIA_PLAYER_NOTIFICATION_ID)
@@ -484,7 +484,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                         stopSelf()
                     }
                 },
-                15000
+                15000,
             )
         }
     }
@@ -502,6 +502,4 @@ class RemotePlayerService : Service(), CoroutineScope {
         val isPlaying: Boolean
             get() = service.playbackState?.state == PlaybackState.STATE_PLAYING
     }
-
-
 }

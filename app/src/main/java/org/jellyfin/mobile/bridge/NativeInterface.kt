@@ -102,8 +102,8 @@ class NativeInterface(private val context: Context) : KoinComponent {
 
         ContextCompat.startForegroundService(
             context,
-            intent
-        );
+            intent,
+        )
 
         // We may need to request bluetooth permission to react to bluetooth disconnect events
         activityEventHandler.emit(ActivityEvent.RequestBluetoothPermission)
@@ -119,8 +119,8 @@ class NativeInterface(private val context: Context) : KoinComponent {
 
         ContextCompat.startForegroundService(
             context,
-            intent
-        );
+            intent,
+        )
         return true
     }
 
