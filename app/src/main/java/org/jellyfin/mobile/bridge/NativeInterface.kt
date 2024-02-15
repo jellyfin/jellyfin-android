@@ -99,11 +99,11 @@ class NativeInterface(private val context: Context) : KoinComponent {
             putExtra(EXTRA_IS_LOCAL_PLAYER, options.optBoolean(EXTRA_IS_LOCAL_PLAYER, true))
             putExtra(EXTRA_IS_PAUSED, options.optBoolean(EXTRA_IS_PAUSED, true))
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(intent);
-        } else {
-            context.startService(intent);
-        }
+
+        ContextCompat.startForegroundService(
+            context,
+            intent
+        );
 
         // We may need to request bluetooth permission to react to bluetooth disconnect events
         activityEventHandler.emit(ActivityEvent.RequestBluetoothPermission)
@@ -116,11 +116,11 @@ class NativeInterface(private val context: Context) : KoinComponent {
             action = Constants.ACTION_REPORT
             putExtra(EXTRA_PLAYER_ACTION, "playbackstop")
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(intent);
-        } else {
-            context.startService(intent);
-        }
+
+        ContextCompat.startForegroundService(
+            context,
+            intent
+        );
         return true
     }
 

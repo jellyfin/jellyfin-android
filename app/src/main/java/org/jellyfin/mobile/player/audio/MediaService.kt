@@ -369,7 +369,10 @@ class MediaService : MediaBrowserServiceCompat() {
         override fun onNotificationPosted(notificationId: Int, notification: Notification, ongoing: Boolean) {
             if (ongoing && !isForegroundService) {
                 val serviceIntent = Intent(applicationContext, this@MediaService.javaClass)
-                ContextCompat.startForegroundService(applicationContext, serviceIntent)
+                ContextCompat.startForegroundService(
+                    applicationContext,
+                    serviceIntent
+                );
 
                 startForeground(notificationId, notification)
                 isForegroundService = true
