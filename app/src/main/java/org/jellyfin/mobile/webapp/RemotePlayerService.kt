@@ -120,6 +120,7 @@ class RemotePlayerService : Service(), CoroutineScope {
 
     override fun onCreate() {
         super.onCreate()
+        Timber.d("RemotePlayerService onCreate")
         job = Job()
 
         // Create wakelock for the service
@@ -165,6 +166,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     private fun stopWakelock() {
+        Timber.d("RemotePlayerService wake lock released")
         if (wakeLock.isHeld) wakeLock.release()
     }
 
@@ -172,6 +174,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         if (intent?.action == null) {
             return
         }
+        Timber.d("RemotePlayerService handle intent " + intent.action)
         val action = intent.action
         if (action == Constants.ACTION_REPORT) {
             startWakelock()
@@ -206,6 +209,8 @@ class RemotePlayerService : Service(), CoroutineScope {
             onStopped(false)
             return
         }
+
+        Timber.d("RemotePlayerService notify " + handledIntent.getStringExtra(EXTRA_PLAYER_ACTION))
 
         launch {
             val mediaSession = mediaSession!!
@@ -485,6 +490,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     override fun onDestroy() {
+        Timber.d("RemotePlayerService onDestroy")
         unregisterReceiver(receiver)
         job.cancel()
         mediaSession?.release()
@@ -496,4 +502,6 @@ class RemotePlayerService : Service(), CoroutineScope {
         val isPlaying: Boolean
             get() = service.playbackState?.state == PlaybackState.STATE_PLAYING
     }
+
+
 }
