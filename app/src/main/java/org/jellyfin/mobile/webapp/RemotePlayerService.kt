@@ -350,6 +350,17 @@ class RemotePlayerService : Service(), CoroutineScope {
             // Post notification
             notificationManager.notify(MEDIA_PLAYER_NOTIFICATION_ID, notification)
 
+            if (!isPaused) {
+                Timber.d("RemotePlayerService starting foreground")
+                startForeground(MEDIA_PLAYER_NOTIFICATION_ID, notification)
+            } else {
+                Timber.d("RemotePlayerService stopping foreground")
+                if (AndroidVersion.isAtLeastN) {
+                    stopForeground(STOP_FOREGROUND_DETACH);
+                } else {
+                    stopForeground(false)
+                }
+            }
             // Activate MediaSession
             mediaSession.isActive = true
             shutdownTimer?.cancel();
