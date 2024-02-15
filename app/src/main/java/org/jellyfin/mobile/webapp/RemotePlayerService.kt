@@ -155,10 +155,9 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     private fun startWakelock() {
-        if (!wakeLock.isHeld) {
-            @Suppress("MagicNumber")
-            wakeLock.acquire(4 * 60 * 60 * 1000L /* 4 hours */)
-        }
+        Timber.d("RemotePlayerService requested wake lock")
+        @Suppress("MagicNumber")
+        wakeLock.acquire(15 * 60 * 1000L /* 5 minutes */)
     }
 
     private fun stopWakelock() {
@@ -171,6 +170,7 @@ class RemotePlayerService : Service(), CoroutineScope {
         }
         val action = intent.action
         if (action == Constants.ACTION_REPORT) {
+            startWakelock()
             notify(intent)
             return
         }
