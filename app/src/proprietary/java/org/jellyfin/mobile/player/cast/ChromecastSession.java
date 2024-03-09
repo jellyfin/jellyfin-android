@@ -205,7 +205,7 @@ public class ChromecastSession {
             return;
         }
         activity.runOnUiThread(() -> session.sendMessage(namespace, message).setResultCallback(result -> {
-            if (!result.isSuccess()) {
+            if (result.isSuccess()) {
                 callback.success();
             } else {
                 callback.error(result.toString());

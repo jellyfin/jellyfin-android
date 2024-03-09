@@ -27,6 +27,8 @@ jobs:
       - name: Sign libre APK
         id: libreSign
         uses: r0adkll/sign-android-release@349ebdef58775b1e0d8099458af0816dc79b6407 # tag=v1
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
         with:
           releaseDirectory: app/build/outputs/apk/libre/release
           signingKeyBase64: ${{ secrets.KEYSTORE }}
@@ -36,6 +38,8 @@ jobs:
       - name: Sign proprietary APK
         id: proprietarySign
         uses: r0adkll/sign-android-release@349ebdef58775b1e0d8099458af0816dc79b6407 # tag=v1
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
         with:
           releaseDirectory: app/build/outputs/apk/proprietary/release
           signingKeyBase64: ${{ secrets.KEYSTORE }}
@@ -45,6 +49,8 @@ jobs:
       - name: Sign proprietary app bundle
         id: proprietaryBundleSign
         uses: r0adkll/sign-android-release@349ebdef58775b1e0d8099458af0816dc79b6407 # tag=v1
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
         with:
           releaseDirectory: app/build/outputs/bundle/proprietaryRelease
           signingKeyBase64: ${{ secrets.KEYSTORE }}
@@ -73,20 +79,20 @@ jobs:
         with:
           switches: -vrptz
           path: build/jellyfin-publish/
-          remote_path: /srv/repository/releases/client/android/versions/v${{ env.JELLYFIN_VERSION }}
-          remote_host: ${{ secrets.DEPLOY_HOST }}
-          remote_user: ${{ secrets.DEPLOY_USER }}
-          remote_key: ${{ secrets.DEPLOY_KEY }}
+          remote_path: /srv/repository/main/client/android/versions/v${{ env.JELLYFIN_VERSION }}
+          remote_host: ${{ secrets.REPO_HOST }}
+          remote_user: ${{ secrets.REPO_USER }}
+          remote_key: ${{ secrets.REPO_KEY }}
       - name: Update repo.jellyfin.org symlinks
         uses: appleboy/ssh-action@8f949198563a347a01c65ffc60399aef2b59d4ab # v1.0.1
         with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_KEY }}
+          host: ${{ secrets.REPO_HOST }}
+          username: ${{ secrets.REPO_USER }}
+          key: ${{ secrets.REPO_KEY }}
           envs: JELLYFIN_VERSION
           script_stop: true
           script: |
-            cd /srv/repository/releases/client/android;
+            cd /srv/repository/main/client/android;
             rm -rf *.apk version.txt;
             ln -s versions/v${JELLYFIN_VERSION}/jellyfin-android-v${JELLYFIN_VERSION}-*.apk .;
             ln -s versions/v${JELLYFIN_VERSION}/version.txt .;

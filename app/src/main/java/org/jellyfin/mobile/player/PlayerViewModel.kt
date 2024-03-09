@@ -360,6 +360,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         itemId = mediaSource.itemId,
                         positionTicks = lastPositionTicks,
                         playSessionId = mediaSource.playSessionId,
+                        liveStreamId = mediaSource.liveStreamId,
                         failed = false,
                     ),
                 )

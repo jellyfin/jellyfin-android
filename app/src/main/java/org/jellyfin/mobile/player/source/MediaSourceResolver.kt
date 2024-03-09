@@ -74,6 +74,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
                 item = item,
                 sourceInfo = mediaSourceInfo,
                 playSessionId = playSessionId,
+                liveStreamId = mediaSourceInfo.liveStreamId,
                 maxStreamingBitrate = maxStreamingBitrate,
                 startTimeTicks = startTimeTicks,
                 audioStreamIndex = audioStreamIndex,
