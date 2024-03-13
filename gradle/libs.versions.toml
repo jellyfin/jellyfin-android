@@ -20,7 +20,7 @@ androidx-fragment = "1.6.2"
 androiddesugarlibs = "2.0.4"
 
 # Lifecycle extensions
-androidx-lifecycle = "2.6.2"
+androidx-lifecycle = "2.7.0"
 
 # UI
 androidx-constraintlayout = "2.1.4"
