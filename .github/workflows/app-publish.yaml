@@ -14,12 +14,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Setup Java
-        uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # v4.0.0
+        uses: actions/setup-java@9704b39bf258b59bc04b50fa2dd55e9ed76b47a8 # v4.1.0
         with:
           distribution: temurin
           java-version: 17
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@982da8e78c05368c70dac0351bb82647a9e9a5d2 # v2.11.1
+        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa # v2.12.0
       - name: Set JELLYFIN_VERSION
         run: echo "JELLYFIN_VERSION=$(echo ${GITHUB_REF#refs/tags/v} | tr / -)" >> $GITHUB_ENV
       - name: Assemble release files
@@ -69,7 +69,7 @@ jobs:
           mv ${{ steps.proprietaryBundleSign.outputs.signedReleaseFile }} build/jellyfin-publish/jellyfin-android-v${{ env.JELLYFIN_VERSION }}-proprietary-release.aab
           mv app/build/version.txt build/jellyfin-publish/
       - name: Upload release archive to GitHub release
-        uses: alexellis/upload-assets@259de5111cb56966d046ced998941e93f91d2c93 # tag=0.4.0
+        uses: alexellis/upload-assets@13926a61cdb2cb35f5fdef1c06b8b591523236d3 # 0.4.1
         env:
           GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
         with:
@@ -84,7 +84,7 @@ jobs:
           remote_user: ${{ secrets.REPO_USER }}
           remote_key: ${{ secrets.REPO_KEY }}
       - name: Update repo.jellyfin.org symlinks
-        uses: appleboy/ssh-action@8f949198563a347a01c65ffc60399aef2b59d4ab # v1.0.1
+        uses: appleboy/ssh-action@029f5b4aeeeb58fdfe1410a5d17f967dacf36262 # v1.0.3
         with:
           host: ${{ secrets.REPO_HOST }}
           username: ${{ secrets.REPO_USER }}
