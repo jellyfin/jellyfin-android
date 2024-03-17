@@ -203,9 +203,9 @@ class DeviceProfileBuilder(
          */
         private val AVAILABLE_VIDEO_CODECS = arrayOf(
             // mp4
-            arrayOf("mpeg1video", "mpeg2video", "h263", "mpeg4", "h264", "hevc", "av1"),
+            arrayOf("mpeg1video", "mpeg2video", "h263", "mpeg4", "h264", "hevc", "av1", "vp9"),
             // fmp4
-            arrayOf("mpeg1video", "mpeg2video", "h263", "mpeg4", "h264", "hevc", "av1"),
+            arrayOf("mpeg1video", "mpeg2video", "h263", "mpeg4", "h264", "hevc", "av1", "vp9"),
             // webm
             arrayOf("vp8", "vp9", "av1"),
             // mkv
