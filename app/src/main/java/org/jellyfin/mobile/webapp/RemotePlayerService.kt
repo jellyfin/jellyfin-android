@@ -62,6 +62,9 @@ import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
 import org.jellyfin.mobile.utils.createMediaNotificationChannel
 import org.jellyfin.mobile.utils.setPlaybackState
 import org.koin.android.ext.android.inject
+import timber.log.Timber
+import java.util.Timer
+import java.util.TimerTask
 import kotlin.coroutines.CoroutineContext
 
 class RemotePlayerService : Service(), CoroutineScope {
@@ -85,6 +88,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     private var currentItemId: String? = null
 
     val playbackState: PlaybackState? get() = mediaSession?.controller?.playbackState
+    var shutdownTimer: Timer? = null
 
     private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -116,6 +120,7 @@ class RemotePlayerService : Service(), CoroutineScope {
 
     override fun onCreate() {
         super.onCreate()
+        Timber.d("RemotePlayerService onCreate")
         job = Job()
 
         // Create wakelock for the service
@@ -142,7 +147,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     override fun onUnbind(intent: Intent): Boolean {
-        onStopped()
+        onStopped(true)
         return super.onUnbind(intent)
     }
 
@@ -155,13 +160,13 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     private fun startWakelock() {
-        if (!wakeLock.isHeld) {
-            @Suppress("MagicNumber")
-            wakeLock.acquire(4 * 60 * 60 * 1000L /* 4 hours */)
-        }
+        Timber.d("RemotePlayerService requested wake lock")
+        @Suppress("MagicNumber")
+        wakeLock.acquire(15 * 60 * 1000L /* 5 minutes */)
     }
 
     private fun stopWakelock() {
+        Timber.d("RemotePlayerService wake lock released")
         if (wakeLock.isHeld) wakeLock.release()
     }
 
@@ -169,8 +174,10 @@ class RemotePlayerService : Service(), CoroutineScope {
         if (intent?.action == null) {
             return
         }
+        Timber.d("RemotePlayerService handle intent " + intent.action)
         val action = intent.action
         if (action == Constants.ACTION_REPORT) {
+            startWakelock()
             notify(intent)
             return
         }
@@ -188,16 +195,22 @@ class RemotePlayerService : Service(), CoroutineScope {
             Constants.ACTION_REWIND -> transportControls.rewind()
             Constants.ACTION_PREVIOUS -> transportControls.skipToPrevious()
             Constants.ACTION_NEXT -> transportControls.skipToNext()
-            Constants.ACTION_STOP -> transportControls.stop()
+            Constants.ACTION_STOP -> {
+                transportControls.stop()
+                stopWakelock()
+            }
         }
     }
 
     @Suppress("ComplexMethod", "LongMethod")
     private fun notify(handledIntent: Intent) {
         if (handledIntent.getStringExtra(EXTRA_PLAYER_ACTION) == "playbackstop") {
-            onStopped()
+            Timber.d("RemotePlayerService notify playbackstop")
+            onStopped(false)
             return
         }
+
+        Timber.d("RemotePlayerService notify " + handledIntent.getStringExtra(EXTRA_PLAYER_ACTION))
 
         launch {
             val mediaSession = mediaSession!!
@@ -342,8 +355,20 @@ class RemotePlayerService : Service(), CoroutineScope {
             // Post notification
             notificationManager.notify(MEDIA_PLAYER_NOTIFICATION_ID, notification)
 
+            if (!isPaused) {
+                Timber.d("RemotePlayerService starting foreground")
+                startForeground(MEDIA_PLAYER_NOTIFICATION_ID, notification)
+            } else {
+                Timber.d("RemotePlayerService stopping foreground")
+                if (AndroidVersion.isAtLeastN) {
+                    stopForeground(STOP_FOREGROUND_DETACH)
+                } else {
+                    stopForeground(false)
+                }
+            }
             // Activate MediaSession
             mediaSession.isActive = true
+            shutdownTimer?.cancel()
         }
     }
 
@@ -423,7 +448,7 @@ class RemotePlayerService : Service(), CoroutineScope {
 
                     override fun onStop() {
                         webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_STOP)
-                        onStopped()
+                        onStopped(false)
                     }
 
                     override fun onSeekTo(pos: Long) {
@@ -438,14 +463,35 @@ class RemotePlayerService : Service(), CoroutineScope {
         }
     }
 
-    private fun onStopped() {
-        notificationManager.cancel(MEDIA_PLAYER_NOTIFICATION_ID)
-        mediaSession?.isActive = false
-        stopWakelock()
-        stopSelf()
+    private fun onStopped(instant: Boolean) {
+        Timber.d("RemotePlayerService onStopped")
+        // wait for 15 seconds
+        // if after 15 seconds there has been no new notify, shut down
+        shutdownTimer?.cancel()
+        shutdownTimer = Timer()
+        if (instant) {
+            notificationManager.cancel(MEDIA_PLAYER_NOTIFICATION_ID)
+            mediaSession?.isActive = false
+            stopWakelock()
+            stopSelf()
+        } else {
+            shutdownTimer?.schedule(
+                object : TimerTask() {
+                    override fun run() {
+                        notificationManager.cancel(MEDIA_PLAYER_NOTIFICATION_ID)
+                        mediaSession?.isActive = false
+                        stopWakelock()
+                        stopSelf()
+                    }
+                },
+                @Suppress("MagicNumber")
+                15000,
+            )
+        }
     }
 
     override fun onDestroy() {
+        Timber.d("RemotePlayerService onDestroy")
         unregisterReceiver(receiver)
         job.cancel()
         mediaSession?.release()
