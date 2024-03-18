@@ -47,7 +47,8 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Starting"
+	android:theme="@style/AppTheme.Starting"
+	android:enableOnBackInvokedCallback="true"
         tools:ignore="UnusedAttribute">
 
         <activity
