@@ -32,7 +32,7 @@ modernandroidpreferences = "2.3.2"
 compose = "1.5.4"
 compose-foundation = "1.5.4"
 compose-material = "1.5.4"
-compose-compiler = "1.5.6"
+compose-compiler = "1.5.11"
 
 # Network
 jellyfin-sdk = "1.4.6"
