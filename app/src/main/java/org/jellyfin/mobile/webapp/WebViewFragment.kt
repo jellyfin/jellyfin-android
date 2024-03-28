@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.webapp
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
@@ -8,8 +9,11 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.ValueCallback
 import android.webkit.WebView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
@@ -67,6 +71,10 @@ class WebViewFragment : Fragment(), BackPressInterceptor {
     // UI
     private var webViewBinding: FragmentWebviewBinding? = null
 
+    // External file access
+    private var startForResult: ActivityResultLauncher<Intent>? = null
+    private var filePathCallback: ValueCallback<Array<Uri>>? = null
+
     init {
         enableServiceWorkerWorkaround()
     }
@@ -113,6 +121,19 @@ class WebViewFragment : Fragment(), BackPressInterceptor {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val webView = webViewBinding!!.webView
+
+        // Register activity launcher for opening subtitle files
+        startForResult = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult(),
+        ) { result ->
+            if (result.resultCode != Activity.RESULT_OK) {
+                filePathCallback?.onReceiveValue(arrayOf())
+                return@registerForActivityResult
+            }
+
+            val uri = result.data?.data as Uri
+            filePathCallback?.onReceiveValue(arrayOf(uri))
+        }
 
         // Apply window insets
         webView.applyWindowInsetsAsMargins()
@@ -169,13 +190,18 @@ class WebViewFragment : Fragment(), BackPressInterceptor {
         webViewBinding = null
     }
 
+    private fun launchFileOpenActivity(intent: Intent, pathCallback: ValueCallback<Array<Uri>>?) {
+        filePathCallback = pathCallback
+        startForResult?.launch(intent)
+    }
+
     private fun WebView.initialize() {
         if (!appPreferences.ignoreWebViewChecks && isOutdated()) { // Check WebView version
             showOutdatedWebViewDialog(this)
             return
         }
         webViewClient = jellyfinWebViewClient
-        webChromeClient = LoggingWebChromeClient()
+        webChromeClient = LoggingWebChromeClient(::launchFileOpenActivity)
         settings.applyDefault()
         addJavascriptInterface(NativeInterface(requireContext()), "NativeInterface")
         addJavascriptInterface(nativePlayer, "NativePlayer")
