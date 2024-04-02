@@ -104,4 +104,5 @@
     <string name="menu_item_hardware_decoding">硬體解碼</string>
     <string name="menu_item_software_decoding">軟體解碼</string>
     <string name="pref_exoplayer_direct_play_ass">在使用direct play時允許使用 SSA/ASS字幕</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">防止轉碼並僅顯示具有基本樣式的字幕。 如果啟用，進階字幕樣式將無法使用。</string>
 </resources>
