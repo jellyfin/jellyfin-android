@@ -25,6 +25,7 @@ import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.databinding.FragmentSettingsBinding
 import org.jellyfin.mobile.utils.BackPressInterceptor
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.DownloadMethod
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.extensions.requireMainActivity
 import org.jellyfin.mobile.utils.getDownloadsPaths
@@ -192,6 +193,36 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
         categoryHeader(PREF_CATEGORY_DOWNLOADS) {
             titleRes = R.string.pref_category_downloads
         }
+
+        val downloadMethods = listOf(
+            SelectionItem(
+                "wifi_only",
+                R.string.wifi_only,
+                R.string.wifi_only_summary,
+            ),
+            SelectionItem(
+                "mobile_data",
+                R.string.mobile_data,
+                R.string.mobile_data_summary,
+            ),
+            SelectionItem(
+                "mobile_and_roaming",
+                R.string.mobile_data_and_roaming,
+                R.string.mobile_data_and_roaming_summary,
+            ),
+        )
+        singleChoice("download_method", downloadMethods) {
+            titleRes = R.string.network_title
+
+            defaultOnSelectionChange {
+                appPreferences.downloadMethod = when (it) {
+                    "wifi_only" -> DownloadMethod.WIFI_ONLY
+                    "mobile_data" -> DownloadMethod.MOBILE_DATA
+                    else -> DownloadMethod.MOBILE_AND_ROAMING
+                }
+            }
+        }
+
         val downloadsDirs = requireContext().getDownloadsPaths().map { path ->
             SelectionItem(path, path, null)
         }
