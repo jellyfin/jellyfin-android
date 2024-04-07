@@ -23,6 +23,6 @@ jobs:
           distribution: temurin
           java-version: 17
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@29c0906b64b8fc82467890bfb7a0a7ef34bda89e # v3.1.0
+        uses: gradle/gradle-build-action@fe59895742b4f984530980e4f693943577526b61 # v3.2.0
       - name: Run test task
         run: ./gradlew test
