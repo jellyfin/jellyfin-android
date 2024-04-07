@@ -100,8 +100,9 @@ class JellyfinMediaSource(
                         }
                     }
                 }
-                MediaStreamType.DATA,
                 MediaStreamType.EMBEDDED_IMAGE,
+                MediaStreamType.DATA,
+                MediaStreamType.LYRIC,
                 -> Unit // ignore
             }
         }
