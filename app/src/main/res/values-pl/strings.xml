@@ -27,7 +27,7 @@
     <string name="media_service_car_section_artists">Wykonawcy</string>
     <string name="media_service_car_section_albums">Albumy</string>
     <string name="media_service_car_section_recents">Ostatnio odtwarzane</string>
-    <string name="media_service_item_not_found">Nie można znaleźć media</string>
+    <string name="media_service_item_not_found">Nie znaleziono elementu multimedialnego</string>
     <string name="media_service_generic_error">Wystąpił błąd</string>
     <string name="download_no_storage_permission">Nie można pobrać plików bez dostępu do pamięci</string>
     <string name="downloading">Pobieranie</string>
