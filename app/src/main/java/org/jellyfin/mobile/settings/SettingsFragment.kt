@@ -192,7 +192,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
         categoryHeader(PREF_CATEGORY_DOWNLOADS) {
             titleRes = R.string.pref_category_downloads
         }
-        val downloadsDirs: List<SelectionItem> = requireContext().getDownloadsPaths().map { path ->
+        val downloadsDirs = requireContext().getDownloadsPaths().map { path ->
             SelectionItem(path, path, null)
         }
         singleChoice(Constants.PREF_DOWNLOAD_LOCATION, downloadsDirs) {
