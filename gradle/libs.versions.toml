@@ -42,7 +42,7 @@ cronet-embedded = "119.6045.31"
 
 # Media
 androidx-media = "1.7.0"
-androidx-mediarouter = "1.6.0"
+androidx-mediarouter = "1.7.0"
 exoplayer = "2.19.1"
 jellyfin-exoplayer-ffmpegextension = "2.19.1+1"
 playservices = "21.4.0"
