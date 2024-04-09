@@ -196,31 +196,24 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
 
         val downloadMethods = listOf(
             SelectionItem(
-                "wifi_only",
+                DownloadMethod.WIFI_ONLY,
                 R.string.wifi_only,
                 R.string.wifi_only_summary,
             ),
             SelectionItem(
-                "mobile_data",
+                DownloadMethod.MOBILE_DATA,
                 R.string.mobile_data,
                 R.string.mobile_data_summary,
             ),
             SelectionItem(
-                "mobile_and_roaming",
+                DownloadMethod.MOBILE_AND_ROAMING,
                 R.string.mobile_data_and_roaming,
                 R.string.mobile_data_and_roaming_summary,
             ),
         )
-        singleChoice("download_method", downloadMethods) {
+        singleChoice(Constants.PREF_DOWNLOAD_METHOD, downloadMethods) {
             titleRes = R.string.network_title
-
-            defaultOnSelectionChange {
-                appPreferences.downloadMethod = when (it) {
-                    "wifi_only" -> DownloadMethod.WIFI_ONLY
-                    "mobile_data" -> DownloadMethod.MOBILE_DATA
-                    else -> DownloadMethod.MOBILE_AND_ROAMING
-                }
-            }
+            initialSelection = appPreferences.downloadMethod
         }
 
         val downloadsDirs = requireContext().getDownloadsPaths().map { path ->
