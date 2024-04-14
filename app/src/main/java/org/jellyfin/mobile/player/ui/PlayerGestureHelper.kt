@@ -6,10 +6,13 @@ import android.provider.Settings
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
+import android.view.Window
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_OFF
+import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.ProgressBar
 import androidx.core.content.getSystemService
 import androidx.core.view.isVisible
@@ -37,6 +40,7 @@ class PlayerGestureHelper(
     private val gestureIndicatorOverlayLayout: LinearLayout by playerBinding::gestureOverlayLayout
     private val gestureIndicatorOverlayImage: ImageView by playerBinding::gestureOverlayImage
     private val gestureIndicatorOverlayProgress: ProgressBar by playerBinding::gestureOverlayProgress
+    private val gestureIndicatorOverlayText: TextView by playerBinding::autoBrightnessIndicator
 
     init {
         if (appPreferences.exoPlayerRememberBrightness) {
@@ -174,6 +178,7 @@ class PlayerGestureHelper(
                     gestureIndicatorOverlayImage.setImageResource(R.drawable.ic_volume_white_24dp)
                     gestureIndicatorOverlayProgress.max = maxVolume
                     gestureIndicatorOverlayProgress.progress = toSet
+                    gestureIndicatorOverlayText.isVisible = false
                 } else {
                     // Swiping on the left, change brightness
 
@@ -194,15 +199,25 @@ class PlayerGestureHelper(
                         }
                     }
 
-                    swipeGestureValueTracker = (swipeGestureValueTracker + ratioChange).coerceIn(brightnessRange)
-                    window.brightness = swipeGestureValueTracker
+                    val brightnessRangeWithAutoBrightness = BRIGHTNESS_OVERRIDE_NONE..BRIGHTNESS_OVERRIDE_FULL
+                    swipeGestureValueTracker = (swipeGestureValueTracker + ratioChange).coerceIn(brightnessRangeWithAutoBrightness)
+
+                    // Reset brightness to system brightness if 10% past zero to delay response
+                    if(swipeGestureValueTracker < BRIGHTNESS_OVERRIDE_NONE * 0.1f && window.brightness != BRIGHTNESS_OVERRIDE_NONE){
+                        resetToSystemAutoBrightness(window)
+                    }
+                    else if(swipeGestureValueTracker >= BRIGHTNESS_OVERRIDE_OFF){
+                        window.brightness = swipeGestureValueTracker
+                    }
+
                     if (appPreferences.exoPlayerRememberBrightness) {
-                        appPreferences.exoPlayerBrightness = swipeGestureValueTracker
+                        appPreferences.exoPlayerBrightness = window.brightness
                     }
 
                     gestureIndicatorOverlayImage.setImageResource(R.drawable.ic_brightness_white_24dp)
                     gestureIndicatorOverlayProgress.max = Constants.PERCENT_MAX
                     gestureIndicatorOverlayProgress.progress = (swipeGestureValueTracker * Constants.PERCENT_MAX).toInt()
+                    gestureIndicatorOverlayText.isVisible = window.brightness == BRIGHTNESS_OVERRIDE_NONE
                 }
 
                 gestureIndicatorOverlayLayout.isVisible = true
@@ -266,5 +281,14 @@ class PlayerGestureHelper(
 
     private fun updateZoomMode(enabled: Boolean) {
         playerView.resizeMode = if (enabled) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FIT
+    }
+
+    private fun resetToSystemAutoBrightness(window: Window) {
+        // pause and resume to immediately to apply screen brightness override if player is playing,
+        // otherwise the system brightness slider will remain blocked until playback was paused
+        val isPlaying = playerView.player?.isPlaying
+        if(isPlaying == true) playerView.player?.pause()
+        window.brightness = BRIGHTNESS_OVERRIDE_NONE
+        if(isPlaying == true) playerView.player?.play()
     }
 }
