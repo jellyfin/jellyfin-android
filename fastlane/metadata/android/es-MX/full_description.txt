@@ -6,9 +6,9 @@ Para usar la aplicación, deberás tener un servidor Jellyfin configurado y corr
 
 Con un servidor Jellyfin podrás:
 
-* Mirar  TV en vivo y grabar programas desde tu servidor Jellyfin (require hardware/servicios adicionales)
+* Mirar TV en vivo y grabar programas desde tu servidor Jellyfin (require hardware/servicios adicionales)
 * Transmitir hacia un dispositivo Chromecast en tu red
 * Consumir to multimedia a tu dispositivo Android
 * Ver tu coleccion en una interfaz fácil de usar
 
-Esta es la aplicacion complementaria oficial de Jellyfin para Android. Gracias por usar Jellyfin.
+Esta es la aplicacion complementaria oficial de Jellyfin para Android. Gracias por usar Jellyfin!
