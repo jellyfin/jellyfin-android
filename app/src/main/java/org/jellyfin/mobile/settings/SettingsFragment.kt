@@ -2,6 +2,7 @@ package org.jellyfin.mobile.settings
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
@@ -220,7 +221,9 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
         }
         singleChoice(Constants.PREF_DOWNLOAD_LOCATION, downloadsDirs) {
             titleRes = R.string.pref_download_location
-            initialSelection = appPreferences.downloadLocation
+            initialSelection = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                .absolutePath
         }
     }
 
