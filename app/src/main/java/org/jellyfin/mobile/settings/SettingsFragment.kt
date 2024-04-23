@@ -213,7 +213,6 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
         )
         singleChoice(Constants.PREF_DOWNLOAD_METHOD, downloadMethods) {
             titleRes = R.string.network_title
-            initialSelection = appPreferences.downloadMethod
         }
 
         val downloadsDirs = requireContext().getDownloadsPaths().map { path ->
