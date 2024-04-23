@@ -10,7 +10,7 @@ import android.webkit.WebView
 import timber.log.Timber
 
 class LoggingWebChromeClient(
-    private val launchFileOpenActivity: (intent: Intent, filePathCallback: ValueCallback<Array<Uri>>?) -> Unit,
+    private val fileChooserListener: FileChooserListener,
 ) : WebChromeClient() {
     override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
         val logLevel = when (consoleMessage.messageLevel()) {
@@ -33,16 +33,20 @@ class LoggingWebChromeClient(
     }
 
     override fun onShowFileChooser(
-        webView: WebView?,
-        filePathCallback: ValueCallback<Array<Uri>>?,
+        webView: WebView,
+        filePathCallback: ValueCallback<Array<Uri>>,
         fileChooserParams: FileChooserParams?,
     ): Boolean {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "*/*"
+        if (fileChooserParams == null) {
+            filePathCallback.onReceiveValue(null)
+            return true
         }
 
-        launchFileOpenActivity(intent, filePathCallback)
+        fileChooserListener.onShowFileChooser(fileChooserParams.createIntent(), filePathCallback)
         return true
+    }
+
+    interface FileChooserListener {
+        fun onShowFileChooser(intent: Intent, filePathCallback: ValueCallback<Array<Uri>>)
     }
 }
