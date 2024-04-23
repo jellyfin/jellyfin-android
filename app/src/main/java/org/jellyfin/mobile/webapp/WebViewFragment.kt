@@ -49,7 +49,7 @@ import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
 import org.jellyfin.mobile.utils.runOnUiThread
 import org.koin.android.ext.android.inject
 
-class WebViewFragment : Fragment(), BackPressInterceptor, LoggingWebChromeClient.FileChooserListener {
+class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClient.FileChooserListener {
     val appPreferences: AppPreferences by inject()
     private val apiClientController: ApiClientController by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
@@ -187,7 +187,7 @@ class WebViewFragment : Fragment(), BackPressInterceptor, LoggingWebChromeClient
             return
         }
         webViewClient = jellyfinWebViewClient
-        webChromeClient = LoggingWebChromeClient(this@WebViewFragment)
+        webChromeClient = JellyfinWebChromeClient(this@WebViewFragment)
         settings.applyDefault()
         addJavascriptInterface(NativeInterface(requireContext()), "NativeInterface")
         addJavascriptInterface(nativePlayer, "NativePlayer")
