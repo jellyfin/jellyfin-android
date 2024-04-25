@@ -12,7 +12,7 @@
     <string name="network_title">Jenis Jaringan yang Diizinkan</string>
     <string name="mobile_data_and_roaming">Data Seluler dan Roaming</string>
     <string name="mobile_data">Data Seluler</string>
-    <string name="network_message">izinkan unduhan melalui data seluler ataupun jaringan roaming\? Biaya Tambahan dari Operator mungkin berlaku.</string>
+    <string name="network_message">izinkan unduhan melalui data seluler ataupun jaringan roaming? Biaya Tambahan dari Operator mungkin berlaku.</string>
     <string name="battery_optimizations_message">Nonaktifkan pengoptimalan baterai untuk pemutaran media saat layar mati.</string>
     <string name="downloading">Mengunduh</string>
     <string name="playback_info_and_x_more">… Dan %d lainnya</string>
