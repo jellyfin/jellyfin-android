@@ -56,7 +56,7 @@
     <string name="mobile_data_and_roaming">ਮੋਬਾਈਲ ਡਾਟਾ ਅਤੇ ਰੋਮਿੰਗ</string>
     <string name="mobile_data">ਮੋਬਾਈਲ ਡਾਟਾ</string>
     <string name="wifi_only">ਸਿਰਫ ਵਾਈਫਾਈ</string>
-    <string name="network_message">ਕੀ ਤੁਸੀਂ ਡਾਉਨਲੋਡ ਨੂੰ ਮੋਬਾਈਲ ਡਾਟਾ ਜਾਂ ਰੋਮਿੰਗ ਨੈਟਵਰਕਸ ਤੇ ਚੱਲਣ ਦੀ ਆਗਿਆ ਦੇਣਾ ਚਾਹੁੰਦੇ ਹੋ\? ਤੁਹਾਡੇ ਪ੍ਰਦਾਤਾ ਤੋਂ ਖਰਚੇ ਲਾਗੂ ਹੋ ਸਕਦੇ ਹਨ.</string>
+    <string name="network_message">ਕੀ ਤੁਸੀਂ ਡਾਉਨਲੋਡ ਨੂੰ ਮੋਬਾਈਲ ਡਾਟਾ ਜਾਂ ਰੋਮਿੰਗ ਨੈਟਵਰਕਸ ਤੇ ਚੱਲਣ ਦੀ ਆਗਿਆ ਦੇਣਾ ਚਾਹੁੰਦੇ ਹੋ? ਤੁਹਾਡੇ ਪ੍ਰਦਾਤਾ ਤੋਂ ਖਰਚੇ ਲਾਗੂ ਹੋ ਸਕਦੇ ਹਨ.</string>
     <string name="network_title">ਮਨਜੂਰ ਨੈਟਵਰਕ ਕਿਸਮ</string>
     <string name="battery_optimizations_message">ਜਦੋਂ ਸਕ੍ਰੀਨ ਬੰਦ ਹੋਵੇ ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਮੀਡੀਆ ਪਲੇਅਬੈਕ ਲਈ ਬੈਟਰੀ ਅਨੁਕੂਲਤਾ ਨੂੰ ਅਯੋਗ ਕਰੋ.</string>
     <string name="available_servers_title">ਉਪਲੱਬਧ ਸਰਵਰ</string>
