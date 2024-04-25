@@ -33,7 +33,7 @@
     <string name="mobile_data_and_roaming">Mobilni Podaci i Roaming</string>
     <string name="mobile_data">Mobilni Podaci</string>
     <string name="wifi_only">Samo WiFi</string>
-    <string name="network_message">Želite li dopustiti preuzimanje putem mobilne podatkovne veze ili roaming mreža\? Vaš davatelj mobilnih usluga može naplatiti dodatne troškove.</string>
+    <string name="network_message">Želite li dopustiti preuzimanje putem mobilne podatkovne veze ili roaming mreža? Vaš davatelj mobilnih usluga može naplatiti dodatne troškove.</string>
     <string name="network_title">Dopuštene Vrste Mreža</string>
     <string name="battery_optimizations_message">Molimo onemogućite optimizaciju baterije za reprodukciju medija dok je zaslon isključen.</string>
     <string name="available_servers_title">Dostupni poslužitelji</string>
