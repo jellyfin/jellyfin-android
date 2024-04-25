@@ -2,7 +2,7 @@
 <resources>
     <string name="battery_optimizations_message">Bitte deaktiviere die Akku-Optimierungen, damit Medien bei ausgeschaltetem Bildschirm abgespielt werden können.</string>
     <string name="network_title">Erlaubte Verbindungsmöglichkeiten</string>
-    <string name="network_message">Möchtest du den Download über mobile Daten oder Roaming-Netzwerke erlauben\? Möglicherweise fallen Gebühren von deinem Anbieter an.</string>
+    <string name="network_message">Möchtest du den Download über mobile Daten oder Roaming-Netzwerke erlauben? Möglicherweise fallen Gebühren von deinem Anbieter an.</string>
     <string name="wifi_only">Nur WLAN</string>
     <string name="mobile_data">Mobile Daten</string>
     <string name="mobile_data_and_roaming">Mobile Daten &amp; Roaming</string>
