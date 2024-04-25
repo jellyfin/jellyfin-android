@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">Datos móviles e itinerancia</string>
     <string name="mobile_data">Datos móviles</string>
     <string name="wifi_only">Sólo Wi-Fi</string>
-    <string name="network_message">¿Desea permitir que la descarga se ejecute a través de datos móviles o redes de itinerancia\? Podrían generarse costos por parte del proveedor.</string>
+    <string name="network_message">¿Desea permitir que la descarga se ejecute a través de datos móviles o redes de itinerancia? Podrían generarse costos por parte del proveedor.</string>
     <string name="network_title">Tipos de red permitidos</string>
     <string name="battery_optimizations_message">Por favor deshabilite las optimizaciones de batería para la reproducción de medios mientras la pantalla está apagada.</string>
     <string name="connect_to_server_title">Conectar al servidor</string>
@@ -84,7 +84,7 @@
     <plurals name="connection_error_prefix">
         <item quantity="one">Se ha probado %d entrada, sin éxito.</item>
         <item quantity="many">Se han probado %d entradas, sin éxito.</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="player_error_unsupported_content">El medio no puede ser reproducido en este dispositivo</string>
     <string name="player_error_network_failure">Incapaz de cargar la información del medio desde el server</string>
