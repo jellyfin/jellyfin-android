@@ -67,7 +67,7 @@
     <string name="mobile_data_and_roaming">Datu mugikorrak eta ibiltaritza</string>
     <string name="mobile_data">Datu mugikorrak</string>
     <string name="wifi_only">WiFi bakarrik</string>
-    <string name="network_message">Datu mugikorren edo ibiltaritzaren bidez deskargatzeko aukera eman nahi duzu\? Zure operadoreak kargu gehigarriak egin ditzake.</string>
+    <string name="network_message">Datu mugikorren edo ibiltaritzaren bidez deskargatzeko aukera eman nahi duzu? Zure operadoreak kargu gehigarriak egin ditzake.</string>
     <string name="network_title">Baimendutako sare-motak</string>
     <string name="battery_optimizations_message">Desaktibatu Jellyfinentzat aurreztutako energia sistemaren ezarpenetan, pantaila itzalita dagoen bitartean edukia erreproduzitu ahal izateko.</string>
     <string name="available_servers_title">Zerbitzari erabilgarriak</string>
