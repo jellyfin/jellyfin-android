@@ -8,7 +8,7 @@
     <string name="choose_server_button_text">Выберыце сервер</string>
     <string name="button_use_different_server">Выкарыстоўвайце іншы сервер</string>
     <string name="battery_optimizations_message">Калі ласка, адключыце аптымізацыю батарэі для прайгравання мультымедыя пры выключаным экране.</string>
-    <string name="network_message">Вы хочаце дазволіць спампоўку праз мабільную перадачу даных або сетку ў роўмінгу\? Ваш правайдэр можа спаганяць плату.</string>
+    <string name="network_message">Вы хочаце дазволіць спампоўку праз мабільную перадачу даных або сетку ў роўмінгу? Ваш правайдэр можа спаганяць плату.</string>
     <string name="mobile_data">Мабільныя дадзеныя</string>
     <string name="download_no_storage_permission">Немагчыма загрузіць файлы без дазволу на захоўванне</string>
     <string name="media_service_car_section_recents">Нядаўна прайгравалася</string>
