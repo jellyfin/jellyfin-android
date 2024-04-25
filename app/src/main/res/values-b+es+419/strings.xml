@@ -4,7 +4,7 @@
     <string name="downloading">Descargando</string>
     <string name="mobile_data">Datos móviles</string>
     <string name="wifi_only">Solo WiFi</string>
-    <string name="network_message">¿Quieres permitir que la descarga se realice a través de redes de datos móviles o de itinerancia\? Podrían generarse costos por parte del proveedor.</string>
+    <string name="network_message">¿Quieres permitir que la descarga se realice a través de redes de datos móviles o de itinerancia? Podrían generarse costos por parte del proveedor.</string>
     <string name="network_title">Tipos de red permitidos</string>
     <string name="battery_optimizations_message">Por favor desactiva las optimizaciones de batería para la reproducción de medios mientras la pantalla este apagada.</string>
     <string name="connect_button_text">Conectar</string>
