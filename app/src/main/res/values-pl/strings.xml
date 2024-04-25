@@ -88,7 +88,7 @@
     <string name="notification_action_rewind">Przewiń</string>
     <string name="music_notification_channel_description">Służy do sterowania odtwarzaniem muzyki</string>
     <string name="mobile_data_and_roaming">Dane komórkowe i roaming</string>
-    <string name="network_message">Czy chcesz zezwolić na pobieranie danych przez sieć komórkową lub roaming\? Opłaty mogą być naliczane przez twojego dostawcę.</string>
+    <string name="network_message">Czy chcesz zezwolić na pobieranie danych przez sieć komórkową lub roaming? Opłaty mogą być naliczane przez twojego dostawcę.</string>
     <string name="battery_optimizations_message">Proszę wyłączyć optymalizacje baterii dla odtwarzania multimediów, gdy ekran jest wyłączony.</string>
     <string name="host_input_hint">Host</string>
     <string name="dialog_web_view_outdated_message">Implementacja WebView używana przez urządzenie jest przestarzała.
