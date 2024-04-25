@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">Dados Móveis e Roaming</string>
     <string name="mobile_data">Dados Móveis</string>
     <string name="wifi_only">Apenas WiFi</string>
-    <string name="network_message">Deseja permitir que a descarga seja executada utilizando dados móveis ou redes de roaming\? Poderão ser aplicadas taxas pela sua operadora.</string>
+    <string name="network_message">Deseja permitir que a descarga seja executada utilizando dados móveis ou redes de roaming? Poderão ser aplicadas taxas pela sua operadora.</string>
     <string name="network_title">Tipos de Rede Permitidos</string>
     <string name="battery_optimizations_message">Por favor, desative as otimizações de bateria para reprodução de multimédia com o ecrã desligado.</string>
     <string name="pref_exoplayer_allow_background_audio">Áudio em segundo plano</string>
