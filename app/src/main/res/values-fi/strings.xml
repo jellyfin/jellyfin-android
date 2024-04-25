@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="wifi_only">Vain Wi-Fi</string>
-    <string name="network_message">Sallitaanko lataus mobiiliverkossa tai verkkovierailun aikana\? Palveluntarjoaja saattaa veloittaa tiedonsiirrosta.</string>
+    <string name="network_message">Sallitaanko lataus mobiiliverkossa tai verkkovierailun aikana? Palveluntarjoaja saattaa veloittaa tiedonsiirrosta.</string>
     <string name="network_title">Sallitut verkkotyypit</string>
     <string name="battery_optimizations_message">Kytke akun käytön optimointi käytöstä toistettaessa mediaa näytön ollessa suljettuna.</string>
     <string name="downloading">Lataus</string>
