@@ -19,7 +19,7 @@
     <string name="external_player_invalid_player">Geçerli bir harici oynatıcı seçilmediği için oynatma takibi özelliği devre dışı bırakıldı.</string>
     <string name="external_player_not_supported_yet">Seçilen harici oynatıcı, oynatma takibi özelliğini desteklemiyor. Uygulamanın geliştiricisi ile iletişime geçin.</string>
     <string name="music_notification_channel_description">Müzik oynatma düğmeleri için kullanılır</string>
-    <string name="network_message">Mobil veri kullanılırken indirmelere izin verilsin mi\? Operatörünüz tarafından faturanıza ek ücretler yansıtılabilir.</string>
+    <string name="network_message">Mobil veri kullanılırken indirmelere izin verilsin mi? Operatörünüz tarafından faturanıza ek ücretler yansıtılabilir.</string>
     <string name="battery_optimizations_message">Lütfen ekran kapalıyken medya oynatma için pil optimizasyonlarını kapatın.</string>
     <string name="dialog_web_view_outdated_message">Cihazınız tarafından kullanılan WebView uygulaması güncel değil.
 \nLütfen uyumlu bir sürüme güncelleyin.</string>
