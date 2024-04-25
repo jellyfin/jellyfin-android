@@ -9,7 +9,7 @@
     <string name="mobile_data_and_roaming">மொபைல் தரவு &amp; ரோமிங்</string>
     <string name="mobile_data">மொபைல் தரவு</string>
     <string name="wifi_only">வைஃபை மட்டும்</string>
-    <string name="network_message">மொபைல் தரவு அல்லது ரோமிங் நெட்வொர்க்குகள் மூலம் பதிவிறக்கத்தை இயக்க அனுமதிக்க விரும்புகிறீர்களா\? உங்கள் வழங்குநரிடமிருந்து கட்டணங்கள் பொருந்தக்கூடும்.</string>
+    <string name="network_message">மொபைல் தரவு அல்லது ரோமிங் நெட்வொர்க்குகள் மூலம் பதிவிறக்கத்தை இயக்க அனுமதிக்க விரும்புகிறீர்களா? உங்கள் வழங்குநரிடமிருந்து கட்டணங்கள் பொருந்தக்கூடும்.</string>
     <string name="network_title">அனுமதிக்கப்பட்ட பிணைய வகைகள்</string>
     <string name="battery_optimizations_message">திரை முடக்கத்தில் இருக்கும்போது மீடியா பிளேபேக்கிற்கான பேட்டரி மேம்படுத்தல்களை முடக்கவும்.</string>
     <string name="connect_button_text">இணை</string>
