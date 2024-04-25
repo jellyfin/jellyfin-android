@@ -34,7 +34,7 @@
     <string name="mobile_data_and_roaming">Dữ liệu di động &amp; Chuyển vùng</string>
     <string name="mobile_data">Dữ liệu di động</string>
     <string name="wifi_only">Chỉ wifi</string>
-    <string name="network_message">Bạn có cho phép tải qua mạng dữ liệu di động hoặc chuyển vùng không\? Phí từ nhà mạng của bạn có thể được áp dụng.</string>
+    <string name="network_message">Bạn có cho phép tải qua mạng dữ liệu di động hoặc chuyển vùng không? Phí từ nhà mạng của bạn có thể được áp dụng.</string>
     <string name="network_title">Các loại mạng được phép</string>
     <string name="battery_optimizations_message">Vui lòng tắt tính năng tiết kiệm pin để trình phát hoạt động khi màn hình tắt.</string>
     <string name="connect_button_text">Kết nối</string>
