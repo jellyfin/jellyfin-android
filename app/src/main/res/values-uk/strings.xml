@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">Мобільні дані та роумінг</string>
     <string name="mobile_data">Мобільні дані</string>
     <string name="wifi_only">Лише WiFi</string>
-    <string name="network_message">Ви хочете дозволити завантаження через мобільні мережі передачі даних або в роумінгу\? Ваш оператор може стягувати плату.</string>
+    <string name="network_message">Ви хочете дозволити завантаження через мобільні мережі передачі даних або в роумінгу? Ваш оператор може стягувати плату.</string>
     <string name="network_title">Дозволені типи мереж</string>
     <string name="battery_optimizations_message">Відключіть оптимізацію акумулятора для відтворення медіа, коли екран вимкнено.</string>
     <string name="connect_button_text">Підключитись</string>
