@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="network_message">Autoriser le téléchargement via les données mobiles et l\'itinérance \? Des frais de votre fournisseur peuvent s\'appliquer.</string>
+    <string name="network_message">Autoriser le téléchargement via les données mobiles et l\'itinérance ? Des frais de votre fournisseur peuvent s\'appliquer.</string>
     <string name="battery_optimizations_message">Veuillez désactiver les optimisations de la batterie pour permettre la lecture avec écran éteint.</string>
     <string name="downloading">Téléchargement en cours</string>
     <string name="mobile_data_and_roaming">Données mobiles et itinérance</string>
