@@ -53,7 +53,7 @@
     <string name="media_service_item_not_found">פריט מדיה לא נמצא</string>
     <string name="player_error_unspecific_exception">משהו השתבש עם הנגן</string>
     <string name="button_use_different_server">השתמש בשרת אחר</string>
-    <string name="network_message">האם אתה מעוניין לאפשר הורדה על גבי נתונים סלולרים או רשתות נדידה\? יכולים להיות חיובים נוספים.</string>
+    <string name="network_message">האם אתה מעוניין לאפשר הורדה על גבי נתונים סלולרים או רשתות נדידה? יכולים להיות חיובים נוספים.</string>
     <string name="playback_info_play_method">צורת ניגון %s</string>
     <string name="playback_info_video_streams">שידור וידאו</string>
     <string name="playback_info_audio_streams">שידור שמע</string>
