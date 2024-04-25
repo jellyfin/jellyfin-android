@@ -64,7 +64,7 @@
     <string name="choose_server_button_text">Tria el servidor</string>
     <string name="button_use_different_server">Utilitzar un servidor diferent</string>
     <string name="battery_optimizations_message">Si us plau, desactiveu les optimitzacions de bateria per a la reproducció de contingut multimèdia mentre la pantalla està apagada.</string>
-    <string name="network_message">Voleu permetre que la descàrrega s\'executi a través de dades mòbils o xarxes de roaming\? Les despeses podrien ser aplicables per part del vostre proveïdor.</string>
+    <string name="network_message">Voleu permetre que la descàrrega s\'executi a través de dades mòbils o xarxes de roaming? Les despeses podrien ser aplicables per part del vostre proveïdor.</string>
     <string name="media_service_car_section_recents">Reproduccions recents</string>
     <string name="media_service_car_item_no_title">Sense títol</string>
     <string name="music_notification_channel_description">Utilitzat per al control de reproducció de música</string>
