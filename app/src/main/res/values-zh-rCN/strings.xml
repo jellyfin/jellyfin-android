@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">移动数据或漫游</string>
     <string name="mobile_data">移动数据</string>
     <string name="wifi_only">仅使用WiFi</string>
-    <string name="network_message">您是否允许使用移动数据或漫游网络下载？您的运营商可能会收取费用。</string>
+    <string name="network_message">您想要允许下载通过移动数据或漫游网络运行吗？您的提供商可能会收取费用。您可以稍后从设置中更改此选项。</string>
     <string name="network_title">允许的网络连接类型</string>
     <string name="downloading">下载中</string>
     <string name="connect_button_text">连接</string>
@@ -108,4 +108,7 @@
     <string name="bluetooth_permission_title">允许使用蓝牙？</string>
     <string name="bluetooth_permission_continue">继续</string>
     <string name="bluetooth_permission_granted">已授予蓝牙权限</string>
+    <string name="wifi_only_summary">媒体将仅通过 WiFi 下载。</string>
+    <string name="mobile_data_summary">媒体将通过 WiFi 和移动网络下载。</string>
+    <string name="mobile_data_and_roaming_summary">媒体将通过 WiFi、移动和漫游网络下载。</string>
 </resources>
