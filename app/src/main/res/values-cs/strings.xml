@@ -109,4 +109,7 @@
     <string name="bluetooth_permission_granted">Oprávnění k Bluetooth bylo uděleno</string>
     <string name="bluetooth_permission_title">Povolit přístup přes Bluetooth\?</string>
     <string name="bluetooth_permission_message">Aby bylo možné zjistit, zda jsou sluchátka nebo reproduktor odpojené, potřebuje aplikace přístup k Bluetooth. V Androidu je toto oprávnění označeno jako přístup k nedalekým zařízením a upozorňuje, že Bluetooth zařízení může být použito k odhadu aktuální polohy. Nicméně aplikace Jellyfin toto oprávnění nikdy nepoužije ke zjištění Vaší polohy.</string>
+    <string name="wifi_only_summary">Média budou stažena pouze přes WiFi.</string>
+    <string name="mobile_data_summary">Média budou stažena přes WiFi a mobilní sítě.</string>
+    <string name="mobile_data_and_roaming_summary">Média budou stažena přes WiFi, mobilní sítě a mobilní sítě v roamingu.</string>
 </resources>
