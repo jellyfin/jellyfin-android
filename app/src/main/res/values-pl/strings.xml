@@ -88,7 +88,7 @@
     <string name="notification_action_rewind">Przewiń</string>
     <string name="music_notification_channel_description">Służy do sterowania odtwarzaniem muzyki</string>
     <string name="mobile_data_and_roaming">Dane komórkowe i roaming</string>
-    <string name="network_message">Czy chcesz zezwolić na pobieranie danych przez sieć komórkową lub roaming? Opłaty mogą być naliczane przez twojego dostawcę.</string>
+    <string name="network_message">Czy chcesz zezwolić na pobieranie danych przez sieć komórkową lub roaming? Opłaty mogą być naliczane przez twojego dostawcę. Później możesz zmienić tę opcję w ustawieniach.</string>
     <string name="battery_optimizations_message">Proszę wyłączyć optymalizacje baterii dla odtwarzania multimediów, gdy ekran jest wyłączony.</string>
     <string name="host_input_hint">Host</string>
     <string name="dialog_web_view_outdated_message">Implementacja WebView używana przez urządzenie jest przestarzała.
@@ -110,4 +110,7 @@
     <string name="bluetooth_permission_granted">Zezwolenie na Bluetooth zostało udzielone</string>
     <string name="bluetooth_permission_title">Zezwolić na dostęp Bluetooth\?</string>
     <string name="bluetooth_permission_message">Aby wykryć, kiedy bezprzewodowe słuchawki lub głośniki są odłączone, aplikacja wymaga dostępu Bluetooth. W systemie Android to uprawnienie jest opisywane jako dostęp do pobliskich urządzeń i ostrzega, że urządzenia Bluetooth mogą służyć do określania bieżącej lokalizacji. Jednak aplikacja Jellyfin nigdy nie użyje tego uprawnienia do wykrycia Twojej lokalizacji.</string>
+    <string name="wifi_only_summary">Multimedia będą pobierane wyłącznie przez Wi-Fi.</string>
+    <string name="mobile_data_summary">Multimedia będą pobierane przez Wi-Fi i sieci komórkowe.</string>
+    <string name="mobile_data_and_roaming_summary">Multimedia będą pobierane przez Wi-Fi, sieci komórkowe i roamingowe.</string>
 </resources>
