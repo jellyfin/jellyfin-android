@@ -10,9 +10,10 @@ import androidx.compose.ui.Modifier
 
 @Composable
 inline fun CenterRow(
+    modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit,
 ) = Row(
-    modifier = Modifier.fillMaxWidth(),
+    modifier = modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.Center,
     verticalAlignment = Alignment.CenterVertically,
     content = content,
