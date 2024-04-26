@@ -64,7 +64,7 @@
     <string name="choose_server_button_text">Tria el servidor</string>
     <string name="button_use_different_server">Utilitzar un servidor diferent</string>
     <string name="battery_optimizations_message">Si us plau, desactiveu les optimitzacions de bateria per a la reproducció de contingut multimèdia mentre la pantalla està apagada.</string>
-    <string name="network_message">Voleu permetre que la descàrrega s\'executi a través de dades mòbils o xarxes de roaming? Les despeses podrien ser aplicables per part del vostre proveïdor.</string>
+    <string name="network_message">Voleu permetre que la descàrrega s\'executi a través de dades mòbils o xarxes de roaming? Les despeses podrien ser aplicables per part del vostre proveïdor. Podeu canviar aquesta opció més endavant des de la configuració.</string>
     <string name="media_service_car_section_recents">Reproduccions recents</string>
     <string name="media_service_car_item_no_title">Sense títol</string>
     <string name="music_notification_channel_description">Utilitzat per al control de reproducció de música</string>
@@ -108,4 +108,7 @@
     <string name="bluetooth_permission_title">Pemetre connexió Bluetooth\?</string>
     <string name="bluetooth_permission_granted">S\'ha concedit el permís Bluetooth</string>
     <string name="bluetooth_permission_message">L\'aplicació necessita accés a Bluetooth per detectar quan els auriculars o altaveus sense fils estan desconnectat. A Android, aquest permís es descriu com a accés a dispositius propers, i adverteix que els dispositius Bluetooth podrien ser utilitzats per a inferir la localització actual. Però, l\'aplicació Jellyfin mai utilitzarà aquest permís per detectar la seva ubicació.</string>
+    <string name="wifi_only_summary">Els continguts multimèdia només es baixaran mitjançant WiFi.</string>
+    <string name="mobile_data_summary">Els continguts multimèdia només es baixaran mitjançant WiFi i xarxes mòbils.</string>
+    <string name="mobile_data_and_roaming_summary">Els continguts multimèdia només es baixaran mitjançant WiFi, i xarxes mòbils i d\'itinerància.</string>
 </resources>
