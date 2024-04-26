@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">Mobilní data a roaming</string>
     <string name="mobile_data">Mobilní data</string>
     <string name="wifi_only">Pouze WiFi</string>
-    <string name="network_message">Chcete povolit stahování přes mobilní data či roaming? Případné poplatky jsou dány vašim operátorem.</string>
+    <string name="network_message">Chcete povolit stahování přes mobilní data či roaming? Případné poplatky jsou dány vašim operátorem. Tuto možnost je možné později změnit v nastavení.</string>
     <string name="network_title">Povolené typy sítě</string>
     <string name="battery_optimizations_message">Systémovou správu baterie pro tuto aplikaci je nutné vypnout, pokud chcete přehrávat s vypnutou obrazovkou.</string>
     <string name="connect_button_text">Připojit</string>
