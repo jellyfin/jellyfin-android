@@ -10,9 +10,6 @@ plugins {
     alias(libs.plugins.android.junit5)
 }
 
-// Apply workaround
-apply("baselineWorkaround.gradle")
-
 detekt {
     buildUponDefaultConfig = true
     allRules = false
