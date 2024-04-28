@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="network_message">Wil je downloads toestaan over mobiele data of tijdens roaming? Je provider kan hiervoor kosten in rekening brengen.</string>
+    <string name="network_message">Wil je downloads toestaan via mobiele data of tijdens roaming? Je provider kan hiervoor kosten in rekening brengen. Je kunt deze optie later wijzigen in de instellingen.</string>
     <string name="network_title">Toegestane netwerktypen</string>
     <string name="downloading">Downloaden</string>
     <string name="mobile_data_and_roaming">Mobiele data &amp; roaming</string>
@@ -34,7 +34,7 @@
     <string name="notification_action_previous">Vorige</string>
     <string name="download_no_storage_permission">Kan geen bestanden downloaden zonder machtigingen</string>
     <string name="connection_error_cannot_connect">Er kan geen verbinding worden gemaakt.
-\nControleer de hostnaam en uw netwerkverbinding.</string>
+\nControleer de hostnaam en je netwerkverbinding.</string>
     <string name="video_player_external_description">Externe video-afspeelapplicaties zoals MX Player en VLC</string>
     <string name="video_player_native_description">Gebaseerd op ExoPlayer, ondersteunt meer videoformaten en codecs, en is meer geïntegreerd in het besturingssysteem</string>
     <string name="video_player_web_description">De standaard HTML-videospeler van de webinterface</string>
@@ -108,4 +108,7 @@
     <string name="bluetooth_permission_message">De app vereist Bluetooth-toegang om te detecteren of er een draadloze koptelefoon of luidspreker is aangesloten. Op Android wordt deze machtiging beschreven als \"toegang tot apparaten in de buurt\" met de waarschuwing dat deze kan worden gebruikt om de huidige locatie te achterhalen. De Jellyfin-app zal deze machtiging echter nooit met dat doel gebruiken.</string>
     <string name="bluetooth_permission_title">Bluetooth-toegang toestaan\?</string>
     <string name="bluetooth_permission_granted">Bluetooth-toestemming is verleend</string>
+    <string name="mobile_data_summary">Media zal via WiFi en mobiele netwerken worden gedownload.</string>
+    <string name="wifi_only_summary">Media zal alleen via WiFi worden gedownload.</string>
+    <string name="mobile_data_and_roaming_summary">Media zal via WiFi, mobiele- en roaming-netwerken worden gedownload.</string>
 </resources>
