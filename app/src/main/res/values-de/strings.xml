@@ -2,7 +2,7 @@
 <resources>
     <string name="battery_optimizations_message">Bitte deaktiviere die Akku-Optimierungen, damit Medien bei ausgeschaltetem Bildschirm abgespielt werden können.</string>
     <string name="network_title">Erlaubte Verbindungsmöglichkeiten</string>
-    <string name="network_message">Möchtest du den Download über mobile Daten oder Roaming-Netzwerke erlauben? Möglicherweise fallen Gebühren von deinem Anbieter an.</string>
+    <string name="network_message">Möchtest du den Download über mobile Daten oder Roaming-Netzwerke erlauben? Möglicherweise fallen Gebühren von deinem Anbieter an. Du kannst diese Option später in den Einstellungen ändern.</string>
     <string name="wifi_only">Nur WLAN</string>
     <string name="mobile_data">Mobile Daten</string>
     <string name="mobile_data_and_roaming">Mobile Daten &amp; Roaming</string>
@@ -108,4 +108,7 @@
     <string name="bluetooth_permission_continue">Weiter</string>
     <string name="bluetooth_permission_granted">Bluetooth-Berechtigung wurde erteilt</string>
     <string name="bluetooth_permission_message">Die App benötigt Bluetooth-Zugriff, um zu erkennen, wenn drahtlose Kopfsprecher oder Lautsprecher getrennt werden. In Android wird diese Berechtigung als Zugriff auf Geräte in der Nähe bezeichnet, und es wird gewarnt, dass Bluetooth-Geräte dazu verwendet werden können, den aktuellen Standort zu bestimmen. Allerdings wird die Jellyfin App diese Berechtigung nie dazu nutzen, deinen Standort zu bestimmen.</string>
+    <string name="wifi_only_summary">Medien werden nur über WLAN heruntergeladen.</string>
+    <string name="mobile_data_summary">Medien werden über WLAN und mobile Daten heruntergeladen.</string>
+    <string name="mobile_data_and_roaming_summary">Medien werden über WLAN, mobile Daten und Roaming-Netzwerke heruntergeladen.</string>
 </resources>
