@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">Dados Móveis &amp; Roaming</string>
     <string name="mobile_data">Dados Móveis</string>
     <string name="wifi_only">Apenas WiFi</string>
-    <string name="network_message">Gostaria de habilitar o download através de dados móveis ou roaming? Você estará suscetível à cobranças de sua operadora.</string>
+    <string name="network_message">Gostaria de habilitar o download através de dados móveis ou roaming? Você estará suscetível à cobranças de sua operadora. Você pode alterar essa opção depois em configurações.</string>
     <string name="network_title">Tipos de Rede Permitidos</string>
     <string name="battery_optimizations_message">Por favor, desative as otimizações de bateria para possibilitar a reprodução de mídia com a tela desligada.</string>
     <string name="activity_name_settings">Configurações do Jellyfin</string>
@@ -109,4 +109,7 @@
     <string name="bluetooth_permission_title">Permitir acesso ao Bluetooth\?</string>
     <string name="bluetooth_permission_continue">Continuar</string>
     <string name="bluetooth_permission_granted">Permissão de acesso ao Bluetooth autorizada</string>
+    <string name="mobile_data_and_roaming_summary">Mídias serão baixadas em WiFi, redes móveis e roaming.</string>
+    <string name="wifi_only_summary">Mídias serão baixadas apenas em WiFi.</string>
+    <string name="mobile_data_summary">Mídias serão baixadas em WiFi e redes móveis.</string>
 </resources>
