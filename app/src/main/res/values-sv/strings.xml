@@ -31,7 +31,7 @@
     <string name="external_player_unknown_error">Okänt fel i extern spelare. Uppspelningsspårning är inaktiverad.</string>
     <string name="external_player_invalid_player">Ingen giltig extern spelare har valts. Uppspelningsspårning är inaktiverad.</string>
     <string name="external_player_invalid_play_method">Felaktig uppspelningsmetod.</string>
-    <string name="network_message">Vill du tillåta nedladdningen att använda mobildata eller roaming? Avgifter från din leverantör kan tillkomma.</string>
+    <string name="network_message">Vill du tillåta nedladdningen att använda mobildata eller roaming? Avgifter från din leverantör kan tillkomma. Du kan ändra detta i inställningarna senare.</string>
     <string name="battery_optimizations_message">Var god och inaktivera batterioptimeringar för att kunna spela upp media medan skärmen är avslagen.</string>
     <string name="connection_error_cannot_connect">Anslutning kan inte upprättas. 
 \nVar god och kontrollera värdnamn och din nätverksanslutning.</string>
@@ -108,4 +108,7 @@
     <string name="bluetooth_permission_message">För att göra det möjligt att upptäcka om hörlurar eller högtalare är anslutna behövs tillgång till Bluetooth. På Android ingår det i platsåtkomst och varnar för att Bluetoothenheter kan användas för att ta reda på användarens plats. Jellyfin-appen kommer aldrig att använda det för att ta reda på din plats.</string>
     <string name="bluetooth_permission_continue">Fortsätt</string>
     <string name="bluetooth_permission_granted">Åtkomst till Bluetooth tillåten</string>
+    <string name="wifi_only_summary">Endast WiFi-anslutning kommer att användas vid nedladdning.</string>
+    <string name="mobile_data_summary">Både Wifi-anslutning och mobildata kommer att användas vid nedladdning.</string>
+    <string name="mobile_data_and_roaming_summary">WiFi-anslutning, mobildata och roaming-anslutning kommer att användas för nedladdning.</string>
 </resources>
