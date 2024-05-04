@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="network_message">Autoriser le téléchargement via les données mobiles et l\'itinérance ? Des frais de votre fournisseur peuvent s\'appliquer.</string>
+    <string name="network_message">Autoriser le téléchargement via les données mobiles et l\'itinérance ? Des frais de votre fournisseur peuvent s\'appliquer. Vous pourrez modifier cette option ultérieurement à partir des paramètres.</string>
     <string name="battery_optimizations_message">Veuillez désactiver les optimisations de la batterie pour permettre la lecture avec écran éteint.</string>
     <string name="downloading">Téléchargement en cours</string>
     <string name="mobile_data_and_roaming">Données mobiles et itinérance</string>
@@ -109,4 +109,6 @@
     <string name="bluetooth_permission_title">Autoriser l\'accès Bluetooth \?</string>
     <string name="bluetooth_permission_continue">Continuer</string>
     <string name="bluetooth_permission_granted">La permission Bluetooth a été attribuée</string>
+    <string name="wifi_only_summary">Les médias seront téléchargés uniquement via WiFi.</string>
+    <string name="mobile_data_summary">Les médias seront téléchargés via les réseaux WiFi et mobiles.</string>
 </resources>
