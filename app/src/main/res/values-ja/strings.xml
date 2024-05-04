@@ -19,7 +19,7 @@
     <string name="mobile_data_and_roaming">モバイルデータ通信 &amp; ローミング</string>
     <string name="mobile_data">モバイルデータ通信</string>
     <string name="wifi_only">WiFi のみ</string>
-    <string name="network_message">モバイルデータ通信やローミングネットワークでダウンロードすることを許可しますか？プロバイダから料金を請求される場合があります。</string>
+    <string name="network_message">モバイルデータ通信やローミングネットワークでダウンロードすることを許可しますか？プロバイダから料金を請求される場合があります。この設定は後から変更できます。</string>
     <string name="network_title">許可するネットワークの種類</string>
     <string name="battery_optimizations_message">ディスプレイをオフにした状態でメディアを再生するには電池の最適化を無効にしてください。</string>
     <string name="available_servers_title">利用可能なサーバー</string>
@@ -94,4 +94,17 @@
     <string name="dialog_web_view_not_supported_message">このデバイスではWebViewはサポートされていません。
 \n互換性のあるWebViewの実装をインストールするか、サポートされているデバイスに切り替えてください。</string>
     <string name="button_use_different_server">他のサーバーを使う</string>
+    <string name="bluetooth_permission_title">Bluetooth アクセスを許可しますか？</string>
+    <string name="bluetooth_permission_granted">Bluetoothの権限が付与されています</string>
+    <string name="wifi_only_summary">メディアはWiFi経由でのみダウンロードされます。</string>
+    <string name="mobile_data_and_roaming_summary">メディアはWiFi、モバイル、およびローミングネットワーク経由でダウンロードされます。</string>
+    <string name="player_error_unspecific_exception">プレーヤーに問題が発生しました</string>
+    <string name="menu_item_auto">自動</string>
+    <string name="menu_item_software_decoding">ソフトウェアデコード</string>
+    <string name="mobile_data_summary">メディアはWiFiおよびモバイルネットワーク経由でダウンロードされます。</string>
+    <string name="menu_item_hardware_decoding">ハードウェアデコード</string>
+    <string name="pref_subtitle_style">字幕スタイルのカスタマイズ</string>
+    <string name="pref_subtitle_style_summary">Androidの設定で字幕のスタイルを変更できます</string>
+    <string name="bluetooth_permission_message">ワイヤレスヘッドフォンやスピーカーの接続が切れたことを検出するために、アプリはBluetoothへのアクセス権限を必要とします。Androidでは、この権限は近くのデバイスへのアクセスとして説明されており、Bluetoothデバイスを使用して現在の位置情報を推測できることが警告されます。ただし、Jellyfin アプリはこの権限を使用してあなたの位置情報を検出することは決してありません。</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">トランスコーディングを防止し、基本的なスタイルの字幕のみを表示します。有効にすると、高度な字幕スタイルは使用できません。</string>
 </resources>
