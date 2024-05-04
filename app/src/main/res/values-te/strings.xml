@@ -97,4 +97,12 @@
     <string name="external_player_system_default">సిస్టమ్ డిఫాల్ట్</string>
     <string name="external_player_system_default_description">సిస్టమ్ ప్లేయర్ ఎంపికను నిర్వహించనివ్వండి, కొంతమంది ప్లేయర్‌లు పూర్తిగా అనుకూలంగా ఉండకపోవచ్చు.</string>
     <string name="pref_category_downloads">డౌన్‌లోడ్‌లు</string>
+    <string name="mobile_data_and_roaming_summary">మీడియా WiFi, మొబైల్ మరియు రోమింగ్ నెట్‌వర్క్‌ల ద్వారా డౌన్‌లోడ్ చేయబడుతుంది.</string>
+    <string name="bluetooth_permission_continue">కొనసాగించు</string>
+    <string name="bluetooth_permission_granted">బ్లూటూత్ అనుమతి మంజూరు చేయబడింది</string>
+    <string name="bluetooth_permission_title">బ్లూటూత్ యాక్సెస్‌ని అనుమతించాలా?</string>
+    <string name="bluetooth_permission_message">వైర్‌లెస్ హెడ్‌ఫోన్‌లు లేదా స్పీకర్‌లు డిస్‌కనెక్ట్ అయినప్పుడు గుర్తించడానికి, యాప్‌కి బ్లూటూత్ యాక్సెస్ అవసరం. ఆండ్రాయిడ్‌లో, ఈ అనుమతి సమీపంలోని పరికరాలకు యాక్సెస్‌గా వివరించబడింది మరియు ప్రస్తుత స్థానాన్ని ఊహించడానికి బ్లూటూత్ పరికరాలను ఉపయోగించవచ్చని హెచ్చరిస్తుంది. అయితే, మీ స్థానాన్ని గుర్తించడానికి జెల్లీఫిన్ యాప్ ఈ అనుమతిని ఎప్పటికీ ఉపయోగించదు.</string>
+    <string name="mobile_data_summary">మీడియా WiFi మరియు మొబైల్ నెట్‌వర్క్‌ల ద్వారా డౌన్‌లోడ్ చేయబడుతుంది.</string>
+    <string name="button_use_different_server">వేరే సర్వర్‌ని ఉపయోగించండి</string>
+    <string name="wifi_only_summary">మీడియా WiFi ద్వారా మాత్రమే డౌన్‌లోడ్ చేయబడుతుంది.</string>
 </resources>
