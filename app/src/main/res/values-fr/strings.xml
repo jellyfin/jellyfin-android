@@ -111,4 +111,5 @@
     <string name="bluetooth_permission_granted">La permission Bluetooth a été attribuée</string>
     <string name="wifi_only_summary">Les médias seront téléchargés uniquement via WiFi.</string>
     <string name="mobile_data_summary">Les médias seront téléchargés via les réseaux WiFi et mobiles.</string>
+    <string name="mobile_data_and_roaming_summary">Les médias seront téléchargés sur les réseaux WiFi, mobiles et itinérants.</string>
 </resources>
