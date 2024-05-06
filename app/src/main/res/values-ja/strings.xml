@@ -107,4 +107,5 @@
     <string name="pref_subtitle_style_summary">Androidの設定で字幕のスタイルを変更できます</string>
     <string name="bluetooth_permission_message">ワイヤレスヘッドフォンやスピーカーの接続が切れたことを検出するために、アプリはBluetoothへのアクセス権限を必要とします。Androidでは、この権限は近くのデバイスへのアクセスとして説明されており、Bluetoothデバイスを使用して現在の位置情報を推測できることが警告されます。ただし、Jellyfin アプリはこの権限を使用してあなたの位置情報を検出することは決してありません。</string>
     <string name="pref_exoplayer_direct_play_ass_summary">トランスコーディングを防止し、基本的なスタイルの字幕のみを表示します。有効にすると、高度な字幕スタイルは使用できません。</string>
+    <string name="pref_exoplayer_direct_play_ass">直接再生時にSSA/ASS字幕を許可する</string>
 </resources>
