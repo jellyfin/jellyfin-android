@@ -49,7 +49,7 @@
     <string name="mobile_data_and_roaming">行動數據或漫遊</string>
     <string name="mobile_data">行動數據</string>
     <string name="wifi_only">僅使用 Wifi</string>
-    <string name="network_message">您要允許使用行動數據或漫遊網路下載嗎？您的網路提供商可能會收取費用。</string>
+    <string name="network_message">您要允許使用行動數據或漫遊網路下載嗎？您的網路提供商可能會收取費用。您可以稍後在設定中更改此選項。</string>
     <string name="battery_optimizations_message">若要在螢幕關閉時繼續播放，請停用電池最佳化。</string>
     <string name="available_servers_title">可用的伺服器</string>
     <string name="choose_server_button_text">選擇伺服器</string>
@@ -105,4 +105,9 @@
     <string name="menu_item_software_decoding">軟體解碼</string>
     <string name="pref_exoplayer_direct_play_ass">在使用direct play時允許使用 SSA/ASS字幕</string>
     <string name="pref_exoplayer_direct_play_ass_summary">防止轉碼並僅顯示具有基本樣式的字幕。 如果啟用，進階字幕樣式將無法使用。</string>
+    <string name="pref_subtitle_style">自定義字幕樣式</string>
+    <string name="pref_subtitle_style_summary">您可以在Android設定中更改字幕樣式</string>
+    <string name="wifi_only_summary">媒體將僅通過WiFi下載。</string>
+    <string name="mobile_data_summary">媒體將通過WiFi和移動網絡下載。</string>
+    <string name="mobile_data_and_roaming_summary">媒體將通過WiFi、移動網絡和漫遊服務下載。</string>
 </resources>
