@@ -4,12 +4,12 @@
     <string name="downloading">다운로드 중</string>
     <string name="mobile_data_and_roaming">모바일 데이터 &amp; 로밍</string>
     <string name="mobile_data">모바일 데이터</string>
-    <string name="network_message">모바일 데이터 혹은 로밍 네트워크를 사용하여 다운로드하는 것을 허용하겠습니까? 요금이 부과될 수 있습니다.</string>
+    <string name="network_message">모바일 데이터 혹은 로밍 네트워크를 사용하여 다운로드하는 것을 허용하겠습니까? 요금이 부과될 수 있습니다. 나중에 설정에서 변경 할 수 있습니다.</string>
     <string name="network_title">허용된 네트워크 종류</string>
     <string name="connect_button_text">연결</string>
     <string name="host_input_hint">호스트</string>
     <string name="connect_to_server_title">서버 연결</string>
-    <string name="battery_optimizations_message">화면을 끈 상태로 미디어 재생하려면 배터리 최적화를 비활성화 해주십시오.</string>
+    <string name="battery_optimizations_message">화면을 끈 상태로 미디어를 재생하려면 배터리 최적화를 비활성화 해주십시오.</string>
     <string name="pref_exoplayer_allow_background_audio">백그라운드 오디오</string>
     <string name="pref_category_video_player">비디오 재생기</string>
     <string name="pref_music_notification_always_dismissible_title">지울 수 있는 음악 플레이어 알림</string>
@@ -93,4 +93,21 @@
     <string name="dialog_web_view_outdated_message">이 기기의 WebView 버전이 오래되었습니다.
 \n호환되는 버전으로 업데이트 해 주십시오.</string>
     <string name="dialog_web_view_not_supported">WebView 지원되지 않음</string>
+    <string name="mobile_data_and_roaming_summary">미디어 다운로드에 WiFi, 모바일 네트워크와 로밍 네트워크를 사용합니다.</string>
+    <string name="menu_item_auto">자동</string>
+    <string name="menu_item_software_decoding">소프트웨어 디코딩</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">가로 모드 비디오를 가로 모드로 재생 시작</string>
+    <string name="pref_subtitle_style_summary">안드로이드 설정에서 자막 스타일을 변경할 수 있습니다</string>
+    <string name="bluetooth_permission_title">블루투스 접근 권한을 허용 하시겠습니까?</string>
+    <string name="bluetooth_permission_message">Jellyfin은 무선 헤드폰 또는 스피커가 연결 해제되었는지 확인하기 위해 블루투스 접근 권한이 필요합니다. 안드로이드에서는 \'근처 기기\' 권한으로 표시되며, 기기 간 상대적 위치를 파악할 수 있다고 경고할 수 있습니다. 하지만 Jellyfin은 절대로 위치 탐지를 위해 이 권한을 사용하지 않습니다.</string>
+    <string name="bluetooth_permission_continue">계속</string>
+    <string name="bluetooth_permission_granted">블루투스 접근 권한이 허용되었습니다</string>
+    <string name="pref_exoplayer_direct_play_ass">직접 플레이시 SSA/ASS 자막 허용</string>
+    <string name="pref_subtitle_style">자막 스타일 변경</string>
+    <string name="player_error_unspecific_exception">플레이어에 문제가 발생했습니다</string>
+    <string name="menu_item_hardware_decoding">하드웨어 디코딩</string>
+    <string name="button_use_different_server">다른 서버 사용</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">트랜스코딩을 억제하고 기본 서식만을 사용해 자막을 보여줍니다. 활성화하면 고급 자막 서식은 사용할 수 없게 됩니다.</string>
+    <string name="wifi_only_summary">미디어 다운로드에 WiFi 만 사용합니다.</string>
+    <string name="mobile_data_summary">미디어 다운로드에 WiFi와 모바일 네트워크를 사용합니다.</string>
 </resources>
