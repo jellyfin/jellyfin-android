@@ -17,4 +17,5 @@
     <string name="media_service_car_section_playlists">Mga Playlist</string>
     <string name="media_service_car_item_no_title">Walang Pamagat</string>
     <string name="music_notification_channel">Player pangkanta ng Jellyfin</string>
+    <string name="dialog_web_view_not_supported">Hindi man supportado ng WebView</string>
 </resources>
