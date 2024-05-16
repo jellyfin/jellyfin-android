@@ -19,8 +19,7 @@
     <string name="music_notification_channel">Player pangkanta ng Jellyfin</string>
     <string name="dialog_web_view_not_supported">Hindi man supportado ng WebView</string>
     <string name="button_use_different_server">Gumamit na iba na Server</string>
-    <string name="bluetooth_permission_message">para ma detect kapag nag disconnect ang headphones or speakers, kailangang nang app yung Bluetooth access. kapag nasa android,
-\nyung</string>
+    <string name="bluetooth_permission_message">para ma detect kapag nag disconnect ang headphones or speakers, kailangang nang app yung Bluetooth access. kapag nasa android, yung bluetooth access naglalagay nang babala na may access sa iba na mnga devices, at baka makita yung lugar mo depende sa device. pero ang Jellyfin hindi man mag gagamit or magtanong nang lugar mo.</string>
     <string name="toast_reopen_after_change">Ipa bukas ulit ang app pagkatapos na merong bago na pinalit</string>
     <string name="host_input_hint">Host</string>
     <string name="connection_error_cannot_connect">Hindi man maka connectado.
@@ -31,4 +30,5 @@
     <string name="choose_server_button_text">Pumili nang Server</string>
     <string name="available_servers_title">Magagamit na Servers</string>
     <string name="bluetooth_permission_title">Payagan ang Bluetooth access?</string>
+    <string name="bluetooth_permission_granted">Pinayagan ang Bluetooth</string>
 </resources>
