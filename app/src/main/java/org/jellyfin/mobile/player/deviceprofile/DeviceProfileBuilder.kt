@@ -40,14 +40,14 @@ class DeviceProfileBuilder(
                 val name = codec.name
                 when (codec) {
                     is DeviceCodec.Video -> {
-                        if (videoCodecs.containsKey(name) && !isSoftwareOnly(codecInfo)) {
+                        if (isSoftwareOnly(codecInfo)) {
+                            continue
+                        }
+                        if (videoCodecs.containsKey(name)) {
                             videoCodecs[name] = videoCodecs[name]!!.mergeCodec(codec)
                         }
-                        else if (!isSoftwareOnly(codecInfo)){
-                            videoCodecs[name] = codec
-                        }
                         else {
-                            // do nothing
+                            videoCodecs[name] = codec
                         }
                     }
                     is DeviceCodec.Audio -> {
