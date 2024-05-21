@@ -45,8 +45,7 @@ class DeviceProfileBuilder(
                         }
                         if (videoCodecs.containsKey(name)) {
                             videoCodecs[name] = videoCodecs[name]!!.mergeCodec(codec)
-                        }
-                        else {
+                        } else {
                             videoCodecs[name] = codec
                         }
                     }
