@@ -31,4 +31,8 @@
     <string name="available_servers_title">Magagamit na Servers</string>
     <string name="bluetooth_permission_title">Payagan ang Bluetooth access?</string>
     <string name="bluetooth_permission_granted">Pinayagan ang Bluetooth</string>
+    <string name="mobile_data">selpone datos/Mobile datos</string>
+    <string name="wifi_only_summary">ma da download lang ang media kapag nasa WiFi lang.</string>
+    <string name="network_title">Pwede na Network Types</string>
+    <string name="wifi_only">WiFi lang</string>
 </resources>
