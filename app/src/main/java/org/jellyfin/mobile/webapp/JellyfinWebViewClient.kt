@@ -1,11 +1,13 @@
 package org.jellyfin.mobile.webapp
 
+import android.content.Intent
 import android.net.Uri
 import android.net.http.SslError
 import android.webkit.SslErrorHandler
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebViewAssetLoader.AssetsPathHandler
 import androidx.webkit.WebViewClientCompat
@@ -36,6 +38,25 @@ abstract class JellyfinWebViewClient(
     abstract fun onConnectedToWebapp()
 
     abstract fun onErrorReceived()
+
+    override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+        val url = request.url
+        val path = url.path?.lowercase(Locale.ROOT) ?: ""
+        return when {
+            path.matches(Constants.MAIN_BUNDLE_PATH_REGEX) && "deferred" !in url.query.orEmpty() -> false
+            path.contains("/native/") -> false
+            path.endsWith(Constants.CAST_SDK_PATH) -> false
+            path.endsWith(Constants.SESSION_CAPABILITIES_PATH) -> false
+            url.toString().contains(server.hostname) -> false
+            else -> {
+                val intent = Intent(Intent.ACTION_VIEW, url)
+                if (intent.resolveActivity(view.context.packageManager) != null) {
+                    startActivity(view.context, intent, null)
+                }
+                true
+            }
+        }
+    }
 
     override fun shouldInterceptRequest(webView: WebView, request: WebResourceRequest): WebResourceResponse? {
         val url = request.url
