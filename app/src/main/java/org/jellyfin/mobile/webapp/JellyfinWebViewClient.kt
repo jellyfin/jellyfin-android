@@ -40,15 +40,12 @@ abstract class JellyfinWebViewClient(
     abstract fun onErrorReceived()
 
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+        Timber.d("shouldOverrideUrlLoading: %s", request.url.toString())
         val url = request.url
-        val path = url.path?.lowercase(Locale.ROOT) ?: ""
         return when {
-            path.matches(Constants.MAIN_BUNDLE_PATH_REGEX) && "deferred" !in url.query.orEmpty() -> false
-            path.contains("/native/") -> false
-            path.endsWith(Constants.CAST_SDK_PATH) -> false
-            path.endsWith(Constants.SESSION_CAPABILITIES_PATH) -> false
-            url.toString().contains(server.hostname) -> false
+            url.toString().startsWith(server.hostname) -> false
             else -> {
+                Timber.d("shouldOverrideUrlLoading: external link, handle with system")
                 val intent = Intent(Intent.ACTION_VIEW, url)
                 if (intent.resolveActivity(view.context.packageManager) != null) {
                     startActivity(view.context, intent, null)
