@@ -41,12 +41,12 @@ abstract class JellyfinWebViewClient(
 
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
         Timber.d("shouldOverrideUrlLoading: %s", request.url.toString())
-        val url = request.url
         return when {
-            url.toString().startsWith(server.hostname) -> false
+            !request.hasGesture() -> false
+            request.url.toString().startsWith(server.hostname) -> false
             else -> {
-                Timber.d("shouldOverrideUrlLoading: external link, handle with system")
-                val intent = Intent(Intent.ACTION_VIEW, url)
+                Timber.d("shouldOverrideUrlLoading: external link with gesture, handle with system")
+                val intent = Intent(Intent.ACTION_VIEW, request.url)
                 if (intent.resolveActivity(view.context.packageManager) != null) {
                     startActivity(view.context, intent, null)
                 }
