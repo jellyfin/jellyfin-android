@@ -12,7 +12,7 @@
     <string name="network_title">Jenis Jaringan yang Diizinkan</string>
     <string name="mobile_data_and_roaming">Data Seluler dan Roaming</string>
     <string name="mobile_data">Data Seluler</string>
-    <string name="network_message">izinkan unduhan melalui data seluler ataupun jaringan roaming? Biaya Tambahan dari Operator mungkin berlaku.</string>
+    <string name="network_message">izinkan unduhan melalui data seluler ataupun jaringan roaming? Biaya Tambahan dari Operator mungkin berlaku. Kamu dapat mengubah pengaturan ini lainkali di Pengaturan</string>
     <string name="battery_optimizations_message">Nonaktifkan pengoptimalan baterai untuk pemutaran media saat layar mati.</string>
     <string name="downloading">Mengunduh</string>
     <string name="playback_info_and_x_more">… Dan %d lainnya</string>
@@ -89,7 +89,7 @@
     <string name="dialog_button_check_for_updates">Cek pembaruan</string>
     <string name="dialog_web_view_outdated_message">Implementasi WebView yang digunakan perangkat anda sudah lawas.
 \nMohon perbarui dengan versi yang cocok.</string>
-    <string name="dialog_web_view_outdated">WebView versi lama</string>
+    <string name="dialog_web_view_outdated">WebView kadaluarsa</string>
     <string name="dialog_web_view_not_supported_message">WebViews tidak didukung oleh perangkat ini.
 \nInstal komponen WebView yang cocok, atau ganti dengan perangkat yang didukung.</string>
     <string name="dialog_web_view_not_supported">WebView tidak didukung</string>
@@ -101,4 +101,13 @@
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Memulai video mode lanskap di orientasi lanskap</string>
     <string name="menu_item_hardware_decoding">Dekoding Perangkat Keras</string>
     <string name="pref_exoplayer_direct_play_ass">Mengijinkan takarir SSA/ASS saat diputar langsung</string>
+    <string name="bluetooth_permission_title">Izinkan akses Bluetooth?</string>
+    <string name="bluetooth_permission_continue">Lanjutkan</string>
+    <string name="bluetooth_permission_granted">Perizinan Bluethooth sudah disetujui</string>
+    <string name="menu_item_software_decoding">Pengkodean Perangkat Lunak</string>
+    <string name="bluetooth_permission_message">Untuk mendeteksi headphone wireless atau speaker saat tidak tersambung, aplikasi membutuhkan akses Bluetooth. Di android, perizinan ini di desckripsikan sebagai \"Akses ke perangkat sekitar\", dan memberitahu bahwa Bluetooth dapat di akses di lokasi sekarang. Akan tetapi, Jellyfin tidak akan menggunakan perizinan ini untuk mendeteksi lokasimu.</string>
+    <string name="wifi_only_summary">Media akan di unduk hanya menggunakan WiFi saja</string>
+    <string name="mobile_data_summary">Media akan di unduh melewati WiFi dan Jaringan Data Seluler</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Mencegah transkode dan menampilkan subtitle dengan style standar. Style subtitle lanjutan tidak akan tersedia jika diaktifkan</string>
+    <string name="mobile_data_and_roaming_summary">Media akan di unduh dengan Wifi, Data Seluler dan Jaringan Roaming</string>
 </resources>
