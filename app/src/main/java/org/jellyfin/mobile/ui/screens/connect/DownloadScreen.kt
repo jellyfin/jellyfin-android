@@ -78,6 +78,7 @@ fun DownloadList(
 
     LaunchedEffect(Unit) {
         // Add Downloads
+
         apiClientController.loadAllDownloads().mapTo(downloadItems) { download ->
             DownloadItem(
                 name = download.downloadName,

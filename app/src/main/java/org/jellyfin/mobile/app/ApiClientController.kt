@@ -75,6 +75,12 @@ class ApiClientController(
         downloadDao.getAllDownloads()
     }
 
+    suspend fun insertDownload(fileURI: String, downloadName: String) {
+        withContext(Dispatchers.IO) {
+            downloadDao.insert(fileURI, downloadName)
+        }
+    }
+
     private fun configureApiClientServer(server: ServerEntity?) {
         apiClient.baseUrl = server?.hostname
     }

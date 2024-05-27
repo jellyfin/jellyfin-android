@@ -1,40 +1,50 @@
 package org.jellyfin.mobile.utils
 
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity
 import android.app.ActivityManager
 import android.app.AlertDialog
-import android.app.DownloadManager
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Environment
 import android.os.PowerManager
 import android.provider.Settings
 import android.provider.Settings.System.ACCELEROMETER_ROTATION
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.withContext
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okio.BufferedSink
+import okio.BufferedSource
+import okio.buffer
+import okio.sink
+import org.chromium.base.ContextUtils
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.app.ApiClientController
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.webapp.WebViewFragment
 import org.koin.android.ext.android.get
 import timber.log.Timber
 import java.io.File
+import java.io.IOException
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
-import kotlin.io.path.Path
-import kotlin.io.path.exists
+
 
 fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     if (AndroidVersion.isAtLeastM) {
@@ -90,28 +100,68 @@ suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: Stri
             .show()
     }
 
-    val downloadLocation = File(filesDir, "/Downloads/")
+    val downloadDirectory = File(filesDir, "/Downloads/")
 
-    if (!downloadLocation.exists()) {
-        downloadLocation.mkdirs()
+    if (!downloadDirectory.exists()) {
+        downloadDirectory.mkdirs()
     }
 
-    val downloadRequest = DownloadManager.Request(uri)
-        .setTitle(title)
-        .setDescription(getString(R.string.downloading))
-        .setDestinationUri(Uri.fromFile(File(downloadLocation, filename)))
-        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+    val downloadFile = File(downloadDirectory, filename)
+    downloadFile(downloadFile, uri.toString())
 
-    downloadFile(downloadRequest, downloadMethod)
+    val apiController: ApiClientController = get()
+    apiController.insertDownload(downloadFile.canonicalPath, filename)
 }
 
-private fun Context.downloadFile(request: DownloadManager.Request, @DownloadMethod downloadMethod: Int) {
+private suspend fun Context.downloadFile(downloadedFile: File, downloadURL: String) {
+    /*
     require(downloadMethod >= 0) { "Download method hasn't been set" }
-    request.apply {
+    download_request.apply {
         setAllowedOverMetered(downloadMethod >= DownloadMethod.MOBILE_DATA)
         setAllowedOverRoaming(downloadMethod == DownloadMethod.MOBILE_AND_ROAMING)
     }
-    getSystemService<DownloadManager>()?.enqueue(request)
+    */
+    //ToDo: Add download method logic
+
+    /*
+    val fileSize: Long = response.header("Content-Length").toString().toLongOrNull()?:0
+    val percent = fileSize / 100
+
+    val notificationID = 100
+
+    val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        val channel = NotificationChannel("YOUR_CHANNEL_ID",
+            "YOUR_CHANNEL_NAME",
+            NotificationManager.IMPORTANCE_DEFAULT)
+        channel.description = "YOUR_NOTIFICATION_CHANNEL_DESCRIPTION"
+        mNotificationManager.createNotificationChannel(channel)
+    }
+
+    //Set notification information:
+    val notificationBuilder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+        .setSmallIcon(R.drawable.notification_icon)
+        .setContentTitle(textTitle)
+        .setContentText(textContent)
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+    */
+    //ToDo: Add notification / download progress logic
+
+    withContext(Dispatchers.IO) {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url(downloadURL)
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+            val sink: BufferedSink = downloadedFile.sink().buffer()
+            val source: BufferedSource = response.body!!.source()
+            sink.writeAll(source)
+            sink.close()
+        }
+    }
 }
 
 fun Activity.isAutoRotateOn() = Settings.System.getInt(contentResolver, ACCELEROMETER_ROTATION, 0) == 1
