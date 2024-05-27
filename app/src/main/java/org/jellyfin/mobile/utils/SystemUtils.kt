@@ -33,6 +33,8 @@ import timber.log.Timber
 import java.io.File
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import kotlin.io.path.Path
+import kotlin.io.path.exists
 
 fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     if (AndroidVersion.isAtLeastM) {
@@ -62,23 +64,6 @@ fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
 suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: String) {
     val appPreferences: AppPreferences = get()
 
-    // Storage permission for downloads isn't necessary from Android 10 onwards
-    if (!AndroidVersion.isAtLeastQ) {
-        @Suppress("MagicNumber")
-        val granted = withTimeout(2 * 60 * 1000 /* 2 minutes */) {
-            suspendCoroutine { continuation ->
-                requestPermission(WRITE_EXTERNAL_STORAGE) { requestPermissionsResult ->
-                    continuation.resume(requestPermissionsResult[WRITE_EXTERNAL_STORAGE] == PERMISSION_GRANTED)
-                }
-            }
-        }
-
-        if (!granted) {
-            toast(R.string.download_no_storage_permission)
-            return
-        }
-    }
-
     val downloadMethod = appPreferences.downloadMethod ?: suspendCancellableCoroutine { continuation ->
         AlertDialog.Builder(this)
             .setTitle(R.string.network_title)
@@ -105,10 +90,16 @@ suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: Stri
             .show()
     }
 
+    val downloadLocation = File(filesDir, "/Downloads/")
+
+    if (!downloadLocation.exists()) {
+        downloadLocation.mkdirs()
+    }
+
     val downloadRequest = DownloadManager.Request(uri)
         .setTitle(title)
         .setDescription(getString(R.string.downloading))
-        .setDestinationUri(Uri.fromFile(File(appPreferences.downloadLocation, filename)))
+        .setDestinationUri(Uri.fromFile(File(downloadLocation, filename)))
         .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
 
     downloadFile(downloadRequest, downloadMethod)

@@ -119,4 +119,6 @@
 
     <string name="pref_category_downloads">Downloads</string>
     <string name="pref_download_location">Download location</string>
+    <string name="view_downloads">View Downloads</string>
+    <string name="available_downloads">Available downloads</string>
 </resources>

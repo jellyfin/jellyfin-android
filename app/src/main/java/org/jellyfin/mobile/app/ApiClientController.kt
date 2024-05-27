@@ -2,8 +2,10 @@ package org.jellyfin.mobile.app
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.data.dao.ServerDao
 import org.jellyfin.mobile.data.dao.UserDao
+import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.sdk.Jellyfin
 import org.jellyfin.sdk.api.client.ApiClient
@@ -16,6 +18,7 @@ class ApiClientController(
     private val apiClient: ApiClient,
     private val serverDao: ServerDao,
     private val userDao: UserDao,
+    private val downloadDao: DownloadDao
 ) {
     private val baseDeviceInfo: DeviceInfo
         get() = jellyfin.options.deviceInfo!!
@@ -66,6 +69,10 @@ class ApiClientController(
         serverDao.getAllServers().filterNot { server ->
             server.id == appPreferences.currentServerId
         }
+    }
+
+    suspend fun loadAllDownloads(): List<DownloadEntity> = withContext(Dispatchers.IO) {
+        downloadDao.getAllDownloads()
     }
 
     private fun configureApiClientServer(server: ServerEntity?) {

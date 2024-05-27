@@ -54,7 +54,7 @@ val applicationModule = module {
     single(named(PLAYER_EVENT_CHANNEL)) { Channel<PlayerEvent>() }
 
     // Controllers
-    single { ApiClientController(get(), get(), get(), get(), get()) }
+    single { ApiClientController(get(), get(), get(), get(), get(), get()) }
 
     // Event handlers and channels
     single { ActivityEventHandler(get()) }

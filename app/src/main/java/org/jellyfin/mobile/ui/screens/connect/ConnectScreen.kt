@@ -34,6 +34,10 @@ fun ConnectScreen(
                     mainViewModel.switchServer(hostname)
                 },
             )
+            DownloadList(
+                showExternalConnectionError = showExternalConnectionError,
+                onViewDownloads = { onViewDownloads() },
+            )
         }
     }
 }
@@ -52,3 +56,5 @@ fun LogoHeader() {
         )
     }
 }
+
+fun onViewDownloads() {}
