@@ -1,6 +1,11 @@
 package org.jellyfin.mobile.player.source
 
+import android.media.MediaMetadataRetriever
+import com.google.common.base.Ticker
+import org.jellyfin.mobile.data.dao.DownloadDao
+import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.player.PlayerException
+import org.jellyfin.mobile.utils.Constants.TICKS_PER_MILLISECOND
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.jellyfin.sdk.api.client.extensions.itemsApi
@@ -8,7 +13,13 @@ import org.jellyfin.sdk.api.client.extensions.mediaInfoApi
 import org.jellyfin.sdk.api.operations.ItemsApi
 import org.jellyfin.sdk.api.operations.MediaInfoApi
 import org.jellyfin.sdk.model.api.DeviceProfile
+import org.jellyfin.sdk.model.api.MediaProtocol
+import org.jellyfin.sdk.model.api.MediaSourceInfo
+import org.jellyfin.sdk.model.api.MediaSourceType
+import org.jellyfin.sdk.model.api.MediaStream
+import org.jellyfin.sdk.model.api.MediaStreamType
 import org.jellyfin.sdk.model.api.PlaybackInfoDto
+import org.jellyfin.sdk.model.api.VideoType
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
 import java.util.UUID
@@ -85,5 +96,69 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
             Timber.e(e, "Cannot create JellyfinMediaSource")
             Result.failure(PlayerException.UnsupportedContent(e))
         }
+    }
+
+    suspend fun resolveDownloadSource(itemId: UUID, mediaSourceId: String, downloadDao: DownloadDao): Result<JellyfinMediaSource> {
+        val download: DownloadEntity = downloadDao.getDownload(mediaSourceId)
+        val runTimeTicks = download.runTimeMs * TICKS_PER_MILLISECOND
+        val fileSize = download.fileSize
+        val downloadVideoStream = MediaStream(
+            path = download.fileURI,
+            type = MediaStreamType.VIDEO,
+            index = 0,
+            isDefault = true,
+            isForced = false,
+            isExternal = false,
+            isInterlaced = false,
+            isTextSubtitleStream = false,
+            supportsExternalStream = false
+        )
+        val downloadAudioStream = MediaStream(
+            path = download.fileURI,
+            type = MediaStreamType.AUDIO,
+            index = 1,
+            isDefault = true,
+            isForced = false,
+            isExternal = false,
+            isInterlaced = false,
+            isTextSubtitleStream = false,
+            supportsExternalStream = false
+        )
+        val mediaSourceInfo = MediaSourceInfo(
+            protocol = MediaProtocol.FILE,
+            id = itemId.toString(),
+            type = MediaSourceType.DEFAULT,
+            name = download.downloadName,
+            size = fileSize,
+            videoType = VideoType.VIDEO_FILE,
+            mediaStreams = listOf(downloadVideoStream, downloadAudioStream),
+            runTimeTicks = runTimeTicks,
+            isRemote = false,
+            readAtNativeFramerate = false,
+            ignoreDts = false,
+            ignoreIndex = false,
+            genPtsInput = false,
+            supportsTranscoding = false,
+            supportsDirectStream = false,
+            supportsDirectPlay = true,
+            isInfiniteStream = false,
+            requiresOpening = false,
+            requiresClosing = false,
+            requiresLooping = false,
+            supportsProbing = false,
+            )
+        val source = JellyfinMediaSource(
+            itemId = itemId,
+            item = null,
+            sourceInfo = mediaSourceInfo,
+            playSessionId = "",
+            liveStreamId = mediaSourceInfo.liveStreamId,
+            maxStreamingBitrate = null,
+            startTimeTicks = null,
+            audioStreamIndex = 1,
+            subtitleStreamIndex = -1,
+            isDownload = true
+        )
+        return Result.success(source)
     }
 }

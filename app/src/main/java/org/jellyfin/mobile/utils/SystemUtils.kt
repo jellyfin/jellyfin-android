@@ -10,6 +10,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Environment
 import android.os.PowerManager
@@ -37,6 +38,8 @@ import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.ApiClientController
 import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.data.dao.DownloadDao
+import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.webapp.WebViewFragment
 import org.koin.android.ext.android.get
@@ -109,8 +112,26 @@ suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: Stri
     val downloadFile = File(downloadDirectory, filename)
     downloadFile(downloadFile, uri.toString())
 
-    val apiController: ApiClientController = get()
-    apiController.insertDownload(downloadFile.canonicalPath, filename)
+    val regex = Regex("""Items/([a-f0-9]{32})/Download""")
+    val matchResult = regex.find(uri.toString())
+    val itemId: String = matchResult?.groups?.get(1)?.value.toString()
+
+    val fileSize = downloadFile.length()
+    val retriever = MediaMetadataRetriever()
+    retriever.setDataSource(downloadFile.canonicalPath)
+    val runTimeMs: Long = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLong() ?: 0
+    retriever.release()
+
+    val downloadDao: DownloadDao = get()
+    downloadDao.insert(
+        DownloadEntity(
+            itemId = itemId,
+            fileURI = downloadFile.canonicalPath,
+            downloadName = filename,
+            fileSize = fileSize,
+            runTimeMs = runTimeMs,
+        )
+    )
 }
 
 private suspend fun Context.downloadFile(downloadedFile: File, downloadURL: String) {

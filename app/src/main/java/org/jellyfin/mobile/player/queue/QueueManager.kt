@@ -2,6 +2,7 @@ package org.jellyfin.mobile.player.queue
 
 import android.net.Uri
 import androidx.annotation.CheckResult
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.exoplayer2.MediaItem
@@ -10,6 +11,9 @@ import com.google.android.exoplayer2.source.MergingMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
+import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.FileDataSource
+import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
@@ -65,16 +69,45 @@ class QueueManager(
             else -> playOptions.mediaSourceId?.toUUIDOrNull()
         } ?: return PlayerException.InvalidPlayOptions()
 
-        startPlayback(
-            itemId = itemId,
-            mediaSourceId = playOptions.mediaSourceId,
-            maxStreamingBitrate = null,
-            startTimeTicks = playOptions.startPositionTicks,
-            audioStreamIndex = playOptions.audioStreamIndex,
-            subtitleStreamIndex = playOptions.subtitleStreamIndex,
-            playWhenReady = true,
-        )
+        when (playOptions.playFromDownloads) {
+            true -> playOptions.mediaSourceId?.let {
+                startDownloadPlayback(
+                    itemId = itemId,
+                    mediaSourceId = it,
+                    playWhenReady = true,)
+            }
+            else -> startPlayback(
+                itemId = itemId,
+                mediaSourceId = playOptions.mediaSourceId,
+                maxStreamingBitrate = null,
+                startTimeTicks = playOptions.startPositionTicks,
+                audioStreamIndex = playOptions.audioStreamIndex,
+                subtitleStreamIndex = playOptions.subtitleStreamIndex,
+                playWhenReady = true,)
+        }
 
+
+        return null
+    }
+
+    private suspend fun startDownloadPlayback(
+        itemId: UUID,
+        mediaSourceId: String,
+        playWhenReady: Boolean,
+    ): PlayerException? {
+        mediaSourceResolver.resolveDownloadSource(
+            itemId = itemId,
+            mediaSourceId = mediaSourceId,
+            downloadDao = get()
+        ).onSuccess { jellyfinMediaSource ->
+            _currentMediaSource.value = jellyfinMediaSource
+
+            // Load new media source
+            viewModel.load(jellyfinMediaSource, prepareDownloadStreams(mediaSourceId, jellyfinMediaSource.sourceInfo.mediaStreams?.get(0)?.path), playWhenReady)
+        }.onFailure { error ->
+            // Should always be of this type, other errors are silently dropped
+            return error as? PlayerException
+        }
         return null
     }
 
@@ -279,6 +312,24 @@ class QueueManager(
             }.build()
             factory.createMediaSource(mediaItem, source.runTimeMs)
         }.toTypedArray()
+    }
+
+
+    private fun prepareDownloadStreams(mediaSourceId: String, fileUri: String?): MediaSource {
+        return createDownloadVideoMediaSource(mediaSourceId, fileUri)
+    }
+
+    @CheckResult
+    private fun createDownloadVideoMediaSource(mediaSourceId: String, fileUri: String?): MediaSource {
+        val dataSourceFactory: DataSource.Factory = FileDataSource.Factory()
+        val mediaSourceFactory = ProgressiveMediaSource.Factory(dataSourceFactory)
+
+        val mediaItem = MediaItem.Builder()
+            .setMediaId(mediaSourceId)
+            .setUri(fileUri?.toUri())
+            .build()
+
+        return mediaSourceFactory.createMediaSource(mediaItem)
     }
 
     /**

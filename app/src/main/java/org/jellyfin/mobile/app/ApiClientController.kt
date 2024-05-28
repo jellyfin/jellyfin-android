@@ -17,8 +17,7 @@ class ApiClientController(
     private val jellyfin: Jellyfin,
     private val apiClient: ApiClient,
     private val serverDao: ServerDao,
-    private val userDao: UserDao,
-    private val downloadDao: DownloadDao
+    private val userDao: UserDao
 ) {
     private val baseDeviceInfo: DeviceInfo
         get() = jellyfin.options.deviceInfo!!
@@ -68,16 +67,6 @@ class ApiClientController(
     suspend fun loadPreviouslyUsedServers(): List<ServerEntity> = withContext(Dispatchers.IO) {
         serverDao.getAllServers().filterNot { server ->
             server.id == appPreferences.currentServerId
-        }
-    }
-
-    suspend fun loadAllDownloads(): List<DownloadEntity> = withContext(Dispatchers.IO) {
-        downloadDao.getAllDownloads()
-    }
-
-    suspend fun insertDownload(fileURI: String, downloadName: String) {
-        withContext(Dispatchers.IO) {
-            downloadDao.insert(fileURI, downloadName)
         }
     }
 

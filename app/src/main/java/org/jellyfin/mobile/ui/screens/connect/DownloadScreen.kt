@@ -1,9 +1,6 @@
 package org.jellyfin.mobile.ui.screens.connect
 
-import android.view.KeyEvent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -13,26 +10,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -45,20 +36,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.app.ApiClientController
-import org.jellyfin.mobile.setup.ConnectionHelper
-import org.jellyfin.mobile.ui.state.CheckUrlState
+import org.jellyfin.mobile.data.dao.DownloadDao
+import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.ui.state.DownloadSelectionMode
-import org.jellyfin.mobile.ui.state.ServerSelectionMode
-import org.jellyfin.mobile.ui.utils.CenterRow
+import org.jellyfin.sdk.model.serializer.toUUID
 import org.koin.compose.koinInject
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -66,31 +52,38 @@ import org.koin.compose.koinInject
 @Composable
 fun DownloadList(
     showExternalConnectionError: Boolean,
-    onViewDownloads: suspend () -> Unit,
-    apiClientController: ApiClientController = koinInject(),
+    onViewDownloads: (PlayOptions) -> Unit,
+    downloadDao: DownloadDao = koinInject(),
 ) {
     val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
     var downloadSelectionMode by remember { mutableStateOf(DownloadSelectionMode.BUTTON) }
-    var downloadURI by remember { mutableStateOf("") }
+    var downloadId by remember { mutableStateOf("") }
     val downloadItems = remember { mutableStateListOf<DownloadItem>() }
     var externalError by remember { mutableStateOf(showExternalConnectionError) }
 
     LaunchedEffect(Unit) {
         // Add Downloads
 
-        apiClientController.loadAllDownloads().mapTo(downloadItems) { download ->
+        downloadDao.getAllDownloads().mapTo(downloadItems) { download ->
             DownloadItem(
                 name = download.downloadName,
-                uri = download.fileURI,
+                id = download.itemId,
             )
         }
     }
 
     fun onSubmit() {
-        coroutineScope.launch {
-            onViewDownloads()
-        }
+        val playOptions = PlayOptions(
+            ids = listOf(downloadId.toUUID()),
+            mediaSourceId = downloadId,
+            startIndex = 0,
+            startPositionTicks= null,
+            audioStreamIndex = 1,
+            subtitleStreamIndex = -1,
+            playFromDownloads = true,
+        )
+        onViewDownloads(playOptions)
     }
 
     Column {
@@ -104,7 +97,6 @@ fun DownloadList(
                         externalError = false
                         keyboardController?.hide()
                         downloadSelectionMode = DownloadSelectionMode.LIST
-                        onSubmit()
                     },
                 )
                 DownloadSelectionMode.LIST -> DownloadsList(
@@ -112,8 +104,8 @@ fun DownloadList(
                     onGoBack = {
                         downloadSelectionMode = DownloadSelectionMode.BUTTON
                     },
-                    onPlayDownload = { uri ->
-                        downloadURI = uri
+                    onPlayDownload = { id ->
+                        downloadId = id
                         downloadSelectionMode = DownloadSelectionMode.BUTTON
                         onSubmit()
                     },
@@ -190,7 +182,7 @@ private fun DownloadsList(
                 DownloadItem(
                     downloadItem = download,
                     onClickItem = {
-                        onPlayDownload(download.uri)
+                        onPlayDownload(download.id)
                     },
                 )
             }

@@ -14,12 +14,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.events.ActivityEvent
+import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.ui.utils.CenterRow
+import org.koin.compose.koinInject
 
 @Composable
 fun ConnectScreen(
     mainViewModel: MainViewModel,
     showExternalConnectionError: Boolean,
+    activityEventHandler: ActivityEventHandler = koinInject(),
 ) {
     Surface(color = MaterialTheme.colors.background) {
         Column(
@@ -36,7 +40,7 @@ fun ConnectScreen(
             )
             DownloadList(
                 showExternalConnectionError = showExternalConnectionError,
-                onViewDownloads = { onViewDownloads() },
+                onViewDownloads = { options -> activityEventHandler.emit(ActivityEvent.LaunchNativePlayer(options)) },
             )
         }
     }
@@ -57,4 +61,6 @@ fun LogoHeader() {
     }
 }
 
-fun onViewDownloads() {}
+fun onViewDownloads() {
+
+}

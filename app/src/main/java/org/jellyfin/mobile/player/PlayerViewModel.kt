@@ -56,6 +56,7 @@ import org.jellyfin.mobile.utils.seekToOffset
 import org.jellyfin.mobile.utils.setPlaybackState
 import org.jellyfin.mobile.utils.toMediaMetadata
 import org.jellyfin.sdk.api.client.ApiClient
+import org.jellyfin.sdk.api.client.Response
 import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.jellyfin.sdk.api.client.extensions.displayPreferencesApi
 import org.jellyfin.sdk.api.client.extensions.hlsSegmentApi
@@ -63,6 +64,7 @@ import org.jellyfin.sdk.api.client.extensions.playStateApi
 import org.jellyfin.sdk.api.operations.DisplayPreferencesApi
 import org.jellyfin.sdk.api.operations.HlsSegmentApi
 import org.jellyfin.sdk.api.operations.PlayStateApi
+import org.jellyfin.sdk.model.api.DisplayPreferencesDto
 import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.api.PlaybackProgressInfo
 import org.jellyfin.sdk.model.api.PlaybackStartInfo
@@ -138,23 +140,24 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
         // Load display preferences
         viewModelScope.launch {
+            var customPrefs: Map<String, String?>? = null
             try {
                 val displayPreferencesDto by displayPreferencesApi.getDisplayPreferences(
                     displayPreferencesId = Constants.DISPLAY_PREFERENCES_ID_USER_SETTINGS,
                     client = Constants.DISPLAY_PREFERENCES_CLIENT_EMBY,
                 )
 
-                val customPrefs = displayPreferencesDto.customPrefs
-
-                displayPreferences = DisplayPreferences(
-                    skipBackLength = customPrefs[Constants.DISPLAY_PREFERENCES_SKIP_BACK_LENGTH]?.toLongOrNull()
-                        ?: Constants.DEFAULT_SEEK_TIME_MS,
-                    skipForwardLength = customPrefs[Constants.DISPLAY_PREFERENCES_SKIP_FORWARD_LENGTH]?.toLongOrNull()
-                        ?: Constants.DEFAULT_SEEK_TIME_MS,
-                )
+                customPrefs = displayPreferencesDto.customPrefs
             } catch (e: ApiClientException) {
-                Timber.e(e, "Failed to load display preferences")
+                Timber.e(e, "Failed to load display preferences from API")
             }
+
+            displayPreferences = DisplayPreferences(
+                skipBackLength = customPrefs?.get(Constants.DISPLAY_PREFERENCES_SKIP_BACK_LENGTH)?.toLongOrNull()
+                    ?: Constants.DEFAULT_SEEK_TIME_MS,
+                skipForwardLength = customPrefs?.get(Constants.DISPLAY_PREFERENCES_SKIP_FORWARD_LENGTH)?.toLongOrNull()
+                    ?: Constants.DEFAULT_SEEK_TIME_MS,
+            )
         }
 
         // Subscribe to player events from webapp
@@ -260,10 +263,12 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     private fun startProgressUpdates() {
-        progressUpdateJob = viewModelScope.launch {
-            while (true) {
-                delay(Constants.PLAYER_TIME_UPDATE_RATE)
-                playerOrNull?.reportPlaybackState()
+        if (queueManager.currentMediaSourceOrNull?.isDownload == false) {
+            progressUpdateJob = viewModelScope.launch {
+                while (true) {
+                    delay(Constants.PLAYER_TIME_UPDATE_RATE)
+                    playerOrNull?.reportPlaybackState()
+                }
             }
         }
     }
@@ -292,6 +297,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     private suspend fun Player.reportPlaybackStart(mediaSource: JellyfinMediaSource) {
+        if (mediaSource.isDownload) return
         try {
             playStateApi.reportPlaybackStart(
                 PlaybackStartInfo(
@@ -345,6 +351,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private fun reportPlaybackStop() {
         val mediaSource = mediaSourceOrNull ?: return
         val player = playerOrNull ?: return
+        if (mediaSourceOrNull?.isDownload == true ) return
         val hasFinished = player.playbackState == Player.STATE_ENDED
         val lastPositionTicks = when {
             hasFinished -> mediaSource.runTimeTicks

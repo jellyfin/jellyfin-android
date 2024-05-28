@@ -6,14 +6,16 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.data.entity.DownloadEntity.Key.TABLE_NAME
+import kotlin.random.Random
 
 @Dao
 interface DownloadDao {
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun insert(entity: DownloadEntity): Long
-
-    fun insert(fileUri: String, downloadName: String) = insert(DownloadEntity(0, fileUri, downloadName))
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(entity: DownloadEntity): Long
 
     @Query("SELECT * FROM $TABLE_NAME ORDER BY download_name DESC")
-    fun getAllDownloads(): List<DownloadEntity>
+    suspend fun getAllDownloads(): List<DownloadEntity>
+
+    @Query("SELECT * FROM $TABLE_NAME WHERE item_id LIKE :downloadId")
+    suspend fun getDownload(downloadId: String): DownloadEntity
 }

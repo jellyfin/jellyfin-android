@@ -17,6 +17,7 @@ class JellyfinMediaSource(
     val playSessionId: String,
     val liveStreamId: String?,
     val maxStreamingBitrate: Int?,
+    val isDownload: Boolean = false,
     private var startTimeTicks: Long? = null,
     audioStreamIndex: Int? = null,
     subtitleStreamIndex: Int? = null,
