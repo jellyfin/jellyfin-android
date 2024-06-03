@@ -40,9 +40,11 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.player.interaction.PlayOptions
+import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.ui.state.DownloadSelectionMode
 import org.jellyfin.sdk.model.serializer.toUUID
 import org.koin.compose.koinInject
@@ -66,9 +68,10 @@ fun DownloadList(
         // Add Downloads
 
         downloadDao.getAllDownloads().mapTo(downloadItems) { download ->
+            var jellyfinMediaSource: JellyfinMediaSource = Json.decodeFromString(download.mediaSource)
             DownloadItem(
-                name = download.downloadName,
-                id = download.itemId,
+                name = jellyfinMediaSource.name,
+                id = jellyfinMediaSource.id,
             )
         }
     }

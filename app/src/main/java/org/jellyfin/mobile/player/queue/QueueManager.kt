@@ -13,6 +13,7 @@ import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.FileDataSource
+import kotlinx.coroutines.runBlocking
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
@@ -33,6 +34,7 @@ import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
+import java.io.File
 import java.util.UUID
 
 class QueueManager(
@@ -96,14 +98,13 @@ class QueueManager(
         playWhenReady: Boolean,
     ): PlayerException? {
         mediaSourceResolver.resolveDownloadSource(
-            itemId = itemId,
             mediaSourceId = mediaSourceId,
             downloadDao = get()
         ).onSuccess { jellyfinMediaSource ->
             _currentMediaSource.value = jellyfinMediaSource
 
             // Load new media source
-            viewModel.load(jellyfinMediaSource, prepareDownloadStreams(mediaSourceId, jellyfinMediaSource.sourceInfo.mediaStreams?.get(0)?.path), playWhenReady)
+            viewModel.load(jellyfinMediaSource, prepareStreams(jellyfinMediaSource), playWhenReady)
         }.onFailure { error ->
             // Should always be of this type, other errors are silently dropped
             return error as? PlayerException
@@ -220,6 +221,18 @@ class QueueManager(
      */
     @CheckResult
     private fun prepareStreams(source: JellyfinMediaSource): MediaSource {
+        if (source.isDownload) {
+            val downloadDao: DownloadDao = get()
+            val fileUri = runBlocking {
+                downloadDao.getFileURI(source.id)
+            }
+            return prepareDownloadStreams(source, fileUri)
+        } else {
+            return prepareSeverStreams(source)
+        }
+    }
+
+    private fun prepareSeverStreams(source: JellyfinMediaSource): MediaSource {
         val videoSource = createVideoMediaSource(source)
         val subtitleSources = createExternalSubtitleMediaSources(source)
         return when {
@@ -315,21 +328,42 @@ class QueueManager(
     }
 
 
-    private fun prepareDownloadStreams(mediaSourceId: String, fileUri: String?): MediaSource {
-        return createDownloadVideoMediaSource(mediaSourceId, fileUri)
+    private fun prepareDownloadStreams(source: JellyfinMediaSource, fileUri: String): MediaSource {
+        val videoSource: MediaSource = createDownloadVideoMediaSource(source.id, fileUri)
+        val subtitleSources: Array<MediaSource> = createDownloadExternalSubtitleMediaSources(source, fileUri)
+        return when {
+            subtitleSources.isNotEmpty() -> MergingMediaSource(videoSource, *subtitleSources)
+            else -> videoSource
+        }
     }
 
     @CheckResult
-    private fun createDownloadVideoMediaSource(mediaSourceId: String, fileUri: String?): MediaSource {
+    private fun createDownloadVideoMediaSource(mediaSourceId: String, fileUri: String): MediaSource {
         val dataSourceFactory: DataSource.Factory = FileDataSource.Factory()
         val mediaSourceFactory = ProgressiveMediaSource.Factory(dataSourceFactory)
 
         val mediaItem = MediaItem.Builder()
             .setMediaId(mediaSourceId)
-            .setUri(fileUri?.toUri())
+            .setUri(fileUri.toUri())
             .build()
 
         return mediaSourceFactory.createMediaSource(mediaItem)
+    }
+
+    @CheckResult
+    private fun createDownloadExternalSubtitleMediaSources(source: JellyfinMediaSource, fileUri: String): Array<MediaSource> {
+        val downloadDir: String = File(fileUri).parent
+        val factory = get<SingleSampleMediaSource.Factory>()
+        return source.externalSubtitleStreams.map { stream ->
+            val uri: Uri = File(downloadDir, "${stream.index}.subrip").toUri()
+            val mediaItem = MediaItem.SubtitleConfiguration.Builder(uri).apply {
+                setId("${ExternalSubtitleStream.ID_PREFIX}${stream.index}")
+                setLabel(stream.displayTitle)
+                setMimeType(stream.mimeType)
+                setLanguage(stream.language)
+            }.build()
+            factory.createMediaSource(mediaItem, source.runTimeMs)
+        }.toTypedArray()
     }
 
     /**

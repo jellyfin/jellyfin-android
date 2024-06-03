@@ -2,6 +2,7 @@ package org.jellyfin.mobile.player.source
 
 import android.media.MediaMetadataRetriever
 import com.google.common.base.Ticker
+import kotlinx.serialization.json.Json
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.player.PlayerException
@@ -12,6 +13,7 @@ import org.jellyfin.sdk.api.client.extensions.itemsApi
 import org.jellyfin.sdk.api.client.extensions.mediaInfoApi
 import org.jellyfin.sdk.api.operations.ItemsApi
 import org.jellyfin.sdk.api.operations.MediaInfoApi
+import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.MediaProtocol
 import org.jellyfin.sdk.model.api.MediaSourceInfo
@@ -41,7 +43,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
     ): Result<JellyfinMediaSource> {
         // Load media source info
         val playSessionId: String
-        val mediaSourceInfo = try {
+        val mediaSourceInfo: MediaSourceInfo = try {
             val response by mediaInfoApi.getPostedPlaybackInfo(
                 itemId = itemId,
                 data = PlaybackInfoDto(
@@ -70,7 +72,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
         }
 
         // Load additional item info if possible
-        val item = try {
+        val item: BaseItemDto? = try {
             val response by itemsApi.getItemsByUserId(ids = listOf(itemId))
             response.items?.firstOrNull()
         } catch (e: ApiClientException) {
@@ -98,67 +100,10 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
         }
     }
 
-    suspend fun resolveDownloadSource(itemId: UUID, mediaSourceId: String, downloadDao: DownloadDao): Result<JellyfinMediaSource> {
+    suspend fun resolveDownloadSource(mediaSourceId: String, downloadDao: DownloadDao): Result<JellyfinMediaSource> {
         val download: DownloadEntity = downloadDao.getDownload(mediaSourceId)
-        val runTimeTicks = download.runTimeMs * TICKS_PER_MILLISECOND
-        val fileSize = download.fileSize
-        val downloadVideoStream = MediaStream(
-            path = download.fileURI,
-            type = MediaStreamType.VIDEO,
-            index = 0,
-            isDefault = true,
-            isForced = false,
-            isExternal = false,
-            isInterlaced = false,
-            isTextSubtitleStream = false,
-            supportsExternalStream = false
-        )
-        val downloadAudioStream = MediaStream(
-            path = download.fileURI,
-            type = MediaStreamType.AUDIO,
-            index = 1,
-            isDefault = true,
-            isForced = false,
-            isExternal = false,
-            isInterlaced = false,
-            isTextSubtitleStream = false,
-            supportsExternalStream = false
-        )
-        val mediaSourceInfo = MediaSourceInfo(
-            protocol = MediaProtocol.FILE,
-            id = itemId.toString(),
-            type = MediaSourceType.DEFAULT,
-            name = download.downloadName,
-            size = fileSize,
-            videoType = VideoType.VIDEO_FILE,
-            mediaStreams = listOf(downloadVideoStream, downloadAudioStream),
-            runTimeTicks = runTimeTicks,
-            isRemote = false,
-            readAtNativeFramerate = false,
-            ignoreDts = false,
-            ignoreIndex = false,
-            genPtsInput = false,
-            supportsTranscoding = false,
-            supportsDirectStream = false,
-            supportsDirectPlay = true,
-            isInfiniteStream = false,
-            requiresOpening = false,
-            requiresClosing = false,
-            requiresLooping = false,
-            supportsProbing = false,
-            )
-        val source = JellyfinMediaSource(
-            itemId = itemId,
-            item = null,
-            sourceInfo = mediaSourceInfo,
-            playSessionId = "",
-            liveStreamId = mediaSourceInfo.liveStreamId,
-            maxStreamingBitrate = null,
-            startTimeTicks = null,
-            audioStreamIndex = 1,
-            subtitleStreamIndex = -1,
-            isDownload = true
-        )
-        return Result.success(source)
+        var jellyfinMediaSource: JellyfinMediaSource = Json.decodeFromString(download.mediaSource)
+        jellyfinMediaSource.isDownload = true
+        return Result.success(jellyfinMediaSource)
     }
 }

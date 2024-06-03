@@ -322,7 +322,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private suspend fun Player.reportPlaybackState() {
         val mediaSource = mediaSourceOrNull ?: return
         val playbackPositionMillis = currentPosition
-        if (playbackState != Player.STATE_ENDED) {
+        if (playbackState != Player.STATE_ENDED && !mediaSource.isDownload) {
             val stream = AudioManager.STREAM_MUSIC
             val volumeRange = audioManager.getVolumeRange(stream)
             val currentVolume = audioManager.getStreamVolume(stream)

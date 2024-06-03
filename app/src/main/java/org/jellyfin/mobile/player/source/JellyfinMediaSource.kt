@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.player.source
 
+import kotlinx.serialization.Serializable
 import org.jellyfin.mobile.player.deviceprofile.CodecHelpers
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.model.api.BaseItemDto
@@ -10,6 +11,7 @@ import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
 import java.util.UUID
 
+@Serializable(with = JellyfinMediaSourceSerializer::class)
 class JellyfinMediaSource(
     val itemId: UUID,
     val item: BaseItemDto?,
@@ -17,7 +19,7 @@ class JellyfinMediaSource(
     val playSessionId: String,
     val liveStreamId: String?,
     val maxStreamingBitrate: Int?,
-    val isDownload: Boolean = false,
+    var isDownload: Boolean = false,
     private var startTimeTicks: Long? = null,
     audioStreamIndex: Int? = null,
     subtitleStreamIndex: Int? = null,

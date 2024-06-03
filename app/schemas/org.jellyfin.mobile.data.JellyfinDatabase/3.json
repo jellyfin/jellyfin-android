@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "62eb30e426c607a6f17512d9bcd50da4",
+    "identityHash": "7557b2c520ecc7e54020a91aba6386b5",
     "entities": [
       {
         "tableName": "Server",
@@ -115,7 +115,7 @@
       },
       {
         "tableName": "Download",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `item_id` TEXT NOT NULL, `file_uri` TEXT NOT NULL, `download_name` TEXT NOT NULL, `file_size` INTEGER NOT NULL, `runtime_ms` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `item_id` TEXT NOT NULL, `file_uri` TEXT NOT NULL, `media_source` TEXT NOT NULL, `thumbnail_uri` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -136,21 +136,15 @@
             "notNull": true
           },
           {
-            "fieldPath": "downloadName",
-            "columnName": "download_name",
+            "fieldPath": "mediaSource",
+            "columnName": "media_source",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "fileSize",
-            "columnName": "file_size",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "runTimeMs",
-            "columnName": "runtime_ms",
-            "affinity": "INTEGER",
+            "fieldPath": "thumbnail",
+            "columnName": "thumbnail_uri",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -177,7 +171,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '62eb30e426c607a6f17512d9bcd50da4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7557b2c520ecc7e54020a91aba6386b5')"
     ]
   }
 }

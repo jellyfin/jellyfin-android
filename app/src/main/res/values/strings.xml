@@ -121,4 +121,8 @@
     <string name="pref_download_location">Download location</string>
     <string name="view_downloads">View Downloads</string>
     <string name="available_downloads">Available downloads</string>
+    <string name="downloads">Downloads</string>
+    <string name="downloaded">Downloaded</string>
+    <string name="download_finished">Download Finished</string>
+    <string name="download_notifications_description">Download notifications</string>
 </resources>

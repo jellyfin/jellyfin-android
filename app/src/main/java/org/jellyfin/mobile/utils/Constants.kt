@@ -60,6 +60,7 @@ object Constants {
         else -> 0
     }
     const val MEDIA_NOTIFICATION_CHANNEL_ID = "org.jellyfin.mobile.media.NOW_PLAYING"
+    const val DOWNLOAD_NOTIFICATION_CHANNEL_ID = "org.jellyfin.mobile.download.DOWNLOAD_PROGRESS"
 
     // Music player constants
     const val SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS: Long = PlaybackState.ACTION_PLAY_PAUSE or
@@ -125,6 +126,7 @@ object Constants {
         PlaybackState.ACTION_FAST_FORWARD or
         PlaybackState.ACTION_STOP
     const val VIDEO_PLAYER_NOTIFICATION_ID = 99
+    const val DOWNLOAD_NOTIFICATION_ID = 80
 
     // Video player intent extras
     const val EXTRA_MEDIA_PLAY_OPTIONS = "org.jellyfin.mobile.MEDIA_PLAY_OPTIONS"

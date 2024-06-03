@@ -103,86 +103,8 @@ suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: Stri
             .show()
     }
 
-    val downloadDirectory = File(filesDir, "/Downloads/")
-
-    if (!downloadDirectory.exists()) {
-        downloadDirectory.mkdirs()
-    }
-
-    val downloadFile = File(downloadDirectory, filename)
-    downloadFile(downloadFile, uri.toString())
-
-    val regex = Regex("""Items/([a-f0-9]{32})/Download""")
-    val matchResult = regex.find(uri.toString())
-    val itemId: String = matchResult?.groups?.get(1)?.value.toString()
-
-    val fileSize = downloadFile.length()
-    val retriever = MediaMetadataRetriever()
-    retriever.setDataSource(downloadFile.canonicalPath)
-    val runTimeMs: Long = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLong() ?: 0
-    retriever.release()
-
-    val downloadDao: DownloadDao = get()
-    downloadDao.insert(
-        DownloadEntity(
-            itemId = itemId,
-            fileURI = downloadFile.canonicalPath,
-            downloadName = filename,
-            fileSize = fileSize,
-            runTimeMs = runTimeMs,
-        )
-    )
-}
-
-private suspend fun Context.downloadFile(downloadedFile: File, downloadURL: String) {
-    /*
-    require(downloadMethod >= 0) { "Download method hasn't been set" }
-    download_request.apply {
-        setAllowedOverMetered(downloadMethod >= DownloadMethod.MOBILE_DATA)
-        setAllowedOverRoaming(downloadMethod == DownloadMethod.MOBILE_AND_ROAMING)
-    }
-    */
-    //ToDo: Add download method logic
-
-    /*
-    val fileSize: Long = response.header("Content-Length").toString().toLongOrNull()?:0
-    val percent = fileSize / 100
-
-    val notificationID = 100
-
-    val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-        val channel = NotificationChannel("YOUR_CHANNEL_ID",
-            "YOUR_CHANNEL_NAME",
-            NotificationManager.IMPORTANCE_DEFAULT)
-        channel.description = "YOUR_NOTIFICATION_CHANNEL_DESCRIPTION"
-        mNotificationManager.createNotificationChannel(channel)
-    }
-
-    //Set notification information:
-    val notificationBuilder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-        .setSmallIcon(R.drawable.notification_icon)
-        .setContentTitle(textTitle)
-        .setContentText(textContent)
-        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-    */
-    //ToDo: Add notification / download progress logic
-
-    withContext(Dispatchers.IO) {
-        val client = OkHttpClient()
-        val request = Request.Builder()
-            .url(downloadURL)
-            .build()
-
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
-
-            val sink: BufferedSink = downloadedFile.sink().buffer()
-            val source: BufferedSource = response.body!!.source()
-            sink.writeAll(source)
-            sink.close()
-        }
-    }
+    val downloadUtils = DownloadUtils(this, filename, uri.toString())
+    downloadUtils.download()
 }
 
 fun Activity.isAutoRotateOn() = Settings.System.getInt(contentResolver, ACCELEROMETER_ROTATION, 0) == 1

@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.detekt)
     alias(libs.plugins.android.junit5)
 }
@@ -113,6 +114,7 @@ dependencies {
 
     // Kotlin
     implementation(libs.bundles.coroutines)
+    implementation(libs.kotlin.serialization.json)
 
     // Core
     implementation(libs.bundles.koin)

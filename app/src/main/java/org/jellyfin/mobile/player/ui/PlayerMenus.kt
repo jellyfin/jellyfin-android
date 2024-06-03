@@ -130,7 +130,7 @@ class PlayerMenus(
 
         val height = videoStream?.height
         val width = videoStream?.width
-        if (height != null && width != null) {
+        if (!mediaSource.isDownload && height != null && width != null) {
             buildQualityMenu(qualityMenu.menu, mediaSource.maxStreamingBitrate, width, height)
         } else {
             qualityButton.isVisible = false
