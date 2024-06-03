@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.bridge.JavascriptCallback
+import org.jellyfin.mobile.downloads.DownloadsFragment
 import org.jellyfin.mobile.player.ui.PlayerFragment
 import org.jellyfin.mobile.player.ui.PlayerFullscreenHelper
 import org.jellyfin.mobile.settings.SettingsFragment
@@ -74,8 +75,11 @@ class ActivityEventHandler(
             }
             is ActivityEvent.DownloadFile -> {
                 lifecycleScope.launch {
-                    with(event) { requestDownload(uri, title, filename) }
+                    with(event) { requestDownload(uri, filename) }
                 }
+            }
+            ActivityEvent.ViewDownloads -> {
+                supportFragmentManager.addFragment<DownloadsFragment>()
             }
             is ActivityEvent.CastMessage -> {
                 val action = event.action

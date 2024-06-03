@@ -1,51 +1,35 @@
 package org.jellyfin.mobile.utils
 
+import android.Manifest
 import android.app.Activity
 import android.app.ActivityManager
 import android.app.AlertDialog
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Environment
 import android.os.PowerManager
 import android.provider.Settings
 import android.provider.Settings.System.ACCELEROMETER_ROTATION
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import okio.BufferedSink
-import okio.BufferedSource
-import okio.buffer
-import okio.sink
-import org.chromium.base.ContextUtils
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.app.ApiClientController
 import org.jellyfin.mobile.app.AppPreferences
-import org.jellyfin.mobile.data.dao.DownloadDao
-import org.jellyfin.mobile.data.entity.DownloadEntity
+import org.jellyfin.mobile.downloads.DownloadMethod
+import org.jellyfin.mobile.downloads.DownloadUtils
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.webapp.WebViewFragment
 import org.koin.android.ext.android.get
 import timber.log.Timber
 import java.io.File
-import java.io.IOException
 import kotlin.coroutines.resume
 
 
@@ -74,7 +58,7 @@ fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     }
 }
 
-suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: String) {
+suspend fun MainActivity.requestDownload(uri: Uri, filename: String) {
     val appPreferences: AppPreferences = get()
 
     val downloadMethod = appPreferences.downloadMethod ?: suspendCancellableCoroutine { continuation ->
@@ -103,8 +87,20 @@ suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: Stri
             .show()
     }
 
-    val downloadUtils = DownloadUtils(this, filename, uri.toString())
-    downloadUtils.download()
+    val permissionResult: Boolean = suspendCancellableCoroutine { continuation ->
+        requestPermission("android.permission.POST_NOTIFICATIONS",) { permissionsMap ->
+            if (permissionsMap[Manifest.permission.POST_NOTIFICATIONS] == PackageManager.PERMISSION_GRANTED) {
+                continuation.resume(true)
+            } else {
+                continuation.cancel(null)
+            }
+        }
+    }
+
+    if (permissionResult) {
+        val downloadUtils = DownloadUtils(this, filename, uri.toString(), downloadMethod)
+        downloadUtils.download()
+    }
 }
 
 fun Activity.isAutoRotateOn() = Settings.System.getInt(contentResolver, ACCELEROMETER_ROTATION, 0) == 1

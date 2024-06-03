@@ -122,7 +122,13 @@
     <string name="view_downloads">View Downloads</string>
     <string name="available_downloads">Available downloads</string>
     <string name="downloads">Downloads</string>
-    <string name="downloaded">Downloaded</string>
+    <string name="downloaded">Downloaded %1$s</string>
     <string name="download_finished">Download Finished</string>
     <string name="download_notifications_description">Download notifications</string>
+    <string name="download_failed">Download failed</string>
+    <string name="failed_subs">Failed to download external subtitles</string>
+    <string name="failed_thumbnail">Failed to download thumbnail</string>
+    <string name="failed_media">Failed to download media</string>
+    <string name="failed_information">Failed to retrieve media information</string>
+    <string name="failed_network_method_check">Please check your allowed download methods</string>
 </resources>

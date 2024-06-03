@@ -26,6 +26,8 @@
         android:maxSdkVersion="28"
         tools:ignore="ScopedStorage" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW" />

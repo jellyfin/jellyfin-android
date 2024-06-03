@@ -26,7 +26,7 @@ import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.databinding.FragmentSettingsBinding
 import org.jellyfin.mobile.utils.BackPressInterceptor
 import org.jellyfin.mobile.utils.Constants
-import org.jellyfin.mobile.utils.DownloadMethod
+import org.jellyfin.mobile.downloads.DownloadMethod
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.extensions.requireMainActivity
 import org.jellyfin.mobile.utils.getDownloadsPaths

@@ -84,6 +84,7 @@ android {
         buildConfig = true
         viewBinding = true
         compose = true
+        dataBinding = true
     }
     kotlinOptions {
         @Suppress("SuspiciousCollectionReassignment")
