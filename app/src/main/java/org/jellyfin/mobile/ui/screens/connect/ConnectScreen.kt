@@ -40,7 +40,7 @@ fun ConnectScreen(
                     mainViewModel.switchServer(hostname)
                 },
             )
-            Button(onClick = { activityEventHandler.emit(ActivityEvent.ViewDownloads) }) {
+            Button(onClick = { activityEventHandler.emit(ActivityEvent.OpenDownloads) }) {
                 Text("View Downloads")
             }
         }

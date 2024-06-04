@@ -78,7 +78,7 @@ class ActivityEventHandler(
                     with(event) { requestDownload(uri, filename) }
                 }
             }
-            ActivityEvent.ViewDownloads -> {
+            ActivityEvent.OpenDownloads -> {
                 supportFragmentManager.addFragment<DownloadsFragment>()
             }
             is ActivityEvent.CastMessage -> {
