@@ -128,8 +128,8 @@ suspend fun MainActivity.removeDownload(download: JellyfinMediaSource) {
     val downloadDao: DownloadDao = get()
     val downloadEntity: DownloadEntity = downloadDao.get(download.id)
     val downloadDir = File(downloadEntity.fileURI).parentFile
-    downloadDir.deleteRecursively()
     downloadDao.delete(download.id)
+    downloadDir.deleteRecursively()
 }
 
 
