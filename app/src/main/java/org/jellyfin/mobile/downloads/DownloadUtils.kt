@@ -7,10 +7,13 @@ import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
+import android.os.Build
 import android.util.AndroidException
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.net.ConnectivityManagerCompat
 import coil.ImageLoader
 import coil.request.ImageRequest
 import kotlinx.coroutines.Dispatchers
@@ -88,13 +91,18 @@ class DownloadUtils(val context: Context, private val filename: String, private 
     }
 
     private fun checkForDownloadMethod() {
-        val network: Network = connectivityManager?.activeNetwork ?: throw AndroidException()
-        val capabilities: NetworkCapabilities = connectivityManager?.getNetworkCapabilities(network) ?: throw AndroidException()
-
         // ToDo: Rework Download Methods
         val validConnection = when (downloadMethod) {
             DownloadMethod.WIFI_ONLY -> ! (connectivityManager?.isActiveNetworkMetered ?: false)
-            DownloadMethod.MOBILE_DATA -> capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_ROAMING)
+            DownloadMethod.MOBILE_DATA -> {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    ! (connectivityManager?.activeNetworkInfo?.isRoaming ?: throw AndroidException())
+                } else {
+                    val network: Network = connectivityManager?.activeNetwork ?: throw AndroidException()
+                    val capabilities: NetworkCapabilities = connectivityManager?.getNetworkCapabilities(network) ?: throw AndroidException()
+                    capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_ROAMING)
+                }
+            }
             else -> true
         }
 
