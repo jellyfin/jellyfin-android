@@ -42,6 +42,7 @@ object Constants {
     const val PREF_EXTERNAL_PLAYER_APP = "pref_external_player_app"
     const val PREF_SUBTITLE_STYLE = "pref_subtitle_style"
     const val PREF_DOWNLOAD_LOCATION = "pref_download_location"
+    const val PREF_DOWNLOAD_INTERNAL = "pref_download_internal"
 
     // InputManager commands
     const val PLAYBACK_MANAGER_COMMAND_PLAY = "unpause"

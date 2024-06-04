@@ -225,6 +225,12 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                 .absolutePath
         }
+
+        checkBox(Constants.PREF_DOWNLOAD_INTERNAL) {
+            titleRes = R.string.store_videos_in_internal_storage
+            summaryRes = R.string.stored_videos_in_internal_storage_desc
+            defaultValue = true
+        }
     }
 
     companion object {

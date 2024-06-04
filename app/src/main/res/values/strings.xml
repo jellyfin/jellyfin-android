@@ -136,4 +136,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="thumbnail_desc">Thumbnail</string>
+    <string name="download_exists">Download already exists</string>
+    <string name="store_videos_in_internal_storage">Store videos in internal storage</string>
+    <string name="stored_videos_in_internal_storage_desc">Videos such as movies and TV shows will be stored in the app\'s internal storage. Allowing access from within the app.</string>
 </resources>

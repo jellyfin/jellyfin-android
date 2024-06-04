@@ -27,4 +27,8 @@ interface DownloadDao {
 
     @Query("SELECT file_uri FROM $TABLE_NAME WHERE item_id LIKE :downloadId")
     suspend fun getFileURI(downloadId: String): String
+
+    @Query("SELECT EXISTS(SELECT * FROM $TABLE_NAME WHERE item_id LIKE :downloadId)")
+    suspend fun downloadExists(downloadId : String) : Boolean
+
 }
