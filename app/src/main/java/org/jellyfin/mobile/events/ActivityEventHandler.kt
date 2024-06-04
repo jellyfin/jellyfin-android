@@ -20,6 +20,7 @@ import org.jellyfin.mobile.player.ui.PlayerFullscreenHelper
 import org.jellyfin.mobile.settings.SettingsFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.extensions.addFragment
+import org.jellyfin.mobile.utils.removeDownload
 import org.jellyfin.mobile.utils.requestDownload
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import timber.log.Timber
@@ -76,6 +77,11 @@ class ActivityEventHandler(
             is ActivityEvent.DownloadFile -> {
                 lifecycleScope.launch {
                     with(event) { requestDownload(uri, filename) }
+                }
+            }
+            is ActivityEvent.RemoveDownload -> {
+                lifecycleScope.launch {
+                    with(event) { removeDownload(download) }
                 }
             }
             ActivityEvent.OpenDownloads -> {

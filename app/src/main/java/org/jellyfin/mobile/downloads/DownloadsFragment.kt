@@ -1,13 +1,14 @@
 package org.jellyfin.mobile.downloads
 
-import DownloadsViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.FragmentDownloadsBinding
 import org.jellyfin.mobile.events.ActivityEvent
@@ -20,9 +21,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class DownloadsFragment: Fragment(), KoinComponent {
-    private lateinit var viewModel: DownloadsViewModel
-    private lateinit var adapter: DownloadsAdapter
+    private val viewModel: DownloadsViewModel by inject()
     private val activityEventHandler: ActivityEventHandler by inject()
+    private lateinit var adapter: DownloadsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val localInflater = inflater.withThemedContext(requireContext(), R.style.AppTheme_Settings)
@@ -35,13 +36,19 @@ class DownloadsFragment: Fragment(), KoinComponent {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
 
-        adapter = DownloadsAdapter { download -> onDownloadItemClick(download) }
+        adapter = DownloadsAdapter(
+            onItemClick = { download -> onDownloadItemClick(download) },
+            onItemHold = { download -> onDownloadItemHold(download) }
+        )
         binding.recyclerView.adapter = adapter
 
-        viewModel = ViewModelProvider(this)[DownloadsViewModel::class.java]
-        viewModel.getAllDownloads().observe(viewLifecycleOwner, Observer { downloads ->
-            downloads?.let { adapter.setDownloads(it) }
-        })
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.downloads.collect { downloads ->
+                    adapter.submitList(downloads)
+                }
+            }
+        }
 
         return binding.root
     }
@@ -57,5 +64,10 @@ class DownloadsFragment: Fragment(), KoinComponent {
         )
         activityEventHandler.emit(ActivityEvent.LaunchNativePlayer(playOptions))
     }
+    private fun onDownloadItemHold(download: DownloadItem) {
+
+        activityEventHandler.emit(ActivityEvent.RemoveDownload(download.mediaSource))
+    }
+
 
 }

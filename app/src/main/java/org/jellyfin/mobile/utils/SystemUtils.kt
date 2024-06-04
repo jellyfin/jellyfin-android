@@ -23,8 +23,11 @@ import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.data.dao.DownloadDao
+import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.downloads.DownloadMethod
 import org.jellyfin.mobile.downloads.DownloadUtils
+import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.webapp.WebViewFragment
 import org.koin.android.ext.android.get
@@ -102,6 +105,33 @@ suspend fun MainActivity.requestDownload(uri: Uri, filename: String) {
         downloadUtils.download()
     }
 }
+suspend fun MainActivity.removeDownload(download: JellyfinMediaSource) {
+    val confirmation = suspendCancellableCoroutine { continuation ->
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.confirm_deletion))
+            .setMessage(getString(R.string.confirm_deletion_desc, download.name))
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                continuation.resume(true)
+            }
+            .setNegativeButton(getString(R.string.no)) { _, _ ->
+                continuation.cancel(null)
+            }
+            .setOnDismissListener {
+                continuation.cancel(null)
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    if (!confirmation) return
+
+    val downloadDao: DownloadDao = get()
+    val downloadEntity: DownloadEntity = downloadDao.get(download.id)
+    val downloadDir = File(downloadEntity.fileURI).parentFile
+    downloadDir.deleteRecursively()
+    downloadDao.delete(download.id)
+}
+
 
 fun Activity.isAutoRotateOn() = Settings.System.getInt(contentResolver, ACCELEROMETER_ROTATION, 0) == 1
 

@@ -3,12 +3,15 @@ package org.jellyfin.mobile.ui.screens.connect
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
@@ -40,9 +43,10 @@ fun ConnectScreen(
                     mainViewModel.switchServer(hostname)
                 },
             )
-            Button(onClick = { activityEventHandler.emit(ActivityEvent.OpenDownloads) }) {
-                Text("View Downloads")
-            }
+            StyledTextButton(
+                onClick = { activityEventHandler.emit(ActivityEvent.OpenDownloads) },
+                text = "View Downloads"
+            )
         }
     }
 }
@@ -62,6 +66,21 @@ fun LogoHeader() {
     }
 }
 
-fun onViewDownloads() {
-
+@Stable
+@Composable
+fun StyledTextButton(
+    text: String,
+    enabled: Boolean = true,
+    onClick: () -> Unit,
+) {
+    TextButton(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        enabled = enabled,
+        colors = ButtonDefaults.buttonColors(),
+    ) {
+        Text(text = text)
+    }
 }

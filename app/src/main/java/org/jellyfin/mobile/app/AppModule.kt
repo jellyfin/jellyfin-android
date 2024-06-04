@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.app
 
+import org.jellyfin.mobile.downloads.DownloadsViewModel
 import android.content.Context
 import coil.ImageLoader
 import com.google.android.exoplayer2.ext.cronet.CronetDataSource
@@ -65,6 +66,7 @@ val applicationModule = module {
 
     // ViewModels
     viewModel { MainViewModel(get(), get()) }
+    viewModel { DownloadsViewModel() }
 
     // Fragments
     fragment { WebViewFragment() }

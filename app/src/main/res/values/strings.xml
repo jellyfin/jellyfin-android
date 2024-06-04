@@ -131,4 +131,8 @@
     <string name="failed_media">Failed to download media</string>
     <string name="failed_information">Failed to retrieve media information</string>
     <string name="failed_network_method_check">Please check your allowed download methods</string>
+    <string name="confirm_deletion">Confirm deletion</string>
+    <string name="confirm_deletion_desc">Do you want to delete %1$s?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

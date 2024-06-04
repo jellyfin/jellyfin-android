@@ -1,12 +1,9 @@
 package org.jellyfin.mobile.player.source
 
-import android.media.MediaMetadataRetriever
-import com.google.common.base.Ticker
 import kotlinx.serialization.json.Json
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.player.PlayerException
-import org.jellyfin.mobile.utils.Constants.TICKS_PER_MILLISECOND
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.jellyfin.sdk.api.client.extensions.itemsApi
@@ -15,13 +12,8 @@ import org.jellyfin.sdk.api.operations.ItemsApi
 import org.jellyfin.sdk.api.operations.MediaInfoApi
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.DeviceProfile
-import org.jellyfin.sdk.model.api.MediaProtocol
 import org.jellyfin.sdk.model.api.MediaSourceInfo
-import org.jellyfin.sdk.model.api.MediaSourceType
-import org.jellyfin.sdk.model.api.MediaStream
-import org.jellyfin.sdk.model.api.MediaStreamType
 import org.jellyfin.sdk.model.api.PlaybackInfoDto
-import org.jellyfin.sdk.model.api.VideoType
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
 import java.util.UUID
@@ -101,7 +93,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
     }
 
     suspend fun resolveDownloadSource(mediaSourceId: String, downloadDao: DownloadDao): Result<JellyfinMediaSource> {
-        val download: DownloadEntity = downloadDao.getDownload(mediaSourceId)
+        val download: DownloadEntity = downloadDao.get(mediaSourceId)
         var jellyfinMediaSource: JellyfinMediaSource = Json.decodeFromString(download.mediaSource)
         jellyfinMediaSource.isDownload = true
         return Result.success(jellyfinMediaSource)
