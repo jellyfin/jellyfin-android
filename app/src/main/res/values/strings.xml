@@ -135,4 +135,5 @@
     <string name="confirm_deletion_desc">Do you want to delete %1$s?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="thumbnail_desc">Thumbnail</string>
 </resources>
