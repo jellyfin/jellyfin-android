@@ -109,4 +109,7 @@
     <string name="bluetooth_permission_title">Consentire accesso Bluetooth\?</string>
     <string name="bluetooth_permission_continue">Continua</string>
     <string name="bluetooth_permission_granted">Il permesso Bluetooth è stato concesso</string>
+    <string name="wifi_only_summary">I contenuti saranno scaricati solo tramite WiFi.</string>
+    <string name="mobile_data_summary">I contenuti saranno scaricati tramite WiFi e rete mobile.</string>
+    <string name="mobile_data_and_roaming_summary">I contenuti saranno scaricati tramite WiFi e rete mobile compreso roaming.</string>
 </resources>
