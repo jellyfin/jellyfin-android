@@ -43,7 +43,7 @@
     <string name="mobile_data_and_roaming">Mobil Netværk &amp; Roaming</string>
     <string name="mobile_data">Mobil netværk</string>
     <string name="wifi_only">Kun trådløs</string>
-    <string name="network_message">Vil du tillade overførelser fra mobilnetværk eller roaming på andre netværk? Der kan blive pålagt gebyr fra dit teleselskab.</string>
+    <string name="network_message">Vil du tillade overførelser fra mobilnetværk eller roaming på andre netværk? Der kan blive pålagt gebyr fra dit teleselskab. Du kan ændre dette senere i indstillingerne.</string>
     <string name="network_title">Tilladte typer af netværk</string>
     <string name="battery_optimizations_message">Deaktiver venligst batteri optimering for medieafspilning i baggrunden.</string>
     <string name="available_servers_title">Tilgængelige servere</string>
@@ -108,4 +108,7 @@
     <string name="bluetooth_permission_continue">Fortsæt</string>
     <string name="bluetooth_permission_granted">Bluetooth-adgang er nu tilladt</string>
     <string name="bluetooth_permission_message">For at registrere, når trådløse hovedtelefoner eller højttalere bliver afbrudt, kræver appen Bluetooth-adgang. På Android beskrives denne tilladelse som adgang til enheder i nærheden, og der advares om, at Bluetooth-enheder kan bruges til at udlede den aktuelle placering. Jellyfin-appen vil dog aldrig bruge denne tilladelse til at registrere din placering.</string>
+    <string name="mobile_data_and_roaming_summary">Medier vil blive downloadet via WiFi, mobil- og roaming-netværk.</string>
+    <string name="wifi_only_summary">Medier vil kun blive downloadet via WiFi.</string>
+    <string name="mobile_data_summary">Medier vil blive downloadet via både WiFi og mobilnetværk.</string>
 </resources>
