@@ -13,20 +13,25 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
+import android.os.SystemClock.sleep
 import android.util.AndroidException
 import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import coil.ImageLoader
 import coil.request.ImageRequest
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.Response
 import okio.BufferedSink
 import okio.BufferedSource
 import okio.buffer
@@ -69,7 +74,7 @@ class DownloadUtils(val context: Context, private val filename: String, private 
     private val mediaSourceResolver: MediaSourceResolver by inject()
     private val deviceProfileBuilder: DeviceProfileBuilder by inject()
     private val deviceProfile = deviceProfileBuilder.getDeviceProfile()
-    private val okClient = OkHttpClient()
+    private val okClient: OkHttpClient
     private val notificationManager: NotificationManager? by lazy { context.getSystemService() }
     private lateinit var notificationBuilder: NotificationCompat.Builder
     private val connectivityManager: ConnectivityManager? by lazy { context.getSystemService() }
@@ -77,6 +82,7 @@ class DownloadUtils(val context: Context, private val filename: String, private 
 
     private var thumbnailURI: String = ""
     private var jellyfinMediaSource: JellyfinMediaSource? = null
+    private val progressListener: ProgressListener
 
 
     init {
@@ -86,6 +92,35 @@ class DownloadUtils(val context: Context, private val filename: String, private 
         itemUUID = itemId.toUUID()
         itemFolder = File(context.filesDir, "/Downloads/$itemId/")
         itemFolder.mkdirs()
+
+
+        progressListener = object : ProgressListener {
+            var prevProgress = 0L
+
+            override fun update(bytesRead: Long, contentLength: Long, done: Boolean) {
+                val progress = 100 * bytesRead / contentLength
+                if (contentLength != -1L && progress > prevProgress) {
+                    mainActivity.lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            notificationBuilder.setProgress(100, progress.toInt(), false)
+                            notificationManager?.notify(DOWNLOAD_NOTIFICATION_ID, notificationBuilder.build())
+                        }
+                    }
+                    prevProgress = progress
+                }
+            }
+        }
+
+        okClient = OkHttpClient.Builder()
+            .addNetworkInterceptor(
+                Interceptor { chain: Interceptor.Chain ->
+                    val originalResponse: Response = chain.proceed(chain.request())
+                    originalResponse.newBuilder()
+                        .body(ProgressResponseBody(originalResponse.body, progressListener))
+                        .build()
+                },
+            )
+            .build()
     }
 
     suspend fun download() {
@@ -170,24 +205,9 @@ class DownloadUtils(val context: Context, private val filename: String, private 
                 val downloadFile = File(itemFolder, filename)
                 val sink: BufferedSink = downloadFile.sink().buffer()
                 val source: BufferedSource = response.body!!.source()
-                val totalBytes = response.body!!.contentLength()
-                val bufferSize: Long = 1024 * 1024
-                var bytesRead: Long
-                var downloadedSize: Long = 0
 
-                while ((source.read(sink.buffer, bufferSize).also { bytesRead = it }) != -1L) {
-                    sink.emit()
-                    downloadedSize += bytesRead
-                    val progress = (downloadedSize * 100 / totalBytes).toInt()
-
-                    notificationBuilder.setProgress(100, progress, false)
-                    withContext(Dispatchers.Main) {
-                        notificationManager?.notify(DOWNLOAD_NOTIFICATION_ID, notificationBuilder.build())
-                    }
-                }
+                sink.writeAll(source)
                 sink.close()
-
-                if (downloadedSize != totalBytes) throw IOException(context.getString(R.string.failed_media))
                 //ToDo: Fix download not be properly aborted when connection is severed
             }
         }
@@ -313,6 +333,7 @@ class DownloadUtils(val context: Context, private val filename: String, private 
             setOngoing(false)
         }
         withContext(Dispatchers.Main) {
+            sleep(500) // Wait for progress notifications to be displayed, otherwise might be overridden
             notificationManager?.notify(DOWNLOAD_NOTIFICATION_ID, notificationBuilder.build())
         }
     }
