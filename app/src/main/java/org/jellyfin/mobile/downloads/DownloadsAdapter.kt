@@ -35,15 +35,6 @@ class DownloadsAdapter(private val onItemClick: (DownloadItem) -> Unit, private 
                 true
             }
 
-            // Prepare description
-            var desc = ""
-            if (downloadItem.mediaSource.item?.seriesName != null) {
-                desc = "${downloadItem.mediaSource.item.seriesName} - ${downloadItem.mediaSource.item.seasonName ?: ""}"
-            } else if (downloadItem.mediaSource.item?.productionYear != null) {
-                desc = downloadItem.mediaSource.item.productionYear.toString()
-            }
-            binding.textViewDescription.text = desc
-
             binding.imageViewThumbnail.setImageBitmap(downloadItem.thumbnail)
 
             binding.executePendingBindings()
