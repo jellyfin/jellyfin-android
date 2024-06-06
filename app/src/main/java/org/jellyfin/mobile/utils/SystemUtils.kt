@@ -105,31 +105,33 @@ suspend fun MainActivity.requestDownload(uri: Uri, filename: String) {
         downloadUtils.download()
     }
 }
-suspend fun MainActivity.removeDownload(download: JellyfinMediaSource) {
-    val confirmation = suspendCancellableCoroutine { continuation ->
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.confirm_deletion))
-            .setMessage(getString(R.string.confirm_deletion_desc, download.name))
-            .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                continuation.resume(true)
-            }
-            .setNegativeButton(getString(R.string.no)) { _, _ ->
-                continuation.cancel(null)
-            }
-            .setOnDismissListener {
-                continuation.cancel(null)
-            }
-            .setCancelable(false)
-            .show()
-    }
+suspend fun MainActivity.removeDownload(download: JellyfinMediaSource, force: Boolean = false) {
+    if (!force) {
+        val confirmation = suspendCancellableCoroutine { continuation ->
+            AlertDialog.Builder(this)
+                .setTitle(getString(R.string.confirm_deletion))
+                .setMessage(getString(R.string.confirm_deletion_desc, download.name))
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                    continuation.resume(true)
+                }
+                .setNegativeButton(getString(R.string.no)) { _, _ ->
+                    continuation.cancel(null)
+                }
+                .setOnDismissListener {
+                    continuation.cancel(null)
+                }
+                .setCancelable(false)
+                .show()
+        }
 
-    if (!confirmation) return
+        if (!confirmation) return
+    }
 
     val downloadDao: DownloadDao = get()
     val downloadEntity: DownloadEntity = downloadDao.get(download.id)
     val downloadDir = File(downloadEntity.fileURI).parentFile
     downloadDao.delete(download.id)
-    downloadDir.deleteRecursively()
+    downloadDir?.deleteRecursively()
 }
 
 

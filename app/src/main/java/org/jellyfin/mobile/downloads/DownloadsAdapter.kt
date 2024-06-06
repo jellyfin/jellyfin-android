@@ -21,6 +21,11 @@ class DownloadsAdapter(private val onItemClick: (DownloadItem) -> Unit, private 
         RecyclerView.ViewHolder(binding.root) {
         fun bind(download: DownloadEntity) {
             val downloadItem = DownloadItem(download)
+            if (downloadItem.thumbnail == null) {
+                binding.unbind()
+                onItemHold(downloadItem)
+                return
+            }
             binding.downloadItem = downloadItem
             itemView.setOnClickListener {
                 onItemClick(downloadItem)

@@ -10,7 +10,7 @@ import java.util.Locale
 
 data class DownloadItem (private val download: DownloadEntity) {
     val mediaSource: JellyfinMediaSource = Json.decodeFromString(download.mediaSource)
-    val thumbnail: Bitmap = BitmapFactory.decodeFile(download.thumbnail)
+    val thumbnail: Bitmap? = BitmapFactory.decodeFile(download.thumbnail)
     val fileSize: String = formatFileSize(File(download.fileURI).length())
 
     private fun formatFileSize(bytes: Long): String {
