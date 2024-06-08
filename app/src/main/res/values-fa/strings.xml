@@ -94,4 +94,5 @@
     <string name="pref_exoplayer_remember_brightness">روشنایی صفحه نمایش را به خاطر بسپار</string>
     <string name="video_player_integrated">پخش‌کننده یکپارچه</string>
     <string name="playback_info_stream_unknown_title">عنوان ناشناخته</string>
+    <string name="bluetooth_permission_continue">ادامه</string>
 </resources>
