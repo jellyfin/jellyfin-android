@@ -73,7 +73,7 @@
     <string name="downloading">جاري التحميل</string>
     <string name="mobile_data_and_roaming">بيانات الهاتف والتجوال</string>
     <string name="mobile_data">بيانات الهاتف</string>
-    <string name="network_message">هل تريد السماح بالتحميل عبر بيانات الهاتف أو شبكات التجوال؟ قد تُضاف رسوما إضافية من مزودك.</string>
+    <string name="network_message">هل تريد السماح بالتحميل عبر بيانات الهاتف أو شبكات التجوال؟ قد تُضاف رسوما إضافية من مزودك. يمكنك تغيير هذا الخيار لاحقًا في الاعدادات.</string>
     <string name="wifi_only">واي فاي فقط</string>
     <string name="network_title">أنواع الشبكات المسموحة</string>
     <string name="battery_optimizations_message">يرجى تعطيل تحسين البطارية لتشغيل الوسائط عندما تكون الشاشة منطفئة.</string>
@@ -112,4 +112,7 @@
     <string name="bluetooth_permission_continue">تابع</string>
     <string name="bluetooth_permission_granted">تم السماح لتشغيل البلوتوث</string>
     <string name="bluetooth_permission_message">للتنبه عند اقطاع الاتصال بالسماعات، التطبيق يحتاج للسماح بتشغيل البلوتوث. على الأندرويد هذه الخاصية تسمى السماح بالاتصال بالأجهزة القريبة Access to Nearby Devices و يحذر أن أجهزة البلوتوث ممكن أن تستخدم للحصول على معلومات الموقع الحالي. لكن Jellyfin لن يستخدم هذه الخاصية أبدا للحصول على موقعك.</string>
+    <string name="wifi_only_summary">سيتم تنزيل الوسائط عبر الواي فاي فقط.</string>
+    <string name="mobile_data_summary">سيتم تنزيل الوسائط عبر الواي فاي والبيانات الخلوية.</string>
+    <string name="mobile_data_and_roaming_summary">سيتم تنزيل الوسائط عبر الواي فاي والبيانات الخلوية وشبكة التجوال.</string>
 </resources>
