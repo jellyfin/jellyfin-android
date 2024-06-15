@@ -101,7 +101,7 @@
     <string name="pref_exoplayer_direct_play_ass_summary">Заборонити перекодування та відображати субтитри лише з основним стилем. Розширений стиль не буде доступний, якщо його ввімкнено.</string>
     <string name="pref_subtitle_style">Налаштувати стиль субтитрів</string>
     <string name="menu_item_hardware_decoding">Апаратне декодування</string>
-    <string name="player_error_unspecific_exception">Щось трапилось з сервером</string>
+    <string name="player_error_unspecific_exception">Щось пішло не так з плеєром</string>
     <string name="menu_item_software_decoding">Програмне декодування</string>
     <string name="button_use_different_server">Використовувати інший сервер</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Почати відтворення відео в ландшафтному режимі (альбомна орієнтація)</string>
