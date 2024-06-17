@@ -89,4 +89,6 @@
     <string name="pref_exoplayer_direct_play_ass">אפשר שימוש בכתוביות מסוג SSA/ASS בניגון ישיר</string>
     <string name="pref_exoplayer_direct_play_ass_summary">מנע המרת קידוד והצג כתוביות עם עיצוב בסיסי בלבד. עיצוב כתוביות מתקדם לא יהיה זמין אם מופעל.</string>
     <string name="dialog_web_view_not_supported">תצוגת אתר לא נתמכת</string>
+    <string name="dialog_web_view_not_supported_message">WebView לא נתמך במכשיר זה.
+\nהתקן גרסה תואמת או החלף למכשיר נתמך.</string>
 </resources>
