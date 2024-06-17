@@ -53,7 +53,7 @@
     <string name="media_service_item_not_found">פריט מדיה לא נמצא</string>
     <string name="player_error_unspecific_exception">משהו השתבש עם הנגן</string>
     <string name="button_use_different_server">השתמש בשרת אחר</string>
-    <string name="network_message">האם אתה מעוניין לאפשר הורדה על גבי נתונים סלולרים או רשתות נדידה? יכולים להיות חיובים נוספים.</string>
+    <string name="network_message">האם לאפשר הורדה באמצעות נתונים סלולרים או בנדידה? עלולים להיות חיובים נוספים ממפעיל הסלולר. יש אפשרות לשנות זאת.</string>
     <string name="playback_info_play_method">צורת ניגון %s</string>
     <string name="playback_info_video_streams">שידור וידאו</string>
     <string name="playback_info_audio_streams">שידור שמע</string>
@@ -110,4 +110,7 @@
     <string name="bluetooth_permission_continue">המשך</string>
     <string name="bluetooth_permission_granted">הוענקה גישה לבלוטות׳</string>
     <string name="bluetooth_permission_message">כדי לזהות מתי אוזניות או רמקולים מנותקים, היישומון צריך גישה לבלוטות׳. ב־Android, ההרשאה הזאת מתוארת כגישה להתקנים סמוכים ומזהירה שהתקני בלוטות׳ יכולים לשמש להסקת המיקום הנוכחי שלך. עם זאת, היישומון של ג׳ליפין אף פעם לא ישתמש בהרשאה הזאת כדי לאתר את המקום שלך.</string>
+    <string name="wifi_only_summary">הורדת מדיה באמצעות WiFi בלבד.</string>
+    <string name="mobile_data_summary">הורדת מדיה באמצעות WiFi ונתונים סלולרים.</string>
+    <string name="mobile_data_and_roaming_summary">הורדת מדיה באמצעות WiFi, נתונים סלולרים ונדידה.</string>
 </resources>
