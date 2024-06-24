@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "7557b2c520ecc7e54020a91aba6386b5",
+    "identityHash": "4366575e1609ecf3e2c44abd106d51d6",
     "entities": [
       {
         "tableName": "Server",
@@ -115,7 +115,7 @@
       },
       {
         "tableName": "Download",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `item_id` TEXT NOT NULL, `file_uri` TEXT NOT NULL, `media_source` TEXT NOT NULL, `thumbnail_uri` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `item_id` TEXT NOT NULL, `media_uri` TEXT NOT NULL, `media_source` TEXT NOT NULL, `download_folder_uri` TEXT NOT NULL, `download_length` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -130,8 +130,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "fileURI",
-            "columnName": "file_uri",
+            "fieldPath": "mediaUri",
+            "columnName": "media_uri",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -142,9 +142,15 @@
             "notNull": true
           },
           {
-            "fieldPath": "thumbnail",
-            "columnName": "thumbnail_uri",
+            "fieldPath": "downloadFolderUri",
+            "columnName": "download_folder_uri",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "downloadLength",
+            "columnName": "download_length",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -171,7 +177,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7557b2c520ecc7e54020a91aba6386b5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4366575e1609ecf3e2c44abd106d51d6')"
     ]
   }
 }

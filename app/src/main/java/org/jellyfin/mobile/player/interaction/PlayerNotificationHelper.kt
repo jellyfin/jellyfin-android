@@ -149,8 +149,8 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
 
     private suspend fun  loadImage(mediaSource: JellyfinMediaSource): Bitmap? {
         if (mediaSource.isDownload) {
-            val thumbnailURI = downloadDao.getThumbnailURI(mediaSource.id)
-            val thumbnailFile = File(thumbnailURI)
+            val downloadFolder = File(downloadDao.getDownloadFolderUri(mediaSource.id))
+            val thumbnailFile = File(downloadFolder, Constants.DOWNLOAD_THUMBNAIL_FILENAME)
             return BitmapFactory.decodeFile(thumbnailFile.canonicalPath)
         } else {
             val size = context.resources.getDimensionPixelSize(R.dimen.media_notification_height)

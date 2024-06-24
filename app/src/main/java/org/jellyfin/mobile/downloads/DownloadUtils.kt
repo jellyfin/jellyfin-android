@@ -13,27 +13,21 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
-import android.os.SystemClock.sleep
 import android.util.AndroidException
-import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
-import androidx.lifecycle.lifecycleScope
 import coil.ImageLoader
 import coil.request.ImageRequest
+import com.google.android.exoplayer2.offline.DownloadRequest
+import com.google.android.exoplayer2.offline.DownloadService
+import com.google.android.exoplayer2.scheduler.Requirements
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import okio.BufferedSink
-import okio.BufferedSource
 import okio.buffer
 import okio.sink
 import org.jellyfin.mobile.MainActivity
@@ -46,7 +40,6 @@ import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
-import org.jellyfin.mobile.utils.Constants.DOWNLOAD_NOTIFICATION_ID
 import org.jellyfin.mobile.utils.requestPermission
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.imageApi
@@ -65,24 +58,23 @@ import kotlin.coroutines.suspendCoroutine
 
 class DownloadUtils(val context: Context, private val filename: String, private val downloadURL: String, private val downloadMethod: Int) : KoinComponent {
     private val mainActivity: MainActivity = context as MainActivity
-    private val itemFolder: File
+    private val downloadFolder: File
     private val itemId: String
     private val itemUUID: UUID
+    private val contentId: String
     private val downloadDao: DownloadDao by inject()
     private val apiClient: ApiClient = get()
     private val imageLoader: ImageLoader by inject()
     private val mediaSourceResolver: MediaSourceResolver by inject()
     private val deviceProfileBuilder: DeviceProfileBuilder by inject()
     private val deviceProfile = deviceProfileBuilder.getDeviceProfile()
-    private val okClient: OkHttpClient
     private val notificationManager: NotificationManager? by lazy { context.getSystemService() }
-    private lateinit var notificationBuilder: NotificationCompat.Builder
     private val connectivityManager: ConnectivityManager? by lazy { context.getSystemService() }
     private val appPreferences: AppPreferences by inject()
+    private var downloadTracker: DownloadTracker
+    private val jellyfinDownloadTracker: DownloadUtils.JellyfinDownloadTracker = JellyfinDownloadTracker()
 
-    private var thumbnailURI: String = ""
     private var jellyfinMediaSource: JellyfinMediaSource? = null
-    private val progressListener: ProgressListener
 
 
     init {
@@ -90,66 +82,43 @@ class DownloadUtils(val context: Context, private val filename: String, private 
         val matchResult = regex.find(downloadURL)
         itemId = matchResult?.groups?.get(1)?.value.toString()
         itemUUID = itemId.toUUID()
-        itemFolder = File(context.filesDir, "/Downloads/$itemId/")
-        itemFolder.mkdirs()
-
-
-        progressListener = object : ProgressListener {
-            var prevProgress = 0L
-
-            override fun update(bytesRead: Long, contentLength: Long, done: Boolean) {
-                val progress = 100 * bytesRead / contentLength
-                if (contentLength != -1L && progress > prevProgress) {
-                    mainActivity.lifecycleScope.launch {
-                        withContext(Dispatchers.Main) {
-                            notificationBuilder.setProgress(100, progress.toInt(), false)
-                            notificationManager?.notify(DOWNLOAD_NOTIFICATION_ID, notificationBuilder.build())
-                        }
-                    }
-                    prevProgress = progress
-                }
-            }
-        }
-
-        okClient = OkHttpClient.Builder()
-            .addNetworkInterceptor(
-                Interceptor { chain: Interceptor.Chain ->
-                    val originalResponse: Response = chain.proceed(chain.request())
-                    originalResponse.newBuilder()
-                        .body(ProgressResponseBody(originalResponse.body, progressListener))
-                        .build()
-                },
-            )
-            .build()
+        contentId = itemUUID.toString()
+        downloadFolder = File(context.filesDir, "/Downloads/$itemId/")
+        downloadFolder.mkdirs()
+        downloadTracker = DownloadServiceUtil.getDownloadTracker()
     }
 
     suspend fun download() {
-        try {
-            createDownloadNotification()
-            checkForDownloadMethod()
-            retrieveJellyfinMediaSource()
-            val internalDownload = getDownloadLocation()
-            if (internalDownload) {
+        createDownloadNotificationChannel()
+        checkForDownloadMethod()
+        retrieveJellyfinMediaSource()
+        val internalDownload = getDownloadLocation()
+        if (internalDownload) {
+            try {
                 checkIfDownloadExists()
-                addTitleToNotification()
                 downloadFiles()
-                storeDownloadSpecs()
-                completeDownloadNotification()
-            } else {
-                downloadExternalMediaFile()
+            } catch (e: IOException) {
+                removeDownloadRemains()
             }
-        } catch (e: IOException) {
-            itemFolder.deleteRecursively()
-            notifyFailedDownload(e)
+        } else {
+            downloadExternalMediaFile()
         }
     }
 
     @SuppressLint("InlinedApi")
     @Suppress("Deprecation")
     private fun checkForDownloadMethod() {
-        // ToDo: Rework Download Methods
         val validConnection = when (downloadMethod) {
-            DownloadMethod.WIFI_ONLY -> ! (connectivityManager?.isActiveNetworkMetered ?: false)
+            DownloadMethod.WIFI_ONLY -> {
+                val downloadRequirements = Requirements(Requirements.NETWORK_UNMETERED)
+                DownloadService.sendSetRequirements(
+                    context,
+                    JellyfinDownloadService::class.java,
+                    downloadRequirements,
+                    false
+                )
+                ! (connectivityManager?.isActiveNetworkMetered ?: false)
+            }
             DownloadMethod.MOBILE_DATA -> {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                     ! (connectivityManager?.activeNetworkInfo?.isRoaming ?: throw AndroidException())
@@ -188,29 +157,20 @@ class DownloadUtils(val context: Context, private val filename: String, private 
     }
 
     private suspend fun downloadFiles() {
+        downloadTracker.addListener(jellyfinDownloadTracker)
         downloadMediaFile()
         downloadThumbnail()
         downloadExternalSubtitles()
     }
 
-    private suspend fun downloadMediaFile() {
-        withContext(Dispatchers.IO) {
-            val request = Request.Builder()
-                .url(downloadURL)
-                .build()
-
-            okClient.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) throw IOException(context.getString(R.string.failed_media))
-
-                val downloadFile = File(itemFolder, filename)
-                val sink: BufferedSink = downloadFile.sink().buffer()
-                val source: BufferedSource = response.body!!.source()
-
-                sink.writeAll(source)
-                sink.close()
-                //ToDo: Fix download not be properly aborted when connection is severed
-            }
-        }
+    private fun downloadMediaFile() {
+        val downloadRequest = DownloadRequest.Builder(contentId, downloadURL.toUri()).setData(jellyfinMediaSource!!.item!!.name!!.encodeToByteArray()).build()
+        DownloadService.sendAddDownload(
+            context,
+            JellyfinDownloadService::class.java,
+            downloadRequest,
+            false
+        )
     }
 
     private suspend fun downloadThumbnail() {
@@ -225,46 +185,37 @@ class DownloadUtils(val context: Context, private val filename: String, private 
         val imageRequest = ImageRequest.Builder(context).data(imageUrl).build()
         val bitmap: Bitmap = imageLoader.execute(imageRequest).drawable?.toBitmap() ?: throw IOException(context.getString(R.string.failed_thumbnail))
 
-        val thumbnailFile = File(itemFolder, "thumbnail.jpg")
+        val thumbnailFile = File(downloadFolder, Constants.DOWNLOAD_THUMBNAIL_FILENAME)
         val sink = thumbnailFile.sink().buffer()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, sink.outputStream())
         withContext(Dispatchers.IO) {
             sink.close()
         }
-        thumbnailURI = thumbnailFile.canonicalPath
     }
 
-    private suspend fun downloadExternalSubtitles() {
+    private fun downloadExternalSubtitles() {
         jellyfinMediaSource!!.externalSubtitleStreams.forEach {
-            withContext(Dispatchers.IO) {
-                val subtitleDownloadURL: String = apiClient.createUrl(it.deliveryUrl)
-                val request = Request.Builder()
-                    .url(subtitleDownloadURL)
-                    .build()
-
-                okClient.newCall(request).execute().use { response ->
-                    if (!response.isSuccessful) throw IOException(context.getString(R.string.failed_subs))
-
-                    val downloadFile = File(itemFolder, "${it.index}.subrip")
-                    val sink: BufferedSink = downloadFile.sink().buffer()
-                    val source: BufferedSource = response.body!!.source()
-                    sink.writeAll(source)
-                    sink.close()
-                }
-            }
+            val subtitleDownloadURL: String = apiClient.createUrl(it.deliveryUrl)
+            val downloadRequest = DownloadRequest.Builder("${contentId}:${it.index}", subtitleDownloadURL.toUri()).build()
+            DownloadService.sendAddDownload(
+                context,
+                JellyfinDownloadService::class.java,
+                downloadRequest,
+                false
+            )
         }
     }
 
     private suspend fun storeDownloadSpecs() {
         val serializedJellyfinMediaSource = Json.encodeToString(jellyfinMediaSource)
-        val downloadFile = File(itemFolder, filename)
         downloadDao.insert(
             DownloadEntity(
                 itemId = itemId,
-                fileURI = downloadFile.canonicalPath,
+                mediaUri = downloadURL,
                 mediaSource = serializedJellyfinMediaSource,
-                thumbnailURI = thumbnailURI,
-            ),
+                downloadFolderUri = downloadFolder.canonicalPath,
+                downloadLength = downloadTracker.getDownloadSize(downloadURL.toUri())
+            )
         )
     }
 
@@ -293,48 +244,25 @@ class DownloadUtils(val context: Context, private val filename: String, private 
         context.getSystemService<DownloadManager>()?.enqueue(downloadRequest)
     }
 
-    private suspend fun createDownloadNotification() {
-        createDownloadNotificationChannel()
+    private fun removeDownloadRemains() {
+        downloadFolder.deleteRecursively()
 
-        notificationBuilder = NotificationCompat.Builder(context, Constants.DOWNLOAD_NOTIFICATION_CHANNEL_ID).apply {
-            setSmallIcon(R.drawable.ic_notification)
-            setContentTitle(context.getString(R.string.downloading))
-            setOngoing(true)
-            setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-        }
+        // Remove media file
+        DownloadService.sendRemoveDownload(
+            context,
+            JellyfinDownloadService::class.java,
+            contentId,
+            false
+        )
 
-        withContext(Dispatchers.Main) {
-            notificationManager?.notify(DOWNLOAD_NOTIFICATION_ID, notificationBuilder.build())
-        }
-    }
-
-    private suspend fun notifyFailedDownload(exception: IOException) {
-        notificationBuilder.apply {
-            setContentTitle(context.getString(R.string.download_failed))
-            setContentText(exception.message ?: "")
-        }
-        withContext(Dispatchers.Main) {
-            notificationManager?.notify(DOWNLOAD_NOTIFICATION_ID, notificationBuilder.build())
-        }
-    }
-
-    private suspend fun addTitleToNotification() {
-        notificationBuilder.setContentText("${context.getString(R.string.downloading)} ${jellyfinMediaSource?.name}")
-        withContext(Dispatchers.Main) {
-            notificationManager?.notify(DOWNLOAD_NOTIFICATION_ID, notificationBuilder.build())
-        }
-    }
-
-    private suspend fun completeDownloadNotification() {
-        notificationBuilder.apply {
-            setContentTitle(context.getString(R.string.download_finished))
-            setContentText(context.getString(R.string.downloaded, jellyfinMediaSource?.name))
-            setProgress(0, 0, false)
-            setOngoing(false)
-        }
-        withContext(Dispatchers.Main) {
-            sleep(500) // Wait for progress notifications to be displayed, otherwise might be overridden
-            notificationManager?.notify(DOWNLOAD_NOTIFICATION_ID, notificationBuilder.build())
+        // Remove subtitles
+        jellyfinMediaSource!!.externalSubtitleStreams.forEach {
+            DownloadService.sendRemoveDownload(
+                context,
+                JellyfinDownloadService::class.java,
+                "${contentId}:${it.index}",
+                false
+            )
         }
     }
 
@@ -348,6 +276,22 @@ class DownloadUtils(val context: Context, private val filename: String, private 
                 description = context.getString(R.string.download_notifications_description)
             }
             notificationManager?.createNotificationChannel(notificationChannel)
+        }
+    }
+
+    private inner class JellyfinDownloadTracker : DownloadTracker.Listener {
+        override fun onDownloadsChanged() {
+            if (downloadTracker.isDownloaded(downloadURL.toUri())) {
+                runBlocking {
+                    withContext(Dispatchers.IO) {
+                        storeDownloadSpecs()
+                    }
+                }
+                downloadTracker.removeListener(this)
+            } else if (downloadTracker.isFailed(downloadURL.toUri())) {
+                removeDownloadRemains()
+                downloadTracker.removeListener(this)
+            }
         }
     }
 }

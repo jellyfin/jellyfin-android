@@ -11,8 +11,6 @@ import com.google.android.exoplayer2.source.MergingMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.FileDataSource
 import kotlinx.coroutines.runBlocking
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.player.PlayerException
@@ -224,7 +222,7 @@ class QueueManager(
         if (source.isDownload) {
             val downloadDao: DownloadDao = get()
             val fileUri = runBlocking {
-                downloadDao.getFileURI(source.id)
+                downloadDao.getMediaUri(source.id)
             }
             return prepareDownloadStreams(source, fileUri)
         } else {
@@ -339,8 +337,7 @@ class QueueManager(
 
     @CheckResult
     private fun createDownloadVideoMediaSource(mediaSourceId: String, fileUri: String): MediaSource {
-        val dataSourceFactory: DataSource.Factory = FileDataSource.Factory()
-        val mediaSourceFactory = ProgressiveMediaSource.Factory(dataSourceFactory)
+        val mediaSourceFactory: ProgressiveMediaSource.Factory = get()
 
         val mediaItem = MediaItem.Builder()
             .setMediaId(mediaSourceId)

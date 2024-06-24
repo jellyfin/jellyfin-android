@@ -17,6 +17,7 @@ import android.provider.Settings
 import android.provider.Settings.System.ACCELEROMETER_ROTATION
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.getSystemService
+import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.jellyfin.mobile.BuildConfig
@@ -27,6 +28,7 @@ import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.downloads.DownloadMethod
 import org.jellyfin.mobile.downloads.DownloadUtils
+import org.jellyfin.mobile.downloads.JellyfinDownloadService
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.webapp.WebViewFragment
@@ -129,9 +131,28 @@ suspend fun MainActivity.removeDownload(download: JellyfinMediaSource, force: Bo
 
     val downloadDao: DownloadDao = get()
     val downloadEntity: DownloadEntity = downloadDao.get(download.id)
-    val downloadDir = File(downloadEntity.fileURI).parentFile
+    val downloadDir = File(downloadEntity.downloadFolderUri)
     downloadDao.delete(download.id)
     downloadDir?.deleteRecursively()
+
+    val contentId = download.itemId.toString()
+    // Remove media file
+    DownloadService.sendRemoveDownload(
+        this,
+        JellyfinDownloadService::class.java,
+        contentId,
+        false
+    )
+
+    // Remove subtitles
+    download!!.externalSubtitleStreams.forEach {
+        DownloadService.sendRemoveDownload(
+            this,
+            JellyfinDownloadService::class.java,
+            "${contentId}:${it.index}",
+            false
+        )
+    }
 }
 
 

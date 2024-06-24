@@ -148,4 +148,6 @@ object Constants {
 
     // Misc
     const val PERCENT_MAX = 100
+    const val DOWNLOAD_PATH = "/MediaCache/"
+    const val DOWNLOAD_THUMBNAIL_FILENAME = "thumbnail.jpg"
 }

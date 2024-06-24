@@ -19,22 +19,25 @@ data class DownloadEntity(
     val id: Long,
     @ColumnInfo(name = ITEM_ID)
     val itemId: String,
-    @ColumnInfo(name = FILE_URI)
-    val fileURI: String,
+    @ColumnInfo(name = MEDIA_URI)
+    val mediaUri: String,
     @ColumnInfo(name = MEDIA_SOURCE)
     val mediaSource: String,
-    @ColumnInfo(name = THUMBNAIL_URI)
-    val thumbnail: String
+    @ColumnInfo(name = DOWNLOAD_FOLDER_URI)
+    val downloadFolderUri: String,
+    @ColumnInfo(name = DOWNLOAD_LENGTH)
+    val downloadLength: Long
 ) {
-    constructor(itemId: String, fileURI: String, mediaSource: String, thumbnailURI: String) :
-        this(0, itemId, fileURI, mediaSource, thumbnailURI)
+    constructor(itemId: String, mediaUri: String, mediaSource: String, downloadFolderUri: String, downloadLength: Long) :
+        this(0, itemId, mediaUri, mediaSource, downloadFolderUri, downloadLength)
 
     companion object Key {
         const val TABLE_NAME = "Download"
         const val ID = "id"
         const val ITEM_ID = "item_id"
-        const val FILE_URI = "file_uri"
+        const val MEDIA_URI = "media_uri"
         const val MEDIA_SOURCE = "media_source"
-        const val THUMBNAIL_URI = "thumbnail_uri"
+        const val DOWNLOAD_FOLDER_URI = "download_folder_uri"
+        const val DOWNLOAD_LENGTH = "download_length"
     }
 }

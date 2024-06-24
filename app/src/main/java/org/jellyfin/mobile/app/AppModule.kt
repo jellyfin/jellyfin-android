@@ -3,6 +3,8 @@ package org.jellyfin.mobile.app
 import org.jellyfin.mobile.downloads.DownloadsViewModel
 import android.content.Context
 import coil.ImageLoader
+import com.google.android.exoplayer2.database.DatabaseProvider
+import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
 import com.google.android.exoplayer2.ext.cronet.CronetDataSource
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.extractor.ts.TsExtractor
@@ -11,9 +13,12 @@ import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.exoplayer2.upstream.cache.Cache
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource
+import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
+import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.google.android.exoplayer2.util.Util
 import kotlinx.coroutines.channels.Channel
 import okhttp3.OkHttpClient
@@ -35,11 +40,13 @@ import org.jellyfin.mobile.utils.isLowRamDevice
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebViewFragment
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
+import org.jellyfin.sdk.model.serializer.toUUID
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import java.io.File
 import java.util.concurrent.Executors
 
 const val PLAYER_EVENT_CHANNEL = "PlayerEventChannel"
@@ -81,7 +88,20 @@ val applicationModule = module {
     single { QualityOptionsProvider() }
 
     // ExoPlayer factories
-    single<DataSource.Factory> {
+    single <DatabaseProvider>{
+        val dbProvider = StandaloneDatabaseProvider(get<Context>())
+        dbProvider
+    }
+    single <Cache> {
+        val downloadPath = File(get<Context>().filesDir, Constants.DOWNLOAD_PATH)
+        if (!downloadPath.exists()) {
+            downloadPath.mkdirs()
+        }
+        val cache = SimpleCache(downloadPath, NoOpCacheEvictor(), get())
+        cache
+    }
+
+    single<DefaultDataSource.Factory> {
         val context: Context = get()
 
         val provider = CronetProvider.getAllProviders(context).firstOrNull { provider: CronetProvider ->
@@ -105,7 +125,32 @@ val applicationModule = module {
         }
 
         DefaultDataSource.Factory(context, baseDataSourceFactory)
+
     }
+
+    single<CacheDataSource.Factory> {
+        // Create a read-only cache data source factory using the download cache.
+        CacheDataSource.Factory()
+            .setCache(get())
+            .setUpstreamDataSourceFactory(get<DefaultDataSource.Factory>())
+            .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
+            .setCacheKeyFactory { spec ->
+                val uri = spec.uri.toString()
+                val idRegex = Regex("""/([a-f0-9]{32}|[a-f0-9-]{36})/""")
+                val idResult = idRegex.find(uri)
+                val itemId = idResult?.groups?.get(1)?.value.toString()
+                var item = itemId.toUUID().toString()
+
+                val subtitleRegex = Regex("""(?:Subtitles/(\d+)/\d+/Stream.subrip)|(?:/(\d+).subrip)""")
+                val subtitleResult = subtitleRegex.find(uri)
+                if (subtitleResult != null) {
+                    item += ":${subtitleResult.groups?.get(1)?.value ?: subtitleResult.groups?.get(2)?.value}"
+                }
+
+                item
+            }
+    }
+
     single<MediaSource.Factory> {
         val context: Context = get()
         val extractorsFactory = DefaultExtractorsFactory().apply {
@@ -117,11 +162,11 @@ val applicationModule = module {
                 },
             )
         }
-        DefaultMediaSourceFactory(get<DataSource.Factory>(), extractorsFactory)
+        DefaultMediaSourceFactory(get<CacheDataSource.Factory>(), extractorsFactory)
     }
-    single { ProgressiveMediaSource.Factory(get()) }
-    single { HlsMediaSource.Factory(get<DataSource.Factory>()) }
-    single { SingleSampleMediaSource.Factory(get()) }
+    single { ProgressiveMediaSource.Factory(get<CacheDataSource.Factory>()) }
+    single { HlsMediaSource.Factory(get<CacheDataSource.Factory>()) }
+    single { SingleSampleMediaSource.Factory(get<CacheDataSource.Factory>()) }
 
     // Media components
     single { LibraryBrowser(get(), get()) }
