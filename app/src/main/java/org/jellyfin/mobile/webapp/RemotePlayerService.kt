@@ -265,10 +265,6 @@ class RemotePlayerService : Service(), CoroutineScope {
                     setPriority(Notification.PRIORITY_LOW)
                 }
 
-                if (AndroidVersion.isAtLeastS) {
-                    setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
-                }
-
                 setContentTitle(title?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) })
                 setContentText(artist?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) })
                 setSubText(album)
@@ -350,12 +346,12 @@ class RemotePlayerService : Service(), CoroutineScope {
                 startForeground(
                     MEDIA_PLAYER_NOTIFICATION_ID,
                     notification,
-                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MANIFEST
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MANIFEST,
                 )
             } else {
                 startForeground(
                     MEDIA_PLAYER_NOTIFICATION_ID,
-                    notification
+                    notification,
                 )
             }
 
