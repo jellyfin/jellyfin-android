@@ -67,7 +67,9 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".webapp.RemotePlayerService" />
+        <service android:name=".webapp.RemotePlayerService"
+            android:enabled="true"
+            android:foregroundServiceType="mediaPlayback"/>
 
         <service
             android:name="org.jellyfin.mobile.player.audio.MediaService"
