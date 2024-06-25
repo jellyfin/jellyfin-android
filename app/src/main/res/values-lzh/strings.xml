@@ -1,7 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dialog_web_view_not_supported_message"></string>
-    <string name="dialog_web_view_not_supported"></string>
-    <string name="dialog_web_view_outdated"></string>
-    <string name="dialog_button_ignore"></string>
-</resources>
+    </resources>
