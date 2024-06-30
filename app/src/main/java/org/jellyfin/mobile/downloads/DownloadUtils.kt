@@ -38,6 +38,7 @@ import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
@@ -167,11 +168,7 @@ class DownloadUtils(
     private fun getDownloadLocation(): Boolean {
         // Only download shows and movies to internal storage
         return appPreferences.downloadToInternal == true &&
-            (
-                jellyfinMediaSource!!.item?.type == BaseItemKind.EPISODE ||
-                    jellyfinMediaSource!!.item?.type == BaseItemKind.MOVIE ||
-                    jellyfinMediaSource!!.item?.type == BaseItemKind.VIDEO
-                )
+            jellyfinMediaSource!!.item?.type in listOf(BaseItemKind.EPISODE, BaseItemKind.MOVIE, BaseItemKind.VIDEO)
     }
 
     private suspend fun downloadFiles() {
@@ -229,12 +226,12 @@ class DownloadUtils(
     }
 
     private suspend fun storeDownloadSpecs() {
-        val serializedJellyfinMediaSource = Json.encodeToString(jellyfinMediaSource)
+        val mediaSource = LocalJellyfinMediaSource(requireNotNull(jellyfinMediaSource))
         downloadDao.insert(
             DownloadEntity(
                 itemId = itemId,
                 mediaUri = downloadURL,
-                mediaSource = serializedJellyfinMediaSource,
+                mediaSource = Json.encodeToString<LocalJellyfinMediaSource>(mediaSource),
                 downloadFolderUri = downloadFolder.canonicalPath,
                 downloadLength = downloadTracker.getDownloadSize(downloadURL.toUri()),
             ),

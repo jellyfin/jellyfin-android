@@ -29,7 +29,7 @@ import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.downloads.DownloadMethod
 import org.jellyfin.mobile.downloads.DownloadUtils
 import org.jellyfin.mobile.downloads.JellyfinDownloadService
-import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.webapp.WebViewFragment
 import org.koin.android.ext.android.get
@@ -106,7 +106,7 @@ suspend fun MainActivity.requestDownload(uri: Uri, filename: String) {
         downloadUtils.download()
     }
 }
-suspend fun MainActivity.removeDownload(download: JellyfinMediaSource, force: Boolean = false) {
+suspend fun MainActivity.removeDownload(download: LocalJellyfinMediaSource, force: Boolean = false) {
     if (!force) {
         val confirmation = suspendCancellableCoroutine { continuation ->
             AlertDialog.Builder(this)
@@ -129,7 +129,7 @@ suspend fun MainActivity.removeDownload(download: JellyfinMediaSource, force: Bo
     }
 
     val downloadDao: DownloadDao = get()
-    val downloadEntity: DownloadEntity = downloadDao.get(download.id)
+    val downloadEntity: DownloadEntity = requireNotNull(downloadDao.get(download.id))
     val downloadDir = File(downloadEntity.downloadFolderUri)
     downloadDao.delete(download.id)
     downloadDir?.deleteRecursively()

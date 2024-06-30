@@ -4,8 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import kotlinx.serialization.json.Json.Default.decodeFromString
 import org.jellyfin.mobile.data.entity.DownloadEntity.Key.ITEM_ID
 import org.jellyfin.mobile.data.entity.DownloadEntity.Key.TABLE_NAME
+import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 
 @Entity(
     tableName = TABLE_NAME,
@@ -28,6 +30,8 @@ data class DownloadEntity(
     @ColumnInfo(name = DOWNLOAD_LENGTH)
     val downloadLength: Long,
 ) {
+    fun asMediaSource(): LocalJellyfinMediaSource = decodeFromString(mediaSource)
+
     constructor(itemId: String, mediaUri: String, mediaSource: String, downloadFolderUri: String, downloadLength: Long) :
         this(0, itemId, mediaUri, mediaSource, downloadFolderUri, downloadLength)
 

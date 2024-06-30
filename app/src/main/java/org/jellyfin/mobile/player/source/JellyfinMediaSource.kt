@@ -1,6 +1,5 @@
 package org.jellyfin.mobile.player.source
 
-import kotlinx.serialization.Serializable
 import org.jellyfin.mobile.player.deviceprofile.CodecHelpers
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.model.api.BaseItemDto
@@ -11,29 +10,22 @@ import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
 import java.util.UUID
 
-@Serializable(with = JellyfinMediaSourceSerializer::class)
-class JellyfinMediaSource(
+sealed class JellyfinMediaSource(
     val itemId: UUID,
     val item: BaseItemDto?,
     val sourceInfo: MediaSourceInfo,
     val playSessionId: String,
-    val liveStreamId: String?,
-    val maxStreamingBitrate: Int?,
-    var isDownload: Boolean = false,
-    private var startTimeTicks: Long? = null,
-    audioStreamIndex: Int? = null,
-    subtitleStreamIndex: Int? = null,
+    startTimeTicks: Long?,
+    val audioStreamIndex: Int?,
+    val subtitleStreamIndex: Int?,
 ) {
     val id: String = requireNotNull(sourceInfo.id) { "Media source has no id" }
     val name: String = item?.name ?: sourceInfo.name.orEmpty()
 
-    val playMethod: PlayMethod = when {
-        sourceInfo.supportsDirectPlay -> PlayMethod.DIRECT_PLAY
-        sourceInfo.supportsDirectStream -> PlayMethod.DIRECT_STREAM
-        sourceInfo.supportsTranscoding -> PlayMethod.TRANSCODE
-        else -> throw IllegalArgumentException("No play method found for $name ($itemId)")
-    }
+    abstract val playMethod: PlayMethod
 
+    var startTimeTicks: Long? = startTimeTicks
+        private set
     var startTimeMs: Long
         get() = (startTimeTicks ?: 0L) / Constants.TICKS_PER_MILLISECOND
         set(value) {
@@ -113,6 +105,7 @@ class JellyfinMediaSource(
         audioStreams = audio
         subtitleStreams = subtitles
         externalSubtitleStreams = externalSubtitles
+        this.startTimeTicks = startTimeTicks
     }
 
     /**

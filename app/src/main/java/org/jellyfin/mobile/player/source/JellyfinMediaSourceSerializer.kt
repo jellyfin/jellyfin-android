@@ -15,7 +15,7 @@ import org.jellyfin.sdk.model.api.MediaSourceInfo
 import org.jellyfin.sdk.model.serializer.toUUID
 import java.util.UUID
 
-class JellyfinMediaSourceSerializer : KSerializer<JellyfinMediaSource> {
+class JellyfinMediaSourceSerializer : KSerializer<LocalJellyfinMediaSource> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("JellyfinMediaSource") {
         element<String>("itemId")
         element<BaseItemDto?>("item", isOptional = true)
@@ -23,7 +23,7 @@ class JellyfinMediaSourceSerializer : KSerializer<JellyfinMediaSource> {
         element<String>("playSessionId")
     }
 
-    override fun serialize(encoder: Encoder, mediaSource: JellyfinMediaSource) =
+    override fun serialize(encoder: Encoder, mediaSource: LocalJellyfinMediaSource) =
         encoder.encodeStructure(descriptor) {
             encodeStringElement(descriptor, 0, mediaSource.itemId.toString())
             encodeNullableSerializableElement(descriptor, 1, BaseItemDto.serializer(), mediaSource.item)
@@ -31,7 +31,7 @@ class JellyfinMediaSourceSerializer : KSerializer<JellyfinMediaSource> {
             encodeStringElement(descriptor, 3, mediaSource.playSessionId)
         }
 
-    override fun deserialize(decoder: Decoder): JellyfinMediaSource =
+    override fun deserialize(decoder: Decoder): LocalJellyfinMediaSource =
         decoder.decodeStructure(descriptor) {
             var itemId: UUID? = null
             var item: BaseItemDto? = null
@@ -51,13 +51,11 @@ class JellyfinMediaSourceSerializer : KSerializer<JellyfinMediaSource> {
 
             require(itemId != null && sourceInfo != null && playSessionId != null)
 
-            JellyfinMediaSource(
+            LocalJellyfinMediaSource(
                 itemId = itemId,
                 item = item,
                 sourceInfo = sourceInfo,
                 playSessionId = playSessionId,
-                liveStreamId = null,
-                maxStreamingBitrate = null,
             )
         }
 }

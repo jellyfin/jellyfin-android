@@ -26,6 +26,8 @@ import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
+import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.VIDEO_PLAYER_NOTIFICATION_ID
@@ -147,12 +149,13 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
         }
     }
 
-    private suspend fun loadImage(mediaSource: JellyfinMediaSource): Bitmap? {
-        if (mediaSource.isDownload) {
+    private suspend fun loadImage(mediaSource: JellyfinMediaSource) = when (mediaSource) {
+        is LocalJellyfinMediaSource -> {
             val downloadFolder = File(downloadDao.getDownloadFolderUri(mediaSource.id))
             val thumbnailFile = File(downloadFolder, Constants.DOWNLOAD_THUMBNAIL_FILENAME)
-            return BitmapFactory.decodeFile(thumbnailFile.canonicalPath)
-        } else {
+            BitmapFactory.decodeFile(thumbnailFile.canonicalPath)
+        }
+        is RemoteJellyfinMediaSource -> {
             val size = context.resources.getDimensionPixelSize(R.dimen.media_notification_height)
 
             val imageUrl = imageApi.getItemImageUrl(
@@ -162,7 +165,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                 maxHeight = size,
             )
             val imageRequest = ImageRequest.Builder(context).data(imageUrl).build()
-            return imageLoader.execute(imageRequest).drawable?.toBitmap()
+            imageLoader.execute(imageRequest).drawable?.toBitmap()
         }
     }
 
