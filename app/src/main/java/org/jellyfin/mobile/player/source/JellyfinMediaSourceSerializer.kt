@@ -15,8 +15,7 @@ import org.jellyfin.sdk.model.api.MediaSourceInfo
 import org.jellyfin.sdk.model.serializer.toUUID
 import java.util.UUID
 
-class JellyfinMediaSourceSerializer: KSerializer<JellyfinMediaSource>
-{
+class JellyfinMediaSourceSerializer : KSerializer<JellyfinMediaSource> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("JellyfinMediaSource") {
         element<String>("itemId")
         element<BaseItemDto?>("item", isOptional = true)
@@ -58,7 +57,7 @@ class JellyfinMediaSourceSerializer: KSerializer<JellyfinMediaSource>
                 sourceInfo = sourceInfo,
                 playSessionId = playSessionId,
                 liveStreamId = null,
-                maxStreamingBitrate = null
+                maxStreamingBitrate = null,
             )
         }
 }

@@ -29,6 +29,5 @@ interface DownloadDao {
     suspend fun getMediaUri(downloadId: String): String
 
     @Query("SELECT EXISTS(SELECT * FROM $TABLE_NAME WHERE item_id LIKE :downloadId)")
-    suspend fun downloadExists(downloadId : String) : Boolean
-
+    suspend fun downloadExists(downloadId: String): Boolean
 }

@@ -84,7 +84,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                 loadImage(currentMediaSource)
             }
 
-            val  style = Notification.MediaStyle().apply {
+            val style = Notification.MediaStyle().apply {
                 setMediaSession(viewModel.mediaSession.sessionToken)
                 setShowActionsInCompactView(0, 1, 2)
             }
@@ -147,7 +147,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
         }
     }
 
-    private suspend fun  loadImage(mediaSource: JellyfinMediaSource): Bitmap? {
+    private suspend fun loadImage(mediaSource: JellyfinMediaSource): Bitmap? {
         if (mediaSource.isDownload) {
             val downloadFolder = File(downloadDao.getDownloadFolderUri(mediaSource.id))
             val thumbnailFile = File(downloadFolder, Constants.DOWNLOAD_THUMBNAIL_FILENAME)

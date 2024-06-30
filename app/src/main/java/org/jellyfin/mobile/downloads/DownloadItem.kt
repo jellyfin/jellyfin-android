@@ -9,23 +9,27 @@ import org.jellyfin.mobile.utils.Constants
 import java.io.File
 import java.util.Locale
 
-data class DownloadItem (private val download: DownloadEntity) {
+data class DownloadItem(private val download: DownloadEntity) {
     val mediaSource: JellyfinMediaSource = Json.decodeFromString(download.mediaSource)
-    val thumbnail: Bitmap? = BitmapFactory.decodeFile(File(download.downloadFolderUri, Constants.DOWNLOAD_THUMBNAIL_FILENAME).canonicalPath)
+    val thumbnail: Bitmap? = BitmapFactory.decodeFile(
+        File(download.downloadFolderUri, Constants.DOWNLOAD_THUMBNAIL_FILENAME).canonicalPath,
+    )
     val fileSize: String = formatFileSize(download.downloadLength)
 
     private fun formatFileSize(bytes: Long): String {
-        if (bytes < 1024) return "$bytes B"
-
         val units = arrayOf("B", "KB", "MB", "GB", "TB")
         var size = bytes.toDouble()
         var unitIndex = 0
 
-        while (size >= 1024 && unitIndex < units.size - 1) {
-            size /= 1024
+        while (size >= KILOBYTE && unitIndex < units.lastIndex) {
+            size /= KILOBYTE
             unitIndex++
         }
 
-        return String.format(Locale.ROOT, "%.1f %s", size, units[unitIndex])
+        return "%.1f %s".format(Locale.ROOT, size, units[unitIndex])
+    }
+
+    companion object {
+        private const val KILOBYTE = 1024
     }
 }

@@ -26,7 +26,7 @@ data class DownloadEntity(
     @ColumnInfo(name = DOWNLOAD_FOLDER_URI)
     val downloadFolderUri: String,
     @ColumnInfo(name = DOWNLOAD_LENGTH)
-    val downloadLength: Long
+    val downloadLength: Long,
 ) {
     constructor(itemId: String, mediaUri: String, mediaSource: String, downloadFolderUri: String, downloadLength: Long) :
         this(0, itemId, mediaUri, mediaSource, downloadFolderUri, downloadLength)

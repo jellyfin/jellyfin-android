@@ -16,10 +16,11 @@ import org.koin.core.component.inject
 class DownloadsViewModel : ViewModel(), KoinComponent {
 
     private val downloadDao: DownloadDao by inject()
+
     // This is a mutable state flow that will be used internally in the viewmodel, empty list is given as initial value.
     private val _downloads = MutableStateFlow(emptyList<DownloadEntity>())
 
-    //Immutable state flow that you expose to your UI
+    // Immutable state flow that you expose to your UI
     val downloads = _downloads.asStateFlow()
 
     init {
@@ -27,7 +28,7 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
     }
 
     private fun getAllDownloads() {
-        viewModelScope.launch { //this: CoroutineScope
+        viewModelScope.launch { // this: CoroutineScope
             downloadDao.getAllDownloads().flowOn(Dispatchers.IO).collect { downloads: List<DownloadEntity> ->
                 _downloads.update { downloads }
             }

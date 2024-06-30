@@ -58,7 +58,6 @@ object DownloadServiceUtil : KoinComponent {
                 )
             downloadTracker =
                 DownloadTracker(downloadManager!!)
-
         }
     }
 }

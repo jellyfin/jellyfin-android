@@ -37,7 +37,6 @@ import timber.log.Timber
 import java.io.File
 import kotlin.coroutines.resume
 
-
 fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     if (AndroidVersion.isAtLeastM) {
         val powerManager: PowerManager = requireContext().getSystemService(Activity.POWER_SERVICE) as PowerManager
@@ -93,7 +92,7 @@ suspend fun MainActivity.requestDownload(uri: Uri, filename: String) {
     }
 
     val permissionResult: Boolean = suspendCancellableCoroutine { continuation ->
-        requestPermission("android.permission.POST_NOTIFICATIONS",) { permissionsMap ->
+        requestPermission("android.permission.POST_NOTIFICATIONS") { permissionsMap ->
             if (permissionsMap[Manifest.permission.POST_NOTIFICATIONS] == PackageManager.PERMISSION_GRANTED) {
                 continuation.resume(true)
             } else {
@@ -141,7 +140,7 @@ suspend fun MainActivity.removeDownload(download: JellyfinMediaSource, force: Bo
         this,
         JellyfinDownloadService::class.java,
         contentId,
-        false
+        false,
     )
 
     // Remove subtitles
@@ -149,12 +148,11 @@ suspend fun MainActivity.removeDownload(download: JellyfinMediaSource, force: Bo
         DownloadService.sendRemoveDownload(
             this,
             JellyfinDownloadService::class.java,
-            "${contentId}:${it.index}",
-            false
+            "$contentId:${it.index}",
+            false,
         )
     }
 }
-
 
 fun Activity.isAutoRotateOn() = Settings.System.getInt(contentResolver, ACCELEROMETER_ROTATION, 0) == 1
 

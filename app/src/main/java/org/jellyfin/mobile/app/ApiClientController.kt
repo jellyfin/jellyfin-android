@@ -2,10 +2,8 @@ package org.jellyfin.mobile.app
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.data.dao.ServerDao
 import org.jellyfin.mobile.data.dao.UserDao
-import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.sdk.Jellyfin
 import org.jellyfin.sdk.api.client.ApiClient
@@ -17,7 +15,7 @@ class ApiClientController(
     private val jellyfin: Jellyfin,
     private val apiClient: ApiClient,
     private val serverDao: ServerDao,
-    private val userDao: UserDao
+    private val userDao: UserDao,
 ) {
     private val baseDeviceInfo: DeviceInfo
         get() = jellyfin.options.deviceInfo!!

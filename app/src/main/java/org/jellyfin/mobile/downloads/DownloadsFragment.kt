@@ -20,7 +20,7 @@ import org.jellyfin.mobile.utils.withThemedContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class DownloadsFragment: Fragment(), KoinComponent {
+class DownloadsFragment : Fragment(), KoinComponent {
     private val viewModel: DownloadsViewModel by inject()
     private val activityEventHandler: ActivityEventHandler by inject()
     private lateinit var adapter: DownloadsAdapter
@@ -38,7 +38,7 @@ class DownloadsFragment: Fragment(), KoinComponent {
 
         adapter = DownloadsAdapter(
             onItemClick = { download -> onDownloadItemClick(download) },
-            onItemHold = { download -> onDownloadItemHold(download) }
+            onItemHold = { download -> onDownloadItemHold(download) },
         )
         binding.recyclerView.adapter = adapter
 
@@ -57,7 +57,7 @@ class DownloadsFragment: Fragment(), KoinComponent {
             ids = listOf(download.mediaSource.itemId),
             mediaSourceId = download.mediaSource.id,
             startIndex = 0,
-            startPositionTicks= null,
+            startPositionTicks = null,
             audioStreamIndex = 1,
             subtitleStreamIndex = -1,
             playFromDownloads = true,
@@ -66,8 +66,6 @@ class DownloadsFragment: Fragment(), KoinComponent {
     }
     private fun onDownloadItemHold(download: DownloadItem) {
         val itemMissing = download.thumbnail == null
-        activityEventHandler.emit(ActivityEvent.RemoveDownload(download.mediaSource, force=itemMissing))
+        activityEventHandler.emit(ActivityEvent.RemoveDownload(download.mediaSource, force = itemMissing))
     }
-
-
 }

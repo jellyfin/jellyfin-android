@@ -1,6 +1,5 @@
 package org.jellyfin.mobile.app
 
-import org.jellyfin.mobile.downloads.DownloadsViewModel
 import android.content.Context
 import coil.ImageLoader
 import com.google.android.exoplayer2.database.DatabaseProvider
@@ -26,6 +25,7 @@ import org.chromium.net.CronetEngine
 import org.chromium.net.CronetProvider
 import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.bridge.NativePlayer
+import org.jellyfin.mobile.downloads.DownloadsViewModel
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.audio.car.LibraryBrowser
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
@@ -88,11 +88,11 @@ val applicationModule = module {
     single { QualityOptionsProvider() }
 
     // ExoPlayer factories
-    single <DatabaseProvider>{
+    single<DatabaseProvider> {
         val dbProvider = StandaloneDatabaseProvider(get<Context>())
         dbProvider
     }
-    single <Cache> {
+    single<Cache> {
         val downloadPath = File(get<Context>().filesDir, Constants.DOWNLOAD_PATH)
         if (!downloadPath.exists()) {
             downloadPath.mkdirs()
@@ -125,7 +125,6 @@ val applicationModule = module {
         }
 
         DefaultDataSource.Factory(context, baseDataSourceFactory)
-
     }
 
     single<CacheDataSource.Factory> {

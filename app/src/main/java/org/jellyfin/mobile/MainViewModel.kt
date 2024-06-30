@@ -29,7 +29,7 @@ class MainViewModel(
 
     private suspend fun refreshServer() {
         val serverEntity = apiClientController.loadSavedServer()
-        _serverState.value = serverEntity?.let { entity ->  ServerState.Available(entity) } ?: ServerState.Unset
+        _serverState.value = serverEntity?.let { entity -> ServerState.Available(entity) } ?: ServerState.Unset
     }
 
     /**

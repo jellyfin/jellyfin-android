@@ -72,9 +72,9 @@ class QueueManager(
         when (playOptions.playFromDownloads) {
             true -> playOptions.mediaSourceId?.let {
                 startDownloadPlayback(
-                    itemId = itemId,
                     mediaSourceId = it,
-                    playWhenReady = true,)
+                    playWhenReady = true,
+                )
             }
             else -> startPlayback(
                 itemId = itemId,
@@ -83,21 +83,20 @@ class QueueManager(
                 startTimeTicks = playOptions.startPositionTicks,
                 audioStreamIndex = playOptions.audioStreamIndex,
                 subtitleStreamIndex = playOptions.subtitleStreamIndex,
-                playWhenReady = true,)
+                playWhenReady = true,
+            )
         }
-
 
         return null
     }
 
     private suspend fun startDownloadPlayback(
-        itemId: UUID,
         mediaSourceId: String,
         playWhenReady: Boolean,
     ): PlayerException? {
         mediaSourceResolver.resolveDownloadSource(
             mediaSourceId = mediaSourceId,
-            downloadDao = get()
+            downloadDao = get(),
         ).onSuccess { jellyfinMediaSource ->
             _currentMediaSource.value = jellyfinMediaSource
 
@@ -324,7 +323,6 @@ class QueueManager(
             factory.createMediaSource(mediaItem, source.runTimeMs)
         }.toTypedArray()
     }
-
 
     private fun prepareDownloadStreams(source: JellyfinMediaSource, fileUri: String): MediaSource {
         val videoSource: MediaSource = createDownloadVideoMediaSource(source.id, fileUri)
