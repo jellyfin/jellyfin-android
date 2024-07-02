@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="downloadItem"
+            type="org.jellyfin.mobile.downloads.DownloadItem" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:padding="16dp">
+
+
+        <ImageView
+            android:id="@+id/imageViewThumbnail"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/thumbnail_desc" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingHorizontal="16dp">
+
+            <TextView
+                android:id="@+id/textViewName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{downloadItem.mediaSource.name}"
+                android:textSize="21sp" />
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{downloadItem.mediaSource.item.seriesName != null ? @string/tv_show_desc(downloadItem.mediaSource.item.seriesName, downloadItem.mediaSource.item.parentIndexNumber, downloadItem.mediaSource.item.indexNumber) : downloadItem.mediaSource.item.productionYear ?? downloadItem.mediaSource.id}"/>
+
+            <TextView
+                android:id="@+id/textViewFileSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{downloadItem.fileSize}" />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.detekt)
     alias(libs.plugins.android.junit5)
 }
@@ -80,6 +81,7 @@ android {
         buildConfig = true
         viewBinding = true
         compose = true
+        dataBinding = true
     }
     kotlinOptions {
         @Suppress("SuspiciousCollectionReassignment")
@@ -110,6 +112,7 @@ dependencies {
 
     // Kotlin
     implementation(libs.bundles.coroutines)
+    implementation(libs.kotlin.serialization.json)
 
     // Core
     implementation(libs.bundles.koin)
@@ -143,6 +146,7 @@ dependencies {
         }
     }
     implementation(libs.okhttp)
+    implementation(libs.okio)
     implementation(libs.coil)
     implementation(libs.cronet.embedded)
 

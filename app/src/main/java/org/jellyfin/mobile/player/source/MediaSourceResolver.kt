@@ -1,5 +1,8 @@
 package org.jellyfin.mobile.player.source
 
+import kotlinx.serialization.json.Json
+import org.jellyfin.mobile.data.dao.DownloadDao
+import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
@@ -7,7 +10,9 @@ import org.jellyfin.sdk.api.client.extensions.itemsApi
 import org.jellyfin.sdk.api.client.extensions.mediaInfoApi
 import org.jellyfin.sdk.api.operations.ItemsApi
 import org.jellyfin.sdk.api.operations.MediaInfoApi
+import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.DeviceProfile
+import org.jellyfin.sdk.model.api.MediaSourceInfo
 import org.jellyfin.sdk.model.api.PlaybackInfoDto
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
@@ -30,7 +35,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
     ): Result<JellyfinMediaSource> {
         // Load media source info
         val playSessionId: String
-        val mediaSourceInfo = try {
+        val mediaSourceInfo: MediaSourceInfo = try {
             val response by mediaInfoApi.getPostedPlaybackInfo(
                 itemId = itemId,
                 data = PlaybackInfoDto(
@@ -59,7 +64,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
         }
 
         // Load additional item info if possible
-        val item = try {
+        val item: BaseItemDto? = try {
             val response by itemsApi.getItemsByUserId(ids = listOf(itemId))
             response.items?.firstOrNull()
         } catch (e: ApiClientException) {
@@ -85,5 +90,12 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
             Timber.e(e, "Cannot create JellyfinMediaSource")
             Result.failure(PlayerException.UnsupportedContent(e))
         }
+    }
+
+    suspend fun resolveDownloadSource(mediaSourceId: String, downloadDao: DownloadDao): Result<JellyfinMediaSource> {
+        val download: DownloadEntity = downloadDao.get(mediaSourceId)
+        var jellyfinMediaSource: JellyfinMediaSource = Json.decodeFromString(download.mediaSource)
+        jellyfinMediaSource.isDownload = true
+        return Result.success(jellyfinMediaSource)
     }
 }
