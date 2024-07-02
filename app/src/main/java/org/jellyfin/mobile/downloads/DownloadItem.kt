@@ -21,15 +21,15 @@ data class DownloadItem(private val download: DownloadEntity) {
         var size = bytes.toDouble()
         var unitIndex = 0
 
-        while (size >= KILOBYTE && unitIndex < units.lastIndex) {
-            size /= KILOBYTE
+        while (size >= BYTES_PER_BINARY_UNIT && unitIndex < units.lastIndex) {
+            size /= BYTES_PER_BINARY_UNIT
             unitIndex++
         }
 
         return "%.1f %s".format(Locale.ROOT, size, units[unitIndex])
     }
 
-    companion object {
-        private const val KILOBYTE = 1024
+    private companion object {
+        const val BYTES_PER_BINARY_UNIT = 1024
     }
 }
