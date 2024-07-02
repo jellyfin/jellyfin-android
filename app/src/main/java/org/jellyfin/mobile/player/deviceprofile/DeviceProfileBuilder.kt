@@ -25,6 +25,7 @@ class DeviceProfileBuilder(
             SUPPORTED_CONTAINER_FORMATS.size == AVAILABLE_VIDEO_CODECS.size && SUPPORTED_CONTAINER_FORMATS.size == AVAILABLE_AUDIO_CODECS.size,
         )
 
+
         // Load Android-supported codecs
         val videoCodecs: MutableMap<String, DeviceCodec.Video> = HashMap()
         val audioCodecs: MutableMap<String, DeviceCodec.Audio> = HashMap()
@@ -35,6 +36,7 @@ class DeviceProfileBuilder(
             for (mimeType in codecInfo.supportedTypes) {
                 val codec = DeviceCodec.from(codecInfo.getCapabilitiesForType(mimeType)) ?: continue
                 val name = codec.name
+
                 when (codec) {
                     is DeviceCodec.Video -> {
                         if (videoCodecs.containsKey(name)) {
@@ -99,26 +101,36 @@ class DeviceProfileBuilder(
         val directPlayProfiles = ArrayList<DirectPlayProfile>()
         val codecProfiles = ArrayList<CodecProfile>()
 
+        val disallowedCodecs: List<String>  = appPreferences.exoPlayerDisallowedCodecs?.split(",")?.map { it.trim() } ?: emptyList()
+
+
         for (i in SUPPORTED_CONTAINER_FORMATS.indices) {
             val container = SUPPORTED_CONTAINER_FORMATS[i]
             if (supportedVideoCodecs[i].isNotEmpty()) {
+
+                val filteredVideoList: List<String> = supportedVideoCodecs[i].filterNot { it in disallowedCodecs }
+                val filteredAudioList: List<String> = supportedAudioCodecs[i].filterNot { it in disallowedCodecs }
+
                 containerProfiles.add(ContainerProfile(type = DlnaProfileType.VIDEO, container = container))
                 directPlayProfiles.add(
                     DirectPlayProfile(
                         type = DlnaProfileType.VIDEO,
                         container = SUPPORTED_CONTAINER_FORMATS[i],
-                        videoCodec = supportedVideoCodecs[i].joinToString(","),
-                        audioCodec = supportedAudioCodecs[i].joinToString(","),
+                        videoCodec = filteredVideoList.joinToString(","),
+                        audioCodec = filteredAudioList.joinToString(","),
                     ),
                 )
             }
             if (supportedAudioCodecs[i].isNotEmpty()) {
+
+                val filteredAudioList: List<String> = supportedAudioCodecs[i].filterNot { it in disallowedCodecs }
+
                 containerProfiles.add(ContainerProfile(type = DlnaProfileType.AUDIO, container = container))
                 directPlayProfiles.add(
                     DirectPlayProfile(
                         type = DlnaProfileType.AUDIO,
                         container = SUPPORTED_CONTAINER_FORMATS[i],
-                        audioCodec = supportedAudioCodecs[i].joinToString(","),
+                        audioCodec = filteredAudioList.joinToString(","),
                     ),
                 )
             }
@@ -131,10 +143,26 @@ class DeviceProfileBuilder(
             else -> getSubtitleProfiles(EXO_EMBEDDED_SUBTITLES, EXO_EXTERNAL_SUBTITLES)
         }
 
+        val filteredTranscodingProfiles: List<TranscodingProfile>
+        if (disallowedCodecs.isEmpty()){
+            filteredTranscodingProfiles = transcodingProfiles
+        }else{
+            filteredTranscodingProfiles = transcodingProfiles.map { tr ->
+                TranscodingProfile(
+                    type = tr.type,
+                    container = tr.container,
+                    videoCodec = tr.videoCodec, //.split(",").filterNot { it in disallowedCodecs }.joinToString(","),
+                    audioCodec = tr.audioCodec.split(",").filterNot { it in disallowedCodecs }.joinToString(","),
+                    protocol = tr.protocol,
+                    conditions = tr.conditions
+                )
+            }
+        }
+
         return DeviceProfile(
             name = Constants.APP_INFO_NAME,
             directPlayProfiles = directPlayProfiles,
-            transcodingProfiles = transcodingProfiles,
+            transcodingProfiles = filteredTranscodingProfiles,
             containerProfiles = containerProfiles,
             codecProfiles = codecProfiles,
             subtitleProfiles = subtitleProfiles,
