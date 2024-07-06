@@ -1,13 +1,13 @@
 [versions]
 # Plugins
 android-plugin = "8.5.0"
-kotlin = "1.9.23"
-kotlin-ksp = "1.9.23-1.0.20"
+kotlin = "1.9.24"
+kotlin-ksp = "1.9.24-1.0.20"
 detekt = "1.22.0"
 android-junit5 = "1.10.0.0"
 
 # KotlinX
-coroutines = "1.8.0"
+coroutines = "1.8.1"
 
 # Core
 koin = "3.5.6"
