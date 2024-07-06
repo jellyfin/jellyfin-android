@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "4366575e1609ecf3e2c44abd106d51d6",
+    "identityHash": "26b179bda28d76008389cab4ce8cb631",
     "entities": [
       {
         "tableName": "Server",
@@ -115,23 +115,11 @@
       },
       {
         "tableName": "Download",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `item_id` TEXT NOT NULL, `media_uri` TEXT NOT NULL, `media_source` TEXT NOT NULL, `download_folder_uri` TEXT NOT NULL, `download_length` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`item_id` TEXT NOT NULL, `media_source` TEXT NOT NULL, PRIMARY KEY(`item_id`))",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "itemId",
             "columnName": "item_id",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "mediaUri",
-            "columnName": "media_uri",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -140,24 +128,12 @@
             "columnName": "media_source",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "downloadFolderUri",
-            "columnName": "download_folder_uri",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "downloadLength",
-            "columnName": "download_length",
-            "affinity": "INTEGER",
-            "notNull": true
           }
         ],
         "primaryKey": {
-          "autoGenerate": true,
+          "autoGenerate": false,
           "columnNames": [
-            "id"
+            "item_id"
           ]
         },
         "indices": [
@@ -177,7 +153,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4366575e1609ecf3e2c44abd106d51d6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '26b179bda28d76008389cab4ce8cb631')"
     ]
   }
 }

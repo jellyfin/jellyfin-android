@@ -72,7 +72,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     fun postNotification() {
         val nm = notificationManager ?: return
         val player = viewModel.playerOrNull ?: return
-        val currentMediaSource = viewModel.queueManager.currentMediaSourceOrNull ?: return
+        val currentMediaSource = viewModel.queueManager.getCurrentMediaSourceOrNull() ?: return
         val hasPrevious = viewModel.queueManager.hasPrevious()
         val hasNext = viewModel.queueManager.hasNext()
         val playbackState = player.playbackState
@@ -151,7 +151,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
 
     private suspend fun loadImage(mediaSource: JellyfinMediaSource) = when (mediaSource) {
         is LocalJellyfinMediaSource -> {
-            val downloadFolder = File(downloadDao.getDownloadFolderUri(mediaSource.id))
+            val downloadFolder = File(downloadDao.get(mediaSource.id).let(::requireNotNull).asMediaSource().localDirectoryUri)
             val thumbnailFile = File(downloadFolder, Constants.DOWNLOAD_THUMBNAIL_FILENAME)
             BitmapFactory.decodeFile(thumbnailFile.canonicalPath)
         }

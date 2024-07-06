@@ -39,7 +39,7 @@ import kotlin.coroutines.resume
 
 fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     if (AndroidVersion.isAtLeastM) {
-        val powerManager: PowerManager = requireContext().getSystemService(Activity.POWER_SERVICE) as PowerManager
+        val powerManager = requireContext().getSystemService(Activity.POWER_SERVICE) as PowerManager
         if (
             !appPreferences.ignoreBatteryOptimizations &&
             !powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)
@@ -130,9 +130,9 @@ suspend fun MainActivity.removeDownload(download: LocalJellyfinMediaSource, forc
 
     val downloadDao: DownloadDao = get()
     val downloadEntity: DownloadEntity = requireNotNull(downloadDao.get(download.id))
-    val downloadDir = File(downloadEntity.downloadFolderUri)
+    val downloadDir = File(downloadEntity.mediaSource.localDirectoryUri)
     downloadDao.delete(download.id)
-    downloadDir?.deleteRecursively()
+    downloadDir.deleteRecursively()
 
     val contentId = download.itemId.toString()
     // Remove media file
@@ -144,7 +144,7 @@ suspend fun MainActivity.removeDownload(download: LocalJellyfinMediaSource, forc
     )
 
     // Remove subtitles
-    download!!.externalSubtitleStreams.forEach {
+    download.externalSubtitleStreams.forEach {
         DownloadService.sendRemoveDownload(
             this,
             JellyfinDownloadService::class.java,

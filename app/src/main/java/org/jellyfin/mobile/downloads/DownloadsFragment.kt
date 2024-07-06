@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.databinding.FragmentDownloadsBinding
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
@@ -52,7 +53,8 @@ class DownloadsFragment : Fragment(), KoinComponent {
 
         return binding.root
     }
-    private fun onDownloadItemClick(download: DownloadItem) {
+
+    private fun onDownloadItemClick(download: DownloadEntity) {
         val playOptions = PlayOptions(
             ids = listOf(download.mediaSource.itemId),
             mediaSourceId = download.mediaSource.id,
@@ -64,7 +66,8 @@ class DownloadsFragment : Fragment(), KoinComponent {
         )
         activityEventHandler.emit(ActivityEvent.LaunchNativePlayer(playOptions))
     }
-    private fun onDownloadItemHold(download: DownloadItem) {
+
+    private fun onDownloadItemHold(download: DownloadEntity) {
         val itemMissing = download.thumbnail == null
         activityEventHandler.emit(ActivityEvent.RemoveDownload(download.mediaSource, force = itemMissing))
     }

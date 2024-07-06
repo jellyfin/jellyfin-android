@@ -92,7 +92,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     val trackSelectionHelper = TrackSelectionHelper(this, trackSelector)
     val queueManager = QueueManager(this)
     val mediaSourceOrNull: JellyfinMediaSource?
-        get() = queueManager.currentMediaSourceOrNull
+        get() = queueManager.getCurrentMediaSourceOrNull()
 
     // ExoPlayer
     private val _player = MutableLiveData<ExoPlayer?>()
@@ -292,7 +292,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
         analyticsCollector = buildAnalyticsCollector()
         setupPlayer()
-        queueManager.currentMediaSourceOrNull?.startTimeMs = playedTime
+        queueManager.getCurrentMediaSourceOrNull()?.startTimeMs = playedTime
         queueManager.tryRestartPlayback()
     }
 

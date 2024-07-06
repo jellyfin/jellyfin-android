@@ -15,10 +15,13 @@ class LocalJellyfinMediaSource(
     startTimeTicks: Long? = null,
     audioStreamIndex: Int? = null,
     subtitleStreamIndex: Int? = null,
+    val localDirectoryUri: String,
+    val remoteFileUri: String,
+    val downloadSize: Long,
 ) : JellyfinMediaSource(itemId, item, sourceInfo, playSessionId, startTimeTicks, audioStreamIndex, subtitleStreamIndex) {
     override val playMethod: PlayMethod = PlayMethod.DIRECT_PLAY
 
-    constructor(source: JellyfinMediaSource) : this(
+    constructor(source: JellyfinMediaSource, downloadFolder: String, downloadUrl: String, downloadSize: Long) : this(
         source.itemId,
         source.item,
         source.sourceInfo,
@@ -26,5 +29,8 @@ class LocalJellyfinMediaSource(
         source.startTimeTicks,
         source.audioStreamIndex,
         source.subtitleStreamIndex,
+        downloadFolder,
+        downloadUrl,
+        downloadSize,
     )
 }
