@@ -4,13 +4,13 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import kotlinx.serialization.json.Json
 import org.jellyfin.mobile.data.entity.DownloadEntity
-import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.utils.Constants
 import java.io.File
 import java.util.Locale
 
 data class DownloadItem(private val download: DownloadEntity) {
-    val mediaSource: JellyfinMediaSource = Json.decodeFromString(download.mediaSource)
+    val mediaSource: LocalJellyfinMediaSource = Json.decodeFromString(download.mediaSource)
     val thumbnail: Bitmap? = BitmapFactory.decodeFile(
         File(download.downloadFolderUri, Constants.DOWNLOAD_THUMBNAIL_FILENAME).canonicalPath,
     )

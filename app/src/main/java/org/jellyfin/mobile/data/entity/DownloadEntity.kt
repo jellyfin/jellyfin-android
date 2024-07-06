@@ -30,7 +30,31 @@ data class DownloadEntity(
     @ColumnInfo(name = DOWNLOAD_LENGTH)
     val downloadLength: Long,
 ) {
-    fun asMediaSource(): LocalJellyfinMediaSource = decodeFromString(mediaSource)
+    /**
+     * Converts the [mediaSource] string to a [LocalJellyfinMediaSource] object.
+     *
+     * @param startTimeMs The start time in milliseconds. If null, the default start time is used.
+     * @param audioStreamIndex The index of the audio stream to select. If null, the default audio stream is used.
+     * @param subtitleStreamIndex The index of the subtitle stream to select. If -1, subtitles are disabled. If null, the default subtitle stream is used.
+     */
+    fun asMediaSource(
+        startTimeMs: Long? = null,
+        audioStreamIndex: Int? = null,
+        subtitleStreamIndex: Int? = null,
+    ) = decodeFromString<LocalJellyfinMediaSource>(mediaSource)
+        .also { localJellyfinMediaSource ->
+            startTimeMs
+                ?.let { localJellyfinMediaSource.startTimeMs = it }
+            audioStreamIndex
+                ?.let { localJellyfinMediaSource.mediaStreams[it] }
+                ?.let(localJellyfinMediaSource::selectAudioStream)
+            subtitleStreamIndex
+                ?.run {
+                    takeUnless { it == -1 }
+                        ?.let { localJellyfinMediaSource.mediaStreams[it] }
+                        ?: localJellyfinMediaSource.selectSubtitleStream(null)
+                }
+        }
 
     constructor(itemId: String, mediaUri: String, mediaSource: String, downloadFolderUri: String, downloadLength: Long) :
         this(0, itemId, mediaUri, mediaSource, downloadFolderUri, downloadLength)
