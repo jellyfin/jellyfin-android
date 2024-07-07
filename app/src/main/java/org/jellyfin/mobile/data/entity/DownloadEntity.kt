@@ -95,7 +95,7 @@ data class DownloadEntity(
 
 class LocalJellyfinMediaSourceConverter {
     @TypeConverter
-    fun toLocalJellyfinMediaSource(value: String): LocalJellyfinMediaSource = decodeFromString<LocalJellyfinMediaSource>(value)
+    fun toLocalJellyfinMediaSource(value: String): LocalJellyfinMediaSource = decodeFromString(value)
 
     @TypeConverter
     fun fromLocalJellyfinMediaSource(value: LocalJellyfinMediaSource): String = Json.encodeToString(value)

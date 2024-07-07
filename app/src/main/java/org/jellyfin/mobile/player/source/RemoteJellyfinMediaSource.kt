@@ -12,10 +12,8 @@ class RemoteJellyfinMediaSource(
     playSessionId: String,
     val liveStreamId: String?,
     val maxStreamingBitrate: Int?,
-    startTimeTicks: Long? = null,
-    audioStreamIndex: Int? = null,
-    subtitleStreamIndex: Int? = null,
-) : JellyfinMediaSource(itemId, item, sourceInfo, playSessionId, startTimeTicks, audioStreamIndex, subtitleStreamIndex) {
+    playbackDetails: PlaybackDetails?,
+) : JellyfinMediaSource(itemId, item, sourceInfo, playSessionId, playbackDetails) {
     override val playMethod: PlayMethod = when {
         sourceInfo.supportsDirectPlay -> PlayMethod.DIRECT_PLAY
         sourceInfo.supportsDirectStream -> PlayMethod.DIRECT_STREAM

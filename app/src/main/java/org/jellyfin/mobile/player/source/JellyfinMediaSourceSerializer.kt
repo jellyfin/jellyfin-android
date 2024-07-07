@@ -26,6 +26,7 @@ class JellyfinMediaSourceSerializer : KSerializer<LocalJellyfinMediaSource> {
         element<Long>("downloadSize")
     }
 
+    @SuppressWarnings("MagicNumber")
     override fun serialize(encoder: Encoder, value: LocalJellyfinMediaSource): Unit =
         encoder.encodeStructure(descriptor) {
             encodeStringElement(descriptor, 0, value.itemId.toString())
@@ -37,6 +38,7 @@ class JellyfinMediaSourceSerializer : KSerializer<LocalJellyfinMediaSource> {
             encodeLongElement(descriptor, 6, value.downloadSize)
         }
 
+    @SuppressWarnings("MagicNumber")
     override fun deserialize(decoder: Decoder): LocalJellyfinMediaSource =
         decoder.decodeStructure(descriptor) {
             var itemId: UUID? = null
@@ -61,18 +63,14 @@ class JellyfinMediaSourceSerializer : KSerializer<LocalJellyfinMediaSource> {
                 }
             }
 
-            require(itemId != null && sourceInfo != null && playSessionId != null && downloadFolderUri != null && downloadedFileUri != null && downloadSize != null) {
-                "Missing required fields"
-            }
-
             LocalJellyfinMediaSource(
-                itemId = itemId,
+                itemId = requireNotNull(itemId) { "Media source has no id" },
                 item = item,
-                sourceInfo = sourceInfo,
-                playSessionId = playSessionId,
-                localDirectoryUri = downloadFolderUri,
-                remoteFileUri = downloadedFileUri,
-                downloadSize = downloadSize,
+                sourceInfo = requireNotNull(sourceInfo) { "Media source has no source info" },
+                playSessionId = requireNotNull(playSessionId) { "Media source has no play session id" },
+                localDirectoryUri = requireNotNull(downloadFolderUri) { "Media source has no download folder uri" },
+                remoteFileUri = requireNotNull(downloadedFileUri) { "Media source has no downloaded file uri" },
+                downloadSize = requireNotNull(downloadSize) { "Media source has no download size" },
             )
         }
 }

@@ -153,9 +153,15 @@ class QueueManager(
      * Reinitialize current media source without changing settings
      */
     fun tryRestartPlayback() {
-        val currentMediaSource = getCurrentMediaSourceOrNull() ?: return
-
-        viewModel.load(currentMediaSource, prepareStreams(currentMediaSource), playWhenReady = true)
+        with(getCurrentMediaSourceOrNull()) {
+            when (this) {
+                is LocalJellyfinMediaSource -> prepareStreams(this)
+                is RemoteJellyfinMediaSource -> prepareStreams(this)
+                null -> return
+            }.let {
+                viewModel.load(this, it, playWhenReady = true)
+            }
+        }
     }
 
     /**
@@ -222,11 +228,6 @@ class QueueManager(
      * @return A [MediaSource]. This can be the media stream of the correct type for the playback method or
      * a [MergingMediaSource] containing the mentioned media stream and all external subtitle streams.
      */
-    private fun prepareStreams(source: JellyfinMediaSource) = when (source) {
-        is RemoteJellyfinMediaSource -> prepareStreams(source)
-        is LocalJellyfinMediaSource -> prepareStreams(source)
-    }
-
     @CheckResult
     private fun prepareStreams(source: LocalJellyfinMediaSource) = get<DownloadDao>()
         .let { runBlocking { it.get(source.id) } }
@@ -330,7 +331,10 @@ class QueueManager(
 
     private fun prepareDownloadStreams(source: LocalJellyfinMediaSource): MediaSource {
         val videoSource: MediaSource = createDownloadVideoMediaSource(source.id, source.remoteFileUri)
-        val subtitleSources: Array<MediaSource> = createDownloadExternalSubtitleMediaSources(source, source.remoteFileUri)
+        val subtitleSources: Array<MediaSource> = createDownloadExternalSubtitleMediaSources(
+            source,
+            source.remoteFileUri,
+        )
         return when {
             subtitleSources.isNotEmpty() -> MergingMediaSource(videoSource, *subtitleSources)
             else -> videoSource

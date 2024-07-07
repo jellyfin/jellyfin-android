@@ -151,7 +151,13 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
 
     private suspend fun loadImage(mediaSource: JellyfinMediaSource) = when (mediaSource) {
         is LocalJellyfinMediaSource -> {
-            val downloadFolder = File(downloadDao.get(mediaSource.id).let(::requireNotNull).asMediaSource().localDirectoryUri)
+            val downloadFolder = File(
+                downloadDao
+                    .get(mediaSource.id)
+                    .let(::requireNotNull)
+                    .asMediaSource()
+                    .localDirectoryUri,
+            )
             val thumbnailFile = File(downloadFolder, Constants.DOWNLOAD_THUMBNAIL_FILENAME)
             BitmapFactory.decodeFile(thumbnailFile.canonicalPath)
         }

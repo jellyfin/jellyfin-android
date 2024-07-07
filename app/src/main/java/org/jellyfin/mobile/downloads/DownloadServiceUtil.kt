@@ -13,6 +13,7 @@ import org.koin.core.component.inject
 import java.util.concurrent.Executors
 
 object DownloadServiceUtil : KoinComponent {
+    private const val DOWNLOAD_THREADS = 6
 
     private val context: Context by inject()
     private val databaseProvider: DatabaseProvider by inject()
@@ -53,7 +54,7 @@ object DownloadServiceUtil : KoinComponent {
                     DefaultDownloadIndex(databaseProvider),
                     DefaultDownloaderFactory(
                         downloadDataCache,
-                        Executors.newFixedThreadPool(6),
+                        Executors.newFixedThreadPool(DOWNLOAD_THREADS),
                     ),
                 )
             downloadTracker =

@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.databinding.DownloadItemBinding
 
-class DownloadsAdapter(private val onItemClick: (DownloadEntity) -> Unit, private val onItemHold: (DownloadEntity) -> Unit) : ListAdapter<DownloadEntity, DownloadsAdapter.DownloadViewHolder>(
+class DownloadsAdapter(
+    private val onItemClick: (DownloadEntity) -> Unit,
+    private val onItemHold: (DownloadEntity) -> Unit,
+) : ListAdapter<DownloadEntity, DownloadsAdapter.DownloadViewHolder>(
     DownloadDiffCallback(),
 ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DownloadViewHolder {

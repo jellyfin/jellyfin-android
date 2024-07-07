@@ -94,8 +94,11 @@ class DownloadUtils(
         val jellyfinMediaSource = retrieveJellyfinMediaSource()
         val isDestinationInternal = jellyfinMediaSource.getIsDestinationInternal()
         if (isDestinationInternal) {
-            if (checkIfDownloadExists(itemId)) removeDownloadRemains(jellyfinMediaSource)
-            else downloadFiles(jellyfinMediaSource)
+            if (checkIfDownloadExists(itemId)) {
+                removeDownloadRemains(jellyfinMediaSource)
+            } else {
+                downloadFiles(jellyfinMediaSource)
+            }
         } else {
             downloadExternalMediaFile(jellyfinMediaSource)
         }
@@ -151,7 +154,11 @@ class DownloadUtils(
 
     // Only download shows and movies to internal storage
     private fun JellyfinMediaSource.getIsDestinationInternal() =
-        appPreferences.downloadToInternal == true && item?.type in listOf(BaseItemKind.EPISODE, BaseItemKind.MOVIE, BaseItemKind.VIDEO)
+        appPreferences.downloadToInternal == true && item?.type in listOf(
+            BaseItemKind.EPISODE,
+            BaseItemKind.MOVIE,
+            BaseItemKind.VIDEO,
+        )
 
     private suspend fun downloadFiles(jellyfinMediaSource: JellyfinMediaSource) {
         val jellyfinDownloadTracker = JellyfinDownloadTracker(jellyfinMediaSource)
@@ -189,7 +196,7 @@ class DownloadUtils(
 
         val thumbnailFile = File(downloadFolder, Constants.DOWNLOAD_THUMBNAIL_FILENAME)
         val sink = thumbnailFile.sink().buffer()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, sink.outputStream())
+        bitmap.compress(Bitmap.CompressFormat.JPEG, THUMBNAIL_DOWNLOAD_QUALITY, sink.outputStream())
         withContext(Dispatchers.IO) {
             sink.close()
         }
@@ -292,5 +299,9 @@ class DownloadUtils(
                 downloadTracker.removeListener(this)
             }
         }
+    }
+
+    private companion object {
+        const val THUMBNAIL_DOWNLOAD_QUALITY = 80
     }
 }

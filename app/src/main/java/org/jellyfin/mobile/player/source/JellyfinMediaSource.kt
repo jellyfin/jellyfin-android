@@ -15,16 +15,14 @@ sealed class JellyfinMediaSource(
     val item: BaseItemDto?,
     val sourceInfo: MediaSourceInfo,
     val playSessionId: String,
-    startTimeTicks: Long?,
-    val audioStreamIndex: Int?,
-    val subtitleStreamIndex: Int?,
+    playbackDetails: PlaybackDetails?,
 ) {
     val id: String = requireNotNull(sourceInfo.id) { "Media source has no id" }
     val name: String = item?.name ?: sourceInfo.name.orEmpty()
 
     abstract val playMethod: PlayMethod
 
-    var startTimeTicks: Long? = startTimeTicks
+    var startTimeTicks: Long? = playbackDetails?.startTimeTicks
         private set
     var startTimeMs: Long
         get() = (startTimeTicks ?: 0L) / Constants.TICKS_PER_MILLISECOND
@@ -68,13 +66,13 @@ sealed class JellyfinMediaSource(
                 }
                 MediaStreamType.AUDIO -> {
                     audio += mediaStream
-                    if (mediaStream.index == (audioStreamIndex ?: sourceInfo.defaultAudioStreamIndex)) {
+                    if (mediaStream.index == (playbackDetails?.audioStreamIndex ?: sourceInfo.defaultAudioStreamIndex)) {
                         selectedAudioStream = mediaStream
                     }
                 }
                 MediaStreamType.SUBTITLE -> {
                     subtitles += mediaStream
-                    if (mediaStream.index == (subtitleStreamIndex ?: sourceInfo.defaultSubtitleStreamIndex)) {
+                    if (mediaStream.index == (playbackDetails?.subtitleStreamIndex ?: sourceInfo.defaultSubtitleStreamIndex)) {
                         selectedSubtitleStream = mediaStream
                     }
 
@@ -160,3 +158,9 @@ sealed class JellyfinMediaSource(
         throw IllegalArgumentException("Invalid media stream")
     }
 }
+
+data class PlaybackDetails(
+    val startTimeTicks: Long?,
+    val audioStreamIndex: Int?,
+    val subtitleStreamIndex: Int?,
+)

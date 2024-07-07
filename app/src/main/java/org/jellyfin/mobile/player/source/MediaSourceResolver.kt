@@ -78,9 +78,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
                 playSessionId = playSessionId,
                 liveStreamId = mediaSourceInfo.liveStreamId,
                 maxStreamingBitrate = maxStreamingBitrate,
-                startTimeTicks = startTimeTicks,
-                audioStreamIndex = audioStreamIndex,
-                subtitleStreamIndex = subtitleStreamIndex,
+                playbackDetails = PlaybackDetails(startTimeTicks, audioStreamIndex, subtitleStreamIndex),
             )
             Result.success(source)
         } catch (e: IllegalArgumentException) {
