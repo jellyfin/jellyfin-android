@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.databinding.FragmentDownloadsBinding
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
@@ -20,7 +21,7 @@ import org.jellyfin.mobile.utils.withThemedContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class DownloadsFragment: Fragment(), KoinComponent {
+class DownloadsFragment : Fragment(), KoinComponent {
     private val viewModel: DownloadsViewModel by inject()
     private val activityEventHandler: ActivityEventHandler by inject()
     private lateinit var adapter: DownloadsAdapter
@@ -38,7 +39,7 @@ class DownloadsFragment: Fragment(), KoinComponent {
 
         adapter = DownloadsAdapter(
             onItemClick = { download -> onDownloadItemClick(download) },
-            onItemHold = { download -> onDownloadItemHold(download) }
+            onItemHold = { download -> onDownloadItemHold(download) },
         )
         binding.recyclerView.adapter = adapter
 
@@ -52,22 +53,22 @@ class DownloadsFragment: Fragment(), KoinComponent {
 
         return binding.root
     }
-    private fun onDownloadItemClick(download: DownloadItem) {
+
+    private fun onDownloadItemClick(download: DownloadEntity) {
         val playOptions = PlayOptions(
             ids = listOf(download.mediaSource.itemId),
             mediaSourceId = download.mediaSource.id,
             startIndex = 0,
-            startPositionTicks= null,
+            startPositionTicks = null,
             audioStreamIndex = 1,
             subtitleStreamIndex = -1,
             playFromDownloads = true,
         )
         activityEventHandler.emit(ActivityEvent.LaunchNativePlayer(playOptions))
     }
-    private fun onDownloadItemHold(download: DownloadItem) {
+
+    private fun onDownloadItemHold(download: DownloadEntity) {
         val itemMissing = download.thumbnail == null
-        activityEventHandler.emit(ActivityEvent.RemoveDownload(download.mediaSource, force=itemMissing))
+        activityEventHandler.emit(ActivityEvent.RemoveDownload(download.mediaSource, force = itemMissing))
     }
-
-
 }

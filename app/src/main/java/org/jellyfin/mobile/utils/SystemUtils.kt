@@ -29,7 +29,7 @@ import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.downloads.DownloadMethod
 import org.jellyfin.mobile.downloads.DownloadUtils
 import org.jellyfin.mobile.downloads.JellyfinDownloadService
-import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.webapp.WebViewFragment
 import org.koin.android.ext.android.get
@@ -37,10 +37,9 @@ import timber.log.Timber
 import java.io.File
 import kotlin.coroutines.resume
 
-
 fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     if (AndroidVersion.isAtLeastM) {
-        val powerManager: PowerManager = requireContext().getSystemService(Activity.POWER_SERVICE) as PowerManager
+        val powerManager = requireContext().getSystemService(Activity.POWER_SERVICE) as PowerManager
         if (
             !appPreferences.ignoreBatteryOptimizations &&
             !powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)
@@ -93,7 +92,7 @@ suspend fun MainActivity.requestDownload(uri: Uri, filename: String) {
     }
 
     val permissionResult: Boolean = suspendCancellableCoroutine { continuation ->
-        requestPermission("android.permission.POST_NOTIFICATIONS",) { permissionsMap ->
+        requestPermission("android.permission.POST_NOTIFICATIONS") { permissionsMap ->
             if (permissionsMap[Manifest.permission.POST_NOTIFICATIONS] == PackageManager.PERMISSION_GRANTED) {
                 continuation.resume(true)
             } else {
@@ -107,7 +106,7 @@ suspend fun MainActivity.requestDownload(uri: Uri, filename: String) {
         downloadUtils.download()
     }
 }
-suspend fun MainActivity.removeDownload(download: JellyfinMediaSource, force: Boolean = false) {
+suspend fun MainActivity.removeDownload(download: LocalJellyfinMediaSource, force: Boolean = false) {
     if (!force) {
         val confirmation = suspendCancellableCoroutine { continuation ->
             AlertDialog.Builder(this)
@@ -130,10 +129,10 @@ suspend fun MainActivity.removeDownload(download: JellyfinMediaSource, force: Bo
     }
 
     val downloadDao: DownloadDao = get()
-    val downloadEntity: DownloadEntity = downloadDao.get(download.id)
-    val downloadDir = File(downloadEntity.downloadFolderUri)
+    val downloadEntity: DownloadEntity = requireNotNull(downloadDao.get(download.id))
+    val downloadDir = File(downloadEntity.mediaSource.localDirectoryUri)
     downloadDao.delete(download.id)
-    downloadDir?.deleteRecursively()
+    downloadDir.deleteRecursively()
 
     val contentId = download.itemId.toString()
     // Remove media file
@@ -141,20 +140,19 @@ suspend fun MainActivity.removeDownload(download: JellyfinMediaSource, force: Bo
         this,
         JellyfinDownloadService::class.java,
         contentId,
-        false
+        false,
     )
 
     // Remove subtitles
-    download!!.externalSubtitleStreams.forEach {
+    download.externalSubtitleStreams.forEach {
         DownloadService.sendRemoveDownload(
             this,
             JellyfinDownloadService::class.java,
-            "${contentId}:${it.index}",
-            false
+            "$contentId:${it.index}",
+            false,
         )
     }
 }
-
 
 fun Activity.isAutoRotateOn() = Settings.System.getInt(contentResolver, ACCELEROMETER_ROTATION, 0) == 1
 

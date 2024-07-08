@@ -20,15 +20,8 @@ interface DownloadDao {
     fun getAllDownloads(): Flow<List<DownloadEntity>>
 
     @Query("SELECT * FROM $TABLE_NAME WHERE item_id LIKE :downloadId")
-    suspend fun get(downloadId: String): DownloadEntity
-
-    @Query("SELECT download_folder_uri FROM $TABLE_NAME WHERE item_id LIKE :downloadId")
-    suspend fun getDownloadFolderUri(downloadId: String): String
-
-    @Query("SELECT media_uri FROM $TABLE_NAME WHERE item_id LIKE :downloadId")
-    suspend fun getMediaUri(downloadId: String): String
+    suspend fun get(downloadId: String): DownloadEntity?
 
     @Query("SELECT EXISTS(SELECT * FROM $TABLE_NAME WHERE item_id LIKE :downloadId)")
-    suspend fun downloadExists(downloadId : String) : Boolean
-
+    suspend fun downloadExists(downloadId: String): Boolean
 }

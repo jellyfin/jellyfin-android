@@ -3,8 +3,8 @@
 
     <data>
         <variable
-            name="downloadItem"
-            type="org.jellyfin.mobile.downloads.DownloadItem" />
+            name="downloadEntity"
+            type="org.jellyfin.mobile.data.entity.DownloadEntity" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,20 +34,20 @@
                 android:id="@+id/textViewName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{downloadItem.mediaSource.name}"
+                android:text="@{downloadEntity.mediaSource.name}"
                 android:textSize="21sp" />
 
             <TextView
                 android:id="@+id/textViewDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{downloadItem.mediaSource.item.seriesName != null ? @string/tv_show_desc(downloadItem.mediaSource.item.seriesName, downloadItem.mediaSource.item.parentIndexNumber, downloadItem.mediaSource.item.indexNumber) : downloadItem.mediaSource.item.productionYear ?? downloadItem.mediaSource.id}"/>
+                android:text="@{downloadEntity.mediaSource.item.seriesName != null ? @string/tv_show_desc(downloadEntity.mediaSource.item.seriesName, downloadEntity.mediaSource.item.parentIndexNumber, downloadEntity.mediaSource.item.indexNumber) : downloadEntity.mediaSource.item.productionYear ?? downloadEntity.mediaSource.id}"/>
 
             <TextView
                 android:id="@+id/textViewFileSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{downloadItem.fileSize}" />
+                android:text="@{downloadEntity.fileSize}" />
 
         </LinearLayout>
     </LinearLayout>

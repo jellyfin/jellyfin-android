@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import org.chromium.base.ContextUtils.getApplicationContext
 import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.databinding.FragmentComposeBinding
 import org.jellyfin.mobile.ui.screens.connect.ConnectScreen

@@ -5,6 +5,7 @@ import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadIndex
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.common.base.Preconditions
+import timber.log.Timber
 import java.io.IOException
 import java.util.concurrent.CopyOnWriteArraySet
 
@@ -16,7 +17,6 @@ class DownloadTracker(downloadManager: DownloadManager) {
     private val listeners: CopyOnWriteArraySet<Listener> = CopyOnWriteArraySet()
     private val downloads: HashMap<Uri, Download> = HashMap()
     private val downloadIndex: DownloadIndex
-
 
     init {
         downloadIndex = downloadManager.downloadIndex
@@ -56,10 +56,11 @@ class DownloadTracker(downloadManager: DownloadManager) {
                 }
             }
         } catch (e: IOException) {
+            Timber.e(e, "Failed to load downloads")
         }
     }
 
-    private inner class DownloadManagerListener :  DownloadManager.Listener {
+    private inner class DownloadManagerListener : DownloadManager.Listener {
         override fun onDownloadChanged(downloadManager: DownloadManager, download: Download, finalException: Exception?) {
             downloads[download.request.uri] = download
             for (listener in listeners) {

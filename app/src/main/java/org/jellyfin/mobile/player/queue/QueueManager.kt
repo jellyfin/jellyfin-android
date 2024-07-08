@@ -11,7 +11,6 @@ import com.google.android.exoplayer2.source.MergingMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import kotlinx.coroutines.runBlocking
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
@@ -19,7 +18,9 @@ import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.source.ExternalSubtitleStream
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceResolver
+import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.videosApi
@@ -51,8 +52,7 @@ class QueueManager(
     val currentMediaSource: LiveData<JellyfinMediaSource>
         get() = _currentMediaSource
 
-    inline val currentMediaSourceOrNull: JellyfinMediaSource?
-        get() = currentMediaSource.value
+    fun getCurrentMediaSourceOrNull(): JellyfinMediaSource? = currentMediaSource.value
 
     /**
      * Handle initial playback options from fragment.
@@ -72,41 +72,40 @@ class QueueManager(
         when (playOptions.playFromDownloads) {
             true -> playOptions.mediaSourceId?.let {
                 startDownloadPlayback(
-                    itemId = itemId,
                     mediaSourceId = it,
-                    playWhenReady = true,)
+                    playWhenReady = true,
+                )
             }
-            else -> startPlayback(
+            else -> startRemotePlayback(
                 itemId = itemId,
                 mediaSourceId = playOptions.mediaSourceId,
                 maxStreamingBitrate = null,
                 startTimeTicks = playOptions.startPositionTicks,
                 audioStreamIndex = playOptions.audioStreamIndex,
                 subtitleStreamIndex = playOptions.subtitleStreamIndex,
-                playWhenReady = true,)
+                playWhenReady = true,
+            )
         }
-
 
         return null
     }
 
     private suspend fun startDownloadPlayback(
-        itemId: UUID,
         mediaSourceId: String,
-        playWhenReady: Boolean,
+        startTimeMs: Long? = null,
+        audioStreamIndex: Int? = null,
+        subtitleStreamIndex: Int? = null,
+        playWhenReady: Boolean = true,
     ): PlayerException? {
-        mediaSourceResolver.resolveDownloadSource(
-            mediaSourceId = mediaSourceId,
-            downloadDao = get()
-        ).onSuccess { jellyfinMediaSource ->
-            _currentMediaSource.value = jellyfinMediaSource
+        get<DownloadDao>()
+            .get(mediaSourceId)
+            ?.asMediaSource(startTimeMs, audioStreamIndex, subtitleStreamIndex)
+            ?.also { jellyfinMediaSource ->
+                _currentMediaSource.value = jellyfinMediaSource
 
-            // Load new media source
-            viewModel.load(jellyfinMediaSource, prepareStreams(jellyfinMediaSource), playWhenReady)
-        }.onFailure { error ->
-            // Should always be of this type, other errors are silently dropped
-            return error as? PlayerException
-        }
+                // Load new media source
+                viewModel.load(jellyfinMediaSource, prepareStreams(jellyfinMediaSource), playWhenReady)
+            }
         return null
     }
 
@@ -115,7 +114,7 @@ class QueueManager(
      *
      * @return an error of type [PlayerException] or null on success.
      */
-    private suspend fun startPlayback(
+    private suspend fun startRemotePlayback(
         itemId: UUID,
         mediaSourceId: String?,
         maxStreamingBitrate: Int?,
@@ -134,8 +133,8 @@ class QueueManager(
             subtitleStreamIndex = subtitleStreamIndex,
         ).onSuccess { jellyfinMediaSource ->
             // Ensure transcoding of the current element is stopped
-            currentMediaSourceOrNull?.let { oldMediaSource ->
-                viewModel.stopTranscoding(oldMediaSource)
+            getCurrentMediaSourceOrNull()?.let { oldMediaSource ->
+                viewModel.stopTranscoding(oldMediaSource as RemoteJellyfinMediaSource)
             }
 
             _currentMediaSource.value = jellyfinMediaSource
@@ -153,23 +152,29 @@ class QueueManager(
      * Reinitialize current media source without changing settings
      */
     fun tryRestartPlayback() {
-        val currentMediaSource = currentMediaSourceOrNull ?: return
-
-        viewModel.load(currentMediaSource, prepareStreams(currentMediaSource), playWhenReady = true)
+        with(getCurrentMediaSourceOrNull()) {
+            when (this) {
+                is LocalJellyfinMediaSource -> prepareStreams(this)
+                is RemoteJellyfinMediaSource -> prepareStreams(this)
+                null -> return
+            }.let {
+                viewModel.load(this, it, playWhenReady = true)
+            }
+        }
     }
 
     /**
      * Change the maximum bitrate to the specified value.
      */
     suspend fun changeBitrate(bitrate: Int?): Boolean {
-        val currentMediaSource = currentMediaSourceOrNull ?: return false
+        val currentMediaSource = getCurrentMediaSourceOrNull() as? RemoteJellyfinMediaSource ?: return false
 
         // Bitrate didn't change, ignore
         if (currentMediaSource.maxStreamingBitrate == bitrate) return true
 
         val currentPlayState = viewModel.getStateAndPause() ?: return false
 
-        return startPlayback(
+        return startRemotePlayback(
             itemId = currentMediaSource.itemId,
             mediaSourceId = currentMediaSource.id,
             maxStreamingBitrate = bitrate,
@@ -187,9 +192,9 @@ class QueueManager(
     suspend fun previous(): Boolean {
         if (!hasPrevious()) return false
 
-        val currentMediaSource = currentMediaSourceOrNull ?: return false
+        val currentMediaSource = getCurrentMediaSourceOrNull() as? RemoteJellyfinMediaSource ?: return false
 
-        startPlayback(
+        startRemotePlayback(
             itemId = currentQueue[--currentQueueIndex],
             mediaSourceId = null,
             maxStreamingBitrate = currentMediaSource.maxStreamingBitrate,
@@ -200,13 +205,18 @@ class QueueManager(
     suspend fun next(): Boolean {
         if (!hasNext()) return false
 
-        val currentMediaSource = currentMediaSourceOrNull ?: return false
-
-        startPlayback(
-            itemId = currentQueue[++currentQueueIndex],
-            mediaSourceId = null,
-            maxStreamingBitrate = currentMediaSource.maxStreamingBitrate,
-        )
+        when (val currentMediaSource = getCurrentMediaSourceOrNull()) {
+            is LocalJellyfinMediaSource -> startDownloadPlayback(
+                mediaSourceId = currentMediaSource.id,
+                playWhenReady = true,
+            )
+            is RemoteJellyfinMediaSource -> startRemotePlayback(
+                itemId = currentQueue[++currentQueueIndex],
+                mediaSourceId = null,
+                maxStreamingBitrate = currentMediaSource.maxStreamingBitrate,
+            )
+            null -> return false
+        }
         return true
     }
 
@@ -218,19 +228,19 @@ class QueueManager(
      * a [MergingMediaSource] containing the mentioned media stream and all external subtitle streams.
      */
     @CheckResult
-    private fun prepareStreams(source: JellyfinMediaSource): MediaSource {
-        if (source.isDownload) {
-            val downloadDao: DownloadDao = get()
-            val fileUri = runBlocking {
-                downloadDao.getMediaUri(source.id)
-            }
-            return prepareDownloadStreams(source, fileUri)
-        } else {
-            return prepareSeverStreams(source)
+    private fun prepareStreams(source: LocalJellyfinMediaSource): MediaSource {
+        val videoSource: MediaSource = createDownloadVideoMediaSource(source.id, source.remoteFileUri)
+        val subtitleSources: Array<MediaSource> = createDownloadExternalSubtitleMediaSources(
+            source,
+            source.remoteFileUri,
+        )
+        return when {
+            subtitleSources.isNotEmpty() -> MergingMediaSource(videoSource, *subtitleSources)
+            else -> videoSource
         }
     }
 
-    private fun prepareSeverStreams(source: JellyfinMediaSource): MediaSource {
+    private fun prepareStreams(source: RemoteJellyfinMediaSource): MediaSource {
         val videoSource = createVideoMediaSource(source)
         val subtitleSources = createExternalSubtitleMediaSources(source)
         return when {
@@ -325,16 +335,6 @@ class QueueManager(
         }.toTypedArray()
     }
 
-
-    private fun prepareDownloadStreams(source: JellyfinMediaSource, fileUri: String): MediaSource {
-        val videoSource: MediaSource = createDownloadVideoMediaSource(source.id, fileUri)
-        val subtitleSources: Array<MediaSource> = createDownloadExternalSubtitleMediaSources(source, fileUri)
-        return when {
-            subtitleSources.isNotEmpty() -> MergingMediaSource(videoSource, *subtitleSources)
-            else -> videoSource
-        }
-    }
-
     @CheckResult
     private fun createDownloadVideoMediaSource(mediaSourceId: String, fileUri: String): MediaSource {
         val mediaSourceFactory: ProgressiveMediaSource.Factory = get()
@@ -370,18 +370,27 @@ class QueueManager(
      */
     suspend fun selectAudioStreamAndRestartPlayback(stream: MediaStream): Boolean {
         require(stream.type == MediaStreamType.AUDIO)
-        val currentMediaSource = currentMediaSourceOrNull ?: return false
         val currentPlayState = viewModel.getStateAndPause() ?: return false
 
-        startPlayback(
-            itemId = currentMediaSource.itemId,
-            mediaSourceId = currentMediaSource.id,
-            maxStreamingBitrate = currentMediaSource.maxStreamingBitrate,
-            startTimeTicks = currentPlayState.position * Constants.TICKS_PER_MILLISECOND,
-            audioStreamIndex = stream.index,
-            subtitleStreamIndex = currentMediaSource.selectedSubtitleStreamIndex,
-            playWhenReady = currentPlayState.playWhenReady,
-        )
+        when (val currentMediaSource = getCurrentMediaSourceOrNull()) {
+            is LocalJellyfinMediaSource -> startDownloadPlayback(
+                mediaSourceId = currentMediaSource.id,
+                startTimeMs = currentPlayState.position,
+                audioStreamIndex = stream.index,
+                subtitleStreamIndex = currentMediaSource.selectedSubtitleStreamIndex,
+                playWhenReady = currentPlayState.playWhenReady,
+            )
+            is RemoteJellyfinMediaSource -> startRemotePlayback(
+                itemId = currentMediaSource.itemId,
+                mediaSourceId = currentMediaSource.id,
+                maxStreamingBitrate = currentMediaSource.maxStreamingBitrate,
+                startTimeTicks = currentPlayState.position * Constants.TICKS_PER_MILLISECOND,
+                audioStreamIndex = stream.index,
+                subtitleStreamIndex = currentMediaSource.selectedSubtitleStreamIndex,
+                playWhenReady = currentPlayState.playWhenReady,
+            )
+            null -> return false
+        }
         return true
     }
 
@@ -394,18 +403,27 @@ class QueueManager(
      */
     suspend fun selectSubtitleStreamAndRestartPlayback(stream: MediaStream?): Boolean {
         require(stream == null || stream.type == MediaStreamType.SUBTITLE)
-        val currentMediaSource = currentMediaSourceOrNull ?: return false
         val currentPlayState = viewModel.getStateAndPause() ?: return false
 
-        startPlayback(
-            itemId = currentMediaSource.itemId,
-            mediaSourceId = currentMediaSource.id,
-            maxStreamingBitrate = currentMediaSource.maxStreamingBitrate,
-            startTimeTicks = currentPlayState.position * Constants.TICKS_PER_MILLISECOND,
-            audioStreamIndex = currentMediaSource.selectedAudioStreamIndex,
-            subtitleStreamIndex = stream?.index ?: -1, // -1 disables subtitles, null would select the default subtitle
-            playWhenReady = currentPlayState.playWhenReady,
-        )
+        when (val mediaSource = getCurrentMediaSourceOrNull()) {
+            is LocalJellyfinMediaSource -> startDownloadPlayback(
+                mediaSourceId = mediaSource.id,
+                startTimeMs = currentPlayState.position,
+                audioStreamIndex = mediaSource.selectedAudioStreamIndex,
+                subtitleStreamIndex = stream?.index ?: -1, // -1 disables subtitles, null would select the default subtitle
+                playWhenReady = currentPlayState.playWhenReady,
+            )
+            is RemoteJellyfinMediaSource -> startRemotePlayback(
+                itemId = mediaSource.itemId,
+                mediaSourceId = mediaSource.id,
+                maxStreamingBitrate = mediaSource.maxStreamingBitrate,
+                startTimeTicks = currentPlayState.position * Constants.TICKS_PER_MILLISECOND,
+                audioStreamIndex = mediaSource.selectedAudioStreamIndex,
+                subtitleStreamIndex = stream?.index ?: -1, // -1 disables subtitles, null would select the default subtitle
+                playWhenReady = currentPlayState.playWhenReady,
+            )
+            null -> return false
+        }
         return true
     }
 }

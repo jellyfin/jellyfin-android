@@ -7,7 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.databinding.DownloadItemBinding
 
-class DownloadsAdapter(private val onItemClick: (DownloadItem) -> Unit, private val onItemHold: (DownloadItem) -> Unit) : ListAdapter<DownloadEntity, DownloadsAdapter.DownloadViewHolder>(DownloadDiffCallback())  {
+class DownloadsAdapter(
+    private val onItemClick: (DownloadEntity) -> Unit,
+    private val onItemHold: (DownloadEntity) -> Unit,
+) : ListAdapter<DownloadEntity, DownloadsAdapter.DownloadViewHolder>(
+    DownloadDiffCallback(),
+) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DownloadViewHolder {
         val binding = DownloadItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return DownloadViewHolder(binding)
@@ -19,23 +24,22 @@ class DownloadsAdapter(private val onItemClick: (DownloadItem) -> Unit, private 
 
     inner class DownloadViewHolder(private val binding: DownloadItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(download: DownloadEntity) {
-            val downloadItem = DownloadItem(download)
-            if (downloadItem.thumbnail == null) {
+        fun bind(downloadEntity: DownloadEntity) {
+            if (downloadEntity.thumbnail == null) {
                 binding.unbind()
-                onItemHold(downloadItem)
+                onItemHold(downloadEntity)
                 return
             }
-            binding.downloadItem = downloadItem
+            binding.downloadEntity = downloadEntity
             itemView.setOnClickListener {
-                onItemClick(downloadItem)
+                onItemClick(downloadEntity)
             }
             itemView.setOnLongClickListener {
-                onItemHold(downloadItem)
+                onItemHold(downloadEntity)
                 true
             }
 
-            binding.imageViewThumbnail.setImageBitmap(downloadItem.thumbnail)
+            binding.imageViewThumbnail.setImageBitmap(downloadEntity.thumbnail)
 
             binding.executePendingBindings()
         }

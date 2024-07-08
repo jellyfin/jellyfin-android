@@ -14,6 +14,7 @@ import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.util.AndroidException
+import androidx.annotation.RequiresApi
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
@@ -26,8 +27,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import okio.buffer
 import okio.sink
 import org.jellyfin.mobile.MainActivity
@@ -35,8 +34,10 @@ import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.data.entity.DownloadEntity
+import org.jellyfin.mobile.downloads.DownloadServiceUtil.getDownloadTracker
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
@@ -55,8 +56,12 @@ import java.io.IOException
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-
-class DownloadUtils(val context: Context, private val filename: String, private val downloadURL: String, private val downloadMethod: Int) : KoinComponent {
+class DownloadUtils(
+    val context: Context,
+    private val filename: String,
+    private val downloadURL: String,
+    private val downloadMethod: Int,
+) : KoinComponent {
     private val mainActivity: MainActivity = context as MainActivity
     private val downloadFolder: File
     private val itemId: String
@@ -71,11 +76,7 @@ class DownloadUtils(val context: Context, private val filename: String, private 
     private val notificationManager: NotificationManager? by lazy { context.getSystemService() }
     private val connectivityManager: ConnectivityManager? by lazy { context.getSystemService() }
     private val appPreferences: AppPreferences by inject()
-    private var downloadTracker: DownloadTracker
-    private val jellyfinDownloadTracker: DownloadUtils.JellyfinDownloadTracker = JellyfinDownloadTracker()
-
-    private var jellyfinMediaSource: JellyfinMediaSource? = null
-
+    private var downloadTracker: DownloadTracker = getDownloadTracker()
 
     init {
         val regex = Regex("""Items/([a-f0-9]{32})/Download""")
@@ -85,47 +86,36 @@ class DownloadUtils(val context: Context, private val filename: String, private 
         contentId = itemUUID.toString()
         downloadFolder = File(context.filesDir, "/Downloads/$itemId/")
         downloadFolder.mkdirs()
-        downloadTracker = DownloadServiceUtil.getDownloadTracker()
     }
 
     suspend fun download() {
         createDownloadNotificationChannel()
         checkForDownloadMethod()
-        retrieveJellyfinMediaSource()
-        val internalDownload = getDownloadLocation()
-        if (internalDownload) {
-            try {
-                checkIfDownloadExists()
-                downloadFiles()
-            } catch (e: IOException) {
-                removeDownloadRemains()
+        val jellyfinMediaSource = retrieveJellyfinMediaSource()
+        val isDestinationInternal = jellyfinMediaSource.getIsDestinationInternal()
+        if (isDestinationInternal) {
+            if (checkIfDownloadExists(itemId)) {
+                removeDownloadRemains(jellyfinMediaSource)
+            } else {
+                downloadFiles(jellyfinMediaSource)
             }
         } else {
-            downloadExternalMediaFile()
+            downloadExternalMediaFile(jellyfinMediaSource)
         }
     }
 
     @SuppressLint("InlinedApi")
-    @Suppress("Deprecation")
     private fun checkForDownloadMethod() {
         val validConnection = when (downloadMethod) {
             DownloadMethod.WIFI_ONLY -> {
-                val downloadRequirements = Requirements(Requirements.NETWORK_UNMETERED)
-                DownloadService.sendSetRequirements(
-                    context,
-                    JellyfinDownloadService::class.java,
-                    downloadRequirements,
-                    false
-                )
-                ! (connectivityManager?.isActiveNetworkMetered ?: false)
+                setDownloadRequirements(Requirements.NETWORK_UNMETERED)
+                !isNetworkMetered()
             }
             DownloadMethod.MOBILE_DATA -> {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                    ! (connectivityManager?.activeNetworkInfo?.isRoaming ?: throw AndroidException())
+                    !isNetworkRoaming()
                 } else {
-                    val network: Network = connectivityManager?.activeNetwork ?: throw AndroidException()
-                    val capabilities: NetworkCapabilities = connectivityManager?.getNetworkCapabilities(network) ?: throw AndroidException()
-                    capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_ROAMING)
+                    isNetworkNotRoaming()
                 }
             }
             else -> true
@@ -134,42 +124,59 @@ class DownloadUtils(val context: Context, private val filename: String, private 
         if (!validConnection) throw IOException(context.getString(R.string.failed_network_method_check))
     }
 
-    private suspend fun checkIfDownloadExists() {
-        if (downloadDao.downloadExists(itemId)) {
-            throw IOException(context.getString(R.string.download_exists))
-        }
+    private fun setDownloadRequirements(requirements: Int) {
+        DownloadService.sendSetRequirements(
+            context,
+            JellyfinDownloadService::class.java,
+            Requirements(requirements),
+            false,
+        )
     }
 
-    private suspend fun retrieveJellyfinMediaSource() {
-        jellyfinMediaSource = mediaSourceResolver.resolveMediaSource(
-            itemId = itemUUID,
-            mediaSourceId = itemId,
-            deviceProfile = deviceProfile,
-        ).getOrElse { throw IOException(context.getString(R.string.failed_information)) }
+    private fun isNetworkMetered(): Boolean = connectivityManager?.isActiveNetworkMetered ?: false
+
+    private fun isNetworkRoaming(): Boolean = connectivityManager?.activeNetworkInfo?.isRoaming ?: throw AndroidException()
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun isNetworkNotRoaming(): Boolean {
+        val network: Network = connectivityManager?.activeNetwork ?: throw AndroidException()
+        val capabilities: NetworkCapabilities = connectivityManager?.getNetworkCapabilities(network) ?: throw AndroidException()
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_ROAMING)
     }
 
-    private fun getDownloadLocation(): Boolean {
-        // Only download shows and movies to internal storage
-        return appPreferences.downloadToInternal == true &&
-            (jellyfinMediaSource!!.item?.type  == BaseItemKind.EPISODE ||
-            jellyfinMediaSource!!.item?.type == BaseItemKind.MOVIE ||
-            jellyfinMediaSource!!.item?.type == BaseItemKind.VIDEO)
-    }
+    private suspend fun checkIfDownloadExists(itemId: String) = downloadDao.downloadExists(itemId)
 
-    private suspend fun downloadFiles() {
+    private suspend fun retrieveJellyfinMediaSource() = mediaSourceResolver.resolveMediaSource(
+        itemId = itemUUID,
+        mediaSourceId = itemId,
+        deviceProfile = deviceProfile,
+    ).getOrElse { throw IOException(context.getString(R.string.failed_information)) }
+
+    // Only download shows and movies to internal storage
+    private fun JellyfinMediaSource.getIsDestinationInternal() =
+        appPreferences.downloadToInternal == true && item?.type in listOf(
+            BaseItemKind.EPISODE,
+            BaseItemKind.MOVIE,
+            BaseItemKind.VIDEO,
+        )
+
+    private suspend fun downloadFiles(jellyfinMediaSource: JellyfinMediaSource) {
+        val jellyfinDownloadTracker = JellyfinDownloadTracker(jellyfinMediaSource)
         downloadTracker.addListener(jellyfinDownloadTracker)
-        downloadMediaFile()
+        downloadMediaFile(jellyfinMediaSource)
         downloadThumbnail()
-        downloadExternalSubtitles()
+        downloadExternalSubtitles(jellyfinMediaSource)
     }
 
-    private fun downloadMediaFile() {
-        val downloadRequest = DownloadRequest.Builder(contentId, downloadURL.toUri()).setData(jellyfinMediaSource!!.item!!.name!!.encodeToByteArray()).build()
+    private fun downloadMediaFile(jellyfinMediaSource: JellyfinMediaSource) {
+        val downloadRequest = DownloadRequest.Builder(contentId, downloadURL.toUri())
+            .setData(jellyfinMediaSource.item!!.name!!.encodeToByteArray())
+            .build()
         DownloadService.sendAddDownload(
             context,
             JellyfinDownloadService::class.java,
             downloadRequest,
-            false
+            false,
         )
     }
 
@@ -183,43 +190,42 @@ class DownloadUtils(val context: Context, private val filename: String, private 
             maxHeight = size,
         )
         val imageRequest = ImageRequest.Builder(context).data(imageUrl).build()
-        val bitmap: Bitmap = imageLoader.execute(imageRequest).drawable?.toBitmap() ?: throw IOException(context.getString(R.string.failed_thumbnail))
+        val bitmap: Bitmap = imageLoader.execute(imageRequest).drawable?.toBitmap() ?: throw IOException(
+            context.getString(R.string.failed_thumbnail),
+        )
 
         val thumbnailFile = File(downloadFolder, Constants.DOWNLOAD_THUMBNAIL_FILENAME)
         val sink = thumbnailFile.sink().buffer()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, sink.outputStream())
+        bitmap.compress(Bitmap.CompressFormat.JPEG, THUMBNAIL_DOWNLOAD_QUALITY, sink.outputStream())
         withContext(Dispatchers.IO) {
             sink.close()
         }
     }
 
-    private fun downloadExternalSubtitles() {
-        jellyfinMediaSource!!.externalSubtitleStreams.forEach {
+    private fun downloadExternalSubtitles(jellyfinMediaSource: JellyfinMediaSource) {
+        jellyfinMediaSource.externalSubtitleStreams.forEach {
             val subtitleDownloadURL: String = apiClient.createUrl(it.deliveryUrl)
-            val downloadRequest = DownloadRequest.Builder("${contentId}:${it.index}", subtitleDownloadURL.toUri()).build()
+            val downloadRequest = DownloadRequest.Builder("$contentId:${it.index}", subtitleDownloadURL.toUri()).build()
             DownloadService.sendAddDownload(
                 context,
                 JellyfinDownloadService::class.java,
                 downloadRequest,
-                false
+                false,
             )
         }
     }
 
-    private suspend fun storeDownloadSpecs() {
-        val serializedJellyfinMediaSource = Json.encodeToString(jellyfinMediaSource)
-        downloadDao.insert(
-            DownloadEntity(
-                itemId = itemId,
-                mediaUri = downloadURL,
-                mediaSource = serializedJellyfinMediaSource,
-                downloadFolderUri = downloadFolder.canonicalPath,
-                downloadLength = downloadTracker.getDownloadSize(downloadURL.toUri())
-            )
-        )
-    }
+    private suspend fun storeDownloadSpecs(jellyfinMediaSource: JellyfinMediaSource) =
+        LocalJellyfinMediaSource(
+            jellyfinMediaSource,
+            downloadFolder.canonicalPath,
+            downloadURL,
+            downloadTracker.getDownloadSize(downloadURL.toUri()),
+        ).also {
+            downloadDao.insert(DownloadEntity(it))
+        }
 
-    private suspend fun downloadExternalMediaFile() {
+    private suspend fun downloadExternalMediaFile(jellyfinMediaSource: JellyfinMediaSource) {
         if (!AndroidVersion.isAtLeastQ) {
             @Suppress("MagicNumber")
             val granted = withTimeout(2 * 60 * 1000 /* 2 minutes */) {
@@ -236,7 +242,7 @@ class DownloadUtils(val context: Context, private val filename: String, private 
         }
 
         val downloadRequest = DownloadManager.Request(downloadURL.toUri())
-            .setTitle(jellyfinMediaSource!!.name)
+            .setTitle(jellyfinMediaSource.name)
             .setDescription(context.getString(R.string.downloading))
             .setDestinationUri(Uri.fromFile(File(appPreferences.downloadLocation, filename)))
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
@@ -244,7 +250,7 @@ class DownloadUtils(val context: Context, private val filename: String, private 
         context.getSystemService<DownloadManager>()?.enqueue(downloadRequest)
     }
 
-    private fun removeDownloadRemains() {
+    private fun removeDownloadRemains(jellyfinMediaSource: JellyfinMediaSource) {
         downloadFolder.deleteRecursively()
 
         // Remove media file
@@ -252,16 +258,16 @@ class DownloadUtils(val context: Context, private val filename: String, private 
             context,
             JellyfinDownloadService::class.java,
             contentId,
-            false
+            false,
         )
 
         // Remove subtitles
-        jellyfinMediaSource!!.externalSubtitleStreams.forEach {
+        jellyfinMediaSource.externalSubtitleStreams.forEach {
             DownloadService.sendRemoveDownload(
                 context,
                 JellyfinDownloadService::class.java,
-                "${contentId}:${it.index}",
-                false
+                "$contentId:${it.index}",
+                false,
             )
         }
     }
@@ -279,19 +285,23 @@ class DownloadUtils(val context: Context, private val filename: String, private 
         }
     }
 
-    private inner class JellyfinDownloadTracker : DownloadTracker.Listener {
+    private inner class JellyfinDownloadTracker(val jellyfinMediaSource: JellyfinMediaSource) : DownloadTracker.Listener {
         override fun onDownloadsChanged() {
             if (downloadTracker.isDownloaded(downloadURL.toUri())) {
                 runBlocking {
                     withContext(Dispatchers.IO) {
-                        storeDownloadSpecs()
+                        storeDownloadSpecs(jellyfinMediaSource)
                     }
                 }
                 downloadTracker.removeListener(this)
             } else if (downloadTracker.isFailed(downloadURL.toUri())) {
-                removeDownloadRemains()
+                removeDownloadRemains(jellyfinMediaSource)
                 downloadTracker.removeListener(this)
             }
         }
+    }
+
+    private companion object {
+        const val THUMBNAIL_DOWNLOAD_QUALITY = 80
     }
 }

@@ -1,8 +1,5 @@
 package org.jellyfin.mobile.player.source
 
-import kotlinx.serialization.json.Json
-import org.jellyfin.mobile.data.dao.DownloadDao
-import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
@@ -32,7 +29,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
         audioStreamIndex: Int? = null,
         subtitleStreamIndex: Int? = null,
         autoOpenLiveStream: Boolean = true,
-    ): Result<JellyfinMediaSource> {
+    ): Result<RemoteJellyfinMediaSource> {
         // Load media source info
         val playSessionId: String
         val mediaSourceInfo: MediaSourceInfo = try {
@@ -74,28 +71,19 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
 
         // Create JellyfinMediaSource
         return try {
-            val source = JellyfinMediaSource(
+            val source = RemoteJellyfinMediaSource(
                 itemId = itemId,
                 item = item,
                 sourceInfo = mediaSourceInfo,
                 playSessionId = playSessionId,
                 liveStreamId = mediaSourceInfo.liveStreamId,
                 maxStreamingBitrate = maxStreamingBitrate,
-                startTimeTicks = startTimeTicks,
-                audioStreamIndex = audioStreamIndex,
-                subtitleStreamIndex = subtitleStreamIndex,
+                playbackDetails = PlaybackDetails(startTimeTicks, audioStreamIndex, subtitleStreamIndex),
             )
             Result.success(source)
         } catch (e: IllegalArgumentException) {
             Timber.e(e, "Cannot create JellyfinMediaSource")
             Result.failure(PlayerException.UnsupportedContent(e))
         }
-    }
-
-    suspend fun resolveDownloadSource(mediaSourceId: String, downloadDao: DownloadDao): Result<JellyfinMediaSource> {
-        val download: DownloadEntity = downloadDao.get(mediaSourceId)
-        var jellyfinMediaSource: JellyfinMediaSource = Json.decodeFromString(download.mediaSource)
-        jellyfinMediaSource.isDownload = true
-        return Result.success(jellyfinMediaSource)
     }
 }

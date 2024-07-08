@@ -15,29 +15,39 @@ import org.jellyfin.sdk.model.api.MediaSourceInfo
 import org.jellyfin.sdk.model.serializer.toUUID
 import java.util.UUID
 
-class JellyfinMediaSourceSerializer: KSerializer<JellyfinMediaSource>
-{
+class JellyfinMediaSourceSerializer : KSerializer<LocalJellyfinMediaSource> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("JellyfinMediaSource") {
         element<String>("itemId")
         element<BaseItemDto?>("item", isOptional = true)
         element<MediaSourceInfo>("sourceInfo")
         element<String>("playSessionId")
+        element<String>("downloadFolderUri")
+        element<String>("downloadedFileUri")
+        element<Long>("downloadSize")
     }
 
-    override fun serialize(encoder: Encoder, mediaSource: JellyfinMediaSource) =
+    @SuppressWarnings("MagicNumber")
+    override fun serialize(encoder: Encoder, value: LocalJellyfinMediaSource): Unit =
         encoder.encodeStructure(descriptor) {
-            encodeStringElement(descriptor, 0, mediaSource.itemId.toString())
-            encodeNullableSerializableElement(descriptor, 1, BaseItemDto.serializer(), mediaSource.item)
-            encodeSerializableElement(descriptor, 2, MediaSourceInfo.serializer(), mediaSource.sourceInfo)
-            encodeStringElement(descriptor, 3, mediaSource.playSessionId)
+            encodeStringElement(descriptor, 0, value.itemId.toString())
+            encodeNullableSerializableElement(descriptor, 1, BaseItemDto.serializer(), value.item)
+            encodeSerializableElement(descriptor, 2, MediaSourceInfo.serializer(), value.sourceInfo)
+            encodeStringElement(descriptor, 3, value.playSessionId)
+            encodeStringElement(descriptor, 4, value.localDirectoryUri)
+            encodeStringElement(descriptor, 5, value.remoteFileUri)
+            encodeLongElement(descriptor, 6, value.downloadSize)
         }
 
-    override fun deserialize(decoder: Decoder): JellyfinMediaSource =
+    @SuppressWarnings("MagicNumber")
+    override fun deserialize(decoder: Decoder): LocalJellyfinMediaSource =
         decoder.decodeStructure(descriptor) {
             var itemId: UUID? = null
             var item: BaseItemDto? = null
             var sourceInfo: MediaSourceInfo? = null
             var playSessionId: String? = null
+            var downloadFolderUri: String? = null
+            var downloadedFileUri: String? = null
+            var downloadSize: Long? = null
 
             while (true) {
                 when (val index = decodeElementIndex(descriptor)) {
@@ -45,20 +55,22 @@ class JellyfinMediaSourceSerializer: KSerializer<JellyfinMediaSource>
                     1 -> item = decodeNullableSerializableElement(descriptor, 1, BaseItemDto.serializer())
                     2 -> sourceInfo = decodeSerializableElement(descriptor, 2, MediaSourceInfo.serializer())
                     3 -> playSessionId = decodeStringElement(descriptor, 3)
+                    4 -> downloadFolderUri = decodeStringElement(descriptor, 4)
+                    5 -> downloadedFileUri = decodeStringElement(descriptor, 5)
+                    6 -> downloadSize = decodeLongElement(descriptor, 6)
                     CompositeDecoder.DECODE_DONE -> break
                     else -> throw SerializationException("Unknown index $index")
                 }
             }
 
-            require(itemId != null && sourceInfo != null && playSessionId != null)
-
-            JellyfinMediaSource(
-                itemId = itemId,
+            LocalJellyfinMediaSource(
+                itemId = requireNotNull(itemId) { "Media source has no id" },
                 item = item,
-                sourceInfo = sourceInfo,
-                playSessionId = playSessionId,
-                liveStreamId = null,
-                maxStreamingBitrate = null
+                sourceInfo = requireNotNull(sourceInfo) { "Media source has no source info" },
+                playSessionId = requireNotNull(playSessionId) { "Media source has no play session id" },
+                localDirectoryUri = requireNotNull(downloadFolderUri) { "Media source has no download folder uri" },
+                remoteFileUri = requireNotNull(downloadedFileUri) { "Media source has no downloaded file uri" },
+                downloadSize = requireNotNull(downloadSize) { "Media source has no download size" },
             )
         }
 }
