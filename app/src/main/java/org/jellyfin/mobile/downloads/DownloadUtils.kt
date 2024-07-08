@@ -13,6 +13,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
+import android.os.Build.VERSION_CODES.P
 import android.util.AndroidException
 import androidx.annotation.RequiresApi
 import androidx.core.content.getSystemService
@@ -108,14 +109,14 @@ class DownloadUtils(
     private fun checkForDownloadMethod() {
         val validConnection = when (downloadMethod) {
             DownloadMethod.WIFI_ONLY -> {
-                setDownloadRequirements(Requirements.NETWORK_UNMETERED)
+                setUnmeteredRequirement()
                 !isNetworkMetered()
             }
             DownloadMethod.MOBILE_DATA -> {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                    !isNetworkRoaming()
+                if (Build.VERSION.SDK_INT < P) {
+                    !isNetworkRoamingCompat()
                 } else {
-                    isNetworkNotRoaming()
+                    !isNetworkRoaming()
                 }
             }
             else -> true
@@ -124,24 +125,24 @@ class DownloadUtils(
         if (!validConnection) throw IOException(context.getString(R.string.failed_network_method_check))
     }
 
-    private fun setDownloadRequirements(requirements: Int) {
+    private fun setUnmeteredRequirement() {
         DownloadService.sendSetRequirements(
             context,
             JellyfinDownloadService::class.java,
-            Requirements(requirements),
+            Requirements(Requirements.NETWORK_UNMETERED),
             false,
         )
     }
 
     private fun isNetworkMetered(): Boolean = connectivityManager?.isActiveNetworkMetered ?: false
 
-    private fun isNetworkRoaming(): Boolean = connectivityManager?.activeNetworkInfo?.isRoaming ?: throw AndroidException()
+    private fun isNetworkRoamingCompat(): Boolean = connectivityManager?.activeNetworkInfo?.isRoaming ?: throw AndroidException()
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun isNetworkNotRoaming(): Boolean {
+    @RequiresApi(P)
+    private fun isNetworkRoaming(): Boolean {
         val network: Network = connectivityManager?.activeNetwork ?: throw AndroidException()
         val capabilities: NetworkCapabilities = connectivityManager?.getNetworkCapabilities(network) ?: throw AndroidException()
-        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_ROAMING)
+        return !capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_ROAMING)
     }
 
     private suspend fun checkIfDownloadExists(itemId: String) = downloadDao.downloadExists(itemId)
