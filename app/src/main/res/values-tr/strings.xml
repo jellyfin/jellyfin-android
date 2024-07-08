@@ -19,7 +19,7 @@
     <string name="external_player_invalid_player">Geçerli bir harici oynatıcı seçilmediği için oynatma takibi özelliği devre dışı bırakıldı.</string>
     <string name="external_player_not_supported_yet">Seçilen harici oynatıcı, oynatma takibi özelliğini desteklemiyor. Uygulamanın geliştiricisi ile iletişime geçin.</string>
     <string name="music_notification_channel_description">Müzik oynatma düğmeleri için kullanılır</string>
-    <string name="network_message">Mobil veri kullanılırken indirmelere izin verilsin mi? Operatörünüz tarafından faturanıza ek ücretler yansıtılabilir.</string>
+    <string name="network_message">Mobil veri kullanılırken indirmelere izin verilsin mi? Operatörünüz tarafından faturanıza ek ücretler yansıtılabilir. Bu seçeneği daha sonra ayarlardan değiştirebilirsiniz.</string>
     <string name="battery_optimizations_message">Lütfen ekran kapalıyken medya oynatma için pil optimizasyonlarını kapatın.</string>
     <string name="dialog_web_view_outdated_message">Cihazınız tarafından kullanılan WebView uygulaması güncel değil.
 \nLütfen uyumlu bir sürüme güncelleyin.</string>
@@ -108,4 +108,7 @@
     <string name="bluetooth_permission_message">Kablosuz kulaklıkların veya hoparlörlerin bağlantısının kesildiğini tespit etmek için uygulama Bluetooth erişimine ihtiyaç duyuyor. Android\'de bu izin, yakındaki cihazlara erişim olarak tanımlanır ve Bluetooth cihazlarının mevcut konumunu tespit etmek için kullanılabileceği konusunda uyarır. Ancak Jellyfin uygulaması konumunuzu tespit etmek için bu izni asla kullanmayacaktır.</string>
     <string name="bluetooth_permission_continue">Devam et</string>
     <string name="bluetooth_permission_granted">Bluetooth izni verildi</string>
+    <string name="wifi_only_summary">Medya yalnızca kablosuz bağlantı üzerinden indirilecektir.</string>
+    <string name="mobile_data_summary">Medya, kablosuz bağlantı ve mobil ağlar üzerinden indirilecektir.</string>
+    <string name="mobile_data_and_roaming_summary">Medya kablosuz bağlantı, mobil ağları üzerinden ve dolaşımdayken indirilecektir.</string>
 </resources>

@@ -34,7 +34,7 @@
     <string name="mobile_data_and_roaming">Dữ liệu di động &amp; Chuyển vùng</string>
     <string name="mobile_data">Dữ liệu di động</string>
     <string name="wifi_only">Chỉ wifi</string>
-    <string name="network_message">Bạn có cho phép tải qua mạng dữ liệu di động hoặc chuyển vùng không? Phí từ nhà mạng của bạn có thể được áp dụng.</string>
+    <string name="network_message">Bạn có muốn cho phép quá trình tải xuống chạy qua dữ liệu di động hoặc mạng chuyển vùng không? Phí từ nhà cung cấp của bạn có thể được áp dụng. Bạn có thể thay đổi tùy chọn này sau từ cài đặt.</string>
     <string name="network_title">Các loại mạng được phép</string>
     <string name="battery_optimizations_message">Vui lòng tắt tính năng tiết kiệm pin để trình phát hoạt động khi màn hình tắt.</string>
     <string name="connect_button_text">Kết nối</string>
@@ -107,4 +107,7 @@
     <string name="bluetooth_permission_title">Cho phép truy cập Bluetooth\?</string>
     <string name="bluetooth_permission_continue">Tiếp tục</string>
     <string name="bluetooth_permission_granted">Quyền Bluetooth đã được cấp</string>
+    <string name="mobile_data_and_roaming_summary">Phương tiện sẽ được tải xuống qua WiFi, mạng di động và chuyển vùng.</string>
+    <string name="wifi_only_summary">Phương tiện sẽ chỉ được tải xuống qua WiFi.</string>
+    <string name="mobile_data_summary">Phương tiện sẽ được tải xuống qua WiFi và mạng di động.</string>
 </resources>

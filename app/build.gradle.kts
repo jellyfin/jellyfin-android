@@ -7,12 +7,10 @@ plugins {
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.detekt)
     alias(libs.plugins.android.junit5)
 }
-
-// Apply workaround
-apply("baselineWorkaround.gradle")
 
 detekt {
     buildUponDefaultConfig = true
@@ -89,9 +87,6 @@ android {
     kotlinOptions {
         @Suppress("SuspiciousCollectionReassignment")
         freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

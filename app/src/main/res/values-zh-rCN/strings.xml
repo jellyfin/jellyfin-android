@@ -72,8 +72,7 @@
     <string name="dialog_button_check_for_updates">检查更新</string>
     <string name="dialog_web_view_outdated_message">该设备使用的WebView实现已过时。
 \n请更新至兼容的版本。</string>
-    <string name="dialog_web_view_outdated">该设备使用的WebView实现已过时。
-\n请更新至兼容的版本。</string>
+    <string name="dialog_web_view_outdated">该设备使用的WebView实现已过时,请更新至兼容的版本。</string>
     <string name="dialog_web_view_not_supported_message">该设备不支持WebView。
 \n安装兼容的WebView实现或切换至受支持的设备。</string>
     <string name="dialog_web_view_not_supported">不支持WebView</string>
@@ -104,7 +103,7 @@
     <string name="menu_item_hardware_decoding">硬件解码</string>
     <string name="menu_item_software_decoding">软件解码</string>
     <string name="button_use_different_server">使用其它服务器</string>
-    <string name="bluetooth_permission_message">Jellyfin</string>
+    <string name="bluetooth_permission_message">为了检测无线耳机或扬声器是否断开连接，应用需要蓝牙访问权限。在 Android 系统中，该权限被描述为“附近的设备”，权限可以使用蓝牙推断您的当前位置。不过，Jellyfin 应用程序将不会使用该权限来检测你的位置。</string>
     <string name="bluetooth_permission_title">允许使用蓝牙？</string>
     <string name="bluetooth_permission_continue">继续</string>
     <string name="bluetooth_permission_granted">已授予蓝牙权限</string>

@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">Mobil adat és Roaming</string>
     <string name="mobile_data">Mobil adat</string>
     <string name="wifi_only">Csak WiFi</string>
-    <string name="network_message">Engedélyezed a letöltést mobil adatforgalom és roaming esetén? Az internetszolgáltató további díjat számíthat fel.</string>
+    <string name="network_message">Engedélyezed a letöltést mobil adatforgalom és roaming esetén? Az internetszolgáltató további díjat számíthat fel. Ezt a később változtathatod a beállításokban.</string>
     <string name="network_title">Engedélyezett hálózat típusok</string>
     <string name="battery_optimizations_message">Ahhoz, hogy a lejátszás kikapcsolt képernyő mellett is működhessen, kapcsold ki az akkumulátor optimalizálást.</string>
     <string name="connect_button_text">Kapcsolódás</string>
@@ -108,4 +108,7 @@
     <string name="bluetooth_permission_continue">Folytatás</string>
     <string name="bluetooth_permission_granted">Bluetooth hozzáférés engedélyezve</string>
     <string name="bluetooth_permission_message">A vezeték nélküli fejhallgató vagy hangszóró leválasztásának észleléséhez az alkalmazásnak Bluetooth-hozzáférésre van szüksége. Androidon ez az engedély a közeli eszközökhöz való hozzáférésként van leírva, és figyelmeztet arra, hogy a Bluetooth-eszközök felhasználhatók az aktuális hely megállapítására. A Jellyfin alkalmazás azonban soha nem használja ezt az engedélyt az Ön tartózkodási helyének észlelésére.</string>
+    <string name="mobile_data_and_roaming_summary">A média WiFi és mobil hálózaton és roamingon keresztül is le lesz letöltve.</string>
+    <string name="wifi_only_summary">A média csak WiFi hálózaton keresztül lesz letöltve.</string>
+    <string name="mobile_data_summary">A média WiFi és mobil hálózaton keresztül is le lesz letöltve.</string>
 </resources>

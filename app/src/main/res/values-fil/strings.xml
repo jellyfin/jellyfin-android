@@ -17,4 +17,23 @@
     <string name="media_service_car_section_playlists">Mga Playlist</string>
     <string name="media_service_car_item_no_title">Walang Pamagat</string>
     <string name="music_notification_channel">Player pangkanta ng Jellyfin</string>
+    <string name="dialog_web_view_not_supported">Hindi man supportado ng WebView</string>
+    <string name="button_use_different_server">Gumamit na iba na Server</string>
+    <string name="bluetooth_permission_message">para ma detect kapag nag disconnect ang headphones or speakers, kailangang nang app yung Bluetooth access. kapag nasa android, yung bluetooth access naglalagay nang babala na may access sa iba na mnga devices, at baka makita yung lugar mo depende sa device. pero ang Jellyfin hindi man mag gagamit or magtanong nang lugar mo.</string>
+    <string name="toast_reopen_after_change">Ipa bukas ulit ang app pagkatapos na merong bago na pinalit</string>
+    <string name="host_input_hint">Host</string>
+    <string name="connection_error_cannot_connect">Hindi man maka connectado.
+\nPaki Check Yung hostname at yung network connection mo.</string>
+    <string name="connection_error_unable_to_reach_sever">Hindi man maka connect sa Host</string>
+    <string name="connection_error_unsupported_version_or_product">Hindi Supportado na version or bagay(product)</string>
+    <string name="connect_button_text">Kumonekta</string>
+    <string name="choose_server_button_text">Pumili nang Server</string>
+    <string name="available_servers_title">Magagamit na Servers</string>
+    <string name="bluetooth_permission_title">Payagan ang Bluetooth access?</string>
+    <string name="bluetooth_permission_granted">Pinayagan ang Bluetooth</string>
+    <string name="mobile_data">selpone datos/Mobile datos</string>
+    <string name="wifi_only_summary">ma da download lang ang media kapag nasa WiFi lang.</string>
+    <string name="network_title">Pwede na Network Types</string>
+    <string name="wifi_only">WiFi lang</string>
+    <string name="downloading">nag da-download</string>
 </resources>
