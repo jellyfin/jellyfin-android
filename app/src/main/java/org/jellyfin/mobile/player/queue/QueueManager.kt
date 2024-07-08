@@ -11,7 +11,6 @@ import com.google.android.exoplayer2.source.MergingMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import kotlinx.coroutines.runBlocking
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
@@ -229,10 +228,17 @@ class QueueManager(
      * a [MergingMediaSource] containing the mentioned media stream and all external subtitle streams.
      */
     @CheckResult
-    private fun prepareStreams(source: LocalJellyfinMediaSource) = get<DownloadDao>()
-        .let { runBlocking { it.get(source.id) } }
-        .let(::requireNotNull)
-        .let { prepareDownloadStreams(source) }
+    private fun prepareStreams(source: LocalJellyfinMediaSource): MediaSource {
+        val videoSource: MediaSource = createDownloadVideoMediaSource(source.id, source.remoteFileUri)
+        val subtitleSources: Array<MediaSource> = createDownloadExternalSubtitleMediaSources(
+            source,
+            source.remoteFileUri,
+        )
+        return when {
+            subtitleSources.isNotEmpty() -> MergingMediaSource(videoSource, *subtitleSources)
+            else -> videoSource
+        }
+    }
 
     private fun prepareStreams(source: RemoteJellyfinMediaSource): MediaSource {
         val videoSource = createVideoMediaSource(source)
@@ -327,18 +333,6 @@ class QueueManager(
             }.build()
             factory.createMediaSource(mediaItem, source.runTimeMs)
         }.toTypedArray()
-    }
-
-    private fun prepareDownloadStreams(source: LocalJellyfinMediaSource): MediaSource {
-        val videoSource: MediaSource = createDownloadVideoMediaSource(source.id, source.remoteFileUri)
-        val subtitleSources: Array<MediaSource> = createDownloadExternalSubtitleMediaSources(
-            source,
-            source.remoteFileUri,
-        )
-        return when {
-            subtitleSources.isNotEmpty() -> MergingMediaSource(videoSource, *subtitleSources)
-            else -> videoSource
-        }
     }
 
     @CheckResult
