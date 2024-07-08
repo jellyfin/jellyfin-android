@@ -40,7 +40,6 @@ okhttp = "4.12.0"
 okio = "3.9.0"
 coil = "2.6.0"
 cronet-embedded = "119.6045.31"
-fetch = "3.0.12"
 
 # Media
 androidx-media = "1.7.0"
@@ -135,6 +134,7 @@ jellyfin-exoplayer-ffmpegextension = { group = "org.jellyfin.exoplayer", name = 
 # Room
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidx-room" }
 
 # Monitoring
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
