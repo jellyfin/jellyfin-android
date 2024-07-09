@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import org.jellyfin.mobile.R
 import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.databinding.DownloadItemBinding
+import org.jellyfin.sdk.model.api.BaseItemDto
 
 class DownloadsAdapter(
     private val onItemClick: (DownloadEntity) -> Unit,
@@ -26,11 +28,21 @@ class DownloadsAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(downloadEntity: DownloadEntity) {
             if (downloadEntity.thumbnail == null) {
-                binding.unbind()
                 onItemHold(downloadEntity)
                 return
             }
-            binding.downloadEntity = downloadEntity
+
+            val context = itemView.context
+
+            val mediaItem: BaseItemDto? = downloadEntity.mediaSource.item
+            binding.textViewName.text = downloadEntity.mediaSource.name
+            binding.textViewDescription.text = when {
+                mediaItem?.seriesName != null -> context.getString(R.string.tv_show_desc, mediaItem.seriesName, mediaItem.parentIndexNumber, mediaItem.indexNumber)
+                mediaItem?.productionYear != null -> mediaItem.productionYear.toString()
+                else -> downloadEntity.mediaSource.id
+            }
+            binding.textViewFileSize.text = downloadEntity.fileSize
+
             itemView.setOnClickListener {
                 onItemClick(downloadEntity)
             }
@@ -40,8 +52,6 @@ class DownloadsAdapter(
             }
 
             binding.imageViewThumbnail.setImageBitmap(downloadEntity.thumbnail)
-
-            binding.executePendingBindings()
         }
     }
 }
