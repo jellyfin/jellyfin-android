@@ -91,4 +91,8 @@
     <string name="dialog_web_view_not_supported">תצוגת אתר לא נתמכת</string>
     <string name="dialog_web_view_not_supported_message">WebView לא נתמך במכשיר זה.
 \nהתקן גרסה תואמת או החלף למכשיר נתמך.</string>
+    <string name="bluetooth_permission_title">אפשר גישת Bluetooth?</string>
+    <string name="bluetooth_permission_continue">המשך</string>
+    <string name="bluetooth_permission_granted">הרשאות Bluetooth ניתנו</string>
+    <string name="button_use_different_server">השתמש בשרת אחר</string>
 </resources>
