@@ -29,8 +29,8 @@ class ActivityEventHandler(
     private val webappFunctionChannel: WebappFunctionChannel,
 ) {
     private val eventsFlow = MutableSharedFlow<ActivityEvent>(
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST,
+        extraBufferCapacity = 10,
+        onBufferOverflow = BufferOverflow.SUSPEND,
     )
 
     fun MainActivity.subscribe() {
