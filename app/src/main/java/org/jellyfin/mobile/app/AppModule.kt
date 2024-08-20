@@ -133,6 +133,7 @@ val applicationModule = module {
             .setCache(get())
             .setUpstreamDataSourceFactory(get<DefaultDataSource.Factory>())
             .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
+            .setCacheWriteDataSinkFactory(null)
             .setCacheKeyFactory { spec ->
                 val uri = spec.uri.toString()
                 val idRegex = Regex("""/([a-f0-9]{32}|[a-f0-9-]{36})/""")
@@ -140,10 +141,10 @@ val applicationModule = module {
                 val itemId = idResult?.groups?.get(1)?.value.toString()
                 var item = itemId.toUUID().toString()
 
-                val subtitleRegex = Regex("""(?:Subtitles/(\d+)/\d+/Stream.subrip)|(?:/(\d+).subrip)""")
+                val subtitleRegex = Regex("""Subtitles/(\d+)/\d+/Stream.subrip|/(\d+).subrip""")
                 val subtitleResult = subtitleRegex.find(uri)
                 if (subtitleResult != null) {
-                    item += ":${subtitleResult.groups?.get(1)?.value ?: subtitleResult.groups?.get(2)?.value}"
+                    item += ":${subtitleResult.groups[1]?.value ?: subtitleResult.groups[2]?.value}"
                 }
 
                 item
