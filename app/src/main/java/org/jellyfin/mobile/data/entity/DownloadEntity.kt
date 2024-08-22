@@ -16,8 +16,8 @@ import org.jellyfin.mobile.data.entity.DownloadEntity.Key.ITEM_ID
 import org.jellyfin.mobile.data.entity.DownloadEntity.Key.TABLE_NAME
 import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.extensions.toFileSize
 import java.io.File
-import java.util.Locale
 
 @Entity(
     tableName = TABLE_NAME,
@@ -68,21 +68,7 @@ data class DownloadEntity(
     )
 
     @Ignore
-    val fileSize: String = formatFileSize(mediaSource.downloadSize)
-
-    @Ignore
-    private fun formatFileSize(bytes: Long): String {
-        val units = arrayOf("B", "KB", "MB", "GB", "TB")
-        var size = bytes.toDouble()
-        var unitIndex = 0
-
-        while (size >= BYTES_PER_BINARY_UNIT && unitIndex < units.lastIndex) {
-            size /= BYTES_PER_BINARY_UNIT
-            unitIndex++
-        }
-
-        return "%.1f %s".format(Locale.ROOT, size, units[unitIndex])
-    }
+    val fileSize: String = mediaSource.downloadSize.toFileSize()
 
     companion object Key {
         const val BYTES_PER_BINARY_UNIT: Int = 1024
