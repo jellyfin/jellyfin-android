@@ -132,5 +132,7 @@
     <string name="thumbnail_desc">Thumbnail</string>
     <string name="store_videos_in_internal_storage">Store videos in internal storage</string>
     <string name="stored_videos_in_internal_storage_desc">Videos such as movies and TV shows will be stored in the app\'s internal storage. Allowing access from within the app.</string>
-    <string name="tv_show_desc">%1$s - Season %2$d - Episode %3$d</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Downloading %1$d titles</string>
+    <string name="downloaded">Downloaded %1$s</string>
 </resources>
