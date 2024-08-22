@@ -71,7 +71,9 @@ class JellyfinDownloadService : DownloadService(
                 Download.STATE_COMPLETED -> {
                     NotificationCompat.Builder(context, Constants.DOWNLOAD_NOTIFICATION_CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_notification)
-                        .setContentTitle(context.getString(R.string.downloaded, Util.fromUtf8Bytes(download.request.data)))
+                        .setContentTitle(
+                            context.getString(R.string.downloaded, Util.fromUtf8Bytes(download.request.data)),
+                        )
                         .setContentInfo(download.bytesDownloaded.toFileSize())
                         .build()
                 }
