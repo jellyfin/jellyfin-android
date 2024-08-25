@@ -98,7 +98,7 @@ public class ChromecastConnection {
      * @return the ChromecastSession object
      */
     ChromecastSession getChromecastSession() {
-        return this.chromecastSession;
+        return chromecastSession;
     }
 
     /**
@@ -170,8 +170,8 @@ public class ChromecastConnection {
     }
 
     private void setAppId(String applicationId) {
-        this.appId = applicationId;
-        this.settings.edit().putString("appId", appId).apply();
+        appId = applicationId;
+        settings.edit().putString("appId", appId).apply();
         getContext().setReceiverApplicationId(appId);
     }
 
@@ -637,7 +637,7 @@ public class ChromecastConnection {
          * @param router mediaRouter object
          */
         void setMediaRouter(MediaRouter router) {
-            this.mediaRouter = router;
+            mediaRouter = router;
         }
 
         /**
