@@ -1,5 +1,5 @@
 import io.gitlab.arturbosch.detekt.Detekt
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.app)
@@ -16,6 +16,13 @@ detekt {
     allRules = false
     config = files("${rootProject.projectDir}/detekt.yml")
     autoCorrect = true
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_11
+        optIn.add("kotlin.RequiresOptIn")
+    }
 }
 
 android {
@@ -81,10 +88,6 @@ android {
         buildConfig = true
         viewBinding = true
         compose = true
-    }
-    kotlinOptions {
-        @Suppress("SuspiciousCollectionReassignment")
-        freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -175,12 +178,6 @@ dependencies {
 }
 
 tasks {
-    withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_11.toString()
-        }
-    }
-
     withType<Detekt> {
         jvmTarget = JavaVersion.VERSION_11.toString()
 
@@ -202,9 +199,9 @@ tasks {
     }
 
     register("versionTxt") {
-        val path = buildDir.resolve("version.txt")
-
         doLast {
+            val path = layout.buildDirectory.file("version.txt").get().asFile
+
             val versionString = "v${android.defaultConfig.versionName}=${android.defaultConfig.versionCode}"
             println("Writing [$versionString] to $path")
             path.writeText("$versionString\n")
