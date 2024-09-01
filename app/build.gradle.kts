@@ -105,10 +105,6 @@ android {
     }
 }
 
-ksp {
-    arg("room.incremental", "true")
-}
-
 dependencies {
     val proprietaryImplementation by configurations
 
