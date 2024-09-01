@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.app)
+    alias(libs.plugins.android.room)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.parcelize)
@@ -99,10 +100,12 @@ android {
         abortOnError = false
         sarifReport = true
     }
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
     arg("room.incremental", "true")
 }
 
