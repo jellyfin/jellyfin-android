@@ -202,9 +202,9 @@ tasks {
     }
 
     register("versionTxt") {
-        val path = buildDir.resolve("version.txt")
-
         doLast {
+            val path = layout.buildDirectory.file("version.txt").get().asFile
+
             val versionString = "v${android.defaultConfig.versionName}=${android.defaultConfig.versionCode}"
             println("Writing [$versionString] to $path")
             path.writeText("$versionString\n")
