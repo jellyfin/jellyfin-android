@@ -248,7 +248,7 @@ class DeviceProfileBuilder(
          */
         private val AVAILABLE_AUDIO_CODECS = arrayOf(
             // mp4
-            arrayOf("mp1", "mp2", "mp3", "aac", "alac", "ac3"),
+            arrayOf("mp1", "mp2", "mp3", "aac", "alac", "ac3", "opus"),
             // fmp4
             arrayOf("mp3", "aac", "ac3", "eac3"),
             // webm
