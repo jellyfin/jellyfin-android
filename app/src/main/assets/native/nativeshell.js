@@ -104,17 +104,6 @@ function getDeviceProfile(profileBuilder, item) {
         return i.Type === "Audio";
     });
 
-    profile.SubtitleProfiles.push(
-        {
-            Format: "ssa",
-            Method: "External"
-        },
-        {
-            Format: "ass",
-            Method: "External"
-        }
-    );
-
     profile.CodecProfiles.push({
         Type: "Video",
         Container: "avi",
