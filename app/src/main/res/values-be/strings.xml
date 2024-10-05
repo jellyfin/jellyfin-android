@@ -8,7 +8,7 @@
     <string name="choose_server_button_text">Выберыце сервер</string>
     <string name="button_use_different_server">Выкарыстоўвайце іншы сервер</string>
     <string name="battery_optimizations_message">Калі ласка, адключыце аптымізацыю батарэі для прайгравання мультымедыя пры выключаным экране.</string>
-    <string name="network_message">Вы хочаце дазволіць спампоўку праз мабільную перадачу даных або сетку ў роўмінгу? Ваш правайдэр можа спаганяць плату.</string>
+    <string name="network_message">Вы жадаеце дазволіць спампоўку праз мабільную перадачу даных або сеткі роўмінгу? Ваш правайдэр можа спаганяць плату. Вы можаце змяніць гэты параметр пазней у наладах.</string>
     <string name="mobile_data">Мабільныя дадзеныя</string>
     <string name="download_no_storage_permission">Немагчыма загрузіць файлы без дазволу на захоўванне</string>
     <string name="media_service_car_section_recents">Нядаўна прайгравалася</string>
@@ -45,7 +45,7 @@
         <item quantity="other">Спрабаваў %d кандыдатаў для ўводу, але беспаспяхова.</item>
     </plurals>
     <string name="connection_error_cannot_connect">Немагчыма ўсталяваць злучэнне.
-\nКалі ласка, праверце імя хаста і падключэнне да сеткі.</string>
+\nКалі ласка, праверце імя хаста і падлучэнне да сеткі.</string>
     <string name="notification_action_rewind">Перамотаць назад</string>
     <string name="player_error_invalid_play_options">Немагчыма атрымаць інфармацыю аб прайграванні</string>
     <string name="player_error_unsupported_content">Медыя не можа прайгравацца на гэтай прыладзе</string>
@@ -54,7 +54,7 @@
     <string name="dialog_button_close_app">Зачыніце праграму</string>
     <string name="connect_to_server_title">Падлучыцца да сервера</string>
     <string name="host_input_hint">Хост</string>
-    <string name="connect_button_text">Злучыцца</string>
+    <string name="connect_button_text">Падлучыцца</string>
     <string name="available_servers_title">Даступныя серверы</string>
     <string name="network_title">Дазволеныя тыпы сетак</string>
     <string name="wifi_only">Толькі WiFi</string>
@@ -108,6 +108,9 @@
     <string name="external_player_mx_player_pro_description">Платная версія MX Player, якая забяспечвае бесперапыннае прайграванне відэа.</string>
     <string name="bluetooth_permission_continue">Працягнуць</string>
     <string name="bluetooth_permission_title">Дазволіць доступ па Bluetooth\?</string>
-    <string name="bluetooth_permission_message">Каб вызначыць, калі бесправадныя навушнікі або калонкі адключаны, праграме патрабуецца доступ па Bluetooth. На Android гэты дазвол апісваецца як доступ да прылад паблізу і папярэджвае, што прылады Bluetooth можна выкарыстоўваць для вызначэння бягучага месцазнаходжання. Аднак праграма Jellyfin ніколі не будзе выкарыстоўваць гэты дазвол для вызначэння вашага месцазнаходжання.</string>
+    <string name="bluetooth_permission_message">Каб вызначыць, калі бесправадныя навушнікі або калонкі адлучаны, праграме патрабуецца доступ па Bluetooth. На Android гэты дазвол апісваецца як доступ да прылад паблізу і папярэджвае, што прылады Bluetooth можна выкарыстоўваць для вызначэння бягучага месцазнаходжання. Аднак праграма Jellyfin ніколі не будзе выкарыстоўваць гэты дазвол для вызначэння вашага месцазнаходжання.</string>
     <string name="bluetooth_permission_granted">Быў дадзены дазвол Bluetooth</string>
+    <string name="wifi_only_summary">Мультымедыя будзе спампоўвацца толькі праз Wi-Fi.</string>
+    <string name="mobile_data_and_roaming_summary">Мультымедыя будзе спампоўвацца праз Wi-Fi, мабільную сетку і сетку ў роўмінгу.</string>
+    <string name="mobile_data_summary">Мультымедыя будзе спампоўвацца праз Wi-Fi і мабільную сетку.</string>
 </resources>

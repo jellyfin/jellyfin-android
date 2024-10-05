@@ -6,6 +6,7 @@ import android.content.Intent
 import android.media.session.PlaybackState
 import android.net.Uri
 import android.webkit.JavascriptInterface
+import androidx.core.content.ContextCompat
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.utils.Constants
@@ -98,7 +99,8 @@ class NativeInterface(private val context: Context) : KoinComponent {
             putExtra(EXTRA_IS_LOCAL_PLAYER, options.optBoolean(EXTRA_IS_LOCAL_PLAYER, true))
             putExtra(EXTRA_IS_PAUSED, options.optBoolean(EXTRA_IS_PAUSED, true))
         }
-        context.startService(intent)
+
+        ContextCompat.startForegroundService(context, intent)
 
         // We may need to request bluetooth permission to react to bluetooth disconnect events
         activityEventHandler.emit(ActivityEvent.RequestBluetoothPermission)
