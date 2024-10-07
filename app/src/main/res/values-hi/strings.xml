@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="dialog_web_view_not_supported_message">वेबव्यू इस डिवाइस द्वारा समर्थित नहीं हैं.
+\nएक संगत वेबव्यू कार्यान्वयन स्थापित करें या किसी समर्थित डिवाइस पर स्विच करें।</string>
+    <string name="dialog_web_view_not_supported">वेबव्यू समर्थित नहीं है</string>
+    <string name="dialog_web_view_outdated">वेबव्यू पुराना हो गया</string>
+</resources>
