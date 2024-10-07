@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.detekt)
     alias(libs.plugins.android.junit5)
@@ -111,6 +112,7 @@ dependencies {
 
     // Kotlin
     implementation(libs.bundles.coroutines)
+    implementation(libs.kotlin.serialization.json)
 
     // Core
     implementation(libs.bundles.koin)
@@ -144,6 +146,7 @@ dependencies {
         }
     }
     implementation(libs.okhttp)
+    implementation(libs.okio)
     implementation(libs.coil)
     implementation(libs.cronet.embedded)
 
@@ -160,6 +163,7 @@ dependencies {
 
     // Room
     implementation(libs.bundles.androidx.room)
+    implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
     // Monitoring

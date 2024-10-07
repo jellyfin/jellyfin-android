@@ -150,6 +150,11 @@ class NativeInterface(private val context: Context) : KoinComponent {
     }
 
     @JavascriptInterface
+    fun openDownloads() {
+        emitEvent(ActivityEvent.OpenDownloads)
+    }
+
+    @JavascriptInterface
     fun openServerSelection() {
         emitEvent(ActivityEvent.SelectServer)
     }
