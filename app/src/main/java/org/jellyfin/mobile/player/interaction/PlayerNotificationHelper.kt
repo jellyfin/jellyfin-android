@@ -125,9 +125,11 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
             mediaIcon?.let {
                 viewModel.mediaSession.controller.metadata?.let {
                     if (!it.containsKey(MediaMetadata.METADATA_KEY_ART)) {
-                        viewModel.mediaSession.setMetadata(MediaMetadata.Builder(it)
-                            .putBitmap(MediaMetadata.METADATA_KEY_ART, mediaIcon)
-                            .build())
+                        viewModel.mediaSession.setMetadata(
+                            MediaMetadata.Builder(it)
+                                .putBitmap(MediaMetadata.METADATA_KEY_ART, mediaIcon)
+                                .build()
+                        )
                     }
                 }
             }
