@@ -3,7 +3,7 @@
     <string name="wifi_only">Vain Wi-Fi</string>
     <string name="network_message">Sallitaanko lataus mobiiliverkossa tai verkkovierailun aikana? Palveluntarjoaja saattaa veloittaa tiedonsiirrosta.</string>
     <string name="network_title">Sallitut verkkotyypit</string>
-    <string name="battery_optimizations_message">Kytke akun käytön optimointi käytöstä toistettaessa mediaa näytön ollessa suljettuna.</string>
+    <string name="battery_optimizations_message">Kytke akun käytön optimointi pois käytöstä toistettaessa mediaa näyttö suljettuna.</string>
     <string name="downloading">Lataus</string>
     <string name="mobile_data_and_roaming">Mobiilidata ja verkkovierailu</string>
     <string name="mobile_data">Mobiilidata</string>
@@ -63,7 +63,7 @@
     <string name="media_service_car_section_songs">Kappaleet</string>
     <string name="media_service_car_section_artists">Esittäjät</string>
     <string name="media_service_car_section_albums">Albumit</string>
-    <string name="media_service_car_section_recents">Hiljattain toistettu</string>
+    <string name="media_service_car_section_recents">Viimeksi toistetut</string>
     <string name="media_service_item_not_found">Mediatiedostoa ei löytynyt</string>
     <string name="media_service_generic_error">Tapahtui virhe</string>
     <string name="pref_download_location">Lataussijainti</string>
@@ -99,8 +99,8 @@
     <string name="pref_exoplayer_direct_play_ass">Salli SSA-/ASS-tekstitykset toistettaessa ilman muuntoa</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Aloita vaakasuorien videoiden toisto vaakasuorassa</string>
     <string name="player_error_unspecific_exception">Jotain soittimessa meni pieleen</string>
-    <string name="menu_item_hardware_decoding">Laitteistodekoodaus</string>
-    <string name="menu_item_software_decoding">Ohjelmistodekoodaus</string>
+    <string name="menu_item_hardware_decoding">Laitteistopurkaminen</string>
+    <string name="menu_item_software_decoding">Ohjelmistopurkaminen</string>
     <string name="pref_subtitle_style">Mukauta tekstityksen tyyliä</string>
     <string name="pref_subtitle_style_summary">Voit muuttaa tekstityksen tyyliä Androidin asetuksista</string>
     <string name="button_use_different_server">Käytä eri palvelinta</string>
@@ -108,4 +108,7 @@
     <string name="bluetooth_permission_message">Sovellus tarvitsee Bluetooth-käyttöoikeuden havaitakseen langattomien kuulokkeiden tai kaiuttimien irtikytkennän. Androidissa tätä käyttöoikeutta kuvataan pääsyksi lähellä oleviin laitteisiin ja se varoittaa, että Bluetooth-laitteita voidaan käyttää nykyisen sijainnin päättelemiseen. Jellyfin-sovellus ei kuitenkaan koskaan käytä sitä sijaintisi tunnistukseen.</string>
     <string name="bluetooth_permission_continue">Jatka</string>
     <string name="bluetooth_permission_title">Myönnetääkö Bluetooth-käyttöoikeus\?</string>
+    <string name="wifi_only_summary">Ladataan vain käytettäessä Wi-Fi verkkoa.</string>
+    <string name="mobile_data_summary">Ladataan käytettäessä joko Wi-Fi tai mobiiliverkkoa.</string>
+    <string name="mobile_data_and_roaming_summary">Ladataan käytettäessä Wi-Fi:ä, mobiiliverkkoa, tai verkkovierailuyhteyttä.</string>
 </resources>
