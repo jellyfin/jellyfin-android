@@ -34,7 +34,6 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
             val response by mediaInfoApi.getPostedPlaybackInfo(
                 itemId = itemId,
                 data = PlaybackInfoDto(
-                    userId = apiClient.userId,
                     // We need to remove the dashes so that the server can find the correct media source.
                     // And if we didn't pass the mediaSourceId, our stream indices would silently get ignored.
                     // https://github.com/jellyfin/jellyfin/blob/9a35fd673203cfaf0098138b2768750f4818b3ab/Jellyfin.Api/Helpers/MediaInfoHelper.cs#L196-L201
@@ -60,8 +59,8 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
 
         // Load additional item info if possible
         val item = try {
-            val response by itemsApi.getItemsByUserId(ids = listOf(itemId))
-            response.items?.firstOrNull()
+            val response by itemsApi.getItems(ids = listOf(itemId))
+            response.items.firstOrNull()
         } catch (e: ApiClientException) {
             Timber.e(e, "Failed to load item for media source $itemId")
             null

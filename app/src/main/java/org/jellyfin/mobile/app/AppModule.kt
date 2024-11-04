@@ -11,8 +11,10 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.DataSpec
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.exoplayer2.upstream.ResolvingDataSource
 import com.google.android.exoplayer2.util.Util
 import kotlinx.coroutines.channels.Channel
 import okhttp3.OkHttpClient
@@ -34,6 +36,7 @@ import org.jellyfin.mobile.utils.isLowRamDevice
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebViewFragment
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
+import org.jellyfin.sdk.api.client.ApiClient
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -81,6 +84,7 @@ val applicationModule = module {
     // ExoPlayer factories
     single<DataSource.Factory> {
         val context: Context = get()
+        val apiClient: ApiClient = get()
 
         val provider = CronetProvider.getAllProviders(context).firstOrNull { provider: CronetProvider ->
             (provider.name == CronetProvider.PROVIDER_NAME_APP_PACKAGED) && provider.isEnabled
@@ -102,7 +106,20 @@ val applicationModule = module {
             }
         }
 
-        DefaultDataSource.Factory(context, baseDataSourceFactory)
+        val dataSourceFactory = DefaultDataSource.Factory(context, baseDataSourceFactory)
+
+        // Add authorization header. This is needed as we don't pass the
+        // access token in the url for Android Auto.
+        ResolvingDataSource.Factory(dataSourceFactory) { dataSpec: DataSpec ->
+            val authorizationHeaderString =
+                "MediaBrowser Token=\"${apiClient.accessToken}\", " +
+                    "Client=\"${apiClient.clientInfo.name}\", " +
+                    "Device=\"${apiClient.deviceInfo.name}\", " +
+                    "DeviceId=\"${apiClient.deviceInfo.id}\", " +
+                    "Version=\"${apiClient.clientInfo.version}\""
+
+            dataSpec.withRequestHeaders(hashMapOf("Authorization" to authorizationHeaderString))
+        }
     }
     single<MediaSource.Factory> {
         val context: Context = get()
