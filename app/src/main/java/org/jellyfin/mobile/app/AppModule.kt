@@ -37,6 +37,7 @@ import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebViewFragment
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.jellyfin.sdk.api.client.ApiClient
+import org.jellyfin.sdk.api.client.util.AuthorizationHeaderBuilder
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -111,12 +112,13 @@ val applicationModule = module {
         // Add authorization header. This is needed as we don't pass the
         // access token in the url for Android Auto.
         ResolvingDataSource.Factory(dataSourceFactory) { dataSpec: DataSpec ->
-            val authorizationHeaderString =
-                "MediaBrowser Token=\"${apiClient.accessToken}\", " +
-                    "Client=\"${apiClient.clientInfo.name}\", " +
-                    "Device=\"${apiClient.deviceInfo.name}\", " +
-                    "DeviceId=\"${apiClient.deviceInfo.id}\", " +
-                    "Version=\"${apiClient.clientInfo.version}\""
+            val authorizationHeaderString = AuthorizationHeaderBuilder.buildHeader(
+                clientName = apiClient.clientInfo.name,
+                clientVersion = apiClient.clientInfo.version,
+                deviceId = apiClient.deviceInfo.id,
+                deviceName = apiClient.deviceInfo.name,
+                accessToken = apiClient.accessToken,
+            )
 
             dataSpec.withRequestHeaders(hashMapOf("Authorization" to authorizationHeaderString))
         }
