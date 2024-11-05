@@ -3,10 +3,10 @@ package org.jellyfin.mobile.player.source
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
-import org.jellyfin.sdk.api.client.extensions.itemsApi
 import org.jellyfin.sdk.api.client.extensions.mediaInfoApi
-import org.jellyfin.sdk.api.operations.ItemsApi
+import org.jellyfin.sdk.api.client.extensions.userLibraryApi
 import org.jellyfin.sdk.api.operations.MediaInfoApi
+import org.jellyfin.sdk.api.operations.UserLibraryApi
 import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.PlaybackInfoDto
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
@@ -15,7 +15,7 @@ import java.util.UUID
 
 class MediaSourceResolver(private val apiClient: ApiClient) {
     private val mediaInfoApi: MediaInfoApi = apiClient.mediaInfoApi
-    private val itemsApi: ItemsApi = apiClient.itemsApi
+    private val userLibraryApi: UserLibraryApi = apiClient.userLibraryApi
 
     @Suppress("ReturnCount")
     suspend fun resolveMediaSource(
@@ -59,8 +59,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
 
         // Load additional item info if possible
         val item = try {
-            val response by itemsApi.getItems(ids = listOf(itemId))
-            response.items.firstOrNull()
+            userLibraryApi.getItem(itemId).content
         } catch (e: ApiClientException) {
             Timber.e(e, "Failed to load item for media source $itemId")
             null
