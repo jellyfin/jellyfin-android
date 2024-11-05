@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.app
 
 import android.content.Context
+import androidx.core.net.toUri
 import coil.ImageLoader
 import com.google.android.exoplayer2.ext.cronet.CronetDataSource
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
@@ -110,17 +111,23 @@ val applicationModule = module {
         val dataSourceFactory = DefaultDataSource.Factory(context, baseDataSourceFactory)
 
         // Add authorization header. This is needed as we don't pass the
-        // access token in the url for Android Auto.
+        // access token in the URL for Android Auto.
         ResolvingDataSource.Factory(dataSourceFactory) { dataSpec: DataSpec ->
-            val authorizationHeaderString = AuthorizationHeaderBuilder.buildHeader(
-                clientName = apiClient.clientInfo.name,
-                clientVersion = apiClient.clientInfo.version,
-                deviceId = apiClient.deviceInfo.id,
-                deviceName = apiClient.deviceInfo.name,
-                accessToken = apiClient.accessToken,
-            )
+            // Only send authorization header if URI matches the jellyfin server
+            val baseUrlAuthority = apiClient.baseUrl?.toUri()?.authority
 
-            dataSpec.withRequestHeaders(hashMapOf("Authorization" to authorizationHeaderString))
+            if (dataSpec.uri.authority == baseUrlAuthority) {
+                val authorizationHeaderString = AuthorizationHeaderBuilder.buildHeader(
+                    clientName = apiClient.clientInfo.name,
+                    clientVersion = apiClient.clientInfo.version,
+                    deviceId = apiClient.deviceInfo.id,
+                    deviceName = apiClient.deviceInfo.name,
+                    accessToken = apiClient.accessToken,
+                )
+
+                dataSpec.withRequestHeaders(hashMapOf("Authorization" to authorizationHeaderString))
+            } else
+                dataSpec
         }
     }
     single<MediaSource.Factory> {
