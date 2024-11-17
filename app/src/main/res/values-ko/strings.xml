@@ -9,12 +9,12 @@
     <string name="connect_button_text">연결</string>
     <string name="host_input_hint">호스트</string>
     <string name="connect_to_server_title">서버 연결</string>
-    <string name="battery_optimizations_message">화면을 끈 상태로 미디어를 재생하려면 배터리 최적화를 비활성화 해주십시오.</string>
+    <string name="battery_optimizations_message">화면을 끈 상태로 미디어를 재생하려면 배터리 최적화를 해제하세요.</string>
     <string name="pref_exoplayer_allow_background_audio">백그라운드 오디오</string>
     <string name="pref_category_video_player">비디오 재생기</string>
     <string name="pref_music_notification_always_dismissible_title">지울 수 있는 음악 플레이어 알림</string>
     <string name="pref_category_music_player">음악 플레이어</string>
-    <string name="activity_name_settings">젤리핀 설정</string>
+    <string name="activity_name_settings">Jellyfin 설정</string>
     <string name="playback_info_and_x_more">...그리고 %d 만큼 더</string>
     <string name="playback_info_audio_streams">오디오 스트림</string>
     <string name="playback_info_video_streams">비디오 스트림</string>
@@ -28,10 +28,10 @@
     <string name="notification_action_play">재생</string>
     <string name="notification_action_rewind">되감기</string>
     <string name="notification_action_previous">이전</string>
-    <string name="connection_error_cannot_connect">연결할 수 없습니다. 
-\n호스트명과 네트워크 연결을 다시 확인해주세요.</string>
+    <string name="connection_error_cannot_connect">연결할 수 없습니다.
+\n호스트 이름과 네트워크 연결 상태를 다시 확인하세요.</string>
     <string name="video_player_external">외부 플레이어</string>
-    <string name="external_player_unknown_error">외부 플레이어에서 알 수 없는 에러가 발생했습니다. 재생 구간 추적이 비활성화되었습니다.</string>
+    <string name="external_player_unknown_error">외부 플레이어에서 알 수 없는 오류가 발생했습니다. 재생 기록이 비활성화되었습니다.</string>
     <string name="external_player_invalid_player">적절한 외부 플레이어가 선택되지 않았습니다. 재생 구간 추적이 비활성화되었습니다.</string>
     <string name="external_player_not_supported_yet">선택한 외부 플레이어에서 재생 구간 추적이 지원되지 않습니다. 해당 앱 개발자에게 문의해보세요.</string>
     <string name="external_player_invalid_play_method">잘못된 재생 방법입니다.</string>
@@ -46,16 +46,16 @@
     <string name="choose_server_button_text">서버 선택</string>
     <string name="external_player_system_default_description">시스템이 플레이어 선택을 처리하도록합니다. 일부 플레이어는 완전히 호환되지 않을 수 있습니다.</string>
     <string name="external_player_system_default">시스템 기본</string>
-    <string name="external_player_vlc_player_description">대부분의 멀티미디어 파일을 재생하는 무료 그리고 오픈소스의 이기종 멀티미디어 플레이어.</string>
+    <string name="external_player_vlc_player_description">대부분의 멀티미디어 파일을 재생할 수 있는 무료 오픈 소스 크로스 플랫폼 멀티미디어 재생기.</string>
     <string name="external_player_vlc_player">VLC 플레이어</string>
     <string name="external_player_mx_player_pro_description">중단없는 비디오 경험을 제공하는 유료 버전의 MX Player.</string>
-    <string name="external_player_mx_player_pro">MX Player 프로</string>
+    <string name="external_player_mx_player_pro">MX Player Pro</string>
     <string name="external_player_mx_player_free_description">고급 하드웨어 가속 및 자막을 지원하는 강력한 비디오 플레이어.</string>
-    <string name="external_player_mx_player_free">무료 MX Player</string>
+    <string name="external_player_mx_player_free">MX Player Free</string>
     <string name="external_player_mpv_description">간단한 경량 비디오 플레이어 (무료) . 다양한 미디어 파일 형식을 지원합니다.</string>
     <string name="external_player_mpv">MPV 플레이어</string>
     <string name="external_player_app">외부 플레이어 앱</string>
-    <string name="media_service_generic_error">에러가 발생했습니다</string>
+    <string name="media_service_generic_error">오류가 발생했습니다</string>
     <string name="pref_download_location">다운로드 위치</string>
     <string name="pref_category_downloads">다운로드</string>
     <string name="pref_music_notification_always_dismissible_summary_on">알림은 재생 중일 때를 포함하여, 항상 지울 수 있습니다</string>
@@ -92,16 +92,16 @@
     <string name="dialog_web_view_outdated">WebView 버전이 오래됨</string>
     <string name="dialog_web_view_outdated_message">이 기기의 WebView 버전이 오래되었습니다.
 \n호환되는 버전으로 업데이트 해 주십시오.</string>
-    <string name="dialog_web_view_not_supported">WebView 지원되지 않음</string>
+    <string name="dialog_web_view_not_supported">WebView가 지원되지 않음</string>
     <string name="mobile_data_and_roaming_summary">미디어 다운로드에 WiFi, 모바일 네트워크와 로밍 네트워크를 사용합니다.</string>
     <string name="menu_item_auto">자동</string>
     <string name="menu_item_software_decoding">소프트웨어 디코딩</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">가로 모드 비디오를 가로 모드로 재생 시작</string>
     <string name="pref_subtitle_style_summary">안드로이드 설정에서 자막 스타일을 변경할 수 있습니다</string>
-    <string name="bluetooth_permission_title">블루투스 접근 권한을 허용 하시겠습니까?</string>
-    <string name="bluetooth_permission_message">Jellyfin은 무선 헤드폰 또는 스피커가 연결 해제되었는지 확인하기 위해 블루투스 접근 권한이 필요합니다. 안드로이드에서는 \'근처 기기\' 권한으로 표시되며, 기기 간 상대적 위치를 파악할 수 있다고 경고할 수 있습니다. 하지만 Jellyfin은 절대로 위치 탐지를 위해 이 권한을 사용하지 않습니다.</string>
+    <string name="bluetooth_permission_title">Bluetooth 권한을 허용 하시겠습니까?</string>
+    <string name="bluetooth_permission_message">Jellyfin은 무선 헤드폰이나 스피커의 연결 해제 감지를 위해 Bluetooth 권한이 필요합니다. Android에서 근처 기기 액세스 권한으로 표시되며, 기기 간 상대적 위치를 파악할 수 있다고 경고할 수 있습니다. 하지만 Jellyfin은 사용자의 위치 정보를 얻기 위해 이 권한을 사용하지 않습니다.</string>
     <string name="bluetooth_permission_continue">계속</string>
-    <string name="bluetooth_permission_granted">블루투스 접근 권한이 허용되었습니다</string>
+    <string name="bluetooth_permission_granted">Bluetooth 접근 권한이 허용되었습니다</string>
     <string name="pref_exoplayer_direct_play_ass">직접 플레이시 SSA/ASS 자막 허용</string>
     <string name="pref_subtitle_style">자막 스타일 변경</string>
     <string name="player_error_unspecific_exception">플레이어에 문제가 발생했습니다</string>
