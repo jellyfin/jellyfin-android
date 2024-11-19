@@ -11,6 +11,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ServiceInfo
 import android.graphics.Bitmap
 import android.media.AudioAttributes
 import android.media.AudioManager
@@ -19,6 +20,7 @@ import android.media.session.MediaController
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import androidx.annotation.StringRes
@@ -87,8 +89,11 @@ class RemotePlayerService : Service(), CoroutineScope {
     private var largeItemIcon: Bitmap? = null
     private var currentItemId: String? = null
 
+    private var extraWakeLockTime: Long = 15 * 60 * 1000L /* 5 minutes */
+
     val playbackState: PlaybackState? get() = mediaSession?.controller?.playbackState
     var shutdownTimer: Timer? = null
+    var notification: Notification? = null
 
     private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -142,6 +147,56 @@ class RemotePlayerService : Service(), CoroutineScope {
         createMediaNotificationChannel(notificationManager)
     }
 
+    private fun ensureStartForeground() {
+        if (notification == null) {
+            Timber.w("No notification was created in onStartCommand this could cause the service to be killed by OS")
+            val tempNotification = Notification.Builder(this@RemotePlayerService).apply {
+                if (AndroidVersion.isAtLeastO) {
+                    setChannelId(MEDIA_NOTIFICATION_CHANNEL_ID) // Set Notification Channel on Android O and above
+                    setColorized(true) // Color notification based on cover art
+                } else {
+                    setPriority(Notification.PRIORITY_LOW)
+                }
+                onStopped(false);
+                setContentText("")
+                setContentTitle("")
+                setSmallIcon(R.drawable.ic_notification)
+            }.build()
+
+            if (Build.VERSION.SDK_INT >= 29) {
+                startForeground(
+                    MEDIA_PLAYER_NOTIFICATION_ID,
+                    tempNotification,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+                )
+            } else {
+                startForeground(
+                    MEDIA_PLAYER_NOTIFICATION_ID,
+                    tempNotification
+                )
+            }
+            notificationManager.cancel(MEDIA_PLAYER_NOTIFICATION_ID)
+            if (AndroidVersion.isAtLeastN) {
+                stopForeground(STOP_FOREGROUND_DETACH)
+            } else {
+                stopForeground(false)
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= 29) {
+                startForeground(
+                    MEDIA_PLAYER_NOTIFICATION_ID,
+                    notification!!,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+                )
+            } else {
+                startForeground(
+                    MEDIA_PLAYER_NOTIFICATION_ID,
+                    notification
+                )
+            }
+        }
+    }
+
     override fun onBind(intent: Intent): IBinder {
         return binder
     }
@@ -152,17 +207,23 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Timber.d("RemotePlayerService onStartCommand")
         if (mediaSession == null) {
             initMediaSession()
         }
         handleIntent(intent)
+        ensureStartForeground()
         return super.onStartCommand(intent, flags, startId)
     }
 
+
     private fun startWakelock() {
+        startWakelock(extraWakeLockTime)
+    }
+
+    private fun startWakelock(wakeLockDuration: Long) {
         Timber.d("RemotePlayerService requested wake lock")
-        @Suppress("MagicNumber")
-        wakeLock.acquire(15 * 60 * 1000L /* 5 minutes */)
+        wakeLock.acquire(wakeLockDuration)
     }
 
     private fun stopWakelock() {
@@ -177,7 +238,6 @@ class RemotePlayerService : Service(), CoroutineScope {
         Timber.d("RemotePlayerService handle intent " + intent.action)
         val action = intent.action
         if (action == Constants.ACTION_REPORT) {
-            startWakelock()
             notify(intent)
             return
         }
@@ -269,7 +329,7 @@ class RemotePlayerService : Service(), CoroutineScope {
             }
 
             @Suppress("DEPRECATION")
-            val notification = Notification.Builder(this@RemotePlayerService).apply {
+            notification = Notification.Builder(this@RemotePlayerService).apply {
                 if (AndroidVersion.isAtLeastO) {
                     setChannelId(MEDIA_NOTIFICATION_CHANNEL_ID) // Set Notification Channel on Android O and above
                     setColorized(true) // Color notification based on cover art
@@ -357,17 +417,16 @@ class RemotePlayerService : Service(), CoroutineScope {
 
             if (!isPaused) {
                 Timber.d("RemotePlayerService starting foreground")
-                startForeground(MEDIA_PLAYER_NOTIFICATION_ID, notification)
             } else {
                 Timber.d("RemotePlayerService stopping foreground")
-                if (AndroidVersion.isAtLeastN) {
-                    stopForeground(STOP_FOREGROUND_DETACH)
-                } else {
-                    stopForeground(false)
-                }
             }
             // Activate MediaSession
             mediaSession.isActive = true
+            if (position != PlaybackState.PLAYBACK_POSITION_UNKNOWN && duration != 0L) {
+                startWakelock(duration - position + extraWakeLockTime)
+            } else {
+                startWakelock()
+            }
             shutdownTimer?.cancel()
         }
     }
