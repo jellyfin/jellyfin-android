@@ -157,7 +157,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                 } else {
                     setPriority(Notification.PRIORITY_LOW)
                 }
-                onStopped(false);
+                onStopped(false)
                 setContentText("")
                 setContentTitle("")
                 setSmallIcon(R.drawable.ic_notification)
@@ -167,12 +167,12 @@ class RemotePlayerService : Service(), CoroutineScope {
                 startForeground(
                     MEDIA_PLAYER_NOTIFICATION_ID,
                     tempNotification,
-                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK,
                 )
             } else {
                 startForeground(
                     MEDIA_PLAYER_NOTIFICATION_ID,
-                    tempNotification
+                    tempNotification,
                 )
             }
             notificationManager.cancel(MEDIA_PLAYER_NOTIFICATION_ID)
@@ -186,12 +186,12 @@ class RemotePlayerService : Service(), CoroutineScope {
                 startForeground(
                     MEDIA_PLAYER_NOTIFICATION_ID,
                     notification!!,
-                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK,
                 )
             } else {
                 startForeground(
                     MEDIA_PLAYER_NOTIFICATION_ID,
-                    notification
+                    notification,
                 )
             }
         }
@@ -215,7 +215,6 @@ class RemotePlayerService : Service(), CoroutineScope {
         ensureStartForeground()
         return super.onStartCommand(intent, flags, startId)
     }
-
 
     private fun startWakelock() {
         startWakelock(extraWakeLockTime)
