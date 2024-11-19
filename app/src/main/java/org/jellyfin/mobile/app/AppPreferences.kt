@@ -66,17 +66,21 @@ class AppPreferences(context: Context) {
 
     var downloadLocation: String
         get() {
-            @Suppress("DEPRECATION")
-            val defaultStorage = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
             val savedStorage = sharedPreferences.getString(Constants.PREF_DOWNLOAD_LOCATION, null)
-            return if (savedStorage != null && File(savedStorage).parentFile?.isDirectory == true) {
-                // Saved location is still valid
-                savedStorage
-            } else {
-                // Reset download option if corrupt
-                sharedPreferences.edit { putString(Constants.PREF_DOWNLOAD_LOCATION, null) }
-                defaultStorage
+            if (savedStorage != null) {
+                if (File(savedStorage).parentFile?.isDirectory == true) {
+                    // Saved location is still valid
+                    return savedStorage
+                } else {
+                    // Reset download option if corrupt
+                    sharedPreferences.edit {
+                        remove(Constants.PREF_DOWNLOAD_LOCATION)
+                    }
+                }
             }
+
+            // Return default storage location
+            return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
         }
         set(value) {
             sharedPreferences.edit {

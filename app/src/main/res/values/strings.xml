@@ -29,10 +29,13 @@
     <string name="bluetooth_permission_granted">Bluetooth permission was granted</string>
     <string name="battery_optimizations_message">Please disable battery optimizations for media playback while the screen is off.</string>
     <string name="network_title">Allowed Network Types</string>
-    <string name="network_message">Do you want to allow the download to run over mobile data or roaming networks? Charges from your provider may apply.</string>
+    <string name="network_message">Do you want to allow the download to run over mobile data or roaming networks? Charges from your provider may apply. You can change this option later from settings.</string>
     <string name="wifi_only">WiFi Only</string>
     <string name="mobile_data">Mobile Data</string>
     <string name="mobile_data_and_roaming">Mobile Data &amp; Roaming</string>
+    <string name="wifi_only_summary">Media will be downloaded over WiFi only.</string>
+    <string name="mobile_data_summary">Media will be downloaded over WiFi and mobile networks.</string>
+    <string name="mobile_data_and_roaming_summary">Media will be downloaded over WiFi, mobile and roaming networks.</string>
     <string name="downloading">Downloading</string>
     <string name="download_no_storage_permission">Cannot download files without storage permissions</string>
 

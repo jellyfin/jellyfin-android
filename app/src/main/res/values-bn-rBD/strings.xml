@@ -42,7 +42,7 @@
     <string name="connect_to_server_title">সার্ভারের সাথে কানেক্ট করুন</string>
     <string name="notification_action_stop">থামান</string>
     <string name="media_service_car_section_recents">সম্প্রতি প্লে হয়েছে</string>
-    <string name="network_message">আপনি কি ডাউনলোডটি মোবাইল ডেটা বা রোমিং নেটওয়ার্কগুলিতে চালানোর অনুমতি দিতে চান\? আপনার মোবাইল অপারেটরের কাছ থেকে চার্জ প্রযোজ্য হতে পারে।</string>
+    <string name="network_message">আপনি কি ডাউনলোডটি মোবাইল ডেটা বা রোমিং নেটওয়ার্কগুলিতে চালানোর অনুমতি দিতে চান? আপনার মোবাইল অপারেটরের কাছ থেকে চার্জ প্রযোজ্য হতে পারে।</string>
     <string name="mobile_data">মোবাইল ডেটা</string>
     <string name="download_no_storage_permission">স্টোরেজ পার্মিশন ছাড়া ফাইলগুলি ডাউনলোড করা যাবে না</string>
     <string name="playback_info_play_method">প্লে করার পদ্ধতিঃ %s</string>

@@ -21,18 +21,18 @@ jobs:
         task: [ detekt, lint ]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Setup Java
-        uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # v4.0.0
+        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4.2.1
         with:
           distribution: temurin
           java-version: 17
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@982da8e78c05368c70dac0351bb82647a9e9a5d2 # v2.11.1
+        uses: gradle/actions/setup-gradle@dbbdc275be76ac10734476cc723d82dfe7ec6eda # v3.4.2
       - name: Run ${{ matrix.task }} task
         run: ./gradlew ${{ matrix.task }}
       - name: Upload SARIF files
-        uses: github/codeql-action/upload-sarif@012739e5082ff0c22ca6d6ab32e07c36df03c4a4 # v3.22.12
+        uses: github/codeql-action/upload-sarif@b611370bb5703a7efb587f9d136a52ea24c5c38c # v3.25.11
         if: ${{ always() }}
         with:
           sarif_file: .

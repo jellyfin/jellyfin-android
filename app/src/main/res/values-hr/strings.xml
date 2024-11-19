@@ -33,7 +33,7 @@
     <string name="mobile_data_and_roaming">Mobilni Podaci i Roaming</string>
     <string name="mobile_data">Mobilni Podaci</string>
     <string name="wifi_only">Samo WiFi</string>
-    <string name="network_message">Želite li dopustiti preuzimanje putem mobilne podatkovne veze ili roaming mreža\? Vaš davatelj mobilnih usluga može naplatiti dodatne troškove.</string>
+    <string name="network_message">Želite li dopustiti preuzimanje putem mobilne podatkovne veze ili roaming mreža? Vaš davatelj mobilnih usluga može naplatiti dodatne troškove.</string>
     <string name="network_title">Dopuštene Vrste Mreža</string>
     <string name="battery_optimizations_message">Molimo onemogućite optimizaciju baterije za reprodukciju medija dok je zaslon isključen.</string>
     <string name="available_servers_title">Dostupni poslužitelji</string>
@@ -109,4 +109,7 @@
     <string name="bluetooth_permission_message">Da bi detektirali kada su bežične slušalice ili zvučnici odspojeni, aplikacija zahtjeva pristup Bluetoothu. U Androidu, ova dozvola je opisana kao pristup bliskim uređajima, i upozorava da Bluetooth uređaji mogu biti korišteni da bi zaključili trenutnu lokaciju. Međutim, Jellyfin aplikacija nikad neće koristiti ovu dozvolu za otkriti vašu lokaciju.</string>
     <string name="bluetooth_permission_granted">Bluetooth dozvola je odobrena</string>
     <string name="bluetooth_permission_continue">Nastavi</string>
+    <string name="wifi_only_summary">Dozvoli preuzimanje medija samo preko WiFi mreže.</string>
+    <string name="mobile_data_summary">Dozvoli preuzimanje medija preko WiFi i mobilne mreže.</string>
+    <string name="mobile_data_and_roaming_summary">Dozvoli preuzimanje medija preko WiFi i mobilne mreže čak i u roamingu.</string>
 </resources>

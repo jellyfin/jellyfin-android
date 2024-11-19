@@ -36,7 +36,7 @@
     <string name="mobile_data_and_roaming">Мобилни подаци и роминг</string>
     <string name="mobile_data">Мобилни подаци</string>
     <string name="wifi_only">Само ВиФи</string>
-    <string name="network_message">Да ли желите да дозволите да преузимање иде преко мобилних података\? Трошкови од вашег провајдера могу бити примењени.</string>
+    <string name="network_message">Да ли желите да дозволите да преузимање иде преко мобилних података? Трошкови од вашег провајдера могу бити примењени.</string>
     <string name="network_title">Дозвољени типови мреже</string>
     <string name="battery_optimizations_message">Молимо вас да онемогућите оптимизацију батерије за репродуцкију медија док је екран изгашен.</string>
     <string name="available_servers_title">Доступни сервери</string>

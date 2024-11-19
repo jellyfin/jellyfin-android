@@ -1,0 +1,3 @@
+Täname et kasutad Jellyfinni Androidile! Soovitame kasutada viimati välja antud Jellyfini Serverit.
+
+Rohkem informatsiooni ja ülevaate muudatustest leiad meie blogist jellyfin.org või GitHub'ist.

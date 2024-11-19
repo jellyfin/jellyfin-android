@@ -8,8 +8,12 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient.FileChooserParams
 import android.webkit.WebView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
@@ -45,7 +49,7 @@ import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
 import org.jellyfin.mobile.utils.runOnUiThread
 import org.koin.android.ext.android.inject
 
-class WebViewFragment : Fragment(), BackPressInterceptor {
+class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClient.FileChooserListener {
     val appPreferences: AppPreferences by inject()
     private val apiClientController: ApiClientController by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
@@ -66,6 +70,14 @@ class WebViewFragment : Fragment(), BackPressInterceptor {
 
     // UI
     private var webViewBinding: FragmentWebviewBinding? = null
+
+    // External file access
+    private var fileChooserActivityLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) { result ->
+        fileChooserCallback?.onReceiveValue(FileChooserParams.parseResult(result.resultCode, result.data))
+    }
+    private var fileChooserCallback: ValueCallback<Array<Uri>>? = null
 
     init {
         enableServiceWorkerWorkaround()
@@ -175,7 +187,7 @@ class WebViewFragment : Fragment(), BackPressInterceptor {
             return
         }
         webViewClient = jellyfinWebViewClient
-        webChromeClient = LoggingWebChromeClient()
+        webChromeClient = JellyfinWebChromeClient(this@WebViewFragment)
         settings.applyDefault()
         addJavascriptInterface(NativeInterface(requireContext()), "NativeInterface")
         addJavascriptInterface(nativePlayer, "NativePlayer")
@@ -248,5 +260,10 @@ class WebViewFragment : Fragment(), BackPressInterceptor {
     private fun handleError() {
         connected = false
         onSelectServer(error = true)
+    }
+
+    override fun onShowFileChooser(intent: Intent, filePathCallback: ValueCallback<Array<Uri>>) {
+        fileChooserCallback = filePathCallback
+        fileChooserActivityLauncher.launch(intent)
     }
 }

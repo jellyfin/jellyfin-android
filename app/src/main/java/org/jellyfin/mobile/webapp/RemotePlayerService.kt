@@ -336,6 +336,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                 } else {
                     setPriority(Notification.PRIORITY_LOW)
                 }
+
                 setContentTitle(title?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) })
                 setContentText(artist?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) })
                 setSubText(album)
@@ -413,7 +414,18 @@ class RemotePlayerService : Service(), CoroutineScope {
             }.build()
 
             // Post notification
-            notificationManager.notify(MEDIA_PLAYER_NOTIFICATION_ID, notification)
+            if (AndroidVersion.isAtLeastQ) {
+                startForeground(
+                    MEDIA_PLAYER_NOTIFICATION_ID,
+                    notification!!,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MANIFEST,
+                )
+            } else {
+                startForeground(
+                    MEDIA_PLAYER_NOTIFICATION_ID,
+                    notification,
+                )
+            }
 
             if (!isPaused) {
                 Timber.d("RemotePlayerService starting foreground")
