@@ -80,7 +80,7 @@
     <string name="playback_info_stream_unknown_title">Tuntematon otsikko</string>
     <string name="player_error_unsupported_content">Tiedostoa ei voida toistaa tällä laitteella</string>
     <string name="player_error_network_failure">Mediatietoja ei voitu ladata palvelimelta</string>
-    <string name="player_error_invalid_play_options">Toistotietoja ei voitu ratkaista</string>
+    <string name="player_error_invalid_play_options">Toistotietojen haku ei onnistunut</string>
     <string name="connection_error_unsupported_version_or_product">Versiota tai laitetta ei tueta</string>
     <string name="connection_error_unable_to_reach_sever">Palvelimeen ei saatu yhteyttä</string>
     <plurals name="connection_error_prefix">
