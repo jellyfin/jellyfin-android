@@ -40,6 +40,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
     private val settingsAdapter: PreferencesAdapter by lazy { PreferencesAdapter(buildSettingsScreen()) }
     private lateinit var startLandscapeVideoInLandscapePreference: CheckBoxPreference
     private lateinit var swipeGesturesPreference: CheckBoxPreference
+    private lateinit var pressSpeedUpPreference: CheckBoxPreference
     private lateinit var rememberBrightnessPreference: Preference
     private lateinit var backgroundAudioPreference: Preference
     private lateinit var directPlayAssPreference: Preference
@@ -105,6 +106,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 startLandscapeVideoInLandscapePreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 swipeGesturesPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 rememberBrightnessPreference.enabled = selection == VideoPlayerType.EXO_PLAYER && swipeGesturesPreference.checked
+                pressSpeedUpPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 directPlayAssPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
@@ -128,6 +130,12 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
             defaultOnCheckedChange { checked ->
                 if (!checked) appPreferences.exoPlayerBrightness = BRIGHTNESS_OVERRIDE_NONE
             }
+        }
+        pressSpeedUpPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_PRESS_SPEED_UP) {
+            titleRes = R.string.pref_exoplayer_allow_press_speed_up
+            summaryRes = R.string.pref_exoplayer_allow_press_speed_up_summary
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+            defaultValue = true
         }
         backgroundAudioPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO) {
             titleRes = R.string.pref_exoplayer_allow_background_audio
