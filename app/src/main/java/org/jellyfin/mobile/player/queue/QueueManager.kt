@@ -23,6 +23,7 @@ import org.jellyfin.sdk.api.client.extensions.videosApi
 import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.model.api.MediaProtocol
 import org.jellyfin.sdk.model.api.MediaStream
+import org.jellyfin.sdk.model.api.MediaStreamProtocol
 import org.jellyfin.sdk.model.api.MediaStreamType
 import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
@@ -242,7 +243,7 @@ class QueueManager(
             PlayMethod.TRANSCODE -> {
                 val transcodingPath = requireNotNull(sourceInfo.transcodingUrl) { "Missing transcode URL" }
                 val protocol = sourceInfo.transcodingSubProtocol
-                require(protocol == "hls") { "Unsupported transcode protocol '$protocol'" }
+                require(protocol == MediaStreamProtocol.HLS) { "Unsupported transcode protocol '$protocol'" }
                 val transcodingUrl = apiClient.createUrl(transcodingPath)
                 val factory = get<HlsMediaSource.Factory>().setAllowChunklessPreparation(true)
 
