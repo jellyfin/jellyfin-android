@@ -578,7 +578,7 @@ public final class Chromecast implements IChromecast {
         };
 
         stopRouteScan(callback);
-        sessionStop(callback);
+        sessionLeave(callback);
         if (media != null) {
             media.destroy();
         }
