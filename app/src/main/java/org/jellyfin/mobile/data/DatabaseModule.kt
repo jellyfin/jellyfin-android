@@ -9,9 +9,11 @@ val databaseModule = module {
         Room.databaseBuilder(androidApplication(), JellyfinDatabase::class.java, "jellyfin")
             .addMigrations()
             .fallbackToDestructiveMigrationFrom(1)
+            .fallbackToDestructiveMigrationFrom(2)
             .fallbackToDestructiveMigrationOnDowngrade()
             .build()
     }
     single { get<JellyfinDatabase>().serverDao }
     single { get<JellyfinDatabase>().userDao }
+    single { get<JellyfinDatabase>().downloadDao }
 }

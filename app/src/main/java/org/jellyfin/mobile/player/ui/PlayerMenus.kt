@@ -15,6 +15,8 @@ import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
+import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -130,10 +132,11 @@ class PlayerMenus(
 
         val height = videoStream?.height
         val width = videoStream?.width
-        if (height != null && width != null) {
-            buildQualityMenu(qualityMenu.menu, mediaSource.maxStreamingBitrate, width, height)
-        } else {
-            qualityButton.isVisible = false
+        when (mediaSource) {
+            is LocalJellyfinMediaSource -> qualityButton.isVisible = false
+            is RemoteJellyfinMediaSource -> if (height != null && width != null) {
+                buildQualityMenu(qualityMenu.menu, mediaSource.maxStreamingBitrate, width, height)
+            }
         }
 
         val playMethod = context.getString(R.string.playback_info_play_method, mediaSource.playMethod)
