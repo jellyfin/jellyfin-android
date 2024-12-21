@@ -328,8 +328,7 @@ class ExternalPlayer(
                 ComponentName(packageName, "$packageName.StartActivity")
             }
             ExternalPlayerPackage.MPVKT_PLAYER -> {
-//                ComponentName(packageName, "$packageName.ui.player.PlayerActivity")
-                ComponentName(packageName, "live.mehiz.mpvkt.ui.player.PlayerActivity")
+                ComponentName(packageName, "$packageName.ui.player.PlayerActivity")
             }
             else -> null
         }
