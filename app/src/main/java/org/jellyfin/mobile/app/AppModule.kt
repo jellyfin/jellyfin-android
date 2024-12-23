@@ -126,8 +126,9 @@ val applicationModule = module {
                 )
 
                 dataSpec.withRequestHeaders(hashMapOf("Authorization" to authorizationHeaderString))
-            } else
+            } else {
                 dataSpec
+            }
         }
     }
     single<MediaSource.Factory> {
