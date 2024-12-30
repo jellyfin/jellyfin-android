@@ -46,6 +46,7 @@ import org.jellyfin.mobile.player.ui.DisplayPreferences
 import org.jellyfin.mobile.player.ui.PlayState
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
+import org.jellyfin.mobile.utils.TickUtils
 import org.jellyfin.mobile.utils.applyDefaultAudioAttributes
 import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
 import org.jellyfin.mobile.utils.extensions.scaleInRange
@@ -66,6 +67,7 @@ import org.jellyfin.sdk.api.operations.DisplayPreferencesApi
 import org.jellyfin.sdk.api.operations.HlsSegmentApi
 import org.jellyfin.sdk.api.operations.PlayStateApi
 import org.jellyfin.sdk.api.operations.UserApi
+import org.jellyfin.sdk.model.api.ChapterInfo
 import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.api.PlaybackOrder
 import org.jellyfin.sdk.model.api.PlaybackProgressInfo
@@ -425,6 +427,40 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
     fun fastForward() {
         playerOrNull?.seekToOffset(displayPreferences.skipForwardLength)
+    }
+
+    private fun getCurrentChapterIdx(chapters: List<ChapterInfo>, ticks: Long): Int?{
+        return chapters.indices.findLast { i -> ticks >= chapters[i].startPositionTicks }
+    }
+
+    fun previousChapter(){
+        val chapters = mediaSourceOrNull?.item?.chapters ?: return
+        val currentPosition = playerOrNull?.currentPosition ?: return
+        var ticks = TickUtils.msToTicks(currentPosition)
+
+        //Go back 10 seconds
+        ticks -= TickUtils.secToTicks(10)
+        if(ticks < 0) skipToPrevious()
+        else{
+            //The current chapter in this case is the one we want to go back to
+            val previousChapter = getCurrentChapterIdx(chapters, ticks) ?: return
+            val seekToMs = TickUtils.ticksToMs(chapters[previousChapter].startPositionTicks)
+            playerOrNull?.seekTo(seekToMs)
+        }
+    }
+
+    fun nextChapter(){
+        val chapters = mediaSourceOrNull?.item?.chapters ?: return
+        val currentPosition = playerOrNull?.currentPosition ?: return
+        val ticks = TickUtils.msToTicks(currentPosition)
+        val currentChapter = getCurrentChapterIdx(chapters, ticks) ?: return
+        val nextChapter = currentChapter + 1
+
+        if(nextChapter > chapters.size) skipToNext()
+        else{
+            val seekToMs = TickUtils.ticksToMs(chapters[nextChapter].startPositionTicks)
+            playerOrNull?.seekTo(seekToMs)
+        }
     }
 
     fun skipToPrevious() {
