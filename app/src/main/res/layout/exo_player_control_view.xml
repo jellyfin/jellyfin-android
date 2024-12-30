@@ -28,9 +28,9 @@
         android:padding="@dimen/exo_center_icon_padding"
         android:src="@drawable/ic_skip_previous_black_32dp"
         android:tint="?android:textColorPrimary"
-        app:layout_constraintBottom_toBottomOf="@id/previous_chapter_button"
+        app:layout_constraintBottom_toBottomOf="@id/play_pause_container"
         app:layout_constraintEnd_toStartOf="@id/previous_chapter_button"
-        app:layout_constraintTop_toTopOf="@id/previous_chapter_button" />
+        app:layout_constraintTop_toTopOf="@id/play_pause_container" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/previous_chapter_button"
@@ -96,9 +96,9 @@
         android:padding="@dimen/exo_center_icon_padding"
         android:src="@drawable/ic_skip_next_black_32dp"
         android:tint="?android:textColorPrimary"
-        app:layout_constraintBottom_toBottomOf="@id/next_chapter_button"
+        app:layout_constraintBottom_toBottomOf="@id/play_pause_container"
         app:layout_constraintStart_toEndOf="@id/next_chapter_button"
-        app:layout_constraintTop_toTopOf="@id/next_chapter_button" />
+        app:layout_constraintTop_toTopOf="@id/play_pause_container" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/exo_position"
