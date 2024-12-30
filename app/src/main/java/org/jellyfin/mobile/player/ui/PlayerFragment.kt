@@ -283,6 +283,10 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     fun onFastForward() = viewModel.fastForward()
 
+    fun onPreviousChapter() = viewModel.previousChapter()
+
+    fun onNextChapter() = viewModel.nextChapter()
+
     /**
      * @param callback called if track selection was successful and UI needs to be updated
      */
