@@ -34,6 +34,8 @@ class PlayerMenus(
     private val qualityOptionsProvider: QualityOptionsProvider by inject()
     private val previousButton: View by playerControlsBinding::previousButton
     private val nextButton: View by playerControlsBinding::nextButton
+    private val previousChapterButton: View by playerControlsBinding::previousChapterButton
+    private val nextChapterButton: View by playerControlsBinding::nextChapterButton
     private val lockScreenButton: View by playerControlsBinding::lockScreenButton
     private val audioStreamsButton: View by playerControlsBinding::audioStreamsButton
     private val subtitlesButton: ImageButton by playerControlsBinding::subtitlesButton
@@ -57,6 +59,12 @@ class PlayerMenus(
         }
         nextButton.setOnClickListener {
             fragment.onSkipToNext()
+        }
+        previousChapterButton.setOnClickListener{
+            fragment.onPreviousChapter()
+        }
+        nextChapterButton.setOnClickListener {
+            fragment.onNextChapter()
         }
         lockScreenButton.setOnClickListener {
             fragment.playerLockScreenHelper.lockScreen()

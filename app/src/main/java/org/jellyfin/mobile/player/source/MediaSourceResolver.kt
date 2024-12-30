@@ -8,6 +8,7 @@ import org.jellyfin.sdk.api.client.extensions.mediaInfoApi
 import org.jellyfin.sdk.api.operations.ItemsApi
 import org.jellyfin.sdk.api.operations.MediaInfoApi
 import org.jellyfin.sdk.model.api.DeviceProfile
+import org.jellyfin.sdk.model.api.ItemFields
 import org.jellyfin.sdk.model.api.PlaybackInfoDto
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
@@ -60,7 +61,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
 
         // Load additional item info if possible
         val item = try {
-            val response by itemsApi.getItemsByUserId(ids = listOf(itemId))
+            val response by itemsApi.getItemsByUserId(ids = listOf(itemId), fields = listOf(ItemFields.CHAPTERS))
             response.items?.firstOrNull()
         } catch (e: ApiClientException) {
             Timber.e(e, "Failed to load item for media source $itemId")
