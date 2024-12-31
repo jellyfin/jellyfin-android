@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.player.ui
 
+import ChapterMarkingView
 import ChapterMarking
 import android.view.Menu
 import android.view.MenuItem
@@ -12,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.core.view.isVisible
+import androidx.core.view.marginStart
 import androidx.core.view.size
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateLayoutParams
@@ -138,8 +140,21 @@ class PlayerMenus(
         // previousButton is always enabled and will rewind if at the start of the queue
         nextButton.isEnabled = hasNext
 
-        val hasChapters = mediaSource.item?.chapters?.isNotEmpty() ?: false
+        val chapters = mediaSource.item?.chapters
+        val hasChapters = chapters?.isNotEmpty() ?: false
         updateLayoutConstraints(hasChapters)
+
+        chapterMarkingContainer.removeAllViews()
+        val runTimeTicks = mediaSource.item?.runTimeTicks
+        if(hasChapters && runTimeTicks != null){
+            val chapterMarkingView = ChapterMarkingView(this.context)
+            val containerWidth = chapterMarkingContainer.width
+            chapters?.forEach { ch ->
+                val percent = ch.startPositionTicks.toDouble() / runTimeTicks
+                val marginStart = (percent * containerWidth).toInt()
+                val view = chapterMarkingView.createView(chapterMarkingContainer, marginStart)
+            }
+        }
 
         val videoStream = mediaSource.selectedVideoStream
 
