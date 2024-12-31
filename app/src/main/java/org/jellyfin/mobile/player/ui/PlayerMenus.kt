@@ -121,40 +121,14 @@ class PlayerMenus(
         }
     }
 
-    private fun updateLayoutConstraints(hasChapters: Boolean){
-        if(hasChapters){
-            previousButton.updateLayoutParams<ConstraintLayout.LayoutParams> { endToStart = previousChapterButton.id }
-            nextButton.updateLayoutParams<ConstraintLayout.LayoutParams> { startToEnd = nextChapterButton.id }
-            previousChapterButton.visibility = View.VISIBLE
-            nextChapterButton.visibility = View.VISIBLE
-        }
-        else{
-            previousButton.updateLayoutParams<ConstraintLayout.LayoutParams> { endToStart = playPauseContainer.id }
-            nextButton.updateLayoutParams<ConstraintLayout.LayoutParams> { startToEnd = playPauseContainer.id }
-            previousChapterButton.visibility = View.GONE
-            nextChapterButton.visibility = View.GONE
-        }
-    }
-
     fun onQueueItemChanged(mediaSource: JellyfinMediaSource, hasNext: Boolean) {
         // previousButton is always enabled and will rewind if at the start of the queue
         nextButton.isEnabled = hasNext
 
         val chapters = mediaSource.item?.chapters
-        val hasChapters = chapters?.isNotEmpty() ?: false
-        updateLayoutConstraints(hasChapters)
-
-        chapterMarkingContainer.removeAllViews()
+        updateLayoutConstraints(!chapters.isNullOrEmpty())
         val runTimeTicks = mediaSource.item?.runTimeTicks
-        if(hasChapters && runTimeTicks != null){
-            val chapterMarkingView = ChapterMarkingView(this.context)
-            val containerWidth = chapterMarkingContainer.width
-            chapters?.forEach { ch ->
-                val percent = ch.startPositionTicks.toDouble() / runTimeTicks
-                val marginStart = (percent * containerWidth).toInt()
-                val view = chapterMarkingView.createView(chapterMarkingContainer, marginStart)
-            }
-        }
+        setChapterMarkings(chapters, runTimeTicks)
 
         val videoStream = mediaSource.selectedVideoStream
 
