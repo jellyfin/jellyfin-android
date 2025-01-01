@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.player.ui
 
+import ChapterMarking
 import android.app.Activity
 import android.app.PictureInPictureParams
 import android.content.pm.ActivityInfo
@@ -417,5 +418,9 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             // Reset screen brightness
             window.brightness = BRIGHTNESS_OVERRIDE_NONE
         }
+    }
+
+    fun setChapterMarkings(markings: List<ChapterMarking>){
+        viewModel.setChapterMarkings(markings)
     }
 }

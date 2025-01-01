@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.player
 
+import ChapterMarking
 import android.annotation.SuppressLint
 import android.app.Application
 import android.media.AudioAttributes
@@ -33,6 +34,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.BuildConfig
+import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.PLAYER_EVENT_CHANNEL
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.player.interaction.PlayerLifecycleObserver
@@ -107,6 +109,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     val player: LiveData<ExoPlayer?> get() = _player
     val playerState: LiveData<Int> get() = _playerState
     val decoderType: LiveData<DecoderType> get() = _decoderType
+
+    // Chapter Markings
+    private var chapterMarkings: List<ChapterMarking> = listOf()
+    private var chapterMarkingUpdateJob: Job? = null
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
@@ -294,6 +300,19 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         progressUpdateJob?.cancel()
     }
 
+    private fun startChapterMarkingUpdates(){
+        chapterMarkingUpdateJob = viewModelScope.launch {
+            while (true) {
+                delay(Constants.CHAPTER_MARKING_UPDATE_DELAY)
+                playerOrNull?.setWatchedChapterMarkings()
+            }
+        }
+    }
+
+    private fun stopChapterMarkingUpdates(){
+        chapterMarkingUpdateJob?.cancel()
+    }
+
     /**
      * Updates the decoder of the [Player]. This will destroy the current player and
      * recreate the player with the selected decoder type
@@ -333,6 +352,19 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             )
         } catch (e: ApiClientException) {
             Timber.e(e, "Failed to report playback start")
+        }
+    }
+
+    private fun Player.setWatchedChapterMarkings(){
+        val playbackPositionMs = currentPosition
+        val playbackPositionTicks = TickUtils.msToTicks(playbackPositionMs)
+
+        val chapters = mediaSourceOrNull?.item?.chapters ?: return
+        val currentChapterIdx = getCurrentChapterIdx(chapters, playbackPositionTicks) ?: return
+
+        chapterMarkings.forEachIndexed { i, m ->
+            val color = if (i <= currentChapterIdx) R.color.jellyfin_accent else R.color.unplayed
+            m.setColor(color)
         }
     }
 
@@ -564,8 +596,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         // Setup or stop regular progress updates
         if (playbackState == Player.STATE_READY && playWhenReady) {
             startProgressUpdates()
+            startChapterMarkingUpdates()
         } else {
             stopProgressUpdates()
+            stopChapterMarkingUpdates()
         }
 
         // Update media session
@@ -594,6 +628,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
     }
 
+    override fun onPositionDiscontinuity(oldPosition: Player.PositionInfo, newPosition: Player.PositionInfo, reason: Int) {
+        super.onPositionDiscontinuity(oldPosition, newPosition, reason)
+        playerOrNull?.setWatchedChapterMarkings()
+    }
+
     override fun onPlayerError(error: PlaybackException) {
         if (error.cause is MediaCodecDecoderException && !fallbackPreferExtensionRenderers) {
             Timber.e(error.cause, "Decoder failed, attempting to restart playback with decoder extensions preferred")
@@ -613,5 +652,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         reportPlaybackStop()
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
         releasePlayer()
+    }
+
+    fun setChapterMarkings(markings: List<ChapterMarking>){
+        chapterMarkings = markings
     }
 }
