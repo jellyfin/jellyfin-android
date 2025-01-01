@@ -207,11 +207,9 @@ class PlayerMenus(
         }
 
         val chapterMarkings: MutableList<ChapterMarking> = mutableListOf()
-        val containerWidth = chapterMarkingContainer.width
         chapters.forEach { ch ->
-            val percent = ch.startPositionTicks.toDouble() / runTimeTicks
-            val marginStart = (percent * containerWidth).toInt()
-            val marking = ChapterMarking(context, chapterMarkingContainer, marginStart)
+            val bias = ch.startPositionTicks.toFloat() / runTimeTicks
+            val marking = ChapterMarking(context, chapterMarkingContainer, bias)
             chapterMarkings.add(marking)
         }
         fragment.setChapterMarkings(chapterMarkings)
