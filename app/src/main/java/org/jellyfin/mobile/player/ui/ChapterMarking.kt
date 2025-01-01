@@ -4,7 +4,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import org.jellyfin.mobile.R
 
-class ChapterMarking(private val context: Context, parent: ConstraintLayout, marginStart: Int) {
+class ChapterMarking(private val context: Context, parent: ConstraintLayout, bias: Float) {
     private val view: View = View(context).apply {
         id = View.generateViewId()
         layoutParams = ConstraintLayout.LayoutParams(
@@ -14,7 +14,8 @@ class ChapterMarking(private val context: Context, parent: ConstraintLayout, mar
             topToTop = ConstraintLayout.LayoutParams.PARENT_ID
             bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
             startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-            setMargins(marginStart, 0, 0, 0)
+            endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+            horizontalBias = bias
         }
 
         background = ContextCompat.getDrawable(context, R.drawable.chapter_marking)
