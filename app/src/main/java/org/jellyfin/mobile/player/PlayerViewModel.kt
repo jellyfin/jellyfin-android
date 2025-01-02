@@ -66,6 +66,7 @@ import org.jellyfin.sdk.api.operations.HlsSegmentApi
 import org.jellyfin.sdk.api.operations.PlayStateApi
 import org.jellyfin.sdk.api.operations.UserApi
 import org.jellyfin.sdk.model.api.PlayMethod
+import org.jellyfin.sdk.model.api.PlaybackOrder
 import org.jellyfin.sdk.model.api.PlaybackProgressInfo
 import org.jellyfin.sdk.model.api.PlaybackStartInfo
 import org.jellyfin.sdk.model.api.PlaybackStopInfo
@@ -319,6 +320,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     positionTicks = mediaSource.startTimeMs * Constants.TICKS_PER_MILLISECOND,
                     volumeLevel = audioManager.getVolumeLevelPercent(),
                     repeatMode = RepeatMode.REPEAT_NONE,
+                    playbackOrder = PlaybackOrder.DEFAULT,
                 ),
             )
         } catch (e: ApiClientException) {
@@ -347,6 +349,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         positionTicks = playbackPositionMillis * Constants.TICKS_PER_MILLISECOND,
                         volumeLevel = (currentVolume - volumeRange.first) * Constants.PERCENT_MAX / volumeRange.width,
                         repeatMode = RepeatMode.REPEAT_NONE,
+                        playbackOrder = PlaybackOrder.DEFAULT,
                     ),
                 )
             } catch (e: ApiClientException) {
