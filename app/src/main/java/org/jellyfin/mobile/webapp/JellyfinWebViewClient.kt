@@ -96,8 +96,8 @@ abstract class JellyfinWebViewClient(
 
         // Abort on some specific error codes or when the request url matches the server url
         when (errorCode) {
-            ERROR_HOST_LOOKUP,
-            ERROR_CONNECT,
+            //ERROR_HOST_LOOKUP,
+            //ERROR_CONNECT,
             ERROR_TIMEOUT,
             ERROR_REDIRECT_LOOP,
             ERROR_UNSUPPORTED_SCHEME,
