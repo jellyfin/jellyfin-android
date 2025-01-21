@@ -38,7 +38,7 @@
     <string name="button_use_different_server">Χρησιμοποιήστε διαφορετικό διακομιστή</string>
     <string name="battery_optimizations_message">Παρακαλούμε απενεργοποιήστε τις βελτιστοποιήσεις μπαταρίας για αναπαραγωγή πολυμέσων ενώ η οθόνη είναι απενεργοποιημένη.</string>
     <string name="network_title">Επιτρεπόμενοι Τύποι Δικτύου</string>
-    <string name="network_message">Θέλετε να επιτρέψετε στη λήψη να εκτελείται μέσω δεδομένων κινητής τηλεφωνίας ή δικτύων περιαγωγής; Ενδέχεται να ισχύουν χρεώσεις από τον πάροχο σας.</string>
+    <string name="network_message">Θέλετε να επιτρέψετε στη λήψη να εκτελείται μέσω δεδομένων κινητής τηλεφωνίας ή δικτύων περιαγωγής; Ενδέχεται να ισχύουν χρεώσεις από τον πάροχό σας. Μπορείτε να αλλάξετε αυτή την επιλογή αργότερα από τις ρυθμίσεις.</string>
     <string name="wifi_only">Μόνο WiFi</string>
     <string name="mobile_data">Δεδομένα Κινητής Τηλεφωνίας</string>
     <string name="mobile_data_and_roaming">Δεδομένα Κινητής Τηλεφωνίας &amp; Περιαγωγή</string>
@@ -108,4 +108,7 @@
     <string name="bluetooth_permission_granted">Η άδεια Bluetooth παραχωρήθηκε</string>
     <string name="bluetooth_permission_title">Να επιτρέπεται η πρόσβαση Bluetooth;</string>
     <string name="bluetooth_permission_continue">Συνέχεια</string>
+    <string name="wifi_only_summary">Θα γίνει λήψη των πολυμέσων μόνο μέσω WiFi.</string>
+    <string name="mobile_data_summary">Θα γίνει λήψη των πολυμέσων μέσω WiFi και δεδομένων κινητής τηλεφωνίας.</string>
+    <string name="mobile_data_and_roaming_summary">Θα γίνει λήψη των πολυμέσων μέσω WiFi, δεδομένων κινητής τηλεφωνίας και δικτύων περιαγωγής.</string>
 </resources>

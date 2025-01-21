@@ -64,7 +64,7 @@
     <string name="mobile_data_and_roaming">داده تلفن همراه و رومینگ</string>
     <string name="mobile_data">داده های موبایل</string>
     <string name="wifi_only">فقط وای فای</string>
-    <string name="network_message">آیا می خواهید به بارگیری داده های تلفن همراه یا شبکه های رومینگ اجازه دهید؟ ممکن است هزینه های ارائه دهنده شما اعمال شود.</string>
+    <string name="network_message">آیا می خواهید به بارگیری با استفاده از داده تلفن همراه یا شبکه های رومینگ اجازه دهید؟ ممکن است هزینه های ارائه دهنده شما اعمال شود. شما می‌توانید بعداً این قابلیت را در تنظیمات تغییر دهید.</string>
     <string name="network_title">انواع مجاز شبکه</string>
     <string name="battery_optimizations_message">لطفاً هنگام خاموش بودن صفحه ، بهینه سازی باتری را برای پخش رسانه غیرفعال کنید.</string>
     <string name="available_servers_title">سرورهای موجود</string>
@@ -95,4 +95,20 @@
     <string name="video_player_integrated">پخش‌کننده یکپارچه</string>
     <string name="playback_info_stream_unknown_title">عنوان ناشناخته</string>
     <string name="bluetooth_permission_continue">ادامه</string>
+    <string name="bluetooth_permission_granted">اجازه استفاده از بلوتوث داده شد</string>
+    <string name="pref_subtitle_style">دلخواه سازی استایل زیرنویس</string>
+    <string name="pref_exoplayer_direct_play_ass">اجازه زیرنویس‌های SSA/ASS در پخش مستقیم</string>
+    <string name="mobile_data_and_roaming_summary">رسانه‌ها با WiFi، داده تلفن بارگیری و شبکه رومینگ می‌شوند.</string>
+    <string name="menu_item_auto">خودکار</string>
+    <string name="menu_item_software_decoding">رمزگشایی نرم افزاری</string>
+    <string name="button_use_different_server">اتصال به سرور دیگر</string>
+    <string name="bluetooth_permission_title">آیا دسترسی به بلوتوث می‌دهید؟</string>
+    <string name="bluetooth_permission_message">برای تشخیص قطع شدن هدفون یا اسپیکر بی‌سیم شما، برنامه نیاز به دسترسی به بلوتوث دارد. در اندروید، این دسترسی به نام دسترسی به دستگاه‌های مجاور توصیف شده، و هشدار می‌دهد که دستگاه‌های بلوتوث برای تشخیص موقعیت فعلی می‌توانند استفاده شوند. با این حال برنامه Jellyfin هیح‌گاه از این دسترسی برای تشخیص موقعیت شما استفاده نمی‌کند.</string>
+    <string name="wifi_only_summary">رسانه‌ها فقط با WiFi بارگیری می‌شوند.</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">شروع نمایش‎‌های افقی در حالت افقی</string>
+    <string name="mobile_data_summary">رسانه‌ها با WiFi و داده تلفن بارگیری می‌شوند.</string>
+    <string name="player_error_unspecific_exception">برای پخش کننده مشکلی پیش آمده</string>
+    <string name="menu_item_hardware_decoding">رمزگشایی سخت افزاری</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">جلوگیری از رمزگردانی و نمایش زیرنویس‌ها فقط با استایل ساده. اگر فغال باشد شیوه‌‎های پیشرفته زیرنویس غیر قابل استقاده هستند.</string>
+    <string name="pref_subtitle_style_summary">می‌توانید استایل زیرنویس را در تنظیمات اندروید تغییر دهید</string>
 </resources>
