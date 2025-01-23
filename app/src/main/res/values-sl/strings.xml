@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">Mobilni podatki in gostovanje</string>
     <string name="mobile_data">Mobilni podatki</string>
     <string name="wifi_only">Samo WiFi</string>
-    <string name="network_message">Ali želite omogočiti prenos prek mobilnih podatkov ali v gostovanju? Vaš ponudnik vam to lahko dodatno zaračuna.</string>
+    <string name="network_message">Ali želite dovoliti izvajanje prenosa prek mobilnih podatkov ali gostujočih omrežij? Vaš ponudnik vam lahko zaračuna stroške. To možnost lahko pozneje spremenite v nastavitvah.</string>
     <string name="network_title">Dovoljene vrste omrežja</string>
     <string name="battery_optimizations_message">Prosimo onemogočite optimizacijo baterije za predvajanje predstavnosti pri izklopljenem zaslonu.</string>
     <string name="connect_button_text">Poveži</string>
@@ -110,4 +110,7 @@
     <string name="bluetooth_permission_message">Aplikacija potrebuje dostop do Bluetooth za zaznavanje prekinjene povezave z brezžičnimi slušalkami ali zvočniki. Na sistemih Android je to dovoljenje opisano kot dostop do naprav v bližini in opozarja, da lahko to omogoči zaznavanje trenutne lokacije. Aplikacija Jellyfin ne bo nikoli uporabila tega dovoljenja za zaznavanje vaše lokacije.</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Začni predvajanje ležečih videov v ležečem načinu</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Prepreči prekodiranje in prikaže podnapise z osnovnimi slogi. Napredno oblikovanje podnapisov ne bo na voljo.</string>
+    <string name="wifi_only_summary">Mediji bodo preneseni samo prek WiFi.</string>
+    <string name="mobile_data_summary">Mediji bodo preneseni prek WiFi in mobilnih omrežij.</string>
+    <string name="mobile_data_and_roaming_summary">Mediji se bodo prenašali prek WiFi, mobilnih in gostujočih omrežij.</string>
 </resources>
