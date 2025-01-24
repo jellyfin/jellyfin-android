@@ -54,7 +54,7 @@
     <string name="external_player_mx_player_free">MX Player Free</string>
     <string name="external_player_mpv_description">Enostaven, majhen in lahek zastonjski (kot svoboda) video predvajalnik. Podpira širok izbor predstavnostnih datotek.</string>
     <string name="external_player_mpv">Predvajalnik MPV</string>
-    <string name="external_player_app">Zunanji predvajalnik</string>
+    <string name="external_player_app">Aplikacija zunanjega predvajalnika</string>
     <string name="music_notification_channel_description">Namenjeno nadzoru predvajanja glasbe</string>
     <string name="music_notification_channel">Predvajalnik glasbe Jellyfin</string>
     <string name="media_service_car_item_no_title">Brez naslova</string>
