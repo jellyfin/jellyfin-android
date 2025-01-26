@@ -8,6 +8,7 @@ import org.jellyfin.sdk.model.api.ContainerProfile
 import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.DirectPlayProfile
 import org.jellyfin.sdk.model.api.DlnaProfileType
+import org.jellyfin.sdk.model.api.MediaStreamProtocol
 import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
 import org.jellyfin.sdk.model.api.SubtitleProfile
 import org.jellyfin.sdk.model.api.TranscodingProfile
@@ -72,7 +73,7 @@ class DeviceProfileBuilder(
                 container = "ts",
                 videoCodec = "h264",
                 audioCodec = "mp1,mp2,mp3,aac,ac3,eac3,dts,mlp,truehd",
-                protocol = "hls",
+                protocol = MediaStreamProtocol.HLS,
                 conditions = emptyList(),
             ),
             TranscodingProfile(
@@ -80,7 +81,7 @@ class DeviceProfileBuilder(
                 container = "mkv",
                 videoCodec = "h264",
                 audioCodec = AVAILABLE_AUDIO_CODECS[SUPPORTED_CONTAINER_FORMATS.indexOf("mkv")].joinToString(","),
-                protocol = "hls",
+                protocol = MediaStreamProtocol.HLS,
                 conditions = emptyList(),
             ),
             TranscodingProfile(
@@ -88,7 +89,7 @@ class DeviceProfileBuilder(
                 container = "mp3",
                 videoCodec = "",
                 audioCodec = "mp3",
-                protocol = "http",
+                protocol = MediaStreamProtocol.HTTP,
                 conditions = emptyList(),
             ),
         )
@@ -102,7 +103,9 @@ class DeviceProfileBuilder(
         for (i in SUPPORTED_CONTAINER_FORMATS.indices) {
             val container = SUPPORTED_CONTAINER_FORMATS[i]
             if (supportedVideoCodecs[i].isNotEmpty()) {
-                containerProfiles.add(ContainerProfile(type = DlnaProfileType.VIDEO, container = container))
+                containerProfiles.add(
+                    ContainerProfile(type = DlnaProfileType.VIDEO, container = container, conditions = emptyList()),
+                )
                 directPlayProfiles.add(
                     DirectPlayProfile(
                         type = DlnaProfileType.VIDEO,
@@ -113,7 +116,9 @@ class DeviceProfileBuilder(
                 )
             }
             if (supportedAudioCodecs[i].isNotEmpty()) {
-                containerProfiles.add(ContainerProfile(type = DlnaProfileType.AUDIO, container = container))
+                containerProfiles.add(
+                    ContainerProfile(type = DlnaProfileType.AUDIO, container = container, conditions = emptyList()),
+                )
                 directPlayProfiles.add(
                     DirectPlayProfile(
                         type = DlnaProfileType.AUDIO,
@@ -141,11 +146,6 @@ class DeviceProfileBuilder(
             maxStreamingBitrate = MAX_STREAMING_BITRATE,
             maxStaticBitrate = MAX_STATIC_BITRATE,
             musicStreamingTranscodingBitrate = MAX_MUSIC_TRANSCODING_BITRATE,
-
-            // TODO: remove redundant defaults after API/SDK is fixed
-            supportedMediaTypes = "",
-            xmlRootAttributes = emptyList(),
-            responseProfiles = emptyList(),
         )
     }
 
@@ -161,8 +161,8 @@ class DeviceProfileBuilder(
     fun getExternalPlayerProfile(): DeviceProfile = DeviceProfile(
         name = EXTERNAL_PLAYER_PROFILE_NAME,
         directPlayProfiles = listOf(
-            DirectPlayProfile(type = DlnaProfileType.VIDEO),
-            DirectPlayProfile(type = DlnaProfileType.AUDIO),
+            DirectPlayProfile(type = DlnaProfileType.VIDEO, container = ""),
+            DirectPlayProfile(type = DlnaProfileType.AUDIO, container = ""),
         ),
         transcodingProfiles = emptyList(),
         containerProfiles = emptyList(),
@@ -178,11 +178,6 @@ class DeviceProfileBuilder(
         maxStreamingBitrate = Int.MAX_VALUE,
         maxStaticBitrate = Int.MAX_VALUE,
         musicStreamingTranscodingBitrate = Int.MAX_VALUE,
-
-        // TODO: remove redundant defaults after API/SDK is fixed
-        supportedMediaTypes = "",
-        xmlRootAttributes = emptyList(),
-        responseProfiles = emptyList(),
     )
 
     companion object {
