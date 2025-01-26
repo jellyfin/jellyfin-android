@@ -3,11 +3,11 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.app)
-    alias(libs.plugins.android.room)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.androidx.room)
     alias(libs.plugins.detekt)
     alias(libs.plugins.android.junit5)
 }
