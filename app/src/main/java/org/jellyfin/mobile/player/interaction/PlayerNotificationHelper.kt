@@ -63,7 +63,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
         }
     }
 
-    @Suppress("DEPRECATION", "LongMethod")
+    @Suppress("DEPRECATION", "CyclomaticComplexMethod", "LongMethod")
     fun postNotification() {
         val nm = notificationManager ?: return
         val player = viewModel.playerOrNull ?: return
@@ -128,7 +128,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                         viewModel.mediaSession.setMetadata(
                             MediaMetadata.Builder(it)
                                 .putBitmap(MediaMetadata.METADATA_KEY_ART, mediaIcon)
-                                .build()
+                                .build(),
                         )
                     }
                 }
