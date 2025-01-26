@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.androidx.room)
     alias(libs.plugins.detekt)
     alias(libs.plugins.android.junit5)
 }
@@ -99,11 +100,9 @@ android {
         abortOnError = false
         sarifReport = true
     }
-}
-
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-    arg("room.incremental", "true")
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
