@@ -12,7 +12,7 @@ coroutines = "1.10.1"
 # Core
 koin = "3.5.6"
 koin-compose = "3.5.6"
-androidx-core = "1.13.1"
+androidx-core = "1.15.0"
 androidx-core-splashscreen = "1.0.1"
 androidx-appcompat = "1.7.0"
 androidx-activity = "1.9.0"
