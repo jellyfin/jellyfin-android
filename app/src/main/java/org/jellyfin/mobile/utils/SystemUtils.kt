@@ -33,6 +33,7 @@ import timber.log.Timber
 import java.io.File
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import kotlin.time.Duration.Companion.minutes
 
 fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     if (AndroidVersion.isAtLeastM) {
@@ -64,8 +65,7 @@ suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: Stri
 
     // Storage permission for downloads isn't necessary from Android 10 onwards
     if (!AndroidVersion.isAtLeastQ) {
-        @Suppress("MagicNumber")
-        val granted = withTimeout(2 * 60 * 1000 /* 2 minutes */) {
+        val granted = withTimeout(2.minutes.inWholeMilliseconds) {
             suspendCoroutine { continuation ->
                 requestPermission(WRITE_EXTERNAL_STORAGE) { requestPermissionsResult ->
                     continuation.resume(requestPermissionsResult[WRITE_EXTERNAL_STORAGE] == PERMISSION_GRANTED)

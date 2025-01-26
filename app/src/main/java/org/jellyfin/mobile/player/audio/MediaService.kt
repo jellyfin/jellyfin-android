@@ -102,7 +102,8 @@ class MediaService : MediaBrowserServiceCompat() {
             apiClientController.loadSavedServerUser()
         }
 
-        val sessionActivityPendingIntent = packageManager?.getLaunchIntentForPackage(packageName)?.let { sessionIntent ->
+        val packageLaunchIntent = packageManager?.getLaunchIntentForPackage(packageName)
+        val sessionActivityPendingIntent = packageLaunchIntent?.let { sessionIntent ->
             PendingIntent.getActivity(this, 0, sessionIntent, Constants.PENDING_INTENT_FLAGS)
         }
 

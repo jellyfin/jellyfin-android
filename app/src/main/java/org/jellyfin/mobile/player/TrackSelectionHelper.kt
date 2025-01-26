@@ -55,7 +55,11 @@ class TrackSelectionHelper(
      * @see selectPlayerAudioTrack
      */
     @Suppress("ReturnCount")
-    private fun selectPlayerAudioTrack(mediaSource: JellyfinMediaSource, audioStream: MediaStream, initial: Boolean): Boolean {
+    private fun selectPlayerAudioTrack(
+        mediaSource: JellyfinMediaSource,
+        audioStream: MediaStream,
+        initial: Boolean,
+    ): Boolean {
         if (mediaSource.playMethod == PlayMethod.TRANSCODE) {
             // Transcoding does not require explicit audio selection
             return true
@@ -113,7 +117,11 @@ class TrackSelectionHelper(
      * @see selectSubtitleTrack
      */
     @Suppress("ReturnCount")
-    private fun selectSubtitleTrack(mediaSource: JellyfinMediaSource, subtitleStream: MediaStream?, initial: Boolean): Boolean {
+    private fun selectSubtitleTrack(
+        mediaSource: JellyfinMediaSource,
+        subtitleStream: MediaStream?,
+        initial: Boolean,
+    ): Boolean {
         when {
             // Fast-pass: Skip execution on subsequent calls with the same selection
             !initial && subtitleStream === mediaSource.selectedSubtitleStream -> return true
