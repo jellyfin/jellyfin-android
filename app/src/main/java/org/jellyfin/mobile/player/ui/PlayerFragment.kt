@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.player.ui
 
+import ChapterMarking
 import android.app.Activity
 import android.app.PictureInPictureParams
 import android.content.pm.ActivityInfo
@@ -278,6 +279,10 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     fun onFastForward() = viewModel.fastForward()
 
+    fun onPreviousChapter() = viewModel.previousChapter()
+
+    fun onNextChapter() = viewModel.nextChapter()
+
     /**
      * @param callback called if track selection was successful and UI needs to be updated
      */
@@ -408,5 +413,9 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             // Reset screen brightness
             window.brightness = BRIGHTNESS_OVERRIDE_NONE
         }
+    }
+
+    fun setChapterMarkings(markings: List<ChapterMarking>){
+        viewModel.setChapterMarkings(markings)
     }
 }
