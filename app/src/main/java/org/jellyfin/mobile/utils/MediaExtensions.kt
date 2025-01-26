@@ -12,7 +12,9 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.analytics.AnalyticsCollector
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.ui.content.ImageProvider
 import org.jellyfin.mobile.utils.extensions.width
+import org.jellyfin.sdk.model.api.ImageType
 import com.google.android.exoplayer2.audio.AudioAttributes as ExoPlayerAudioAttributes
 
 inline fun MediaSession.applyDefaultLocalAudioAttributes(contentType: Int) {
@@ -29,7 +31,12 @@ inline fun MediaSession.applyDefaultLocalAudioAttributes(contentType: Int) {
 fun JellyfinMediaSource.toMediaMetadata(): MediaMetadata = MediaMetadata.Builder().apply {
     putString(MediaMetadata.METADATA_KEY_MEDIA_ID, itemId.toString())
     putString(MediaMetadata.METADATA_KEY_TITLE, name)
+    item?.artists?.joinToString()?.let { artists ->
+        putString(MediaMetadata.METADATA_KEY_ARTIST, artists)
+    }
     putLong(MediaMetadata.METADATA_KEY_DURATION, runTimeMs)
+    val imageUri = ImageProvider.buildItemUri(itemId, ImageType.PRIMARY, item?.imageTags?.get(ImageType.PRIMARY))
+    putString(MediaMetadata.METADATA_KEY_ART_URI, imageUri.toString())
 }.build()
 
 fun MediaSession.setPlaybackState(playbackState: Int, position: Long, playbackActions: Long) {
