@@ -15,7 +15,7 @@ plugins {
 detekt {
     buildUponDefaultConfig = true
     allRules = false
-    config = files("${rootProject.projectDir}/detekt.yml")
+    config.setFrom("${rootProject.projectDir}/detekt.yml")
     autoCorrect = true
 }
 

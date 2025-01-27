@@ -277,7 +277,9 @@ class DeviceProfileBuilder(
         private val EXO_EMBEDDED_SUBTITLES = arrayOf("dvbsub", "pgssub", "srt", "subrip", "ttml")
         private val EXO_EXTERNAL_SUBTITLES = arrayOf("srt", "subrip", "ttml", "vtt", "webvtt")
         private val SUBTITLES_SSA = arrayOf("ssa", "ass")
-        private val EXTERNAL_PLAYER_SUBTITLES = arrayOf("ass", "dvbsub", "pgssub", "srt", "srt", "ssa", "subrip", "subrip", "ttml", "ttml", "vtt", "webvtt")
+        private val EXTERNAL_PLAYER_SUBTITLES = arrayOf(
+            "ass", "dvbsub", "pgssub", "srt", "srt", "ssa", "subrip", "subrip", "ttml", "ttml", "vtt", "webvtt",
+        )
 
         /**
          * Taken from Jellyfin Web:
