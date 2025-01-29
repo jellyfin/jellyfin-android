@@ -14,7 +14,7 @@ class MediaSegments(private val context: Context) : KoinComponent {
 
     @JavascriptInterface
     fun setSegmentTypeAction(typeString: String, actionString: String) {
-        val type: MediaSegmentType = when(typeString) {
+        val type: MediaSegmentType = when (typeString) {
             "Intro" -> MediaSegmentType.INTRO
             "Outro" -> MediaSegmentType.OUTRO
             "Preview" -> MediaSegmentType.PREVIEW
@@ -23,7 +23,7 @@ class MediaSegments(private val context: Context) : KoinComponent {
             else -> return
         }
 
-        val action: MediaSegmentAction = when(actionString) {
+        val action: MediaSegmentAction = when (actionString) {
             "None" -> MediaSegmentAction.NOTHING
             "Skip" -> MediaSegmentAction.SKIP
             "AskToSkip" -> MediaSegmentAction.ASK_TO_SKIP
