@@ -427,7 +427,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 for (mediaSegment in mediaSegments) {
                     val action = mediaSegmentRepository.getMediaSegmentAction(mediaSegment)
 
-                    when(action) {
+                    when (action) {
                         MediaSegmentAction.SKIP -> addSkipAction(mediaSegment)
                         MediaSegmentAction.NOTHING -> Unit
                         // Unimplemented
@@ -442,15 +442,15 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val player = playerOrNull ?: return
 
         player.createMessage { _, _ ->
-                // We can't seek directly on the ExoPlayer instance as not all media is seekable
-                // the seek function in the PlaybackController checks this and optionally starts a transcode
-                // at the requested position
-                // TODO: The above is probably true for jellyfin-android as well.
-                // But I believe there is no such logic here.
-                viewModelScope.launch(Dispatchers.Main) {
-                    player.seekTo(mediaSegment.end.inWholeMilliseconds)
-                }
+            // We can't seek directly on the ExoPlayer instance as not all media is seekable
+            // the seek function in the PlaybackController checks this and optionally starts a transcode
+            // at the requested position
+            // TODO: The above is probably true for jellyfin-android as well.
+            // But I believe there is no such logic here.
+            viewModelScope.launch(Dispatchers.Main) {
+                player.seekTo(mediaSegment.end.inWholeMilliseconds)
             }
+        }
             // Segments at position 0 will never be hit by ExoPlayer so we need to add a minimum value
             .setPosition(mediaSegment.start.inWholeMilliseconds.coerceAtLeast(1))
             .setDeleteAfterDelivery(false)
