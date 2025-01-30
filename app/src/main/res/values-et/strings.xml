@@ -77,7 +77,7 @@
     <string name="bluetooth_permission_message">Juhtmeta kõrvaklappide või kõlarite lahtiühendamise tuvastamiseks vajab rakendus Bluetoothi juurdepääsu. Androidis kirjeldatakse seda luba kui juurdepääsu lähedalasuvatele seadmetele ja hoiatab, et Bluetooth-seadmeid saab kasutada praeguse asukoha tuletamiseks. Rakendus Jellyfin ei kasuta seda luba aga kunagi teie asukoha tuvastamiseks.</string>
     <string name="bluetooth_permission_continue">Jätka</string>
     <string name="battery_optimizations_message">Keelake aku optimeerimine meediumi taasesitamiseks, kui ekraan on välja lülitatud.</string>
-    <string name="network_message">Kas soovite lubada allalaadimist mobiilse andmeside või rändlusvõrkude kaudu? Rakenduda võivad teie teenusepakkuja tasud.</string>
+    <string name="network_message">Kas soovite lubada allalaadimist mobiilse andmeside või rändlusvõrkude kaudu? Rakenduda võivad teie teenusepakkuja tasud. Sätet on võimalik hiljem seadistuste alt muuta.</string>
     <string name="playback_info_transcoding">Ümberkodeerimine: %b</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Vältige ümberkodeerimist ja kuvage subtiitreid ainult põhistiiliga. Subtiitrite täpsem stiil pole saadaval, kui see on lubatud.</string>
     <string name="external_player_mpv_description">Lihtne, väike ja kerge tasuta (nagu vabaduses) videopleier. See toetab mitmesuguseid meediumifailivorminguid.</string>
@@ -108,4 +108,7 @@
     <string name="pref_exoplayer_direct_play_ass">Luba SSA/ASS subtiitrid otseesituses</string>
     <string name="external_player_mx_player_free_description">Võimas videopleier täiustatud riistvaralise kiirenduse ja subtiitrite toega.</string>
     <string name="external_player_mx_player_pro">MX Player Pro</string>
+    <string name="wifi_only_summary">Meediafailide allalaadimine ainult läbi WiFi võrgu.</string>
+    <string name="mobile_data_and_roaming_summary">Meediafailide allalaadimine läbi WiFi, mobiilside ja rändlusvõrkude.</string>
+    <string name="mobile_data_summary">Meediafailide allalaadimine läbi WiFi ja mobiilside võrkude.</string>
 </resources>

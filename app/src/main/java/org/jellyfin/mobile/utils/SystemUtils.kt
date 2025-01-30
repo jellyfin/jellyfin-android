@@ -36,6 +36,7 @@ import org.koin.android.ext.android.get
 import timber.log.Timber
 import java.io.File
 import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     if (AndroidVersion.isAtLeastM) {

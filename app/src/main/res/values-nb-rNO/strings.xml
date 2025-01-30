@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">Mobildata &amp; Roaming</string>
     <string name="mobile_data">Mobildata</string>
     <string name="wifi_only">Kun WiFi</string>
-    <string name="network_message">"Tillat nedlasting over mobildata eller roaming-nettverk? Kostnader fra din mobiloperatør kan påløpe. Du kan endre dette  senere i innstillinger."</string>
+    <string name="network_message">Tillat nedlasting over mobildata eller roaming-nettverk? Kostnader fra din mobiloperatør kan påløpe. Du kan endre dette senere i innstillinger.</string>
     <string name="network_title">Tillatte nettverkstyper</string>
     <string name="battery_optimizations_message">Deaktiver batterioptimaliseringer for avspilling mens skjermen er av.</string>
     <string name="connect_button_text">Koble til</string>
@@ -109,6 +109,6 @@
     <string name="bluetooth_permission_granted">Bluetooth-tillatelse ble gitt</string>
     <string name="bluetooth_permission_message">For å oppdage når trådløse hodetelefoner eller høyttalere er frakoblet, krever appen Bluetooth-tilgang. På Android beskrives denne tillatelsen som tilgang til enheter i nærheten, og advarer om at Bluetooth-enheter kan brukes til å utlede gjeldende posisjon. Jellyfin-appen vil imidlertid aldri bruke denne tillatelsen til å oppdage posisjonen din.</string>
     <string name="wifi_only_summary">Media lastes kun ned på WiFi.</string>
-    <string name="mobile_data_summary">Media vil ikke bli nedlastet over WiFi og mobile netverk</string>
-    <string name="mobile_data_and_roaming_summary">Media vil bli nedlastet over WiFi, mobile og omstreifende netverk</string>
+    <string name="mobile_data_summary">Media vil ikke bli lastet ned over WiFi og mobilnett.</string>
+    <string name="mobile_data_and_roaming_summary">Media vil bli lastet ned over WiFi, roaming- og mobilnett.</string>
 </resources>

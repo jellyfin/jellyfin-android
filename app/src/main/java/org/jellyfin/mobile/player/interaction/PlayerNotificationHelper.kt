@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.MediaMetadata
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
@@ -68,7 +69,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
         }
     }
 
-    @Suppress("DEPRECATION", "LongMethod")
+    @Suppress("DEPRECATION", "CyclomaticComplexMethod", "LongMethod")
     fun postNotification() {
         val nm = notificationManager ?: return
         val player = viewModel.playerOrNull ?: return
@@ -126,6 +127,18 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
             }.build()
 
             nm.notify(VIDEO_PLAYER_NOTIFICATION_ID, notification)
+
+            mediaIcon?.let {
+                viewModel.mediaSession.controller.metadata?.let {
+                    if (!it.containsKey(MediaMetadata.METADATA_KEY_ART)) {
+                        viewModel.mediaSession.setMetadata(
+                            MediaMetadata.Builder(it)
+                                .putBitmap(MediaMetadata.METADATA_KEY_ART, mediaIcon)
+                                .build(),
+                        )
+                    }
+                }
+            }
         }
 
         if (receiverRegistered.compareAndSet(false, true)) {

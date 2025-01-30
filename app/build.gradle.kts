@@ -1,5 +1,5 @@
 import io.gitlab.arturbosch.detekt.Detekt
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.app)
@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.androidx.room)
     alias(libs.plugins.detekt)
     alias(libs.plugins.android.junit5)
 }
@@ -15,13 +16,20 @@ plugins {
 detekt {
     buildUponDefaultConfig = true
     allRules = false
-    config = files("${rootProject.projectDir}/detekt.yml")
+    config.setFrom("${rootProject.projectDir}/detekt.yml")
     autoCorrect = true
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_11
+        optIn.add("kotlin.RequiresOptIn")
+    }
 }
 
 android {
     namespace = "org.jellyfin.mobile"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 21
@@ -83,10 +91,6 @@ android {
         viewBinding = true
         compose = true
     }
-    kotlinOptions {
-        @Suppress("SuspiciousCollectionReassignment")
-        freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -97,11 +101,9 @@ android {
         abortOnError = false
         sarifReport = true
     }
-}
-
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-    arg("room.incremental", "true")
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -179,12 +181,6 @@ dependencies {
 }
 
 tasks {
-    withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_11.toString()
-        }
-    }
-
     withType<Detekt> {
         jvmTarget = JavaVersion.VERSION_11.toString()
 
@@ -206,9 +202,9 @@ tasks {
     }
 
     register("versionTxt") {
-        val path = buildDir.resolve("version.txt")
-
         doLast {
+            val path = layout.buildDirectory.file("version.txt").get().asFile
+
             val versionString = "v${android.defaultConfig.versionName}=${android.defaultConfig.versionCode}"
             println("Writing [$versionString] to $path")
             path.writeText("$versionString\n")

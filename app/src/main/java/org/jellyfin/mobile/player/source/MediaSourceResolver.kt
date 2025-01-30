@@ -3,11 +3,10 @@ package org.jellyfin.mobile.player.source
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
-import org.jellyfin.sdk.api.client.extensions.itemsApi
 import org.jellyfin.sdk.api.client.extensions.mediaInfoApi
-import org.jellyfin.sdk.api.operations.ItemsApi
+import org.jellyfin.sdk.api.client.extensions.userLibraryApi
 import org.jellyfin.sdk.api.operations.MediaInfoApi
-import org.jellyfin.sdk.model.api.BaseItemDto
+import org.jellyfin.sdk.api.operations.UserLibraryApi
 import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.MediaSourceInfo
 import org.jellyfin.sdk.model.api.PlaybackInfoDto
@@ -17,7 +16,7 @@ import java.util.UUID
 
 class MediaSourceResolver(private val apiClient: ApiClient) {
     private val mediaInfoApi: MediaInfoApi = apiClient.mediaInfoApi
-    private val itemsApi: ItemsApi = apiClient.itemsApi
+    private val userLibraryApi: UserLibraryApi = apiClient.userLibraryApi
 
     @Suppress("ReturnCount")
     suspend fun resolveMediaSource(
@@ -36,7 +35,6 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
             val response by mediaInfoApi.getPostedPlaybackInfo(
                 itemId = itemId,
                 data = PlaybackInfoDto(
-                    userId = apiClient.userId,
                     // We need to remove the dashes so that the server can find the correct media source.
                     // And if we didn't pass the mediaSourceId, our stream indices would silently get ignored.
                     // https://github.com/jellyfin/jellyfin/blob/9a35fd673203cfaf0098138b2768750f4818b3ab/Jellyfin.Api/Helpers/MediaInfoHelper.cs#L196-L201
@@ -61,9 +59,9 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
         }
 
         // Load additional item info if possible
-        val item: BaseItemDto? = try {
-            val response by itemsApi.getItemsByUserId(ids = listOf(itemId))
-            response.items?.firstOrNull()
+
+        val item = try {
+            userLibraryApi.getItem(itemId).content
         } catch (e: ApiClientException) {
             Timber.e(e, "Failed to load item for media source $itemId")
             null

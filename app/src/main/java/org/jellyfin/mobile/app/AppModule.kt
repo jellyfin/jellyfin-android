@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.app
 
 import android.content.Context
+import androidx.core.net.toUri
 import coil.ImageLoader
 import com.google.android.exoplayer2.database.DatabaseProvider
 import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
@@ -18,6 +19,11 @@ import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
+import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.DataSpec
+import com.google.android.exoplayer2.upstream.DefaultDataSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.exoplayer2.upstream.ResolvingDataSource
 import com.google.android.exoplayer2.util.Util
 import kotlinx.coroutines.channels.Channel
 import okhttp3.OkHttpClient
@@ -41,6 +47,8 @@ import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebViewFragment
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.jellyfin.sdk.model.serializer.toUUID
+import org.jellyfin.sdk.api.client.ApiClient
+import org.jellyfin.sdk.api.client.util.AuthorizationHeaderBuilder
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -103,6 +111,7 @@ val applicationModule = module {
 
     single<DefaultDataSource.Factory> {
         val context: Context = get()
+        val apiClient: ApiClient = get()
 
         val provider = CronetProvider.getAllProviders(context).firstOrNull { provider: CronetProvider ->
             (provider.name == CronetProvider.PROVIDER_NAME_APP_PACKAGED) && provider.isEnabled
@@ -124,7 +133,28 @@ val applicationModule = module {
             }
         }
 
-        DefaultDataSource.Factory(context, baseDataSourceFactory)
+        val dataSourceFactory = DefaultDataSource.Factory(context, baseDataSourceFactory)
+
+        // Add authorization header. This is needed as we don't pass the
+        // access token in the URL for Android Auto.
+        ResolvingDataSource.Factory(dataSourceFactory) { dataSpec: DataSpec ->
+            // Only send authorization header if URI matches the jellyfin server
+            val baseUrlAuthority = apiClient.baseUrl?.toUri()?.authority
+
+            if (dataSpec.uri.authority == baseUrlAuthority) {
+                val authorizationHeaderString = AuthorizationHeaderBuilder.buildHeader(
+                    clientName = apiClient.clientInfo.name,
+                    clientVersion = apiClient.clientInfo.version,
+                    deviceId = apiClient.deviceInfo.id,
+                    deviceName = apiClient.deviceInfo.name,
+                    accessToken = apiClient.accessToken,
+                )
+
+                dataSpec.withRequestHeaders(hashMapOf("Authorization" to authorizationHeaderString))
+            } else {
+                dataSpec
+            }
+        }
     }
 
     single<CacheDataSource.Factory> {

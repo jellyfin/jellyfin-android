@@ -5,7 +5,7 @@
     <string name="mobile_data_and_roaming">Мобильный данные и роуминг</string>
     <string name="mobile_data">Мобильные данные</string>
     <string name="wifi_only">Только WiFi</string>
-    <string name="network_message">Загрузку выполнять с помощью мобильные данных или через роуминговые сети? Ваш провайдер может взимать плату.</string>
+    <string name="network_message">Загрузку выполнять с помощью мобильные данных или через роуминговые сети? Ваш провайдер может взимать плату. Вы можете изменить эту опцию позже в настройках.</string>
     <string name="network_title">Разрешённые типы сетей</string>
     <string name="connect_to_server_title">Соединение с сервером</string>
     <string name="pref_category_video_player">Видео проигрыватель</string>
@@ -110,4 +110,7 @@
     <string name="bluetooth_permission_granted">Доступ к Bluetooth разрешён</string>
     <string name="bluetooth_permission_title">Разрешить доступ к Bluetooth\?</string>
     <string name="bluetooth_permission_message">Чтобы определить, что беспроводное аудио устройство отключилось, приложению нужен доступ к Bluetooth. На Android права доступа объясняются доступом к близлежащим устройствам, и предупреждают Вас о том, что устройства могут пытаться узнать Ваше местоположение. Однако Jellyfin не использует эти права для доступа к Вашему местоположению.</string>
+    <string name="wifi_only_summary">Медиа будут загружаться только через Wi-Fi.</string>
+    <string name="mobile_data_summary">Медиа будут загружаться через Wi-Fi и мобильные сети.</string>
+    <string name="mobile_data_and_roaming_summary">Медиафайлы будут загружаться через Wi-Fi, мобильные сети и в роуминге.</string>
 </resources>

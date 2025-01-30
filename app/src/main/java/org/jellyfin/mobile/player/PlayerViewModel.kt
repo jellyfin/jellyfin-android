@@ -61,10 +61,13 @@ import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.jellyfin.sdk.api.client.extensions.displayPreferencesApi
 import org.jellyfin.sdk.api.client.extensions.hlsSegmentApi
 import org.jellyfin.sdk.api.client.extensions.playStateApi
+import org.jellyfin.sdk.api.client.extensions.userApi
 import org.jellyfin.sdk.api.operations.DisplayPreferencesApi
 import org.jellyfin.sdk.api.operations.HlsSegmentApi
 import org.jellyfin.sdk.api.operations.PlayStateApi
+import org.jellyfin.sdk.api.operations.UserApi
 import org.jellyfin.sdk.model.api.PlayMethod
+import org.jellyfin.sdk.model.api.PlaybackOrder
 import org.jellyfin.sdk.model.api.PlaybackProgressInfo
 import org.jellyfin.sdk.model.api.PlaybackStartInfo
 import org.jellyfin.sdk.model.api.PlaybackStopInfo
@@ -82,6 +85,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private val displayPreferencesApi: DisplayPreferencesApi = apiClient.displayPreferencesApi
     private val playStateApi: PlayStateApi = apiClient.playStateApi
     private val hlsSegmentApi: HlsSegmentApi = apiClient.hlsSegmentApi
+    private val userApi: UserApi = apiClient.userApi
 
     private val lifecycleObserver = PlayerLifecycleObserver(this)
     private val audioManager: AudioManager by lazy { getApplication<Application>().getSystemService()!! }
@@ -133,6 +137,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private val mediaSessionCallback = PlayerMediaSessionCallback(this)
 
     private var displayPreferences = DisplayPreferences()
+    private var autoPlayNextEpisodeEnabled: Boolean = false
 
     init {
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
@@ -157,6 +162,15 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 skipForwardLength = customPrefs?.get(Constants.DISPLAY_PREFERENCES_SKIP_FORWARD_LENGTH)?.toLongOrNull()
                     ?: Constants.DEFAULT_SEEK_TIME_MS,
             )
+        }
+
+        viewModelScope.launch {
+            try {
+                val userConfig = userApi.getCurrentUser().content.configuration
+                autoPlayNextEpisodeEnabled = userConfig?.enableNextEpisodeAutoPlay ?: false
+            } catch (e: ApiClientException) {
+                Timber.e(e, "Failed to load auto play preference")
+            }
         }
 
         // Subscribe to player events from webapp
@@ -311,6 +325,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     positionTicks = mediaSource.startTimeMs * Constants.TICKS_PER_MILLISECOND,
                     volumeLevel = audioManager.getVolumeLevelPercent(),
                     repeatMode = RepeatMode.REPEAT_NONE,
+                    playbackOrder = PlaybackOrder.DEFAULT,
                 ),
             )
         } catch (e: ApiClientException) {
@@ -339,6 +354,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         positionTicks = playbackPositionMillis * Constants.TICKS_PER_MILLISECOND,
                         volumeLevel = (currentVolume - volumeRange.first) * Constants.PERCENT_MAX / volumeRange.width,
                         repeatMode = RepeatMode.REPEAT_NONE,
+                        playbackOrder = PlaybackOrder.DEFAULT,
                     ),
                 )
             } catch (e: ApiClientException) {
@@ -522,7 +538,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 }
                 Player.STATE_ENDED -> {
                     reportPlaybackStop()
-                    if (!queueManager.next()) {
+                    if (!autoPlayNextEpisodeEnabled || !queueManager.next()) {
                         releasePlayer()
                     }
                 }

@@ -64,6 +64,7 @@ import org.jellyfin.mobile.utils.createMediaNotificationChannel
 import org.jellyfin.mobile.utils.setPlaybackState
 import org.koin.android.ext.android.inject
 import kotlin.coroutines.CoroutineContext
+import kotlin.time.Duration.Companion.hours
 
 class RemotePlayerService : Service(), CoroutineScope {
 
@@ -157,8 +158,7 @@ class RemotePlayerService : Service(), CoroutineScope {
 
     private fun startWakelock() {
         if (!wakeLock.isHeld) {
-            @Suppress("MagicNumber")
-            wakeLock.acquire(4 * 60 * 60 * 1000L /* 4 hours */)
+            wakeLock.acquire(4.hours.inWholeMilliseconds)
         }
     }
 
@@ -277,8 +277,10 @@ class RemotePlayerService : Service(), CoroutineScope {
                     }
                 }
                 setStyle(style)
-                setVisibility(Notification.VISIBILITY_PUBLIC) // Privacy value for lock screen
-                setOngoing(!isPaused && !appPreferences.musicNotificationAlwaysDismissible) // Swipe to dismiss if paused
+                // Privacy value for lock screen
+                setVisibility(Notification.VISIBILITY_PUBLIC)
+                // Swipe to dismiss if paused
+                setOngoing(!isPaused && !appPreferences.musicNotificationAlwaysDismissible)
                 setDeleteIntent(createDeleteIntent())
                 setContentIntent(createContentIntent())
 
