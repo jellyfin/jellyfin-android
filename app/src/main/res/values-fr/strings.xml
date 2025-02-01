@@ -80,9 +80,9 @@
     <string name="pref_music_notification_always_dismissible_summary_on">La notification peut toujours être rejetée, même lorsque la lecture d\'un média est en cours</string>
     <string name="pref_music_notification_always_dismissible_summary_off">La notification peut être rejetée uniquement lorsque la lecture est en pause</string>
     <plurals name="connection_error_prefix">
-        <item quantity="one">%d candidat a été testé, sans succès.</item>
-        <item quantity="many">%d candidats ont été testés, sans succès.</item>
-        <item quantity="other">%d candidats ont été testés, sans succès.</item>
+        <item quantity="one">%d adresse a été testée, sans succès.</item>
+        <item quantity="many">%d adresses ont été testées, sans succès.</item>
+        <item quantity="other">%d adresses ont été testées, sans succès.</item>
     </plurals>
     <string name="connection_error_unsupported_version_or_product">Version ou produit non supporté</string>
     <string name="connection_error_unable_to_reach_sever">Impossible de contacter le serveur</string>
