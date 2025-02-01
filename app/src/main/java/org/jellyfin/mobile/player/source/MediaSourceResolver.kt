@@ -8,6 +8,7 @@ import org.jellyfin.sdk.api.client.extensions.userLibraryApi
 import org.jellyfin.sdk.api.operations.MediaInfoApi
 import org.jellyfin.sdk.api.operations.UserLibraryApi
 import org.jellyfin.sdk.model.api.DeviceProfile
+import org.jellyfin.sdk.model.api.MediaSourceInfo
 import org.jellyfin.sdk.model.api.PlaybackInfoDto
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
@@ -27,10 +28,10 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
         audioStreamIndex: Int? = null,
         subtitleStreamIndex: Int? = null,
         autoOpenLiveStream: Boolean = true,
-    ): Result<JellyfinMediaSource> {
+    ): Result<RemoteJellyfinMediaSource> {
         // Load media source info
         val playSessionId: String
-        val mediaSourceInfo = try {
+        val mediaSourceInfo: MediaSourceInfo = try {
             val response by mediaInfoApi.getPostedPlaybackInfo(
                 itemId = itemId,
                 data = PlaybackInfoDto(
@@ -58,6 +59,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
         }
 
         // Load additional item info if possible
+
         val item = try {
             userLibraryApi.getItem(itemId).content
         } catch (e: ApiClientException) {
@@ -67,16 +69,14 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
 
         // Create JellyfinMediaSource
         return try {
-            val source = JellyfinMediaSource(
+            val source = RemoteJellyfinMediaSource(
                 itemId = itemId,
                 item = item,
                 sourceInfo = mediaSourceInfo,
                 playSessionId = playSessionId,
                 liveStreamId = mediaSourceInfo.liveStreamId,
                 maxStreamingBitrate = maxStreamingBitrate,
-                startTimeTicks = startTimeTicks,
-                audioStreamIndex = audioStreamIndex,
-                subtitleStreamIndex = subtitleStreamIndex,
+                playbackDetails = PlaybackDetails(startTimeTicks, audioStreamIndex, subtitleStreamIndex),
             )
             Result.success(source)
         } catch (e: IllegalArgumentException) {
