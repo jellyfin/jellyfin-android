@@ -111,6 +111,8 @@
     <string name="external_player_mx_player_pro_description">The paid version of MX Player which provides an uninterrupted video experience.</string>
     <string name="external_player_vlc_player">VLC Player</string>
     <string name="external_player_vlc_player_description">Free and open source cross-platform multimedia player that plays most multimedia files.</string>
+    <string name="external_player_mpvkt">mpvKt Player</string>
+    <string name="external_player_mpvkt_description">A media player based on mpv-android aiming to provide a nicer user interface over the original.</string>
     <string name="external_player_system_default">System default</string>
     <string name="external_player_system_default_description">Let the system handle the player choice, some players may not be fully compatible.</string>
 
