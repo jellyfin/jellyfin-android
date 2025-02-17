@@ -1,6 +1,8 @@
 package org.jellyfin.mobile.player.deviceprofile
 
+import android.media.MediaCodecInfo
 import android.media.MediaCodecList
+import android.os.Build
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.model.api.CodecProfile
@@ -12,6 +14,7 @@ import org.jellyfin.sdk.model.api.MediaStreamProtocol
 import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
 import org.jellyfin.sdk.model.api.SubtitleProfile
 import org.jellyfin.sdk.model.api.TranscodingProfile
+import java.util.Locale
 
 class DeviceProfileBuilder(
     private val appPreferences: AppPreferences,
@@ -38,6 +41,9 @@ class DeviceProfileBuilder(
                 val name = codec.name
                 when (codec) {
                     is DeviceCodec.Video -> {
+                        if (isSoftwareOnly(codecInfo)) {
+                            continue
+                        }
                         if (videoCodecs.containsKey(name)) {
                             videoCodecs[name] = videoCodecs[name]!!.mergeCodec(codec)
                         } else {
@@ -156,6 +162,54 @@ class DeviceProfileBuilder(
         for (format in external) {
             add(SubtitleProfile(format = format, method = SubtitleDeliveryMethod.EXTERNAL))
         }
+    }
+
+    // taken from https://github.com/Parseus/codecinfo
+    private fun isSoftwareOnly(codecInfo: MediaCodecInfo): Boolean {
+        if (Build.VERSION.SDK_INT >= 29) {
+            return codecInfo.isSoftwareOnly
+        }
+
+        val codecName = codecInfo.name.lowercase(Locale.ENGLISH)
+
+        // Broadcom codecs which specifically mention HW acceleration in their names
+        if (codecName.contains("omx.brcm.video", true) && codecName.contains("hw", true)) {
+            return false
+        }
+
+        // Marvell codecs which specifically mention HW acceleration in their names
+        if (codecName.startsWith("omx.marvell.video.hw", true)) {
+            return false
+        }
+
+        // Intel codecs which specifically mention HW acceleration in their names
+        if (codecName.startsWith("omx.intel.hw_vd", true)) {
+            return false
+        }
+
+        // Qualcomm codecs which specifically mention HW acceleration in their names
+        if (codecName.startsWith("omx.qcom") && codecName.endsWith("hw")) {
+            return false
+        }
+
+        // ARC/ARC++ (App Runtime for Chrome) codecs are always HW-only.
+        if (codecName.startsWith("c2.vda.arc") || codecName.startsWith("arc.")) {
+            return false
+        }
+
+        return codecName.startsWith("omx.google.")
+            || codecName.contains("ffmpeg") // either OMX.ffmpeg or OMX.k3.ffmpeg
+            || (codecName.startsWith("omx.sec.") && codecName.contains(".sw."))
+            || codecName == "omx.qcom.video.decoder.hevcswvdec"
+            || codecName.startsWith("c2.android.")
+            || codecName.startsWith("c2.google.")
+            || codecName.startsWith("omx.sprd.soft.")
+            || codecName.startsWith("omx.avcodec.")
+            || codecName.startsWith("omx.pv")
+            || codecName.endsWith("sw", true)
+            || codecName.endsWith("sw.dec", true)
+            || codecName.contains("sw_vd", true)
+            || (!codecName.startsWith("omx.") && !codecName.startsWith("c2."))
     }
 
     fun getExternalPlayerProfile(): DeviceProfile = DeviceProfile(
