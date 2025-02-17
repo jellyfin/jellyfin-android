@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
-import android.media.MediaMetadata
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
@@ -77,10 +76,6 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
         context.createMediaNotificationChannel(nm)
 
         viewModel.viewModelScope.launch {
-            val mediaIcon: Bitmap? = withContext(Dispatchers.IO) {
-                loadImage(currentMediaSource)
-            }
-
             val style = Notification.MediaStyle().apply {
                 setMediaSession(viewModel.mediaSession.sessionToken)
                 setShowActionsInCompactView(0, 1, 2)
@@ -94,11 +89,20 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                 } else {
                     setPriority(Notification.PRIORITY_LOW)
                 }
-                setSmallIcon(R.drawable.ic_notification)
-                mediaIcon?.let(::setLargeIcon)
-                setContentTitle(currentMediaSource.name)
-                currentMediaSource.item?.artists?.joinToString()?.let(::setContentText)
                 setStyle(style)
+                setSmallIcon(R.drawable.ic_notification)
+                if (!AndroidVersion.isAtLeastQ) {
+                    val mediaIcon: Bitmap? = withContext(Dispatchers.IO) {
+                        loadImage(currentMediaSource)
+                    }
+                    if (mediaIcon != null) {
+                        setLargeIcon(mediaIcon)
+                    }
+                }
+                setContentTitle(currentMediaSource.name)
+                currentMediaSource.item?.artists?.joinToString()?.let { artists ->
+                    setContentText(artists)
+                }
                 setVisibility(Notification.VISIBILITY_PUBLIC)
                 when {
                     hasPrevious -> addAction(generateAction(PlayerNotificationAction.PREVIOUS))
@@ -121,18 +125,6 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
             }.build()
 
             nm.notify(VIDEO_PLAYER_NOTIFICATION_ID, notification)
-
-            mediaIcon?.let {
-                viewModel.mediaSession.controller.metadata?.let {
-                    if (!it.containsKey(MediaMetadata.METADATA_KEY_ART)) {
-                        viewModel.mediaSession.setMetadata(
-                            MediaMetadata.Builder(it)
-                                .putBitmap(MediaMetadata.METADATA_KEY_ART, mediaIcon)
-                                .build(),
-                        )
-                    }
-                }
-            }
         }
 
         if (receiverRegistered.compareAndSet(false, true)) {
@@ -157,13 +149,12 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     }
 
     private suspend fun loadImage(mediaSource: JellyfinMediaSource): Bitmap? {
-        val size = context.resources.getDimensionPixelSize(R.dimen.media_notification_height)
-
+        val height = context.resources.getDimensionPixelSize(R.dimen.media_notification_height)
         val imageUrl = imageApi.getItemImageUrl(
             itemId = mediaSource.itemId,
             imageType = ImageType.PRIMARY,
-            maxWidth = size,
-            maxHeight = size,
+            fillHeight = height,
+            tag = mediaSource.item?.imageTags?.get(ImageType.PRIMARY),
         )
         val imageRequest = ImageRequest.Builder(context).data(imageUrl).build()
         return imageLoader.execute(imageRequest).drawable?.toBitmap()
