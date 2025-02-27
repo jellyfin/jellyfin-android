@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">Date Mobile &amp; Roaming</string>
     <string name="mobile_data">Date mobile</string>
     <string name="wifi_only">Doar WiFi</string>
-    <string name="network_message">Doriți să permiteți descărcarea să continua peste rețele de date mobile sau roaming? Se pot aplica taxe de la furnizorul dvs.</string>
+    <string name="network_message">Doriți să permiteți descărcarea prin rețele de date mobile sau roaming? Se pot aplica taxe de la furnizorul dumneavoastra. Puteți schimba această opțiune mai târziu din setări.</string>
     <string name="network_title">Tipuri de rețea permise</string>
     <string name="battery_optimizations_message">Vă rugăm să dezactivați optimizările bateriei pentru redarea media cand ecranul e stins.</string>
     <string name="connect_button_text">Conectați</string>
@@ -25,7 +25,7 @@
     <string name="notification_action_next">Următorul</string>
     <string name="notification_action_fast_forward">Repede inainte</string>
     <string name="notification_action_pause">Pauză</string>
-    <string name="notification_action_play">Rulează</string>
+    <string name="notification_action_play">Redă</string>
     <string name="notification_action_rewind">Derulează</string>
     <string name="notification_action_previous">Anteriorul</string>
     <string name="download_no_storage_permission">Nu se pot descărca fișiere fără permisiuni de stocare</string>
@@ -109,4 +109,7 @@
     <string name="bluetooth_permission_title">Permiteți accesul la Bluetooth\?</string>
     <string name="bluetooth_permission_continue">Continua</string>
     <string name="bluetooth_permission_granted">Permisiunea Bluetooth a fost acordată</string>
+    <string name="wifi_only_summary">Media va fi descărcată doar prin WiFi.</string>
+    <string name="mobile_data_summary">Media va fi descărcată prin WiFi si rețele mobile.</string>
+    <string name="mobile_data_and_roaming_summary">Media va fi descărcată prin WiFi, rețele mobile și rețele de roaming.</string>
 </resources>
