@@ -71,8 +71,7 @@
         <service
             android:name=".webapp.RemotePlayerService"
             android:exported="false"
-            android:foregroundServiceType="mediaPlayback">
-        </service>
+            android:foregroundServiceType="mediaPlayback" />
 
         <service
             android:name="org.jellyfin.mobile.player.audio.MediaService"
@@ -88,6 +87,13 @@
             android:name="androidx.mediarouter.media.MediaTransferReceiver"
             android:exported="true"
             tools:ignore="ExportedReceiver" />
+
+        <provider
+            android:name=".ui.content.ImageProvider"
+            android:authorities="${applicationId}.image-provider"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            android:readPermission="android.permission.MEDIA_CONTENT_CONTROL" />
 
         <meta-data
             android:name="com.google.android.gms.version"
