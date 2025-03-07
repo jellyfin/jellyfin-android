@@ -211,17 +211,6 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     }
 
     /**
-     * Exit fullscreen on first back-button press, otherwise exit directly
-     */
-    override fun onInterceptBackPressed(): Boolean = when {
-        playerFullscreenHelper.isFullscreen -> {
-            toggleFullscreen()
-            true
-        }
-        else -> super.onInterceptBackPressed()
-    }
-
-    /**
      * Handle current orientation and update fullscreen state and switcher icon
      */
     private fun updateFullscreenState(configuration: Configuration) {
