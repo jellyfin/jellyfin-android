@@ -250,7 +250,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
      */
     private fun toggleFullscreen() {
         val videoTrack = currentVideoStream
-        if (videoTrack == null || videoTrack.width!! >= videoTrack.height!!) {
+        if (videoTrack == null || videoTrack.isLandscape) {
             val current = resources.configuration.orientation
             requireActivity().requestedOrientation = when (current) {
                 Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
