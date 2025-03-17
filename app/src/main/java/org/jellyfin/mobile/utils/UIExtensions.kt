@@ -7,7 +7,7 @@ import android.content.res.Resources
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.view.Window
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -15,7 +15,7 @@ import androidx.annotation.StyleRes
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.core.view.updateMargins
+import androidx.core.view.updateLayoutParams
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -39,10 +39,9 @@ fun LayoutInflater.withThemedContext(context: Context, @StyleRes style: Int): La
 
 fun View.applyWindowInsetsAsMargins() {
     ViewCompat.setOnApplyWindowInsetsListener(this) { _, windowInsets ->
-        val layoutParams = layoutParams as ViewGroup.MarginLayoutParams
         val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-        with(insets) {
-            layoutParams.updateMargins(left, top, right, bottom)
+        updateLayoutParams<MarginLayoutParams> {
+            setMargins(insets.left, insets.top, insets.right, insets.bottom)
         }
         windowInsets
     }
