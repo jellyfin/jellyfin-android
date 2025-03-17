@@ -88,6 +88,9 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val window = requireActivity().window
+        playerFullscreenHelper = PlayerFullscreenHelper(window)
+
         // Observe ViewModel
         viewModel.player.observe(this) { player ->
             playerView.player = player
@@ -144,7 +147,6 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val window = requireActivity().window
 
         // Insets handling
         ViewCompat.setOnApplyWindowInsetsListener(playerBinding.root) { _, insets ->
@@ -197,7 +199,6 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         // Set controller timeout
         suppressControllerAutoHide(false)
 
-        playerFullscreenHelper = PlayerFullscreenHelper(window)
         playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
         playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)
 
