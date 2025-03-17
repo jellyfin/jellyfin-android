@@ -28,13 +28,11 @@ class PlayerFullscreenHelper(private val window: Window) {
     }
 
     fun enableFullscreen() {
-        WindowCompat.setDecorFitsSystemWindows(window, false)
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
         windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 
     fun disableFullscreen() {
-        WindowCompat.setDecorFitsSystemWindows(window, true)
         windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
     }
 
