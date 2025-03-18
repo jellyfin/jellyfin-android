@@ -33,7 +33,9 @@ import java.util.UUID
 class ImageProvider : ContentProvider(), KoinComponent {
 
     companion object {
-        const val AUTHORITY = "${BuildConfig.APPLICATION_ID}.image-provider"
+        private const val AUTHORITY = "${BuildConfig.APPLICATION_ID}.image-provider"
+
+        private const val PATH_SEGMENTS_COUNT = 3
 
         fun buildItemUri(itemId: UUID, imageType: ImageType, imageTag: String?): Uri {
             return Uri.Builder()
@@ -83,14 +85,15 @@ class ImageProvider : ContentProvider(), KoinComponent {
         return loadImage(uri, null)
     }
 
+    @Suppress("ThrowsCount")
     @OptIn(ExperimentalCoilApi::class)
     private fun loadImage(uri: Uri, size: Point?): AssetFileDescriptor {
         val pathSegments = uri.pathSegments
-        if (pathSegments.size < 3) {
+        if (pathSegments.size < PATH_SEGMENTS_COUNT) {
             throw FileNotFoundException("Unsupported number of parameters")
         }
         val (type, itemIdString, imageTypeString) = pathSegments
-        val imageTag = pathSegments.getOrNull(3)
+        val imageTag = pathSegments.getOrNull(PATH_SEGMENTS_COUNT)
 
         val itemId = itemIdString.toUUIDOrNull() ?: throw FileNotFoundException("Invalid item ID $itemIdString")
         val imageType = try {
@@ -131,7 +134,7 @@ class ImageProvider : ContentProvider(), KoinComponent {
         val snapshot = imageResult.diskCacheKey?.let { cacheKey -> imageLoader.diskCache?.openSnapshot(cacheKey) }
             ?: throw FileNotFoundException("Failed to load image")
 
-        return snapshot.use { snapshot ->
+        return snapshot.use {
             val file = snapshot.data.toFile()
             val parcelFileDescriptor = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
             AssetFileDescriptor(parcelFileDescriptor, 0, file.length())
