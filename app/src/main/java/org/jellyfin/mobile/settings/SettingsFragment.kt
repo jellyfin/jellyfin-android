@@ -168,6 +168,11 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 R.string.external_player_vlc_player,
                 R.string.external_player_vlc_player_description,
             ),
+            SelectionItem(
+                ExternalPlayerPackage.MPVKT_PLAYER,
+                R.string.external_player_mpvkt,
+                R.string.external_player_mpvkt_description,
+            ),
         ).filter { item ->
             item.key == ExternalPlayerPackage.SYSTEM_DEFAULT || packageManager.isPackageInstalled(item.key)
         }
