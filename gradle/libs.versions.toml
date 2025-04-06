@@ -35,7 +35,7 @@ compose-foundation = "1.7.6"
 compose-material = "1.7.6"
 
 # Network
-jellyfin-sdk = "1.6.6"
+jellyfin-sdk = "1.6.8"
 okhttp = "4.12.0"
 okio = "3.9.0"
 coil = "2.7.0"
