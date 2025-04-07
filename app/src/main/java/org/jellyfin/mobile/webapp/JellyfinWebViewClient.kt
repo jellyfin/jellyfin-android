@@ -1,11 +1,13 @@
 package org.jellyfin.mobile.webapp
 
+import android.content.Intent
 import android.net.Uri
 import android.net.http.SslError
 import android.webkit.SslErrorHandler
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.webkit.WebResourceErrorCompat
 import androidx.webkit.WebViewAssetLoader.AssetsPathHandler
 import androidx.webkit.WebViewClientCompat
@@ -36,6 +38,22 @@ abstract class JellyfinWebViewClient(
     abstract fun onConnectedToWebapp()
 
     abstract fun onErrorReceived()
+
+    override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+        Timber.d("shouldOverrideUrlLoading: %s", request.url.toString())
+        return when {
+            !request.hasGesture() -> false
+            request.url.toString().startsWith(server.hostname) -> false
+            else -> {
+                Timber.d("shouldOverrideUrlLoading: external link with gesture, handle with system")
+                val intent = Intent(Intent.ACTION_VIEW, request.url)
+                if (intent.resolveActivity(view.context.packageManager) != null) {
+                    startActivity(view.context, intent, null)
+                }
+                true
+            }
+        }
+    }
 
     override fun shouldInterceptRequest(webView: WebView, request: WebResourceRequest): WebResourceResponse? {
         val url = request.url
