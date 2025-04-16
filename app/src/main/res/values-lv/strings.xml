@@ -107,4 +107,9 @@
     <string name="wifi_only_summary">Multivide tiks lejupielādēta, izmantojot tikai WiFi.</string>
     <string name="external_player_mx_player_free_description">Jaudīgs video atskaņotājs ar uzlabotu aparatūras paātrinājumu un subtitru atbalstu.</string>
     <string name="pref_subtitle_style">Pielāgot subtitru stilu</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="zero">Mēģināts ievadīt %d kandidātus, bez panākumiem.</item>
+        <item quantity="one">Mēģināts ievadīt %d kandidātu, bez panākumiem.</item>
+        <item quantity="other">Mēģināts ievadīt %d kandidātus, bez panākumiem.</item>
+    </plurals>
 </resources>
