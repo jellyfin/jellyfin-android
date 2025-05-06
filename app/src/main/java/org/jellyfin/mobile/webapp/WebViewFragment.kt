@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.ViewCompat
 import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -128,7 +127,6 @@ class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClien
 
         // Apply window insets
         webView.applyWindowInsetsAsMargins()
-        ViewCompat.requestApplyInsets(webView)
 
         // Setup exclusion rects for gestures
         if (AndroidVersion.isAtLeastQ) {

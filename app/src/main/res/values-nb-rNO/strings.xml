@@ -8,7 +8,7 @@
     <string name="network_title">Tillatte nettverkstyper</string>
     <string name="battery_optimizations_message">Deaktiver batterioptimaliseringer for avspilling mens skjermen er av.</string>
     <string name="connect_button_text">Koble til</string>
-    <string name="host_input_hint">Tjener</string>
+    <string name="host_input_hint">Server</string>
     <string name="connect_to_server_title">Koble til tjener</string>
     <string name="playback_info_audio_streams">Lyd-strømmer</string>
     <string name="playback_info_video_streams">Video-strømmer</string>

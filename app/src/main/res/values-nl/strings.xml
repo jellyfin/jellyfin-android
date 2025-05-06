@@ -100,8 +100,8 @@
     <string name="pref_subtitle_style">Ondertitelingsstijl aanpassen</string>
     <string name="pref_subtitle_style_summary">Je kunt de ondertitelingsstijl aanpassen in de Android-instellingen</string>
     <string name="player_error_unspecific_exception">Er is iets misgegaan met de speler</string>
-    <string name="menu_item_hardware_decoding">Hardware-decoderen</string>
-    <string name="menu_item_software_decoding">Software-decoderen</string>
+    <string name="menu_item_hardware_decoding">Hardwarematig decoderen</string>
+    <string name="menu_item_software_decoding">Softwarematig decoderen</string>
     <string name="button_use_different_server">Andere server gebruiken</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Horizontale video\'s in horizontale oriëntatie starten</string>
     <string name="bluetooth_permission_continue">Doorgaan</string>
