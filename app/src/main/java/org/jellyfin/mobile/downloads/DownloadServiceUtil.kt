@@ -2,11 +2,10 @@ package org.jellyfin.mobile.downloads
 
 import android.content.Context
 import com.google.android.exoplayer2.database.DatabaseProvider
-import com.google.android.exoplayer2.offline.DefaultDownloadIndex
-import com.google.android.exoplayer2.offline.DefaultDownloaderFactory
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.ui.DownloadNotificationHelper
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource
+import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.cache.Cache
 import org.jellyfin.mobile.utils.Constants.DOWNLOAD_NOTIFICATION_CHANNEL_ID
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -17,7 +16,8 @@ object DownloadServiceUtil : KoinComponent {
 
     private val context: Context by inject()
     private val databaseProvider: DatabaseProvider by inject()
-    private val downloadDataCache: CacheDataSource.Factory by inject()
+    private val downloadCache: Cache by inject()
+    private val dataSourceFactory: DataSource.Factory by inject()
     private var downloadManager: DownloadManager? = null
     private var downloadNotificationHelper: DownloadNotificationHelper? = null
     private var downloadTracker: DownloadTracker? = null
@@ -51,11 +51,10 @@ object DownloadServiceUtil : KoinComponent {
             downloadManager =
                 DownloadManager(
                     context,
-                    DefaultDownloadIndex(databaseProvider),
-                    DefaultDownloaderFactory(
-                        downloadDataCache,
-                        Executors.newFixedThreadPool(DOWNLOAD_THREADS),
-                    ),
+                    databaseProvider,
+                    downloadCache,
+                    dataSourceFactory,
+                    Executors.newFixedThreadPool(DOWNLOAD_THREADS),
                 )
             downloadTracker =
                 DownloadTracker(downloadManager!!)

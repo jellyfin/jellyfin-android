@@ -497,6 +497,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         audioManager.setStreamVolume(stream, scaled, 0)
     }
 
+    @Deprecated("Deprecated in Java")
     @SuppressLint("SwitchIntDef")
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
         val player = playerOrNull ?: return

@@ -61,7 +61,11 @@ class DownloadTracker(downloadManager: DownloadManager) {
     }
 
     private inner class DownloadManagerListener : DownloadManager.Listener {
-        override fun onDownloadChanged(downloadManager: DownloadManager, download: Download, finalException: Exception?) {
+        override fun onDownloadChanged(
+            downloadManager: DownloadManager,
+            download: Download,
+            finalException: Exception?,
+        ) {
             downloads[download.request.uri] = download
             for (listener in listeners) {
                 listener.onDownloadsChanged()

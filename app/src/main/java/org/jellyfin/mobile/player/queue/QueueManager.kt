@@ -349,7 +349,10 @@ class QueueManager(
     }
 
     @CheckResult
-    private fun createDownloadExternalSubtitleMediaSources(source: JellyfinMediaSource, fileUri: String): Array<MediaSource> {
+    private fun createDownloadExternalSubtitleMediaSources(
+        source: JellyfinMediaSource,
+        fileUri: String,
+    ): Array<MediaSource> {
         val downloadDir: String = File(fileUri).parent
         val factory = get<SingleSampleMediaSource.Factory>()
         return source.externalSubtitleStreams.map { stream ->

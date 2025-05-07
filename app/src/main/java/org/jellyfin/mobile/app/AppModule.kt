@@ -13,17 +13,15 @@ import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.SingleSampleMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.upstream.DefaultDataSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.upstream.cache.Cache
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource
-import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
-import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DataSpec
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.ResolvingDataSource
+import com.google.android.exoplayer2.upstream.cache.Cache
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource
+import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
+import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.google.android.exoplayer2.util.Util
 import kotlinx.coroutines.channels.Channel
 import okhttp3.OkHttpClient
@@ -42,11 +40,11 @@ import org.jellyfin.mobile.player.ui.PlayerFragment
 import org.jellyfin.mobile.setup.ConnectionHelper
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
+import org.jellyfin.mobile.utils.extractId
 import org.jellyfin.mobile.utils.isLowRamDevice
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebViewFragment
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
-import org.jellyfin.sdk.model.serializer.toUUID
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.util.AuthorizationHeaderBuilder
 import org.koin.android.ext.koin.androidApplication
@@ -109,7 +107,7 @@ val applicationModule = module {
         cache
     }
 
-    single<DefaultDataSource.Factory> {
+    single<DataSource.Factory> {
         val context: Context = get()
         val apiClient: ApiClient = get()
 
@@ -161,23 +159,11 @@ val applicationModule = module {
         // Create a read-only cache data source factory using the download cache.
         CacheDataSource.Factory()
             .setCache(get())
-            .setUpstreamDataSourceFactory(get<DefaultDataSource.Factory>())
+            .setUpstreamDataSourceFactory(get<DataSource.Factory>())
             .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
             .setCacheWriteDataSinkFactory(null)
             .setCacheKeyFactory { spec ->
-                val uri = spec.uri.toString()
-                val idRegex = Regex("""/([a-f0-9]{32}|[a-f0-9-]{36})/""")
-                val idResult = idRegex.find(uri)
-                val itemId = idResult?.groups?.get(1)?.value.toString()
-                var item = itemId.toUUID().toString()
-
-                val subtitleRegex = Regex("""Subtitles/(\d+)/\d+/Stream.subrip|/(\d+).subrip""")
-                val subtitleResult = subtitleRegex.find(uri)
-                if (subtitleResult != null) {
-                    item += ":${subtitleResult.groups[1]?.value ?: subtitleResult.groups[2]?.value}"
-                }
-
-                item
+                spec.uri.extractId()
             }
     }
 

@@ -9,7 +9,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.MediaMetadata
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
@@ -169,14 +168,14 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
         }
         is RemoteJellyfinMediaSource -> {
             val height = context.resources.getDimensionPixelSize(R.dimen.media_notification_height)
-            
+
             val imageUrl = imageApi.getItemImageUrl(
                 itemId = mediaSource.itemId,
                 imageType = ImageType.PRIMARY,
                 fillHeight = height,
                 tag = mediaSource.item?.imageTags?.get(ImageType.PRIMARY),
             )
-            
+
             val imageRequest = ImageRequest.Builder(context).data(imageUrl).build()
             imageLoader.execute(imageRequest).drawable?.toBitmap()
         }

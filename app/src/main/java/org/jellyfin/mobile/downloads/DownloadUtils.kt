@@ -42,6 +42,7 @@ import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.utils.extractId
 import org.jellyfin.mobile.utils.requestPermission
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.imageApi
@@ -170,8 +171,12 @@ class DownloadUtils(
     }
 
     private fun downloadMediaFile(jellyfinMediaSource: JellyfinMediaSource) {
-        val downloadRequest = DownloadRequest.Builder(contentId, downloadURL.toUri())
+        val downloadUri = downloadURL.toUri()
+        val cacheKey = downloadURL.toUri().extractId()
+
+        val downloadRequest = DownloadRequest.Builder(contentId, downloadUri)
             .setData(jellyfinMediaSource.item!!.name!!.encodeToByteArray())
+            .setCustomCacheKey(cacheKey)
             .build()
         DownloadService.sendAddDownload(
             context,
@@ -205,8 +210,12 @@ class DownloadUtils(
 
     private fun downloadExternalSubtitles(jellyfinMediaSource: JellyfinMediaSource) {
         jellyfinMediaSource.externalSubtitleStreams.forEach {
-            val subtitleDownloadURL: String = apiClient.createUrl(it.deliveryUrl)
-            val downloadRequest = DownloadRequest.Builder("$contentId:${it.index}", subtitleDownloadURL.toUri()).build()
+            val subtitleDownloadURL = apiClient.createUrl(it.deliveryUrl).toUri()
+            val subtitleCacheKey: String = subtitleDownloadURL.extractId()
+
+            val downloadRequest = DownloadRequest.Builder("$contentId:${it.index}", subtitleDownloadURL)
+                .setCustomCacheKey(subtitleCacheKey)
+                .build()
             DownloadService.sendAddDownload(
                 context,
                 JellyfinDownloadService::class.java,
@@ -229,7 +238,7 @@ class DownloadUtils(
     private suspend fun downloadExternalMediaFile(jellyfinMediaSource: JellyfinMediaSource) {
         if (!AndroidVersion.isAtLeastQ) {
             @Suppress("MagicNumber")
-            val granted = withTimeout(2 * 60 * 1000 /* 2 minutes */) {
+            val granted = withTimeout(2 * 60 * 1000) {
                 suspendCoroutine { continuation ->
                     mainActivity.requestPermission(WRITE_EXTERNAL_STORAGE) { requestPermissionsResult ->
                         continuation.resume(requestPermissionsResult[WRITE_EXTERNAL_STORAGE] == PERMISSION_GRANTED)

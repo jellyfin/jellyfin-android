@@ -32,11 +32,11 @@ import org.jellyfin.mobile.downloads.JellyfinDownloadService
 import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.webapp.WebViewFragment
+import org.jellyfin.sdk.model.serializer.toUUID
 import org.koin.android.ext.android.get
 import timber.log.Timber
 import java.io.File
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     if (AndroidVersion.isAtLeastM) {
@@ -197,3 +197,19 @@ fun Context.getDownloadsPaths(): List<String> = ArrayList<String>().apply {
 
 val Context.isLowRamDevice: Boolean
     get() = getSystemService<ActivityManager>()!!.isLowRamDevice
+
+fun Uri.extractId(): String {
+    val uri = toString()
+    val idRegex = Regex("""/([a-f0-9]{32}|[a-f0-9-]{36})/""")
+    val idResult = idRegex.find(uri)
+    val itemId = idResult?.groups?.get(1)?.value.toString()
+    var item = itemId.toUUID().toString()
+
+    val subtitleRegex = Regex("""Subtitles/(\d+)/\d+/Stream.subrip|/(\d+).subrip""")
+    val subtitleResult = subtitleRegex.find(uri)
+    if (subtitleResult != null) {
+        item += ":${subtitleResult.groups[1]?.value ?: subtitleResult.groups[2]?.value}"
+    }
+
+    return item
+}
