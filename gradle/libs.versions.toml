@@ -30,9 +30,9 @@ androidx-webkit = "1.13.0"
 modernandroidpreferences = "2.4.0-beta2"
 
 # Compose
-compose = "1.7.6"
-compose-foundation = "1.7.6"
-compose-material = "1.7.6"
+compose = "1.8.1"
+compose-foundation = "1.8.1"
+compose-material = "1.8.1"
 
 # Network
 jellyfin-sdk = "1.6.8"
