@@ -49,7 +49,7 @@ jellyfin-exoplayer-ffmpegextension = "2.19.1+1"
 playservices = "22.0.0"
 
 # Room
-androidx-room = "2.6.1"
+androidx-room = "2.7.1"
 
 # Monitoring
 timber = "5.0.1"
