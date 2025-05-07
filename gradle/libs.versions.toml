@@ -33,6 +33,7 @@ modernandroidpreferences = "2.4.0-beta2"
 compose = "1.8.1"
 compose-foundation = "1.8.1"
 compose-material = "1.8.1"
+compose-material-icons = "1.7.8"
 
 # Network
 jellyfin-sdk = "1.6.8"
@@ -109,8 +110,8 @@ compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compos
 compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "compose" }
 compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "compose-foundation" }
 compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose-material" }
-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "compose-material" }
-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose-material" }
+compose-material-icons = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "compose-material-icons" }
+compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose-material-icons" }
 
 # Network
 jellyfin-sdk = { group = "org.jellyfin.sdk", name = "jellyfin-core", version.ref = "jellyfin-sdk" }
