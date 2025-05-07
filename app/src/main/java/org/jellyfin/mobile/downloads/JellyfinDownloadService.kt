@@ -41,14 +41,23 @@ class JellyfinDownloadService : DownloadService(
     }
 
     @Suppress("MagicNumber")
-    override fun getForegroundNotification(downloads: MutableList<Download>, notMetRequirements: Int): Notification =
-        NotificationCompat.Builder(this, Constants.DOWNLOAD_NOTIFICATION_CHANNEL_ID)
+    override fun getForegroundNotification(downloads: MutableList<Download>, notMetRequirements: Int): Notification {
+        val inboxStyle = NotificationCompat.InboxStyle()
+
+        downloads.forEach { download ->
+            val progress = download.percentDownloaded
+            inboxStyle.addLine("${Util.fromUtf8Bytes(download.request.data)} - ${progress.toInt()}%")
+        }
+
+        return NotificationCompat.Builder(this, Constants.DOWNLOAD_NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(getString(R.string.downloading))
-            .setContentInfo(getString(R.string.downloading_desc, downloads.size))
             .setOngoing(true)
-            .setProgress(100, downloads.map { it.percentDownloaded }.average().toInt(), false)
+            .setOnlyAlertOnce(true)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setStyle(inboxStyle)
             .build()
+    }
 
     private class TerminalStateNotificationHelper(
         context: Context,
