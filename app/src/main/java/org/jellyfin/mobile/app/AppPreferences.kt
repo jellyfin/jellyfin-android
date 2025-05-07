@@ -90,6 +90,16 @@ class AppPreferences(context: Context) {
             }
         }
 
+    var downloadToInternal: Boolean?
+        get() = sharedPreferences.getBoolean(Constants.PREF_DOWNLOAD_INTERNAL, true)
+        set(value) {
+            if (value != null) {
+                sharedPreferences.edit {
+                    putBoolean(Constants.PREF_DOWNLOAD_METHOD, value)
+                }
+            }
+        }
+
     val musicNotificationAlwaysDismissible: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_MUSIC_NOTIFICATION_ALWAYS_DISMISSIBLE, false)
 

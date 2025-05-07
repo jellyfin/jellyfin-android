@@ -146,6 +146,7 @@ class MediaService : MediaBrowserServiceCompat() {
     }
 
     override fun onDestroy() {
+        super.onDestroy()
         mediaSession.run {
             isActive = false
             release()
@@ -381,6 +382,7 @@ class MediaService : MediaBrowserServiceCompat() {
      * Listen for events from ExoPlayer.
      */
     private inner class PlayerEventListener : Player.Listener {
+        @Deprecated("Deprecated in Java")
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) {
                 Player.STATE_BUFFERING,

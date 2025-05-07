@@ -119,4 +119,20 @@
 
     <string name="pref_category_downloads">Downloads</string>
     <string name="pref_download_location">Download location</string>
+    <string name="view_downloads">View downloads</string>
+    <string name="downloads">Downloads</string>
+    <string name="download_notifications_description">Download notifications</string>
+    <string name="failed_thumbnail">Failed to download thumbnail</string>
+    <string name="failed_information">Failed to retrieve media information</string>
+    <string name="failed_network_method_check">Please check your allowed download methods</string>
+    <string name="confirm_deletion">Confirm deletion</string>
+    <string name="confirm_deletion_desc">Do you want to delete %1$s?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="thumbnail_desc">Thumbnail</string>
+    <string name="store_videos_in_internal_storage">Store videos in internal storage</string>
+    <string name="stored_videos_in_internal_storage_desc">Videos such as movies and TV shows will be stored in the app\'s internal storage. Allowing access from within the app.</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Downloading %1$d titles</string>
+    <string name="downloaded">Downloaded %1$s</string>
 </resources>

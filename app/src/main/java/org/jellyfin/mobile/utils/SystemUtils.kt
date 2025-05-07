@@ -1,17 +1,15 @@
 package org.jellyfin.mobile.utils
 
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.Manifest
 import android.app.Activity
 import android.app.ActivityManager
 import android.app.AlertDialog
-import android.app.DownloadManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Environment
 import android.os.PowerManager
@@ -19,25 +17,30 @@ import android.provider.Settings
 import android.provider.Settings.System.ACCELEROMETER_ROTATION
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.getSystemService
+import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withTimeout
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.data.dao.DownloadDao
+import org.jellyfin.mobile.data.entity.DownloadEntity
+import org.jellyfin.mobile.downloads.DownloadMethod
+import org.jellyfin.mobile.downloads.DownloadUtils
+import org.jellyfin.mobile.downloads.JellyfinDownloadService
+import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.webapp.WebViewFragment
+import org.jellyfin.sdk.model.serializer.toUUID
 import org.koin.android.ext.android.get
 import timber.log.Timber
 import java.io.File
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
-import kotlin.time.Duration.Companion.minutes
 
 fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     if (AndroidVersion.isAtLeastM) {
-        val powerManager: PowerManager = requireContext().getSystemService(Activity.POWER_SERVICE) as PowerManager
+        val powerManager = requireContext().getSystemService(Activity.POWER_SERVICE) as PowerManager
         if (
             !appPreferences.ignoreBatteryOptimizations &&
             !powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)
@@ -60,24 +63,8 @@ fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     }
 }
 
-suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: String) {
+suspend fun MainActivity.requestDownload(uri: Uri, filename: String) {
     val appPreferences: AppPreferences = get()
-
-    // Storage permission for downloads isn't necessary from Android 10 onwards
-    if (!AndroidVersion.isAtLeastQ) {
-        val granted = withTimeout(2.minutes.inWholeMilliseconds) {
-            suspendCoroutine { continuation ->
-                requestPermission(WRITE_EXTERNAL_STORAGE) { requestPermissionsResult ->
-                    continuation.resume(requestPermissionsResult[WRITE_EXTERNAL_STORAGE] == PERMISSION_GRANTED)
-                }
-            }
-        }
-
-        if (!granted) {
-            toast(R.string.download_no_storage_permission)
-            return
-        }
-    }
 
     val downloadMethod = appPreferences.downloadMethod ?: suspendCancellableCoroutine { continuation ->
         AlertDialog.Builder(this)
@@ -105,22 +92,67 @@ suspend fun MainActivity.requestDownload(uri: Uri, title: String, filename: Stri
             .show()
     }
 
-    val downloadRequest = DownloadManager.Request(uri)
-        .setTitle(title)
-        .setDescription(getString(R.string.downloading))
-        .setDestinationUri(Uri.fromFile(File(appPreferences.downloadLocation, filename)))
-        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-
-    downloadFile(downloadRequest, downloadMethod)
-}
-
-private fun Context.downloadFile(request: DownloadManager.Request, @DownloadMethod downloadMethod: Int) {
-    require(downloadMethod >= 0) { "Download method hasn't been set" }
-    request.apply {
-        setAllowedOverMetered(downloadMethod >= DownloadMethod.MOBILE_DATA)
-        setAllowedOverRoaming(downloadMethod == DownloadMethod.MOBILE_AND_ROAMING)
+    val permissionResult: Boolean = suspendCancellableCoroutine { continuation ->
+        requestPermission("android.permission.POST_NOTIFICATIONS") { permissionsMap ->
+            if (permissionsMap[Manifest.permission.POST_NOTIFICATIONS] == PackageManager.PERMISSION_GRANTED) {
+                continuation.resume(true)
+            } else {
+                continuation.cancel(null)
+            }
+        }
     }
-    getSystemService<DownloadManager>()?.enqueue(request)
+
+    if (permissionResult) {
+        val downloadUtils = DownloadUtils(this, filename, uri.toString(), downloadMethod)
+        downloadUtils.download()
+    }
+}
+suspend fun MainActivity.removeDownload(download: LocalJellyfinMediaSource, force: Boolean = false) {
+    if (!force) {
+        val confirmation = suspendCancellableCoroutine { continuation ->
+            AlertDialog.Builder(this)
+                .setTitle(getString(R.string.confirm_deletion))
+                .setMessage(getString(R.string.confirm_deletion_desc, download.name))
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                    continuation.resume(true)
+                }
+                .setNegativeButton(getString(R.string.no)) { _, _ ->
+                    continuation.cancel(null)
+                }
+                .setOnDismissListener {
+                    continuation.cancel(null)
+                }
+                .setCancelable(false)
+                .show()
+        }
+
+        if (!confirmation) return
+    }
+
+    val downloadDao: DownloadDao = get()
+    val downloadEntity: DownloadEntity = requireNotNull(downloadDao.get(download.id))
+    val downloadDir = File(downloadEntity.mediaSource.localDirectoryUri)
+    downloadDao.delete(download.id)
+    downloadDir.deleteRecursively()
+
+    val contentId = download.itemId.toString()
+    // Remove media file
+    DownloadService.sendRemoveDownload(
+        this,
+        JellyfinDownloadService::class.java,
+        contentId,
+        false,
+    )
+
+    // Remove subtitles
+    download.externalSubtitleStreams.forEach {
+        DownloadService.sendRemoveDownload(
+            this,
+            JellyfinDownloadService::class.java,
+            "$contentId:${it.index}",
+            false,
+        )
+    }
 }
 
 fun Activity.isAutoRotateOn() = Settings.System.getInt(contentResolver, ACCELEROMETER_ROTATION, 0) == 1
@@ -165,3 +197,19 @@ fun Context.getDownloadsPaths(): List<String> = ArrayList<String>().apply {
 
 val Context.isLowRamDevice: Boolean
     get() = getSystemService<ActivityManager>()!!.isLowRamDevice
+
+fun Uri.extractId(): String {
+    val uri = toString()
+    val idRegex = Regex("""/([a-f0-9]{32}|[a-f0-9-]{36})/""")
+    val idResult = idRegex.find(uri)
+    val itemId = idResult?.groups?.get(1)?.value.toString()
+    var item = itemId.toUUID().toString()
+
+    val subtitleRegex = Regex("""Subtitles/(\d+)/\d+/Stream.subrip|/(\d+).subrip""")
+    val subtitleResult = subtitleRegex.find(uri)
+    if (subtitleResult != null) {
+        item += ":${subtitleResult.groups[1]?.value ?: subtitleResult.groups[2]?.value}"
+    }
+
+    return item
+}

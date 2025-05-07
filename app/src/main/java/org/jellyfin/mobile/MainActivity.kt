@@ -187,6 +187,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
         for (fragment in supportFragmentManager.fragments) {
             if (fragment is PlayerFragment && fragment.isVisible) {
                 fragment.onUserLeaveHint()

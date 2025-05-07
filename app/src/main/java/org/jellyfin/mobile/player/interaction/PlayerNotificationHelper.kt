@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
@@ -22,8 +23,11 @@ import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
+import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.VIDEO_PLAYER_NOTIFICATION_ID
@@ -35,6 +39,7 @@ import org.jellyfin.sdk.model.api.ImageType
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
+import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinComponent {
@@ -43,6 +48,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     private val notificationManager: NotificationManager? by lazy { context.getSystemService() }
     private val imageApi: ImageApi = get<ApiClient>().imageApi
     private val imageLoader: ImageLoader by inject()
+    private val downloadDao: DownloadDao by inject()
     private val receiverRegistered = AtomicBoolean(false)
 
     val allowBackgroundAudio: Boolean
@@ -66,7 +72,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     fun postNotification() {
         val nm = notificationManager ?: return
         val player = viewModel.playerOrNull ?: return
-        val currentMediaSource = viewModel.queueManager.currentMediaSourceOrNull ?: return
+        val currentMediaSource = viewModel.queueManager.getCurrentMediaSourceOrNull() ?: return
         val hasPrevious = viewModel.queueManager.hasPrevious()
         val hasNext = viewModel.queueManager.hasNext()
         val playbackState = player.playbackState
@@ -148,16 +154,31 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
         }
     }
 
-    private suspend fun loadImage(mediaSource: JellyfinMediaSource): Bitmap? {
-        val height = context.resources.getDimensionPixelSize(R.dimen.media_notification_height)
-        val imageUrl = imageApi.getItemImageUrl(
-            itemId = mediaSource.itemId,
-            imageType = ImageType.PRIMARY,
-            fillHeight = height,
-            tag = mediaSource.item?.imageTags?.get(ImageType.PRIMARY),
-        )
-        val imageRequest = ImageRequest.Builder(context).data(imageUrl).build()
-        return imageLoader.execute(imageRequest).drawable?.toBitmap()
+    private suspend fun loadImage(mediaSource: JellyfinMediaSource) = when (mediaSource) {
+        is LocalJellyfinMediaSource -> {
+            val downloadFolder = File(
+                downloadDao
+                    .get(mediaSource.id)
+                    .let(::requireNotNull)
+                    .asMediaSource()
+                    .localDirectoryUri,
+            )
+            val thumbnailFile = File(downloadFolder, Constants.DOWNLOAD_THUMBNAIL_FILENAME)
+            BitmapFactory.decodeFile(thumbnailFile.canonicalPath)
+        }
+        is RemoteJellyfinMediaSource -> {
+            val height = context.resources.getDimensionPixelSize(R.dimen.media_notification_height)
+
+            val imageUrl = imageApi.getItemImageUrl(
+                itemId = mediaSource.itemId,
+                imageType = ImageType.PRIMARY,
+                fillHeight = height,
+                tag = mediaSource.item?.imageTags?.get(ImageType.PRIMARY),
+            )
+
+            val imageRequest = ImageRequest.Builder(context).data(imageUrl).build()
+            imageLoader.execute(imageRequest).drawable?.toBitmap()
+        }
     }
 
     private fun generateAction(playerNotificationAction: PlayerNotificationAction): Notification.Action {
