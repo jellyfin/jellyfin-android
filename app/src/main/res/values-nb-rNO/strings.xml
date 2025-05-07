@@ -111,4 +111,9 @@
     <string name="wifi_only_summary">Media lastes kun ned på WiFi.</string>
     <string name="mobile_data_summary">Media vil ikke bli lastet ned over WiFi og mobilnett.</string>
     <string name="mobile_data_and_roaming_summary">Media vil bli lastet ned over WiFi, roaming- og mobilnett.</string>
+    <string name="download_notifications_description">Nedlastingsvarsler</string>
+    <string name="failed_thumbnail">Klarte ikke laste ned miniatyrbilde</string>
+    <string name="failed_information">Klarte ikke hente medieinformasjon</string>
+    <string name="view_downloads">Se nedlastinger</string>
+    <string name="downloads">Nedlastinger</string>
 </resources>
