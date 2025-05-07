@@ -1,14 +1,14 @@
 [versions]
 # Plugins
 android-plugin = "8.9.0"
-kotlin = "2.1.10"
+kotlin = "2.1.20"
 kotlin-ksp = "2.1.20-2.0.1"
 detekt = "1.23.8"
 android-junit5 = "1.12.0.0"
 
 # KotlinX
-coroutines = "1.10.1"
-serialization-json = "1.6.3"
+coroutines = "1.10.2"
+serialization-json = "1.8.1"
 
 # Core
 koin = "4.0.4"
