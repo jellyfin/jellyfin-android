@@ -116,4 +116,15 @@
     <string name="failed_information">Klarte ikke hente medieinformasjon</string>
     <string name="view_downloads">Se nedlastinger</string>
     <string name="downloads">Nedlastinger</string>
+    <string name="failed_network_method_check">Vennligst sjekk dine tillatte nedlastingsmetoder</string>
+    <string name="confirm_deletion">Bekreft sletting</string>
+    <string name="thumbnail_desc">Miniatyrbilde</string>
+    <string name="store_videos_in_internal_storage">Oppbevar videoer i intern lagring</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Laster ned %1$d titler</string>
+    <string name="downloaded">Lastet ned %1$s</string>
+    <string name="confirm_deletion_desc">Ønsker du å slette %1$s?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nei</string>
+    <string name="stored_videos_in_internal_storage_desc">Videoer som filmer og TV-serier vil bli lagret i appens interne lagringsminne. Tillat tilgang fra inne i appen.</string>
 </resources>
