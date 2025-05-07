@@ -113,4 +113,20 @@
     <string name="wifi_only_summary">Multimedia będą pobierane wyłącznie przez Wi-Fi.</string>
     <string name="mobile_data_summary">Multimedia będą pobierane przez Wi-Fi i sieci komórkowe.</string>
     <string name="mobile_data_and_roaming_summary">Multimedia będą pobierane przez Wi-Fi, sieci komórkowe i roamingowe.</string>
+    <string name="downloads">Pobrane</string>
+    <string name="failed_network_method_check">Sprawdź dozwolone metody pobierania</string>
+    <string name="confirm_deletion">Potwierdź usunięcie</string>
+    <string name="confirm_deletion_desc">Czy chcesz usunąć %1$s?</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="thumbnail_desc">Miniaturka</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Pobieranie tytułów: %1$d</string>
+    <string name="downloaded">Pobrane %1$s</string>
+    <string name="view_downloads">Zobacz pobrane</string>
+    <string name="download_notifications_description">Powiadomienia o pobieraniu</string>
+    <string name="failed_thumbnail">Nie udało się pobrać miniatury</string>
+    <string name="failed_information">Nie udało się pobrać informacji o multimediach</string>
+    <string name="store_videos_in_internal_storage">Przechowuj filmy w pamięci wewnętrznej</string>
+    <string name="stored_videos_in_internal_storage_desc">Wideo, takie jak filmy i programy telewizyjne, będą przechowywane w pamięci wewnętrznej aplikacji. Zezwalając na dostęp z poziomu aplikacji.</string>
 </resources>
