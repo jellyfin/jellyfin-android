@@ -111,4 +111,14 @@
     <string name="mobile_data_summary">Media zal via WiFi en mobiele netwerken worden gedownload.</string>
     <string name="wifi_only_summary">Media zal alleen via WiFi worden gedownload.</string>
     <string name="mobile_data_and_roaming_summary">Media zal via WiFi, mobiele- en roaming-netwerken worden gedownload.</string>
+    <string name="downloads">Downloads</string>
+    <string name="failed_thumbnail">Miniatuur downloaden mislukt</string>
+    <string name="failed_information">Media-informatie ophalen mislukt</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nee</string>
+    <string name="confirm_deletion">Verwijderen bevestigen</string>
+    <string name="confirm_deletion_desc">Wil je \"%1$s\" verwijderen?</string>
+    <string name="view_downloads">Downloads weergeven</string>
+    <string name="download_notifications_description">Downloadmeldingen</string>
+    <string name="thumbnail_desc">Miniatuur</string>
 </resources>
