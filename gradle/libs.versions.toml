@@ -11,8 +11,8 @@ coroutines = "1.10.1"
 serialization-json = "1.6.3"
 
 # Core
-koin = "4.0.2"
-koin-compose = "4.0.2"
+koin = "4.0.4"
+koin-compose = "4.0.4"
 androidx-core = "1.16.0"
 androidx-core-splashscreen = "1.0.1"
 androidx-appcompat = "1.7.0"
