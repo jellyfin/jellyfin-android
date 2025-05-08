@@ -64,6 +64,7 @@ class ExternalPlayer(
             Constants.MPV_PLAYER_RESULT_ACTION -> handleMPVPlayer(resultCode, intent)
             Constants.MX_PLAYER_RESULT_ACTION -> handleMXPlayer(resultCode, intent)
             Constants.VLC_PLAYER_RESULT_ACTION -> handleVLCPlayer(resultCode, intent)
+            Constants.MPVKT_PLAYER_RESULT_ACTION -> handleMPVKTPlayer(resultCode, intent)
             else -> {
                 if (action != null && resultCode != Activity.RESULT_CANCELED) {
                     Timber.d("Unknown action $action [resultCode=$resultCode]")
@@ -289,6 +290,29 @@ class ExternalPlayer(
         }
     }
 
+    private fun handleMPVKTPlayer(resultCode: Int, data: Intent) {
+        val player = "mpvKt Player"
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                val position = data.getIntExtra("position", 0)
+                if (position > 0) {
+                    Timber.d("Playback stopped [player=$player, position=$position]")
+                    notifyEvent(Constants.EVENT_TIME_UPDATE, "$position")
+                    notifyEvent(Constants.EVENT_ENDED)
+                } else {
+                    Timber.d("Playback completed [player=$player]")
+                    notifyEvent(Constants.EVENT_TIME_UPDATE)
+                    notifyEvent(Constants.EVENT_ENDED)
+                }
+            }
+            else -> {
+                Timber.d("Invalid state [player=$player, resultCode=$resultCode]")
+                notifyEvent(Constants.EVENT_CANCELED)
+                context.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
+            }
+        }
+    }
+
     /**
      * To ensure that the correct activity is called.
      */
@@ -302,6 +326,9 @@ class ExternalPlayer(
             }
             ExternalPlayerPackage.VLC_PLAYER -> {
                 ComponentName(packageName, "$packageName.StartActivity")
+            }
+            ExternalPlayerPackage.MPVKT_PLAYER -> {
+                ComponentName(packageName, "$packageName.ui.player.PlayerActivity")
             }
             else -> null
         }
