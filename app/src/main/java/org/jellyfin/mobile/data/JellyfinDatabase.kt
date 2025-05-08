@@ -10,7 +10,17 @@ import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.mobile.data.entity.UserEntity
 
-@Database(entities = [ServerEntity::class, UserEntity::class, DownloadEntity::class], version = 3, autoMigrations = [ AutoMigration (from = 2, to = 3) ])
+@Database(
+    entities = [
+        ServerEntity::class,
+        UserEntity::class,
+        DownloadEntity::class,
+    ],
+    version = 3,
+    autoMigrations = [
+        AutoMigration(from = 2, to = 3),
+    ],
+)
 abstract class JellyfinDatabase : RoomDatabase() {
     abstract val serverDao: ServerDao
     abstract val userDao: UserDao
