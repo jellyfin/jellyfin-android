@@ -60,8 +60,6 @@ android {
             signingConfig = releaseSigningConfig
         }
         getByName("debug") {
-            isMinifyEnabled = false
-            isShrinkResources = false
             applicationIdSuffix = ".debug"
             isDebuggable = true
             aaptOptions.cruncherEnabled = false

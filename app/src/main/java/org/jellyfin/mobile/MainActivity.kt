@@ -193,7 +193,6 @@ class MainActivity : AppCompatActivity() {
                 fragment.onUserLeaveHint()
             }
         }
-        super.onUserLeaveHint()
     }
 
     override fun onStop() {
