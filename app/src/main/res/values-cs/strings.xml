@@ -112,4 +112,20 @@
     <string name="wifi_only_summary">Média budou stažena pouze přes WiFi.</string>
     <string name="mobile_data_summary">Média budou stažena přes WiFi a mobilní sítě.</string>
     <string name="mobile_data_and_roaming_summary">Média budou stažena přes WiFi, mobilní sítě a mobilní sítě v roamingu.</string>
+    <string name="view_downloads">Zobrazit stažené</string>
+    <string name="failed_thumbnail">Nepodařilo se stáhnout náhled</string>
+    <string name="download_notifications_description">Upozornění na stažení</string>
+    <string name="failed_information">Nepovedlo se získat informace o médiu</string>
+    <string name="failed_network_method_check">Zkontrolujte, prosím, povolené způsoby stahování</string>
+    <string name="thumbnail_desc">Náhled</string>
+    <string name="yes">Ano</string>
+    <string name="store_videos_in_internal_storage">Uložit videa ve vnitřním úložišti</string>
+    <string name="stored_videos_in_internal_storage_desc">Videa jako jsou filmy a seriály budou uložena ve vnitřním úložišti aplikace. Přístup k nim bude povolen v rámci aplikace.</string>
+    <string name="downloaded">Staženo %1$s</string>
+    <string name="downloads">Stažené</string>
+    <string name="confirm_deletion">Potvrďte smazání</string>
+    <string name="confirm_deletion_desc">Chcete smazat %1$s?</string>
+    <string name="no">Ne</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Stahování %1$d titulů</string>
 </resources>
