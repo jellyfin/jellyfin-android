@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">Mobilius ir Tarptinklinius Tinklus</string>
     <string name="mobile_data">Mobilius Tinklus</string>
     <string name="wifi_only">Tik WiFi</string>
-    <string name="network_message">Ar norite leisti duomenų siuntimą per mobilius arba tarptinklinius tinklus? Charges from your provider may apply.</string>
+    <string name="network_message">Ar norite leisti duomenų siuntimą per mobilius arba tarptinklinius tinklus? Gali būti taikomi tiekėjo mokesčiai. Šį nustatymą galėsite pakeisti vėliau.</string>
     <string name="network_title">Leidžiamos Tinklo Rūšys</string>
     <string name="battery_optimizations_message">Prašome išjungti baterijos optimizavimą, tam kad medijos atkūrimas veiktų išjungus ekraną.</string>
     <string name="activity_name_settings">Jellyfin Nustatymai</string>
@@ -67,4 +67,24 @@
     <string name="dialog_web_view_not_supported_message">Šis prietaisas nepalaiko WebViews.
 \nĮdiekite suderinamą WebView realizaciją arba pereikite prie palaikomo įrenginio.</string>
     <string name="dialog_web_view_not_supported">WebView nepalaikomas</string>
+    <string name="connection_error_unsupported_version_or_product">Nepalaikoma versija ar produktas</string>
+    <string name="bluetooth_permission_continue">Tęsti</string>
+    <string name="bluetooth_permission_granted">Bluetooth prieiga suteikta</string>
+    <string name="player_error_unspecific_exception">Kažkas atsitiko grotuvui</string>
+    <string name="button_use_different_server">Naudoti kitą serverį</string>
+    <string name="connection_error_cannot_connect">Nepavyko prisijungti.
+\nPatikrinkite pavadinimą ir tinklo ryšį.</string>
+    <string name="wifi_only_summary">Turinys bus siunčiamas tik per WiFi.</string>
+    <string name="mobile_data_summary">Turinys bus siunčiamas per WiFi ir mobilius duomenis.</string>
+    <string name="mobile_data_and_roaming_summary">Turinys bus siunčiamas per WiFi, mobilius duomenis ir tarptinkliniu ryšiu.</string>
+    <string name="menu_item_software_decoding">Programinis dekodavimas</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Bandyta %d netinkami kandidatai įvesčiai.</item>
+        <item quantity="few">Bandyta %d netinkami kandidatai įvesčiai.</item>
+        <item quantity="other">Bandyta %d netinkamų kandidatų įvesčiai.</item>
+    </plurals>
+    <string name="menu_item_hardware_decoding">Aparatūrinis dekodavimas</string>
+    <string name="bluetooth_permission_title">Leisti Bluetooth prieigą?</string>
+    <string name="bluetooth_permission_message">Programa reikalauja Bluetooth prieigos, kad atpažinti kada atjungiamos bevielės ausinės ar garsiakalbiai. Android operacinėje sistemoje, tai vadinama prieiga prie artimų įrenginių, bei joje įspėjama, kad Bluetooth įrenginiai gali būti naudojami gauti dabartinę lokaciją. Jellyfin programa niekada nenaudos šios prieigos aptikti lokaciją.</string>
+    <string name="menu_item_auto">Automatiškai</string>
 </resources>

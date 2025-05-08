@@ -71,6 +71,10 @@ window.NativeShell = {
         window.NativeInterface.openClientSettings();
     },
 
+    openDownloads() {
+        window.NativeInterface.openDownloads();
+    },
+
     selectServer() {
         window.NativeInterface.openServerSelection();
     },

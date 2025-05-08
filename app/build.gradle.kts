@@ -6,7 +6,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.androidx.room)
     alias(libs.plugins.detekt)
     alias(libs.plugins.android.junit5)
 }
@@ -14,7 +16,7 @@ plugins {
 detekt {
     buildUponDefaultConfig = true
     allRules = false
-    config = files("${rootProject.projectDir}/detekt.yml")
+    config.setFrom("${rootProject.projectDir}/detekt.yml")
     autoCorrect = true
 }
 
@@ -27,7 +29,7 @@ kotlin {
 
 android {
     namespace = "org.jellyfin.mobile"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 21
@@ -101,11 +103,9 @@ android {
         abortOnError = false
         sarifReport = true
     }
-}
-
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-    arg("room.incremental", "true")
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -113,6 +113,7 @@ dependencies {
 
     // Kotlin
     implementation(libs.bundles.coroutines)
+    implementation(libs.kotlin.serialization.json)
 
     // Core
     implementation(libs.bundles.koin)
@@ -146,6 +147,7 @@ dependencies {
         }
     }
     implementation(libs.okhttp)
+    implementation(libs.okio)
     implementation(libs.coil)
     implementation(libs.cronet.embedded)
 
@@ -162,6 +164,7 @@ dependencies {
 
     // Room
     implementation(libs.bundles.androidx.room)
+    implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
     // Monitoring

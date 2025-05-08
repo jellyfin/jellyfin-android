@@ -22,7 +22,7 @@
     <string name="mobile_data_and_roaming">Të dhëna celulare &amp; Roaming</string>
     <string name="mobile_data">Të dhëna Celulare</string>
     <string name="wifi_only">Vetëm Wi-Fi</string>
-    <string name="network_message">Dëshironi të lejoni të shkarkoni me të dhenat celulare (mobile data) ose kur keni rrjet roaming? Mund të zbatohen tarifa nga operatori juaj .</string>
+    <string name="network_message">Dëshironi të lejoni të shkarkoni me të dhenat celulare (mobile data) ose kur keni rrjet roaming? Mund të aplikohen tarifa nga operatori juaj celular. Mund ta ndryshosh këtë opsion më vonë tek cilësimet.</string>
     <string name="network_title">Llojet e lejuara të rrjetit</string>
     <string name="battery_optimizations_message">Ju lutemi çaktivizoni optimizimet e baterisë për luajtjen e medias ndërsa ekrani është i fikur.</string>
     <string name="connect_button_text">Lidhu</string>
@@ -92,4 +92,23 @@
     <string name="dialog_web_view_not_supported_message">WebViews nuk mbështeten nga kjo pajisje.
 \nInstaloni një zbatim të përputhshëm të WebView ose kaloni në një pajisje që përkrahet.</string>
     <string name="dialog_web_view_not_supported">WebView nuk mbështetet</string>
+    <string name="menu_item_auto">Auto</string>
+    <string name="menu_item_hardware_decoding">Dekodim në hardware</string>
+    <string name="pref_exoplayer_direct_play_ass">Lejo titrat SSA/ASS ne direct play</string>
+    <string name="wifi_only_summary">Mediat do të shkarkohen vetëm përmes WiFi.</string>
+    <string name="mobile_data_summary">Mediat do të shkarkohen përmes WiFi dhe rrjeteve mobile.</string>
+    <string name="mobile_data_and_roaming_summary">Mediat do të shkarkohen përmes WiFi, rrjeteve mobile dhe rrjeteve roaming.</string>
+    <string name="menu_item_software_decoding">Dekodim në software</string>
+    <string name="video_player_integrated">Player i integruar</string>
+    <string name="bluetooth_permission_title">Lejo akses në bluetooth?</string>
+    <string name="button_use_different_server">Përdor server tjetër</string>
+    <string name="bluetooth_permission_granted">Aksesi në Bluetooth u lejua</string>
+    <string name="player_error_unspecific_exception">Diçka nuk eci sic duhet</string>
+    <string name="bluetooth_permission_continue">Vazhdo</string>
+    <string name="playback_info_stream_unknown_title">i/e panjohur</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Luaj videot në modalitetin landscape me orientim landscape</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Parandalo transkodimin dhe shfaq titrat vetëm me stilim bazë. Stilimi i avancuar i titrave nuk do të jetë i disponueshëm nëse kjo veçori është e aktivizuar.</string>
+    <string name="pref_subtitle_style_summary">Mund ta ndryshosh stilin e titrave në cilësimet e Android-it</string>
+    <string name="pref_subtitle_style">Përshtat stilin e titrave</string>
+    <string name="bluetooth_permission_message">Për të gjetur kur shkëputen kufjet ose altoparlantët wireless, aplikacioni kërkon akses në Bluetooth. Në Android, kjo leje përshkruhet si akses në pajisjet afër dhe paralajmëron se pajisjet Bluetooth mund të përdoren për të përcaktuar vendndodhjen aktuale. Megjithatë, aplikacioni Jellyfin nuk do ta përdorë kurrë këtë leje për të zbuluar vendndodhjen tënde.</string>
 </resources>

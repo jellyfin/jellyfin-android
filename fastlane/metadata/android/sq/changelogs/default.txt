@@ -1,0 +1,3 @@
+Faleminderit që përdor Jellyfin për Android! Rekomandohet gjithmonë të përdorësh versionin më të fundit të Jellyfin Server.
+
+Për më shumë informacion, shiko blogun tonë në jellyfin.org ose lexo listën e plotë të ndryshimeve në GitHub.

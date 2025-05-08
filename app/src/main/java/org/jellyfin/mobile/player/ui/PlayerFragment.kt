@@ -20,6 +20,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.setPadding
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -87,6 +88,9 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val window = requireActivity().window
+        playerFullscreenHelper = PlayerFullscreenHelper(window)
+
         // Observe ViewModel
         viewModel.player.observe(this) { player ->
             playerView.player = player
@@ -143,7 +147,6 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val window = requireActivity().window
 
         // Insets handling
         ViewCompat.setOnApplyWindowInsetsListener(playerBinding.root) { _, insets ->
@@ -153,15 +156,26 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
                 AndroidVersion.isAtLeastR -> insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
                 else -> insets.getInsets(WindowInsetsCompat.Type.systemBars())
             }
-            playerControlsView.updatePadding(
-                top = systemInsets.top,
-                left = systemInsets.left,
-                right = systemInsets.right,
-                bottom = systemInsets.bottom,
-            )
+            if (playerFullscreenHelper.isFullscreen) {
+                playerView.setPadding(0)
+                playerControlsView.updatePadding(
+                    left = systemInsets.left,
+                    top = systemInsets.top,
+                    right = systemInsets.right,
+                    bottom = systemInsets.bottom,
+                )
+            } else {
+                playerView.updatePadding(
+                    left = systemInsets.left,
+                    top = systemInsets.top,
+                    right = systemInsets.right,
+                    bottom = systemInsets.bottom,
+                )
+                playerControlsView.setPadding(0) // Padding is handled by PlayerView
+            }
             playerOverlay.updatePadding(
-                top = systemInsets.top,
                 left = systemInsets.left,
+                top = systemInsets.top,
                 right = systemInsets.right,
                 bottom = systemInsets.bottom,
             )
@@ -175,7 +189,6 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
             insets
         }
-        ViewCompat.requestApplyInsets(view)
 
         // Handle toolbar back button
         toolbar.setNavigationOnClickListener { parentFragmentManager.popBackStack() }
@@ -186,7 +199,6 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         // Set controller timeout
         suppressControllerAutoHide(false)
 
-        playerFullscreenHelper = PlayerFullscreenHelper(window)
         playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
         playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)
 
@@ -208,17 +220,6 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         if (isLandscape()) {
             playerFullscreenHelper.enableFullscreen()
         }
-    }
-
-    /**
-     * Exit fullscreen on first back-button press, otherwise exit directly
-     */
-    override fun onInterceptBackPressed(): Boolean = when {
-        playerFullscreenHelper.isFullscreen -> {
-            toggleFullscreen()
-            true
-        }
-        else -> super.onInterceptBackPressed()
     }
 
     /**
@@ -250,7 +251,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
      */
     private fun toggleFullscreen() {
         val videoTrack = currentVideoStream
-        if (videoTrack == null || videoTrack.width!! >= videoTrack.height!!) {
+        if (videoTrack == null || videoTrack.isLandscape) {
             val current = resources.configuration.orientation
             requireActivity().requestedOrientation = when (current) {
                 Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE

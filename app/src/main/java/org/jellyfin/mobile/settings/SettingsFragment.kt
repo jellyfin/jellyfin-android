@@ -24,9 +24,9 @@ import de.Maxr1998.modernpreferences.preferences.choice.SelectionItem
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.databinding.FragmentSettingsBinding
+import org.jellyfin.mobile.downloads.DownloadMethod
 import org.jellyfin.mobile.utils.BackPressInterceptor
 import org.jellyfin.mobile.utils.Constants
-import org.jellyfin.mobile.utils.DownloadMethod
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.extensions.requireMainActivity
 import org.jellyfin.mobile.utils.getDownloadsPaths
@@ -168,6 +168,11 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 R.string.external_player_vlc_player,
                 R.string.external_player_vlc_player_description,
             ),
+            SelectionItem(
+                ExternalPlayerPackage.MPVKT_PLAYER,
+                R.string.external_player_mpvkt,
+                R.string.external_player_mpvkt_description,
+            ),
         ).filter { item ->
             item.key == ExternalPlayerPackage.SYSTEM_DEFAULT || packageManager.isPackageInstalled(item.key)
         }
@@ -224,6 +229,12 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
             initialSelection = Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                 .absolutePath
+        }
+
+        checkBox(Constants.PREF_DOWNLOAD_INTERNAL) {
+            titleRes = R.string.store_videos_in_internal_storage
+            summaryRes = R.string.stored_videos_in_internal_storage_desc
+            defaultValue = true
         }
     }
 

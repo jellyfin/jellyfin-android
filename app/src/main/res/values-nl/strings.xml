@@ -100,8 +100,8 @@
     <string name="pref_subtitle_style">Ondertitelingsstijl aanpassen</string>
     <string name="pref_subtitle_style_summary">Je kunt de ondertitelingsstijl aanpassen in de Android-instellingen</string>
     <string name="player_error_unspecific_exception">Er is iets misgegaan met de speler</string>
-    <string name="menu_item_hardware_decoding">Hardware-decoderen</string>
-    <string name="menu_item_software_decoding">Software-decoderen</string>
+    <string name="menu_item_hardware_decoding">Hardwarematig decoderen</string>
+    <string name="menu_item_software_decoding">Softwarematig decoderen</string>
     <string name="button_use_different_server">Andere server gebruiken</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Horizontale video\'s in horizontale oriëntatie starten</string>
     <string name="bluetooth_permission_continue">Doorgaan</string>
@@ -111,4 +111,20 @@
     <string name="mobile_data_summary">Media zal via WiFi en mobiele netwerken worden gedownload.</string>
     <string name="wifi_only_summary">Media zal alleen via WiFi worden gedownload.</string>
     <string name="mobile_data_and_roaming_summary">Media zal via WiFi, mobiele- en roaming-netwerken worden gedownload.</string>
+    <string name="downloads">Downloads</string>
+    <string name="failed_thumbnail">Miniatuur downloaden mislukt</string>
+    <string name="failed_information">Media-informatie ophalen mislukt</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nee</string>
+    <string name="confirm_deletion">Verwijderen bevestigen</string>
+    <string name="confirm_deletion_desc">Wil je \"%1$s\" verwijderen?</string>
+    <string name="view_downloads">Downloads weergeven</string>
+    <string name="download_notifications_description">Downloadmeldingen</string>
+    <string name="thumbnail_desc">Miniatuur</string>
+    <string name="downloading_desc">%1$d titels downloaden</string>
+    <string name="tv_show_desc">%1$s - S%2$dA%3$d</string>
+    <string name="store_videos_in_internal_storage">Video\'s bewaren in interne opslag</string>
+    <string name="downloaded">%1$s gedownload</string>
+    <string name="failed_network_method_check">Controleer je toegelaten downloadmethoden</string>
+    <string name="stored_videos_in_internal_storage_desc">Video\'s zoals films en tv-series worden bewaard in de interne opslag van de app. Ze zijn dan toegankelijk vanuit de app zelf.</string>
 </resources>

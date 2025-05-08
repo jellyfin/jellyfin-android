@@ -39,7 +39,7 @@
     <string name="choose_server_button_text">సర్వర్‌ని ఎంచుకోండి</string>
     <string name="available_servers_title">అందుబాటులో ఉన్న సర్వర్లు</string>
     <string name="battery_optimizations_message">దయచేసి స్క్రీన్ ఆఫ్‌లో ఉన్నప్పుడు మీడియా ప్లేబ్యాక్ కోసం బ్యాటరీ ఆప్టిమైజేషన్‌లను నిలిపివేయండి.</string>
-    <string name="network_message">మీరు డౌన్‌లోడ్‌ను మొబైల్ డేటా లేదా రోమింగ్ నెట్‌వర్క్‌లలో అమలు చేయడానికి అనుమతించాలనుకుంటున్నారా? మీ ప్రొవైడర్ నుండి ఛార్జీలు వర్తించవచ్చు.</string>
+    <string name="network_message">మీరు డౌన్‌లోడ్‌ను మొబైల్ డేటా లేదా రోమింగ్ నెట్‌వర్క్‌లలో అమలు చేయడానికి అనుమతించాలనుకుంటున్నారా? మీ ప్రొవైడర్ నుండి ఛార్జీలు వర్తించవచ్చు. మీరు ఈ ఐఛ్చికాన్ని తరువాత అమరకల నుంచి మార్చవచ్చు.</string>
     <string name="wifi_only">WiFi మాత్రమే</string>
     <string name="mobile_data">మొబైల్ డేటా</string>
     <string name="mobile_data_and_roaming">మొబైల్ డేటా &amp; రోమింగ్</string>
@@ -105,4 +105,5 @@
     <string name="mobile_data_summary">మీడియా WiFi మరియు మొబైల్ నెట్‌వర్క్‌ల ద్వారా డౌన్‌లోడ్ చేయబడుతుంది.</string>
     <string name="button_use_different_server">వేరే సర్వర్‌ని ఉపయోగించండి</string>
     <string name="wifi_only_summary">మీడియా WiFi ద్వారా మాత్రమే డౌన్‌లోడ్ చేయబడుతుంది.</string>
+    <string name="player_error_unspecific_exception">ప్లేయర్ లో ఎదో తప్పు జరిగింది</string>
 </resources>

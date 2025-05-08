@@ -1,0 +1,14 @@
+Jūsu multivide, pēc jūsu noteikumiem
+
+Jellyfin projekts ir atvērtā koda bezmaksas programmatūras multivides serveris. Nav maksas, nav izsekošanas, nav slēptu nolūku. Iegūstiet mūsu bezmaksas serveri, lai vienuviet apkopotu visus jūsu audio, video, fotoattēlu failus un daudz ko citu.
+
+Lai izmantotu šo lietotni, ir jāiestata un jāiedarbina Jellyfin serveris. Uzziniet vairāk šeit <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
+
+Ar Jellyfin serveri jūs varat:
+
+*Skatīties TV tiešraides un ierakstītos raidījumus no Jellyfin servera (nepieciešama papildus aparatūra/pakalpojumi)
+*Straumēšana uz Chromecast ierīci jūsu tīklā
+*Straumējiet multivides saturu uz Android ierīci
+*Skatiet savu kolekciju viegli lietojamā saskarnē
+
+Šī ir oficiālā Jellyfin pavadošā lietotne operētājsistēmai Android. Paldies, ka izmantojat Jellyfin!
