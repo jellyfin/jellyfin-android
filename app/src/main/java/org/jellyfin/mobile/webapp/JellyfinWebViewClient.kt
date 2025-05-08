@@ -1,6 +1,5 @@
 package org.jellyfin.mobile.webapp
 
-import android.net.Uri
 import android.net.http.SslError
 import android.webkit.SslErrorHandler
 import android.webkit.WebResourceRequest
@@ -84,7 +83,7 @@ abstract class JellyfinWebViewClient(
         val errorMessage = errorResponse.data?.run { bufferedReader().use(Reader::readText) }
         Timber.e("Received WebView HTTP %d error: %s", errorResponse.statusCode, errorMessage)
 
-        if (request.url == Uri.parse(view.url)) onErrorReceived()
+        if (request.isForMainFrame) onErrorReceived()
     }
 
     override fun onReceivedError(
@@ -103,21 +102,11 @@ abstract class JellyfinWebViewClient(
         Timber.e("Received WebView error %d at %s: %s", errorCode, request.url.toString(), description)
 
         // Abort on some specific error codes or when the request url matches the server url
-        when (errorCode) {
-            ERROR_HOST_LOOKUP,
-            ERROR_CONNECT,
-            ERROR_TIMEOUT,
-            ERROR_REDIRECT_LOOP,
-            ERROR_UNSUPPORTED_SCHEME,
-            ERROR_FAILED_SSL_HANDSHAKE,
-            -> onErrorReceived()
-            else -> if (request.url == Uri.parse(view.url)) onErrorReceived()
-        }
+        if (request.isForMainFrame) onErrorReceived()
     }
 
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
         Timber.e("Received SSL error: %s", error.toString())
         handler.cancel()
-        onErrorReceived()
     }
 }
