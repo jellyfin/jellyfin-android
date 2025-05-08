@@ -127,4 +127,6 @@
     <string name="downloaded">%1$s gedownload</string>
     <string name="failed_network_method_check">Controleer je toegelaten downloadmethoden</string>
     <string name="stored_videos_in_internal_storage_desc">Video\'s zoals films en tv-series worden bewaard in de interne opslag van de app. Ze zijn dan toegankelijk vanuit de app zelf.</string>
+    <string name="external_player_mpvkt_description">Een op mpv-android gebaseerde mediaspeler, met als doel een betere interface te bieden dan het origineel.</string>
+    <string name="external_player_mpvkt">mpvKt Player</string>
 </resources>
