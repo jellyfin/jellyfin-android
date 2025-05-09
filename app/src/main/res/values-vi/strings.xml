@@ -110,4 +110,6 @@
     <string name="mobile_data_and_roaming_summary">Phương tiện sẽ được tải xuống qua WiFi, mạng di động và chuyển vùng.</string>
     <string name="wifi_only_summary">Phương tiện sẽ chỉ được tải xuống qua WiFi.</string>
     <string name="mobile_data_summary">Phương tiện sẽ được tải xuống qua WiFi và mạng di động.</string>
+    <string name="external_player_mpvkt">Trình phát mpvKt</string>
+    <string name="external_player_mpvkt_description">Một trình phát phương tiện dựa trên mpv-android nhằm mục đích cung cấp giao diện người dùng đẹp hơn so với bản gốc.</string>
 </resources>
