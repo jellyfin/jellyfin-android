@@ -2,7 +2,7 @@
 <resources>
     <string name="pref_download_location">Lokalizacja pobranych</string>
     <string name="pref_category_downloads">Pobrane</string>
-    <string name="external_player_system_default">Domyśle systemu</string>
+    <string name="external_player_system_default">Domyślny systemu</string>
     <string name="video_player_external">Zewnętrzny odtwarzacz</string>
     <string name="pref_video_player_type_title">Typ odtwarzacza wideo</string>
     <string name="pref_category_video_player">Odtwarzacz wideo</string>
@@ -129,4 +129,6 @@
     <string name="failed_information">Nie udało się pobrać informacji o multimediach</string>
     <string name="store_videos_in_internal_storage">Przechowuj filmy w pamięci wewnętrznej</string>
     <string name="stored_videos_in_internal_storage_desc">Wideo, takie jak filmy i programy telewizyjne, będą przechowywane w pamięci wewnętrznej aplikacji. Zezwalając na dostęp z poziomu aplikacji.</string>
+    <string name="external_player_mpvkt">Odtwarzacz mpvKt</string>
+    <string name="external_player_mpvkt_description">Odtwarzacz multimedialny bazujący na mpv-android, którego celem jest zapewnienie przyjemniejszego interfejsu użytkownika niż oryginał.</string>
 </resources>
