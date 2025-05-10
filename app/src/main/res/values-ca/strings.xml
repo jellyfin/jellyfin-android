@@ -111,4 +111,24 @@
     <string name="wifi_only_summary">Els continguts multimèdia només es baixaran mitjançant WiFi.</string>
     <string name="mobile_data_summary">Els continguts multimèdia només es baixaran mitjançant WiFi i xarxes mòbils.</string>
     <string name="mobile_data_and_roaming_summary">Els continguts multimèdia només es baixaran mitjançant WiFi, i xarxes mòbils i d\'itinerància.</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Mantingueu premut per accelerar</string>
+    <string name="confirm_deletion">Confirmar eliminació</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Manteniu premuda la pantalla per accelerar temporalment la reproducció</string>
+    <string name="external_player_mpvkt">Reproductor mpvKt</string>
+    <string name="external_player_mpvkt_description">Un reproductor multimèdia basat en mpv-android amb l\'objectiu de proporcionar una interfície d\'usuari més agradable que l\'original.</string>
+    <string name="confirm_deletion_desc">Vols eliminar %1$s?</string>
+    <string name="no">No</string>
+    <string name="thumbnail_desc">Miniatura</string>
+    <string name="stored_videos_in_internal_storage_desc">Els vídeos, com ara pel·lícules i programes de televisió, s\'emmagatzemaran a l\'emmagatzematge intern de l\'aplicació. Permetent-hi l\'accés des de dins l\'aplicació.</string>
+    <string name="view_downloads">Veure descarregues</string>
+    <string name="downloads">Descàrregues</string>
+    <string name="download_notifications_description">Notificacions de descàrrega</string>
+    <string name="failed_thumbnail">No s\'ha pogut descarregar la miniatura</string>
+    <string name="failed_information">No s\'ha pogut obtenir la informació multimèdia</string>
+    <string name="failed_network_method_check">Si us plau, comprova els teus mètodes de descàrrega permesos</string>
+    <string name="yes">Si</string>
+    <string name="store_videos_in_internal_storage">Emmagatzemar vídeos a l\'emmagatzematge intern</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Descarregant %1$d títols</string>
+    <string name="downloaded">Descarregats %1$s</string>
 </resources>
