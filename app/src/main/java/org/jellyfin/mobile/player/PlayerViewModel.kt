@@ -484,14 +484,14 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         return false
     }
 
-    fun setPressSpeedUp(isPressing: Boolean, speed: Float) : Boolean {
+    fun setPressSpeedUp(isPressing: Boolean, speed: Float): Boolean {
         if (!isPressing) {
-            return setPlaybackSpeed(playSpeed);
+            return setPlaybackSpeed(playSpeed)
         }
         val player = playerOrNull ?: return false
         val parameters = player.playbackParameters
         playSpeed = parameters.speed
-        return setPlaybackSpeed(speed);
+        return setPlaybackSpeed(speed)
     }
 
     fun stop() {

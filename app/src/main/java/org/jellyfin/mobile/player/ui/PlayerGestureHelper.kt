@@ -37,7 +37,7 @@ class PlayerGestureHelper(
     private val gestureIndicatorOverlayLayout: LinearLayout by playerBinding::gestureOverlayLayout
     private val gestureIndicatorOverlayImage: ImageView by playerBinding::gestureOverlayImage
     private val gestureIndicatorOverlayProgress: ProgressBar by playerBinding::gestureOverlayProgress
-    private var isOnPressingSpeedUp = false;
+    private var isOnPressingSpeedUp = false
 
     init {
         if (appPreferences.exoPlayerRememberBrightness) {

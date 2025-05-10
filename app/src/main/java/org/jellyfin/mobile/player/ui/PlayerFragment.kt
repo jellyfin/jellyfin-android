@@ -318,7 +318,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     }
 
     fun onPressSpeedUp(isPressing: Boolean): Boolean {
-        return viewModel.setPressSpeedUp(isPressing, 3f)
+        return viewModel.setPressSpeedUp(isPressing, Constants.HOLD_SPEEDUP_MULTIPLIER)
     }
 
     fun onDecoderSelected(type: DecoderType) {
