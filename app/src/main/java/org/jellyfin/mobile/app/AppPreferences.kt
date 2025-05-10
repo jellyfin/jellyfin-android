@@ -113,6 +113,9 @@ class AppPreferences(context: Context) {
     val exoPlayerAllowSwipeGestures: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_ALLOW_SWIPE_GESTURES, true)
 
+    val exoPlayerAllowPressSpeedUp: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_ALLOW_PRESS_SPEED_UP, true)
+
     val exoPlayerRememberBrightness: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_REMEMBER_BRIGHTNESS, false)
 

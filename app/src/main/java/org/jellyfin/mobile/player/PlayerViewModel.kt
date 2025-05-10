@@ -113,6 +113,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private var analyticsCollector = buildAnalyticsCollector()
     private val initialTracksSelected = AtomicBoolean(false)
     private var fallbackPreferExtensionRenderers = false
+    private var playSpeed = 1f
 
     private var progressUpdateJob: Job? = null
 
@@ -481,6 +482,16 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             return true
         }
         return false
+    }
+
+    fun setPressSpeedUp(isPressing: Boolean, speed: Float): Boolean {
+        if (!isPressing) {
+            return setPlaybackSpeed(playSpeed)
+        }
+        val player = playerOrNull ?: return false
+        val parameters = player.playbackParameters
+        playSpeed = parameters.speed
+        return setPlaybackSpeed(speed)
     }
 
     fun stop() {

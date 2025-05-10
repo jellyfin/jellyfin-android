@@ -97,6 +97,8 @@
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Start landscape mode videos in landscape orientation</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Brightness and volume gestures</string>
     <string name="pref_exoplayer_remember_brightness">Remember display brightness</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Hold to speed up</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Touch and hold the screen to temporarily speed up playback</string>
     <string name="pref_exoplayer_allow_background_audio">Background audio</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Allow playing videos in the background with audio-only</string>
     <string name="pref_exoplayer_direct_play_ass">Allow SSA/ASS subtitles in direct play</string>

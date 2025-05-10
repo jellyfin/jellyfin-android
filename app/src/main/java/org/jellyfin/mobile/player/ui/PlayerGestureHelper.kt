@@ -37,6 +37,7 @@ class PlayerGestureHelper(
     private val gestureIndicatorOverlayLayout: LinearLayout by playerBinding::gestureOverlayLayout
     private val gestureIndicatorOverlayImage: ImageView by playerBinding::gestureOverlayImage
     private val gestureIndicatorOverlayProgress: ProgressBar by playerBinding::gestureOverlayProgress
+    private var isOnPressingSpeedUp = false
 
     init {
         if (appPreferences.exoPlayerRememberBrightness) {
@@ -125,6 +126,17 @@ class PlayerGestureHelper(
                     if (!isControllerVisible) showController() else hideController()
                 }
                 return true
+            }
+
+            override fun onLongPress(e: MotionEvent) {
+                if (!appPreferences.exoPlayerAllowPressSpeedUp) {
+                    return
+                }
+
+                with(fragment) {
+                    isOnPressingSpeedUp = true
+                    onPressSpeedUp(true)
+                }
             }
 
             override fun onScroll(
@@ -244,6 +256,12 @@ class PlayerGestureHelper(
                 unlockDetector.onTouchEvent(event)
             }
             if (event.action == MotionEvent.ACTION_UP) {
+                if (isOnPressingSpeedUp) {
+                    isOnPressingSpeedUp = false
+                    with(fragment) {
+                        onPressSpeedUp(false)
+                    }
+                }
                 // Hide gesture indicator after timeout, if shown
                 gestureIndicatorOverlayLayout.apply {
                     if (isVisible) {
