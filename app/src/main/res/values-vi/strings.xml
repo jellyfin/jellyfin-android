@@ -112,4 +112,14 @@
     <string name="mobile_data_summary">Phương tiện sẽ được tải xuống qua WiFi và mạng di động.</string>
     <string name="external_player_mpvkt">Trình phát mpvKt</string>
     <string name="external_player_mpvkt_description">Một trình phát phương tiện dựa trên mpv-android nhằm mục đích cung cấp giao diện người dùng đẹp hơn so với bản gốc.</string>
+    <string name="download_notifications_description">Thông báo tải xuống</string>
+    <string name="failed_network_method_check">Vui lòng kiểm tra các phương thức tải xuống được phép của bạn</string>
+    <string name="confirm_deletion">Xác nhận xóa</string>
+    <string name="confirm_deletion_desc">Bạn có muốn xóa %1$s?</string>
+    <string name="view_downloads">Xem tải xuống</string>
+    <string name="downloads">Tải xuống</string>
+    <string name="failed_thumbnail">Tải xuống hình thu nhỏ thất bại</string>
+    <string name="failed_information">Truy xuất thông tin phương tiện thất bại</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
 </resources>
