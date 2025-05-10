@@ -52,7 +52,7 @@ performance:
 style:
   ForbiddenComment:
     # Allow TODOs
-    values: [ 'FIXME:', 'STOPSHIP:' ]
+    comments: [ 'FIXME:', 'STOPSHIP:' ]
   LoopWithTooManyJumpStatements:
     maxJumpCount: 2
   MaxLineLength:

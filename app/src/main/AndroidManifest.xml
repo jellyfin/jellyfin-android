@@ -4,15 +4,31 @@
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30"
+        android:required="false" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_CONNECT"
+        android:required="false"
+        android:usesPermissionFlags="neverForLocation"
+        tools:targetApi="s" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage"
         tools:node="remove" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28"
         tools:ignore="ScopedStorage" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <queries>
         <intent>
@@ -24,6 +40,7 @@
         <package android:name="com.mxtech.videoplayer.pro" />
         <package android:name="is.xyz.mpv" />
         <package android:name="org.videolan.vlc" />
+        <package android:name="live.mehiz.mpvkt" />
     </queries>
 
     <application
@@ -40,7 +57,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|uiMode"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation|uiMode"
             android:exported="true"
             android:launchMode="singleTask"
             android:supportsPictureInPicture="true">
@@ -55,21 +72,44 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".webapp.RemotePlayerService" />
+
+        <service
+            android:name=".webapp.RemotePlayerService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
 
         <service
             android:name="org.jellyfin.mobile.player.audio.MediaService"
             android:exported="true"
+            android:foregroundServiceType="mediaPlayback"
             tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
 
+        <service android:name="org.jellyfin.mobile.downloads.JellyfinDownloadService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync">
+            <!-- This is needed for Scheduler -->
+            <intent-filter>
+                <action android:name="androidx.media3.exoplayer.downloadService.action.RESTART"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
+
+
         <receiver
             android:name="androidx.mediarouter.media.MediaTransferReceiver"
             android:exported="true"
             tools:ignore="ExportedReceiver" />
+
+        <provider
+            android:name=".ui.content.ImageProvider"
+            android:authorities="${applicationId}.image-provider"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            android:readPermission="android.permission.MEDIA_CONTENT_CONTROL" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -83,5 +123,8 @@
         <meta-data
             android:name="com.google.android.gms.car.notification.SmallIcon"
             android:resource="@mipmap/ic_launcher_round" />
+        <meta-data
+            android:name="android.webkit.WebView.EnableSafeBrowsing"
+            android:value="false" />
     </application>
 </manifest>

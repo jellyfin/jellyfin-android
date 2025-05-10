@@ -17,6 +17,9 @@ interface ServerDao {
     @Query("SELECT * FROM $TABLE_NAME WHERE id = :id")
     fun getServer(id: Long): ServerEntity?
 
+    @Query("SELECT * FROM $TABLE_NAME ORDER BY last_used_timestamp DESC")
+    fun getAllServers(): List<ServerEntity>
+
     @Query("SELECT * FROM $TABLE_NAME WHERE hostname = :hostname")
     fun getServerByHostname(hostname: String): ServerEntity?
 }

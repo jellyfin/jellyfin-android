@@ -1,1 +1,1 @@
-Cliente mobile para o Jellyfin, o sistema de mídia de software livre
+Jellyfin para dispositivos móveis — um sistema multimédia gratuito e de código aberto

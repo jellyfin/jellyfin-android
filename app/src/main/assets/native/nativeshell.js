@@ -71,6 +71,10 @@ window.NativeShell = {
         window.NativeInterface.openClientSettings();
     },
 
+    openDownloads() {
+        window.NativeInterface.openDownloads();
+    },
+
     selectServer() {
         window.NativeInterface.openServerSelection();
     },
@@ -103,17 +107,6 @@ function getDeviceProfile(profileBuilder, item) {
     profile.CodecProfiles = profile.CodecProfiles.filter(function (i) {
         return i.Type === "Audio";
     });
-
-    profile.SubtitleProfiles.push(
-        {
-            Format: "ssa",
-            Method: "External"
-        },
-        {
-            Format: "ass",
-            Method: "External"
-        }
-    );
 
     profile.CodecProfiles.push({
         Type: "Video",

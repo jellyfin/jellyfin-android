@@ -1,0 +1,3 @@
+Cảm ơn bạn đã sử dụng Jellyfin cho Android! Luôn luôn khuyến khích sử dụng Máy chủ Jellyfin được phát hành mới nhất.
+
+Để biết thêm thông tin, vui lòng xem blog của chúng tôi tại jellyfin.org hoặc đọc nhật ký thay đổi đầy đủ trên GitHub.

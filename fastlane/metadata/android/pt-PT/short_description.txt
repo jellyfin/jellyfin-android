@@ -1,1 +1,1 @@
-Cliente móvel para , o sistema software de mídia gratuito
+Jellyfin para dispositivos móveis — um sistema multimédia gratuito e de código aberto

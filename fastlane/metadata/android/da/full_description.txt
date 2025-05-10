@@ -1,6 +1,6 @@
 Dine medier, på dine vilkår.
 
-Jellyfin projektet er et open source, gratis software medieserver. Ingen gebyrer, ingen sporing, ingen skjult agenda. Hent vores gratis server for at samle alt dit musik, film, billeder, og mere på et sted.
+Jellyfin projektet er et open source, fri software medieserver. Ingen gebyrer, ingen sporing, ingen skjult agenda. Hent vores gratis server for at samle alt dit musik, film, billeder, og mere på et sted.
 
 For at bruge appen, skal du have adgang til en Jellyfin server. Læs mere på <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
 

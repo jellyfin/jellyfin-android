@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
@@ -27,7 +26,6 @@ import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
@@ -53,31 +51,61 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.app.ApiClientController
 import org.jellyfin.mobile.setup.ConnectionHelper
 import org.jellyfin.mobile.ui.state.CheckUrlState
-import org.jellyfin.mobile.ui.state.ServerSelectionType
+import org.jellyfin.mobile.ui.state.ServerSelectionMode
 import org.jellyfin.mobile.ui.utils.CenterRow
-import org.jellyfin.sdk.model.api.ServerDiscoveryInfo
-import org.koin.androidx.compose.get
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalComposeUiApi::class)
+@Suppress("LongMethod")
 @Composable
 fun ServerSelection(
     showExternalConnectionError: Boolean,
-    connectionHelper: ConnectionHelper = get(),
+    apiClientController: ApiClientController = koinInject(),
+    connectionHelper: ConnectionHelper = koinInject(),
     onConnected: suspend (String) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
-    var serverSelectionType by remember { mutableStateOf(ServerSelectionType.ADDRESS) }
+    var serverSelectionMode by remember { mutableStateOf(ServerSelectionMode.ADDRESS) }
     var hostname by remember { mutableStateOf("") }
+    val serverSuggestions = remember { mutableStateListOf<ServerSuggestion>() }
     var checkUrlState by remember<MutableState<CheckUrlState>> { mutableStateOf(CheckUrlState.Unchecked) }
     var externalError by remember { mutableStateOf(showExternalConnectionError) }
 
-    val discoveredServers = remember { mutableStateListOf<ServerDiscoveryInfo>() }
+    // Prefill currently selected server if available
     LaunchedEffect(Unit) {
+        val server = apiClientController.loadSavedServer()
+        if (server != null) {
+            hostname = server.hostname
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        // Suggest saved servers
+        apiClientController.loadPreviouslyUsedServers().mapTo(serverSuggestions) { server ->
+            ServerSuggestion(
+                type = ServerSuggestion.Type.SAVED,
+                name = server.hostname,
+                address = server.hostname,
+                timestamp = server.lastUsedTimestamp,
+            )
+        }
+
+        // Prepend discovered servers to suggestions
         connectionHelper.discoverServersAsFlow().collect { serverInfo ->
-            discoveredServers.add(serverInfo)
+            serverSuggestions.removeIf { existing -> existing.address == serverInfo.address }
+            serverSuggestions.add(
+                index = 0,
+                ServerSuggestion(
+                    type = ServerSuggestion.Type.DISCOVERED,
+                    name = serverInfo.name,
+                    address = serverInfo.address,
+                    timestamp = System.currentTimeMillis(),
+                ),
+            )
         }
     }
 
@@ -99,9 +127,12 @@ fun ServerSelection(
             modifier = Modifier.padding(bottom = 8.dp),
             style = MaterialTheme.typography.h5,
         )
-        Crossfade(serverSelectionType) { selectionType ->
+        Crossfade(
+            targetState = serverSelectionMode,
+            label = "Server selection mode",
+        ) { selectionType ->
             when (selectionType) {
-                ServerSelectionType.ADDRESS -> AddressSelection(
+                ServerSelectionMode.ADDRESS -> AddressSelection(
                     text = hostname,
                     errorText = when {
                         externalError -> stringResource(R.string.connection_error_cannot_connect)
@@ -116,20 +147,20 @@ fun ServerSelection(
                     onDiscoveryClick = {
                         externalError = false
                         keyboardController?.hide()
-                        serverSelectionType = ServerSelectionType.AUTO_DISCOVERY
+                        serverSelectionMode = ServerSelectionMode.AUTO_DISCOVERY
                     },
                     onSubmit = {
                         onSubmit()
                     },
                 )
-                ServerSelectionType.AUTO_DISCOVERY -> ServerDiscoveryList(
-                    discoveredServers = discoveredServers,
+                ServerSelectionMode.AUTO_DISCOVERY -> ServerDiscoveryList(
+                    serverSuggestions = serverSuggestions,
                     onGoBack = {
-                        serverSelectionType = ServerSelectionType.ADDRESS
+                        serverSelectionMode = ServerSelectionMode.ADDRESS
                     },
                     onSelectServer = { url ->
                         hostname = url
-                        serverSelectionType = ServerSelectionType.ADDRESS
+                        serverSelectionMode = ServerSelectionMode.ADDRESS
                         onSubmit()
                     },
                 )
@@ -237,27 +268,8 @@ private fun AnimatedErrorText(
 
 @Stable
 @Composable
-private fun StyledTextButton(
-    text: String,
-    enabled: Boolean = true,
-    onClick: () -> Unit,
-) {
-    TextButton(
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        enabled = enabled,
-        colors = ButtonDefaults.buttonColors(),
-    ) {
-        Text(text = text)
-    }
-}
-
-@Stable
-@Composable
 private fun ServerDiscoveryList(
-    discoveredServers: SnapshotStateList<ServerDiscoveryInfo>,
+    serverSuggestions: SnapshotStateList<ServerSuggestion>,
     onGoBack: () -> Unit,
     onSelectServer: (String) -> Unit,
 ) {
@@ -290,9 +302,9 @@ private fun ServerDiscoveryList(
                     shape = MaterialTheme.shapes.medium,
                 ),
         ) {
-            items(discoveredServers) { server ->
+            items(serverSuggestions) { server ->
                 ServerDiscoveryItem(
-                    serverInfo = server,
+                    serverSuggestion = server,
                     onClickServer = {
                         onSelectServer(server.address)
                     },
@@ -306,7 +318,7 @@ private fun ServerDiscoveryList(
 @Stable
 @Composable
 private fun ServerDiscoveryItem(
-    serverInfo: ServerDiscoveryInfo,
+    serverSuggestion: ServerSuggestion,
     onClickServer: () -> Unit,
 ) {
     ListItem(
@@ -314,10 +326,10 @@ private fun ServerDiscoveryItem(
             .clip(MaterialTheme.shapes.medium)
             .clickable(onClick = onClickServer),
         text = {
-            Text(text = serverInfo.name)
+            Text(text = serverSuggestion.name)
         },
         secondaryText = {
-            Text(text = serverInfo.address)
+            Text(text = serverSuggestion.address)
         },
     )
 }

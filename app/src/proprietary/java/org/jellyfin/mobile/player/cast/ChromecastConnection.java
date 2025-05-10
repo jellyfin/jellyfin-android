@@ -51,7 +51,7 @@ public class ChromecastConnection {
     /**
      * Controls the media.
      */
-    private final ChromecastSession media;
+    private final ChromecastSession chromecastSession;
 
     /**
      * Lifetime variable.
@@ -81,7 +81,7 @@ public class ChromecastConnection {
         settings = activity.getSharedPreferences("CORDOVA-PLUGIN-CHROMECAST_ChromecastConnection", 0);
         appId = settings.getString("appId", CastMediaControlIntent.DEFAULT_MEDIA_RECEIVER_APPLICATION_ID);
         listener = connectionListener;
-        media = new ChromecastSession(activity, listener);
+        chromecastSession = new ChromecastSession(activity, listener);
 
         // Set the initial appId
         CastOptionsProvider.setAppId(appId);
@@ -98,7 +98,7 @@ public class ChromecastConnection {
      * @return the ChromecastSession object
      */
     ChromecastSession getChromecastSession() {
-        return media;
+        return chromecastSession;
     }
 
     /**
@@ -142,7 +142,7 @@ public class ChromecastConnection {
                             // If we do have a session
                             if (session != null) {
                                 // Let the client know
-                                media.setSession(session);
+                                chromecastSession.setSession(session);
                                 listener.onSessionRejoin(ChromecastUtilities.createSessionObject(session));
                             }
                         }
@@ -170,8 +170,8 @@ public class ChromecastConnection {
     }
 
     private void setAppId(String applicationId) {
-        this.appId = applicationId;
-        this.settings.edit().putString("appId", appId).apply();
+        appId = applicationId;
+        settings.edit().putString("appId", appId).apply();
         getContext().setReceiverApplicationId(appId);
     }
 
@@ -386,7 +386,7 @@ public class ChromecastConnection {
             @Override
             public void onSessionStarted(@NonNull CastSession castSession, @NonNull String sessionId) {
                 getSessionManager().removeSessionManagerListener(this, CastSession.class);
-                media.setSession(castSession);
+                chromecastSession.setSession(castSession);
                 callback.onJoin(ChromecastUtilities.createSessionObject(castSession));
             }
 
@@ -500,7 +500,7 @@ public class ChromecastConnection {
                     @Override
                     public void onSessionEnded(@NonNull CastSession castSession, int error) {
                         getSessionManager().removeSessionManagerListener(this, CastSession.class);
-                        media.setSession(null);
+                        chromecastSession.setSession(null);
                         if (callback != null) {
                             callback.success();
                         }
@@ -637,7 +637,7 @@ public class ChromecastConnection {
          * @param router mediaRouter object
          */
         void setMediaRouter(MediaRouter router) {
-            this.mediaRouter = router;
+            mediaRouter = router;
         }
 
         /**

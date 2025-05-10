@@ -1,14 +1,14 @@
-Ang iyong media, sa iyong mga tuntunin.
+Media mo, hawak mo.
 
-Ang Jellyfin project ay isang open source, libreng software media server. Walang bayad, walang pagsubaybay, walang hidden agenda. Kunin ang aming libreng server upang kolektahin ang lahat ng iyong audio, video, mga larawan, at higit pa sa isang lugar.
+Ang proyektong Jellyfin ay isang open source, at libreng software media server. Na walang bayad, walang pagsusubaybay, at walang nakatagong adyenda. Kuning ang aming libreng server upang maikolekta ang lahat ng iyong odyo, bidyo, larawan at iba pa sa iisang lugar.
 
-Upang magamit ang app, dapat ay mayroon kang Jellyfin server na naka-set up at tumatakbo. Alamin ang higit pa sa <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
+Upang magamit ang app, ikaw dapat ay may Jellyfin server na naisetup at gumagana. Alamin ang iba pa sa <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
 
-Sa isang server ng Jellyfin, maaari mong:
+Sa Jellyfin server, kaya mong:
 
-* Manood ng Live TV at mga nai-record na palabas mula sa iyong Jellyfin server (kailangan ng karagdagang hardware/serbisyo)
-* Stream sa isang Chromecast device sa iyong network
-* I-stream ang iyong media sa iyong Android device
-* Tingnan ang iyong koleksyon sa isang madaling gamitin na interface
+* Manood ng Live TV at mga rekorded na talastas galing sa iyong Jellyfin server (karagdagang hardware/mga serbisyo ang kailangan)
+* Pag iistream papunta sa isang Chromecast device na nasa iyong kabalagan
+* Pag iistream ng iyong mga media papunta sa iyong Android device
+* Tingan ang iyong koleksyon sa isang madaling gamitin na interface.
 
-Ito ang opisyal na Jellyfin companion app para sa Android. Salamat sa paggamit ng Jellyfin!
+Ito ang opisyal na Jellyfin companion app para sa Android. Salamat sa iyong paggmit ng Jellyfin!

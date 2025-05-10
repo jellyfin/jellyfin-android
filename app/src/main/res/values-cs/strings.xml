@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">Mobilní data a roaming</string>
     <string name="mobile_data">Mobilní data</string>
     <string name="wifi_only">Pouze WiFi</string>
-    <string name="network_message">Chcete povolit stahování přes mobilní data či roaming\? Případné poplatky jsou dány vašim operátorem.</string>
+    <string name="network_message">Chcete povolit stahování přes mobilní data či roaming? Případné poplatky jsou dány vašim operátorem. Tuto možnost je možné později změnit v nastavení.</string>
     <string name="network_title">Povolené typy sítě</string>
     <string name="battery_optimizations_message">Systémovou správu baterie pro tuto aplikaci je nutné vypnout, pokud chcete přehrávat s vypnutou obrazovkou.</string>
     <string name="connect_button_text">Připojit</string>
@@ -105,4 +105,27 @@
     <string name="pref_subtitle_style">Přizpůsobit vzhled titulků</string>
     <string name="pref_subtitle_style_summary">V nastavení Androidu můžete změnit vzhled titulků</string>
     <string name="button_use_different_server">Použít jiný server</string>
+    <string name="bluetooth_permission_continue">Pokračovat</string>
+    <string name="bluetooth_permission_granted">Oprávnění k Bluetooth bylo uděleno</string>
+    <string name="bluetooth_permission_title">Povolit přístup přes Bluetooth\?</string>
+    <string name="bluetooth_permission_message">Aby bylo možné zjistit, zda jsou sluchátka nebo reproduktor odpojené, potřebuje aplikace přístup k Bluetooth. V Androidu je toto oprávnění označeno jako přístup k nedalekým zařízením a upozorňuje, že Bluetooth zařízení může být použito k odhadu aktuální polohy. Nicméně aplikace Jellyfin toto oprávnění nikdy nepoužije ke zjištění Vaší polohy.</string>
+    <string name="wifi_only_summary">Média budou stažena pouze přes WiFi.</string>
+    <string name="mobile_data_summary">Média budou stažena přes WiFi a mobilní sítě.</string>
+    <string name="mobile_data_and_roaming_summary">Média budou stažena přes WiFi, mobilní sítě a mobilní sítě v roamingu.</string>
+    <string name="view_downloads">Zobrazit stažené</string>
+    <string name="failed_thumbnail">Nepodařilo se stáhnout náhled</string>
+    <string name="download_notifications_description">Upozornění na stažení</string>
+    <string name="failed_information">Nepovedlo se získat informace o médiu</string>
+    <string name="failed_network_method_check">Zkontrolujte, prosím, povolené způsoby stahování</string>
+    <string name="thumbnail_desc">Náhled</string>
+    <string name="yes">Ano</string>
+    <string name="store_videos_in_internal_storage">Uložit videa ve vnitřním úložišti</string>
+    <string name="stored_videos_in_internal_storage_desc">Videa jako jsou filmy a seriály budou uložena ve vnitřním úložišti aplikace. Přístup k nim bude povolen v rámci aplikace.</string>
+    <string name="downloaded">Staženo %1$s</string>
+    <string name="downloads">Stažené</string>
+    <string name="confirm_deletion">Potvrďte smazání</string>
+    <string name="confirm_deletion_desc">Chcete smazat %1$s?</string>
+    <string name="no">Ne</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Stahování %1$d titulů</string>
 </resources>

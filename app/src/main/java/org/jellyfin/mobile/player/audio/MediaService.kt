@@ -44,7 +44,6 @@ import org.jellyfin.mobile.player.cast.ICastPlayerProvider
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.extensions.mediaUri
 import org.jellyfin.mobile.utils.toast
-import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
@@ -53,7 +52,6 @@ import com.google.android.exoplayer2.MediaItem as ExoPlayerMediaItem
 
 class MediaService : MediaBrowserServiceCompat() {
     private val apiClientController: ApiClientController by inject()
-    private val apiClient: ApiClient by inject()
     private val libraryBrowser: LibraryBrowser by inject()
 
     private val serviceScope = MainScope()
@@ -104,7 +102,8 @@ class MediaService : MediaBrowserServiceCompat() {
             apiClientController.loadSavedServerUser()
         }
 
-        val sessionActivityPendingIntent = packageManager?.getLaunchIntentForPackage(packageName)?.let { sessionIntent ->
+        val packageLaunchIntent = packageManager?.getLaunchIntentForPackage(packageName)
+        val sessionActivityPendingIntent = packageLaunchIntent?.let { sessionIntent ->
             PendingIntent.getActivity(this, 0, sessionIntent, Constants.PENDING_INTENT_FLAGS)
         }
 
@@ -147,6 +146,7 @@ class MediaService : MediaBrowserServiceCompat() {
     }
 
     override fun onDestroy() {
+        super.onDestroy()
         mediaSession.run {
             isActive = false
             release()
@@ -177,12 +177,7 @@ class MediaService : MediaBrowserServiceCompat() {
             loadingJob.join()
 
             val items = try {
-                if (apiClient.userId != null) {
-                    libraryBrowser.loadLibrary(parentId)
-                } else {
-                    Timber.e("Missing userId in ApiClient")
-                    null
-                }
+                libraryBrowser.loadLibrary(parentId)
             } catch (e: ApiClientException) {
                 Timber.e(e)
                 null
@@ -387,6 +382,7 @@ class MediaService : MediaBrowserServiceCompat() {
      * Listen for events from ExoPlayer.
      */
     private inner class PlayerEventListener : Player.Listener {
+        @Deprecated("Deprecated in Java")
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) {
                 Player.STATE_BUFFERING,

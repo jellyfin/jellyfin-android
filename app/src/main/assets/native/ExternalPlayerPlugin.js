@@ -34,7 +34,9 @@ export class ExternalPlayerPlugin {
     }
 
     canPlayItem(item, playOptions) {
-        return this._externalPlayer.isEnabled();
+        return this._externalPlayer.isEnabled() &&
+            playOptions.fullscreen &&
+            !this.playbackManager.syncPlayEnabled;
     }
 
     currentSrc() {
@@ -139,12 +141,11 @@ export class ExternalPlayerPlugin {
     async getDeviceProfile() {
         return {
             Name: 'Android External Player Stub',
-            MaxStreamingBitrate: 100000000,
-            MaxStaticBitrate: 100000000,
-            MusicStreamingTranscodingBitrate: 320000,
+            MaxStreamingBitrate: 1_000_000_000,
+            MaxStaticBitrate: 1_000_000_000,
             DirectPlayProfiles: [{Type: 'Video'}, {Type: 'Audio'}],
             CodecProfiles: [],
-            SubtitleProfiles: JSON.parse(this._externalPlayer.getSubtitleProfiles()),
+            SubtitleProfiles: [{Method: 'Embed'}, {Method: 'External'}, {Method: 'Drop'}],
             TranscodingProfiles: []
         };
     }

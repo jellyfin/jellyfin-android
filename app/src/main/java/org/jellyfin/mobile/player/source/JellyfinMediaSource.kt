@@ -10,26 +10,20 @@ import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
 import java.util.UUID
 
-class JellyfinMediaSource(
+sealed class JellyfinMediaSource(
     val itemId: UUID,
     val item: BaseItemDto?,
     val sourceInfo: MediaSourceInfo,
     val playSessionId: String,
-    val maxStreamingBitrate: Int?,
-    private var startTimeTicks: Long? = null,
-    audioStreamIndex: Int? = null,
-    subtitleStreamIndex: Int? = null,
+    playbackDetails: PlaybackDetails?,
 ) {
     val id: String = requireNotNull(sourceInfo.id) { "Media source has no id" }
     val name: String = item?.name ?: sourceInfo.name.orEmpty()
 
-    val playMethod: PlayMethod = when {
-        sourceInfo.supportsDirectPlay -> PlayMethod.DIRECT_PLAY
-        sourceInfo.supportsDirectStream -> PlayMethod.DIRECT_STREAM
-        sourceInfo.supportsTranscoding -> PlayMethod.TRANSCODE
-        else -> throw IllegalArgumentException("No play method found for $name ($itemId)")
-    }
+    abstract val playMethod: PlayMethod
 
+    var startTimeTicks: Long? = playbackDetails?.startTimeTicks
+        private set
     var startTimeMs: Long
         get() = (startTimeTicks ?: 0L) / Constants.TICKS_PER_MILLISECOND
         set(value) {
@@ -50,6 +44,13 @@ class JellyfinMediaSource(
     var selectedSubtitleStream: MediaStream? = null
         private set
 
+    val selectedAudioStreamIndex: Int?
+        get() = selectedAudioStream?.index
+    val selectedSubtitleStreamIndex: Int
+        // -1 disables subtitles, null would select the default subtitle
+        // If the default should be played, it would be explicitly set above
+        get() = selectedSubtitleStream?.index ?: -1
+
     init {
         // Classify MediaStreams
         val audio = ArrayList<MediaStream>()
@@ -65,13 +66,13 @@ class JellyfinMediaSource(
                 }
                 MediaStreamType.AUDIO -> {
                     audio += mediaStream
-                    if (mediaStream.index == (audioStreamIndex ?: sourceInfo.defaultAudioStreamIndex)) {
+                    if (mediaStream.index == (playbackDetails?.audioStreamIndex ?: sourceInfo.defaultAudioStreamIndex)) {
                         selectedAudioStream = mediaStream
                     }
                 }
                 MediaStreamType.SUBTITLE -> {
                     subtitles += mediaStream
-                    if (mediaStream.index == (subtitleStreamIndex ?: sourceInfo.defaultSubtitleStreamIndex)) {
+                    if (mediaStream.index == (playbackDetails?.subtitleStreamIndex ?: sourceInfo.defaultSubtitleStreamIndex)) {
                         selectedSubtitleStream = mediaStream
                     }
 
@@ -92,8 +93,9 @@ class JellyfinMediaSource(
                         }
                     }
                 }
-                MediaStreamType.DATA,
                 MediaStreamType.EMBEDDED_IMAGE,
+                MediaStreamType.DATA,
+                MediaStreamType.LYRIC,
                 -> Unit // ignore
             }
         }
@@ -101,6 +103,7 @@ class JellyfinMediaSource(
         audioStreams = audio
         subtitleStreams = subtitles
         externalSubtitleStreams = externalSubtitles
+        this.startTimeTicks = startTimeTicks
     }
 
     /**
@@ -155,3 +158,9 @@ class JellyfinMediaSource(
         throw IllegalArgumentException("Invalid media stream")
     }
 }
+
+data class PlaybackDetails(
+    val startTimeTicks: Long?,
+    val audioStreamIndex: Int?,
+    val subtitleStreamIndex: Int?,
+)

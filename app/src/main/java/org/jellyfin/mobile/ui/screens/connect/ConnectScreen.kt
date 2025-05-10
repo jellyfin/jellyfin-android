@@ -3,29 +3,32 @@ package org.jellyfin.mobile.ui.screens.connect
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.FixedScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.events.ActivityEvent
+import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.ui.utils.CenterRow
+import org.koin.compose.koinInject
 
 @Composable
 fun ConnectScreen(
     mainViewModel: MainViewModel,
     showExternalConnectionError: Boolean,
+    activityEventHandler: ActivityEventHandler = koinInject(),
 ) {
     Surface(color = MaterialTheme.colors.background) {
         Column(
@@ -40,6 +43,10 @@ fun ConnectScreen(
                     mainViewModel.switchServer(hostname)
                 },
             )
+            StyledTextButton(
+                onClick = { activityEventHandler.emit(ActivityEvent.OpenDownloads) },
+                text = stringResource(R.string.view_downloads),
+            )
         }
     }
 }
@@ -47,24 +54,33 @@ fun ConnectScreen(
 @Stable
 @Composable
 fun LogoHeader() {
-    CenterRow {
+    CenterRow(
+        modifier = Modifier.padding(vertical = 25.dp),
+    ) {
         Image(
-            painter = painterResource(R.drawable.ic_launcher_foreground),
+            painter = painterResource(R.drawable.app_logo),
             modifier = Modifier
-                .width(72.dp)
-                .height(72.dp)
-                .padding(top = 8.dp),
-            contentScale = @Suppress("MagicNumber") FixedScale(1.2f),
+                .height(72.dp),
             contentDescription = null,
         )
-        Text(
-            text = stringResource(R.string.app_name_short),
-            modifier = Modifier
-                .padding(vertical = 56.dp)
-                .padding(start = 12.dp, end = 24.dp),
-            fontFamily = FontFamily(Font(R.font.quicksand)),
-            maxLines = 1,
-            style = MaterialTheme.typography.h3,
-        )
+    }
+}
+
+@Stable
+@Composable
+fun StyledTextButton(
+    text: String,
+    enabled: Boolean = true,
+    onClick: () -> Unit,
+) {
+    TextButton(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        enabled = enabled,
+        colors = ButtonDefaults.buttonColors(),
+    ) {
+        Text(text = text)
     }
 }

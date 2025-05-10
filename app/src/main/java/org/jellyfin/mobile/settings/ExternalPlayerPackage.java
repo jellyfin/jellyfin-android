@@ -8,6 +8,7 @@ import androidx.annotation.StringDef;
     ExternalPlayerPackage.MX_PLAYER_FREE,
     ExternalPlayerPackage.MX_PLAYER_PRO,
     ExternalPlayerPackage.VLC_PLAYER,
+    ExternalPlayerPackage.MPVKT_PLAYER,
     ExternalPlayerPackage.SYSTEM_DEFAULT
 })
 public @interface ExternalPlayerPackage {
@@ -15,5 +16,6 @@ public @interface ExternalPlayerPackage {
     String MX_PLAYER_FREE = "com.mxtech.videoplayer.ad";
     String MX_PLAYER_PRO = "com.mxtech.videoplayer.pro";
     String VLC_PLAYER = "org.videolan.vlc";
+    String MPVKT_PLAYER = "live.mehiz.mpvkt";
     String SYSTEM_DEFAULT = "~system~";
 }

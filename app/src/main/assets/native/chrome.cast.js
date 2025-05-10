@@ -530,6 +530,7 @@ var _session;
  */
 chrome.cast.initialize = function (apiConfig, successCallback, errorCallback) {
     execute('initialize', apiConfig.sessionRequest.appId, apiConfig.autoJoinPolicy, apiConfig.defaultActionPolicy, function (err) {
+        console.log('initializing app for config:', JSON.stringify(apiConfig));
         if (!err) {
             // Don't set the listeners config until success
             _initialized = true;
@@ -553,6 +554,7 @@ chrome.cast.initialize = function (apiConfig, successCallback, errorCallback) {
  */
 chrome.cast.requestSession = function (successCallback, errorCallback, opt_sessionRequest) {
     execute('requestSession', function (err, obj) {
+        console.log('requestSession', JSON.stringify(opt_sessionRequest));
         if (!err) {
             successCallback(createNewSession(obj));
         } else {
@@ -594,16 +596,19 @@ chrome.cast.Session = function Session (sessionId, appId, displayName, appImages
     this.receiver = receiver;
     this.media = [];
     this.status = chrome.cast.SessionStatus.CONNECTED;
+    console.log('new session', this.sessionId, this.appId, this.displayName, this.appImages, this.receiver);
 };
 
 chrome.cast.Session.prototype = Object.create(EventEmitter.prototype);
 
 function sessionPreCheck (sessionId) {
     if (!_session || _session.status !== chrome.cast.SessionStatus.CONNECTED) {
+        console.error('No active session');
         return new chrome.cast.Error(
             chrome.cast.ErrorCode.INVALID_PARAMETER, 'No active session');
     }
     if (sessionId !== _session.sessionId) {
+        console.error('Unknown session ID', sessionId, _session.sessionId);
         return new chrome.cast.Error(
             chrome.cast.ErrorCode.INVALID_PARAMETER, 'Unknown session ID');
     }

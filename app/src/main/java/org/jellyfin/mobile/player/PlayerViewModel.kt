@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.analytics.DefaultAnalyticsCollector
 import com.google.android.exoplayer2.mediacodec.MediaCodecDecoderException
 import com.google.android.exoplayer2.mediacodec.MediaCodecInfo
 import com.google.android.exoplayer2.mediacodec.MediaCodecSelector
+import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.util.Clock
 import com.google.android.exoplayer2.util.EventLogger
@@ -39,6 +40,7 @@ import org.jellyfin.mobile.player.interaction.PlayerMediaSessionCallback
 import org.jellyfin.mobile.player.interaction.PlayerNotificationHelper
 import org.jellyfin.mobile.player.queue.QueueManager
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
 import org.jellyfin.mobile.player.ui.DecoderType
 import org.jellyfin.mobile.player.ui.DisplayPreferences
 import org.jellyfin.mobile.player.ui.PlayState
@@ -59,10 +61,13 @@ import org.jellyfin.sdk.api.client.exception.ApiClientException
 import org.jellyfin.sdk.api.client.extensions.displayPreferencesApi
 import org.jellyfin.sdk.api.client.extensions.hlsSegmentApi
 import org.jellyfin.sdk.api.client.extensions.playStateApi
+import org.jellyfin.sdk.api.client.extensions.userApi
 import org.jellyfin.sdk.api.operations.DisplayPreferencesApi
 import org.jellyfin.sdk.api.operations.HlsSegmentApi
 import org.jellyfin.sdk.api.operations.PlayStateApi
+import org.jellyfin.sdk.api.operations.UserApi
 import org.jellyfin.sdk.model.api.PlayMethod
+import org.jellyfin.sdk.model.api.PlaybackOrder
 import org.jellyfin.sdk.model.api.PlaybackProgressInfo
 import org.jellyfin.sdk.model.api.PlaybackStartInfo
 import org.jellyfin.sdk.model.api.PlaybackStopInfo
@@ -80,6 +85,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private val displayPreferencesApi: DisplayPreferencesApi = apiClient.displayPreferencesApi
     private val playStateApi: PlayStateApi = apiClient.playStateApi
     private val hlsSegmentApi: HlsSegmentApi = apiClient.hlsSegmentApi
+    private val userApi: UserApi = apiClient.userApi
 
     private val lifecycleObserver = PlayerLifecycleObserver(this)
     private val audioManager: AudioManager by lazy { getApplication<Application>().getSystemService()!! }
@@ -88,9 +94,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     // Media source handling
     private val trackSelector = DefaultTrackSelector(getApplication())
     val trackSelectionHelper = TrackSelectionHelper(this, trackSelector)
-    val mediaQueueManager = QueueManager(this)
+    val queueManager = QueueManager(this)
     val mediaSourceOrNull: JellyfinMediaSource?
-        get() = mediaQueueManager.mediaQueue.value?.jellyfinMediaSource
+        get() = queueManager.getCurrentMediaSourceOrNull()
 
     // ExoPlayer
     private val _player = MutableLiveData<ExoPlayer?>()
@@ -132,28 +138,39 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private val mediaSessionCallback = PlayerMediaSessionCallback(this)
 
     private var displayPreferences = DisplayPreferences()
+    private var autoPlayNextEpisodeEnabled: Boolean = false
 
     init {
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
 
         // Load display preferences
         viewModelScope.launch {
+            var customPrefs: Map<String, String?>? = null
             try {
                 val displayPreferencesDto by displayPreferencesApi.getDisplayPreferences(
                     displayPreferencesId = Constants.DISPLAY_PREFERENCES_ID_USER_SETTINGS,
                     client = Constants.DISPLAY_PREFERENCES_CLIENT_EMBY,
                 )
 
-                val customPrefs = displayPreferencesDto.customPrefs
-
-                displayPreferences = DisplayPreferences(
-                    skipBackLength = customPrefs[Constants.DISPLAY_PREFERENCES_SKIP_BACK_LENGTH]?.toLongOrNull()
-                        ?: Constants.DEFAULT_SEEK_TIME_MS,
-                    skipForwardLength = customPrefs[Constants.DISPLAY_PREFERENCES_SKIP_FORWARD_LENGTH]?.toLongOrNull()
-                        ?: Constants.DEFAULT_SEEK_TIME_MS,
-                )
+                customPrefs = displayPreferencesDto.customPrefs
             } catch (e: ApiClientException) {
-                Timber.e(e, "Failed to load display preferences")
+                Timber.e(e, "Failed to load display preferences from API")
+            }
+
+            displayPreferences = DisplayPreferences(
+                skipBackLength = customPrefs?.get(Constants.DISPLAY_PREFERENCES_SKIP_BACK_LENGTH)?.toLongOrNull()
+                    ?: Constants.DEFAULT_SEEK_TIME_MS,
+                skipForwardLength = customPrefs?.get(Constants.DISPLAY_PREFERENCES_SKIP_FORWARD_LENGTH)?.toLongOrNull()
+                    ?: Constants.DEFAULT_SEEK_TIME_MS,
+            )
+        }
+
+        viewModelScope.launch {
+            try {
+                val userConfig = userApi.getCurrentUser().content.configuration
+                autoPlayNextEpisodeEnabled = userConfig?.enableNextEpisodeAutoPlay ?: false
+            } catch (e: ApiClientException) {
+                Timber.e(e, "Failed to load auto play preference")
             }
         }
 
@@ -240,26 +257,29 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         _player.value = null
     }
 
-    fun load(queueItem: QueueManager.QueueItem.Loaded, playWhenReady: Boolean) {
+    fun load(jellyfinMediaSource: JellyfinMediaSource, exoMediaSource: MediaSource, playWhenReady: Boolean) {
         val player = playerOrNull ?: return
 
-        player.setMediaSource(queueItem.exoMediaSource)
+        player.setMediaSource(exoMediaSource)
         player.prepare()
 
         initialTracksSelected.set(false)
 
-        val startTime = queueItem.jellyfinMediaSource.startTimeMs
+        val startTime = jellyfinMediaSource.startTimeMs
         if (startTime > 0) player.seekTo(startTime)
         player.playWhenReady = playWhenReady
 
-        mediaSession.setMetadata(queueItem.jellyfinMediaSource.toMediaMetadata())
+        mediaSession.setMetadata(jellyfinMediaSource.toMediaMetadata())
 
-        viewModelScope.launch {
-            player.reportPlaybackStart(queueItem.jellyfinMediaSource)
+        if (jellyfinMediaSource is RemoteJellyfinMediaSource) {
+            viewModelScope.launch {
+                player.reportPlaybackStart(jellyfinMediaSource)
+            }
         }
     }
 
     private fun startProgressUpdates() {
+        if (mediaSourceOrNull != null && mediaSourceOrNull !is RemoteJellyfinMediaSource) return
         progressUpdateJob = viewModelScope.launch {
             while (true) {
                 delay(Constants.PLAYER_TIME_UPDATE_RATE)
@@ -287,11 +307,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
         analyticsCollector = buildAnalyticsCollector()
         setupPlayer()
-        mediaQueueManager.mediaQueue.value?.jellyfinMediaSource?.startTimeMs = playedTime
-        mediaQueueManager.tryRestartPlayback()
+        queueManager.getCurrentMediaSourceOrNull()?.startTimeMs = playedTime
+        queueManager.tryRestartPlayback()
     }
 
-    private suspend fun Player.reportPlaybackStart(mediaSource: JellyfinMediaSource) {
+    private suspend fun Player.reportPlaybackStart(mediaSource: RemoteJellyfinMediaSource) {
         try {
             playStateApi.reportPlaybackStart(
                 PlaybackStartInfo(
@@ -306,6 +326,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     positionTicks = mediaSource.startTimeMs * Constants.TICKS_PER_MILLISECOND,
                     volumeLevel = audioManager.getVolumeLevelPercent(),
                     repeatMode = RepeatMode.REPEAT_NONE,
+                    playbackOrder = PlaybackOrder.DEFAULT,
                 ),
             )
         } catch (e: ApiClientException) {
@@ -314,7 +335,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     private suspend fun Player.reportPlaybackState() {
-        val mediaSource = mediaSourceOrNull ?: return
+        val mediaSource = mediaSourceOrNull as? RemoteJellyfinMediaSource ?: return
         val playbackPositionMillis = currentPosition
         if (playbackState != Player.STATE_ENDED) {
             val stream = AudioManager.STREAM_MUSIC
@@ -334,6 +355,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         positionTicks = playbackPositionMillis * Constants.TICKS_PER_MILLISECOND,
                         volumeLevel = (currentVolume - volumeRange.first) * Constants.PERCENT_MAX / volumeRange.width,
                         repeatMode = RepeatMode.REPEAT_NONE,
+                        playbackOrder = PlaybackOrder.DEFAULT,
                     ),
                 )
             } catch (e: ApiClientException) {
@@ -343,7 +365,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     private fun reportPlaybackStop() {
-        val mediaSource = mediaSourceOrNull ?: return
+        val mediaSource = mediaSourceOrNull as? RemoteJellyfinMediaSource ?: return
         val player = playerOrNull ?: return
         val hasFinished = player.playbackState == Player.STATE_ENDED
         val lastPositionTicks = when {
@@ -360,6 +382,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         itemId = mediaSource.itemId,
                         positionTicks = lastPositionTicks,
                         playSessionId = mediaSource.playSessionId,
+                        liveStreamId = mediaSource.liveStreamId,
                         failed = false,
                     ),
                 )
@@ -377,7 +400,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
     }
 
-    suspend fun stopTranscoding(mediaSource: JellyfinMediaSource) {
+    suspend fun stopTranscoding(mediaSource: RemoteJellyfinMediaSource) {
         if (mediaSource.playMethod == PlayMethod.TRANSCODE) {
             hlsSegmentApi.stopEncodingProcess(
                 deviceId = apiClient.deviceInfo.id,
@@ -410,7 +433,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             // Skip to previous element
             player.currentPosition <= Constants.MAX_SKIP_TO_PREV_MS -> viewModelScope.launch {
                 pause()
-                if (!mediaQueueManager.previous()) {
+                if (!queueManager.previous()) {
                     // Skip to previous failed, go to start of video anyway
                     playerOrNull?.seekTo(0)
                     play()
@@ -423,7 +446,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
     fun skipToNext() {
         viewModelScope.launch {
-            mediaQueueManager.next()
+            queueManager.next()
         }
     }
 
@@ -442,7 +465,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     suspend fun changeBitrate(bitrate: Int?): Boolean {
-        return mediaQueueManager.changeBitrate(bitrate)
+        return queueManager.changeBitrate(bitrate)
     }
 
     /**
@@ -485,6 +508,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         audioManager.setStreamVolume(stream, scaled, 0)
     }
 
+    @Deprecated("Deprecated in Java")
     @SuppressLint("SwitchIntDef")
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
         val player = playerOrNull ?: return
@@ -510,9 +534,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
         // Update media session
         var playbackActions = SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
-        mediaQueueManager.mediaQueue.value?.let { queueItem ->
-            if (queueItem.hasPrevious()) playbackActions = playbackActions or PlaybackState.ACTION_SKIP_TO_PREVIOUS
-            if (queueItem.hasNext()) playbackActions = playbackActions or PlaybackState.ACTION_SKIP_TO_NEXT
+        if (queueManager.hasPrevious()) {
+            playbackActions = playbackActions or PlaybackState.ACTION_SKIP_TO_PREVIOUS
+        }
+        if (queueManager.hasNext()) {
+            playbackActions = playbackActions or PlaybackState.ACTION_SKIP_TO_NEXT
         }
         mediaSession.setPlaybackState(player, playbackActions)
 
@@ -524,7 +550,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 }
                 Player.STATE_ENDED -> {
                     reportPlaybackStop()
-                    if (!mediaQueueManager.next()) {
+                    if (!autoPlayNextEpisodeEnabled || !queueManager.next()) {
                         releasePlayer()
                     }
                 }
@@ -541,7 +567,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             }
             fallbackPreferExtensionRenderers = true
             setupPlayer()
-            mediaQueueManager.tryRestartPlayback()
+            queueManager.tryRestartPlayback()
         } else {
             _error.postValue(error.localizedMessage.orEmpty())
         }

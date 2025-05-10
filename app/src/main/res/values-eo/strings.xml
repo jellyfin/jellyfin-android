@@ -29,7 +29,7 @@
     <string name="media_service_car_section_albums">Albumoj</string>
     <string name="connect_button_text">Konektu</string>
     <string name="host_input_hint">Gastigo</string>
-    <string name="network_message">Ĉu vi volas permesi al la elŝuto lanĉi tra poŝfonaj datenoj aŭ retmigradaj retoj\? Eble aplikas kostoj de via provizanto.</string>
+    <string name="network_message">Ĉu vi volas permesi al la elŝuto lanĉi tra poŝfonaj datenoj aŭ retmigradaj retoj? Eble aplikas kostoj de via provizanto.</string>
     <string name="external_player_mpv_description">Simpla, malgranda kaj malpeza senpaga (kiel en libereco) videoludilo. Ĝi subtenas ampleksan varion de purmedidosieraj formatoj.</string>
     <string name="external_player_not_supported_yet">Ludada spurado ankoraŭ ne estas subtenata en elektita ekstera ludilo. Kontaktu programistojn por provi aldoni subtenon por ĝi.</string>
     <string name="dialog_web_view_not_supported_message">WebViews ne estas subtenataj de ĉi tiu aparato.

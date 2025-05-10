@@ -1,96 +1,100 @@
 [versions]
 # Plugins
-android-plugin = "7.4.2"
-kotlin = "1.7.20"
-kotlin-ksp = "1.7.20-1.0.8"
-detekt = "1.22.0"
-android-junit5 = "1.8.2.1"
-dependencyupdates = "0.46.0"
+android-plugin = "8.10.0"
+kotlin = "2.1.20"
+kotlin-ksp = "2.1.20-2.0.1"
+detekt = "1.23.8"
+android-junit5 = "1.12.0.0"
 
 # KotlinX
-coroutines = "1.6.4"
+coroutines = "1.10.2"
+serialization-json = "1.8.1"
 
 # Core
-koin = "3.3.3"
-koin-compose = "3.4.2"
-androidx-core = "1.9.0"
-androidx-core-splashscreen = "1.0.0"
-androidx-appcompat = "1.6.1"
-androidx-activity = "1.6.1"
-androidx-fragment = "1.5.5"
-androiddesugarlibs = "1.2.2"
+koin = "4.0.4"
+koin-compose = "4.0.4"
+androidx-core = "1.16.0"
+androidx-core-splashscreen = "1.0.1"
+androidx-appcompat = "1.7.0"
+androidx-activity = "1.10.1"
+androidx-fragment = "1.8.6"
+androiddesugarlibs = "2.1.5"
 
 # Lifecycle extensions
-androidx-lifecycle = "2.5.1"
+androidx-lifecycle = "2.9.0"
 
 # UI
-androidx-constraintlayout = "2.1.4"
-google-material = "1.8.0"
-androidx-webkit = "1.6.1"
-modernandroidpreferences = "2.3.2"
+androidx-constraintlayout = "2.2.1"
+google-material = "1.12.0"
+androidx-webkit = "1.13.0"
+modernandroidpreferences = "2.4.0-beta2"
 
 # Compose
-compose = "1.3.3"
-compose-foundation = "1.3.1"
-compose-material = "1.3.1"
-compose-compiler = "1.3.2"
+compose = "1.8.1"
+compose-foundation = "1.8.1"
+compose-material = "1.8.1"
+compose-material-icons = "1.7.8"
 
 # Network
-jellyfin-sdk = "1.4.1"
-okhttp = "4.10.0"
-coil = "2.2.2"
-cronet-embedded = "108.5359.79"
+jellyfin-sdk = "1.6.8"
+okhttp = "4.12.0"
+okio = "3.11.0"
+coil = "2.7.0"
+cronet-embedded = "119.6045.31"
 
 # Media
-androidx-media = "1.6.0"
-androidx-mediarouter = "1.3.1"
-exoplayer = "2.18.5"
-jellyfin-exoplayer-ffmpegextension = "2.18.2+1"
-playservices = "21.2.0"
+androidx-media = "1.7.0"
+androidx-mediarouter = "1.7.0"
+exoplayer = "2.19.1"
+jellyfin-exoplayer-ffmpegextension = "2.19.1+1"
+playservices = "22.0.0"
 
 # Room
-androidx-room = "2.5.0"
+androidx-room = "2.7.1"
 
 # Monitoring
 timber = "5.0.1"
-leakcanary = "2.10"
-redscreenofdeath = "0.1.3"
+leakcanary = "2.14"
 
 # Testing
-junit = "5.9.2"
-kotest = "5.5.5"
-mockk = "1.13.4"
-androidx-test-runner = "1.5.2"
-androidx-test-espresso = "3.5.1"
+junit = "5.12.2"
+kotest = "5.9.1"
+mockk = "1.14.2"
+androidx-test-runner = "1.6.2"
+androidx-test-espresso = "3.6.1"
 
 [plugins]
 android-app = { id = "com.android.application", version.ref = "android-plugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "kotlin-ksp" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
 android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-dependencyupdates = { id = "com.github.ben-manes.versions", version.ref = "dependencyupdates" }
 
 [libraries]
 # KotlinX
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization-json" }
 
 # Core
 koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin-compose" }
-androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
+android-gradle = { module = "com.android.tools.build:gradle", version.ref = "android-plugin" }
+androidx-core = { group = "androidx.core", name = "core", version.ref = "androidx-core" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-core-splashscreen" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
-androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidx-activity" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "androidx-activity" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidx-fragment" }
 androiddesugarlibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androiddesugarlibs" }
 
 # Lifecycle Extensions
-androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
-androidx-lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidx-lifecycle" }
-androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "androidx-lifecycle" }
 
@@ -106,12 +110,13 @@ compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compos
 compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "compose" }
 compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "compose-foundation" }
 compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose-material" }
-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "compose-material" }
-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose-material" }
+compose-material-icons = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "compose-material-icons" }
+compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose-material-icons" }
 
 # Network
 jellyfin-sdk = { group = "org.jellyfin.sdk", name = "jellyfin-core", version.ref = "jellyfin-sdk" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
 coil = { group = "io.coil-kt", name = "coil-base", version.ref = "coil" }
 cronet-embedded = { group = "org.chromium.net", name = "cronet-embedded", version.ref = "cronet-embedded" }
 
@@ -130,14 +135,12 @@ jellyfin-exoplayer-ffmpegextension = { group = "org.jellyfin.exoplayer", name = 
 
 # Room
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
-androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidx-room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidx-room" }
 
 # Monitoring
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
-redscreenofdeath-impl = { group = "com.mlegy.redscreenofdeath", name = "red-screen-of-death", version.ref = "redscreenofdeath" }
-redscreenofdeath-noop = { group = "com.mlegy.redscreenofdeath", name = "red-screen-of-death-no-op", version.ref = "redscreenofdeath" }
 
 # Testing
 junit-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit" }
@@ -182,6 +185,6 @@ playservices = [
     "playservices-cast",
     "playservices-castframework",
 ]
-androidx-room = ["androidx-room-runtime", "androidx-room-ktx"]
+androidx-room = ["androidx-room-runtime"]
 kotest = ["kotest-runner", "kotest-assertions", "kotest-property"]
 androidx-test = ["androidx-test-runner", "androidx-test-espresso"]

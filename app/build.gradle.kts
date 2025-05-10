@@ -1,31 +1,39 @@
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import com.github.benmanes.gradle.versions.updates.gradle.GradleReleaseChannel
 import io.gitlab.arturbosch.detekt.Detekt
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.app)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.androidx.room)
     alias(libs.plugins.detekt)
     alias(libs.plugins.android.junit5)
-    alias(libs.plugins.dependencyupdates)
 }
 
 detekt {
     buildUponDefaultConfig = true
     allRules = false
-    config = files("${rootProject.projectDir}/detekt.yml")
+    config.setFrom("${rootProject.projectDir}/detekt.yml")
     autoCorrect = true
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_11
+        optIn.add("kotlin.RequiresOptIn")
+    }
 }
 
 android {
     namespace = "org.jellyfin.mobile"
-    compileSdk = 33
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 32
+        targetSdk = 34
         versionName = project.getVersionName()
         versionCode = getVersionCode(versionName!!)
         setProperty("archivesBaseName", "jellyfin-android-v$versionName")
@@ -79,17 +87,13 @@ android {
 
     @Suppress("UnstableApiUsage")
     buildFeatures {
+        buildConfig = true
         viewBinding = true
         compose = true
     }
-    kotlinOptions {
-        @Suppress("SuspiciousCollectionReassignment")
-        freeCompilerArgs += listOf("-Xopt-in=kotlin.RequiresOptIn")
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
     compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
         isCoreLibraryDesugaringEnabled = true
     }
     lint {
@@ -97,11 +101,9 @@ android {
         abortOnError = false
         sarifReport = true
     }
-}
-
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-    arg("room.incremental", "true")
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -109,6 +111,7 @@ dependencies {
 
     // Kotlin
     implementation(libs.bundles.coroutines)
+    implementation(libs.kotlin.serialization.json)
 
     // Core
     implementation(libs.bundles.koin)
@@ -142,6 +145,7 @@ dependencies {
         }
     }
     implementation(libs.okhttp)
+    implementation(libs.okio)
     implementation(libs.coil)
     implementation(libs.cronet.embedded)
 
@@ -153,20 +157,17 @@ dependencies {
         exclude("com.google.android.gms", "play-services-cronet")
     }
     implementation(libs.jellyfin.exoplayer.ffmpegextension)
-    @Suppress("UnstableApiUsage")
     proprietaryImplementation(libs.exoplayer.cast)
-    @Suppress("UnstableApiUsage")
     proprietaryImplementation(libs.bundles.playservices)
 
     // Room
     implementation(libs.bundles.androidx.room)
+    implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
     // Monitoring
     implementation(libs.timber)
     debugImplementation(libs.leakcanary)
-    debugImplementation(libs.redscreenofdeath.impl)
-    releaseImplementation(libs.redscreenofdeath.noop)
 
     // Testing
     testImplementation(libs.junit.api)
@@ -181,7 +182,7 @@ dependencies {
 
 tasks {
     withType<Detekt> {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_11.toString()
 
         reports {
             html.required.set(true)
@@ -200,28 +201,10 @@ tasks {
         }
     }
 
-    // Configure dependency updates task
-    withType<DependencyUpdatesTask> {
-        gradleReleaseChannel = GradleReleaseChannel.CURRENT.id
-        rejectVersionIf {
-            val currentType = classifyVersion(currentVersion)
-            val candidateType = classifyVersion(candidate.version)
-
-            when (candidateType) {
-                // Always accept stable updates
-                VersionType.STABLE -> true
-                // Accept milestone updates for current milestone and unstable
-                VersionType.MILESTONE -> currentType != VersionType.STABLE
-                // Only accept unstable for current unstable
-                VersionType.UNSTABLE -> currentType == VersionType.UNSTABLE
-            }.not()
-        }
-    }
-
     register("versionTxt") {
-        val path = buildDir.resolve("version.txt")
-
         doLast {
+            val path = layout.buildDirectory.file("version.txt").get().asFile
+
             val versionString = "v${android.defaultConfig.versionName}=${android.defaultConfig.versionCode}"
             println("Writing [$versionString] to $path")
             path.writeText("$versionString\n")

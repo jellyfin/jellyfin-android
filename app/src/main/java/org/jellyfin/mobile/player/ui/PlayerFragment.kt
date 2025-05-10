@@ -20,6 +20,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.setPadding
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -35,6 +36,8 @@ import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.interaction.PlayOptions
+import org.jellyfin.mobile.utils.AndroidVersion
+import org.jellyfin.mobile.utils.BackPressInterceptor
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.PIP_MAX_RATIONAL
@@ -48,8 +51,9 @@ import org.jellyfin.mobile.utils.extensions.keepScreenOn
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.android.ext.android.inject
+import com.google.android.exoplayer2.ui.R as ExoplayerR
 
-class PlayerFragment : Fragment() {
+class PlayerFragment : Fragment(), BackPressInterceptor {
     private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
     private var _playerBinding: FragmentPlayerBinding? = null
@@ -84,6 +88,9 @@ class PlayerFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val window = requireActivity().window
+        playerFullscreenHelper = PlayerFullscreenHelper(window)
+
         // Observe ViewModel
         viewModel.player.observe(this) { player ->
             playerView.player = player
@@ -101,10 +108,8 @@ class PlayerFragment : Fragment() {
             val safeMessage = message.ifEmpty { requireContext().getString(R.string.player_error_unspecific_exception) }
             requireContext().toast(safeMessage)
         }
-        viewModel.mediaQueueManager.mediaQueue.observe(this) { queueItem ->
-            val jellyfinMediaSource = queueItem.jellyfinMediaSource
-
-            if (jellyfinMediaSource.selectedVideoStream?.isLandscape == false) {
+        viewModel.queueManager.currentMediaSource.observe(this) { mediaSource ->
+            if (mediaSource.selectedVideoStream?.isLandscape == false) {
                 // For portrait videos, immediately enable fullscreen
                 playerFullscreenHelper.enableFullscreen()
             } else if (appPreferences.exoPlayerStartLandscapeVideoInLandscape) {
@@ -113,8 +118,8 @@ class PlayerFragment : Fragment() {
             }
 
             // Update title and player menus
-            toolbar.title = jellyfinMediaSource.name
-            playerMenus?.onQueueItemChanged(queueItem)
+            toolbar.title = mediaSource.name
+            playerMenus?.onQueueItemChanged(mediaSource, viewModel.queueManager.hasNext())
         }
 
         // Handle fragment arguments, extract playback options and start playback
@@ -125,7 +130,7 @@ class PlayerFragment : Fragment() {
                 context.toast(R.string.player_error_invalid_play_options)
                 return@launch
             }
-            when (viewModel.mediaQueueManager.startPlayback(playOptions, playWhenReady = true)) {
+            when (viewModel.queueManager.initializePlaybackQueue(playOptions)) {
                 is PlayerException.InvalidPlayOptions -> context.toast(R.string.player_error_invalid_play_options)
                 is PlayerException.NetworkFailure -> context.toast(R.string.player_error_network_failure)
                 is PlayerException.UnsupportedContent -> context.toast(R.string.player_error_unsupported_content)
@@ -142,22 +147,35 @@ class PlayerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val window = requireActivity().window
 
         // Insets handling
         ViewCompat.setOnApplyWindowInsetsListener(playerBinding.root) { _, insets ->
-            val systemInsets = insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
             playerFullscreenHelper.onWindowInsetsChanged(insets)
 
-            playerControlsView.updatePadding(
-                top = systemInsets.top,
-                left = systemInsets.left,
-                right = systemInsets.right,
-                bottom = systemInsets.bottom,
-            )
+            val systemInsets = when {
+                AndroidVersion.isAtLeastR -> insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
+                else -> insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            }
+            if (playerFullscreenHelper.isFullscreen) {
+                playerView.setPadding(0)
+                playerControlsView.updatePadding(
+                    left = systemInsets.left,
+                    top = systemInsets.top,
+                    right = systemInsets.right,
+                    bottom = systemInsets.bottom,
+                )
+            } else {
+                playerView.updatePadding(
+                    left = systemInsets.left,
+                    top = systemInsets.top,
+                    right = systemInsets.right,
+                    bottom = systemInsets.bottom,
+                )
+                playerControlsView.setPadding(0) // Padding is handled by PlayerView
+            }
             playerOverlay.updatePadding(
-                top = systemInsets.top,
                 left = systemInsets.left,
+                top = systemInsets.top,
                 right = systemInsets.right,
                 bottom = systemInsets.bottom,
             )
@@ -171,7 +189,6 @@ class PlayerFragment : Fragment() {
 
             insets
         }
-        ViewCompat.requestApplyInsets(view)
 
         // Handle toolbar back button
         toolbar.setNavigationOnClickListener { parentFragmentManager.popBackStack() }
@@ -182,24 +199,12 @@ class PlayerFragment : Fragment() {
         // Set controller timeout
         suppressControllerAutoHide(false)
 
-        playerFullscreenHelper = PlayerFullscreenHelper(window)
         playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
         playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)
 
         // Handle fullscreen switcher
         fullscreenSwitcher.setOnClickListener {
-            val videoTrack = currentVideoStream
-            if (videoTrack == null || videoTrack.width!! >= videoTrack.height!!) {
-                // Landscape video, change orientation (which affects the fullscreen state)
-                val current = resources.configuration.orientation
-                requireActivity().requestedOrientation = when (current) {
-                    Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-                    else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-                }
-            } else {
-                // Portrait video, only handle fullscreen state
-                playerFullscreenHelper.toggleFullscreen()
-            }
+            toggleFullscreen()
         }
     }
 
@@ -222,7 +227,7 @@ class PlayerFragment : Fragment() {
      */
     private fun updateFullscreenState(configuration: Configuration) {
         // Do not handle any orientation changes while being in Picture-in-Picture mode
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && requireActivity().isInPictureInPictureMode) {
+        if (AndroidVersion.isAtLeastN && requireActivity().isInPictureInPictureMode) {
             return
         }
 
@@ -235,6 +240,28 @@ class PlayerFragment : Fragment() {
                 // Disable fullscreen for landscape video in portrait orientation
                 playerFullscreenHelper.disableFullscreen()
             }
+        }
+    }
+
+    /**
+     * Toggle fullscreen.
+     *
+     * If playing a portrait video, this just hides the status and navigation bars.
+     * For landscape videos, additionally the screen gets rotated.
+     */
+    private fun toggleFullscreen() {
+        val videoTrack = currentVideoStream
+        if (videoTrack == null || videoTrack.isLandscape) {
+            val current = resources.configuration.orientation
+            requireActivity().requestedOrientation = when (current) {
+                Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            }
+            // No need to call playerFullscreenHelper in this case,
+            // since the configuration change triggers updateFullscreenState,
+            // which does it for us.
+        } else {
+            playerFullscreenHelper.toggleFullscreen()
         }
     }
 
@@ -306,8 +333,14 @@ class PlayerFragment : Fragment() {
         viewModel.skipToNext()
     }
 
+    fun onPopupDismissed() {
+        if (!AndroidVersion.isAtLeastR) {
+            updateFullscreenState(resources.configuration)
+        }
+    }
+
     fun onUserLeaveHint() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && viewModel.playerOrNull?.isPlaying == true) {
+        if (AndroidVersion.isAtLeastN && viewModel.playerOrNull?.isPlaying == true) {
             requireActivity().enterPictureInPicture()
         }
     }
@@ -315,7 +348,7 @@ class PlayerFragment : Fragment() {
     @Suppress("NestedBlockDepth")
     @RequiresApi(Build.VERSION_CODES.N)
     private fun Activity.enterPictureInPicture() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (AndroidVersion.isAtLeastO) {
             val params = PictureInPictureParams.Builder().apply {
                 val aspectRational = currentVideoStream?.aspectRational?.let { aspectRational ->
                     when {
@@ -325,7 +358,7 @@ class PlayerFragment : Fragment() {
                     }
                 }
                 setAspectRatio(aspectRational)
-                val contentFrame: View = playerView.findViewById(R.id.exo_content_frame)
+                val contentFrame: View = playerView.findViewById(ExoplayerR.id.exo_content_frame)
                 val contentRect = with(contentFrame) {
                     val (x, y) = intArrayOf(0, 0).also(::getLocationInWindow)
                     Rect(x, y, x + width, y + height)

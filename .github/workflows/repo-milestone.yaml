@@ -9,17 +9,29 @@ on:
 jobs:
   milestone:
     name: Apply milestone
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: ${{ contains(github.repository_owner, 'jellyfin') }}
     steps:
-      - uses: actions/github-script@98814c53be79b1d30f795b907e553d8679345975 # v6.4.0
+      - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           github-token: ${{ secrets.JF_BOT_TOKEN }}
           script: |
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const pr_id = context.issue.number;
-            const response = await github.rest.issues.listMilestones({
+
+            let response = await github.rest.issues.get({
+              owner,
+              repo,
+              issue_number: pr_id,
+            });
+            const pr = response.data;
+
+            if (pr.milestone !== null) {
+              return;
+            }
+
+            response = await github.rest.issues.listMilestones({
               owner,
               repo,
               state: 'open',

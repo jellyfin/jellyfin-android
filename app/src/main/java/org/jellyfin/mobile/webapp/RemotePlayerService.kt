@@ -11,6 +11,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ServiceInfo
 import android.graphics.Bitmap
 import android.media.AudioAttributes
 import android.media.AudioManager
@@ -19,7 +20,6 @@ import android.media.session.MediaController
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
 import android.os.Binder
-import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import androidx.annotation.StringRes
@@ -36,6 +36,7 @@ import kotlinx.coroutines.launch
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.EXTRA_ALBUM
 import org.jellyfin.mobile.utils.Constants.EXTRA_ARTIST
@@ -63,6 +64,7 @@ import org.jellyfin.mobile.utils.createMediaNotificationChannel
 import org.jellyfin.mobile.utils.setPlaybackState
 import org.koin.android.ext.android.inject
 import kotlin.coroutines.CoroutineContext
+import kotlin.time.Duration.Companion.hours
 
 class RemotePlayerService : Service(), CoroutineScope {
 
@@ -156,8 +158,7 @@ class RemotePlayerService : Service(), CoroutineScope {
 
     private fun startWakelock() {
         if (!wakeLock.isHeld) {
-            @Suppress("MagicNumber")
-            wakeLock.acquire(4 * 60 * 60 * 1000L /* 4 hours */)
+            wakeLock.acquire(4.hours.inWholeMilliseconds)
         }
     }
 
@@ -166,7 +167,9 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     private fun handleIntent(intent: Intent?) {
-        if (intent == null || intent.action == null) return
+        if (intent?.action == null) {
+            return
+        }
         val action = intent.action
         if (action == Constants.ACTION_REPORT) {
             notify(intent)
@@ -244,7 +247,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                 mediaSession.setPlaybackToRemote(remoteVolumeProvider)
             }
 
-            val supportsNativeSeek = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+            val supportsNativeSeek = AndroidVersion.isAtLeastQ
 
             val style = Notification.MediaStyle().apply {
                 setMediaSession(mediaSession.sessionToken)
@@ -255,17 +258,18 @@ class RemotePlayerService : Service(), CoroutineScope {
 
             @Suppress("DEPRECATION")
             val notification = Notification.Builder(this@RemotePlayerService).apply {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (AndroidVersion.isAtLeastO) {
                     setChannelId(MEDIA_NOTIFICATION_CHANNEL_ID) // Set Notification Channel on Android O and above
                     setColorized(true) // Color notification based on cover art
                 } else {
                     setPriority(Notification.PRIORITY_LOW)
                 }
+
                 setContentTitle(title?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) })
                 setContentText(artist?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) })
                 setSubText(album)
                 if (position != PlaybackState.PLAYBACK_POSITION_UNKNOWN) {
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                    if (!AndroidVersion.isAtLeastN) {
                         // Show current position in "when" field pre-N
                         setShowWhen(!isPaused)
                         setUsesChronometer(!isPaused)
@@ -273,8 +277,10 @@ class RemotePlayerService : Service(), CoroutineScope {
                     }
                 }
                 setStyle(style)
-                setVisibility(Notification.VISIBILITY_PUBLIC) // Privacy value for lock screen
-                setOngoing(!isPaused && !appPreferences.musicNotificationAlwaysDismissible) // Swipe to dismiss if paused
+                // Privacy value for lock screen
+                setVisibility(Notification.VISIBILITY_PUBLIC)
+                // Swipe to dismiss if paused
+                setOngoing(!isPaused && !appPreferences.musicNotificationAlwaysDismissible)
                 setDeleteIntent(createDeleteIntent())
                 setContentIntent(createContentIntent())
 
@@ -338,7 +344,18 @@ class RemotePlayerService : Service(), CoroutineScope {
             }.build()
 
             // Post notification
-            notificationManager.notify(MEDIA_PLAYER_NOTIFICATION_ID, notification)
+            if (AndroidVersion.isAtLeastQ) {
+                startForeground(
+                    MEDIA_PLAYER_NOTIFICATION_ID,
+                    notification,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MANIFEST,
+                )
+            } else {
+                startForeground(
+                    MEDIA_PLAYER_NOTIFICATION_ID,
+                    notification,
+                )
+            }
 
             // Activate MediaSession
             mediaSession.isActive = true

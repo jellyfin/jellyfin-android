@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="network_message">Autoriser le téléchargement via les données mobiles et l\'itinérance \? Des frais de votre fournisseur peuvent s\'appliquer.</string>
+    <string name="network_message">Autoriser le téléchargement via les données mobiles et l\'itinérance ? Des frais de votre fournisseur peuvent s\'appliquer. Vous pourrez modifier cette option ultérieurement à partir des paramètres.</string>
     <string name="battery_optimizations_message">Veuillez désactiver les optimisations de la batterie pour permettre la lecture avec écran éteint.</string>
     <string name="downloading">Téléchargement en cours</string>
     <string name="mobile_data_and_roaming">Données mobiles et itinérance</string>
@@ -80,9 +80,9 @@
     <string name="pref_music_notification_always_dismissible_summary_on">La notification peut toujours être rejetée, même lorsque la lecture d\'un média est en cours</string>
     <string name="pref_music_notification_always_dismissible_summary_off">La notification peut être rejetée uniquement lorsque la lecture est en pause</string>
     <plurals name="connection_error_prefix">
-        <item quantity="one">%d candidat a été testé, sans succès.</item>
-        <item quantity="many">%d candidat a été testé, sans succès.</item>
-        <item quantity="other">%d candidats ont été testés, sans succès.</item>
+        <item quantity="one">%d adresse a été testée, sans succès.</item>
+        <item quantity="many">%d adresses ont été testées, sans succès.</item>
+        <item quantity="other">%d adresses ont été testées, sans succès.</item>
     </plurals>
     <string name="connection_error_unsupported_version_or_product">Version ou produit non supporté</string>
     <string name="connection_error_unable_to_reach_sever">Impossible de contacter le serveur</string>
@@ -105,4 +105,11 @@
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Démarrer les vidéos en mode paysage en orientation paysage</string>
     <string name="pref_subtitle_style_summary">Vous pouvez customiser les sous-titres dans les paramètres d\'Android</string>
     <string name="button_use_different_server">Utiliser un serveur différent</string>
+    <string name="bluetooth_permission_message">Pour détecter lorsque des écouteurs ou des haut-parleurs sans fil sont déconnectés, l\'application nécessite un accès Bluetooth. Sur Android, cette autorisation est décrite comme l\'accès aux appareils à proximité et avertit que les appareils Bluetooth peuvent être utilisés pour déduire l\'emplacement actuel. Cependant, l\'application Jellyfin n\'utilisera jamais cette autorisation pour détecter votre position.</string>
+    <string name="bluetooth_permission_title">Autoriser l\'accès Bluetooth \?</string>
+    <string name="bluetooth_permission_continue">Continuer</string>
+    <string name="bluetooth_permission_granted">La permission Bluetooth a été attribuée</string>
+    <string name="wifi_only_summary">Les médias seront téléchargés uniquement via WiFi.</string>
+    <string name="mobile_data_summary">Les médias seront téléchargés via les réseaux WiFi et mobiles.</string>
+    <string name="mobile_data_and_roaming_summary">Les médias seront téléchargés sur les réseaux WiFi, mobiles et itinérants.</string>
 </resources>

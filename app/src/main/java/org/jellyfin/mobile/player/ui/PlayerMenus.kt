@@ -7,7 +7,6 @@ import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.annotation.StringRes
-import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.view.size
@@ -15,7 +14,9 @@ import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
-import org.jellyfin.mobile.player.queue.QueueManager
+import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
+import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -101,10 +102,9 @@ class PlayerMenus(
         }
     }
 
-    fun onQueueItemChanged(queueItem: QueueManager.QueueItem.Loaded) {
-        nextButton.isEnabled = queueItem.hasNext()
-
-        val mediaSource = queueItem.jellyfinMediaSource
+    fun onQueueItemChanged(mediaSource: JellyfinMediaSource, hasNext: Boolean) {
+        // previousButton is always enabled and will rewind if at the start of the queue
+        nextButton.isEnabled = hasNext
 
         val videoStream = mediaSource.selectedVideoStream
 
@@ -132,10 +132,11 @@ class PlayerMenus(
 
         val height = videoStream?.height
         val width = videoStream?.width
-        if (height != null && width != null) {
-            buildQualityMenu(qualityMenu.menu, mediaSource.maxStreamingBitrate, width, height)
-        } else {
-            qualityButton.isVisible = false
+        when (mediaSource) {
+            is LocalJellyfinMediaSource -> qualityButton.isVisible = false
+            is RemoteJellyfinMediaSource -> if (height != null && width != null) {
+                buildQualityMenu(qualityMenu.menu, mediaSource.maxStreamingBitrate, width, height)
+            }
         }
 
         val playMethod = context.getString(R.string.playback_info_play_method, mediaSource.playMethod)
@@ -182,13 +183,14 @@ class PlayerMenus(
 
     private fun createSubtitlesMenu() = PopupMenu(context, subtitlesButton).apply {
         setOnMenuItemClickListener { clickedItem ->
-            val selected = clickedItem.itemId
-            fragment.onSubtitleSelected(selected) {
-                menu.forEach { item ->
-                    item.isChecked = false
-                }
-                clickedItem.isChecked = true
-                subtitlesEnabled = selected >= 0
+            // Immediately apply changes to the menu, necessary when direct playing
+            // When transcoding, the updated media source will cause the menu to be rebuilt
+            clickedItem.isChecked = true
+
+            // The itemId is the MediaStream.index of the track
+            val selectedSubtitleStreamIndex = clickedItem.itemId
+            fragment.onSubtitleSelected(selectedSubtitleStreamIndex) {
+                subtitlesEnabled = selectedSubtitleStreamIndex >= 0
                 updateSubtitlesButton()
             }
             true
@@ -198,13 +200,12 @@ class PlayerMenus(
 
     private fun createAudioStreamsMenu() = PopupMenu(context, audioStreamsButton).apply {
         setOnMenuItemClickListener { clickedItem: MenuItem ->
+            // Immediately apply changes to the menu, necessary when direct playing
+            // When transcoding, the updated media source will cause the menu to be rebuilt
+            clickedItem.isChecked = true
+
             // The itemId is the MediaStream.index of the track
-            fragment.onAudioTrackSelected(clickedItem.itemId) {
-                menu.forEach { item ->
-                    item.isChecked = false
-                }
-                clickedItem.isChecked = true
-            }
+            fragment.onAudioTrackSelected(clickedItem.itemId) {}
             true
         }
         setOnDismissListener(this@PlayerMenus)
@@ -218,12 +219,7 @@ class PlayerMenus(
         menu.setGroupCheckable(SPEED_MENU_GROUP, true, true)
         setOnMenuItemClickListener { clickedItem: MenuItem ->
             fragment.onSpeedSelected(clickedItem.itemId * SPEED_MENU_STEP_SIZE).also { success ->
-                if (success) {
-                    menu.forEach { item ->
-                        item.isChecked = false
-                    }
-                    clickedItem.isChecked = true
-                }
+                if (success) clickedItem.isChecked = true
             }
         }
         setOnDismissListener(this@PlayerMenus)
@@ -258,9 +254,6 @@ class PlayerMenus(
         setOnMenuItemClickListener { clickedItem: MenuItem ->
             val type = DecoderType.values()[clickedItem.itemId]
             fragment.onDecoderSelected(type)
-            menu.forEach { item ->
-                item.isChecked = false
-            }
             clickedItem.isChecked = true
             true
         }
@@ -325,6 +318,7 @@ class PlayerMenus(
 
     override fun onDismiss(menu: PopupMenu) {
         fragment.suppressControllerAutoHide(false)
+        fragment.onPopupDismissed()
     }
 
     private fun formatBitrate(bitrate: Double): String {

@@ -7,20 +7,21 @@ import android.media.AudioManager
 import android.media.MediaMetadata
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
-import android.os.Build
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.analytics.AnalyticsCollector
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.ui.content.ImageProvider
 import org.jellyfin.mobile.utils.extensions.width
+import org.jellyfin.sdk.model.api.ImageType
 import com.google.android.exoplayer2.audio.AudioAttributes as ExoPlayerAudioAttributes
 
 inline fun MediaSession.applyDefaultLocalAudioAttributes(contentType: Int) {
     val audioAttributes = AudioAttributes.Builder().apply {
         setUsage(AudioAttributes.USAGE_MEDIA)
         setContentType(contentType)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (AndroidVersion.isAtLeastQ) {
             setAllowedCapturePolicy(AudioAttributes.ALLOW_CAPTURE_BY_ALL)
         }
     }.build()
@@ -30,7 +31,12 @@ inline fun MediaSession.applyDefaultLocalAudioAttributes(contentType: Int) {
 fun JellyfinMediaSource.toMediaMetadata(): MediaMetadata = MediaMetadata.Builder().apply {
     putString(MediaMetadata.METADATA_KEY_MEDIA_ID, itemId.toString())
     putString(MediaMetadata.METADATA_KEY_TITLE, name)
+    item?.artists?.joinToString()?.let { artists ->
+        putString(MediaMetadata.METADATA_KEY_ARTIST, artists)
+    }
     putLong(MediaMetadata.METADATA_KEY_DURATION, runTimeMs)
+    val imageUri = ImageProvider.buildItemUri(itemId, ImageType.PRIMARY, item?.imageTags?.get(ImageType.PRIMARY))
+    putString(MediaMetadata.METADATA_KEY_ART_URI, imageUri.toString())
 }.build()
 
 fun MediaSession.setPlaybackState(playbackState: Int, position: Long, playbackActions: Long) {
@@ -60,7 +66,7 @@ fun MediaSession.setPlaybackState(player: Player, playbackActions: Long) {
 }
 
 fun AudioManager.getVolumeRange(streamType: Int): IntRange {
-    val minVolume = (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) getStreamMinVolume(streamType) else 0)
+    val minVolume = (if (AndroidVersion.isAtLeastP) getStreamMinVolume(streamType) else 0)
     val maxVolume = getStreamMaxVolume(streamType)
     return minVolume..maxVolume
 }

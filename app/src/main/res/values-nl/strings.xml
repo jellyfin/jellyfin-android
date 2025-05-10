@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="network_message">Wil je downloads toestaan over mobiele data of tijdens roaming\? Je provider kan hiervoor kosten in rekening brengen.</string>
+    <string name="network_message">Wil je downloads toestaan via mobiele data of tijdens roaming? Je provider kan hiervoor kosten in rekening brengen. Je kunt deze optie later wijzigen in de instellingen.</string>
     <string name="network_title">Toegestane netwerktypen</string>
     <string name="downloading">Downloaden</string>
     <string name="mobile_data_and_roaming">Mobiele data &amp; roaming</string>
@@ -34,12 +34,12 @@
     <string name="notification_action_previous">Vorige</string>
     <string name="download_no_storage_permission">Kan geen bestanden downloaden zonder machtigingen</string>
     <string name="connection_error_cannot_connect">Er kan geen verbinding worden gemaakt.
-\nControleer de hostnaam en uw netwerkverbinding.</string>
+\nControleer de hostnaam en je netwerkverbinding.</string>
     <string name="video_player_external_description">Externe video-afspeelapplicaties zoals MX Player en VLC</string>
     <string name="video_player_native_description">Gebaseerd op ExoPlayer, ondersteunt meer videoformaten en codecs, en is meer geïntegreerd in het besturingssysteem</string>
     <string name="video_player_web_description">De standaard HTML-videospeler van de webinterface</string>
     <string name="video_player_external">Externe speler</string>
-    <string name="video_player_web">Web-speler</string>
+    <string name="video_player_web">Webspeler</string>
     <string name="pref_video_player_type_title">Videospelertype</string>
     <string name="available_servers_title">Beschikbare servers</string>
     <string name="choose_server_button_text">Server kiezen</string>
@@ -56,7 +56,7 @@
     <string name="external_player_vlc_player">VLC Player</string>
     <string name="external_player_mx_player_free_description">Krachtige videospeler met geavanceerde hardwareversnelling en ondersteuning voor ondertiteling.</string>
     <string name="music_notification_channel_description">Gebruikt voor muziekafspeelknoppen</string>
-    <string name="music_notification_channel">Jellyfin Muziekspeler</string>
+    <string name="music_notification_channel">Jellyfin-muziekspeler</string>
     <string name="media_service_car_item_no_title">Geen titel</string>
     <string name="media_service_car_section_playlists">Afspeellijsten</string>
     <string name="media_service_car_section_genres">Genres</string>
@@ -77,7 +77,7 @@
     <string name="dialog_web_view_outdated_message">De WebView-implementatie die door jouw apparaat wordt gebruikt is verouderd.
 \nWerk deze bij naar een compatibele versie.</string>
     <string name="player_error_unsupported_content">Media kan niet afgespeeld worden door dit apparaat</string>
-    <string name="connection_error_unsupported_version_or_product">Niet ondersteunde versie of product</string>
+    <string name="connection_error_unsupported_version_or_product">Niet-ondersteunde versie of product</string>
     <string name="connection_error_unable_to_reach_sever">Kan server niet bereiken</string>
     <plurals name="connection_error_prefix">
         <item quantity="one">%d kandidaat geprobeerd, zonder succes.</item>
@@ -100,8 +100,33 @@
     <string name="pref_subtitle_style">Ondertitelingsstijl aanpassen</string>
     <string name="pref_subtitle_style_summary">Je kunt de ondertitelingsstijl aanpassen in de Android-instellingen</string>
     <string name="player_error_unspecific_exception">Er is iets misgegaan met de speler</string>
-    <string name="menu_item_hardware_decoding">Hardware-decoderen</string>
-    <string name="menu_item_software_decoding">Software-decoderen</string>
+    <string name="menu_item_hardware_decoding">Hardwarematig decoderen</string>
+    <string name="menu_item_software_decoding">Softwarematig decoderen</string>
     <string name="button_use_different_server">Andere server gebruiken</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Horizontale video\'s in horizontale oriëntatie starten</string>
+    <string name="bluetooth_permission_continue">Doorgaan</string>
+    <string name="bluetooth_permission_message">De app vereist Bluetooth-toegang om te detecteren of er een draadloze koptelefoon of luidspreker is aangesloten. Op Android wordt deze machtiging beschreven als \"toegang tot apparaten in de buurt\" met de waarschuwing dat deze kan worden gebruikt om de huidige locatie te achterhalen. De Jellyfin-app zal deze machtiging echter nooit met dat doel gebruiken.</string>
+    <string name="bluetooth_permission_title">Bluetooth-toegang toestaan\?</string>
+    <string name="bluetooth_permission_granted">Bluetooth-toestemming is verleend</string>
+    <string name="mobile_data_summary">Media zal via WiFi en mobiele netwerken worden gedownload.</string>
+    <string name="wifi_only_summary">Media zal alleen via WiFi worden gedownload.</string>
+    <string name="mobile_data_and_roaming_summary">Media zal via WiFi, mobiele- en roaming-netwerken worden gedownload.</string>
+    <string name="downloads">Downloads</string>
+    <string name="failed_thumbnail">Miniatuur downloaden mislukt</string>
+    <string name="failed_information">Media-informatie ophalen mislukt</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nee</string>
+    <string name="confirm_deletion">Verwijderen bevestigen</string>
+    <string name="confirm_deletion_desc">Wil je \"%1$s\" verwijderen?</string>
+    <string name="view_downloads">Downloads weergeven</string>
+    <string name="download_notifications_description">Downloadmeldingen</string>
+    <string name="thumbnail_desc">Miniatuur</string>
+    <string name="downloading_desc">%1$d titels downloaden</string>
+    <string name="tv_show_desc">%1$s - S%2$dA%3$d</string>
+    <string name="store_videos_in_internal_storage">Video\'s bewaren in interne opslag</string>
+    <string name="downloaded">%1$s gedownload</string>
+    <string name="failed_network_method_check">Controleer je toegelaten downloadmethoden</string>
+    <string name="stored_videos_in_internal_storage_desc">Video\'s zoals films en tv-series worden bewaard in de interne opslag van de app. Ze zijn dan toegankelijk vanuit de app zelf.</string>
+    <string name="external_player_mpvkt_description">Een op mpv-android gebaseerde mediaspeler, met als doel een betere interface te bieden dan het origineel.</string>
+    <string name="external_player_mpvkt">mpvKt Player</string>
 </resources>

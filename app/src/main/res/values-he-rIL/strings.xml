@@ -14,7 +14,7 @@
     <string name="mobile_data_and_roaming">נתוני סלולר &amp; נדידה</string>
     <string name="mobile_data">נתונים סלולרים</string>
     <string name="wifi_only">WiFi בלבד</string>
-    <string name="network_message">האם ברצונך לאפשר הורדה עם שימוש ברשת הסלולרית או נדידה\? ייתכן ויחולו חיובים מחברת הסלולר.</string>
+    <string name="network_message">האם ברצונך לאפשר הורדה עם שימוש ברשת הסלולרית או נדידה? ייתכן ויחולו חיובים מחברת הסלולר.</string>
     <string name="network_title">אפשרויות תקשורת מורשות</string>
     <string name="battery_optimizations_message">אנא כבה את מצב החסכון בסוללה להפעלה בזמן שהמסך כבוי.</string>
     <string name="connect_button_text">התחבר</string>
@@ -88,4 +88,11 @@
     <string name="pref_exoplayer_allow_background_audio_summary">אפשר הפעלת סרטונים ברקע עם אודיו בלבד</string>
     <string name="pref_exoplayer_direct_play_ass">אפשר שימוש בכתוביות מסוג SSA/ASS בניגון ישיר</string>
     <string name="pref_exoplayer_direct_play_ass_summary">מנע המרת קידוד והצג כתוביות עם עיצוב בסיסי בלבד. עיצוב כתוביות מתקדם לא יהיה זמין אם מופעל.</string>
+    <string name="dialog_web_view_not_supported">תצוגת אתר לא נתמכת</string>
+    <string name="dialog_web_view_not_supported_message">WebView לא נתמך במכשיר זה.
+\nהתקן גרסה תואמת או החלף למכשיר נתמך.</string>
+    <string name="bluetooth_permission_title">אפשר גישת Bluetooth?</string>
+    <string name="bluetooth_permission_continue">המשך</string>
+    <string name="bluetooth_permission_granted">הרשאות Bluetooth ניתנו</string>
+    <string name="button_use_different_server">השתמש בשרת אחר</string>
 </resources>

@@ -2,7 +2,6 @@ package org.jellyfin.mobile.utils
 
 import android.app.PendingIntent
 import android.media.session.PlaybackState
-import android.os.Build
 import android.util.Rational
 import org.jellyfin.mobile.BuildConfig
 
@@ -30,6 +29,7 @@ object Constants {
     const val PREF_INSTANCE_URL = "pref_instance_url"
     const val PREF_IGNORE_BATTERY_OPTIMIZATIONS = "pref_ignore_battery_optimizations"
     const val PREF_IGNORE_WEBVIEW_CHECKS = "pref_ignore_webview_checks"
+    const val PREF_IGNORE_BLUETOOTH_PERMISSION = "pref_ignore_bluetooth_permission"
     const val PREF_DOWNLOAD_METHOD = "pref_download_method"
     const val PREF_MUSIC_NOTIFICATION_ALWAYS_DISMISSIBLE = "pref_music_notification_always_dismissible"
     const val PREF_VIDEO_PLAYER_TYPE = "pref_video_player_type"
@@ -43,6 +43,7 @@ object Constants {
     const val PREF_EXTERNAL_PLAYER_APP = "pref_external_player_app"
     const val PREF_SUBTITLE_STYLE = "pref_subtitle_style"
     const val PREF_DOWNLOAD_LOCATION = "pref_download_location"
+    const val PREF_DOWNLOAD_INTERNAL = "pref_download_internal"
 
     // InputManager commands
     const val PLAYBACK_MANAGER_COMMAND_PLAY = "unpause"
@@ -57,10 +58,11 @@ object Constants {
 
     // Notification
     val PENDING_INTENT_FLAGS = PendingIntent.FLAG_UPDATE_CURRENT or when {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> PendingIntent.FLAG_IMMUTABLE
+        AndroidVersion.isAtLeastM -> PendingIntent.FLAG_IMMUTABLE
         else -> 0
     }
     const val MEDIA_NOTIFICATION_CHANNEL_ID = "org.jellyfin.mobile.media.NOW_PLAYING"
+    const val DOWNLOAD_NOTIFICATION_CHANNEL_ID = "org.jellyfin.mobile.download.DOWNLOAD_PROGRESS"
 
     // Music player constants
     const val SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS: Long = PlaybackState.ACTION_PLAY_PAUSE or
@@ -126,6 +128,7 @@ object Constants {
         PlaybackState.ACTION_FAST_FORWARD or
         PlaybackState.ACTION_STOP
     const val VIDEO_PLAYER_NOTIFICATION_ID = 99
+    const val DOWNLOAD_NOTIFICATION_ID = 80
 
     // Video player intent extras
     const val EXTRA_MEDIA_PLAY_OPTIONS = "org.jellyfin.mobile.MEDIA_PLAY_OPTIONS"
@@ -134,6 +137,7 @@ object Constants {
     const val MPV_PLAYER_RESULT_ACTION = "is.xyz.mpv.MPVActivity.result"
     const val MX_PLAYER_RESULT_ACTION = "com.mxtech.intent.result.VIEW"
     const val VLC_PLAYER_RESULT_ACTION = "org.videolan.vlc.player.result"
+    const val MPVKT_PLAYER_RESULT_ACTION = "live.mehiz.mpvkt.ui.player.PlayerActivity.result"
 
     // External player webapp events
     const val EVENT_ENDED = "Ended"
@@ -146,4 +150,6 @@ object Constants {
 
     // Misc
     const val PERCENT_MAX = 100
+    const val DOWNLOAD_PATH = "/MediaCache/"
+    const val DOWNLOAD_THUMBNAIL_FILENAME = "thumbnail.jpg"
 }

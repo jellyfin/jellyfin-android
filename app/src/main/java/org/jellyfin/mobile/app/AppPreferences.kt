@@ -46,6 +46,14 @@ class AppPreferences(context: Context) {
             }
         }
 
+    var ignoreBluetoothPermission: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_IGNORE_BLUETOOTH_PERMISSION, false)
+        set(value) {
+            sharedPreferences.edit {
+                putBoolean(Constants.PREF_IGNORE_BLUETOOTH_PERMISSION, value)
+            }
+        }
+
     var downloadMethod: Int?
         get() = sharedPreferences.getInt(Constants.PREF_DOWNLOAD_METHOD, -1).takeIf { it >= 0 }
         set(value) {
@@ -58,22 +66,36 @@ class AppPreferences(context: Context) {
 
     var downloadLocation: String
         get() {
-            @Suppress("DEPRECATION")
-            val defaultStorage = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
             val savedStorage = sharedPreferences.getString(Constants.PREF_DOWNLOAD_LOCATION, null)
-            return if (savedStorage != null && File(savedStorage).parentFile?.isDirectory == true) {
-                // Saved location is still valid
-                savedStorage
-            } else {
-                // Reset download option if corrupt
-                sharedPreferences.edit { putString(Constants.PREF_DOWNLOAD_LOCATION, null) }
-                defaultStorage
+            if (savedStorage != null) {
+                if (File(savedStorage).parentFile?.isDirectory == true) {
+                    // Saved location is still valid
+                    return savedStorage
+                } else {
+                    // Reset download option if corrupt
+                    sharedPreferences.edit {
+                        remove(Constants.PREF_DOWNLOAD_LOCATION)
+                    }
+                }
             }
+
+            // Return default storage location
+            return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
         }
         set(value) {
             sharedPreferences.edit {
                 if (File(value).parentFile?.isDirectory == true) {
                     putString(Constants.PREF_DOWNLOAD_LOCATION, value)
+                }
+            }
+        }
+
+    var downloadToInternal: Boolean?
+        get() = sharedPreferences.getBoolean(Constants.PREF_DOWNLOAD_INTERNAL, true)
+        set(value) {
+            if (value != null) {
+                sharedPreferences.edit {
+                    putBoolean(Constants.PREF_DOWNLOAD_METHOD, value)
                 }
             }
         }

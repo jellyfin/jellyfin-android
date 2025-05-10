@@ -1,0 +1,3 @@
+Salamat sa paggamit ng Jellyfin para sa Android! Ang paggamit ng pinakabagong labas na Jellyfin Server ay parating nirerekomendema.
+
+Para sa karagdagang impormasyon, pakiusap at tingnan ang aming blog sa jellyfin.org, o kaya'y basahin ang kabouhang changelog sa GitHub.

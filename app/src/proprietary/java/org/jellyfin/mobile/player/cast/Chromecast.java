@@ -33,7 +33,7 @@ public final class Chromecast implements IChromecast {
     /**
      * Object to control the media.
      */
-    private ChromecastSession media;
+    private ChromecastSession chromecastSession;
     /**
      * Holds the reference to the current client initiated scan.
      */
@@ -53,7 +53,7 @@ public final class Chromecast implements IChromecast {
 
     public void initializePlugin(Activity activity) {
         try {
-            this.connection = new ChromecastConnection(activity, new ChromecastConnection.Listener() {
+            connection = new ChromecastConnection(activity, new ChromecastConnection.Listener() {
                 @Override
                 public void onSessionRejoin(JSONObject jsonSession) {
                     sendEvent("SESSION_LISTENER", new JSONArray().put(jsonSession));
@@ -93,7 +93,7 @@ public final class Chromecast implements IChromecast {
                     sendEvent("RECEIVER_MESSAGE", new JSONArray().put(namespace).put(message));
                 }
             });
-            this.media = connection.getChromecastSession();
+            chromecastSession = connection.getChromecastSession();
         } catch (RuntimeException e) {
             noChromecastError = "Could not initialize chromecast: " + e.getMessage();
             e.printStackTrace();
@@ -153,13 +153,7 @@ public final class Chromecast implements IChromecast {
             } else {
                 return false;
             }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            return false;
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            return false;
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();
             return false;
         }
@@ -173,7 +167,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean setup(JavascriptCallback javascriptCallback) {
-        this.eventCallback = javascriptCallback;
+        eventCallback = javascriptCallback;
         // Ensure any existing scan is stopped
         if (connection == null) return false;
         connection.stopRouteScan(clientScan, () -> {
@@ -275,7 +269,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean setReceiverVolumeLevel(Double newLevel, JavascriptCallback javascriptCallback) {
-        this.media.setVolume(newLevel, javascriptCallback);
+        chromecastSession.setVolume(newLevel, javascriptCallback);
         return true;
     }
 
@@ -287,7 +281,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean setReceiverMuted(Boolean muted, JavascriptCallback javascriptCallback) {
-        this.media.setMute(muted, javascriptCallback);
+        chromecastSession.setMute(muted, javascriptCallback);
         return true;
     }
 
@@ -300,7 +294,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean sendMessage(String namespace, String message, final JavascriptCallback javascriptCallback) {
-        this.media.sendMessage(namespace, message, javascriptCallback);
+        chromecastSession.sendMessage(namespace, message, javascriptCallback);
         return true;
     }
 
@@ -312,7 +306,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean addMessageListener(String namespace, JavascriptCallback javascriptCallback) {
-        this.media.addMessageListener(namespace);
+        chromecastSession.addMessageListener(namespace);
         javascriptCallback.success();
         return true;
     }
@@ -337,7 +331,7 @@ public final class Chromecast implements IChromecast {
     }
 
     private boolean loadMedia(String contentId, JSONObject customData, String contentType, Integer duration, String streamType, Boolean autoPlay, Double currentTime, JSONObject metadata, JSONObject textTrackStyle, final JavascriptCallback javascriptCallback) {
-        this.media.loadMedia(contentId, customData, contentType, duration, streamType, autoPlay, currentTime, metadata, textTrackStyle, javascriptCallback);
+        chromecastSession.loadMedia(contentId, customData, contentType, duration, streamType, autoPlay, currentTime, metadata, textTrackStyle, javascriptCallback);
         return true;
     }
 
@@ -348,7 +342,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean mediaPlay(JavascriptCallback javascriptCallback) {
-        media.mediaPlay(javascriptCallback);
+        chromecastSession.mediaPlay(javascriptCallback);
         return true;
     }
 
@@ -359,7 +353,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean mediaPause(JavascriptCallback javascriptCallback) {
-        media.mediaPause(javascriptCallback);
+        chromecastSession.mediaPause(javascriptCallback);
         return true;
     }
 
@@ -372,7 +366,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean mediaSeek(Integer seekTime, String resumeState, JavascriptCallback javascriptCallback) {
-        media.mediaSeek(seekTime.longValue() * 1000, resumeState, javascriptCallback);
+        chromecastSession.mediaSeek(seekTime.longValue() * 1000, resumeState, javascriptCallback);
         return true;
     }
 
@@ -398,7 +392,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean setMediaVolume(Double level, Boolean muted, JavascriptCallback javascriptCallback) {
-        media.mediaSetVolume(level, muted, javascriptCallback);
+        chromecastSession.mediaSetVolume(level, muted, javascriptCallback);
         return true;
     }
 
@@ -409,7 +403,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean mediaStop(JavascriptCallback javascriptCallback) {
-        media.mediaStop(javascriptCallback);
+        chromecastSession.mediaStop(javascriptCallback);
         return true;
     }
 
@@ -432,7 +426,7 @@ public final class Chromecast implements IChromecast {
             Timber.tag(TAG).e("Wrong format in activeTrackIds");
         }
 
-        this.media.mediaEditTracksInfo(trackIds, textTrackStyle, javascriptCallback);
+        chromecastSession.mediaEditTracksInfo(trackIds, textTrackStyle, javascriptCallback);
         return true;
     }
 
@@ -444,7 +438,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean queueLoad(JSONObject queueLoadRequest, final JavascriptCallback javascriptCallback) {
-        this.media.queueLoad(queueLoadRequest, javascriptCallback);
+        chromecastSession.queueLoad(queueLoadRequest, javascriptCallback);
         return true;
     }
 
@@ -456,7 +450,7 @@ public final class Chromecast implements IChromecast {
      * @return true for cordova
      */
     public boolean queueJumpToItem(Integer itemId, final JavascriptCallback javascriptCallback) {
-        this.media.queueJumpToItem(itemId, javascriptCallback);
+        chromecastSession.queueJumpToItem(itemId, javascriptCallback);
         return true;
     }
 
@@ -578,11 +572,13 @@ public final class Chromecast implements IChromecast {
         };
 
         stopRouteScan(callback);
-        sessionStop(callback);
-        if (media != null) {
-            media.destroy();
+        // Default behavior for youtube-like apps is to leave the session running if the app is closed.
+        // This, at least, allows the user to close the app and re-open without stopping media when trying to fix things.
+        sessionLeave(callback);
+        if (chromecastSession != null) {
+            chromecastSession.destroy();
         }
-        media = null;
+        chromecastSession = null;
         if (connection != null) {
             connection.destroy();
         }

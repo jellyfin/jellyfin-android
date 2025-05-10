@@ -45,7 +45,7 @@ fun Activity.requestPermission(vararg permissions: String, callback: PermissionR
     }
 
     if (skipRequest) {
-        callback(permissions.map { Pair(it, PackageManager.PERMISSION_GRANTED) }.toMap())
+        callback(permissions.associateWith { PackageManager.PERMISSION_GRANTED })
     } else {
         val helper = getKoin().get<PermissionRequestHelper>()
         val code = helper.getRequestCode()

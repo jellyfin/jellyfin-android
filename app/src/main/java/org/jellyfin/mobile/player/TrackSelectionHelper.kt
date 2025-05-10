@@ -40,7 +40,7 @@ class TrackSelectionHelper(
 
         // For transcoding and external streams, we need to restart playback
         if (mediaSource.playMethod == PlayMethod.TRANSCODE || selectedMediaStream.isExternal) {
-            return viewModel.mediaQueueManager.selectAudioStreamAndRestartPlayback(selectedMediaStream)
+            return viewModel.queueManager.selectAudioStreamAndRestartPlayback(selectedMediaStream)
         }
 
         return selectPlayerAudioTrack(mediaSource, selectedMediaStream, initial = false).also { success ->
@@ -55,7 +55,11 @@ class TrackSelectionHelper(
      * @see selectPlayerAudioTrack
      */
     @Suppress("ReturnCount")
-    private fun selectPlayerAudioTrack(mediaSource: JellyfinMediaSource, audioStream: MediaStream, initial: Boolean): Boolean {
+    private fun selectPlayerAudioTrack(
+        mediaSource: JellyfinMediaSource,
+        audioStream: MediaStream,
+        initial: Boolean,
+    ): Boolean {
         if (mediaSource.playMethod == PlayMethod.TRANSCODE) {
             // Transcoding does not require explicit audio selection
             return true
@@ -70,9 +74,15 @@ class TrackSelectionHelper(
 
         val player = viewModel.playerOrNull ?: return false
         val embeddedStreamIndex = mediaSource.getEmbeddedStreamIndex(audioStream)
-        val audioGroup = player.currentTracks.groups.getOrNull(embeddedStreamIndex)?.mediaTrackGroup ?: return false
+        val sortedTrackGroups = player.currentTracks.groups.sortedBy { group ->
+            val formatId = group.mediaTrackGroup.getFormat(0).id
 
-        return trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_AUDIO, audioGroup)
+            // Sort by format ID, but pad number string with zeroes to ensure proper sorting
+            formatId?.toIntOrNull()?.let { id -> "%05d".format(id) } ?: formatId
+        }
+        val audioGroup = sortedTrackGroups.getOrNull(embeddedStreamIndex) ?: return false
+
+        return trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_AUDIO, audioGroup.mediaTrackGroup)
     }
 
     /**
@@ -86,6 +96,15 @@ class TrackSelectionHelper(
         val selectedMediaStream = mediaSource.mediaStreams.getOrNull(mediaStreamIndex)
         require(selectedMediaStream == null || selectedMediaStream.type == MediaStreamType.SUBTITLE)
 
+        // If the selected subtitle stream requires encoding or the current subtitle is baked into the stream,
+        // we need to restart playback
+        if (
+            selectedMediaStream?.deliveryMethod == SubtitleDeliveryMethod.ENCODE ||
+            mediaSource.selectedSubtitleStream?.deliveryMethod == SubtitleDeliveryMethod.ENCODE
+        ) {
+            return viewModel.queueManager.selectSubtitleStreamAndRestartPlayback(selectedMediaStream)
+        }
+
         return selectSubtitleTrack(mediaSource, selectedMediaStream, initial = false).also { success ->
             if (success) viewModel.logTracks()
         }
@@ -98,7 +117,11 @@ class TrackSelectionHelper(
      * @see selectSubtitleTrack
      */
     @Suppress("ReturnCount")
-    private fun selectSubtitleTrack(mediaSource: JellyfinMediaSource, subtitleStream: MediaStream?, initial: Boolean): Boolean {
+    private fun selectSubtitleTrack(
+        mediaSource: JellyfinMediaSource,
+        subtitleStream: MediaStream?,
+        initial: Boolean,
+    ): Boolean {
         when {
             // Fast-pass: Skip execution on subsequent calls with the same selection
             !initial && subtitleStream === mediaSource.selectedSubtitleStream -> return true
@@ -115,12 +138,17 @@ class TrackSelectionHelper(
 
         val player = viewModel.playerOrNull ?: return false
         when (subtitleStream.deliveryMethod) {
+            SubtitleDeliveryMethod.ENCODE -> {
+                // Normally handled in selectSubtitleTrack(int) by restarting playback,
+                // initial selection is always considered successful
+                return true
+            }
             SubtitleDeliveryMethod.EMBED -> {
                 // For embedded subtitles, we can match by the index of this stream in all embedded streams.
                 val embeddedStreamIndex = mediaSource.getEmbeddedStreamIndex(subtitleStream)
-                val subtitleGroup = player.currentTracks.groups.getOrNull(embeddedStreamIndex)?.mediaTrackGroup ?: return false
+                val subtitleGroup = player.currentTracks.groups.getOrNull(embeddedStreamIndex) ?: return false
 
-                return trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_TEXT, subtitleGroup)
+                return trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_TEXT, subtitleGroup.mediaTrackGroup)
             }
             SubtitleDeliveryMethod.EXTERNAL -> {
                 // For external subtitles, we can simply match the ID that we set when creating the player media source.
@@ -147,6 +175,7 @@ class TrackSelectionHelper(
             else -> -1
         }
         selectSubtitleTrack(newSubtitleIndex)
-        return mediaSource.selectedSubtitleStream != null
+        // Media source may have changed by now
+        return mediaSourceOrNull?.selectedSubtitleStream != null
     }
 }

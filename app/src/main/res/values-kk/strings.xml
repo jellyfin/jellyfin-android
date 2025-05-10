@@ -64,7 +64,7 @@
     <string name="external_player_mpv_description">Qarapaiym, yqşam jäne qolaily tegın beine oinatqyş . Ol köptegen tasyğyş fail pışımderın qoldaidy.</string>
     <string name="video_player_native_description">ExoPlayer negіzіnde äzırlengen, beine pışımder men kodekterdı köbırek qoldaidy jäne OJ ışıne tyğyzdau bіrіktіrіlgen</string>
     <string name="external_player_not_supported_yet">Tañdağanyñyz syrtqy oinatqyşta älı de oinatudy qadağalau üşın qoldau körsetіlmegen. Ony qoldauğa äreket jasau üşın äzırleuşılerımen bailanysyñyz.</string>
-    <string name="network_message">Jüktep alu ūialy derekter nemese roumiñ jelіlerі arqyly oryndalsyn ba\? Jetkızuşı üşın aqy alynuy mümkın.</string>
+    <string name="network_message">Jüktep alu ūialy derekter nemese roumiñ jelіlerі arqyly oryndalsyn ba? Jetkızuşı üşın aqy alynuy mümkın.</string>
     <string name="battery_optimizations_message">Tasyğyşderekterdı oinatuğa arnalğan batareiany oñtailandyrudy ekran öşırulı bolğanda öşırіñız.</string>
     <string name="pref_download_location">Jükteu orny</string>
     <string name="pref_category_downloads">Jükteuler</string>

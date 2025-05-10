@@ -4,21 +4,30 @@ import android.app.Service
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.provider.Settings
 import android.view.OrientationEventListener
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withStarted
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.cast.Chromecast
 import org.jellyfin.mobile.player.cast.IChromecast
 import org.jellyfin.mobile.player.ui.PlayerFragment
 import org.jellyfin.mobile.setup.ConnectFragment
+import org.jellyfin.mobile.utils.AndroidVersion
+import org.jellyfin.mobile.utils.BackPressInterceptor
+import org.jellyfin.mobile.utils.BluetoothPermissionHelper
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
 import org.jellyfin.mobile.utils.SmartOrientationListener
@@ -34,6 +43,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : AppCompatActivity() {
     private val activityEventHandler: ActivityEventHandler = get()
     val mainViewModel: MainViewModel by viewModel()
+    val bluetoothPermissionHelper: BluetoothPermissionHelper = BluetoothPermissionHelper(this, get())
     val chromecast: IChromecast = Chromecast()
     private val permissionRequestHelper: PermissionRequestHelper by inject()
 
@@ -51,14 +61,43 @@ class MainActivity : AppCompatActivity() {
 
     private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(this) }
 
+    /**
+     * Passes back press events onto the currently visible [Fragment] if it implements the [BackPressInterceptor] interface.
+     *
+     * If the current fragment does not implement [BackPressInterceptor] or has decided not to intercept the event
+     * (see result of [BackPressInterceptor.onInterceptBackPressed]), the topmost backstack entry will be popped.
+     *
+     * If there is no topmost backstack entry, the event will be passed onto the dispatcher's fallback handler.
+     */
+    private val onBackPressedCallback: OnBackPressedCallback.() -> Unit = callback@{
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        if (currentFragment is BackPressInterceptor && currentFragment.onInterceptBackPressed()) {
+            // Top fragment handled back press
+            return@callback
+        }
+
+        // This is the same default action as in Activity.onBackPressed
+        if (!supportFragmentManager.isStateSaved && supportFragmentManager.popBackStackImmediate()) {
+            // Removed fragment from back stack
+            return@callback
+        }
+
+        // Let the system handle the back press
+        isEnabled = false
+        // Make sure that we *really* call the fallback handler
+        assert(!onBackPressedDispatcher.hasEnabledCallbacks()) {
+            "MainActivity should be the lowest onBackPressCallback"
+        }
+        onBackPressedDispatcher.onBackPressed()
+        isEnabled = true // re-enable callback in case activity isn't finished
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         setupKoinFragmentFactory()
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // Bind player service
-        bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
 
         // Check WebView support
         if (!isWebViewSupported()) {
@@ -66,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                 setTitle(R.string.dialog_web_view_not_supported)
                 setMessage(R.string.dialog_web_view_not_supported_message)
                 setCancelable(false)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                if (AndroidVersion.isAtLeastN) {
                     setNeutralButton(R.string.dialog_button_open_settings) { _, _ ->
                         startActivity(Intent(Settings.ACTION_WEBVIEW_SETTINGS))
                         Toast.makeText(context, R.string.toast_reopen_after_change, Toast.LENGTH_LONG).show()
@@ -80,32 +119,23 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        // Bind player service
+        bindService(Intent(this, RemotePlayerService::class.java), serviceConnection, Service.BIND_AUTO_CREATE)
+
         // Subscribe to activity events
         with(activityEventHandler) { subscribe() }
 
         // Load UI
-        lifecycleScope.launchWhenStarted {
-            mainViewModel.serverState.collect { state ->
-                with(supportFragmentManager) {
-                    when (state) {
-                        ServerState.Pending -> {
-                            // TODO add loading indicator
-                        }
-                        is ServerState.Unset -> replaceFragment<ConnectFragment>()
-                        is ServerState.Available -> {
-                            val currentFragment = findFragmentById(R.id.fragment_container)
-                            if (currentFragment !is WebViewFragment || currentFragment.server != state.server) {
-                                replaceFragment<WebViewFragment>(
-                                    Bundle().apply {
-                                        putParcelable(Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER, state.server)
-                                    },
-                                )
-                            }
-                        }
-                    }
+        lifecycleScope.launch {
+            mainViewModel.serverState.collectLatest { state ->
+                lifecycle.withStarted {
+                    handleServerState(state)
                 }
             }
         }
+
+        // Handle back presses
+        onBackPressedDispatcher.addCallback(this, onBackPressed = onBackPressedCallback)
 
         // Setup Chromecast
         chromecast.initializePlugin(this)
@@ -114,6 +144,31 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         orientationListener.enable()
+    }
+
+    private fun handleServerState(state: ServerState) {
+        with(supportFragmentManager) {
+            val currentFragment = findFragmentById(R.id.fragment_container)
+            when (state) {
+                ServerState.Pending -> {
+                    // TODO add loading indicator
+                }
+                is ServerState.Unset -> {
+                    if (currentFragment !is ConnectFragment) {
+                        replaceFragment<ConnectFragment>()
+                    }
+                }
+                is ServerState.Available -> {
+                    if (currentFragment !is WebViewFragment || currentFragment.server != state.server) {
+                        replaceFragment<WebViewFragment>(
+                            Bundle().apply {
+                                putParcelable(Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER, state.server)
+                            },
+                        )
+                    }
+                }
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -127,11 +182,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 
     override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
         for (fragment in supportFragmentManager.fragments) {
             if (fragment is PlayerFragment && fragment.isVisible) {
                 fragment.onUserLeaveHint()
@@ -142,14 +198,6 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         orientationListener.disable()
-    }
-
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            supportFragmentManager.popBackStack()
-        } else {
-            super.onBackPressed()
-        }
     }
 
     override fun onDestroy() {

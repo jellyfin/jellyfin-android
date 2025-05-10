@@ -1,0 +1,3 @@
+Ačiū kad naudojatės Jellyfin skirtą Android! Visada rekomenduojame naudoti naujausią Jellyfin serverio versiją.
+
+Daugiau informacijos galite rasti mūsų bloge jellyfin.org arba perskaityti visą pakeitimų istoriją mūsų GitHub.
