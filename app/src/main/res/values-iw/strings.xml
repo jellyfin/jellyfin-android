@@ -113,4 +113,11 @@
     <string name="wifi_only_summary">הורדת מדיה באמצעות WiFi בלבד.</string>
     <string name="mobile_data_summary">הורדת מדיה באמצעות WiFi ונתונים סלולרים.</string>
     <string name="mobile_data_and_roaming_summary">הורדת מדיה באמצעות WiFi, נתונים סלולרים ונדידה.</string>
+    <string name="view_downloads">הצג הורדות</string>
+    <string name="downloads">הורדות</string>
+    <string name="download_notifications_description">התראות הורדה</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">לחץ והחזק את המסך כדי להאיץ זמנית את ההפעלה</string>
+    <string name="pref_exoplayer_allow_press_speed_up">החזק כדי להאיץ</string>
+    <string name="external_player_mpvkt">נגן mpvKt</string>
+    <string name="external_player_mpvkt_description">נגן מדיה המבוסס על mpv-android שמטרתו לספק ממשק משתמש נחמד יותר בהשוואה למקור.</string>
 </resources>
