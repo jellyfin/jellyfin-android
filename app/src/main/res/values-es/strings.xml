@@ -112,4 +112,9 @@
     <string name="mobile_data_and_roaming_summary">Los medios se descargarán a través de redes WiFi, móviles y de roaming.</string>
     <string name="wifi_only_summary">Los medios se descargarán únicamente a través de WiFi.</string>
     <string name="mobile_data_summary">Los medios se descargarán a través de WiFi y redes móviles.</string>
+    <string name="external_player_mpvkt_description">Un reproductor multimedia basado en mpv-android que tiene como objetivo proporcionar una interfaz de usuario más agradable.</string>
+    <string name="view_downloads">Ver descargas</string>
+    <string name="downloads">Descargas</string>
+    <string name="download_notifications_description">Notificaciones de descarga</string>
+    <string name="failed_thumbnail">No se pudo descargar la miniatura</string>
 </resources>
