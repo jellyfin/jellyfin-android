@@ -122,4 +122,12 @@
     <string name="failed_information">Truy xuất thông tin phương tiện thất bại</string>
     <string name="yes">Có</string>
     <string name="no">Không</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Giữ để tăng tốc</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Chạm và giữ màn hình để tạm thời tăng tốc phát lại</string>
+    <string name="store_videos_in_internal_storage">Lưu trữ video trong bộ lưu trữ nội bộ</string>
+    <string name="stored_videos_in_internal_storage_desc">Các video như phim và chương trình TV sẽ được lưu trong bộ lưu trữ nội bộ của ứng dụng. Cho phép truy cập từ bên trong ứng dụng.</string>
+    <string name="thumbnail_desc">Hình thu nhỏ</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Đang tải xuống %1$d tiêu đề</string>
+    <string name="downloaded">Đã tải xuống %1$s</string>
 </resources>
