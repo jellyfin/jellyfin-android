@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="downloading">A descarregar</string>
+    <string name="downloading">A transferir</string>
     <string name="mobile_data_and_roaming">Dados Móveis e Roaming</string>
     <string name="mobile_data">Dados Móveis</string>
     <string name="wifi_only">Apenas WiFi</string>
@@ -31,7 +31,7 @@
     <string name="notification_action_pause">Pausa</string>
     <string name="notification_action_play">Reproduzir</string>
     <string name="notification_action_previous">Anterior</string>
-    <string name="download_no_storage_permission">Não é possível descarregar ficheiros sem permissões para armazenamento</string>
+    <string name="download_no_storage_permission">Não é possível transferir ficheiros sem permissões de armazenamento</string>
     <string name="connect_button_text">Ligar</string>
     <string name="connect_to_server_title">Ligar ao Servidor</string>
     <string name="notification_action_rewind">Recuar</string>
@@ -112,4 +112,24 @@
     <string name="wifi_only_summary">Média será transferida apenas por WiFi.</string>
     <string name="mobile_data_summary">Média será transferida por WiFi e redes móveis.</string>
     <string name="mobile_data_and_roaming_summary">Média será transferida por WiFi e redes móveis, incluindo em roaming.</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Pressiona o ecrã para acelerar temporariamente a reprodução</string>
+    <string name="failed_thumbnail">Falha ao transferir a miniatura</string>
+    <string name="external_player_mpvkt">Leitor mpvKt</string>
+    <string name="external_player_mpvkt_description">Um leitor multimédia baseado no mpv-android, com o objetivo de fornecer uma interface de utilizador mais agradável do que a original.</string>
+    <string name="downloads">Transferências</string>
+    <string name="confirm_deletion">Confirmar eliminação</string>
+    <string name="stored_videos_in_internal_storage_desc">Vídeos, como filmes e séries, serão armazenados na memória interna da aplicação, permitindo o acesso a partir da própria app.</string>
+    <string name="tv_show_desc">%1$s - T%2$dE%3$d</string>
+    <string name="no">Não</string>
+    <string name="thumbnail_desc">Miniatura</string>
+    <string name="store_videos_in_internal_storage">Armazenar vídeos na memória interna</string>
+    <string name="view_downloads">Ver transferências</string>
+    <string name="download_notifications_description">Notificações de transferências</string>
+    <string name="yes">Sim</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Pressionar para acelerar</string>
+    <string name="failed_information">Falha ao obter informações do conteúdo multimédia</string>
+    <string name="failed_network_method_check">Verifica os métodos de transferência permitidos</string>
+    <string name="confirm_deletion_desc">Queres eliminar %1$s?</string>
+    <string name="downloading_desc">A transferir %1$d títulos</string>
+    <string name="downloaded">Transferido %1$s</string>
 </resources>
