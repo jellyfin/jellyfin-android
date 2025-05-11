@@ -113,4 +113,24 @@
     <string name="wifi_only_summary">Медиа будут загружаться только через Wi-Fi.</string>
     <string name="mobile_data_summary">Медиа будут загружаться через Wi-Fi и мобильные сети.</string>
     <string name="mobile_data_and_roaming_summary">Медиафайлы будут загружаться через Wi-Fi, мобильные сети и в роуминге.</string>
+    <string name="confirm_deletion">Подтвердить удаление</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Удерживать для ускорения</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Коснитесь и удерживайте экран для ускорения воспроизведения</string>
+    <string name="external_player_mpvkt_description">Медиаплеер на базе mpv-android, призванный обеспечить более приятный пользовательский интерфейс в сравнении с оригинальным плеером.</string>
+    <string name="view_downloads">В загрузки</string>
+    <string name="downloads">Загрузки</string>
+    <string name="download_notifications_description">Уведомления о загрузках</string>
+    <string name="failed_network_method_check">Пожалуйста, проверьте ваши доступные методы скачивания</string>
+    <string name="thumbnail_desc">Миниатюра</string>
+    <string name="stored_videos_in_internal_storage_desc">Видео, такие как фильмы и сериалы, будут сохраняться во внутренней памяти приложения. Разрешает доступ из приложения.</string>
+    <string name="downloading_desc">Скачивание %1$d элемента(ов)</string>
+    <string name="external_player_mpvkt">Плеер mpvKt</string>
+    <string name="store_videos_in_internal_storage">Сохранять видео во внутреннем хранилище</string>
+    <string name="downloaded">Скачано %1$s</string>
+    <string name="failed_thumbnail">Не удалось скачать миниатюру</string>
+    <string name="failed_information">Не удалось получить информацию о медиа</string>
+    <string name="confirm_deletion_desc">Вы хотите удалить %1$s?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
 </resources>
