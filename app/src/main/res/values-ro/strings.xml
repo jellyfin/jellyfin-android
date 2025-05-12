@@ -112,4 +112,24 @@
     <string name="wifi_only_summary">Media va fi descărcată doar prin WiFi.</string>
     <string name="mobile_data_summary">Media va fi descărcată prin WiFi si rețele mobile.</string>
     <string name="mobile_data_and_roaming_summary">Media va fi descărcată prin WiFi, rețele mobile și rețele de roaming.</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Atingeți lung ecranul pentru a accelera temporar redarea</string>
+    <string name="downloads">Descărcări</string>
+    <string name="download_notifications_description">Notificări descărcări</string>
+    <string name="failed_thumbnail">Nu s-a putut descărca miniatura</string>
+    <string name="failed_information">Nu s-au putut prelua informațiile media</string>
+    <string name="failed_network_method_check">Vă rugăm să verificați metodele de descărcare permise</string>
+    <string name="stored_videos_in_internal_storage_desc">Videoclipurile precum filme și emisiuni TV vor fi stocate în memoria internă a aplicației. Permiterea accesului din interiorul aplicației.</string>
+    <string name="external_player_mpvkt">mpvKt media player</string>
+    <string name="external_player_mpvkt_description">Un player media bazat pe mpv-android care urmărește să ofere o interfață de utilizator mai plăcută față de originalul.</string>
+    <string name="view_downloads">Vedeți descărcări</string>
+    <string name="confirm_deletion">Confirmați ștergerea</string>
+    <string name="yes">Da</string>
+    <string name="store_videos_in_internal_storage">Stocați videoclipuri în stocarea internă</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Țineți apăsat pentru a accelera</string>
+    <string name="confirm_deletion_desc">Doriți să ștergeți %1$s?</string>
+    <string name="no">Nu</string>
+    <string name="thumbnail_desc">Miniatură</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Se descarcă %1$d titluri</string>
+    <string name="downloaded">S-a descărcat %1$s</string>
 </resources>
