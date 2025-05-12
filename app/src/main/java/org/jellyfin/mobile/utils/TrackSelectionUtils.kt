@@ -1,9 +1,8 @@
 package org.jellyfin.mobile.utils
 
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.source.TrackGroup
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.TrackSelectionOverride
+import androidx.media3.common.TrackGroup
+import androidx.media3.common.TrackSelectionOverride
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 
 /**
  * Select the [trackGroup] of the specified [type] and ensure the type is enabled.

@@ -14,8 +14,8 @@ import android.widget.ProgressBar
 import androidx.core.content.getSystemService
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
-import com.google.android.exoplayer2.ui.PlayerView
+import androidx.media3.ui.AspectRatioFrameLayout
+import androidx.media3.ui.PlayerView
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
@@ -123,7 +123,7 @@ class PlayerGestureHelper(
 
             override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
                 playerView.apply {
-                    if (!isControllerVisible) showController() else hideController()
+                    if (!isControllerFullyVisible) showController() else hideController()
                 }
                 return true
             }
