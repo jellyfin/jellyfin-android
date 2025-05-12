@@ -112,4 +112,24 @@
     <string name="wifi_only_summary">Les médias seront téléchargés uniquement via WiFi.</string>
     <string name="mobile_data_summary">Les médias seront téléchargés via les réseaux WiFi et mobiles.</string>
     <string name="mobile_data_and_roaming_summary">Les médias seront téléchargés sur les réseaux WiFi, mobiles et itinérants.</string>
+    <string name="confirm_deletion">Confirmer la suppression</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Maintenir pour accélérer</string>
+    <string name="failed_network_method_check">Veuillez vérifier vos méthodes de téléchargement autorisées</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Toucher et maintenir l’écran pour accélérer temporairement la lecture</string>
+    <string name="failed_information">La récupération des informations du média a échoué</string>
+    <string name="downloads">Téléchargements</string>
+    <string name="download_notifications_description">Notifications de téléchargements</string>
+    <string name="external_player_mpvkt_description">Un lecteur multimédia basé sur mpv-android, visant à offrir une interface utilisateur plus agréable que celle d\'origine.</string>
+    <string name="failed_thumbnail">Le téléchargement de la miniature a échoué</string>
+    <string name="external_player_mpvkt">Lecteur mpvKt</string>
+    <string name="confirm_deletion_desc">Voulez-vous supprimer %1$s ?</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="thumbnail_desc">Miniature</string>
+    <string name="stored_videos_in_internal_storage_desc">Les vidéos, comme les films et les séries, seront enregistrées dans le stockage interne de l’application, ce qui permettra d\'y accéder depuis l\'application.</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Téléchargement de %1$d titres</string>
+    <string name="downloaded">%1$s téléchargé</string>
+    <string name="view_downloads">Voir les téléchargements</string>
+    <string name="store_videos_in_internal_storage">Enregistrer les vidéos dans le stockage interne</string>
 </resources>
