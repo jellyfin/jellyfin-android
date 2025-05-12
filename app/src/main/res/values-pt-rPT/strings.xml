@@ -47,7 +47,7 @@
     <string name="music_notification_channel_description">Utilizado para controlo da reprodução de música</string>
     <string name="music_notification_channel">Leitor de música Jellyfin</string>
     <string name="media_service_car_item_no_title">Sem título</string>
-    <string name="media_service_car_section_playlists">Listas de reprodução</string>
+    <string name="media_service_car_section_playlists">Playlists</string>
     <string name="media_service_car_section_genres">Géneros</string>
     <string name="media_service_car_section_songs">Músicas</string>
     <string name="media_service_car_section_artists">Artistas</string>
