@@ -127,4 +127,6 @@
     <string name="yes">Ja</string>
     <string name="no">Nei</string>
     <string name="stored_videos_in_internal_storage_desc">Videoer som filmer og TV-serier vil bli lagret i appens interne lagringsminne. Tillat tilgang fra inne i appen.</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Hold for å øke farten</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Trykk og hold på skjermen for å midlertidig øke farten på avspilling</string>
 </resources>
