@@ -110,4 +110,24 @@
     <string name="wifi_only_summary">媒体将仅通过 WiFi 下载。</string>
     <string name="mobile_data_summary">媒体将通过 WiFi 和移动网络下载。</string>
     <string name="mobile_data_and_roaming_summary">媒体将通过 WiFi、移动和漫游网络下载。</string>
+    <string name="downloads">下载</string>
+    <string name="failed_information">无法检索媒体信息</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">长按屏幕可暂时加快播放速度</string>
+    <string name="external_player_mpvkt_description">基于 mpv-android 的媒体播放器旨在提供比原版更好的用户界面。</string>
+    <string name="failed_thumbnail">下载缩略图失败</string>
+    <string name="yes">是</string>
+    <string name="view_downloads">查看下载</string>
+    <string name="download_notifications_description">下载通知</string>
+    <string name="confirm_deletion_desc">您想删除 %1$s 吗？</string>
+    <string name="no">否</string>
+    <string name="failed_network_method_check">请检查您允许的下载方法</string>
+    <string name="confirm_deletion">确认删除</string>
+    <string name="thumbnail_desc">缩略图</string>
+    <string name="store_videos_in_internal_storage">将视频存储在内部存储器中</string>
+    <string name="stored_videos_in_internal_storage_desc">电影和电视节目等视频将存储在应用程序的内部存储空间中。允许从应用程序内部访问。</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">正在下载 %1$d 个标题</string>
+    <string name="downloaded">已下载 %1$s</string>
+    <string name="external_player_mpvkt">mpvKt 播放器</string>
+    <string name="pref_exoplayer_allow_press_speed_up">长按可加速播放</string>
 </resources>
