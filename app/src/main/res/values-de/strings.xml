@@ -111,4 +111,23 @@
     <string name="wifi_only_summary">Medien werden nur über WLAN heruntergeladen.</string>
     <string name="mobile_data_summary">Medien werden über WLAN und mobile Daten heruntergeladen.</string>
     <string name="mobile_data_and_roaming_summary">Medien werden über WLAN, mobile Daten und Roaming-Netzwerke heruntergeladen.</string>
+    <string name="external_player_mpvkt_description">Ein Media Player basierend auf mpv-android, der eine schönere Benutzeroberfläche als der Standardplayer bietet.</string>
+    <string name="view_downloads">Downloads anzeigen</string>
+    <string name="failed_information">Laden der Media Informationen fehlgeschlagen</string>
+    <string name="failed_thumbnail">Laden des Vorschaubildes fehlgeschlagen</string>
+    <string name="download_notifications_description">Download Benachrichtigungen</string>
+    <string name="failed_network_method_check">Bitte überprüfe deine zugelassenen Optionen zum Herunterladen</string>
+    <string name="store_videos_in_internal_storage">Videos im internen Speicher ablegen</string>
+    <string name="stored_videos_in_internal_storage_desc">Videos wie Filme oder TV Shows werden im App internen Speicher abgelegt. Erlaube den Zugriff aus der App heraus.</string>
+    <string name="downloading_desc">Lade %1$d Titel herunter</string>
+    <string name="external_player_mpvkt">mpvKt Player</string>
+    <string name="confirm_deletion_desc">Möchtest du %1$s löschen?</string>
+    <string name="no">Nein</string>
+    <string name="yes">Ja</string>
+    <string name="thumbnail_desc">Vorschaubild</string>
+    <string name="downloaded">%1$s heruntergeladen</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Halten zum Beschleunigen des Videos</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Berühre und halte den Bildschirm gedrückt, um die Wiedergabe kurzzeitig zu beschleunigen</string>
+    <string name="downloads">Downloads</string>
+    <string name="confirm_deletion">Löschen bestätigen</string>
 </resources>
