@@ -18,7 +18,7 @@ body:
       label: Problem description
       description: Describe the issue you are experiencing or the gap you are trying to address.
       placeholder: |
-        The Android app does not support playback of downloaded Media.
+        The Android app does not support playback of downloaded media.
         This makes the download option less usefull then it could be.
     validations:
       required: true
@@ -35,7 +35,7 @@ body:
       label: Alternatives considered
       description: Outline any other approaches you have thought about or explored to solve the problem.
       placeholder: |
-        An alternative approach could involve simply downloading supported formants and let the user play them with a 3rd party media player.
+        An alternative approach could involve simply downloading supported formats and let the user play them with a 3rd party media player.
     validations:
       required: true
   - type: textarea
