@@ -1,0 +1,55 @@
+name: Feature request
+description: Request a new feature
+labels:
+  - enhancement
+body:
+  - type: checkboxes
+    id: before-posting
+    attributes:
+      label: "This request respects the following points:"
+      description: All conditions are **required**.
+      options:
+        - label: This request is **not** already on [GitHub](https://github.com/jellyfin/jellyfin-android/labels/enhancement) _(I've searched it)_.
+          required: true
+        - label: I agree to follow Jellyfin's [Code of Conduct](https://jellyfin.org/docs/general/community-standards.html#code-of-conduct).
+          required: true
+  - type: textarea
+    attributes:
+      label: Problem description
+      description: Describe the issue you are experiencing or the gap you are trying to address.
+      placeholder: |
+        The Android app does not support playback of downloaded media.
+        This makes the download option less usefull then it could be.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Proposed solution
+      description: Provide a detailed description of what you would like to see implemented or changed.
+      placeholder: |
+        The app could download the media in supported formats and display a seperate menu for downloaded content.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Alternatives considered
+      description: Outline any other approaches you have thought about or explored to solve the problem.
+      placeholder: |
+        An alternative approach could involve simply downloading supported formats and let the user play them with a 3rd party media player.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional information
+      description: Include any relevant details, resources, or screenshots that might help in understanding or implementing the request.
+      placeholder: Add any additional context here.
+    validations:
+      required: false
+  - type: input
+    id: other-sources
+    attributes:
+      label: Other sources
+      description: If this topic has been discussed outside of GitHub, please link it.
+      placeholder: https://forum.jellyfin.org/…
+    validations:
+      required: false
