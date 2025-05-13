@@ -1,2 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="dialog_web_view_outdated_message">A implementación de WebView empregada polo seu dispositivo está desactualizada. \nPor favor, actualice a unha versión compatible.</string>
+    <string name="choose_server_button_text">Elixir servidor</string>
+    <string name="dialog_web_view_not_supported">WebView non soportado</string>
+    <string name="dialog_web_view_not_supported_message">As WebViews non están soportadas neste dispositivo. \nInstale unha implementación de WebView compatible ou cambie a un dispositivo soportado.</string>
+    <string name="dialog_web_view_outdated">WebView desactualizado</string>
+    <string name="dialog_button_check_for_updates">Buscar actualizacións</string>
+    <string name="dialog_button_close_app">Pechar aplicación</string>
+    <string name="dialog_button_open_settings">Abrir configuración</string>
+    <string name="dialog_button_ignore">Ignorar</string>
+    <string name="toast_reopen_after_change">Por favor, volve abrir a aplicación despois de realizar os cambios</string>
+    <string name="connect_to_server_title">Conectarse ao servidor</string>
+    <string name="host_input_hint">Host</string>
+    <string name="connection_error_cannot_connect">A conexión non puido ser establecida.\nPor favor, comprobe o nome do host e a súa conexión de rede.</string>
+    <string name="connection_error_unable_to_reach_sever">Non se puido acceder ao servidor</string>
+    <string name="connection_error_unsupported_version_or_product">Versión ou produto non soportado</string>
+    <string name="connect_button_text">Conectar</string>
+    <string name="available_servers_title">Servidores dispoñibles</string>
+    <string name="button_use_different_server">Usar un servidor diferente</string>
+    <string name="bluetooth_permission_title">Permir acceso ao Bluetooth?</string>
+</resources>
