@@ -111,4 +111,13 @@
     <string name="menu_item_hardware_decoding">رمزگشایی سخت افزاری</string>
     <string name="pref_exoplayer_direct_play_ass_summary">جلوگیری از رمزگردانی و نمایش زیرنویس‌ها فقط با استایل ساده. اگر فغال باشد شیوه‌‎های پیشرفته زیرنویس غیر قابل استقاده هستند.</string>
     <string name="pref_subtitle_style_summary">می‌توانید استایل زیرنویس را در تنظیمات اندروید تغییر دهید</string>
+    <string name="external_player_mpvkt">پخش‌کننده mpvKt</string>
+    <string name="pref_exoplayer_allow_press_speed_up">برای افزایش سرعت نگه دارید</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">برای افزایش موقت سرعت پخش، صفحه را لمس کرده و نگه دارید</string>
+    <string name="external_player_mpvkt_description">یک پخش‌کننده رسانه‌ای مبتنی بر mpv-android که هدف آن ارائه رابط کاربری زیباتر نسبت به نسخه اصلی است</string>
+    <string name="view_downloads">مشاهده دانلودها</string>
+    <string name="downloads">دانلود ها</string>
+    <string name="download_notifications_description">اعلان‌های دانلود</string>
+    <string name="failed_thumbnail">دانلود تصویر بند انگشتی ناموفق بود</string>
+    <string name="failed_information">دریافت اطلاعات رسانه‌ای ناموفق بود</string>
 </resources>
