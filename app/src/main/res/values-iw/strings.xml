@@ -9,7 +9,7 @@
     <string name="downloading">מוריד</string>
     <string name="media_service_car_section_artists">אומנים</string>
     <string name="notification_action_previous">הקודם</string>
-    <string name="notification_action_fast_forward">הרץ קדימה</string>
+    <string name="notification_action_fast_forward">הרץ-קדימה</string>
     <string name="menu_item_none">ללא</string>
     <string name="pref_download_location">מיקום הורדה</string>
     <string name="pref_category_video_player">נגן וידיאו</string>
