@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_category_video_player">נגן וידיאו</string>
-    <string name="pref_music_notification_always_dismissible_title">הגדר את התראת נגן השמע כניתן לביטול</string>
+    <string name="pref_music_notification_always_dismissible_title">התראת נגן שניתנת להסרה</string>
     <string name="pref_category_music_player">נגן מוזיקה</string>
     <string name="activity_name_settings">הגדרות Jellyfin</string>
     <string name="playback_info_and_x_more">...ועוד %d נוספים</string>
@@ -11,10 +11,10 @@
     <string name="playback_info_play_method">פועל כ: %s</string>
     <string name="menu_item_none">כלום</string>
     <string name="downloading">מוריד</string>
-    <string name="mobile_data_and_roaming">נתוני סלולר &amp; נדידה</string>
+    <string name="mobile_data_and_roaming">נתונים סלולריים ורשתות בנדידה</string>
     <string name="mobile_data">נתונים סלולרים</string>
     <string name="wifi_only">WiFi בלבד</string>
-    <string name="network_message">האם לאפשר הורדה באמצעות נתונים סלולרים או בנדידה? עלולים להיות חיובים נוספים ממפעיל הסלולר. יש אפשרות לשנות זאת מאוחר יותר בהגדרות.</string>
+    <string name="network_message">האם לאפשר הורדה באמצעות נתונים סלולריים או רשתות בנדידה? עלולים להיות חיובים נוספים ממפעיל הסלולר. יש אפשרות לשנות זאת מאוחר יותר בהגדרות.</string>
     <string name="network_title">אפשרויות תקשורת מורשות</string>
     <string name="battery_optimizations_message">אנא כבה את מצב החסכון בסוללה להפעלה בזמן שהמסך כבוי.</string>
     <string name="connect_button_text">התחבר</string>
@@ -79,11 +79,11 @@
     <string name="dialog_button_open_settings">פתח הגדרות</string>
     <string name="toast_reopen_after_change">אנא פתח מחדש את האפליקציה לאחר ביצוע שינויים</string>
     <string name="connection_error_unable_to_reach_sever">לא מצליח להתחבר לשרת</string>
-    <string name="player_error_network_failure">לא ניתן לטעון נתוני מדיה מהשרת</string>
-    <string name="player_error_unsupported_content">לא ניתן להפעיל מדיה ממכשיר זה</string>
+    <string name="player_error_network_failure">לא ניתן לטעון מידע על המדיה מהשרת</string>
+    <string name="player_error_unsupported_content">לא ניתן לנגן מדיה ממכשיר זה</string>
     <string name="playback_info_stream_unknown_title">כותרת לא ידועה</string>
     <string name="menu_item_auto">אוטומטי</string>
-    <string name="pref_music_notification_always_dismissible_summary_off">ניתן לבטל את ההתראה רק כאשר ההשמעה מושהית</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">ההתראה ניתנת להסרה רק כאשר הניגון מושהה</string>
     <string name="pref_exoplayer_remember_brightness">שמור את בהירות התצוגה</string>
     <string name="pref_exoplayer_allow_background_audio_summary">אפשר הפעלת סרטונים ברקע עם אודיו בלבד</string>
     <string name="pref_exoplayer_direct_play_ass">אפשר שימוש בכתוביות מסוג SSA/ASS בניגון ישיר</string>
@@ -103,4 +103,10 @@
     </plurals>
     <string name="bluetooth_permission_message">כדי לזהות מתי אוזניות או רמקולים מנותקים, היישומון צריך גישה לבלוטות׳. ב־Android, ההרשאה הזאת מתוארת כגישה להתקנים סמוכים ומזהירה שהתקני בלוטות׳ יכולים לשמש להסקת המיקום הנוכחי שלך. עם זאת, היישומון של Jellyfin אף פעם לא ישתמש בהרשאה הזאת כדי לאתר את המקום שלך.</string>
     <string name="mobile_data_summary">הורדת מדיה באמצעות WiFi ונתונים סלולרים.</string>
+    <string name="menu_item_hardware_decoding">פענוח על ידי חומרה</string>
+    <string name="mobile_data_and_roaming_summary">הורדת מדיה באמצעות WiFi, נתונים סלולריים ורשתות בנדידה.</string>
+    <string name="player_error_invalid_play_options">לא ניתן להשיג מידע ניגון</string>
+    <string name="menu_item_software_decoding">פענוח על ידי תוכנה</string>
+    <string name="player_error_unspecific_exception">משהו השתבש עם הנגן</string>
+    <string name="video_player_integrated">נגן מובנה</string>
 </resources>
