@@ -31,7 +31,7 @@
     <string name="notification_action_rewind">הרץ אחורה</string>
     <string name="notification_action_previous">קודם</string>
     <string name="music_notification_channel_description">משמש לפקדי השמעת מוזיקה</string>
-    <string name="music_notification_channel">Jellyfin Music Player</string>
+    <string name="music_notification_channel">נגן מוזיקה של Jellyfin</string>
     <string name="media_service_car_item_no_title">ללא כותרת</string>
     <string name="media_service_car_section_playlists">רשימות השמעה</string>
     <string name="media_service_car_section_genres">ז\'אנרים</string>
@@ -57,7 +57,7 @@
     <string name="video_player_external_description">תוכנת ניגון וידאו חיצונית כמו VLC וגם MX Player</string>
     <string name="video_player_native_description">מבוסס על נגן אקסו (ExoPlayer), תומך ביותר סוגי וידאו וקידודים וגם יותר משולב במערכת ההפעלה</string>
     <string name="external_player_mx_player_free_description">נגן וידיאו חזק עם האצת חומרה מתקדמת ותמיכה בכתוביות.</string>
-    <string name="external_player_mx_player_free">נגן MX חינמי</string>
+    <string name="external_player_mx_player_free">MX Player Free</string>
     <string name="external_player_mpv_description">נגן וידיאו פשוט, חופשי (כמו בחופש),קטן וקל משקל. הוא תומך במגוון רחב של פורמטים של קבצי מדיה.</string>
     <string name="external_player_mpv">נגן MPV</string>
     <string name="external_player_system_default_description">תן למערכת להתמודד עם בחירת הנגן, יתכן שחלק מהנגנים אינם תואמים לחלוטין.</string>
@@ -112,4 +112,24 @@
     <string name="pref_exoplayer_start_landscape_video_in_landscape">התחל סרטונים לרוחב בתצוגה לרוחב</string>
     <string name="pref_exoplayer_allow_press_speed_up">החזק כדי להאיץ</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">לחץ והחזק את המסך כדי להאיץ את הניגון זמנית</string>
+    <string name="pref_subtitle_style_summary">ניתן לשנות את סגנון הכתוביות בהגדרות Android</string>
+    <string name="failed_network_method_check">אנא בדוק את שיטות ההורדה המותרות לך</string>
+    <string name="yes">כן</string>
+    <string name="no">לא</string>
+    <string name="external_player_mpvkt">נגן mpvKt</string>
+    <string name="external_player_mpvkt_description">נגן מדיה המבוסס על mpv-android שמטרתו לספק ממשק משתמש נחמד יותר בהשוואה למקורי.</string>
+    <string name="pref_subtitle_style">להתאים אישית סגנון כתוביות</string>
+    <string name="view_downloads">הצג הורדות</string>
+    <string name="downloads">הורדות</string>
+    <string name="download_notifications_description">התראות הורדה</string>
+    <string name="failed_thumbnail">הורדת התמונה הממוזערת נכשלה</string>
+    <string name="failed_information">אחזור פרטי המדיה נכשל</string>
+    <string name="confirm_deletion">אישור מחיקה</string>
+    <string name="confirm_deletion_desc">האם ברצונך למחוק את %1$s?</string>
+    <string name="thumbnail_desc">תמונה ממוזערת</string>
+    <string name="store_videos_in_internal_storage">אחסן סרטונים באחסון הפנימי</string>
+    <string name="stored_videos_in_internal_storage_desc">סרטונים כגון סרטים ותוכניות טלוויזיה יאוחסנו באחסון הפנימי של האפליקציה. גישה אליהם מתאפשרת מתוך האפליקציה.</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">מוריד %1$d כותרות</string>
+    <string name="downloaded">%1$s ירד</string>
 </resources>
