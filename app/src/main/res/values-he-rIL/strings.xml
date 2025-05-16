@@ -52,8 +52,8 @@
     <string name="external_player_invalid_player">לא נבחר נגן חיצוני חוקי. מעקב אחר הפעלה מושבת.</string>
     <string name="external_player_not_supported_yet">מעקב נגינה עדיין לא נתמך בנגן החיצוני שנבחר. פנה למפתחים כדי לנסות להוסיף תמיכה לכך.</string>
     <string name="external_player_app">אפליקצית נגן חיצונית</string>
-    <string name="pref_exoplayer_allow_brightness_volume_gesture">אפשר מחוות לשליטה בבהירות ועוצמת שמע בנגן מקומי</string>
-    <string name="pref_exoplayer_allow_background_audio">אפשר ניגון מוזיקה ברקע בנגן מקומי</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">מחוות בהירות ועוצמת קול</string>
+    <string name="pref_exoplayer_allow_background_audio">ניגון שמע ברקע</string>
     <string name="video_player_external_description">תוכנת ניגון וידאו חיצונית כמו VLC וגם MX Player</string>
     <string name="video_player_native_description">מבוסס על נגן אקסו (ExoPlayer), תומך ביותר סוגי וידאו וקידודים וגם יותר משולב במערכת ההפעלה</string>
     <string name="external_player_mx_player_free_description">נגן וידיאו חזק עם האצת חומרה מתקדמת ותמיכה בכתוביות.</string>
@@ -84,7 +84,7 @@
     <string name="playback_info_stream_unknown_title">כותרת לא ידועה</string>
     <string name="menu_item_auto">אוטומטי</string>
     <string name="pref_music_notification_always_dismissible_summary_off">ההתראה ניתנת להסרה רק כאשר הניגון מושהה</string>
-    <string name="pref_exoplayer_remember_brightness">שמור את בהירות התצוגה</string>
+    <string name="pref_exoplayer_remember_brightness">זכור את רמת בהירות התצוגה</string>
     <string name="pref_exoplayer_allow_background_audio_summary">אפשר הפעלת סרטונים ברקע עם אודיו בלבד</string>
     <string name="pref_exoplayer_direct_play_ass">אפשר שימוש בכתוביות מסוג SSA/ASS בניגון ישיר</string>
     <string name="pref_exoplayer_direct_play_ass_summary">מנע המרת קידוד והצג כתוביות עם עיצוב בסיסי בלבד. עיצוב כתוביות מתקדם לא יהיה זמין אם מופעל.</string>
@@ -109,4 +109,7 @@
     <string name="menu_item_software_decoding">פענוח על ידי תוכנה</string>
     <string name="player_error_unspecific_exception">משהו השתבש עם הנגן</string>
     <string name="video_player_integrated">נגן מובנה</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">התחל סרטונים לרוחב בתצוגה לרוחב</string>
+    <string name="pref_exoplayer_allow_press_speed_up">החזק כדי להאיץ</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">לחץ והחזק את המסך כדי להאיץ את הניגון זמנית</string>
 </resources>
