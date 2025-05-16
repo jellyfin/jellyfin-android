@@ -14,7 +14,7 @@
     <string name="mobile_data_and_roaming">נתוני סלולר &amp; נדידה</string>
     <string name="mobile_data">נתונים סלולרים</string>
     <string name="wifi_only">WiFi בלבד</string>
-    <string name="network_message">האם ברצונך לאפשר הורדה עם שימוש ברשת הסלולרית או נדידה? ייתכן ויחולו חיובים מחברת הסלולר.</string>
+    <string name="network_message">האם לאפשר הורדה באמצעות נתונים סלולרים או בנדידה? עלולים להיות חיובים נוספים ממפעיל הסלולר. יש אפשרות לשנות זאת מאוחר יותר בהגדרות.</string>
     <string name="network_title">אפשרויות תקשורת מורשות</string>
     <string name="battery_optimizations_message">אנא כבה את מצב החסכון בסוללה להפעלה בזמן שהמסך כבוי.</string>
     <string name="connect_button_text">התחבר</string>
@@ -25,7 +25,7 @@
     <string name="external_player_invalid_play_method">שיטת ניגון לא חוקית.</string>
     <string name="notification_action_stop">עצור</string>
     <string name="notification_action_next">הבא</string>
-    <string name="notification_action_fast_forward">הרץ קדימה</string>
+    <string name="notification_action_fast_forward">הרץ-קדימה</string>
     <string name="notification_action_pause">הפסק</string>
     <string name="notification_action_play">הפעל</string>
     <string name="notification_action_rewind">הרץ אחורה</string>
@@ -95,4 +95,12 @@
     <string name="bluetooth_permission_continue">המשך</string>
     <string name="bluetooth_permission_granted">הרשאות Bluetooth ניתנו</string>
     <string name="button_use_different_server">השתמש בשרת אחר</string>
+    <string name="wifi_only_summary">הורדת מדיה באמצעות WiFi בלבד.</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">מועמד אחד לקלט נוסה ללא הצלחה.</item>
+        <item quantity="two">שני מועמדים לקלט נוסו ללא הצלחה.</item>
+        <item quantity="other">%d מועמדים לקלט נוסו ללא הצלחה.</item>
+    </plurals>
+    <string name="bluetooth_permission_message">כדי לזהות מתי אוזניות או רמקולים מנותקים, היישומון צריך גישה לבלוטות׳. ב־Android, ההרשאה הזאת מתוארת כגישה להתקנים סמוכים ומזהירה שהתקני בלוטות׳ יכולים לשמש להסקת המיקום הנוכחי שלך. עם זאת, היישומון של Jellyfin אף פעם לא ישתמש בהרשאה הזאת כדי לאתר את המקום שלך.</string>
+    <string name="mobile_data_summary">הורדת מדיה באמצעות WiFi ונתונים סלולרים.</string>
 </resources>
