@@ -1,5 +1,5 @@
 const features = [
-    "castmenuhashchange"
+    "castmenuhashchange",
     "clientsettings",
     "displaylanguage",
     "downloadmanagement",
@@ -12,7 +12,7 @@ const features = [
     "physicalvolumecontrol",
     "remotecontrol",
     "subtitleappearancesettings",
-    "subtitleburnsettings",
+    "subtitleburnsettings"
 //    'sharing'
 ];
 
