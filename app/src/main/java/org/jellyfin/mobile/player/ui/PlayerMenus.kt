@@ -1,6 +1,5 @@
 package org.jellyfin.mobile.player.ui
 
-import ChapterMarkingView
 import ChapterMarking
 import android.view.Menu
 import android.view.MenuItem
@@ -10,11 +9,9 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.view.size
-import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateLayoutParams
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
@@ -42,11 +39,8 @@ class PlayerMenus(
     private val context = playerBinding.root.context
     private val qualityOptionsProvider: QualityOptionsProvider by inject()
     private val playPauseContainer: View by playerControlsBinding::playPauseContainer
-    private val playPauseContainer: View by playerControlsBinding::playPauseContainer
     private val previousButton: View by playerControlsBinding::previousButton
     private val nextButton: View by playerControlsBinding::nextButton
-    private val previousChapterButton: View by playerControlsBinding::previousChapterButton
-    private val nextChapterButton: View by playerControlsBinding::nextChapterButton
     private val previousChapterButton: View by playerControlsBinding::previousChapterButton
     private val nextChapterButton: View by playerControlsBinding::nextChapterButton
     private val lockScreenButton: View by playerControlsBinding::lockScreenButton
@@ -62,7 +56,6 @@ class PlayerMenus(
     private val speedMenu: PopupMenu = createSpeedMenu()
     private val qualityMenu: PopupMenu = createQualityMenu()
     private val decoderMenu: PopupMenu = createDecoderMenu()
-    private val chapterMarkingContainer: ConstraintLayout by playerControlsBinding::chapterMarkingContainer
     private val chapterMarkingContainer: ConstraintLayout by playerControlsBinding::chapterMarkingContainer
 
     private var subtitleCount = 0
@@ -138,11 +131,6 @@ class PlayerMenus(
         val runTimeTicks = mediaSource.item?.runTimeTicks
         setChapterMarkings(chapters, runTimeTicks)
 
-        val chapters = mediaSource.item?.chapters
-        updateLayoutConstraints(!chapters.isNullOrEmpty())
-        val runTimeTicks = mediaSource.item?.runTimeTicks
-        setChapterMarkings(chapters, runTimeTicks)
-
         val videoStream = mediaSource.selectedVideoStream
 
         val audioStreams = mediaSource.audioStreams
@@ -199,38 +187,6 @@ class PlayerMenus(
             videoTracksInfo,
             audioTracksInfo,
         ).joinToString("\n\n")
-    }
-
-    private fun updateLayoutConstraints(hasChapters: Boolean){
-        if(hasChapters){
-            previousButton.updateLayoutParams<ConstraintLayout.LayoutParams> { endToStart = previousChapterButton.id }
-            nextButton.updateLayoutParams<ConstraintLayout.LayoutParams> { startToEnd = nextChapterButton.id }
-            previousChapterButton.visibility = View.VISIBLE
-            nextChapterButton.visibility = View.VISIBLE
-        }
-        else{
-            previousButton.updateLayoutParams<ConstraintLayout.LayoutParams> { endToStart = playPauseContainer.id }
-            nextButton.updateLayoutParams<ConstraintLayout.LayoutParams> { startToEnd = playPauseContainer.id }
-            previousChapterButton.visibility = View.GONE
-            nextChapterButton.visibility = View.GONE
-        }
-    }
-
-    private fun setChapterMarkings(chapters: List<ChapterInfo>?, runTimeTicks: Long?){
-        chapterMarkingContainer.removeAllViews()
-
-        if(chapters.isNullOrEmpty() || runTimeTicks == null){
-            fragment.setChapterMarkings(mutableListOf())
-            return
-        }
-
-        val chapterMarkings: MutableList<ChapterMarking> = mutableListOf()
-        chapters.forEach { ch ->
-            val bias = ch.startPositionTicks.toFloat() / runTimeTicks
-            val marking = ChapterMarking(context, chapterMarkingContainer, bias)
-            chapterMarkings.add(marking)
-        }
-        fragment.setChapterMarkings(chapterMarkings)
     }
 
     private fun updateLayoutConstraints(hasChapters: Boolean){

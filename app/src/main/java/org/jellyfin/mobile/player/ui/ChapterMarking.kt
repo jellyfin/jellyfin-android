@@ -7,6 +7,7 @@ import org.jellyfin.mobile.R
 class ChapterMarking(private val context: Context, parent: ConstraintLayout, bias: Float) {
     private val view: View = View(context).apply {
         id = View.generateViewId()
+        //Maybe there's a way to programmatically get the height and width of the chapter_marking xml
         layoutParams = ConstraintLayout.LayoutParams(
             (3 * context.resources.displayMetrics.density).toInt(),
             (15 * context.resources.displayMetrics.density).toInt(),
