@@ -47,6 +47,8 @@ class PlayerMenus(
     private val nextButton: View by playerControlsBinding::nextButton
     private val previousChapterButton: View by playerControlsBinding::previousChapterButton
     private val nextChapterButton: View by playerControlsBinding::nextChapterButton
+    private val previousChapterButton: View by playerControlsBinding::previousChapterButton
+    private val nextChapterButton: View by playerControlsBinding::nextChapterButton
     private val lockScreenButton: View by playerControlsBinding::lockScreenButton
     private val audioStreamsButton: View by playerControlsBinding::audioStreamsButton
     private val subtitlesButton: ImageButton by playerControlsBinding::subtitlesButton
@@ -61,6 +63,7 @@ class PlayerMenus(
     private val qualityMenu: PopupMenu = createQualityMenu()
     private val decoderMenu: PopupMenu = createDecoderMenu()
     private val chapterMarkingContainer: ConstraintLayout by playerControlsBinding::chapterMarkingContainer
+    private val chapterMarkingContainer: ConstraintLayout by playerControlsBinding::chapterMarkingContainer
 
     private var subtitleCount = 0
     private var subtitlesEnabled = false
@@ -71,6 +74,12 @@ class PlayerMenus(
         }
         nextButton.setOnClickListener {
             fragment.onSkipToNext()
+        }
+        previousChapterButton.setOnClickListener{
+            fragment.onPreviousChapter()
+        }
+        nextChapterButton.setOnClickListener {
+            fragment.onNextChapter()
         }
         previousChapterButton.setOnClickListener{
             fragment.onPreviousChapter()
@@ -123,6 +132,11 @@ class PlayerMenus(
     fun onQueueItemChanged(mediaSource: JellyfinMediaSource, hasNext: Boolean) {
         // previousButton is always enabled and will rewind if at the start of the queue
         nextButton.isEnabled = hasNext
+
+        val chapters = mediaSource.item?.chapters
+        updateLayoutConstraints(!chapters.isNullOrEmpty())
+        val runTimeTicks = mediaSource.item?.runTimeTicks
+        setChapterMarkings(chapters, runTimeTicks)
 
         val chapters = mediaSource.item?.chapters
         updateLayoutConstraints(!chapters.isNullOrEmpty())
@@ -185,6 +199,38 @@ class PlayerMenus(
             videoTracksInfo,
             audioTracksInfo,
         ).joinToString("\n\n")
+    }
+
+    private fun updateLayoutConstraints(hasChapters: Boolean){
+        if(hasChapters){
+            previousButton.updateLayoutParams<ConstraintLayout.LayoutParams> { endToStart = previousChapterButton.id }
+            nextButton.updateLayoutParams<ConstraintLayout.LayoutParams> { startToEnd = nextChapterButton.id }
+            previousChapterButton.visibility = View.VISIBLE
+            nextChapterButton.visibility = View.VISIBLE
+        }
+        else{
+            previousButton.updateLayoutParams<ConstraintLayout.LayoutParams> { endToStart = playPauseContainer.id }
+            nextButton.updateLayoutParams<ConstraintLayout.LayoutParams> { startToEnd = playPauseContainer.id }
+            previousChapterButton.visibility = View.GONE
+            nextChapterButton.visibility = View.GONE
+        }
+    }
+
+    private fun setChapterMarkings(chapters: List<ChapterInfo>?, runTimeTicks: Long?){
+        chapterMarkingContainer.removeAllViews()
+
+        if(chapters.isNullOrEmpty() || runTimeTicks == null){
+            fragment.setChapterMarkings(mutableListOf())
+            return
+        }
+
+        val chapterMarkings: MutableList<ChapterMarking> = mutableListOf()
+        chapters.forEach { ch ->
+            val bias = ch.startPositionTicks.toFloat() / runTimeTicks
+            val marking = ChapterMarking(context, chapterMarkingContainer, bias)
+            chapterMarkings.add(marking)
+        }
+        fragment.setChapterMarkings(chapterMarkings)
     }
 
     private fun updateLayoutConstraints(hasChapters: Boolean){
