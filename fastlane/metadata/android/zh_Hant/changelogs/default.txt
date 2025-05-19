@@ -1,3 +1,3 @@
-感謝您使用 Android TV 版的 Jellyfin！建議始終使用最新版本的 Jellyfin 伺服器。
+感謝您使用 Android 版的 Jellyfin！建議始終使用最新版本的 Jellyfin 伺服器。
 
 欲了解更多資訊，請參閱我們在 jellyfin.org 的部落格，或前往 GitHub 閱讀完整的更新日誌。
