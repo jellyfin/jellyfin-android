@@ -5,9 +5,12 @@ import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.data.dao.ServerDao
 import org.jellyfin.mobile.data.dao.UserDao
 import org.jellyfin.mobile.data.entity.ServerEntity
+import org.jellyfin.mobile.utils.getClientCertificate
+import org.jellyfin.mobile.utils.storeClientCertificate
 import org.jellyfin.sdk.Jellyfin
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.model.DeviceInfo
+import java.security.KeyStore
 
 class ApiClientController(
     private val appPreferences: AppPreferences,
@@ -22,11 +25,16 @@ class ApiClientController(
     /**
      * Store server with [hostname] in the database.
      */
-    suspend fun setupServer(hostname: String) {
+    suspend fun setupServer(hostname: String, mtls: KeyStore.PrivateKeyEntry? = null) {
         appPreferences.currentServerId = withContext(Dispatchers.IO) {
             serverDao.getServerByHostname(hostname)?.id ?: serverDao.insert(hostname)
         }
-        apiClient.update(baseUrl = hostname)
+
+        if (mtls != null) {
+            storeClientCertificate(appPreferences.currentServerId.toString(), mtls)
+        }
+
+        apiClient.update(baseUrl = hostname, mtls = getClientCertificate(hostname))
     }
 
     suspend fun setupUser(serverId: Long, userId: String, accessToken: String) {
@@ -68,7 +76,7 @@ class ApiClientController(
     }
 
     private fun configureApiClientServer(server: ServerEntity?) {
-        apiClient.update(baseUrl = server?.hostname)
+        apiClient.update(baseUrl = server?.hostname, mtls = getClientCertificate(server?.id.toString()))
     }
 
     private fun configureApiClientUser(userId: String, accessToken: String) {

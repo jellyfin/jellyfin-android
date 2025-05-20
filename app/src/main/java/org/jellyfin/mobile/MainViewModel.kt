@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.app.ApiClientController
 import org.jellyfin.mobile.data.entity.ServerEntity
+import java.security.KeyStore
 
 class MainViewModel(
     app: Application,
@@ -22,8 +23,8 @@ class MainViewModel(
         }
     }
 
-    suspend fun switchServer(hostname: String) {
-        apiClientController.setupServer(hostname)
+    suspend fun switchServer(hostname: String, mtls: KeyStore.PrivateKeyEntry? = null) {
+        apiClientController.setupServer(hostname, mtls)
         refreshServer()
     }
 

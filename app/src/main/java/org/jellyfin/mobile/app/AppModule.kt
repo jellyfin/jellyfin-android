@@ -39,6 +39,7 @@ import org.jellyfin.mobile.setup.ConnectionHelper
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
 import org.jellyfin.mobile.utils.extractId
+import org.jellyfin.mobile.utils.getClientCertificate
 import org.jellyfin.mobile.utils.isLowRamDevice
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebViewFragment
@@ -51,13 +52,56 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import java.io.File
+import java.security.KeyStore
+import javax.net.ssl.KeyManagerFactory
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManagerFactory
+import javax.net.ssl.X509TrustManager
 
 const val PLAYER_EVENT_CHANNEL = "PlayerEventChannel"
 private const val TS_SEARCH_PACKETS = 1800
 
 val applicationModule = module {
     single { AppPreferences(androidApplication()) }
-    single { OkHttpClient() }
+    single<OkHttpClient> {
+        val okHttpBuilder = OkHttpClient.Builder()
+
+        get<AppPreferences>().currentServerId?.let { id ->
+            getClientCertificate(id.toString())?.let { mtls ->
+                val keyStore = KeyStore.getInstance("PKCS12")
+                keyStore.load(null, null)
+                keyStore.setKeyEntry(
+                    "client",
+                    mtls.privateKey,
+                    null,
+                    mtls.certificateChain,
+                )
+
+                val kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm())
+                kmf.init(keyStore, null)
+
+                val sslContext = SSLContext.getInstance("TLS").apply {
+                    init(kmf.keyManagers, null, null)
+                }
+
+                val trustManagerFactory = TrustManagerFactory.getInstance(
+                    TrustManagerFactory.getDefaultAlgorithm(),
+                ).apply {
+                    init(null as KeyStore?) // use default trust store
+                }
+
+                val trustManager = trustManagerFactory.trustManagers
+                    .filterIsInstance<X509TrustManager>()
+                    .firstOrNull()
+
+                trustManager?.let {
+                    okHttpBuilder.sslSocketFactory(sslContext.socketFactory, it)
+                }
+            }
+        }
+
+        okHttpBuilder.build()
+    }
     single { ImageLoader(androidApplication()) }
     single { PermissionRequestHelper() }
     single { RemoteVolumeProvider(get()) }
@@ -109,9 +153,7 @@ val applicationModule = module {
         val context: Context = get()
         val apiClient: ApiClient = get()
 
-        val baseDataSourceFactory = DefaultHttpDataSource.Factory().apply {
-            setUserAgent(Util.getUserAgent(context, Constants.APP_INFO_NAME))
-        }
+        val baseDataSourceFactory = OkHttpDataSource.Factory(get<OkHttpClient>())
 
         val dataSourceFactory = DefaultDataSource.Factory(context, baseDataSourceFactory)
 

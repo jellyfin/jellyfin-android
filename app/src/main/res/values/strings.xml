@@ -139,4 +139,8 @@
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="downloading_desc">Downloading %1$d titles</string>
     <string name="downloaded">Downloaded %1$s</string>
+    <string name="enter_pkcs_12_password">Enter PKCS#12 Password</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_client_certificate">Select client certificate file (.p12)</string>
 </resources>

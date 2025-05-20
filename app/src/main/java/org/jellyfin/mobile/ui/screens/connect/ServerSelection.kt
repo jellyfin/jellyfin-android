@@ -1,6 +1,9 @@
 package org.jellyfin.mobile.ui.screens.connect
 
+import android.net.Uri
 import android.view.KeyEvent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExitTransition
@@ -18,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
@@ -40,14 +44,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
@@ -57,15 +62,15 @@ import org.jellyfin.mobile.ui.state.CheckUrlState
 import org.jellyfin.mobile.ui.state.ServerSelectionMode
 import org.jellyfin.mobile.ui.utils.CenterRow
 import org.koin.compose.koinInject
+import java.security.KeyStore
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Suppress("LongMethod")
 @Composable
 fun ServerSelection(
     showExternalConnectionError: Boolean,
     apiClientController: ApiClientController = koinInject(),
     connectionHelper: ConnectionHelper = koinInject(),
-    onConnected: suspend (String) -> Unit,
+    onConnected: suspend (String, KeyStore.PrivateKeyEntry?) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -74,6 +79,8 @@ fun ServerSelection(
     val serverSuggestions = remember { mutableStateListOf<ServerSuggestion>() }
     var checkUrlState by remember<MutableState<CheckUrlState>> { mutableStateOf(CheckUrlState.Unchecked) }
     var externalError by remember { mutableStateOf(showExternalConnectionError) }
+    var mtlsError by remember { mutableStateOf("") }
+    var mtls: KeyStore.PrivateKeyEntry? = null
 
     // Prefill currently selected server if available
     LaunchedEffect(Unit) {
@@ -113,11 +120,24 @@ fun ServerSelection(
         externalError = false
         checkUrlState = CheckUrlState.Pending
         coroutineScope.launch {
-            val state = connectionHelper.checkServerUrl(hostname)
+            val state = connectionHelper.checkServerUrl(hostname, mtls)
             checkUrlState = state
             if (state is CheckUrlState.Success) {
-                onConnected(state.address)
+                onConnected(state.address, mtls)
             }
+        }
+    }
+
+    fun onCertificateSelection(bytes: ByteArray, password: String) {
+        try {
+            mtlsError = ""
+            val keyStore = KeyStore.getInstance("PKCS12").apply {
+                load(bytes.inputStream(), password.toCharArray())
+            }
+            val alias = keyStore.aliases().nextElement()
+            mtls = keyStore.getEntry(alias, KeyStore.PasswordProtection(password.toCharArray())) as KeyStore.PrivateKeyEntry
+        } catch (_: Exception) {
+            mtlsError = "Could not load client certificate. Maybe wrong password?"
         }
     }
 
@@ -136,6 +156,7 @@ fun ServerSelection(
                     text = hostname,
                     errorText = when {
                         externalError -> stringResource(R.string.connection_error_cannot_connect)
+                        mtlsError.isNotEmpty() -> mtlsError
                         else -> (checkUrlState as? CheckUrlState.Error)?.message
                     },
                     loading = checkUrlState is CheckUrlState.Pending,
@@ -143,6 +164,9 @@ fun ServerSelection(
                         externalError = false
                         checkUrlState = CheckUrlState.Unchecked
                         hostname = value
+                    },
+                    onCertificateSelected = { bytes, password ->
+                        onCertificateSelection(bytes, password)
                     },
                     onDiscoveryClick = {
                         externalError = false
@@ -176,6 +200,7 @@ private fun AddressSelection(
     errorText: String?,
     loading: Boolean,
     onTextChange: (String) -> Unit,
+    onCertificateSelected: (ByteArray, String) -> Unit,
     onDiscoveryClick: () -> Unit,
     onSubmit: () -> Unit,
 ) {
@@ -188,6 +213,7 @@ private fun AddressSelection(
         )
         AnimatedErrorText(errorText = errorText)
         if (!loading) {
+            CertificateSelectionScreen(onCertificateSelected)
             Spacer(modifier = Modifier.height(12.dp))
             StyledTextButton(
                 text = stringResource(R.string.connect_button_text),
@@ -332,4 +358,92 @@ private fun ServerDiscoveryItem(
             Text(text = serverSuggestion.address)
         },
     )
+}
+
+@Stable
+@Composable
+fun CertificateSelectionScreen(
+    onCertificateSelected: (ByteArray, String) -> Unit,
+) {
+    val context = LocalContext.current
+    var clientP12 by remember { mutableStateOf<ByteArray?>(null) }
+    var showPasswordDialog by remember { mutableStateOf(false) }
+    var password by remember { mutableStateOf("") }
+
+    val filePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument(),
+    ) { uri: Uri? ->
+        uri?.let {
+            val contentResolver = context.contentResolver
+            val certificateStream = contentResolver.openInputStream(it)
+            if (certificateStream != null) {
+                clientP12 = certificateStream.readBytes()
+                certificateStream.close()
+                showPasswordDialog = true
+            }
+        }
+    }
+
+    PasswordInputDialog(
+        showDialog = showPasswordDialog,
+        password = password,
+        onPasswordChange = { password = it },
+        onConfirm = {
+            clientP12?.let { clientP12 ->
+                onCertificateSelected(clientP12, password)
+            }
+            showPasswordDialog = false
+            password = ""
+        },
+        onDismiss = {
+            showPasswordDialog = false
+            clientP12 = null
+            password = ""
+        },
+    )
+
+    StyledTextButton(
+        onClick = {
+            filePickerLauncher.launch(arrayOf("application/x-pkcs12"))
+        },
+        text = stringResource(R.string.select_client_certificate),
+    )
+}
+
+@Composable
+private fun PasswordInputDialog(
+    showDialog: Boolean,
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text(stringResource(R.string.enter_pkcs_12_password)) },
+            text = {
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = onPasswordChange,
+                    label = { Text("Password") },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            },
+            confirmButton = {
+                StyledTextButton(
+                    onClick = onConfirm,
+                    text = stringResource(R.string.ok),
+                )
+            },
+            dismissButton = {
+                StyledTextButton(
+                    onClick = onDismiss,
+                    text = stringResource(R.string.cancel),
+                )
+            },
+        )
+    }
 }

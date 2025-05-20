@@ -87,6 +87,7 @@ androidx-core = { group = "androidx.core", name = "core", version.ref = "android
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-core-splashscreen" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "androidx-activity" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidx-fragment" }
 androiddesugarlibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androiddesugarlibs" }
 

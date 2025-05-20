@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.webapp
 
 import android.net.http.SslError
+import android.webkit.ClientCertRequest
 import android.webkit.SslErrorHandler
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
@@ -20,6 +21,8 @@ import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
 import java.io.Reader
+import java.security.KeyStore
+import java.security.cert.X509Certificate
 import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -30,11 +33,23 @@ abstract class JellyfinWebViewClient(
     private val server: ServerEntity,
     private val assetsPathHandler: AssetsPathHandler,
     private val apiClientController: ApiClientController,
+    private val clientPrivateKeyEntry: KeyStore.PrivateKeyEntry? = null,
 ) : WebViewClientCompat() {
 
     abstract fun onConnectedToWebapp()
 
     abstract fun onErrorReceived()
+
+    override fun onReceivedClientCertRequest(view: WebView?, request: ClientCertRequest) {
+        if (clientPrivateKeyEntry == null) {
+            request.cancel()
+            return
+        }
+        request.proceed(
+            clientPrivateKeyEntry.privateKey,
+            clientPrivateKeyEntry.certificateChain.map { it as X509Certificate }.toTypedArray(),
+        )
+    }
 
     override fun shouldInterceptRequest(webView: WebView, request: WebResourceRequest): WebResourceResponse? {
         val url = request.url

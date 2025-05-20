@@ -15,6 +15,7 @@ import android.os.Environment
 import android.os.PowerManager
 import android.provider.Settings
 import android.provider.Settings.System.ACCELEROMETER_ROTATION
+import android.security.KeyStoreException
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.getSystemService
 import androidx.media3.exoplayer.offline.DownloadService
@@ -36,6 +37,7 @@ import org.jellyfin.sdk.model.serializer.toUUID
 import org.koin.android.ext.android.get
 import timber.log.Timber
 import java.io.File
+import java.security.KeyStore
 import kotlin.coroutines.resume
 
 fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
@@ -212,4 +214,35 @@ fun Uri.extractId(): String {
     }
 
     return item
+}
+
+fun storeClientCertificate(
+    alias: String,
+    mtls: KeyStore.PrivateKeyEntry,
+) {
+    try {
+        val keyStore = KeyStore.getInstance("AndroidKeyStore").apply {
+            load(null)
+        }
+
+        keyStore.setEntry(
+            alias,
+            mtls,
+            null,
+        )
+    } catch (e: KeyStoreException) {
+        Timber.e("Failed importing certificate")
+    }
+}
+
+fun getClientCertificate(
+    alias: String,
+): KeyStore.PrivateKeyEntry? {
+    return runCatching {
+        val keyStore = KeyStore.getInstance("AndroidKeyStore").apply {
+            load(null)
+        }
+
+        keyStore.getEntry(alias, null)
+    }.getOrNull() as KeyStore.PrivateKeyEntry?
 }
