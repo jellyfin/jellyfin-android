@@ -161,7 +161,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
                 playerControlsView.updatePadding(
                     left = insets.displayCutout?.safeInsetLeft ?: systemInsets.left,
                     top = systemInsets.top,
-                    right = systemInsets.right,
+                    right = insets.displayCutout?.safeInsetRight ?: systemInsets.right,
                     bottom = systemInsets.bottom,
                 )
             } else {
