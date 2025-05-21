@@ -112,4 +112,24 @@
     <string name="wifi_only_summary">Médiá sa budú sťahovať len cez Wi-Fi.</string>
     <string name="mobile_data_summary">Médiá sa budú sťahovať cez WiFi a mobilné siete.</string>
     <string name="mobile_data_and_roaming_summary">Médiá sa budú sťahovať cez WiFi, mobilné a roamingové siete.</string>
+    <string name="downloaded">Stiahnuté %1$s</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Dotykom a podržaním obrazovky dočasne zrýchlite prehrávanie</string>
+    <string name="external_player_mpvkt">mpvKt Player</string>
+    <string name="external_player_mpvkt_description">Multimediálny prehrávač založený na mpv-android, ktorého cieľom je poskytnúť príjemnejšie používateľské rozhranie oproti pôvodnému.</string>
+    <string name="view_downloads">Zobraziť stiahnuté</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Podržaním zrýchlite</string>
+    <string name="downloads">Stiahnuté</string>
+    <string name="download_notifications_description">Oznámenia o stiahnutí</string>
+    <string name="failed_thumbnail">Nepodarilo sa stiahnuť thumbnail</string>
+    <string name="failed_information">Nepodarilo sa načítať informácie o médiu</string>
+    <string name="failed_network_method_check">Skontrolujte povolené spôsoby sťahovania</string>
+    <string name="confirm_deletion">Potvrďte vymazanie</string>
+    <string name="confirm_deletion_desc">Chcete vymazať %1$s?</string>
+    <string name="yes">Áno</string>
+    <string name="no">Nie</string>
+    <string name="thumbnail_desc">Thumbnail</string>
+    <string name="store_videos_in_internal_storage">Ukladať videá do internej pamäte</string>
+    <string name="stored_videos_in_internal_storage_desc">Videá, ako sú filmy a seriály, sa budú ukladať do internej pamäte aplikácie. Prístup k nim bude povolený v rámci aplikácie.</string>
+    <string name="downloading_desc">Sťahovanie %1$d titulov</string>
 </resources>
