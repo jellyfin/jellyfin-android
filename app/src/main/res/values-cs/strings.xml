@@ -128,4 +128,8 @@
     <string name="no">Ne</string>
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="downloading_desc">Stahování %1$d titulů</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Klepněte a držte prst na obrazovce pro dočasné zrychlení přehrávání</string>
+    <string name="external_player_mpvkt_description">Multimediální přehrávač založený na mpv-android poskytující pěknější rozhraní, než původní.</string>
+    <string name="external_player_mpvkt">Přehrávač mpvKt</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Podržte pro zrychlení</string>
 </resources>
