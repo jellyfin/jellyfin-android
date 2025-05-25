@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.bridge
 
 import android.webkit.JavascriptInterface
+import kotlinx.serialization.json.*
 import org.jellyfin.mobile.player.mediasegments.MediaSegmentAction
 import org.jellyfin.mobile.player.mediasegments.MediaSegmentRepository
 import org.jellyfin.sdk.model.api.MediaSegmentType
@@ -19,5 +20,10 @@ class MediaSegments(
             )
     } catch (e: IllegalArgumentException) {
         Timber.e("setSegmentTypeAction: %s", e.message)
+    }
+
+    @JavascriptInterface
+    fun getSupportedSegmentTypes(): String {
+        return Json.encodeToString(MediaSegmentRepository.SUPPORTED_TYPES)
     }
 }
