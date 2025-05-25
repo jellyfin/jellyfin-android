@@ -530,13 +530,13 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val chapters = mediaSourceOrNull?.item?.chapters ?: return
         val currentPosition = playerOrNull?.currentPosition ?: return
         val ticks = TickUtils.msToTicks(currentPosition)
-        val currentChapter = getCurrentChapterIdx(chapters, ticks) ?: return
-        val nextChapter = currentChapter + 1
+        val currentChapterIdx = getCurrentChapterIdx(chapters, ticks) ?: return
+        val nextChapterIdx = currentChapterIdx + 1
 
-        if (nextChapter > chapters.size) {
+        if (nextChapterIdx > (chapters.size - 1)) {
             skipToNext()
         } else {
-            val seekToMs = TickUtils.ticksToMs(chapters[nextChapter].startPositionTicks)
+            val seekToMs = TickUtils.ticksToMs(chapters[nextChapterIdx].startPositionTicks)
             playerOrNull?.seekTo(seekToMs)
         }
     }

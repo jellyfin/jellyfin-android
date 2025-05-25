@@ -55,6 +55,7 @@ import org.koin.android.ext.android.inject
 import kotlin.math.max
 import androidx.media3.ui.R as Media3R
 
+@Suppress("TooManyFunctions")
 class PlayerFragment : Fragment(), BackPressInterceptor {
     private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
@@ -74,7 +75,8 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     lateinit var playerLockScreenHelper: PlayerLockScreenHelper
     lateinit var playerGestureHelper: PlayerGestureHelper
 
-    private val currentVideoStream: MediaStream? get() = viewModel.mediaSourceOrNull?.selectedVideoStream
+    private val currentVideoStream: MediaStream?
+        get() = viewModel.mediaSourceOrNull?.selectedVideoStream
 
     /**
      * Listener that watches the current device orientation.
