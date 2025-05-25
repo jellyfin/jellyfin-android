@@ -202,7 +202,6 @@ class PlayerMenus(
 
         if (chapters.isNullOrEmpty() || runTimeTicks == null) {
             fragment.setChapterMarkings(mutableListOf())
-            fragment.activity
             return
         }
 
