@@ -68,7 +68,7 @@ class PlayerMenus(
         nextButton.setOnClickListener {
             fragment.onSkipToNext()
         }
-        previousChapterButton.setOnClickListener{
+        previousChapterButton.setOnClickListener {
             fragment.onPreviousChapter()
         }
         nextChapterButton.setOnClickListener {
@@ -183,14 +183,13 @@ class PlayerMenus(
         ).joinToString("\n\n")
     }
 
-    private fun updateLayoutConstraints(hasChapters: Boolean){
-        if(hasChapters){
+    private fun updateLayoutConstraints(hasChapters: Boolean) {
+        if (hasChapters) {
             previousButton.updateLayoutParams<ConstraintLayout.LayoutParams> { endToStart = previousChapterButton.id }
             nextButton.updateLayoutParams<ConstraintLayout.LayoutParams> { startToEnd = nextChapterButton.id }
             previousChapterButton.visibility = View.VISIBLE
             nextChapterButton.visibility = View.VISIBLE
-        }
-        else{
+        } else {
             previousButton.updateLayoutParams<ConstraintLayout.LayoutParams> { endToStart = playPauseContainer.id }
             nextButton.updateLayoutParams<ConstraintLayout.LayoutParams> { startToEnd = playPauseContainer.id }
             previousChapterButton.visibility = View.GONE
@@ -198,11 +197,12 @@ class PlayerMenus(
         }
     }
 
-    private fun setChapterMarkings(chapters: List<ChapterInfo>?, runTimeTicks: Long?){
+    private fun setChapterMarkings(chapters: List<ChapterInfo>?, runTimeTicks: Long?) {
         chapterMarkingContainer.removeAllViews()
 
-        if(chapters.isNullOrEmpty() || runTimeTicks == null){
+        if (chapters.isNullOrEmpty() || runTimeTicks == null) {
             fragment.setChapterMarkings(mutableListOf())
+            fragment.activity
             return
         }
 

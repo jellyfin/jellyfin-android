@@ -74,8 +74,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     lateinit var playerLockScreenHelper: PlayerLockScreenHelper
     lateinit var playerGestureHelper: PlayerGestureHelper
 
-    private val currentVideoStream: MediaStream?
-        get() = viewModel.mediaSourceOrNull?.selectedVideoStream
+    private val currentVideoStream: MediaStream? get() = viewModel.mediaSourceOrNull?.selectedVideoStream
 
     /**
      * Listener that watches the current device orientation.
@@ -424,7 +423,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         }
     }
 
-    fun setChapterMarkings(markings: List<ChapterMarking>){
+    fun setChapterMarkings(markings: List<ChapterMarking>) {
         viewModel.setChapterMarkings(markings)
     }
 }

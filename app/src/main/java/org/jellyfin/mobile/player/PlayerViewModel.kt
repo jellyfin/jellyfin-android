@@ -309,7 +309,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         progressUpdateJob?.cancel()
     }
 
-    private fun startChapterMarkingUpdates(){
+    private fun startChapterMarkingUpdates() {
         chapterMarkingUpdateJob = viewModelScope.launch {
             while (true) {
                 delay(Constants.CHAPTER_MARKING_UPDATE_DELAY)
@@ -318,7 +318,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
     }
 
-    private fun stopChapterMarkingUpdates(){
+    private fun stopChapterMarkingUpdates() {
         chapterMarkingUpdateJob?.cancel()
     }
 
@@ -353,7 +353,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     isPaused = !isPlaying,
                     isMuted = false,
                     canSeek = true,
-                    positionTicks = mediaSource.startTimeMs * Constants.TICKS_PER_MILLISECOND,
+                    positionTicks = mediaSource.startTimeMs * Constants.TICKS_PER_MS,
                     volumeLevel = audioManager.getVolumeLevelPercent(),
                     repeatMode = RepeatMode.REPEAT_NONE,
                     playbackOrder = PlaybackOrder.DEFAULT,
@@ -364,7 +364,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
     }
 
-    private fun Player.setWatchedChapterMarkings(){
+    private fun Player.setWatchedChapterMarkings() {
         val playbackPositionMs = currentPosition
         val playbackPositionTicks = TickUtils.msToTicks(playbackPositionMs)
 
@@ -395,7 +395,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         isPaused = !isPlaying,
                         isMuted = false,
                         canSeek = true,
-                        positionTicks = playbackPositionMillis * Constants.TICKS_PER_MILLISECOND,
+                        positionTicks = playbackPositionMillis * Constants.TICKS_PER_MS,
                         volumeLevel = (currentVolume - volumeRange.first) * Constants.PERCENT_MAX / volumeRange.width,
                         repeatMode = RepeatMode.REPEAT_NONE,
                         playbackOrder = PlaybackOrder.DEFAULT,
@@ -413,7 +413,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val hasFinished = player.playbackState == Player.STATE_ENDED
         val lastPositionTicks = when {
             hasFinished -> mediaSource.runTimeTicks
-            else -> player.currentPosition * Constants.TICKS_PER_MILLISECOND
+            else -> player.currentPosition * Constants.TICKS_PER_MS
         }
 
         // viewModelScope may already be cancelled at this point, so we need to fallback
@@ -504,35 +504,38 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         playerOrNull?.seekToOffset(displayPreferences.skipForwardLength)
     }
 
-    private fun getCurrentChapterIdx(chapters: List<ChapterInfo>, ticks: Long): Int?{
+    private fun getCurrentChapterIdx(chapters: List<ChapterInfo>, ticks: Long): Int? {
         return chapters.indices.findLast { i -> ticks >= chapters[i].startPositionTicks }
     }
 
-    fun previousChapter(){
+    fun previousChapter() {
         val chapters = mediaSourceOrNull?.item?.chapters ?: return
         val currentPosition = playerOrNull?.currentPosition ?: return
         var ticks = TickUtils.msToTicks(currentPosition)
 
-        //Go back 10 seconds
-        ticks -= TickUtils.secToTicks(10)
-        if(ticks < 0) skipToPrevious()
-        else{
-            //The current chapter in this case is the one we want to go back to
-            val previousChapter = getCurrentChapterIdx(chapters, ticks) ?: return
-            val seekToMs = TickUtils.ticksToMs(chapters[previousChapter].startPositionTicks)
+        // Update the ticks to be slightly in the past, to check if we should go back to the beginning of the current
+        // chapter or the previous one, if not enough time has elapsed since the start of the current chapter
+        ticks -= TickUtils.secToTicks(Constants.MAX_SKIP_TO_PREV_CHAPTER_SEC)
+        // If we'd end up with negative ticks then we need to play the previous item
+        if (ticks < 0) {
+            skipToPrevious()
+        } else {
+            val previousChapterIdx = getCurrentChapterIdx(chapters, ticks) ?: return
+            val seekToMs = TickUtils.ticksToMs(chapters[previousChapterIdx].startPositionTicks)
             playerOrNull?.seekTo(seekToMs)
         }
     }
 
-    fun nextChapter(){
+    fun nextChapter() {
         val chapters = mediaSourceOrNull?.item?.chapters ?: return
         val currentPosition = playerOrNull?.currentPosition ?: return
         val ticks = TickUtils.msToTicks(currentPosition)
         val currentChapter = getCurrentChapterIdx(chapters, ticks) ?: return
         val nextChapter = currentChapter + 1
 
-        if(nextChapter > chapters.size) skipToNext()
-        else{
+        if (nextChapter > chapters.size) {
+            skipToNext()
+        } else {
             val seekToMs = TickUtils.ticksToMs(chapters[nextChapter].startPositionTicks)
             playerOrNull?.seekTo(seekToMs)
         }
@@ -697,7 +700,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         releasePlayer()
     }
 
-    fun setChapterMarkings(markings: List<ChapterMarking>){
+    fun setChapterMarkings(markings: List<ChapterMarking>) {
         chapterMarkings = markings
     }
 }

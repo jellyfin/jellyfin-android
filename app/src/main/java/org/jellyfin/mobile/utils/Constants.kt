@@ -102,7 +102,7 @@ object Constants {
 
     // Video player constants
     const val LANGUAGE_UNDEFINED = "und"
-    const val TICKS_PER_MILLISECOND = 10000
+    const val TICKS_PER_MS = 10000
     const val PLAYER_TIME_UPDATE_RATE = 10000L
     const val CHAPTER_MARKING_UPDATE_DELAY = 1000L
     const val DEFAULT_CONTROLS_TIMEOUT_MS = 2500
@@ -132,6 +132,7 @@ object Constants {
         PlaybackState.ACTION_STOP
     const val VIDEO_PLAYER_NOTIFICATION_ID = 99
     const val DOWNLOAD_NOTIFICATION_ID = 80
+    const val MAX_SKIP_TO_PREV_CHAPTER_SEC = 10L
 
     // Video player intent extras
     const val EXTRA_MEDIA_PLAY_OPTIONS = "org.jellyfin.mobile.MEDIA_PLAY_OPTIONS"
@@ -155,4 +156,7 @@ object Constants {
     const val PERCENT_MAX = 100
     const val DOWNLOAD_PATH = "/MediaCache/"
     const val DOWNLOAD_THUMBNAIL_FILENAME = "thumbnail.jpg"
+
+    // Time
+    const val MS_PER_SEC = 1000
 }

@@ -5,11 +5,16 @@ import androidx.core.content.ContextCompat
 import org.jellyfin.mobile.R
 
 class ChapterMarking(private val context: Context, parent: ConstraintLayout, bias: Float) {
+    private val _chapterMarkingDrawingWidth =
+        context.resources.getDimensionPixelSize(R.dimen.exo_chapter_marking_width)
+    private val _chapterMarkingDrawingHeight =
+        context.resources.getDimensionPixelSize(R.dimen.exo_chapter_marking_height)
+
     private val view: View = View(context).apply {
         id = View.generateViewId()
         layoutParams = ConstraintLayout.LayoutParams(
-            (3 * context.resources.displayMetrics.density).toInt(),
-            (15 * context.resources.displayMetrics.density).toInt(),
+            _chapterMarkingDrawingWidth,
+            _chapterMarkingDrawingHeight,
         ).apply {
             topToTop = ConstraintLayout.LayoutParams.PARENT_ID
             bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
@@ -17,7 +22,6 @@ class ChapterMarking(private val context: Context, parent: ConstraintLayout, bia
             endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
             horizontalBias = bias
         }
-
         background = ContextCompat.getDrawable(context, R.drawable.chapter_marking)
     }
 
@@ -25,7 +29,7 @@ class ChapterMarking(private val context: Context, parent: ConstraintLayout, bia
         parent.addView(view)
     }
 
-    fun setColor(id: Int){
+    fun setColor(id: Int) {
         view.setBackgroundColor(ContextCompat.getColor(context, id))
     }
 }
