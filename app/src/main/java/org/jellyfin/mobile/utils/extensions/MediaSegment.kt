@@ -7,4 +7,5 @@ import kotlin.time.Duration
 val MediaSegmentDto.start get() = startTicks.ticks
 val MediaSegmentDto.end get() = endTicks.ticks
 
-val MediaSegmentDto.duration get() = (endTicks - startTicks).ticks.coerceAtLeast(Duration.ZERO)
+val MediaSegmentDto.duration: Duration
+    get() = (endTicks - startTicks).ticks.coerceAtLeast(Duration.ZERO)

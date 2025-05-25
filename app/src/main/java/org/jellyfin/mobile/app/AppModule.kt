@@ -28,6 +28,7 @@ import okhttp3.OkHttpClient
 import org.chromium.net.CronetEngine
 import org.chromium.net.CronetProvider
 import org.jellyfin.mobile.MainViewModel
+import org.jellyfin.mobile.bridge.MediaSegments
 import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.downloads.DownloadsViewModel
 import org.jellyfin.mobile.events.ActivityEventHandler
@@ -77,6 +78,7 @@ val applicationModule = module {
 
     // Bridge interfaces
     single { NativePlayer(get(), get(), get(named(PLAYER_EVENT_CHANNEL))) }
+    single { MediaSegments(get()) }
 
     // ViewModels
     viewModel { MainViewModel(get(), get()) }

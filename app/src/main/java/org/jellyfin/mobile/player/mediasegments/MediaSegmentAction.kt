@@ -17,4 +17,23 @@ enum class MediaSegmentAction {
      * segments with a duration of at least 3 seconds to avoid UI flickering.
      */
     ASK_TO_SKIP,
+    ;
+
+    companion object {
+        /**
+         * Find the enum member by the serial name or return null.
+         */
+        fun fromNameOrNull(serialName: String): MediaSegmentAction? = when (serialName) {
+            "None" -> NOTHING
+            "Skip" -> SKIP
+            "AskToSkip" -> ASK_TO_SKIP
+            else -> null
+        }
+
+        /**
+         * Find the enum member by the serial name or throw.
+         */
+        fun fromName(serialName: String): MediaSegmentAction =
+            requireNotNull(fromNameOrNull(serialName)) { """Unknown value $serialName""" }
+    }
 }
