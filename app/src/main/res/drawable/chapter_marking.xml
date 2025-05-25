@@ -3,6 +3,6 @@
     <solid android:color="@color/unplayed"/>
     <corners android:radius="0dp"/>
     <size
-        android:width="3dp"
-        android:height="15dp"/>
+        android:width="@dimen/exo_chapter_marking_width"
+        android:height="@dimen/exo_chapter_marking_height"/>
 </shape>
