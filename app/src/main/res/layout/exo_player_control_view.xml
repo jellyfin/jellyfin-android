@@ -47,7 +47,6 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ripple_background_circular"
             android:padding="@dimen/exo_center_icon_padding"
-            android:src="@drawable/ic_play_black_42dp"
             android:tint="?android:textColorPrimary" />
     </FrameLayout>
 
