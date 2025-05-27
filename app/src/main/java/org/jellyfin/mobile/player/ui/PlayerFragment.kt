@@ -51,7 +51,7 @@ import org.jellyfin.mobile.utils.extensions.keepScreenOn
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.android.ext.android.inject
-import androidx.media3.ui.R as ExoplayerR
+import androidx.media3.ui.R as Media3R
 
 class PlayerFragment : Fragment(), BackPressInterceptor {
     private val appPreferences: AppPreferences by inject()
@@ -198,6 +198,9 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
         // Set controller timeout
         suppressControllerAutoHide(false)
+
+        // Disable controller animations
+        playerView.setControllerAnimationEnabled(false)
 
         playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
         playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)
@@ -358,7 +361,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
                     }
                 }
                 setAspectRatio(aspectRational)
-                val contentFrame: View = playerView.findViewById(ExoplayerR.id.exo_content_frame)
+                val contentFrame: View = playerView.findViewById(Media3R.id.exo_content_frame)
                 val contentRect = with(contentFrame) {
                     val (x, y) = intArrayOf(0, 0).also(::getLocationInWindow)
                     Rect(x, y, x + width, y + height)

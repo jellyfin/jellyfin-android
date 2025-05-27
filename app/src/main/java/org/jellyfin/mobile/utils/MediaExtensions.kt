@@ -9,7 +9,6 @@ import android.media.session.MediaSession
 import android.media.session.PlaybackState
 import androidx.media3.common.C
 import androidx.media3.common.Player
-import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.analytics.AnalyticsCollector
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.ui.content.ImageProvider
@@ -79,9 +78,9 @@ fun AudioManager.getVolumeLevelPercent(): Int {
 }
 
 /**
- * Set ExoPlayer [Media3AudioAttributes], make ExoPlayer handle audio focus
+ * Configure [Media3AudioAttributes] to handle audio focus
  */
-inline fun ExoPlayer.applyDefaultAudioAttributes(@C.AudioContentType contentType: Int) {
+inline fun Player.applyDefaultAudioAttributes(@C.AudioContentType contentType: Int) {
     val audioAttributes = Media3AudioAttributes.Builder()
         .setUsage(C.USAGE_MEDIA)
         .setContentType(contentType)

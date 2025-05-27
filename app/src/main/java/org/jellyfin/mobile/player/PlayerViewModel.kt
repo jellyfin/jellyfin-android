@@ -198,7 +198,6 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     /**
      * Setup a new [ExoPlayer] for video playback, register callbacks and set attributes
      */
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     fun setupPlayer() {
         val renderersFactory = DefaultRenderersFactory(getApplication()).apply {
             setEnableDecoderFallback(true) // Fallback only works if initialization fails, not decoding at playback time

@@ -3,7 +3,6 @@ package org.jellyfin.mobile.app
 import android.content.Context
 import androidx.core.net.toUri
 import androidx.media3.common.util.Util
-import coil.ImageLoader
 import androidx.media3.database.DatabaseProvider
 import androidx.media3.database.StandaloneDatabaseProvider
 import androidx.media3.datasource.DataSource
@@ -16,12 +15,13 @@ import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.datasource.cache.NoOpCacheEvictor
 import androidx.media3.datasource.cache.SimpleCache
 import androidx.media3.exoplayer.hls.HlsMediaSource
-import androidx.media3.extractor.DefaultExtractorsFactory
-import androidx.media3.extractor.ts.TsExtractor
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.source.SingleSampleMediaSource
+import androidx.media3.extractor.DefaultExtractorsFactory
+import androidx.media3.extractor.ts.TsExtractor
+import coil.ImageLoader
 import kotlinx.coroutines.channels.Channel
 import okhttp3.OkHttpClient
 import org.jellyfin.mobile.MainViewModel
@@ -49,10 +49,8 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import java.io.File
-import java.util.concurrent.Executors
 
 const val PLAYER_EVENT_CHANNEL = "PlayerEventChannel"
-private const val HTTP_CACHE_SIZE: Long = 16 * 1024 * 1024
 private const val TS_SEARCH_PACKETS = 1800
 
 val applicationModule = module {
