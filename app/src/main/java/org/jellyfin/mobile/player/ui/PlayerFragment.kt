@@ -51,6 +51,7 @@ import org.jellyfin.mobile.utils.extensions.keepScreenOn
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.android.ext.android.inject
+import kotlin.math.max
 import androidx.media3.ui.R as Media3R
 
 class PlayerFragment : Fragment(), BackPressInterceptor {
@@ -159,10 +160,10 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             if (playerFullscreenHelper.isFullscreen) {
                 playerView.setPadding(0)
                 playerControlsView.updatePadding(
-                    left = systemInsets.left,
-                    top = systemInsets.top,
-                    right = systemInsets.right,
-                    bottom = systemInsets.bottom,
+                    left = max(insets.displayCutout?.safeInsetLeft ?: 0, systemInsets.left),
+                    top = max(insets.displayCutout?.safeInsetTop ?: 0, systemInsets.top),
+                    right = max(insets.displayCutout?.safeInsetRight ?: 0, systemInsets.right),
+                    bottom = max(insets.displayCutout?.safeInsetBottom ?: 0, systemInsets.bottom),
                 )
             } else {
                 playerView.updatePadding(
