@@ -42,23 +42,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/exo_play"
+            android:id="@+id/exo_play_pause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ripple_background_circular"
             android:padding="@dimen/exo_center_icon_padding"
-            android:src="@drawable/ic_play_black_42dp"
             android:tint="?android:textColorPrimary" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/exo_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ripple_background_circular"
-            android:padding="@dimen/exo_center_icon_padding"
-            android:src="@drawable/ic_pause_black_42dp"
-            android:tint="?android:textColorPrimary"
-            tools:visibility="gone" />
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatImageButton
@@ -85,7 +74,7 @@
         app:layout_constraintTop_toTopOf="@id/exo_progress"
         tools:text="33:01" />
 
-    <com.google.android.exoplayer2.ui.DefaultTimeBar
+    <androidx.media3.ui.DefaultTimeBar
         android:id="@+id/exo_progress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

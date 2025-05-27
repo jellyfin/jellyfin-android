@@ -40,13 +40,12 @@ jellyfin-sdk = "1.6.8"
 okhttp = "4.12.0"
 okio = "3.11.0"
 coil = "2.7.0"
-cronet-embedded = "119.6045.31"
 
 # Media
 androidx-media = "1.7.0"
 androidx-mediarouter = "1.7.0"
-exoplayer = "2.19.1"
-jellyfin-exoplayer-ffmpegextension = "2.19.1+1"
+androidx-media3 = "1.6.1"
+jellyfin-androidx-media = "1.6.1+1"
 playservices = "22.1.0"
 
 # Room
@@ -118,20 +117,20 @@ jellyfin-sdk = { group = "org.jellyfin.sdk", name = "jellyfin-core", version.ref
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
 coil = { group = "io.coil-kt", name = "coil-base", version.ref = "coil" }
-cronet-embedded = { group = "org.chromium.net", name = "cronet-embedded", version.ref = "cronet-embedded" }
 
 # Media
 androidx-media = { group = "androidx.media", name = "media", version.ref = "androidx-media" }
 androidx-mediarouter = { group = "androidx.mediarouter", name = "mediarouter", version.ref = "androidx-mediarouter" }
-exoplayer-core = { group = "com.google.android.exoplayer", name = "exoplayer-core", version.ref = "exoplayer" }
-exoplayer-ui = { group = "com.google.android.exoplayer", name = "exoplayer-ui", version.ref = "exoplayer" }
-exoplayer-mediaSession = { group = "com.google.android.exoplayer", name = "extension-mediasession", version.ref = "exoplayer" }
-exoplayer-hls = { group = "com.google.android.exoplayer", name = "exoplayer-hls", version.ref = "exoplayer" }
-exoplayer-cast = { group = "com.google.android.exoplayer", name = "extension-cast", version.ref = "exoplayer" }
-exoplayer-cronet = { group = "com.google.android.exoplayer", name = "extension-cronet", version.ref = "exoplayer" }
+androidx-media3-common = { module = "androidx.media3:media3-common", version.ref = "androidx-media3" }
+androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "androidx-media3" }
+androidx-media3-session = { module = "androidx.media3:media3-session", version.ref = "androidx-media3" }
+androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "androidx-media3" }
+androidx-media3-exoplayer-hls = { module = "androidx.media3:media3-exoplayer-hls", version.ref = "androidx-media3" }
+androidx-media3-datasource-okhttp = { module = "androidx.media3:media3-datasource-okhttp", version.ref = "androidx-media3" }
+androidx-media3-cast = { module = "androidx.media3:media3-cast", version.ref = "androidx-media3" }
 playservices-cast = { group = "com.google.android.gms", name = "play-services-cast", version.ref = "playservices" }
 playservices-castframework = { group = "com.google.android.gms", name = "play-services-cast-framework", version.ref = "playservices" }
-jellyfin-exoplayer-ffmpegextension = { group = "org.jellyfin.exoplayer", name = "exoplayer-ffmpeg-extension", version.ref = "jellyfin-exoplayer-ffmpegextension" }
+jellyfin-androidx-media3-ffmpeg-decoder = { module = "org.jellyfin.media3:media3-ffmpeg-decoder", version.ref = "jellyfin-androidx-media" }
 
 # Room
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
@@ -174,12 +173,14 @@ compose = [
     "compose-material-icons",
     "compose-material-icons-extended",
 ]
-exoplayer = [
-    "exoplayer-core",
-    "exoplayer-ui",
-    "exoplayer-mediaSession",
-    "exoplayer-hls",
-    "exoplayer-cronet",
+androidx-media3 = [
+    "androidx-media3-common",
+    "androidx-media3-ui",
+    "androidx-media3-session",
+    "androidx-media3-exoplayer",
+    "androidx-media3-exoplayer-hls",
+    "androidx-media3-datasource-okhttp",
+    "jellyfin-androidx-media3-ffmpeg-decoder",
 ]
 playservices = [
     "playservices-cast",

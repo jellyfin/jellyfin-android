@@ -4,7 +4,7 @@ import android.content.pm.ActivityInfo
 import android.view.OrientationEventListener
 import android.widget.ImageButton
 import androidx.core.view.isVisible
-import com.google.android.exoplayer2.ui.PlayerView
+import androidx.media3.ui.PlayerView
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
@@ -50,7 +50,7 @@ class PlayerLockScreenHelper(
         if (!AndroidVersion.isAtLeastN || !activity.isInPictureInPictureMode) {
             playerView.useController = true
             playerView.apply {
-                if (!isControllerVisible) showController()
+                if (!isControllerFullyVisible) showController()
             }
         }
     }

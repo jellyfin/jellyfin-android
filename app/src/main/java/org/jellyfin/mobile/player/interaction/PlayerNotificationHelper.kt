@@ -13,9 +13,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.Player
 import coil.ImageLoader
 import coil.request.ImageRequest
-import com.google.android.exoplayer2.Player
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
