@@ -3,8 +3,8 @@ package org.jellyfin.mobile.events
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.net.Uri
 import android.os.Bundle
+import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -68,7 +68,7 @@ class ActivityEventHandler(
             }
             is ActivityEvent.OpenUrl -> {
                 try {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.uri))
+                    val intent = Intent(Intent.ACTION_VIEW, event.uri.toUri())
                     startActivity(intent)
                 } catch (e: ActivityNotFoundException) {
                     Timber.e("openIntent: %s", e.message)

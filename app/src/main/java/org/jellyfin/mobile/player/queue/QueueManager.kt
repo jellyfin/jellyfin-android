@@ -325,7 +325,7 @@ class QueueManager(
     ): Array<MediaSource> {
         val factory = get<SingleSampleMediaSource.Factory>()
         return source.externalSubtitleStreams.map { stream ->
-            val uri = Uri.parse(apiClient.createUrl(stream.deliveryUrl))
+            val uri = apiClient.createUrl(stream.deliveryUrl).toUri()
             val mediaItem = MediaItem.SubtitleConfiguration.Builder(uri).apply {
                 setId("${ExternalSubtitleStream.ID_PREFIX}${stream.index}")
                 setLabel(stream.displayTitle)
@@ -353,7 +353,7 @@ class QueueManager(
         source: JellyfinMediaSource,
         fileUri: String,
     ): Array<MediaSource> {
-        val downloadDir: String = File(fileUri).parent
+        val downloadDir = File(fileUri).parent
         val factory = get<SingleSampleMediaSource.Factory>()
         return source.externalSubtitleStreams.map { stream ->
             val uri: Uri = File(downloadDir, "${stream.index}.subrip").toUri()
