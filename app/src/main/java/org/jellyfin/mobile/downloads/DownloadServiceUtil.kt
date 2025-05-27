@@ -1,11 +1,11 @@
 package org.jellyfin.mobile.downloads
 
 import android.content.Context
-import com.google.android.exoplayer2.database.DatabaseProvider
-import com.google.android.exoplayer2.offline.DownloadManager
-import com.google.android.exoplayer2.ui.DownloadNotificationHelper
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.cache.Cache
+import androidx.media3.database.DatabaseProvider
+import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.cache.Cache
+import androidx.media3.exoplayer.offline.DownloadManager
+import androidx.media3.exoplayer.offline.DownloadNotificationHelper
 import org.jellyfin.mobile.utils.Constants.DOWNLOAD_NOTIFICATION_CHANNEL_ID
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

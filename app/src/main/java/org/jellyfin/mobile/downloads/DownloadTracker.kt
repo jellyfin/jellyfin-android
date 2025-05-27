@@ -1,9 +1,9 @@
 package org.jellyfin.mobile.downloads
 
 import android.net.Uri
-import com.google.android.exoplayer2.offline.Download
-import com.google.android.exoplayer2.offline.DownloadIndex
-import com.google.android.exoplayer2.offline.DownloadManager
+import androidx.media3.exoplayer.offline.Download
+import androidx.media3.exoplayer.offline.DownloadIndex
+import androidx.media3.exoplayer.offline.DownloadManager
 import com.google.common.base.Preconditions
 import timber.log.Timber
 import java.io.IOException

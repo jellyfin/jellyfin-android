@@ -85,7 +85,6 @@ android {
         }
     }
 
-    @Suppress("UnstableApiUsage")
     buildFeatures {
         buildConfig = true
         viewBinding = true
@@ -147,17 +146,12 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okio)
     implementation(libs.coil)
-    implementation(libs.cronet.embedded)
 
     // Media
     implementation(libs.androidx.media)
     implementation(libs.androidx.mediarouter)
-    implementation(libs.bundles.exoplayer) {
-        // Exclude Play Services cronet provider library
-        exclude("com.google.android.gms", "play-services-cronet")
-    }
-    implementation(libs.jellyfin.exoplayer.ffmpegextension)
-    proprietaryImplementation(libs.exoplayer.cast)
+    implementation(libs.bundles.androidx.media3)
+    proprietaryImplementation(libs.androidx.media3.cast)
     proprietaryImplementation(libs.bundles.playservices)
 
     // Room

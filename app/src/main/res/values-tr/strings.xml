@@ -111,4 +111,24 @@
     <string name="wifi_only_summary">Medya yalnızca kablosuz bağlantı üzerinden indirilecektir.</string>
     <string name="mobile_data_summary">Medya, kablosuz bağlantı ve mobil ağlar üzerinden indirilecektir.</string>
     <string name="mobile_data_and_roaming_summary">Medya kablosuz bağlantı, mobil ağları üzerinden ve dolaşımdayken indirilecektir.</string>
+    <string name="downloaded">%1$s İndirildi</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Geçici olarak hızlandırmak için ekrana basılı tut</string>
+    <string name="external_player_mpvkt">mpvKt Oynatıcısı</string>
+    <string name="external_player_mpvkt_description">Orijinaline göre daha güzel kullanıcı arayüzü sunmayı amaçlayan mpv-android tabanlı bir medya oynatıcısı.</string>
+    <string name="thumbnail_desc">Küçük resim</string>
+    <string name="store_videos_in_internal_storage">Video\'ları dahili depolamaya kaydet</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Hızlandırmak için basılı tut</string>
+    <string name="view_downloads">İndirilenlere bak</string>
+    <string name="downloads">İndirilenler</string>
+    <string name="download_notifications_description">İndirilenler\'in bildirimleri</string>
+    <string name="failed_thumbnail">Önizleme resmi indirilemedi</string>
+    <string name="failed_information">Medya bilgisi alınamadı</string>
+    <string name="failed_network_method_check">Lütfen izin verilen indirme yöntemlerinizi kontrol edin</string>
+    <string name="confirm_deletion">Silmeyi onayla</string>
+    <string name="confirm_deletion_desc">%1$s\'i silmek istiyor musunuz?</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+    <string name="stored_videos_in_internal_storage_desc">Film ve Dizi gibi videolar uygulamanın dahili depolama alanında saklanacaktır. Uygulama içinden erişime izin verilebilir.</string>
+    <string name="tv_show_desc">%1$s - S%2$dB%3$d</string>
+    <string name="downloading_desc">%1$d Başlıkları indiriliyor</string>
 </resources>

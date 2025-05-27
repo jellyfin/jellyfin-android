@@ -8,7 +8,7 @@
     <string name="playback_info_audio_streams">הזרמות שמע</string>
     <string name="playback_info_video_streams">הזרמות וידיאו</string>
     <string name="playback_info_transcoding">מקודד: %b</string>
-    <string name="playback_info_play_method">פועל כ: %s</string>
+    <string name="playback_info_play_method">שיטת ניגון: %s</string>
     <string name="menu_item_none">כלום</string>
     <string name="downloading">מוריד</string>
     <string name="mobile_data_and_roaming">נתונים סלולריים ורשתות בנדידה</string>
@@ -27,7 +27,7 @@
     <string name="notification_action_next">הבא</string>
     <string name="notification_action_fast_forward">הרץ-קדימה</string>
     <string name="notification_action_pause">הפסק</string>
-    <string name="notification_action_play">הפעל</string>
+    <string name="notification_action_play">נגן</string>
     <string name="notification_action_rewind">הרץ אחורה</string>
     <string name="notification_action_previous">קודם</string>
     <string name="music_notification_channel_description">משמש לפקדי השמעת מוזיקה</string>

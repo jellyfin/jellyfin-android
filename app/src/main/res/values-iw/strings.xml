@@ -54,7 +54,7 @@
     <string name="player_error_unspecific_exception">משהו השתבש עם הנגן</string>
     <string name="button_use_different_server">השתמש בשרת אחר</string>
     <string name="network_message">האם לאפשר הורדה באמצעות נתונים סלולריים או רשתות בנדידה? עלולים להיות חיובים נוספים ממפעיל הסלולר. יש אפשרות לשנות זאת מאוחר יותר בהגדרות.</string>
-    <string name="playback_info_play_method">צורת ניגון %s</string>
+    <string name="playback_info_play_method">שיטת ניגון: %s</string>
     <string name="playback_info_video_streams">שידור וידאו</string>
     <string name="playback_info_audio_streams">שידור שמע</string>
     <string name="connection_error_cannot_connect">אין יכולת ליצור חיבור.

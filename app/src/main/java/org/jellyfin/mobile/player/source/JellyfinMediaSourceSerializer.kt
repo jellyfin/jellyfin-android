@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.player.source
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -15,6 +16,7 @@ import org.jellyfin.sdk.model.api.MediaSourceInfo
 import org.jellyfin.sdk.model.serializer.toUUID
 import java.util.UUID
 
+@OptIn(ExperimentalSerializationApi::class)
 class JellyfinMediaSourceSerializer : KSerializer<LocalJellyfinMediaSource> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("JellyfinMediaSource") {
         element<String>("itemId")

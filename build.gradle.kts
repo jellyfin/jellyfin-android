@@ -11,12 +11,12 @@ allprojects {
             content {
                 includeVersionByRegex(JellyfinSdk.GROUP, ".*", JellyfinSdk.SNAPSHOT)
                 includeVersionByRegex(JellyfinSdk.GROUP, ".*", JellyfinSdk.SNAPSHOT_UNSTABLE)
-                includeVersionByRegex(JellyfinExoPlayer.GROUP, ".*", JellyfinExoPlayer.SNAPSHOT)
+                includeVersionByRegex(JellyfinMedia3.GROUP, ".*", JellyfinMedia3.SNAPSHOT)
             }
         }
     }
 }
 
-tasks.create<Delete>("clean") {
+tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }

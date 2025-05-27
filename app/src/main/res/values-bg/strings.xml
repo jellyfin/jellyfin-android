@@ -2,7 +2,7 @@
 <resources>
     <string name="network_title">Позволен мрежови тип</string>
     <string name="battery_optimizations_message">Моля изключете оптимизациите на батерията при възпроизвеждане на медия, когато екрана е изключен.</string>
-    <string name="network_message">Желаете ли да позволите изтеглянето да стартира през мобилните данни или мрежа в Роуминг? Charges from your provider may apply.</string>
+    <string name="network_message">Желаете ли да позволите изтеглянето да стартира през мобилните данни или мрежа в Роуминг? Възможно е да се начислят такси от вашия доставчик.</string>
     <string name="downloading">Изтегляне</string>
     <string name="mobile_data_and_roaming">Мобилни Данни и Роуминг</string>
     <string name="mobile_data">Мобилни Данни</string>
@@ -94,4 +94,38 @@
     <string name="dialog_web_view_not_supported_message">WebView не се поддържа от това устройство.
 \nИнсталирайте съвместима реализация на WebView или превключете към поддържано устройство.</string>
     <string name="dialog_web_view_not_supported">WebView не се поддържа</string>
+    <string name="bluetooth_permission_title">Да се разреши ли достъп до Bluetooth?</string>
+    <string name="external_player_mpvkt">mpvKt Player</string>
+    <string name="bluetooth_permission_continue">Продължи</string>
+    <string name="bluetooth_permission_granted">Разрешението за Bluetooth е предоставено</string>
+    <string name="pref_subtitle_style">Персонализиране на стила на субтитрите</string>
+    <string name="store_videos_in_internal_storage">Съхранявайте видеоклипове във вътрешната памет</string>
+    <string name="button_use_different_server">Използвай друг сървър</string>
+    <string name="mobile_data_summary">Медийните файлове ще бъдат изтеглени през WiFi и мобилни мрежи.</string>
+    <string name="player_error_unspecific_exception">Нещо се обърка с плейъра</string>
+    <string name="view_downloads">Преглед на изтеглянията</string>
+    <string name="downloads">Изтегляния</string>
+    <string name="confirm_deletion">Потвърдете изтриването</string>
+    <string name="confirm_deletion_desc">Искате ли да изтриете %1$s?</string>
+    <string name="yes">Да</string>
+    <string name="no">Не</string>
+    <string name="bluetooth_permission_message">За да открие кога безжичните слушалки или високоговорители са изключени, приложението изисква достъп до Bluetooth. В Android това разрешение е описано като достъп до устройства наблизо и предупреждава, че Bluetooth устройства могат да бъдат използвани за определяне на текущото местоположение. Приложението Jellyfin обаче никога няма да използва това разрешение, за да открие вашето местоположение.</string>
+    <string name="wifi_only_summary">Медийните файлове ще бъдат изтеглени само през WiFi.</string>
+    <string name="mobile_data_and_roaming_summary">Медийните файлове ще бъдат изтеглени през WiFi, мобилни мрежи, дори и в роуминг.</string>
+    <string name="menu_item_auto">Авто</string>
+    <string name="menu_item_hardware_decoding">Хардуерно декодиране</string>
+    <string name="menu_item_software_decoding">Софтуерно декодиране</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Стартиране на видеоклипове в пейзажен режим в пейзажна ориентация</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Задръжте, за да ускорите</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Докоснете и задръжте екрана, за да ускорите временно възпроизвеждането</string>
+    <string name="pref_exoplayer_direct_play_ass">Позволяване на SSA/ASS субтитри при директно възпроизвеждане</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Предотвратяване на транскодирането и показване на субтитри само с основен стил. Разширеният стил на субтитрите няма да е наличен, ако е активирано.</string>
+    <string name="external_player_mpvkt_description">Медиен плейър, базиран на mpv-android, чиято цел е да осигури по-приятен потребителски интерфейс в сравнение с оригинала.</string>
+    <string name="thumbnail_desc">Миниатюра</string>
+    <string name="pref_subtitle_style_summary">Можете да промените стила на субтитрите в настройките на Android</string>
+    <string name="download_notifications_description">Известия за изтегляне</string>
+    <string name="failed_thumbnail">Изтеглянето на миниатюрата не бе успешно</string>
+    <string name="failed_information">Неуспешно извличане на медийна информация</string>
+    <string name="failed_network_method_check">Моля, проверете разрешените методи за изтегляне</string>
+    <string name="stored_videos_in_internal_storage_desc">Видеоклипове като филми и телевизионни предавания ще се съхраняват във вътрешната памет на приложението. Достъпът ще бъде разрешен от самото приложение.</string>
 </resources>

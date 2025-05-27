@@ -5,12 +5,12 @@ import androidx.annotation.CheckResult
 import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.MergingMediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.source.SingleSampleMediaSource
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.hls.HlsMediaSource
+import androidx.media3.exoplayer.source.MediaSource
+import androidx.media3.exoplayer.source.MergingMediaSource
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.exoplayer.source.SingleSampleMediaSource
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
@@ -325,7 +325,7 @@ class QueueManager(
     ): Array<MediaSource> {
         val factory = get<SingleSampleMediaSource.Factory>()
         return source.externalSubtitleStreams.map { stream ->
-            val uri = Uri.parse(apiClient.createUrl(stream.deliveryUrl))
+            val uri = apiClient.createUrl(stream.deliveryUrl).toUri()
             val mediaItem = MediaItem.SubtitleConfiguration.Builder(uri).apply {
                 setId("${ExternalSubtitleStream.ID_PREFIX}${stream.index}")
                 setLabel(stream.displayTitle)
@@ -353,7 +353,7 @@ class QueueManager(
         source: JellyfinMediaSource,
         fileUri: String,
     ): Array<MediaSource> {
-        val downloadDir: String = File(fileUri).parent
+        val downloadDir = File(fileUri).parent
         val factory = get<SingleSampleMediaSource.Factory>()
         return source.externalSubtitleStreams.map { stream ->
             val uri: Uri = File(downloadDir, "${stream.index}.subrip").toUri()

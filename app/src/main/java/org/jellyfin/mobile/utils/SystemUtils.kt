@@ -17,7 +17,7 @@ import android.provider.Settings
 import android.provider.Settings.System.ACCELEROMETER_ROTATION
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.getSystemService
-import com.google.android.exoplayer2.offline.DownloadService
+import androidx.media3.exoplayer.offline.DownloadService
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.jellyfin.mobile.BuildConfig

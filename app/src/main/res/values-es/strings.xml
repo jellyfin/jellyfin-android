@@ -116,5 +116,20 @@
     <string name="view_downloads">Ver descargas</string>
     <string name="downloads">Descargas</string>
     <string name="download_notifications_description">Notificaciones de descarga</string>
-    <string name="failed_thumbnail">No se pudo descargar la miniatura</string>
+    <string name="failed_thumbnail">Error al descargar la miniatura</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Mantener pulsado para acelerar</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Mantén pulsada la pantalla para acelerar temporalmente la reproducción</string>
+    <string name="failed_information">Error al recuperar la información del contenido</string>
+    <string name="store_videos_in_internal_storage">Almacenar vídeos en la memoria interna</string>
+    <string name="downloading_desc">Descargando %1$d títulos</string>
+    <string name="external_player_mpvkt">Reproductor mpvKt</string>
+    <string name="yes">Si</string>
+    <string name="failed_network_method_check">Compruebe los métodos de descarga permitidos</string>
+    <string name="confirm_deletion">Confirmar borrado</string>
+    <string name="confirm_deletion_desc">¿Quiere borrar %1$s?</string>
+    <string name="no">No</string>
+    <string name="thumbnail_desc">Miniaturas</string>
+    <string name="stored_videos_in_internal_storage_desc">Los vídeos, como películas y programas de televisión, se guardarán en el almacenamiento interno de la aplicación. Esto permite acceder a ellos desde la aplicación.</string>
+    <string name="tv_show_desc">%1$s - T%2$dE%3$d</string>
+    <string name="downloaded">Descargado %1$s</string>
 </resources>

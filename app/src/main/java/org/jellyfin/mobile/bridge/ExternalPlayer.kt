@@ -4,11 +4,11 @@ import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.webkit.JavascriptInterface
 import android.widget.Toast
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.MainScope
@@ -137,7 +137,7 @@ class ExternalPlayer(
             if (context.packageManager.isPackageInstalled(appPreferences.externalPlayerApp)) {
                 component = getComponent(appPreferences.externalPlayerApp)
             }
-            setDataAndType(Uri.parse(url), "video/*")
+            setDataAndType(url.toUri(), "video/*")
             putExtra("title", source.name)
             putExtra("position", source.startTimeMs.toInt())
             putExtra("return_result", true)
@@ -155,12 +155,12 @@ class ExternalPlayer(
 
             // MX Player API / MPV
             val subtitleUris = externalSubs.map { stream ->
-                Uri.parse(apiClient.createUrl(stream.deliveryUrl))
+                apiClient.createUrl(stream.deliveryUrl).toUri()
             }
             putExtra("subs", subtitleUris.toTypedArray())
             putExtra("subs.name", externalSubs.map(ExternalSubtitleStream::displayTitle).toTypedArray())
             putExtra("subs.filename", externalSubs.map(ExternalSubtitleStream::language).toTypedArray())
-            putExtra("subs.enable", enabledSubUrl?.let { url -> arrayOf(Uri.parse(url)) } ?: emptyArray())
+            putExtra("subs.enable", enabledSubUrl?.let { url -> arrayOf(url.toUri()) } ?: emptyArray())
 
             // VLC
             if (enabledSubUrl != null) putExtra("subtitles_location", enabledSubUrl)

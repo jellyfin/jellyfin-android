@@ -28,8 +28,7 @@
     <string name="download_no_storage_permission">Неможливо завантажити файли без дозволу на зберігання</string>
     <string name="available_servers_title">Доступні сервера</string>
     <string name="choose_server_button_text">Виберіть сервер</string>
-    <string name="connection_error_cannot_connect">Неможливо встановити з’єднання.
-\nПеревірте, будь ласка, ім’я сервера та ваше мережеве з’єднання.</string>
+    <string name="connection_error_cannot_connect">Неможливо встановити з’єднання.\nПеревірте, будь ласка, ім’я сервера та ваше мережеве з’єднання.</string>
     <string name="pref_download_location">Тека завантажень</string>
     <string name="pref_category_downloads">Завантаження</string>
     <string name="external_player_system_default_description">Дозвольте системі обирати плеєр самостійно, оскільки деякі плеєри можуть бути не повністю сумісними.</string>
@@ -93,8 +92,7 @@
     <string name="dialog_web_view_outdated_message">Реалізація WebView, яку використовує ваш пристрій, застаріла.
 \nОновіть його до сумісної версії.</string>
     <string name="dialog_web_view_outdated">WebView застарів</string>
-    <string name="dialog_web_view_not_supported_message">WebView не підтримується цим пристроєм.
-\nУстановіть сумісну реалізацію WebView або використайте на підтримуваний пристрій.</string>
+    <string name="dialog_web_view_not_supported_message">WebView не підтримується цим пристроєм.\nУстановіть сумісну реалізацію WebView або використайте на підтримуваний пристрій.</string>
     <string name="dialog_web_view_not_supported">WebView не підтримується</string>
     <string name="menu_item_auto">Автоматичний</string>
     <string name="pref_exoplayer_direct_play_ass">Дозволити субтитри SSA/ASS у прямому відтворенні</string>
@@ -113,4 +111,24 @@
     <string name="mobile_data_and_roaming_summary">Медіа будуть завантажуватися через WiFi, мобільні та роумінгові мережі.</string>
     <string name="mobile_data_summary">Медіа будуть завантажуватися через WiFi та мобільні мережі.</string>
     <string name="wifi_only_summary">Медіа будуть завантажуватися тільки через WiFi.</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Утримуйте, щоб пришвидшити</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Торкніться та утримуйте екран, щоб тимчасово пришвидшити відтворення</string>
+    <string name="external_player_mpvkt">mpvKt Player</string>
+    <string name="external_player_mpvkt_description">Медіаплеєр на базі mpv-android, спрямований на надання кращого інтерфейсу користувача порівняно з оригінальним.</string>
+    <string name="yes">Так</string>
+    <string name="failed_thumbnail">Не вдалося завантажити мініатюру</string>
+    <string name="failed_information">Не вдалося отримати інформацію про медіа</string>
+    <string name="confirm_deletion">Підтвердити видалення</string>
+    <string name="thumbnail_desc">Мініатюра</string>
+    <string name="store_videos_in_internal_storage">Зберегти відео у внутрішній пам\'яті</string>
+    <string name="stored_videos_in_internal_storage_desc">Такі відео, як фільми та телешоу, зберігатимуться у внутрішній пам’яті програми. Доступ до них буде надано безпосередньо з програми.</string>
+    <string name="view_downloads">Переглянути завантаження</string>
+    <string name="downloads">Завантаження</string>
+    <string name="download_notifications_description">Сповіщення про завантаження</string>
+    <string name="failed_network_method_check">Будь ласка, перевірте дозволені способи завантаження</string>
+    <string name="confirm_deletion_desc">Ви хочете видалити %1$s?</string>
+    <string name="no">Ні</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Завантаження %1$d файлів</string>
+    <string name="downloaded">Завантажено %1$s</string>
 </resources>
