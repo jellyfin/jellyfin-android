@@ -135,7 +135,7 @@ class DownloadUtils(
         )
     }
 
-    private fun isNetworkMetered(): Boolean = connectivityManager?.isActiveNetworkMetered ?: false
+    private fun isNetworkMetered(): Boolean = connectivityManager?.isActiveNetworkMetered == true
 
     private fun isNetworkRoamingCompat(): Boolean = connectivityManager?.activeNetworkInfo?.isRoaming ?: throw AndroidException()
 

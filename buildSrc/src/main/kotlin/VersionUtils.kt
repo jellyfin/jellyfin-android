@@ -1,5 +1,4 @@
 import org.gradle.api.Project
-import java.util.*
 
 /**
  * Get the version name from the current environment or use the fallback.

@@ -27,7 +27,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -278,7 +278,7 @@ private fun ServerDiscoveryList(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(onClick = onGoBack) {
-                Icon(imageVector = Icons.Outlined.ArrowBack, contentDescription = null)
+                Icon(imageVector = Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = null)
             }
             Text(
                 modifier = Modifier

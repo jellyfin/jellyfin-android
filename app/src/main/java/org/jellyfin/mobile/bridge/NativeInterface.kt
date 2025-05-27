@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.media.session.PlaybackState
-import android.net.Uri
 import android.webkit.JavascriptInterface
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.utils.Constants
@@ -134,7 +134,7 @@ class NativeInterface(private val context: Context) : KoinComponent {
                 val filename: String = file.getString("filename")
                 val url: String = file.getString("url")
 
-                emitEvent(ActivityEvent.DownloadFile(Uri.parse(url), title, filename))
+                emitEvent(ActivityEvent.DownloadFile(url.toUri(), title, filename))
             }
         } catch (e: JSONException) {
             Timber.e("Download failed: %s", e.message)

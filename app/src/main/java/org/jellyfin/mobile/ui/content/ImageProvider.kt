@@ -68,7 +68,7 @@ class ImageProvider : ContentProvider(), KoinComponent {
         selectionArgs: Array<out String?>?,
         sortOrder: String?,
     ): Cursor = MatrixCursor(arrayOf("_id", MediaMetadata.METADATA_KEY_ART_URI)).apply {
-        addRow(arrayOf(0, uri.toString()))
+        addRow(arrayOf<Any?>(0, uri.toString()))
     }
 
     override fun openTypedAssetFile(uri: Uri, mimeTypeFilter: String, opts: Bundle?): AssetFileDescriptor {
