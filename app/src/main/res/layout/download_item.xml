@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:baselineAligned="false"
     android:padding="16dp">
@@ -12,7 +13,8 @@
         android:layout_weight="1.5"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/thumbnail_desc" />
+        android:contentDescription="@string/thumbnail_desc"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -26,17 +28,20 @@
             android:id="@+id/textViewName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="21sp" />
+            android:textSize="21sp"
+            tools:text="Name" />
 
         <TextView
             android:id="@+id/textViewDescription"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:text="This is a description" />
 
         <TextView
             android:id="@+id/textViewFileSize"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:text="12 MB"/>
 
     </LinearLayout>
 </LinearLayout>

@@ -16,19 +16,40 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
+import org.jellyfin.mobile.ui.utils.AppTheme
 import org.jellyfin.mobile.ui.utils.CenterRow
 import org.koin.compose.koinInject
 
 @Composable
-fun ConnectScreen(
-    mainViewModel: MainViewModel,
+fun ConnectScreenRoot(
     showExternalConnectionError: Boolean,
+    mainViewModel: MainViewModel,
     activityEventHandler: ActivityEventHandler = koinInject(),
+) {
+    AppTheme {
+        ConnectScreen(
+            showExternalConnectionError = showExternalConnectionError,
+            onConnected = { hostname ->
+                mainViewModel.switchServer(hostname)
+            },
+            onOpenDownloads = {
+                activityEventHandler.emit(ActivityEvent.OpenDownloads)
+            },
+        )
+    }
+}
+
+@Composable
+fun ConnectScreen(
+    showExternalConnectionError: Boolean,
+    onConnected: suspend (String) -> Unit,
+    onOpenDownloads: () -> Unit,
 ) {
     Surface(color = MaterialTheme.colors.background) {
         Column(
@@ -39,12 +60,10 @@ fun ConnectScreen(
             LogoHeader()
             ServerSelection(
                 showExternalConnectionError = showExternalConnectionError,
-                onConnected = { hostname ->
-                    mainViewModel.switchServer(hostname)
-                },
+                onConnected = onConnected,
             )
             StyledTextButton(
-                onClick = { activityEventHandler.emit(ActivityEvent.OpenDownloads) },
+                onClick = onOpenDownloads,
                 text = stringResource(R.string.view_downloads),
             )
         }
@@ -82,5 +101,24 @@ fun StyledTextButton(
         colors = ButtonDefaults.buttonColors(),
     ) {
         Text(text = text)
+    }
+}
+
+@Preview
+@Composable
+fun LogoHeaderPreview() {
+    AppTheme {
+        LogoHeader()
+    }
+}
+
+@Preview
+@Composable
+fun StyledTextButtonPreview() {
+    AppTheme {
+        StyledTextButton(
+            text = "Button",
+            onClick = {},
+        )
     }
 }
