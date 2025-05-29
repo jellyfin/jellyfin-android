@@ -2,10 +2,13 @@ package org.jellyfin.mobile.ui.screens.connect
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -34,6 +37,7 @@ fun ConnectScreenRoot(
 ) {
     AppTheme {
         ConnectScreen(
+            modifier = Modifier.windowInsetsPadding(WindowInsets.safeContent),
             showExternalConnectionError = showExternalConnectionError,
             onConnected = { hostname ->
                 mainViewModel.switchServer(hostname)
@@ -47,15 +51,18 @@ fun ConnectScreenRoot(
 
 @Composable
 fun ConnectScreen(
+    modifier: Modifier = Modifier,
     showExternalConnectionError: Boolean,
     onConnected: suspend (String) -> Unit,
     onOpenDownloads: () -> Unit,
 ) {
-    Surface(color = MaterialTheme.colors.background) {
+    Surface(
+        modifier = modifier,
+        color = MaterialTheme.colors.background,
+    ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
+                .fillMaxSize(),
         ) {
             LogoHeader()
             ServerSelection(
