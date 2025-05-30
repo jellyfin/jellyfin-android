@@ -1,6 +1,5 @@
 package org.jellyfin.mobile.player
 
-import ChapterMarking
 import android.annotation.SuppressLint
 import android.app.Application
 import android.media.AudioAttributes
@@ -45,6 +44,7 @@ import org.jellyfin.mobile.player.mediasegments.MediaSegmentRepository
 import org.jellyfin.mobile.player.queue.QueueManager
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
+import org.jellyfin.mobile.player.ui.ChapterMarking
 import org.jellyfin.mobile.player.ui.DecoderType
 import org.jellyfin.mobile.player.ui.DisplayPreferences
 import org.jellyfin.mobile.player.ui.PlayState
@@ -515,7 +515,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
         // Update the ticks to be slightly in the past, to check if we should go back to the beginning of the current
         // chapter or the previous one, if not enough time has elapsed since the start of the current chapter
-        ticks -= TickUtils.secToTicks(Constants.MAX_SKIP_TO_PREV_CHAPTER_SEC)
+        ticks -= TickUtils.msToTicks(Constants.MAX_SKIP_TO_PREV_CHAPTER_MS)
         // If we'd end up with negative ticks then we need to play the previous item
         if (ticks < 0) {
             skipToPrevious()
