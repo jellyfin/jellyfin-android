@@ -134,7 +134,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:played_color="?colorAccent"
             app:scrubber_color="?colorAccent"
-            app:unplayed_color="@color/unplayed"
+            app:unplayed_color="@color/playback_timebar_unplayed"
             app:scrubber_dragged_size="24dp"
             app:scrubber_enabled_size="16dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
