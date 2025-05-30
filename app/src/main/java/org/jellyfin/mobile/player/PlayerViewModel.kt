@@ -372,7 +372,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val currentChapterIdx = getCurrentChapterIdx(chapters, playbackPositionTicks) ?: return
 
         chapterMarkings.forEachIndexed { i, m ->
-            val color = if (i <= currentChapterIdx) R.color.jellyfin_accent else R.color.unplayed
+            val color = if (i <= currentChapterIdx) R.color.jellyfin_accent else R.color.playback_timebar_unplayed
             m.setColor(color)
         }
     }
