@@ -16,4 +16,5 @@
     <color name="theme_background">#101010</color>
     <color name="playback_controls_background">#60000000</color>
     <color name="playback_info_background">#cc000000</color>
+    <color name="playback_timebar_unplayed">#333333</color>
 </resources>
