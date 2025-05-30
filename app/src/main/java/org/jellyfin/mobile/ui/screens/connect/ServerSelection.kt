@@ -334,7 +334,6 @@ private fun ServerDiscoveryItem(
     )
 }
 
-
 @Preview
 @Composable
 private fun AddressSelectionPreview(
@@ -376,7 +375,9 @@ private fun ServerDiscoveryItemPreview(
 @Preview
 @Composable
 private fun ServerDiscoveryListPreview(
-    @PreviewParameter(ServerSuggestionListPreviewParameterProvider::class) serverSuggestionsList: List<ServerSuggestion>,
+    @PreviewParameter(
+        ServerSuggestionListPreviewParameterProvider::class,
+    ) serverSuggestionsList: List<ServerSuggestion>,
 ) {
     AppTheme {
         ServerDiscoveryList(

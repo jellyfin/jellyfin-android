@@ -175,7 +175,6 @@ compose = [
     "compose-material",
     "compose-material-icons",
     "compose-material-icons-extended",
-    "compose-ui-tooling",
     "compose-ui-tooling-preview",
 ]
 androidx-media3 = [
