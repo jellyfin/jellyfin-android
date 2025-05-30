@@ -102,7 +102,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     val queueManager = QueueManager(this)
     val mediaSourceOrNull: JellyfinMediaSource?
         get() = queueManager.getCurrentMediaSourceOrNull()
-    private val mediaSegmentRepository = MediaSegmentRepository()
+    private val mediaSegmentRepository: MediaSegmentRepository by inject()
 
     // ExoPlayer
     private val _player = MutableLiveData<ExoPlayer?>()
