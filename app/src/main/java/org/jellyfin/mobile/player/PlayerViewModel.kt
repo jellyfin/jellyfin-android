@@ -38,6 +38,8 @@ import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.player.interaction.PlayerLifecycleObserver
 import org.jellyfin.mobile.player.interaction.PlayerMediaSessionCallback
 import org.jellyfin.mobile.player.interaction.PlayerNotificationHelper
+import org.jellyfin.mobile.player.mediasegments.MediaSegmentAction
+import org.jellyfin.mobile.player.mediasegments.MediaSegmentRepository
 import org.jellyfin.mobile.player.queue.QueueManager
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
@@ -48,7 +50,9 @@ import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
 import org.jellyfin.mobile.utils.applyDefaultAudioAttributes
 import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
+import org.jellyfin.mobile.utils.extensions.end
 import org.jellyfin.mobile.utils.extensions.scaleInRange
+import org.jellyfin.mobile.utils.extensions.start
 import org.jellyfin.mobile.utils.extensions.width
 import org.jellyfin.mobile.utils.getVolumeLevelPercent
 import org.jellyfin.mobile.utils.getVolumeRange
@@ -66,6 +70,7 @@ import org.jellyfin.sdk.api.operations.DisplayPreferencesApi
 import org.jellyfin.sdk.api.operations.HlsSegmentApi
 import org.jellyfin.sdk.api.operations.PlayStateApi
 import org.jellyfin.sdk.api.operations.UserApi
+import org.jellyfin.sdk.model.api.MediaSegmentDto
 import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.api.PlaybackOrder
 import org.jellyfin.sdk.model.api.PlaybackProgressInfo
@@ -97,6 +102,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     val queueManager = QueueManager(this)
     val mediaSourceOrNull: JellyfinMediaSource?
         get() = queueManager.getCurrentMediaSourceOrNull()
+    private val mediaSegmentRepository: MediaSegmentRepository by inject()
 
     // ExoPlayer
     private val _player = MutableLiveData<ExoPlayer?>()
@@ -267,6 +273,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
         val startTime = jellyfinMediaSource.startTimeMs
         if (startTime > 0) player.seekTo(startTime)
+
+        applyMediaSegments(jellyfinMediaSource)
+
         player.playWhenReady = playWhenReady
 
         mediaSession.setMetadata(jellyfinMediaSource.toMediaMetadata())
@@ -407,6 +416,40 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 playSessionId = mediaSource.playSessionId,
             )
         }
+    }
+
+    private fun applyMediaSegments(jellyfinMediaSource: JellyfinMediaSource) {
+        viewModelScope.launch {
+            if (jellyfinMediaSource.item != null) {
+                val mediaSegments = mediaSegmentRepository.getSegmentsForItem(jellyfinMediaSource.item)
+
+                for (mediaSegment in mediaSegments) {
+                    val action = mediaSegmentRepository.getMediaSegmentAction(mediaSegment)
+
+                    when (action) {
+                        MediaSegmentAction.SKIP -> addSkipAction(mediaSegment)
+                        MediaSegmentAction.NOTHING -> Unit
+                        // Unimplemented
+                        MediaSegmentAction.ASK_TO_SKIP -> Unit
+                    }
+                }
+            }
+        }
+    }
+
+    private fun addSkipAction(mediaSegment: MediaSegmentDto) {
+        val player = playerOrNull ?: return
+
+        player
+            .createMessage { _, _ ->
+                viewModelScope.launch(Dispatchers.Main) {
+                    player.seekTo(mediaSegment.end.inWholeMilliseconds)
+                }
+            }
+            // Segments at position 0 will never be hit by ExoPlayer so we need to add a minimum value
+            .setPosition(mediaSegment.start.inWholeMilliseconds.coerceAtLeast(1))
+            .setDeleteAfterDelivery(false)
+            .send()
     }
 
     // Player controls
