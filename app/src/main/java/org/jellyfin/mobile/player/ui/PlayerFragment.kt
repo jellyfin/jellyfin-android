@@ -1,6 +1,5 @@
 package org.jellyfin.mobile.player.ui
 
-import ChapterMarking
 import android.app.Activity
 import android.app.PictureInPictureParams
 import android.content.pm.ActivityInfo

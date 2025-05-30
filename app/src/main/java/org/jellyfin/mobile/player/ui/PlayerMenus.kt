@@ -1,6 +1,5 @@
 package org.jellyfin.mobile.player.ui
 
-import ChapterMarking
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -200,15 +199,17 @@ class PlayerMenus(
     private fun setChapterMarkings(chapters: List<ChapterInfo>?, runTimeTicks: Long?) {
         chapterMarkingContainer.removeAllViews()
 
-        if (chapters.isNullOrEmpty() || runTimeTicks == null) {
+        if (chapters.isNullOrEmpty() || runTimeTicks == null || runTimeTicks <= 0) {
             fragment.setChapterMarkings(mutableListOf())
             return
         }
 
         val chapterMarkings: MutableList<ChapterMarking> = mutableListOf()
         chapters.forEach { ch ->
-            val bias = ch.startPositionTicks.toFloat() / runTimeTicks
-            val marking = ChapterMarking(context, chapterMarkingContainer, bias)
+            val percent = ch.startPositionTicks.toFloat() / runTimeTicks
+            val bias = percent.coerceIn(0f, 1f)
+            val marking = ChapterMarking(context, bias)
+            chapterMarkingContainer.addView(marking.view)
             chapterMarkings.add(marking)
         }
         fragment.setChapterMarkings(chapterMarkings)
