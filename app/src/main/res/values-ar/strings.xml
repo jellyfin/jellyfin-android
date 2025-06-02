@@ -133,4 +133,5 @@
     <string name="thumbnail_desc">صورة مصغّرة</string>
     <string name="stored_videos_in_internal_storage_desc">سيتم تخزين الفيديوهات مثل الأفلام والمسلسلات في الذاكرة الداخلية للتطبيق، مما يتيح الوصول إليها من داخل التطبيق.</string>
     <string name="downloading_desc">جارٍ تنزيل %1$d عنوانًا</string>
+    <string name="downloaded">تم تنزيل %1$s</string>
 </resources>
