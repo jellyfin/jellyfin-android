@@ -115,4 +115,22 @@
     <string name="wifi_only_summary">سيتم تنزيل الوسائط عبر الواي فاي فقط.</string>
     <string name="mobile_data_summary">سيتم تنزيل الوسائط عبر الواي فاي والبيانات الخلوية.</string>
     <string name="mobile_data_and_roaming_summary">سيتم تنزيل الوسائط عبر الواي فاي والبيانات الخلوية وشبكة التجوال.</string>
+    <string name="pref_exoplayer_allow_press_speed_up">اضغط مع الاستمرار للتسريع</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">اضغط مطولًا على الشاشة لتسريع الفيديو مؤقتًا</string>
+    <string name="external_player_mpvkt">مشغّل mpvKt</string>
+    <string name="external_player_mpvkt_description">مشغّل وسائط مبني على mpv-android يهدف إلى تقديم واجهة مستخدم أكثر أناقة من النسخة الأصلية.</string>
+    <string name="view_downloads">عرض التنزيلات</string>
+    <string name="failed_information">تعذّر الحصول على معلومات الوسائط</string>
+    <string name="failed_network_method_check">يرجى التحقق من طرق التنزيل المسموح بها</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="store_videos_in_internal_storage">تخزين الفيديوهات في الذاكرة الداخلية</string>
+    <string name="downloads">التنزيلات</string>
+    <string name="download_notifications_description">إشعارات التنزيل</string>
+    <string name="failed_thumbnail">فشل في تنزيل الصورة المصغّرة</string>
+    <string name="confirm_deletion">تأكيد الحذف</string>
+    <string name="confirm_deletion_desc">هل تريد حذف %1$s؟</string>
+    <string name="thumbnail_desc">صورة مصغّرة</string>
+    <string name="stored_videos_in_internal_storage_desc">سيتم تخزين الفيديوهات مثل الأفلام والمسلسلات في الذاكرة الداخلية للتطبيق، مما يتيح الوصول إليها من داخل التطبيق.</string>
+    <string name="downloading_desc">جارٍ تنزيل %1$d عنوانًا</string>
 </resources>
