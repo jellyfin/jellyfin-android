@@ -12,12 +12,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
 import androidx.core.os.BundleCompat
-import coil.ImageLoader
-import coil.annotation.ExperimentalCoilApi
-import coil.executeBlocking
-import coil.request.CachePolicy
-import coil.request.ImageRequest
-import coil.request.SuccessResult
+import coil3.ImageLoader
+import coil3.executeBlocking
+import coil3.network.NetworkHeaders
+import coil3.network.httpHeaders
+import coil3.request.CachePolicy
+import coil3.request.ImageRequest
+import coil3.request.SuccessResult
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.imageApi
@@ -86,7 +87,6 @@ class ImageProvider : ContentProvider(), KoinComponent {
     }
 
     @Suppress("ThrowsCount")
-    @OptIn(ExperimentalCoilApi::class)
     private fun loadImage(uri: Uri, size: Point?): AssetFileDescriptor {
         val pathSegments = uri.pathSegments
         if (pathSegments.size < PATH_SEGMENTS_COUNT) {
@@ -120,10 +120,14 @@ class ImageProvider : ContentProvider(), KoinComponent {
             deviceName = apiClient.deviceInfo.name,
             accessToken = apiClient.accessToken,
         )
+        val headers = NetworkHeaders.Builder()
+            .set("Authorization", authorizationHeader)
+            .build()
+
         val imageRequest = ImageRequest.Builder(context!!)
             .data(imageUrl)
             .diskCachePolicy(CachePolicy.ENABLED)
-            .addHeader("Authorization", authorizationHeader)
+            .httpHeaders(headers)
             .build()
 
         val imageResult = imageLoader.executeBlocking(imageRequest)

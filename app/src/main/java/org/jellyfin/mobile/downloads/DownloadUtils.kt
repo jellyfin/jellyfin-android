@@ -17,13 +17,13 @@ import android.os.Build.VERSION_CODES.P
 import android.util.AndroidException
 import androidx.annotation.RequiresApi
 import androidx.core.content.getSystemService
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import androidx.media3.exoplayer.offline.DownloadRequest
 import androidx.media3.exoplayer.offline.DownloadService
 import androidx.media3.exoplayer.scheduler.Requirements
-import coil.ImageLoader
-import coil.request.ImageRequest
+import coil3.ImageLoader
+import coil3.request.ImageRequest
+import coil3.toBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -196,7 +196,7 @@ class DownloadUtils(
             maxHeight = size,
         )
         val imageRequest = ImageRequest.Builder(context).data(imageUrl).build()
-        val bitmap: Bitmap = imageLoader.execute(imageRequest).drawable?.toBitmap() ?: throw IOException(
+        val bitmap: Bitmap = imageLoader.execute(imageRequest).image?.toBitmap() ?: throw IOException(
             context.getString(R.string.failed_thumbnail),
         )
 

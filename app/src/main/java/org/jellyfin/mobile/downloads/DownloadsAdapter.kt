@@ -4,6 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil3.load
+import coil3.request.error
+import coil3.request.fallback
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.databinding.DownloadItemBinding
@@ -27,11 +30,6 @@ class DownloadsAdapter(
     inner class DownloadViewHolder(private val binding: DownloadItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(downloadEntity: DownloadEntity) {
-            if (downloadEntity.thumbnail == null) {
-                onItemHold(downloadEntity)
-                return
-            }
-
             val context = itemView.context
 
             val mediaItem: BaseItemDto? = downloadEntity.mediaSource.item
@@ -56,7 +54,10 @@ class DownloadsAdapter(
                 true
             }
 
-            binding.imageViewThumbnail.setImageBitmap(downloadEntity.thumbnail)
+            binding.imageViewThumbnail.load(downloadEntity.thumbnailPath) {
+                fallback(R.drawable.ic_local_movies_white_128)
+                error(R.drawable.ic_local_movies_white_128)
+            }
         }
     }
 }

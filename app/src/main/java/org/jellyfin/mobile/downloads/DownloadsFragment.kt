@@ -68,7 +68,6 @@ class DownloadsFragment : Fragment(), KoinComponent {
     }
 
     private fun onDownloadItemHold(download: DownloadEntity) {
-        val itemMissing = download.thumbnail == null
-        activityEventHandler.emit(ActivityEvent.RemoveDownload(download.mediaSource, force = itemMissing))
+        activityEventHandler.emit(ActivityEvent.RemoveDownload(download.mediaSource))
     }
 }

@@ -1,7 +1,5 @@
 package org.jellyfin.mobile.data.entity
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -62,9 +60,7 @@ data class DownloadEntity(
         this(mediaSource.id, mediaSource)
 
     @Ignore
-    val thumbnail: Bitmap? = BitmapFactory.decodeFile(
-        File(mediaSource.localDirectoryUri, Constants.DOWNLOAD_THUMBNAIL_FILENAME).canonicalPath,
-    )
+    val thumbnailPath: String = File(mediaSource.localDirectoryUri, Constants.DOWNLOAD_THUMBNAIL_FILENAME).canonicalPath
 
     @Ignore
     val fileSize: String = mediaSource.downloadSize.toFileSize()
