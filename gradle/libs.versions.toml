@@ -43,7 +43,7 @@ coil = "2.7.0"
 
 # Media
 androidx-media = "1.7.0"
-androidx-mediarouter = "1.7.0"
+androidx-mediarouter = "1.8.0"
 androidx-media3 = "1.6.1"
 jellyfin-androidx-media = "1.6.1+1"
 playservices = "22.1.0"
