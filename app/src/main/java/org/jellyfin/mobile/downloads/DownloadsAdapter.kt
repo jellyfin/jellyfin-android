@@ -62,8 +62,8 @@ class DownloadsAdapter(
 
             val thumbnailUrl = getThumbnailUrl(context, downloadEntity.mediaSource.itemId)
             binding.imageViewThumbnail.load(thumbnailUrl) {
-                fallback(R.drawable.ic_local_movies_white_128)
-                error(R.drawable.ic_local_movies_white_128)
+                fallback(R.drawable.ic_local_movies_white_64)
+                error(R.drawable.ic_local_movies_white_64)
             }
         }
     }
