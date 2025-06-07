@@ -145,7 +145,7 @@ dependencies {
     }
     implementation(libs.okhttp)
     implementation(libs.okio)
-    implementation(libs.coil)
+    implementation(libs.bundles.coil)
 
     // Media
     implementation(libs.androidx.media)

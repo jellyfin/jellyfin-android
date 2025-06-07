@@ -25,10 +25,10 @@ import android.os.PowerManager
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.text.HtmlCompat
-import coil.ImageLoader
-import coil.request.ImageRequest
+import coil3.ImageLoader
+import coil3.request.ImageRequest
+import coil3.toBitmap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -218,7 +218,7 @@ class RemotePlayerService : Service(), CoroutineScope {
             val cachedBitmap = largeItemIcon?.takeIf { itemId == currentItemId }
             val bitmap = cachedBitmap ?: if (!imageUrl.isNullOrEmpty()) {
                 val request = ImageRequest.Builder(this@RemotePlayerService).data(imageUrl).build()
-                imageLoader.execute(request).drawable?.toBitmap()?.also { bitmap ->
+                imageLoader.execute(request).image?.toBitmap()?.also { bitmap ->
                     largeItemIcon = bitmap // Cache bitmap for later use
                 }
             } else {

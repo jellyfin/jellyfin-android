@@ -2,6 +2,8 @@
 <resources>
     <dimen name="media_notification_height">128dp</dimen>
 
+    <dimen name="movie_thumbnail_list_size">64dp</dimen>
+
     <dimen name="exo_title_text_size">16sp</dimen>
     <dimen name="exo_player_controls_display_padding">12dp</dimen>
     <dimen name="exo_center_icon_padding">12dp</dimen>

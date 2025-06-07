@@ -18,12 +18,14 @@ import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.extensions.requireMainActivity
 import org.jellyfin.mobile.utils.withThemedContext
+import org.jellyfin.sdk.api.client.ApiClient
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class DownloadsFragment : Fragment(), KoinComponent {
     private val viewModel: DownloadsViewModel by inject()
     private val activityEventHandler: ActivityEventHandler by inject()
+    private val apiClient: ApiClient by inject()
     private lateinit var adapter: DownloadsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -38,6 +40,7 @@ class DownloadsFragment : Fragment(), KoinComponent {
         }
 
         adapter = DownloadsAdapter(
+            apiClient,
             onItemClick = { download -> onDownloadItemClick(download) },
             onItemHold = { download -> onDownloadItemHold(download) },
         )
@@ -68,7 +71,6 @@ class DownloadsFragment : Fragment(), KoinComponent {
     }
 
     private fun onDownloadItemHold(download: DownloadEntity) {
-        val itemMissing = download.thumbnail == null
-        activityEventHandler.emit(ActivityEvent.RemoveDownload(download.mediaSource, force = itemMissing))
+        activityEventHandler.emit(ActivityEvent.RemoveDownload(download.mediaSource))
     }
 }

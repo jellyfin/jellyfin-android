@@ -1,7 +1,5 @@
 package org.jellyfin.mobile.data.entity
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -14,9 +12,7 @@ import kotlinx.serialization.json.Json.Default.decodeFromString
 import org.jellyfin.mobile.data.entity.DownloadEntity.Key.ITEM_ID
 import org.jellyfin.mobile.data.entity.DownloadEntity.Key.TABLE_NAME
 import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
-import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.extensions.toFileSize
-import java.io.File
 
 @Entity(
     tableName = TABLE_NAME,
@@ -60,11 +56,6 @@ data class DownloadEntity(
 
     constructor(mediaSource: LocalJellyfinMediaSource) :
         this(mediaSource.id, mediaSource)
-
-    @Ignore
-    val thumbnail: Bitmap? = BitmapFactory.decodeFile(
-        File(mediaSource.localDirectoryUri, Constants.DOWNLOAD_THUMBNAIL_FILENAME).canonicalPath,
-    )
 
     @Ignore
     val fileSize: String = mediaSource.downloadSize.toFileSize()
