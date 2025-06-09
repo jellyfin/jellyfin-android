@@ -1,6 +1,6 @@
 [versions]
 # Plugins
-android-plugin = "8.10.0"
+android-plugin = "8.10.1"
 kotlin = "2.1.21"
 kotlin-ksp = "2.1.21-2.0.1"
 detekt = "1.23.8"
@@ -88,6 +88,7 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "androidx-activity" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidx-fragment" }
+androidx-fragment-compose = { module = "androidx.fragment:fragment-compose", version.ref = "androidx-fragment" }
 androiddesugarlibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androiddesugarlibs" }
 
 # Lifecycle Extensions
@@ -111,6 +112,8 @@ compose-foundation = { group = "androidx.compose.foundation", name = "foundation
 compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose-material" }
 compose-material-icons = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "compose-material-icons" }
 compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose-material-icons" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose" }
 
 # Network
 jellyfin-sdk = { group = "org.jellyfin.sdk", name = "jellyfin-core", version.ref = "jellyfin-sdk" }
@@ -118,6 +121,7 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhtt
 okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
 coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 
 # Media
 androidx-media = { group = "androidx.media", name = "media", version.ref = "androidx-media" }
@@ -158,7 +162,7 @@ detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-form
 [bundles]
 coroutines = ["coroutines-core", "coroutines-android"]
 koin = ["koin", "koin-compose"]
-coil = ["coil", "coil-network"]
+coil = ["coil", "coil-network", "coil-compose"]
 androidx-lifecycle = [
     "androidx-lifecycle-viewmodel",
     "androidx-lifecycle-livedata",
@@ -174,6 +178,7 @@ compose = [
     "compose-material",
     "compose-material-icons",
     "compose-material-icons-extended",
+    "compose-ui-tooling-preview",
 ]
 androidx-media3 = [
     "androidx-media3-common",

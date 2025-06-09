@@ -119,6 +119,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.fragment)
+    implementation(libs.androidx.fragment.compose)
     coreLibraryDesugaring(libs.androiddesugarlibs)
 
     // Lifecycle
@@ -132,6 +133,7 @@ dependencies {
 
     // Jetpack Compose
     implementation(libs.bundles.compose)
+    debugImplementation(libs.compose.ui.tooling)
 
     // Network
     val sdkVersion = findProperty("sdk.version")?.toString()

@@ -44,6 +44,7 @@ import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.util.AuthorizationHeaderBuilder
 import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -73,7 +74,7 @@ val applicationModule = module {
 
     // ViewModels
     viewModel { MainViewModel(get(), get()) }
-    viewModel { DownloadsViewModel() }
+    viewModel { DownloadsViewModel(androidContext()) }
 
     // Fragments
     fragment { WebViewFragment() }
