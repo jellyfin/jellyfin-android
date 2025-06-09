@@ -1,20 +1,29 @@
 package org.jellyfin.mobile.ui.screens.downloads
 
-import android.widget.Toast
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.ListItem
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.LocalMovies
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -41,25 +50,42 @@ import java.util.UUID
 @Composable
 fun DownloadsScreenRoot(
     downloadsViewModel: DownloadsViewModel,
+    navigateBack: () -> Unit = {},
 ) {
     val uiState: DownloadsUiState by downloadsViewModel.uiState.collectAsStateWithLifecycle()
 
     AppTheme {
-        val context = LocalContext.current
-        DownloadsScreen(
-            uiState = uiState,
-            onSelectItem = { mediaSourceItemId, mediaSourceId ->
-                Toast.makeText(context, "Item selected $mediaSourceItemId, $mediaSourceId", Toast.LENGTH_SHORT).show()
-
-                downloadsViewModel.openDownload(mediaSourceItemId, mediaSourceId)
-            },
-            onDeleteDownloadsItem = {
-                Toast.makeText(context, "Delete Item $it", Toast.LENGTH_SHORT).show()
-                downloadsViewModel.deleteDownload(it)
-            },
-
-        )
+        Scaffold(
+            modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing),
+            topBar = { DownloadsTopAppBar(navigateBack = navigateBack) },
+        ) { padding ->
+            DownloadsScreen(
+                modifier = Modifier.padding(padding),
+                uiState = uiState,
+                onSelectItem = { mediaSourceItemId, mediaSourceId ->
+                    downloadsViewModel.openDownload(mediaSourceItemId, mediaSourceId)
+                },
+                onDeleteDownloadsItem = {
+                    downloadsViewModel.deleteDownload(it)
+                },
+            )
+        }
     }
+}
+
+@Composable
+fun DownloadsTopAppBar(navigateBack: () -> Unit) {
+    TopAppBar(
+        navigationIcon = {
+            IconButton(onClick = navigateBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "",
+                )
+            }
+        },
+        title = { Text("Downloads") },
+    )
 }
 
 @Composable
@@ -156,7 +182,9 @@ fun DownloadListItem(
                 error = rememberVectorPainter(Icons.Default.LocalMovies),
                 contentDescription = name,
                 contentScale = ContentScale.FillBounds,
-                modifier = Modifier.height(64.dp).width(64.dp),
+                modifier = Modifier
+                    .height(64.dp)
+                    .width(64.dp),
             )
         },
         text = {
@@ -187,6 +215,14 @@ data class DeleteDialogState(
         val hide = DeleteDialogState()
         fun show(mediaSourceId: String, itemName: String) =
             DeleteDialogState(true, mediaSourceId, itemName)
+    }
+}
+
+@Preview
+@Composable
+fun DownloadsTopAppBarPreview() {
+    AppTheme {
+        DownloadsTopAppBar(navigateBack = {})
     }
 }
 

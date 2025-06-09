@@ -17,19 +17,14 @@ import android.provider.Settings
 import android.provider.Settings.System.ACCELEROMETER_ROTATION
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.getSystemService
-import androidx.media3.exoplayer.offline.DownloadService
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
-import org.jellyfin.mobile.data.dao.DownloadDao
-import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.downloads.DownloadMethod
 import org.jellyfin.mobile.downloads.DownloadUtils
-import org.jellyfin.mobile.downloads.JellyfinDownloadService
-import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.webapp.WebViewFragment
 import org.jellyfin.sdk.model.serializer.toUUID
@@ -105,53 +100,6 @@ suspend fun MainActivity.requestDownload(uri: Uri, filename: String) {
     if (permissionResult) {
         val downloadUtils = DownloadUtils(this, filename, uri.toString(), downloadMethod)
         downloadUtils.download()
-    }
-}
-suspend fun MainActivity.removeDownload(download: LocalJellyfinMediaSource, force: Boolean = false) {
-    if (!force) {
-        val confirmation = suspendCancellableCoroutine { continuation ->
-            AlertDialog.Builder(this)
-                .setTitle(getString(R.string.confirm_deletion))
-                .setMessage(getString(R.string.confirm_deletion_desc, download.name))
-                .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                    continuation.resume(true)
-                }
-                .setNegativeButton(getString(R.string.no)) { _, _ ->
-                    continuation.cancel(null)
-                }
-                .setOnDismissListener {
-                    continuation.cancel(null)
-                }
-                .setCancelable(false)
-                .show()
-        }
-
-        if (!confirmation) return
-    }
-
-    val downloadDao: DownloadDao = get()
-    val downloadEntity: DownloadEntity = requireNotNull(downloadDao.get(download.id))
-    val downloadDir = File(downloadEntity.mediaSource.localDirectoryUri)
-    downloadDao.delete(download.id)
-    downloadDir.deleteRecursively()
-
-    val contentId = download.itemId.toString()
-    // Remove media file
-    DownloadService.sendRemoveDownload(
-        this,
-        JellyfinDownloadService::class.java,
-        contentId,
-        false,
-    )
-
-    // Remove subtitles
-    download.externalSubtitleStreams.forEach {
-        DownloadService.sendRemoveDownload(
-            this,
-            JellyfinDownloadService::class.java,
-            "$contentId:${it.index}",
-            false,
-        )
     }
 }
 
