@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -35,29 +34,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Devices.PIXEL_6_PRO
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import org.jellyfin.mobile.downloads.DownloadsUiState
-import org.jellyfin.mobile.downloads.DownloadsViewModel
 import org.jellyfin.mobile.ui.utils.AppTheme
 import java.util.UUID
 
 @Composable
 fun DownloadsScreenRoot(
     downloadsViewModel: DownloadsViewModel,
-    navigateBack: () -> Unit = {},
+    onNavigateBack: () -> Unit = {},
 ) {
     val uiState: DownloadsUiState by downloadsViewModel.uiState.collectAsStateWithLifecycle()
 
     AppTheme {
         Scaffold(
             modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing),
-            topBar = { DownloadsTopAppBar(navigateBack = navigateBack) },
+            topBar = { DownloadsTopAppBar(onNavigateBack = onNavigateBack) },
         ) { padding ->
             DownloadsScreen(
                 modifier = Modifier.padding(padding),
@@ -74,10 +71,10 @@ fun DownloadsScreenRoot(
 }
 
 @Composable
-fun DownloadsTopAppBar(navigateBack: () -> Unit) {
+fun DownloadsTopAppBar(onNavigateBack: () -> Unit) {
     TopAppBar(
         navigationIcon = {
-            IconButton(onClick = navigateBack) {
+            IconButton(onClick = onNavigateBack) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "",
@@ -173,36 +170,35 @@ fun DownloadListItem(
                 onLongClick = { onDeleteItem(mediaSourceId) },
             ),
         icon = {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(thumbnailUrl)
-                    .crossfade(true)
-                    .build(),
-                fallback = rememberVectorPainter(Icons.Default.LocalMovies),
-                error = rememberVectorPainter(Icons.Default.LocalMovies),
-                contentDescription = name,
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .height(64.dp)
-                    .width(64.dp),
-            )
+            DownloadThumbnailImage(thumbnailUrl, name)
         },
         text = {
-            Text(
-                text = name,
-            )
+            Text(text = name)
         },
         secondaryText = {
-            Text(
-                text = description,
-            )
+            Text(text = description)
         },
         trailing = {
-            Text(
-                fileSize,
-                maxLines = 1,
-            )
+            Text(fileSize, maxLines = 1)
         },
+    )
+}
+
+@Composable
+private fun DownloadThumbnailImage(thumbnailUrl: String, name: String) {
+    val downloadThumbnailSize: Dp = dimensionResource(org.jellyfin.mobile.R.dimen.movie_thumbnail_list_size)
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(thumbnailUrl)
+            .crossfade(true)
+            .build(),
+        fallback = rememberVectorPainter(Icons.Default.LocalMovies),
+        error = rememberVectorPainter(Icons.Default.LocalMovies),
+        contentDescription = name,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .height(downloadThumbnailSize)
+            .width(downloadThumbnailSize),
     )
 }
 
@@ -222,11 +218,11 @@ data class DeleteDialogState(
 @Composable
 fun DownloadsTopAppBarPreview() {
     AppTheme {
-        DownloadsTopAppBar(navigateBack = {})
+        DownloadsTopAppBar(onNavigateBack = {})
     }
 }
 
-@Preview(device = PIXEL_6_PRO)
+@Preview()
 @Composable
 fun DownloadListItemPreview() {
     AppTheme {
@@ -245,12 +241,45 @@ fun DownloadListItemPreview() {
     }
 }
 
-@Preview(device = PIXEL_6_PRO)
+@Preview()
 @Composable
 fun DownloadsScreenLoadingPreview() {
     AppTheme {
         DownloadsScreen(
             uiState = DownloadsUiState.Loading,
+            onSelectItem = { _, _ -> },
+            onDeleteDownloadsItem = { },
+        )
+    }
+}
+
+@Preview()
+@Composable
+fun DownloadsScreenPreview() {
+    AppTheme {
+        DownloadsScreen(
+            uiState = DownloadsUiState.ShowDownloads(
+                listOf(
+                    DownloadModel(
+                        itemId = "itemId1",
+                        mediaSourceItemId = UUID.randomUUID(),
+                        mediaSourceId = "mediaSourceId1",
+                        name = "Item Name 1",
+                        description = "A thrilling movie about Item 1",
+                        fileSize = "100MB",
+                        thumbnailUrl = "",
+                    ),
+                    DownloadModel(
+                        itemId = "itemId2",
+                        mediaSourceItemId = UUID.randomUUID(),
+                        mediaSourceId = "mediaSourceId2",
+                        name = "Item Name 2",
+                        description = "Description of Item 2",
+                        fileSize = "200MB",
+                        thumbnailUrl = "",
+                    ),
+                ),
+            ),
             onSelectItem = { _, _ -> },
             onDeleteDownloadsItem = { },
         )
