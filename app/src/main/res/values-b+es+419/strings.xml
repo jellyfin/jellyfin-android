@@ -112,4 +112,12 @@
     <string name="mobile_data_and_roaming_summary">El contenido se descargará sobre WIFI, redes móviles y en itinerancia.</string>
     <string name="wifi_only_summary">El contenido se descargará solo sobre WIFI.</string>
     <string name="mobile_data_summary">El contenido se descargará sobre WIFI o redes móviles.</string>
+    <string name="external_player_mpvkt">Reproductor mpvKt</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Sostener para acelerar</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Tocar y sostener en la pantalla para acelerar temporalmente la reproducción</string>
+    <string name="view_downloads">Ver descargas</string>
+    <string name="downloads">Descargas</string>
+    <string name="download_notifications_description">Notificaciones de descargas</string>
+    <string name="failed_thumbnail">Fallo la descarga de miniatura</string>
+    <string name="external_player_mpvkt_description">Un reproductor basado en mpv-android para proveer una interfaz mas atractiva que la original.</string>
 </resources>
