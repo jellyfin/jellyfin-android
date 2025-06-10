@@ -11,11 +11,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
-import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.Player
-import coil.ImageLoader
-import coil.request.ImageRequest
+import coil3.ImageLoader
+import coil3.request.ImageRequest
+import coil3.toBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -177,7 +177,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
             )
 
             val imageRequest = ImageRequest.Builder(context).data(imageUrl).build()
-            imageLoader.execute(imageRequest).drawable?.toBitmap()
+            imageLoader.execute(imageRequest).image?.toBitmap()
         }
     }
 

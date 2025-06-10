@@ -7,7 +7,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -17,19 +16,14 @@ import android.os.Build.VERSION_CODES.P
 import android.util.AndroidException
 import androidx.annotation.RequiresApi
 import androidx.core.content.getSystemService
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import androidx.media3.exoplayer.offline.DownloadRequest
 import androidx.media3.exoplayer.offline.DownloadService
 import androidx.media3.exoplayer.scheduler.Requirements
-import coil.ImageLoader
-import coil.request.ImageRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
-import okio.buffer
-import okio.sink
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
@@ -45,10 +39,8 @@ import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.extractId
 import org.jellyfin.mobile.utils.requestPermission
 import org.jellyfin.sdk.api.client.ApiClient
-import org.jellyfin.sdk.api.client.extensions.imageApi
 import org.jellyfin.sdk.model.UUID
 import org.jellyfin.sdk.model.api.BaseItemKind
-import org.jellyfin.sdk.model.api.ImageType
 import org.jellyfin.sdk.model.serializer.toUUID
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -71,7 +63,6 @@ class DownloadUtils(
     private val contentId: String
     private val downloadDao: DownloadDao by inject()
     private val apiClient: ApiClient = get()
-    private val imageLoader: ImageLoader by inject()
     private val mediaSourceResolver: MediaSourceResolver by inject()
     private val deviceProfileBuilder: DeviceProfileBuilder by inject()
     private val deviceProfile = deviceProfileBuilder.getDeviceProfile()
@@ -166,7 +157,6 @@ class DownloadUtils(
         val jellyfinDownloadTracker = JellyfinDownloadTracker(jellyfinMediaSource)
         downloadTracker.addListener(jellyfinDownloadTracker)
         downloadMediaFile(jellyfinMediaSource)
-        downloadThumbnail()
         downloadExternalSubtitles(jellyfinMediaSource)
     }
 
@@ -184,28 +174,6 @@ class DownloadUtils(
             downloadRequest,
             false,
         )
-    }
-
-    private suspend fun downloadThumbnail() {
-        val size = context.resources.getDimensionPixelSize(R.dimen.media_notification_height)
-
-        val imageUrl = apiClient.imageApi.getItemImageUrl(
-            itemId = itemUUID,
-            imageType = ImageType.PRIMARY,
-            maxWidth = size,
-            maxHeight = size,
-        )
-        val imageRequest = ImageRequest.Builder(context).data(imageUrl).build()
-        val bitmap: Bitmap = imageLoader.execute(imageRequest).drawable?.toBitmap() ?: throw IOException(
-            context.getString(R.string.failed_thumbnail),
-        )
-
-        val thumbnailFile = File(downloadFolder, Constants.DOWNLOAD_THUMBNAIL_FILENAME)
-        val sink = thumbnailFile.sink().buffer()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, THUMBNAIL_DOWNLOAD_QUALITY, sink.outputStream())
-        withContext(Dispatchers.IO) {
-            sink.close()
-        }
     }
 
     private fun downloadExternalSubtitles(jellyfinMediaSource: JellyfinMediaSource) {
@@ -309,9 +277,5 @@ class DownloadUtils(
                 downloadTracker.removeListener(this)
             }
         }
-    }
-
-    private companion object {
-        const val THUMBNAIL_DOWNLOAD_QUALITY = 80
     }
 }
