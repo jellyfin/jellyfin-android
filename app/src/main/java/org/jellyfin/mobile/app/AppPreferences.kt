@@ -5,9 +5,12 @@ import android.content.SharedPreferences
 import android.os.Environment
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import androidx.core.content.edit
+import org.jellyfin.mobile.player.mediasegments.MediaSegmentAction
+import org.jellyfin.mobile.player.mediasegments.toMediaSegmentActionsString
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.sdk.model.api.MediaSegmentType
 import java.io.File
 
 class AppPreferences(context: Context) {
@@ -99,6 +102,19 @@ class AppPreferences(context: Context) {
                 }
             }
         }
+
+    /**
+     * The actions to take for each media segment type. Managed by the MediaSegmentRepository.
+     */
+    var mediaSegmentActions: String
+        get() = sharedPreferences.getString(
+            Constants.PREF_MEDIA_SEGMENT_ACTIONS,
+            mapOf(
+                MediaSegmentType.INTRO to MediaSegmentAction.ASK_TO_SKIP,
+                MediaSegmentType.OUTRO to MediaSegmentAction.ASK_TO_SKIP,
+            ).toMediaSegmentActionsString(),
+        )!!
+        set(value) = sharedPreferences.edit { putString(Constants.PREF_MEDIA_SEGMENT_ACTIONS, value) }
 
     val musicNotificationAlwaysDismissible: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_MUSIC_NOTIFICATION_ALWAYS_DISMISSIBLE, false)

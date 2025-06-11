@@ -25,10 +25,12 @@ import coil3.ImageLoader
 import kotlinx.coroutines.channels.Channel
 import okhttp3.OkHttpClient
 import org.jellyfin.mobile.MainViewModel
+import org.jellyfin.mobile.bridge.MediaSegments
 import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayerEvent
+import org.jellyfin.mobile.player.mediasegments.MediaSegmentRepository
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.player.ui.PlayerFragment
@@ -71,6 +73,7 @@ val applicationModule = module {
 
     // Bridge interfaces
     single { NativePlayer(get(), get(), get(named(PLAYER_EVENT_CHANNEL))) }
+    single { MediaSegments(get()) }
 
     // ViewModels
     viewModel { MainViewModel(get(), get()) }
@@ -87,6 +90,7 @@ val applicationModule = module {
     single { MediaSourceResolver(get()) }
     single { DeviceProfileBuilder(get()) }
     single { QualityOptionsProvider() }
+    single { MediaSegmentRepository() }
 
     // ExoPlayer factories
     single<DatabaseProvider> {
