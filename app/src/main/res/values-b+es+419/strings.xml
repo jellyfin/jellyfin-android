@@ -120,4 +120,11 @@
     <string name="download_notifications_description">Notificaciones de descargas</string>
     <string name="failed_thumbnail">Fallo la descarga de miniatura</string>
     <string name="external_player_mpvkt_description">Un reproductor basado en mpv-android para proveer una interfaz mas atractiva que la original.</string>
+    <string name="failed_information">Fallo la obtención de información del contenido</string>
+    <string name="failed_network_method_check">Por favor, revisa los métodos de descarga permitidos</string>
+    <string name="confirm_deletion">Confirma el borrado</string>
+    <string name="confirm_deletion_desc">¿Quiere borrar %1$s?</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="thumbnail_desc">Miniatura</string>
 </resources>
