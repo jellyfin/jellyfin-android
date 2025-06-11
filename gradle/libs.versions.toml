@@ -1,6 +1,6 @@
 [versions]
 # Plugins
-android-plugin = "8.10.0"
+android-plugin = "8.10.1"
 kotlin = "2.1.21"
 kotlin-ksp = "2.1.21-2.0.1"
 detekt = "1.23.8"
@@ -15,18 +15,18 @@ koin = "4.0.4"
 koin-compose = "4.0.4"
 androidx-core = "1.16.0"
 androidx-core-splashscreen = "1.0.1"
-androidx-appcompat = "1.7.0"
+androidx-appcompat = "1.7.1"
 androidx-activity = "1.10.1"
-androidx-fragment = "1.8.7"
+androidx-fragment = "1.8.8"
 androiddesugarlibs = "2.1.5"
 
 # Lifecycle extensions
-androidx-lifecycle = "2.9.0"
+androidx-lifecycle = "2.9.1"
 
 # UI
 androidx-constraintlayout = "2.2.1"
 google-material = "1.12.0"
-androidx-webkit = "1.13.0"
+androidx-webkit = "1.14.0"
 modernandroidpreferences = "2.4.0-beta2"
 
 # Compose
@@ -43,7 +43,7 @@ coil = "2.7.0"
 
 # Media
 androidx-media = "1.7.0"
-androidx-mediarouter = "1.7.0"
+androidx-mediarouter = "1.8.0"
 androidx-media3 = "1.6.1"
 jellyfin-androidx-media = "1.6.1+1"
 playservices = "22.1.0"
@@ -56,7 +56,7 @@ timber = "5.0.1"
 leakcanary = "2.14"
 
 # Testing
-junit = "5.12.2"
+junit = "5.13.0"
 kotest = "5.9.1"
 mockk = "1.14.2"
 androidx-test-runner = "1.6.2"

@@ -111,4 +111,21 @@
     <string name="wifi_only_summary">Endast WiFi-anslutning kommer att användas vid nedladdning.</string>
     <string name="mobile_data_summary">Både Wifi-anslutning och mobildata kommer att användas vid nedladdning.</string>
     <string name="mobile_data_and_roaming_summary">WiFi-anslutning, mobildata och roaming-anslutning kommer att användas för nedladdning.</string>
+    <string name="external_player_mpvkt">mpvKt Spelare</string>
+    <string name="download_notifications_description">Nerladdningsnotifieringar</string>
+    <string name="failed_information">Misslyckades med att hämta mediainformation</string>
+    <string name="yes">Ja</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Håll för att öka hastigheten</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Tryck och håll in på skärmen för att tillfälligt öka uppspelningshastigheten</string>
+    <string name="external_player_mpvkt_description">En mediaspelare baserad på mpv-android som siktar på att ge ett bättre användarinterface än originalet.</string>
+    <string name="view_downloads">Se nerladdningar</string>
+    <string name="downloads">Nerladdningar</string>
+    <string name="failed_thumbnail">Misslyckades med att ladda ner thumbnail</string>
+    <string name="confirm_deletion">Bekräfta borttagning</string>
+    <string name="confirm_deletion_desc">Vill du ta bort %1$s?</string>
+    <string name="no">Nej</string>
+    <string name="store_videos_in_internal_storage">Lagra videor på intern lagring</string>
+    <string name="stored_videos_in_internal_storage_desc">Videos så som filmer och tvansnitt kommer att lagras i appens interna lagring. Tillåt åtkomst från appen.</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Laddar ner %1$d titlar</string>
 </resources>
