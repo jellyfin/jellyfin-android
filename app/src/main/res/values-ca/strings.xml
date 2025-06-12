@@ -3,7 +3,7 @@
     <string name="dialog_web_view_outdated">WebView desactualitzat</string>
     <string name="dialog_button_check_for_updates">Comprovar si hi ha actualitzacions</string>
     <string name="dialog_button_close_app">Tanca l\'aplicació</string>
-    <string name="dialog_button_open_settings">Obrir configuració</string>
+    <string name="dialog_button_open_settings">Obre la configuració</string>
     <string name="connect_to_server_title">Connexió al servidor</string>
     <string name="host_input_hint">Amfitrió</string>
     <string name="connection_error_cannot_connect">No es pot establir la connexió.\nComproveu el nom de l\'amfitrió i la connexió a la xarxa.</string>
@@ -28,7 +28,7 @@
     <string name="notification_action_play">Reprodueix</string>
     <string name="notification_action_pause">Atura</string>
     <string name="notification_action_fast_forward">Avança</string>
-    <string name="player_error_network_failure">No es pot carregar la informació multimèdia del servidor</string>
+    <string name="player_error_network_failure">No s\'ha pogut carregar la informació multimèdia del servidor</string>
     <string name="player_error_unspecific_exception">S\'ha produït un error amb el reproductor</string>
     <string name="playback_info_stream_unknown_title">Títol desconegut</string>
     <string name="playback_info_and_x_more">... i %d més</string>
@@ -69,8 +69,8 @@
     <string name="music_notification_channel_description">Utilitzat per al control de reproducció de música</string>
     <string name="notification_action_rewind">Rebobina</string>
     <string name="notification_action_next">Següent</string>
-    <string name="notification_action_stop">Aturar</string>
-    <string name="player_error_invalid_play_options">No es pot resoldre la informació de reproducció</string>
+    <string name="notification_action_stop">Finalitza</string>
+    <string name="player_error_invalid_play_options">No s\'ha pogut resoldre la informació de reproducció</string>
     <string name="player_error_unsupported_content">Aquest dispositiu no pot reproduir aquest contingut multimèdia</string>
     <string name="playback_info_play_method">Mètode de reproducció: %s</string>
     <string name="playback_info_transcoding">Transcodificació: %b</string>
@@ -91,7 +91,7 @@
     <string name="video_player_web_description">El reproductor de vídeo HTML predeterminat de la interfície web</string>
     <string name="video_player_native_description">Basat en ExoPlayer, admet més formats i codecs de vídeo i està més integrat en el sistema operatiu</string>
     <string name="video_player_external_description">Aplicacions externes de reproducció de vídeo com MX Player i VLC</string>
-    <string name="pref_exoplayer_remember_brightness">Recordar la brillantor de la pantalla</string>
+    <string name="pref_exoplayer_remember_brightness">Recorda la brillantor de la pantalla</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Permetre la reproducció de vídeos en segon pla només amb àudio</string>
     <string name="pref_exoplayer_direct_play_ass">Permetre subtítols SSA/ASS en reproducció directa</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Evitar la transcodificació i mostrar subtítols amb estil bàsic. L\'estil avançat dels subtítols no estarà disponible si s\'activa aquesta opció.</string>
@@ -111,7 +111,7 @@
     <string name="mobile_data_summary">Els continguts multimèdia només es baixaran mitjançant WiFi i xarxes mòbils.</string>
     <string name="mobile_data_and_roaming_summary">Els continguts multimèdia només es baixaran mitjançant WiFi, i xarxes mòbils i d\'itinerància.</string>
     <string name="pref_exoplayer_allow_press_speed_up">Mantingueu premut per accelerar</string>
-    <string name="confirm_deletion">Confirmar eliminació</string>
+    <string name="confirm_deletion">Confirmeu l\'eliminació</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Manteniu premuda la pantalla per accelerar temporalment la reproducció</string>
     <string name="external_player_mpvkt">Reproductor mpvKt</string>
     <string name="external_player_mpvkt_description">Un reproductor multimèdia basat en mpv-android amb l\'objectiu de proporcionar una interfície d\'usuari més agradable que l\'original.</string>
@@ -124,10 +124,10 @@
     <string name="download_notifications_description">Notificacions de descàrrega</string>
     <string name="failed_thumbnail">No s\'ha pogut descarregar la miniatura</string>
     <string name="failed_information">No s\'ha pogut obtenir la informació multimèdia</string>
-    <string name="failed_network_method_check">Si us plau, comprova els teus mètodes de descàrrega permesos</string>
+    <string name="failed_network_method_check">Comproveu els mètodes permesos de descàrrega</string>
     <string name="yes">Sí</string>
     <string name="store_videos_in_internal_storage">Emmagatzema vídeos a l\'emmagatzematge intern</string>
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
-    <string name="downloading_desc">Descarregant %1$d títols</string>
-    <string name="downloaded">Descarregats %1$s</string>
+    <string name="downloading_desc">S\'estan descarregant %1$d títols</string>
+    <string name="downloaded">S\'ha descarregat %1$s</string>
 </resources>
