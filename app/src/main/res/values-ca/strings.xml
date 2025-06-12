@@ -53,7 +53,7 @@
 \nInstal·leu una implementació de WebView compatible o canvieu a un dispositiu compatible.</string>
     <string name="dialog_web_view_outdated_message">La implementació de WebView utilitzada pel teu dispositiu està desactualitzada.\nActualitzeu-la a una versió compatible.</string>
     <string name="dialog_button_ignore">Ignora</string>
-    <string name="toast_reopen_after_change">Si us plau, torneu a obrir l\'aplicació després que es facin canvis</string>
+    <string name="toast_reopen_after_change">Torneu a obrir l\'aplicació després que es facin canvis</string>
     <plurals name="connection_error_prefix">
         <item quantity="one">S\'ha intentat %d opció per a l\'entrada, sense èxit.</item>
         <item quantity="many">S\'han intentat %d opcions per a l\'entrada, sense èxit.</item>
@@ -103,8 +103,8 @@
     <string name="pref_subtitle_style">Personalitzar l\'estil dels subtítols</string>
     <string name="pref_subtitle_style_summary">Podeu canviar l\'estil dels subtítols a la configuració d\'Android</string>
     <string name="pref_download_location">Ubicació de les descàrregues</string>
-    <string name="bluetooth_permission_continue">Continuar</string>
-    <string name="bluetooth_permission_title">Permetre connexió Bluetooth?</string>
+    <string name="bluetooth_permission_continue">Continua</string>
+    <string name="bluetooth_permission_title">Autoritzeu la connexió via Bluetooth?</string>
     <string name="bluetooth_permission_granted">S\'ha concedit el permís Bluetooth</string>
     <string name="bluetooth_permission_message">L\'aplicació necessita accés a Bluetooth per detectar quan els auriculars o altaveus sense fils estan desconnectats. A Android, aquest permís es descriu com a accés a dispositius propers, i adverteix que els dispositius Bluetooth podrien ser utilitzats per a inferir la localització actual. Tot i això, l\'aplicació Jellyfin mai farà servir aquest permís per detectar la seva ubicació.</string>
     <string name="wifi_only_summary">Els continguts multimèdia només es baixaran mitjançant WiFi.</string>
