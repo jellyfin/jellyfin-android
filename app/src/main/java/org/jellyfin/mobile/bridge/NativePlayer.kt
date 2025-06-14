@@ -50,7 +50,7 @@ class NativePlayer(
 
     @JavascriptInterface
     fun seek(ticks: Long) {
-        playerEventChannel.trySend(PlayerEvent.Seek(ticks / Constants.TICKS_PER_MILLISECOND))
+        playerEventChannel.trySend(PlayerEvent.Seek(ticks / Constants.TICKS_PER_MS))
     }
 
     @JavascriptInterface

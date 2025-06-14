@@ -13,4 +13,6 @@
     <dimen name="exo_bottom_controls_margin">8dp</dimen>
     <dimen name="exo_gesture_overlay_width">160dp</dimen>
     <dimen name="exo_gesture_overlay_image_size">72dp</dimen>
+    <dimen name="exo_chapter_marking_width">3dp</dimen>
+    <dimen name="exo_chapter_marking_height">15dp</dimen>
 </resources>
