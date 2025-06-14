@@ -14,7 +14,6 @@ import androidx.media3.exoplayer.scheduler.PlatformScheduler
 import androidx.media3.exoplayer.scheduler.Scheduler
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.utils.Constants
-import org.jellyfin.mobile.utils.extensions.toFileSize
 
 class JellyfinDownloadService : DownloadService(
     Constants.DOWNLOAD_NOTIFICATION_ID,
@@ -78,13 +77,12 @@ class JellyfinDownloadService : DownloadService(
             }
             val notification = when (download.state) {
                 Download.STATE_COMPLETED -> {
-                    NotificationCompat.Builder(context, Constants.DOWNLOAD_NOTIFICATION_CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_notification)
-                        .setContentTitle(
-                            context.getString(R.string.downloaded, Util.fromUtf8Bytes(download.request.data)),
-                        )
-                        .setContentInfo(download.bytesDownloaded.toFileSize())
-                        .build()
+                    notificationHelper.buildDownloadCompletedNotification(
+                        context,
+                        R.drawable.ic_notification,
+                        null,
+                        Util.fromUtf8Bytes(download.request.data),
+                    )
                 }
                 Download.STATE_FAILED -> {
                     notificationHelper.buildDownloadFailedNotification(
