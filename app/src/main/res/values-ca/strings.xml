@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="dialog_web_view_outdated">WebView desactualitzat</string>
-    <string name="dialog_button_check_for_updates">Comprovar si hi ha actualitzacions</string>
+    <string name="dialog_button_check_for_updates">Comprova si hi ha actualitzacions</string>
     <string name="dialog_button_close_app">Tanca l\'aplicació</string>
     <string name="dialog_button_open_settings">Obre la configuració</string>
     <string name="connect_to_server_title">Connexió al servidor</string>
@@ -11,7 +11,7 @@
     <string name="connect_button_text">Connecta</string>
     <string name="available_servers_title">Servidors disponibles</string>
     <string name="network_title">Tipus de xarxes permeses</string>
-    <string name="wifi_only">Només Wi-Fi</string>
+    <string name="wifi_only">Només wifi</string>
     <string name="mobile_data">Dades mòbils</string>
     <string name="mobile_data_and_roaming">Dades mòbils i roaming</string>
     <string name="downloading">S\'està descarregant</string>
@@ -107,9 +107,9 @@
     <string name="bluetooth_permission_title">Autoritzeu la connexió via Bluetooth?</string>
     <string name="bluetooth_permission_granted">S\'ha concedit el permís Bluetooth</string>
     <string name="bluetooth_permission_message">L\'aplicació necessita accés a Bluetooth per detectar quan els auriculars o altaveus sense fils estan desconnectats. A Android, aquest permís es descriu com a accés a dispositius propers, i adverteix que els dispositius Bluetooth podrien ser utilitzats per a inferir la localització actual. Tot i això, l\'aplicació Jellyfin mai farà servir aquest permís per detectar la seva ubicació.</string>
-    <string name="wifi_only_summary">Els continguts multimèdia només es baixaran mitjançant WiFi.</string>
-    <string name="mobile_data_summary">Els continguts multimèdia només es baixaran mitjançant WiFi i xarxes mòbils.</string>
-    <string name="mobile_data_and_roaming_summary">Els continguts multimèdia només es baixaran mitjançant WiFi, i xarxes mòbils i d\'itinerància.</string>
+    <string name="wifi_only_summary">Els continguts multimèdia només es baixaran mitjançant wifi.</string>
+    <string name="mobile_data_summary">Els continguts multimèdia es descarregaran mitjançant wifi i xarxes mòbils.</string>
+    <string name="mobile_data_and_roaming_summary">Els continguts multimèdia es descarregaran mitjançant wifi, xarxes mòbils i d\'itinerància.</string>
     <string name="pref_exoplayer_allow_press_speed_up">Mantingueu premut per accelerar</string>
     <string name="confirm_deletion">Confirmeu l\'eliminació</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Manteniu premuda la pantalla per accelerar temporalment la reproducció</string>
