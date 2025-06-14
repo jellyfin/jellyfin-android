@@ -1,3 +1,3 @@
-Gràcies per utilitzar Jellyfin per a Android! Es recomana sempre usar la versió més recent del servidor Jellyfin.
+Gràcies per utilitzar Jellyfin per a Android! Es recomana que feu servir sempre la versió més recent del servidor Jellyfin.
 
-Per a obtenir més informació, si us plau, consulti el nostre blog a jellyfin.org, o llegeix el registre de canvis complet a GitHub.
+Per a obtenir més informació, consulteu el nostre blog a jellyfin.org, o llegiu el registre complet de canvis a GitHub.
