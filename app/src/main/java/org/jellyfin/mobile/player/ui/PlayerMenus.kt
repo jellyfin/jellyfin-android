@@ -200,17 +200,16 @@ class PlayerMenus(
         chapterMarkingContainer.removeAllViews()
 
         if (chapters.isNullOrEmpty() || runTimeTicks == null || runTimeTicks <= 0) {
-            fragment.setChapterMarkings(mutableListOf())
+            fragment.setChapterMarkings(emptyList())
             return
         }
 
-        val chapterMarkings: MutableList<ChapterMarking> = mutableListOf()
-        chapters.forEach { ch ->
+        val chapterMarkings = chapters.map { ch ->
             val percent = ch.startPositionTicks.toFloat() / runTimeTicks
             val bias = percent.coerceIn(0f, 1f)
             val marking = ChapterMarking(context, bias)
-            chapterMarkingContainer.addView(marking.view)
-            chapterMarkings.add(marking)
+            chapterMarkingContainer.addView(marking.view) //Add view as side effect to avoid another loop
+            marking
         }
         fragment.setChapterMarkings(chapterMarkings)
     }
