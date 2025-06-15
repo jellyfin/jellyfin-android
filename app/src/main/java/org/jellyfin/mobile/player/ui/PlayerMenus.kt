@@ -208,7 +208,7 @@ class PlayerMenus(
             val percent = ch.startPositionTicks.toFloat() / runTimeTicks
             val bias = percent.coerceIn(0f, 1f)
             val marking = ChapterMarking(context, bias)
-            chapterMarkingContainer.addView(marking.view) //Add view as side effect to avoid another loop
+            chapterMarkingContainer.addView(marking.view) // Add view as side effect to avoid another loop
             marking
         }
         fragment.setChapterMarkings(chapterMarkings)
