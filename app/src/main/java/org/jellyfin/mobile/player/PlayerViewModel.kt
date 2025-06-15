@@ -50,7 +50,6 @@ import org.jellyfin.mobile.player.ui.DisplayPreferences
 import org.jellyfin.mobile.player.ui.PlayState
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
-import org.jellyfin.mobile.utils.TickUtils
 import org.jellyfin.mobile.utils.applyDefaultAudioAttributes
 import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
 import org.jellyfin.mobile.utils.extensions.end
@@ -81,12 +80,15 @@ import org.jellyfin.sdk.model.api.PlaybackProgressInfo
 import org.jellyfin.sdk.model.api.PlaybackStartInfo
 import org.jellyfin.sdk.model.api.PlaybackStopInfo
 import org.jellyfin.sdk.model.api.RepeatMode
+import org.jellyfin.sdk.model.extensions.inWholeTicks
+import org.jellyfin.sdk.model.extensions.ticks
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("TooManyFunctions")
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
@@ -117,7 +119,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     val decoderType: LiveData<DecoderType> get() = _decoderType
 
     // Chapter Markings
-    private var chapterMarkings: List<ChapterMarking> = listOf()
+    private var chapterMarkings: List<ChapterMarking> = emptyList()
     private var chapterMarkingUpdateJob: Job? = null
 
     private val _error = MutableLiveData<String>()
@@ -366,7 +368,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
     private fun Player.setWatchedChapterMarkings() {
         val playbackPositionMs = currentPosition
-        val playbackPositionTicks = TickUtils.msToTicks(playbackPositionMs)
+        val playbackPositionTicks = playbackPositionMs.milliseconds.inWholeTicks
 
         val chapters = mediaSourceOrNull?.item?.chapters ?: return
         val currentChapterIdx = getCurrentChapterIdx(chapters, playbackPositionTicks) ?: return
@@ -511,17 +513,18 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     fun previousChapter() {
         val chapters = mediaSourceOrNull?.item?.chapters ?: return
         val currentPosition = playerOrNull?.currentPosition ?: return
-        var ticks = TickUtils.msToTicks(currentPosition)
+        var ticks = currentPosition.milliseconds.inWholeTicks
 
         // Update the ticks to be slightly in the past, to check if we should go back to the beginning of the current
         // chapter or the previous one, if not enough time has elapsed since the start of the current chapter
-        ticks -= TickUtils.msToTicks(Constants.MAX_SKIP_TO_PREV_CHAPTER_MS)
+        ticks -= Constants.MAX_SKIP_TO_PREV_CHAPTER_MS.milliseconds.inWholeTicks
         // If we'd end up with negative ticks then we need to play the previous item
         if (ticks < 0) {
             skipToPrevious()
         } else {
             val previousChapterIdx = getCurrentChapterIdx(chapters, ticks) ?: return
-            val seekToMs = TickUtils.ticksToMs(chapters[previousChapterIdx].startPositionTicks)
+            val seekToTicks = chapters[previousChapterIdx].startPositionTicks
+            val seekToMs = seekToTicks.ticks.inWholeMilliseconds
             playerOrNull?.seekTo(seekToMs)
         }
     }
@@ -529,14 +532,15 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     fun nextChapter() {
         val chapters = mediaSourceOrNull?.item?.chapters ?: return
         val currentPosition = playerOrNull?.currentPosition ?: return
-        val ticks = TickUtils.msToTicks(currentPosition)
+        val ticks = currentPosition.milliseconds.inWholeTicks
         val currentChapterIdx = getCurrentChapterIdx(chapters, ticks) ?: return
         val nextChapterIdx = currentChapterIdx + 1
 
         if (nextChapterIdx > (chapters.size - 1)) {
             skipToNext()
         } else {
-            val seekToMs = TickUtils.ticksToMs(chapters[nextChapterIdx].startPositionTicks)
+            val seekToTicks = chapters[nextChapterIdx].startPositionTicks
+            val seekToMs = seekToTicks.ticks.inWholeMilliseconds
             playerOrNull?.seekTo(seekToMs)
         }
     }
