@@ -33,6 +33,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.BuildConfig
+import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.PLAYER_EVENT_CHANNEL
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.player.interaction.PlayerLifecycleObserver
@@ -43,6 +44,7 @@ import org.jellyfin.mobile.player.mediasegments.MediaSegmentRepository
 import org.jellyfin.mobile.player.queue.QueueManager
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
+import org.jellyfin.mobile.player.ui.ChapterMarking
 import org.jellyfin.mobile.player.ui.DecoderType
 import org.jellyfin.mobile.player.ui.DisplayPreferences
 import org.jellyfin.mobile.player.ui.PlayState
@@ -70,6 +72,7 @@ import org.jellyfin.sdk.api.operations.DisplayPreferencesApi
 import org.jellyfin.sdk.api.operations.HlsSegmentApi
 import org.jellyfin.sdk.api.operations.PlayStateApi
 import org.jellyfin.sdk.api.operations.UserApi
+import org.jellyfin.sdk.model.api.ChapterInfo
 import org.jellyfin.sdk.model.api.MediaSegmentDto
 import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.api.PlaybackOrder
@@ -77,12 +80,15 @@ import org.jellyfin.sdk.model.api.PlaybackProgressInfo
 import org.jellyfin.sdk.model.api.PlaybackStartInfo
 import org.jellyfin.sdk.model.api.PlaybackStopInfo
 import org.jellyfin.sdk.model.api.RepeatMode
+import org.jellyfin.sdk.model.extensions.inWholeTicks
+import org.jellyfin.sdk.model.extensions.ticks
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("TooManyFunctions")
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
@@ -111,6 +117,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     val player: LiveData<ExoPlayer?> get() = _player
     val playerState: LiveData<Int> get() = _playerState
     val decoderType: LiveData<DecoderType> get() = _decoderType
+
+    // Chapter Markings
+    private var chapterMarkings: List<ChapterMarking> = emptyList()
+    private var chapterMarkingUpdateJob: Job? = null
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
@@ -301,6 +311,19 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         progressUpdateJob?.cancel()
     }
 
+    private fun startChapterMarkingUpdates() {
+        chapterMarkingUpdateJob = viewModelScope.launch {
+            while (true) {
+                delay(Constants.CHAPTER_MARKING_UPDATE_DELAY)
+                playerOrNull?.setWatchedChapterMarkings()
+            }
+        }
+    }
+
+    private fun stopChapterMarkingUpdates() {
+        chapterMarkingUpdateJob?.cancel()
+    }
+
     /**
      * Updates the decoder of the [Player]. This will destroy the current player and
      * recreate the player with the selected decoder type
@@ -332,7 +355,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     isPaused = !isPlaying,
                     isMuted = false,
                     canSeek = true,
-                    positionTicks = mediaSource.startTimeMs * Constants.TICKS_PER_MILLISECOND,
+                    positionTicks = mediaSource.startTimeMs * Constants.TICKS_PER_MS,
                     volumeLevel = audioManager.getVolumeLevelPercent(),
                     repeatMode = RepeatMode.REPEAT_NONE,
                     playbackOrder = PlaybackOrder.DEFAULT,
@@ -340,6 +363,19 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             )
         } catch (e: ApiClientException) {
             Timber.e(e, "Failed to report playback start")
+        }
+    }
+
+    private fun Player.setWatchedChapterMarkings() {
+        val playbackPositionMs = currentPosition
+        val playbackPositionTicks = playbackPositionMs.milliseconds.inWholeTicks
+
+        val chapters = mediaSourceOrNull?.item?.chapters ?: return
+        val currentChapterIdx = getCurrentChapterIdx(chapters, playbackPositionTicks) ?: return
+
+        chapterMarkings.forEachIndexed { i, m ->
+            val color = if (i <= currentChapterIdx) R.color.jellyfin_accent else R.color.playback_timebar_unplayed
+            m.setColor(color)
         }
     }
 
@@ -361,7 +397,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         isPaused = !isPlaying,
                         isMuted = false,
                         canSeek = true,
-                        positionTicks = playbackPositionMillis * Constants.TICKS_PER_MILLISECOND,
+                        positionTicks = playbackPositionMillis * Constants.TICKS_PER_MS,
                         volumeLevel = (currentVolume - volumeRange.first) * Constants.PERCENT_MAX / volumeRange.width,
                         repeatMode = RepeatMode.REPEAT_NONE,
                         playbackOrder = PlaybackOrder.DEFAULT,
@@ -379,7 +415,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val hasFinished = player.playbackState == Player.STATE_ENDED
         val lastPositionTicks = when {
             hasFinished -> mediaSource.runTimeTicks
-            else -> player.currentPosition * Constants.TICKS_PER_MILLISECOND
+            else -> player.currentPosition * Constants.TICKS_PER_MS
         }
 
         // viewModelScope may already be cancelled at this point, so we need to fallback
@@ -468,6 +504,45 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
     fun fastForward() {
         playerOrNull?.seekToOffset(displayPreferences.skipForwardLength)
+    }
+
+    private fun getCurrentChapterIdx(chapters: List<ChapterInfo>, ticks: Long): Int? {
+        return chapters.indices.findLast { i -> ticks >= chapters[i].startPositionTicks }
+    }
+
+    fun previousChapter() {
+        val chapters = mediaSourceOrNull?.item?.chapters ?: return
+        val currentPosition = playerOrNull?.currentPosition ?: return
+        var ticks = currentPosition.milliseconds.inWholeTicks
+
+        // Update the ticks to be slightly in the past, to check if we should go back to the beginning of the current
+        // chapter or the previous one, if not enough time has elapsed since the start of the current chapter
+        ticks -= Constants.MAX_SKIP_TO_PREV_CHAPTER_MS.milliseconds.inWholeTicks
+        // If we'd end up with negative ticks then we need to play the previous item
+        if (ticks < 0) {
+            skipToPrevious()
+        } else {
+            val previousChapterIdx = getCurrentChapterIdx(chapters, ticks) ?: return
+            val seekToTicks = chapters[previousChapterIdx].startPositionTicks
+            val seekToMs = seekToTicks.ticks.inWholeMilliseconds
+            playerOrNull?.seekTo(seekToMs)
+        }
+    }
+
+    fun nextChapter() {
+        val chapters = mediaSourceOrNull?.item?.chapters ?: return
+        val currentPosition = playerOrNull?.currentPosition ?: return
+        val ticks = currentPosition.milliseconds.inWholeTicks
+        val currentChapterIdx = getCurrentChapterIdx(chapters, ticks) ?: return
+        val nextChapterIdx = currentChapterIdx + 1
+
+        if (nextChapterIdx > (chapters.size - 1)) {
+            skipToNext()
+        } else {
+            val seekToTicks = chapters[nextChapterIdx].startPositionTicks
+            val seekToMs = seekToTicks.ticks.inWholeMilliseconds
+            playerOrNull?.seekTo(seekToMs)
+        }
     }
 
     fun skipToPrevious() {
@@ -571,8 +646,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         // Setup or stop regular progress updates
         if (playbackState == Player.STATE_READY && playWhenReady) {
             startProgressUpdates()
+            startChapterMarkingUpdates()
         } else {
             stopProgressUpdates()
+            stopChapterMarkingUpdates()
         }
 
         // Update media session
@@ -601,6 +678,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
     }
 
+    override fun onPositionDiscontinuity(oldPosition: Player.PositionInfo, newPosition: Player.PositionInfo, reason: Int) {
+        super.onPositionDiscontinuity(oldPosition, newPosition, reason)
+        playerOrNull?.setWatchedChapterMarkings()
+    }
+
     override fun onPlayerError(error: PlaybackException) {
         if (error.cause is MediaCodecDecoderException && !fallbackPreferExtensionRenderers) {
             Timber.e(error.cause, "Decoder failed, attempting to restart playback with decoder extensions preferred")
@@ -620,5 +702,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         reportPlaybackStop()
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
         releasePlayer()
+    }
+
+    fun setChapterMarkings(markings: List<ChapterMarking>) {
+        chapterMarkings = markings
     }
 }

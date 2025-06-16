@@ -7,9 +7,11 @@ import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.annotation.StringRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.view.size
+import androidx.core.view.updateLayoutParams
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
@@ -17,6 +19,7 @@ import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
+import org.jellyfin.sdk.model.api.ChapterInfo
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -34,8 +37,11 @@ class PlayerMenus(
 
     private val context = playerBinding.root.context
     private val qualityOptionsProvider: QualityOptionsProvider by inject()
+    private val playPauseContainer: View by playerControlsBinding::playPauseContainer
     private val previousButton: View by playerControlsBinding::previousButton
     private val nextButton: View by playerControlsBinding::nextButton
+    private val previousChapterButton: View by playerControlsBinding::previousChapterButton
+    private val nextChapterButton: View by playerControlsBinding::nextChapterButton
     private val lockScreenButton: View by playerControlsBinding::lockScreenButton
     private val audioStreamsButton: View by playerControlsBinding::audioStreamsButton
     private val subtitlesButton: ImageButton by playerControlsBinding::subtitlesButton
@@ -49,6 +55,7 @@ class PlayerMenus(
     private val speedMenu: PopupMenu = createSpeedMenu()
     private val qualityMenu: PopupMenu = createQualityMenu()
     private val decoderMenu: PopupMenu = createDecoderMenu()
+    private val chapterMarkingContainer: ConstraintLayout by playerControlsBinding::chapterMarkingContainer
 
     private var subtitleCount = 0
     private var subtitlesEnabled = false
@@ -59,6 +66,12 @@ class PlayerMenus(
         }
         nextButton.setOnClickListener {
             fragment.onSkipToNext()
+        }
+        previousChapterButton.setOnClickListener {
+            fragment.onPreviousChapter()
+        }
+        nextChapterButton.setOnClickListener {
+            fragment.onNextChapter()
         }
         lockScreenButton.setOnClickListener {
             fragment.playerLockScreenHelper.lockScreen()
@@ -105,6 +118,11 @@ class PlayerMenus(
     fun onQueueItemChanged(mediaSource: JellyfinMediaSource, hasNext: Boolean) {
         // previousButton is always enabled and will rewind if at the start of the queue
         nextButton.isEnabled = hasNext
+
+        val chapters = mediaSource.item?.chapters
+        updateLayoutConstraints(!chapters.isNullOrEmpty())
+        val runTimeTicks = mediaSource.item?.runTimeTicks
+        setChapterMarkings(chapters, runTimeTicks)
 
         val videoStream = mediaSource.selectedVideoStream
 
@@ -162,6 +180,38 @@ class PlayerMenus(
             videoTracksInfo,
             audioTracksInfo,
         ).joinToString("\n\n")
+    }
+
+    private fun updateLayoutConstraints(hasChapters: Boolean) {
+        if (hasChapters) {
+            previousButton.updateLayoutParams<ConstraintLayout.LayoutParams> { endToStart = previousChapterButton.id }
+            nextButton.updateLayoutParams<ConstraintLayout.LayoutParams> { startToEnd = nextChapterButton.id }
+            previousChapterButton.visibility = View.VISIBLE
+            nextChapterButton.visibility = View.VISIBLE
+        } else {
+            previousButton.updateLayoutParams<ConstraintLayout.LayoutParams> { endToStart = playPauseContainer.id }
+            nextButton.updateLayoutParams<ConstraintLayout.LayoutParams> { startToEnd = playPauseContainer.id }
+            previousChapterButton.visibility = View.GONE
+            nextChapterButton.visibility = View.GONE
+        }
+    }
+
+    private fun setChapterMarkings(chapters: List<ChapterInfo>?, runTimeTicks: Long?) {
+        chapterMarkingContainer.removeAllViews()
+
+        if (chapters.isNullOrEmpty() || runTimeTicks == null || runTimeTicks <= 0) {
+            fragment.setChapterMarkings(emptyList())
+            return
+        }
+
+        val chapterMarkings = chapters.map { ch ->
+            val percent = ch.startPositionTicks.toFloat() / runTimeTicks
+            val bias = percent.coerceIn(0f, 1f)
+            val marking = ChapterMarking(context, bias)
+            chapterMarkingContainer.addView(marking.view) // Add view as side effect to avoid another loop
+            marking
+        }
+        fragment.setChapterMarkings(chapterMarkings)
     }
 
     private fun buildMediaStreamsInfo(
