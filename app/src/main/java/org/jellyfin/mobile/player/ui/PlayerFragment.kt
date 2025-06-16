@@ -54,6 +54,7 @@ import org.koin.android.ext.android.inject
 import kotlin.math.max
 import androidx.media3.ui.R as Media3R
 
+@Suppress("TooManyFunctions")
 class PlayerFragment : Fragment(), BackPressInterceptor {
     private val appPreferences: AppPreferences by inject()
     private val viewModel: PlayerViewModel by viewModels()
@@ -283,6 +284,10 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     fun onFastForward() = viewModel.fastForward()
 
+    fun onPreviousChapter() = viewModel.previousChapter()
+
+    fun onNextChapter() = viewModel.nextChapter()
+
     /**
      * @param callback called if track selection was successful and UI needs to be updated
      */
@@ -417,5 +422,9 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             // Reset screen brightness
             window.brightness = BRIGHTNESS_OVERRIDE_NONE
         }
+    }
+
+    fun setChapterMarkings(markings: List<ChapterMarking>) {
+        viewModel.setChapterMarkings(markings)
     }
 }

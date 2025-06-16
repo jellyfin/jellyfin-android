@@ -25,12 +25,12 @@ sealed class JellyfinMediaSource(
     var startTimeTicks: Long? = playbackDetails?.startTimeTicks
         private set
     var startTimeMs: Long
-        get() = (startTimeTicks ?: 0L) / Constants.TICKS_PER_MILLISECOND
+        get() = (startTimeTicks ?: 0L) / Constants.TICKS_PER_MS
         set(value) {
-            startTimeTicks = value * Constants.TICKS_PER_MILLISECOND
+            startTimeTicks = value * Constants.TICKS_PER_MS
         }
     val runTimeTicks: Long = sourceInfo.runTimeTicks ?: 0
-    val runTimeMs: Long = runTimeTicks / Constants.TICKS_PER_MILLISECOND
+    val runTimeMs: Long = runTimeTicks / Constants.TICKS_PER_MS
 
     val mediaStreams: List<MediaStream> = sourceInfo.mediaStreams.orEmpty()
     val audioStreams: List<MediaStream>
