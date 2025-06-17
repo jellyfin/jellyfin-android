@@ -8,7 +8,10 @@ import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.MediaStreamType
 import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
+import org.jellyfin.sdk.model.extensions.inWholeTicks
+import org.jellyfin.sdk.model.extensions.ticks
 import java.util.UUID
+import kotlin.time.Duration.Companion.milliseconds
 
 sealed class JellyfinMediaSource(
     val itemId: UUID,
@@ -25,12 +28,12 @@ sealed class JellyfinMediaSource(
     var startTimeTicks: Long? = playbackDetails?.startTimeTicks
         private set
     var startTimeMs: Long
-        get() = (startTimeTicks ?: 0L) / Constants.TICKS_PER_MS
+        get() = (startTimeTicks ?: 0L).ticks.inWholeMilliseconds
         set(value) {
-            startTimeTicks = value * Constants.TICKS_PER_MS
+            startTimeTicks = value.milliseconds.inWholeTicks
         }
     val runTimeTicks: Long = sourceInfo.runTimeTicks ?: 0
-    val runTimeMs: Long = runTimeTicks / Constants.TICKS_PER_MS
+    val runTimeMs: Long = runTimeTicks.ticks.inWholeTicks
 
     val mediaStreams: List<MediaStream> = sourceInfo.mediaStreams.orEmpty()
     val audioStreams: List<MediaStream>

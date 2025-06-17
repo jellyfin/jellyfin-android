@@ -9,6 +9,7 @@ import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.sdk.model.extensions.ticks
 import org.json.JSONObject
 
 @Suppress("unused")
@@ -50,7 +51,7 @@ class NativePlayer(
 
     @JavascriptInterface
     fun seek(ticks: Long) {
-        playerEventChannel.trySend(PlayerEvent.Seek(ticks / Constants.TICKS_PER_MS))
+        playerEventChannel.trySend(PlayerEvent.Seek(ticks.ticks.inWholeMilliseconds))
     }
 
     @JavascriptInterface

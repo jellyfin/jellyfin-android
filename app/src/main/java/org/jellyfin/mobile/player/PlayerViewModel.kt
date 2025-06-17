@@ -355,7 +355,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     isPaused = !isPlaying,
                     isMuted = false,
                     canSeek = true,
-                    positionTicks = mediaSource.startTimeMs * Constants.TICKS_PER_MS,
+                    positionTicks = mediaSource.startTimeMs.milliseconds.inWholeTicks,
                     volumeLevel = audioManager.getVolumeLevelPercent(),
                     repeatMode = RepeatMode.REPEAT_NONE,
                     playbackOrder = PlaybackOrder.DEFAULT,
@@ -397,7 +397,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         isPaused = !isPlaying,
                         isMuted = false,
                         canSeek = true,
-                        positionTicks = playbackPositionMillis * Constants.TICKS_PER_MS,
+                        positionTicks = playbackPositionMillis.milliseconds.inWholeTicks,
                         volumeLevel = (currentVolume - volumeRange.first) * Constants.PERCENT_MAX / volumeRange.width,
                         repeatMode = RepeatMode.REPEAT_NONE,
                         playbackOrder = PlaybackOrder.DEFAULT,
@@ -415,7 +415,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val hasFinished = player.playbackState == Player.STATE_ENDED
         val lastPositionTicks = when {
             hasFinished -> mediaSource.runTimeTicks
-            else -> player.currentPosition * Constants.TICKS_PER_MS
+            else -> player.currentPosition.milliseconds.inWholeTicks
         }
 
         // viewModelScope may already be cancelled at this point, so we need to fallback

@@ -30,12 +30,14 @@ import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.MediaStreamProtocol
 import org.jellyfin.sdk.model.api.MediaStreamType
 import org.jellyfin.sdk.model.api.PlayMethod
+import org.jellyfin.sdk.model.extensions.inWholeTicks
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
 import java.io.File
 import java.util.UUID
+import kotlin.time.Duration.Companion.milliseconds
 
 class QueueManager(
     private val viewModel: PlayerViewModel,
@@ -179,7 +181,7 @@ class QueueManager(
             itemId = currentMediaSource.itemId,
             mediaSourceId = currentMediaSource.id,
             maxStreamingBitrate = bitrate,
-            startTimeTicks = currentPlayState.position * Constants.TICKS_PER_MS,
+            startTimeTicks = currentPlayState.position.milliseconds.inWholeTicks,
             audioStreamIndex = currentMediaSource.selectedAudioStreamIndex,
             subtitleStreamIndex = currentMediaSource.selectedSubtitleStreamIndex,
             playWhenReady = currentPlayState.playWhenReady,
@@ -388,7 +390,7 @@ class QueueManager(
                 itemId = currentMediaSource.itemId,
                 mediaSourceId = currentMediaSource.id,
                 maxStreamingBitrate = currentMediaSource.maxStreamingBitrate,
-                startTimeTicks = currentPlayState.position * Constants.TICKS_PER_MS,
+                startTimeTicks = currentPlayState.position.milliseconds.inWholeTicks,
                 audioStreamIndex = stream.index,
                 subtitleStreamIndex = currentMediaSource.selectedSubtitleStreamIndex,
                 playWhenReady = currentPlayState.playWhenReady,
@@ -421,7 +423,7 @@ class QueueManager(
                 itemId = mediaSource.itemId,
                 mediaSourceId = mediaSource.id,
                 maxStreamingBitrate = mediaSource.maxStreamingBitrate,
-                startTimeTicks = currentPlayState.position * Constants.TICKS_PER_MS,
+                startTimeTicks = currentPlayState.position.milliseconds.inWholeTicks,
                 audioStreamIndex = mediaSource.selectedAudioStreamIndex,
                 subtitleStreamIndex = stream?.index ?: -1, // -1 disables subtitles, null would select the default subtitle
                 playWhenReady = currentPlayState.playWhenReady,
