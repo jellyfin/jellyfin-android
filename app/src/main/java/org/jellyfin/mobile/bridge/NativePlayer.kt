@@ -8,7 +8,6 @@ import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.settings.VideoPlayerType
-import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.model.extensions.ticks
 import org.json.JSONObject
 
