@@ -49,7 +49,7 @@ jellyfin-androidx-media = "1.6.1+1"
 playservices = "22.1.0"
 
 # Room
-androidx-room = "2.7.1"
+androidx-room = "2.7.2"
 
 # Monitoring
 timber = "5.0.1"
