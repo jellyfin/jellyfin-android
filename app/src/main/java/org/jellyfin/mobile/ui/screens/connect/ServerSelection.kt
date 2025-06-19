@@ -25,6 +25,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
@@ -38,9 +39,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.key.onKeyEvent
@@ -48,6 +47,8 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
@@ -55,10 +56,10 @@ import org.jellyfin.mobile.app.ApiClientController
 import org.jellyfin.mobile.setup.ConnectionHelper
 import org.jellyfin.mobile.ui.state.CheckUrlState
 import org.jellyfin.mobile.ui.state.ServerSelectionMode
+import org.jellyfin.mobile.ui.utils.AppTheme
 import org.jellyfin.mobile.ui.utils.CenterRow
 import org.koin.compose.koinInject
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Suppress("LongMethod")
 @Composable
 fun ServerSelection(
@@ -133,7 +134,7 @@ fun ServerSelection(
         ) { selectionType ->
             when (selectionType) {
                 ServerSelectionMode.ADDRESS -> AddressSelection(
-                    text = hostname,
+                    url = hostname,
                     errorText = when {
                         externalError -> stringResource(R.string.connection_error_cannot_connect)
                         else -> (checkUrlState as? CheckUrlState.Error)?.message
@@ -172,7 +173,7 @@ fun ServerSelection(
 @Stable
 @Composable
 private fun AddressSelection(
-    text: String,
+    url: String,
     errorText: String?,
     loading: Boolean,
     onTextChange: (String) -> Unit,
@@ -181,8 +182,8 @@ private fun AddressSelection(
 ) {
     Column {
         ServerUrlField(
-            text = text,
-            errorText = errorText,
+            url = url,
+            isError = errorText != null,
             onTextChange = onTextChange,
             onSubmit = onSubmit,
         )
@@ -191,7 +192,7 @@ private fun AddressSelection(
             Spacer(modifier = Modifier.height(12.dp))
             StyledTextButton(
                 text = stringResource(R.string.connect_button_text),
-                enabled = text.isNotBlank(),
+                enabled = url.isNotBlank(),
                 onClick = onSubmit,
             )
             StyledTextButton(
@@ -209,13 +210,13 @@ private fun AddressSelection(
 @Stable
 @Composable
 private fun ServerUrlField(
-    text: String,
-    errorText: String?,
+    url: String,
+    isError: Boolean,
     onTextChange: (String) -> Unit,
     onSubmit: () -> Unit,
 ) {
     OutlinedTextField(
-        value = text,
+        value = url,
         onValueChange = onTextChange,
         modifier = Modifier
             .fillMaxWidth()
@@ -232,7 +233,7 @@ private fun ServerUrlField(
         label = {
             Text(text = stringResource(R.string.host_input_hint))
         },
-        isError = errorText != null,
+        isError = isError,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Uri,
             imeAction = ImeAction.Go,
@@ -269,7 +270,7 @@ private fun AnimatedErrorText(
 @Stable
 @Composable
 private fun ServerDiscoveryList(
-    serverSuggestions: SnapshotStateList<ServerSuggestion>,
+    serverSuggestions: List<ServerSuggestion>,
     onGoBack: () -> Unit,
     onSelectServer: (String) -> Unit,
 ) {
@@ -332,4 +333,56 @@ private fun ServerDiscoveryItem(
             Text(text = serverSuggestion.address)
         },
     )
+}
+
+@Preview
+@Composable
+private fun AddressSelectionPreview(
+    @PreviewParameter(AddressSelectionStateProvider::class) state: AddressSelectionPreviewState,
+) {
+    AppTheme {
+        Surface {
+            AddressSelection(
+                url = state.url,
+                errorText = state.errorText,
+                loading = state.loading,
+                onTextChange = {},
+                onDiscoveryClick = {},
+                onSubmit = {},
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun ServerDiscoveryItemPreview(
+    @PreviewParameter(ServerSuggestionPreviewParameterProvider::class) serverSuggestion: ServerSuggestion,
+) {
+    AppTheme {
+        Surface {
+            ServerDiscoveryItem(
+                serverSuggestion = serverSuggestion,
+                onClickServer = {},
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun ServerDiscoveryListPreview(
+    @PreviewParameter(
+        ServerSuggestionListPreviewParameterProvider::class,
+    ) serverSuggestionsList: List<ServerSuggestion>,
+) {
+    AppTheme {
+        Surface {
+            ServerDiscoveryList(
+                serverSuggestions = serverSuggestionsList,
+                onGoBack = { },
+                onSelectServer = { },
+            )
+        }
+    }
 }
