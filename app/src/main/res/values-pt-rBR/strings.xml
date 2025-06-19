@@ -127,4 +127,7 @@
     <string name="downloaded">Baixado %1$s</string>
     <string name="store_videos_in_internal_storage">Guardar vídeos no armazenamento interno</string>
     <string name="stored_videos_in_internal_storage_desc">Vídeos como filmes e shows de TV serão armazenados no armazenamento interno do aplicativo. Autorirzando acesso de dentro do aplicativo.</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Segure para acelerar</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Toque e segure a tela para acelerar a reprodução temporariamente</string>
+    <string name="failed_information">Falha ao recuperar informações da mídia</string>
 </resources>
