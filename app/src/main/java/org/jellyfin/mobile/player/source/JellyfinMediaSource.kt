@@ -8,10 +8,9 @@ import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.MediaStreamType
 import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
-import org.jellyfin.sdk.model.extensions.inWholeTicks
 import org.jellyfin.sdk.model.extensions.ticks
 import java.util.UUID
-import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration
 
 sealed class JellyfinMediaSource(
     val itemId: UUID,
@@ -25,15 +24,8 @@ sealed class JellyfinMediaSource(
 
     abstract val playMethod: PlayMethod
 
-    var startTimeTicks: Long? = playbackDetails?.startTimeTicks
-        private set
-    var startTimeMs: Long
-        get() = (startTimeTicks ?: 0L).ticks.inWholeMilliseconds
-        set(value) {
-            startTimeTicks = value.milliseconds.inWholeTicks
-        }
-    val runTimeTicks: Long = sourceInfo.runTimeTicks ?: 0
-    val runTimeMs: Long = runTimeTicks.ticks.inWholeTicks
+    var startTime: Duration = playbackDetails?.startTime ?: Duration.ZERO
+    val runTime: Duration = sourceInfo.runTimeTicks?.ticks ?: Duration.ZERO
 
     val mediaStreams: List<MediaStream> = sourceInfo.mediaStreams.orEmpty()
     val audioStreams: List<MediaStream>
@@ -106,7 +98,6 @@ sealed class JellyfinMediaSource(
         audioStreams = audio
         subtitleStreams = subtitles
         externalSubtitleStreams = externalSubtitles
-        this.startTimeTicks = startTimeTicks
     }
 
     /**
@@ -163,7 +154,7 @@ sealed class JellyfinMediaSource(
 }
 
 data class PlaybackDetails(
-    val startTimeTicks: Long?,
+    val startTime: Duration?,
     val audioStreamIndex: Int?,
     val subtitleStreamIndex: Int?,
 )

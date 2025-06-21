@@ -3,18 +3,20 @@ package org.jellyfin.mobile.player.interaction
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import org.jellyfin.mobile.utils.extensions.size
+import org.jellyfin.sdk.model.extensions.ticks
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
 import java.util.UUID
+import kotlin.time.Duration
 
 @Parcelize
 data class PlayOptions(
     val ids: List<UUID>,
     val mediaSourceId: String?,
     val startIndex: Int,
-    val startPositionTicks: Long?,
+    val startPosition: Duration?,
     val audioStreamIndex: Int?,
     val subtitleStreamIndex: Int?,
     val playFromDownloads: Boolean?,
@@ -31,7 +33,7 @@ data class PlayOptions(
                 } ?: emptyList(),
                 mediaSourceId = json.optString("mediaSourceId"),
                 startIndex = json.optInt("startIndex"),
-                startPositionTicks = json.optLong("startPositionTicks").takeIf { it > 0 },
+                startPosition = (json.optLong("startPositionTicks").takeIf { it > 0 })?.ticks,
                 audioStreamIndex = json.optString("audioStreamIndex").toIntOrNull(),
                 subtitleStreamIndex = json.optString("subtitleStreamIndex").toIntOrNull(),
                 playFromDownloads = false,

@@ -88,6 +88,7 @@ import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.time.Duration.Companion.ZERO
 import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("TooManyFunctions")
@@ -197,7 +198,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     PlayerEvent.Pause -> mediaSessionCallback.onPause()
                     PlayerEvent.Resume -> mediaSessionCallback.onPlay()
                     PlayerEvent.Stop, PlayerEvent.Destroy -> mediaSessionCallback.onStop()
-                    is PlayerEvent.Seek -> playerOrNull?.seekTo(event.ms)
+                    is PlayerEvent.Seek -> playerOrNull?.seekTo(event.duration.inWholeMilliseconds)
                     is PlayerEvent.SetVolume -> {
                         setVolume(event.volume)
                         playerOrNull?.reportPlaybackState()
@@ -281,8 +282,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
         initialTracksSelected.set(false)
 
-        val startTime = jellyfinMediaSource.startTimeMs
-        if (startTime > 0) player.seekTo(startTime)
+        val startTime = jellyfinMediaSource.startTime
+        if (startTime > ZERO) player.seekTo(startTime.inWholeMilliseconds)
 
         applyMediaSegments(jellyfinMediaSource)
 
@@ -331,7 +332,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     fun updateDecoderType(type: DecoderType) {
         _decoderType.postValue(type)
         analyticsCollector.release()
-        val playedTime = playerOrNull?.currentPosition ?: 0L
+        val playedTime = (playerOrNull?.currentPosition ?: 0L).milliseconds
         // Stop and release the player without ending playback
         playerOrNull?.run {
             removeListener(this@PlayerViewModel)
@@ -339,7 +340,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
         analyticsCollector = buildAnalyticsCollector()
         setupPlayer()
-        queueManager.getCurrentMediaSourceOrNull()?.startTimeMs = playedTime
+        queueManager.getCurrentMediaSourceOrNull()?.startTime = playedTime
         queueManager.tryRestartPlayback()
     }
 
@@ -355,7 +356,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     isPaused = !isPlaying,
                     isMuted = false,
                     canSeek = true,
-                    positionTicks = mediaSource.startTimeMs.milliseconds.inWholeTicks,
+                    positionTicks = mediaSource.startTime.inWholeTicks,
                     volumeLevel = audioManager.getVolumeLevelPercent(),
                     repeatMode = RepeatMode.REPEAT_NONE,
                     playbackOrder = PlaybackOrder.DEFAULT,
@@ -414,7 +415,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val player = playerOrNull ?: return
         val hasFinished = player.playbackState == Player.STATE_ENDED
         val lastPositionTicks = when {
-            hasFinished -> mediaSource.runTimeTicks
+            hasFinished -> mediaSource.runTime.inWholeTicks
             else -> player.currentPosition.milliseconds.inWholeTicks
         }
 
@@ -573,7 +574,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
         val playWhenReady = player.playWhenReady
         player.pause()
-        val position = player.contentPosition
+        val position = player.contentPosition.milliseconds
 
         return PlayState(playWhenReady, position)
     }

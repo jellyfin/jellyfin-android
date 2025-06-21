@@ -33,7 +33,7 @@ fun JellyfinMediaSource.toMediaMetadata(): MediaMetadata = MediaMetadata.Builder
     item?.artists?.joinToString()?.let { artists ->
         putString(MediaMetadata.METADATA_KEY_ARTIST, artists)
     }
-    putLong(MediaMetadata.METADATA_KEY_DURATION, runTimeMs)
+    putLong(MediaMetadata.METADATA_KEY_DURATION, runTime.inWholeMilliseconds)
     val imageUri = ImageProvider.buildItemUri(itemId, ImageType.PRIMARY, item?.imageTags?.get(ImageType.PRIMARY))
     putString(MediaMetadata.METADATA_KEY_ART_URI, imageUri.toString())
 }.build()
