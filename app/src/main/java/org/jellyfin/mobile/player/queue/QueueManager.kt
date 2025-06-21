@@ -21,7 +21,6 @@ import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
-import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.videosApi
 import org.jellyfin.sdk.api.operations.VideosApi
@@ -36,6 +35,7 @@ import org.koin.core.component.get
 import org.koin.core.component.inject
 import java.io.File
 import java.util.UUID
+import kotlin.time.Duration
 
 class QueueManager(
     private val viewModel: PlayerViewModel,
@@ -81,7 +81,7 @@ class QueueManager(
                 itemId = itemId,
                 mediaSourceId = playOptions.mediaSourceId,
                 maxStreamingBitrate = null,
-                startTimeTicks = playOptions.startPositionTicks,
+                startTime = playOptions.startPosition,
                 audioStreamIndex = playOptions.audioStreamIndex,
                 subtitleStreamIndex = playOptions.subtitleStreamIndex,
                 playWhenReady = true,
@@ -93,14 +93,14 @@ class QueueManager(
 
     private suspend fun startDownloadPlayback(
         mediaSourceId: String,
-        startTimeMs: Long? = null,
+        startTime: Duration? = null,
         audioStreamIndex: Int? = null,
         subtitleStreamIndex: Int? = null,
         playWhenReady: Boolean = true,
     ): PlayerException? {
         get<DownloadDao>()
             .get(mediaSourceId)
-            ?.asMediaSource(startTimeMs, audioStreamIndex, subtitleStreamIndex)
+            ?.asMediaSource(startTime, audioStreamIndex, subtitleStreamIndex)
             ?.also { jellyfinMediaSource ->
                 _currentMediaSource.value = jellyfinMediaSource
 
@@ -119,7 +119,7 @@ class QueueManager(
         itemId: UUID,
         mediaSourceId: String?,
         maxStreamingBitrate: Int?,
-        startTimeTicks: Long? = null,
+        startTime: Duration? = null,
         audioStreamIndex: Int? = null,
         subtitleStreamIndex: Int? = null,
         playWhenReady: Boolean = true,
@@ -129,7 +129,7 @@ class QueueManager(
             mediaSourceId = mediaSourceId,
             deviceProfile = deviceProfile,
             maxStreamingBitrate = maxStreamingBitrate,
-            startTimeTicks = startTimeTicks,
+            startTime = startTime,
             audioStreamIndex = audioStreamIndex,
             subtitleStreamIndex = subtitleStreamIndex,
         ).onSuccess { jellyfinMediaSource ->
@@ -179,7 +179,7 @@ class QueueManager(
             itemId = currentMediaSource.itemId,
             mediaSourceId = currentMediaSource.id,
             maxStreamingBitrate = bitrate,
-            startTimeTicks = currentPlayState.position * Constants.TICKS_PER_MS,
+            startTime = currentPlayState.position,
             audioStreamIndex = currentMediaSource.selectedAudioStreamIndex,
             subtitleStreamIndex = currentMediaSource.selectedSubtitleStreamIndex,
             playWhenReady = currentPlayState.playWhenReady,
@@ -332,7 +332,7 @@ class QueueManager(
                 setMimeType(stream.mimeType)
                 setLanguage(stream.language)
             }.build()
-            factory.createMediaSource(mediaItem, source.runTimeMs)
+            factory.createMediaSource(mediaItem, source.runTime.inWholeMilliseconds)
         }.toTypedArray()
     }
 
@@ -363,7 +363,7 @@ class QueueManager(
                 setMimeType(stream.mimeType)
                 setLanguage(stream.language)
             }.build()
-            factory.createMediaSource(mediaItem, source.runTimeMs)
+            factory.createMediaSource(mediaItem, source.runTime.inWholeMilliseconds)
         }.toTypedArray()
     }
 
@@ -379,7 +379,7 @@ class QueueManager(
         when (val currentMediaSource = getCurrentMediaSourceOrNull()) {
             is LocalJellyfinMediaSource -> startDownloadPlayback(
                 mediaSourceId = currentMediaSource.id,
-                startTimeMs = currentPlayState.position,
+                startTime = currentPlayState.position,
                 audioStreamIndex = stream.index,
                 subtitleStreamIndex = currentMediaSource.selectedSubtitleStreamIndex,
                 playWhenReady = currentPlayState.playWhenReady,
@@ -388,7 +388,7 @@ class QueueManager(
                 itemId = currentMediaSource.itemId,
                 mediaSourceId = currentMediaSource.id,
                 maxStreamingBitrate = currentMediaSource.maxStreamingBitrate,
-                startTimeTicks = currentPlayState.position * Constants.TICKS_PER_MS,
+                startTime = currentPlayState.position,
                 audioStreamIndex = stream.index,
                 subtitleStreamIndex = currentMediaSource.selectedSubtitleStreamIndex,
                 playWhenReady = currentPlayState.playWhenReady,
@@ -412,7 +412,7 @@ class QueueManager(
         when (val mediaSource = getCurrentMediaSourceOrNull()) {
             is LocalJellyfinMediaSource -> startDownloadPlayback(
                 mediaSourceId = mediaSource.id,
-                startTimeMs = currentPlayState.position,
+                startTime = currentPlayState.position,
                 audioStreamIndex = mediaSource.selectedAudioStreamIndex,
                 subtitleStreamIndex = stream?.index ?: -1, // -1 disables subtitles, null would select the default subtitle
                 playWhenReady = currentPlayState.playWhenReady,
@@ -421,7 +421,7 @@ class QueueManager(
                 itemId = mediaSource.itemId,
                 mediaSourceId = mediaSource.id,
                 maxStreamingBitrate = mediaSource.maxStreamingBitrate,
-                startTimeTicks = currentPlayState.position * Constants.TICKS_PER_MS,
+                startTime = currentPlayState.position,
                 audioStreamIndex = mediaSource.selectedAudioStreamIndex,
                 subtitleStreamIndex = stream?.index ?: -1, // -1 disables subtitles, null would select the default subtitle
                 playWhenReady = currentPlayState.playWhenReady,
