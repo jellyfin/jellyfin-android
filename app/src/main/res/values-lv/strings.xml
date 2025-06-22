@@ -112,4 +112,24 @@
         <item quantity="one">Mēģināts ievadīt %d kandidātu, bez panākumiem.</item>
         <item quantity="other">Mēģināts ievadīt %d kandidātus, bez panākumiem.</item>
     </plurals>
+    <string name="external_player_mpvkt">mpvKt Atskaņotājs</string>
+    <string name="external_player_mpvkt_description">Mediju atskaņotājs, kurš balstīts uz mpv-android ar mērķi piedāvāt patīkamāku lietotāju saskarni pār oriģinālo.</string>
+    <string name="view_downloads">Skatīt lejupielādes</string>
+    <string name="confirm_deletion">Apstiprināt dzēšanu</string>
+    <string name="confirm_deletion_desc">Vai Jūs vēlaties dzēst %1$s?</string>
+    <string name="no">Nē</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Turēt, lai paātrinātu</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Pieskarties un turēt, lai īslaicīgi paātrinātu atskaņošanu</string>
+    <string name="downloads">Lejupielādes</string>
+    <string name="download_notifications_description">Lejupielāžu paziņojumi</string>
+    <string name="failed_thumbnail">Neizdevās lejupielādēt sīktēlu</string>
+    <string name="failed_information">Neizdevās iegūt mediju informāciju</string>
+    <string name="failed_network_method_check">Lūdzu pārbaudiet Jūsu atļautās lejupielāžu metodes</string>
+    <string name="yes">Jā</string>
+    <string name="thumbnail_desc">Sīktēls</string>
+    <string name="store_videos_in_internal_storage">Turēt video iebūvētajā atmiņā</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloaded">Lejupielādēti %1$s</string>
+    <string name="stored_videos_in_internal_storage_desc">Video kā filmas un TV šovi tiks turēti aplikācijas iebūvētajā atmiņā. Ļaujot piekļuvi no aplikācijas.</string>
+    <string name="downloading_desc">Lejupielādē %1$d medijus</string>
 </resources>
