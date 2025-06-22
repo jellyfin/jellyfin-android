@@ -86,5 +86,17 @@
             android:visibility="gone"
             tools:ignore="KeyboardInaccessibleWidget"
             tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/skip_segment_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Skip"
+            android:layout_marginStart="@dimen/exo_player_controls_display_padding"
+            android:layout_marginEnd="@dimen/exo_player_controls_display_padding"
+            android:layout_marginBottom="96dp"
+            android:layout_gravity="end|bottom"
+            android:visibility="gone"
+            tools:visibility="visible"/>
     </FrameLayout>
 </FrameLayout>
