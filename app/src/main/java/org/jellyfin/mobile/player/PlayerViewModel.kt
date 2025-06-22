@@ -380,7 +380,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
     private suspend fun Player.reportPlaybackState() {
         val mediaSource = mediaSourceOrNull as? RemoteJellyfinMediaSource ?: return
-        val playbackPositionMillis = currentPosition
+        val playbackPosition = currentPosition.milliseconds
         if (playbackState != Player.STATE_ENDED) {
             val stream = AudioManager.STREAM_MUSIC
             val volumeRange = audioManager.getVolumeRange(stream)
@@ -396,7 +396,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         isPaused = !isPlaying,
                         isMuted = false,
                         canSeek = true,
-                        positionTicks = playbackPositionMillis.milliseconds.inWholeTicks,
+                        positionTicks = playbackPosition.inWholeTicks,
                         volumeLevel = (currentVolume - volumeRange.first) * Constants.PERCENT_MAX / volumeRange.width,
                         repeatMode = RepeatMode.REPEAT_NONE,
                         playbackOrder = PlaybackOrder.DEFAULT,
