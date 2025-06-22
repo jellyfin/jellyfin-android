@@ -3,6 +3,7 @@ package org.jellyfin.mobile.player.ui
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -19,6 +20,8 @@ import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
+import org.jellyfin.mobile.player.ui.playermenuhelper.PlayerMenuHelper
+import org.jellyfin.mobile.player.ui.playermenuhelper.SkipMediaSegmentButton
 import org.jellyfin.sdk.model.api.ChapterInfo
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.core.component.KoinComponent
@@ -56,9 +59,14 @@ class PlayerMenus(
     private val qualityMenu: PopupMenu = createQualityMenu()
     private val decoderMenu: PopupMenu = createDecoderMenu()
     private val chapterMarkingContainer: ConstraintLayout by playerControlsBinding::chapterMarkingContainer
+    private val skipSegmentButton: Button by playerBinding::skipSegmentButton
 
     private var subtitleCount = 0
     private var subtitlesEnabled = false
+
+    private val playerMenuHelper: PlayerMenuHelper = PlayerMenuHelper(
+        skipMediaSegmentButton = SkipMediaSegmentButton(skipSegmentButton, fragment::onSkipMediaSegment),
+    )
 
     init {
         previousButton.setOnClickListener {
@@ -113,6 +121,8 @@ class PlayerMenus(
         playbackInfo.setOnClickListener {
             dismissPlaybackInfo()
         }
+
+        fragment.setPlayerMenuHelper(playerMenuHelper)
     }
 
     fun onQueueItemChanged(mediaSource: JellyfinMediaSource, hasNext: Boolean) {
@@ -186,13 +196,13 @@ class PlayerMenus(
         if (hasChapters) {
             previousButton.updateLayoutParams<ConstraintLayout.LayoutParams> { endToStart = previousChapterButton.id }
             nextButton.updateLayoutParams<ConstraintLayout.LayoutParams> { startToEnd = nextChapterButton.id }
-            previousChapterButton.visibility = View.VISIBLE
-            nextChapterButton.visibility = View.VISIBLE
+            previousChapterButton.isVisible = true
+            nextChapterButton.isVisible = true
         } else {
             previousButton.updateLayoutParams<ConstraintLayout.LayoutParams> { endToStart = playPauseContainer.id }
             nextButton.updateLayoutParams<ConstraintLayout.LayoutParams> { startToEnd = playPauseContainer.id }
-            previousChapterButton.visibility = View.GONE
-            nextChapterButton.visibility = View.GONE
+            previousChapterButton.isVisible = false
+            nextChapterButton.isVisible = false
         }
     }
 
@@ -200,7 +210,7 @@ class PlayerMenus(
         chapterMarkingContainer.removeAllViews()
 
         if (chapters.isNullOrEmpty() || runTimeTicks == null || runTimeTicks <= 0) {
-            fragment.setChapterMarkings(emptyList())
+            playerMenuHelper.chapterMarkings.setMarkings(emptyList())
             return
         }
 
@@ -211,7 +221,7 @@ class PlayerMenus(
             chapterMarkingContainer.addView(marking.view) // Add view as side effect to avoid another loop
             marking
         }
-        fragment.setChapterMarkings(chapterMarkings)
+        playerMenuHelper.chapterMarkings.setMarkings(chapterMarkings)
     }
 
     private fun buildMediaStreamsInfo(
