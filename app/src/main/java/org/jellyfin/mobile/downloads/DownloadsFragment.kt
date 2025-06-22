@@ -62,7 +62,7 @@ class DownloadsFragment : Fragment(), KoinComponent {
             ids = listOf(download.mediaSource.itemId),
             mediaSourceId = download.mediaSource.id,
             startIndex = 0,
-            startPositionTicks = null,
+            startPosition = null,
             audioStreamIndex = 1,
             subtitleStreamIndex = -1,
             playFromDownloads = true,

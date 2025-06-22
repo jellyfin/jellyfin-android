@@ -13,6 +13,7 @@ import org.jellyfin.mobile.data.entity.DownloadEntity.Key.ITEM_ID
 import org.jellyfin.mobile.data.entity.DownloadEntity.Key.TABLE_NAME
 import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.utils.extensions.toFileSize
+import kotlin.time.Duration
 
 @Entity(
     tableName = TABLE_NAME,
@@ -31,18 +32,18 @@ data class DownloadEntity(
     /**
      * Converts the [mediaSource] string to a [LocalJellyfinMediaSource] object.
      *
-     * @param startTimeMs The start time in milliseconds. If null, the default start time is used.
+     * @param startTime The start time as a kotlin.time.Duration. If null, the default start time is used.
      * @param audioStreamIndex The index of the audio stream to select. If null, the default audio stream is used.
      * @param subtitleStreamIndex The index of the subtitle stream to select. If -1, subtitles are disabled. If null, the default subtitle stream is used.
      */
     fun asMediaSource(
-        startTimeMs: Long? = null,
+        startTime: Duration? = null,
         audioStreamIndex: Int? = null,
         subtitleStreamIndex: Int? = null,
     ): LocalJellyfinMediaSource = mediaSource
         .also { localJellyfinMediaSource ->
-            startTimeMs
-                ?.let { localJellyfinMediaSource.startTimeMs = it }
+            startTime
+                ?.let { localJellyfinMediaSource.startTime = it }
             audioStreamIndex
                 ?.let { localJellyfinMediaSource.mediaStreams[it] }
                 ?.let(localJellyfinMediaSource::selectAudioStream)

@@ -24,7 +24,7 @@ class LocalJellyfinMediaSource(
         source.item,
         source.sourceInfo,
         source.playSessionId,
-        PlaybackDetails(source.startTimeTicks, source.selectedAudioStreamIndex, source.selectedSubtitleStreamIndex),
+        PlaybackDetails(source.startTime, source.selectedAudioStreamIndex, source.selectedSubtitleStreamIndex),
         downloadFolder,
         downloadUrl,
         downloadSize,

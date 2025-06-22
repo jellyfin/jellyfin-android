@@ -10,9 +10,11 @@ import org.jellyfin.sdk.api.operations.UserLibraryApi
 import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.MediaSourceInfo
 import org.jellyfin.sdk.model.api.PlaybackInfoDto
+import org.jellyfin.sdk.model.extensions.inWholeTicks
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
 import java.util.UUID
+import kotlin.time.Duration
 
 class MediaSourceResolver(private val apiClient: ApiClient) {
     private val mediaInfoApi: MediaInfoApi = apiClient.mediaInfoApi
@@ -24,7 +26,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
         mediaSourceId: String? = null,
         deviceProfile: DeviceProfile? = null,
         maxStreamingBitrate: Int? = null,
-        startTimeTicks: Long? = null,
+        startTime: Duration? = null,
         audioStreamIndex: Int? = null,
         subtitleStreamIndex: Int? = null,
         autoOpenLiveStream: Boolean = true,
@@ -41,7 +43,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
                     mediaSourceId = mediaSourceId ?: itemId.toString().replace("-", ""),
                     deviceProfile = deviceProfile,
                     maxStreamingBitrate = maxStreamingBitrate,
-                    startTimeTicks = startTimeTicks,
+                    startTimeTicks = startTime?.inWholeTicks,
                     audioStreamIndex = audioStreamIndex,
                     subtitleStreamIndex = subtitleStreamIndex,
                     autoOpenLiveStream = autoOpenLiveStream,
@@ -76,7 +78,7 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
                 playSessionId = playSessionId,
                 liveStreamId = mediaSourceInfo.liveStreamId,
                 maxStreamingBitrate = maxStreamingBitrate,
-                playbackDetails = PlaybackDetails(startTimeTicks, audioStreamIndex, subtitleStreamIndex),
+                playbackDetails = PlaybackDetails(startTime, audioStreamIndex, subtitleStreamIndex),
             )
             Result.success(source)
         } catch (e: IllegalArgumentException) {

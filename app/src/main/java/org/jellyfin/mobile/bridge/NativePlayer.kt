@@ -8,8 +8,9 @@ import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.settings.VideoPlayerType
-import org.jellyfin.mobile.utils.Constants
 import org.json.JSONObject
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("unused")
 class NativePlayer(
@@ -49,13 +50,13 @@ class NativePlayer(
     }
 
     @JavascriptInterface
-    fun seek(ticks: Long) {
-        playerEventChannel.trySend(PlayerEvent.Seek(ticks / Constants.TICKS_PER_MS))
+    fun seek(duration: Duration) {
+        playerEventChannel.trySend(PlayerEvent.Seek(duration))
     }
 
     @JavascriptInterface
     fun seekMs(ms: Long) {
-        playerEventChannel.trySend(PlayerEvent.Seek(ms))
+        playerEventChannel.trySend(PlayerEvent.Seek(ms.milliseconds))
     }
 
     @JavascriptInterface

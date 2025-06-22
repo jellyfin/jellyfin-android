@@ -99,7 +99,7 @@ class ExternalPlayer(
                 itemId = itemId,
                 mediaSourceId = playOptions.mediaSourceId,
                 deviceProfile = externalPlayerProfile,
-                startTimeTicks = playOptions.startPositionTicks,
+                startTime = playOptions.startPosition,
                 audioStreamIndex = playOptions.audioStreamIndex,
                 subtitleStreamIndex = playOptions.subtitleStreamIndex,
                 maxStreamingBitrate = Int.MAX_VALUE, // ensure we always direct play
@@ -139,7 +139,7 @@ class ExternalPlayer(
             }
             setDataAndType(url.toUri(), "video/*")
             putExtra("title", source.name)
-            putExtra("position", source.startTimeMs.toInt())
+            putExtra("position", source.startTime.inWholeMilliseconds.toInt())
             putExtra("return_result", true)
             putExtra("secure_uri", true)
 
@@ -168,7 +168,7 @@ class ExternalPlayer(
         playerContract.launch(playerIntent)
         Timber.d(
             "Starting playback [id=${source.itemId}, title=${source.name}, " +
-                "playMethod=${source.playMethod}, startTimeMs=${source.startTimeMs}]",
+                "playMethod=${source.playMethod}, startTime=${source.startTime}]",
         )
     }
 

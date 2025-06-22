@@ -88,6 +88,7 @@ import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("TooManyFunctions")
@@ -197,7 +198,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     PlayerEvent.Pause -> mediaSessionCallback.onPause()
                     PlayerEvent.Resume -> mediaSessionCallback.onPlay()
                     PlayerEvent.Stop, PlayerEvent.Destroy -> mediaSessionCallback.onStop()
-                    is PlayerEvent.Seek -> playerOrNull?.seekTo(event.ms)
+                    is PlayerEvent.Seek -> playerOrNull?.seekTo(event.duration.inWholeMilliseconds)
                     is PlayerEvent.SetVolume -> {
                         setVolume(event.volume)
                         playerOrNull?.reportPlaybackState()
@@ -281,8 +282,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
         initialTracksSelected.set(false)
 
-        val startTime = jellyfinMediaSource.startTimeMs
-        if (startTime > 0) player.seekTo(startTime)
+        val startTime = jellyfinMediaSource.startTime
+        if (startTime > Duration.ZERO) player.seekTo(startTime.inWholeMilliseconds)
 
         applyMediaSegments(jellyfinMediaSource)
 
@@ -331,7 +332,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     fun updateDecoderType(type: DecoderType) {
         _decoderType.postValue(type)
         analyticsCollector.release()
-        val playedTime = playerOrNull?.currentPosition ?: 0L
+        val playedTime = (playerOrNull?.currentPosition ?: 0L).milliseconds
         // Stop and release the player without ending playback
         playerOrNull?.run {
             removeListener(this@PlayerViewModel)
@@ -339,7 +340,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
         analyticsCollector = buildAnalyticsCollector()
         setupPlayer()
-        queueManager.getCurrentMediaSourceOrNull()?.startTimeMs = playedTime
+        queueManager.getCurrentMediaSourceOrNull()?.startTime = playedTime
         queueManager.tryRestartPlayback()
     }
 
@@ -355,7 +356,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     isPaused = !isPlaying,
                     isMuted = false,
                     canSeek = true,
-                    positionTicks = mediaSource.startTimeMs * Constants.TICKS_PER_MS,
+                    positionTicks = mediaSource.startTime.inWholeTicks,
                     volumeLevel = audioManager.getVolumeLevelPercent(),
                     repeatMode = RepeatMode.REPEAT_NONE,
                     playbackOrder = PlaybackOrder.DEFAULT,
@@ -367,21 +368,19 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     private fun Player.setWatchedChapterMarkings() {
-        val playbackPositionMs = currentPosition
-        val playbackPositionTicks = playbackPositionMs.milliseconds.inWholeTicks
-
+        val playbackPosition = currentPosition.milliseconds
         val chapters = mediaSourceOrNull?.item?.chapters ?: return
-        val currentChapterIdx = getCurrentChapterIdx(chapters, playbackPositionTicks) ?: return
+        val startPositions = chapters.map { c -> c.startPositionTicks.ticks }
 
-        chapterMarkings.forEachIndexed { i, m ->
-            val color = if (i <= currentChapterIdx) R.color.jellyfin_accent else R.color.playback_timebar_unplayed
-            m.setColor(color)
+        startPositions.zip(chapterMarkings).forEach { (pos, marking) ->
+            val color = if (playbackPosition >= pos) R.color.jellyfin_accent else R.color.playback_timebar_unplayed
+            marking.setColor(color)
         }
     }
 
     private suspend fun Player.reportPlaybackState() {
         val mediaSource = mediaSourceOrNull as? RemoteJellyfinMediaSource ?: return
-        val playbackPositionMillis = currentPosition
+        val playbackPosition = currentPosition.milliseconds
         if (playbackState != Player.STATE_ENDED) {
             val stream = AudioManager.STREAM_MUSIC
             val volumeRange = audioManager.getVolumeRange(stream)
@@ -397,7 +396,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                         isPaused = !isPlaying,
                         isMuted = false,
                         canSeek = true,
-                        positionTicks = playbackPositionMillis * Constants.TICKS_PER_MS,
+                        positionTicks = playbackPosition.inWholeTicks,
                         volumeLevel = (currentVolume - volumeRange.first) * Constants.PERCENT_MAX / volumeRange.width,
                         repeatMode = RepeatMode.REPEAT_NONE,
                         playbackOrder = PlaybackOrder.DEFAULT,
@@ -414,8 +413,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val player = playerOrNull ?: return
         val hasFinished = player.playbackState == Player.STATE_ENDED
         val lastPositionTicks = when {
-            hasFinished -> mediaSource.runTimeTicks
-            else -> player.currentPosition * Constants.TICKS_PER_MS
+            hasFinished -> mediaSource.runTime.inWholeTicks
+            else -> player.currentPosition.milliseconds.inWholeTicks
         }
 
         // viewModelScope may already be cancelled at this point, so we need to fallback
@@ -506,42 +505,45 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         playerOrNull?.seekToOffset(displayPreferences.skipForwardLength)
     }
 
-    private fun getCurrentChapterIdx(chapters: List<ChapterInfo>, ticks: Long): Int? {
-        return chapters.indices.findLast { i -> ticks >= chapters[i].startPositionTicks }
+    private fun getCurrentChapterStartPosition(chapters: List<ChapterInfo>, playbackPosition: Duration): Duration? {
+        val startPositions = chapters.map { c -> c.startPositionTicks.ticks }
+        return startPositions.findLast { pos -> playbackPosition >= pos }
+    }
+
+    private fun getNextChapterStartPosition(chapters: List<ChapterInfo>, playbackPosition: Duration): Duration? {
+        val startPositions = chapters.map { c -> c.startPositionTicks.ticks }
+        val currentChapterIdx = startPositions.indexOfLast { pos -> playbackPosition >= pos }
+        if (currentChapterIdx == -1) return null
+        val nextChapterIndex = currentChapterIdx + 1
+        return startPositions.getOrElse(nextChapterIndex) { _ -> Duration.INFINITE }
     }
 
     fun previousChapter() {
         val chapters = mediaSourceOrNull?.item?.chapters ?: return
-        val currentPosition = playerOrNull?.currentPosition ?: return
-        var ticks = currentPosition.milliseconds.inWholeTicks
+        val currentPosition = playerOrNull?.currentPosition?.milliseconds ?: return
 
-        // Update the ticks to be slightly in the past, to check if we should go back to the beginning of the current
+        // Update the playback position to be slightly in the past, to check if we should go back to the beginning of the current
         // chapter or the previous one, if not enough time has elapsed since the start of the current chapter
-        ticks -= Constants.MAX_SKIP_TO_PREV_CHAPTER_MS.milliseconds.inWholeTicks
-        // If we'd end up with negative ticks then we need to play the previous item
-        if (ticks < 0) {
+        val skipToPreviousDuration = Constants.MAX_SKIP_TO_PREV_CHAPTER_MS.milliseconds
+        val playbackPosition = currentPosition - skipToPreviousDuration
+        // If we'd end up with a negative position then we need to play the previous item
+        if (playbackPosition < Duration.ZERO) {
             skipToPrevious()
         } else {
-            val previousChapterIdx = getCurrentChapterIdx(chapters, ticks) ?: return
-            val seekToTicks = chapters[previousChapterIdx].startPositionTicks
-            val seekToMs = seekToTicks.ticks.inWholeMilliseconds
-            playerOrNull?.seekTo(seekToMs)
+            val seekToPosition = getCurrentChapterStartPosition(chapters, playbackPosition) ?: return
+            playerOrNull?.seekTo(seekToPosition.inWholeMilliseconds)
         }
     }
 
     fun nextChapter() {
         val chapters = mediaSourceOrNull?.item?.chapters ?: return
-        val currentPosition = playerOrNull?.currentPosition ?: return
-        val ticks = currentPosition.milliseconds.inWholeTicks
-        val currentChapterIdx = getCurrentChapterIdx(chapters, ticks) ?: return
-        val nextChapterIdx = currentChapterIdx + 1
+        val currentPosition = playerOrNull?.currentPosition?.milliseconds ?: return
+        val playbackPosition = getNextChapterStartPosition(chapters, currentPosition) ?: return
 
-        if (nextChapterIdx > (chapters.size - 1)) {
+        if (playbackPosition == Duration.INFINITE) {
             skipToNext()
         } else {
-            val seekToTicks = chapters[nextChapterIdx].startPositionTicks
-            val seekToMs = seekToTicks.ticks.inWholeMilliseconds
-            playerOrNull?.seekTo(seekToMs)
+            playerOrNull?.seekTo(playbackPosition.inWholeMilliseconds)
         }
     }
 
@@ -573,7 +575,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
         val playWhenReady = player.playWhenReady
         player.pause()
-        val position = player.contentPosition
+        val position = player.contentPosition.milliseconds
 
         return PlayState(playWhenReady, position)
     }

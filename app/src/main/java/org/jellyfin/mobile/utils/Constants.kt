@@ -102,7 +102,6 @@ object Constants {
 
     // Video player constants
     const val LANGUAGE_UNDEFINED = "und"
-    const val TICKS_PER_MS = 10000
     const val PLAYER_TIME_UPDATE_RATE = 10000L
     const val CHAPTER_MARKING_UPDATE_DELAY = 1000L
     const val DEFAULT_CONTROLS_TIMEOUT_MS = 2500
