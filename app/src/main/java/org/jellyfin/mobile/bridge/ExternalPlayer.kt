@@ -168,7 +168,7 @@ class ExternalPlayer(
         playerContract.launch(playerIntent)
         Timber.d(
             "Starting playback [id=${source.itemId}, title=${source.name}, " +
-                "playMethod=${source.playMethod}, startTimeMs=${source.startTime.inWholeMilliseconds}]",
+                "playMethod=${source.playMethod}, startTime=${source.startTime}]",
         )
     }
 
