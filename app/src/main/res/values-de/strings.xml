@@ -73,8 +73,7 @@
     <string name="dialog_web_view_outdated_message">Die von deinem Gerät verwendete WebView-Implementierung ist veraltet.
 \nBitte aktualisiere auf eine kompatible Version.</string>
     <string name="dialog_web_view_outdated">WebView veraltet</string>
-    <string name="dialog_web_view_not_supported_message">WebViews werden von diesem Gerät nicht unterstützt.
-\nInstalliere eine kompatible WebView-Implementierung oder wechsel zu einem unterstützten Gerät.</string>
+    <string name="dialog_web_view_not_supported_message">WebViews werden von diesem Gerät nicht unterstützt.\nInstalliere eine kompatible WebView-Implementierung oder wechsle zu einem unterstützten Gerät.</string>
     <string name="dialog_web_view_not_supported">WebView nicht unterstützt</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Hintergrundwiedergabe von Videos zulassen (nur Ton)</string>
     <string name="pref_music_notification_always_dismissible_summary_on">Die Benachrichtigung kann immer verworfen werden, auch während der Medienwiedergabe</string>
