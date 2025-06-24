@@ -102,7 +102,7 @@
     <string name="pref_subtitle_style">Untertitelstil anpassen</string>
     <string name="player_error_unspecific_exception">Beim Abspielen ist ein Fehler aufgetreten</string>
     <string name="menu_item_hardware_decoding">Hardware-Dekodierung</string>
-    <string name="button_use_different_server">Verwende einen anderen Server</string>
+    <string name="button_use_different_server">Einen anderen Server verwenden</string>
     <string name="bluetooth_permission_title">Bluetooth-Zugriff erlauben\?</string>
     <string name="bluetooth_permission_continue">Weiter</string>
     <string name="bluetooth_permission_granted">Bluetooth-Berechtigung wurde erteilt</string>
