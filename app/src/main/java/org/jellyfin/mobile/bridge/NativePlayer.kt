@@ -8,6 +8,7 @@ import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.settings.VideoPlayerType
+import org.jellyfin.sdk.model.extensions.ticks
 import org.json.JSONObject
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -50,8 +51,8 @@ class NativePlayer(
     }
 
     @JavascriptInterface
-    fun seek(duration: Duration) {
-        playerEventChannel.trySend(PlayerEvent.Seek(duration))
+    fun seekTicks(ticks: Long) {
+        playerEventChannel.trySend(PlayerEvent.Seek(ticks.ticks))
     }
 
     @JavascriptInterface

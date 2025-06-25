@@ -66,7 +66,7 @@ export class ExoPlayerPlugin {
     previousTrack() {}
 
     seek(ticks) {
-        this._nativePlayer.seek(ticks);
+        this._nativePlayer.seekTicks(ticks);
     }
 
     currentTime(ms) {
