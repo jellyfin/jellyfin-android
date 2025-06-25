@@ -10,7 +10,6 @@ import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.sdk.model.extensions.ticks
 import org.json.JSONObject
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("unused")
