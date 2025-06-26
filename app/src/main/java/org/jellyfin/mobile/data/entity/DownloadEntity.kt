@@ -32,7 +32,7 @@ data class DownloadEntity(
     /**
      * Converts the [mediaSource] string to a [LocalJellyfinMediaSource] object.
      *
-     * @param startTime The start time as a kotlin.time.Duration. If null, the default start time is used.
+     * @param startTime The start time as a [Duration]. If null, the default start time is used.
      * @param audioStreamIndex The index of the audio stream to select. If null, the default audio stream is used.
      * @param subtitleStreamIndex The index of the subtitle stream to select. If -1, subtitles are disabled. If null, the default subtitle stream is used.
      */
