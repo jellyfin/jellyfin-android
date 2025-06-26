@@ -111,4 +111,24 @@
     <string name="mobile_data_and_roaming_summary">வைஃபை, மொபைல் மற்றும் ரோமிங் நெட்வொர்க்குகள் மூலம் மீடியா பதிவிறக்கப்படும்.</string>
     <string name="wifi_only_summary">மீடியா வைஃபை மூலம் மட்டுமே பதிவிறக்கப்படும்.</string>
     <string name="mobile_data_summary">வைஃபை மற்றும் மொபைல் நெட்வொர்க்குகள் மூலம் மீடியா பதிவிறக்கப்படும்.</string>
+    <string name="pref_exoplayer_allow_press_speed_up">வேகப்படுத்தப் பிடிக்கவும்</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">பிளேபேக்கை தற்காலிகமாக வேகப்படுத்த திரையைத் தொட்டுப் பிடிக்கவும்</string>
+    <string name="failed_thumbnail">சிறுபடத்தைப் பதிவிறக்க முடியவில்லை</string>
+    <string name="stored_videos_in_internal_storage_desc">திரைப்படங்கள் மற்றும் தொலைக்காட்சி நிகழ்ச்சிகள் போன்ற வீடியோக்கள் பயன்பாட்டின் உள் சேமிப்பகத்தில் சேமிக்கப்படும். பயன்பாட்டிலிருந்து அணுகலை அனுமதிக்கிறது.</string>
+    <string name="external_player_mpvkt">mpvKt பிளேயர்</string>
+    <string name="downloads">பதிவிறக்கங்கள்</string>
+    <string name="thumbnail_desc">சிறுபடம்</string>
+    <string name="external_player_mpvkt_description">அசலை விட சிறந்த பயனர் இடைமுகத்தை வழங்குவதை நோக்கமாகக் கொண்ட mpv-android அடிப்படையிலான மீடியா பிளேயர்.</string>
+    <string name="view_downloads">பதிவிறக்கங்களைக் காண்க</string>
+    <string name="download_notifications_description">பதிவிறக்க அறிவிப்புகள்</string>
+    <string name="failed_information">மீடியா தகவலை மீட்டெடுக்க முடியவில்லை</string>
+    <string name="failed_network_method_check">உங்களுக்கு அனுமதிக்கப்பட்ட பதிவிறக்க முறைகளைச் சரிபார்க்கவும்</string>
+    <string name="confirm_deletion">நீக்குதலை உறுதிப்படுத்தவும்</string>
+    <string name="confirm_deletion_desc">%1$s-ஐ நீக்க விரும்புகிறீர்களா?</string>
+    <string name="yes">ஆம்</string>
+    <string name="no">இல்லை</string>
+    <string name="store_videos_in_internal_storage">வீடியோக்களை உள் சேமிப்பகத்தில் சேமிக்கவும்</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">%1$d தலைப்புகளைப் பதிவிறக்குகிறது</string>
+    <string name="downloaded">%1$s பதிவிறக்கப்பட்டது</string>
 </resources>
