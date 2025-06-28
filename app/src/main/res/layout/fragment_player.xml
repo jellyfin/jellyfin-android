@@ -91,7 +91,7 @@
             android:id="@+id/skip_segment_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Skip"
+            android:text="@string/skip_media_segment"
             android:layout_marginStart="@dimen/exo_player_controls_display_padding"
             android:layout_marginEnd="@dimen/exo_player_controls_display_padding"
             android:layout_marginBottom="96dp"
