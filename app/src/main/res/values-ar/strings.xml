@@ -94,8 +94,7 @@
     <string name="dialog_web_view_outdated_message">تطبيق WebView الذي يستخدمه جهازك قديم.
 \nيرجى تحديثه إلى إصدار متوافق.</string>
     <string name="dialog_web_view_outdated">اصدار الWebView قديم</string>
-    <string name="dialog_web_view_not_supported_message">WebViews غير مدعوم على هذا الجهاز.
-\nقم بتثبيت تطبيق WebView متوافق أو قم بتبديل إلى جهاز مدعوم.</string>
+    <string name="dialog_web_view_not_supported_message">WebViews غير مدعومه على هذا الجهاز. \nقم بتثبيت تطبيق WebView متوافق أو قم بتبديل إلى جهاز مدعوم.</string>
     <string name="video_player_integrated">القارئ المدمج</string>
     <string name="playback_info_stream_unknown_title">عنوان غير معروف</string>
     <string name="pref_exoplayer_direct_play_ass_summary">منع تحويل الشفرة وإظهار الترجمات مع النمط الأساسي فقط. لن يكون نمط الترجمة المتقدم متاحًا إذا تم تمكينه.</string>
@@ -108,7 +107,7 @@
     <string name="pref_exoplayer_start_landscape_video_in_landscape">استخدم الوضع العرضي في الشاشة أثناء المقطع عندما تكون الشاشة على وضع الأفقي</string>
     <string name="pref_subtitle_style">تعديل كيفية ظهور الترجمة</string>
     <string name="pref_subtitle_style_summary">بإمكان تغيير إعدادات كيفية ظهور الترجمة في إعدادات الـ Android</string>
-    <string name="bluetooth_permission_title">هل تسمح بتشغيل البلوتوث؟</string>
+    <string name="bluetooth_permission_title">السماح بتشغيل البلوتوث؟</string>
     <string name="bluetooth_permission_continue">تابع</string>
     <string name="bluetooth_permission_granted">تم السماح لتشغيل البلوتوث</string>
     <string name="bluetooth_permission_message">للتنبه عند اقطاع الاتصال بالسماعات، التطبيق يحتاج للسماح بتشغيل البلوتوث. على الأندرويد هذه الخاصية تسمى السماح بالاتصال بالأجهزة القريبة Access to Nearby Devices و يحذر أن أجهزة البلوتوث ممكن أن تستخدم للحصول على معلومات الموقع الحالي. لكن Jellyfin لن يستخدم هذه الخاصية أبدا للحصول على موقعك.</string>
@@ -134,4 +133,5 @@
     <string name="stored_videos_in_internal_storage_desc">سيتم تخزين الفيديوهات مثل الأفلام والمسلسلات في الذاكرة الداخلية للتطبيق، مما يتيح الوصول إليها من داخل التطبيق.</string>
     <string name="downloading_desc">جارٍ تنزيل %1$d عنوانًا</string>
     <string name="downloaded">تم تنزيل %1$s</string>
+    <string name="tv_show_desc">%1$s - س%2$dي%3$d</string>
 </resources>
