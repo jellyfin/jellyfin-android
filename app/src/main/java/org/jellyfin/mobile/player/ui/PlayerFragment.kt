@@ -36,6 +36,7 @@ import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.interaction.PlayOptions
+import org.jellyfin.mobile.player.ui.playermenuhelper.PlayerMenuHelper
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.BackPressInterceptor
 import org.jellyfin.mobile.utils.Constants
@@ -49,6 +50,7 @@ import org.jellyfin.mobile.utils.extensions.getParcelableCompat
 import org.jellyfin.mobile.utils.extensions.isLandscape
 import org.jellyfin.mobile.utils.extensions.keepScreenOn
 import org.jellyfin.mobile.utils.toast
+import org.jellyfin.sdk.model.api.MediaSegmentDto
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.android.ext.android.inject
 import kotlin.math.max
@@ -342,6 +344,10 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         viewModel.skipToNext()
     }
 
+    fun onSkipMediaSegment(mediaSegmentDto: MediaSegmentDto?) {
+        viewModel.skipMediaSegment(mediaSegmentDto)
+    }
+
     fun onPopupDismissed() {
         if (!AndroidVersion.isAtLeastR) {
             updateFullscreenState(resources.configuration)
@@ -424,7 +430,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         }
     }
 
-    fun setChapterMarkings(markings: List<ChapterMarking>) {
-        viewModel.setChapterMarkings(markings)
+    fun setPlayerMenuHelper(menuHelper: PlayerMenuHelper) {
+        viewModel.setPlayerMenuHelper(menuHelper)
     }
 }
