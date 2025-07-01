@@ -66,11 +66,11 @@
     <string name="music_notification_channel">Jellyfin Music Player</string>
     <string name="music_notification_channel_description">Usado para controles de reprodução de música</string>
     <string name="notification_action_previous">Anterior</string>
-    <string name="notification_action_rewind">Retroceder</string>
+    <string name="notification_action_rewind">Rebobinar</string>
     <plurals name="connection_error_prefix">
         <item quantity="one">Tentou %d candidato para entrada, sem sucesso.</item>
         <item quantity="many">Tentou %d candidatos para entrada, sem sucesso.</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="external_player_invalid_player">Nenhum reprodutor externo válido selecionado. Rastreamento de reprodução desativado.</string>
     <string name="pref_music_notification_always_dismissible_summary_on">A notificação pode ser sempre dispensada, mesmo durante a reprodução</string>
