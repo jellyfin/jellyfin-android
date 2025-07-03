@@ -97,6 +97,9 @@
             android:layout_marginBottom="96dp"
             android:layout_gravity="end|bottom"
             android:visibility="gone"
+            android:background="@drawable/skip_media_segment_background"
+            android:textColor="@color/skip_media_segment_text"
+            android:textSize="18sp"
             tools:visibility="visible"/>
     </FrameLayout>
 </FrameLayout>
