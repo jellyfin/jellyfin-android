@@ -688,10 +688,12 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         // Setup or stop regular progress updates
         if (playbackState == Player.STATE_READY && playWhenReady) {
             startProgressUpdates()
-            if(!playerMenuHelper?.chapterMarkings?.markings.isNullOrEmpty())
+            if (!playerMenuHelper?.chapterMarkings?.markings.isNullOrEmpty()) {
                 startChapterMarkingUpdates()
-            if(askToSkipMediaSegments.isNotEmpty())
+            }
+            if (askToSkipMediaSegments.isNotEmpty()) {
                 startSkipMediaSegmentUpdates()
+            }
         } else {
             stopProgressUpdates()
             stopChapterMarkingUpdates()
