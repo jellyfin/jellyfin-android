@@ -86,5 +86,20 @@
             android:visibility="gone"
             tools:ignore="KeyboardInaccessibleWidget"
             tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/skip_segment_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/skip_media_segment"
+            android:layout_marginStart="@dimen/exo_player_controls_display_padding"
+            android:layout_marginEnd="@dimen/exo_player_controls_display_padding"
+            android:layout_marginBottom="96dp"
+            android:layout_gravity="end|bottom"
+            android:visibility="gone"
+            android:background="@drawable/skip_media_segment_background"
+            android:textColor="@color/skip_media_segment_text"
+            android:textSize="18sp"
+            tools:visibility="visible"/>
     </FrameLayout>
 </FrameLayout>

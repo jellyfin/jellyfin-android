@@ -44,10 +44,10 @@ import org.jellyfin.mobile.player.mediasegments.MediaSegmentRepository
 import org.jellyfin.mobile.player.queue.QueueManager
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
-import org.jellyfin.mobile.player.ui.ChapterMarking
 import org.jellyfin.mobile.player.ui.DecoderType
 import org.jellyfin.mobile.player.ui.DisplayPreferences
 import org.jellyfin.mobile.player.ui.PlayState
+import org.jellyfin.mobile.player.ui.playermenuhelper.PlayerMenuHelper
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
 import org.jellyfin.mobile.utils.applyDefaultAudioAttributes
@@ -119,9 +119,11 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     val playerState: LiveData<Int> get() = _playerState
     val decoderType: LiveData<DecoderType> get() = _decoderType
 
-    // Chapter Markings
-    private var chapterMarkings: List<ChapterMarking> = emptyList()
-    private var chapterMarkingUpdateJob: Job? = null
+    // Player Menus
+    private var playerMenuHelper: PlayerMenuHelper? = null
+
+    // Media Segments Ask to Skip
+    private var askToSkipMediaSegments: List<MediaSegmentDto> = emptyList()
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
@@ -133,6 +135,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private var playSpeed = 1f
 
     private var progressUpdateJob: Job? = null
+    private var chapterMarkingUpdateJob: Job? = null
+    private var skipMediaSegmentUpdateJob: Job? = null
 
     /**
      * Returns the current ExoPlayer instance or null
@@ -325,6 +329,19 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         chapterMarkingUpdateJob?.cancel()
     }
 
+    private fun startSkipMediaSegmentUpdates() {
+        skipMediaSegmentUpdateJob = viewModelScope.launch {
+            while (true) {
+                delay(Constants.SKIP_MEDIA_SEGMENT_UPDATE_DELAY)
+                playerOrNull?.updateSkipMediaSegmentButton()
+            }
+        }
+    }
+
+    private fun stopSkipMediaSegmentUpdates() {
+        skipMediaSegmentUpdateJob?.cancel()
+    }
+
     /**
      * Updates the decoder of the [Player]. This will destroy the current player and
      * recreate the player with the selected decoder type
@@ -371,10 +388,24 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val playbackPosition = currentPosition.milliseconds
         val chapters = mediaSourceOrNull?.item?.chapters ?: return
         val startPositions = chapters.map { c -> c.startPositionTicks.ticks }
+        val chapterMarkings = playerMenuHelper?.chapterMarkings?.markings ?: emptyList()
 
         startPositions.zip(chapterMarkings).forEach { (pos, marking) ->
             val color = if (playbackPosition >= pos) R.color.jellyfin_accent else R.color.playback_timebar_unplayed
             marking.setColor(color)
+        }
+    }
+
+    private fun Player.updateSkipMediaSegmentButton() {
+        val mediaSegments = askToSkipMediaSegments
+        if (mediaSegments.isEmpty()) return
+
+        val playbackPosition = currentPosition.milliseconds
+        val currentMediaSegment = mediaSegments.find { seg -> playbackPosition in seg.start..seg.end }
+        if (currentMediaSegment != null) {
+            playerMenuHelper?.skipMediaSegmentButton?.showSkipSegmentButton(currentMediaSegment)
+        } else {
+            playerMenuHelper?.skipMediaSegmentButton?.hideSkipSegmentButton()
         }
     }
 
@@ -454,20 +485,24 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     private fun applyMediaSegments(jellyfinMediaSource: JellyfinMediaSource) {
+        askToSkipMediaSegments = emptyList()
+
         viewModelScope.launch {
             if (jellyfinMediaSource.item != null) {
                 val mediaSegments = mediaSegmentRepository.getSegmentsForItem(jellyfinMediaSource.item)
+                val newAskToSkipMediaSegments = mutableListOf<MediaSegmentDto>()
 
                 for (mediaSegment in mediaSegments) {
                     val action = mediaSegmentRepository.getMediaSegmentAction(mediaSegment)
 
                     when (action) {
                         MediaSegmentAction.SKIP -> addSkipAction(mediaSegment)
+                        MediaSegmentAction.ASK_TO_SKIP -> newAskToSkipMediaSegments.add(mediaSegment)
                         MediaSegmentAction.NOTHING -> Unit
-                        // Unimplemented
-                        MediaSegmentAction.ASK_TO_SKIP -> Unit
                     }
                 }
+
+                askToSkipMediaSegments = newAskToSkipMediaSegments
             }
         }
     }
@@ -488,7 +523,6 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     // Player controls
-
     fun play() {
         playerOrNull?.play()
     }
@@ -570,6 +604,12 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
     }
 
+    fun skipMediaSegment(mediaSegmentDto: MediaSegmentDto?) {
+        val player = playerOrNull ?: return
+        val mediaSegment = mediaSegmentDto ?: return
+        player.seekTo(mediaSegment.end.inWholeMilliseconds + 1)
+    }
+
     fun getStateAndPause(): PlayState? {
         val player = playerOrNull ?: return null
 
@@ -648,10 +688,16 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         // Setup or stop regular progress updates
         if (playbackState == Player.STATE_READY && playWhenReady) {
             startProgressUpdates()
-            startChapterMarkingUpdates()
+            if (!playerMenuHelper?.chapterMarkings?.markings.isNullOrEmpty()) {
+                startChapterMarkingUpdates()
+            }
+            if (askToSkipMediaSegments.isNotEmpty()) {
+                startSkipMediaSegmentUpdates()
+            }
         } else {
             stopProgressUpdates()
             stopChapterMarkingUpdates()
+            stopSkipMediaSegmentUpdates()
         }
 
         // Update media session
@@ -683,6 +729,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     override fun onPositionDiscontinuity(oldPosition: Player.PositionInfo, newPosition: Player.PositionInfo, reason: Int) {
         super.onPositionDiscontinuity(oldPosition, newPosition, reason)
         playerOrNull?.setWatchedChapterMarkings()
+        playerOrNull?.updateSkipMediaSegmentButton()
     }
 
     override fun onPlayerError(error: PlaybackException) {
@@ -706,7 +753,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         releasePlayer()
     }
 
-    fun setChapterMarkings(markings: List<ChapterMarking>) {
-        chapterMarkings = markings
+    fun setPlayerMenuHelper(menuHelper: PlayerMenuHelper) {
+        playerMenuHelper = menuHelper
     }
 }
