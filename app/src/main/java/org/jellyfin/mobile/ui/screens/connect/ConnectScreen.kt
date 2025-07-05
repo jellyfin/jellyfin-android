@@ -2,10 +2,13 @@ package org.jellyfin.mobile.ui.screens.connect
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -16,35 +19,58 @@ import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
+import org.jellyfin.mobile.ui.utils.AppTheme
 import org.jellyfin.mobile.ui.utils.CenterRow
 import org.koin.compose.koinInject
 
 @Composable
-fun ConnectScreen(
-    mainViewModel: MainViewModel,
+fun ConnectScreenRoot(
     showExternalConnectionError: Boolean,
+    mainViewModel: MainViewModel,
     activityEventHandler: ActivityEventHandler = koinInject(),
 ) {
-    Surface(color = MaterialTheme.colors.background) {
+    AppTheme {
+        ConnectScreen(
+            modifier = Modifier.windowInsetsPadding(WindowInsets.safeContent),
+            showExternalConnectionError = showExternalConnectionError,
+            onConnected = { hostname ->
+                mainViewModel.switchServer(hostname)
+            },
+            onOpenDownloads = {
+                activityEventHandler.emit(ActivityEvent.OpenDownloads)
+            },
+        )
+    }
+}
+
+@Composable
+fun ConnectScreen(
+    modifier: Modifier = Modifier,
+    showExternalConnectionError: Boolean,
+    onConnected: suspend (String) -> Unit,
+    onOpenDownloads: () -> Unit,
+) {
+    Surface(
+        modifier = modifier,
+        color = MaterialTheme.colors.background,
+    ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
+                .fillMaxSize(),
         ) {
             LogoHeader()
             ServerSelection(
                 showExternalConnectionError = showExternalConnectionError,
-                onConnected = { hostname ->
-                    mainViewModel.switchServer(hostname)
-                },
+                onConnected = onConnected,
             )
             StyledTextButton(
-                onClick = { activityEventHandler.emit(ActivityEvent.OpenDownloads) },
+                onClick = onOpenDownloads,
                 text = stringResource(R.string.view_downloads),
             )
         }
@@ -82,5 +108,24 @@ fun StyledTextButton(
         colors = ButtonDefaults.buttonColors(),
     ) {
         Text(text = text)
+    }
+}
+
+@Preview
+@Composable
+fun LogoHeaderPreview() {
+    AppTheme {
+        LogoHeader()
+    }
+}
+
+@Preview
+@Composable
+fun StyledTextButtonPreview() {
+    AppTheme {
+        StyledTextButton(
+            text = "Button",
+            onClick = {},
+        )
     }
 }
