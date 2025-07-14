@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="downloading">Atsiunčiama</string>
-    <string name="mobile_data_and_roaming">Mobilius ir Tarptinklinius Tinklus</string>
-    <string name="mobile_data">Mobilius Tinklus</string>
+    <string name="mobile_data_and_roaming">Mobilius ir tarptinklinius tinklus</string>
+    <string name="mobile_data">Mobilius tinklus</string>
     <string name="wifi_only">Tik WiFi</string>
     <string name="network_message">Ar norite leisti duomenų siuntimą per mobilius arba tarptinklinius tinklus? Gali būti taikomi tiekėjo mokesčiai. Šį nustatymą galėsite pakeisti vėliau.</string>
-    <string name="network_title">Leidžiamos Tinklo Rūšys</string>
+    <string name="network_title">Leidžiamos tinklo rūšys</string>
     <string name="battery_optimizations_message">Prašome išjungti baterijos optimizavimą, tam kad medijos atkūrimas veiktų išjungus ekraną.</string>
     <string name="activity_name_settings">Jellyfin Nustatymai</string>
     <string name="external_player_unknown_error">Nežinoma išorinio grotuvo klaida. Atkūrimo sekimas išjungtas.</string>
@@ -21,7 +21,7 @@
     <string name="available_servers_title">Galimi serveriai</string>
     <string name="media_service_car_section_recents">Neseniai leista</string>
     <string name="notification_action_play">Leisti</string>
-    <string name="media_service_item_not_found">Nepavyko rasti failo</string>
+    <string name="media_service_item_not_found">Medijos elemento nepavyko rasti</string>
     <string name="player_error_unsupported_content">Nepalaikomas failo formatas</string>
     <string name="player_error_network_failure">Nepavyko įkelti informacijos iš serverio</string>
     <string name="player_error_invalid_play_options">Klaidinga atkūrimo informacija</string>
@@ -42,7 +42,7 @@
     <string name="media_service_generic_error">Įvyko klaida</string>
     <string name="download_no_storage_permission">Negalima atsisiųsti failų be saugyklos leidimų</string>
     <string name="playback_info_and_x_more">...ir %d daugiau</string>
-    <string name="video_player_web_description">Žiniatinklio vartotojo sąsajos numatytasis HTML vaizdo įrašų grotuvas</string>
+    <string name="video_player_web_description">Žiniatinklio naudotojo sąsajos numatytasis HTML vaizdo įrašų grotuvas</string>
     <string name="video_player_web">Internetinis grotuvas</string>
     <string name="pref_video_player_type_title">Vaizdo grotuvo tipas</string>
     <string name="pref_music_notification_always_dismissible_summary_on">Panešimą galima visada išjungti, net ir paleidus grotuvą</string>
@@ -79,8 +79,8 @@
     <string name="mobile_data_and_roaming_summary">Turinys bus siunčiamas per WiFi, mobilius duomenis ir tarptinkliniu ryšiu.</string>
     <string name="menu_item_software_decoding">Programinis dekodavimas</string>
     <plurals name="connection_error_prefix">
-        <item quantity="one">Bandyta %d netinkami kandidatai įvesčiai.</item>
-        <item quantity="few">Bandyta %d netinkami kandidatai įvesčiai.</item>
+        <item quantity="one">Bandytas %d netinkamas kandidatas įvesčiai.</item>
+        <item quantity="few">Bandyti %d netinkami kandidatai įvesčiai.</item>
         <item quantity="other">Bandyta %d netinkamų kandidatų įvesčiai.</item>
     </plurals>
     <string name="menu_item_hardware_decoding">Aparatūrinis dekodavimas</string>
