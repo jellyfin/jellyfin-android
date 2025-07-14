@@ -75,6 +75,7 @@
     <string name="menu_item_auto">Auto</string>
     <string name="menu_item_hardware_decoding">Hardware Decoding</string>
     <string name="menu_item_software_decoding">Software Decoding</string>
+    <string name="skip_media_segment">Skip</string>
 
     <string name="external_player_invalid_play_method">Invalid play method.</string>
     <string name="external_player_not_supported_yet">Playback tracking not supported in selected external player yet. Contact developers to try to add support for it.</string>
