@@ -131,4 +131,5 @@
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="downloading_desc">Завантаження %1$d файлів</string>
     <string name="downloaded">Завантажено %1$s</string>
+    <string name="skip_media_segment">Пропустити</string>
 </resources>
