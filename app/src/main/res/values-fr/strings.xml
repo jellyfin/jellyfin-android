@@ -132,4 +132,5 @@
     <string name="downloaded">%1$s téléchargé</string>
     <string name="view_downloads">Voir les téléchargements</string>
     <string name="store_videos_in_internal_storage">Enregistrer les vidéos dans le stockage interne</string>
+    <string name="skip_media_segment">Passer</string>
 </resources>
