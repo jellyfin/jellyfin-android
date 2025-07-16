@@ -132,4 +132,5 @@
     <string name="store_videos_in_internal_storage">Ukladať videá do internej pamäte</string>
     <string name="stored_videos_in_internal_storage_desc">Videá, ako sú filmy a seriály, sa budú ukladať do internej pamäte aplikácie. Prístup k nim bude povolený v rámci aplikácie.</string>
     <string name="downloading_desc">Sťahovanie %1$d titulov</string>
+    <string name="skip_media_segment">Preskočiť</string>
 </resources>
