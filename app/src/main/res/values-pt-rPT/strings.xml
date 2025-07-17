@@ -132,4 +132,5 @@
     <string name="confirm_deletion_desc">Queres eliminar %1$s?</string>
     <string name="downloading_desc">A transferir %1$d títulos</string>
     <string name="downloaded">Transferido %1$s</string>
+    <string name="skip_media_segment">Saltar</string>
 </resources>
