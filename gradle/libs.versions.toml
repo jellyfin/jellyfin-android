@@ -1,6 +1,6 @@
 [versions]
 # Plugins
-android-plugin = "8.10.1"
+android-plugin = "8.11.1"
 kotlin = "2.2.0"
 kotlin-ksp = "2.1.21-2.0.2"
 detekt = "1.23.8"
