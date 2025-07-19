@@ -21,7 +21,7 @@ androidx-fragment = "1.8.8"
 androiddesugarlibs = "2.1.5"
 
 # Lifecycle extensions
-androidx-lifecycle = "2.9.1"
+androidx-lifecycle = "2.9.2"
 
 # UI
 androidx-constraintlayout = "2.2.1"
