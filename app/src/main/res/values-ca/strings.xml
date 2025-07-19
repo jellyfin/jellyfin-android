@@ -78,7 +78,7 @@
     <string name="playback_info_audio_streams">Transmissions d\'àudio</string>
     <string name="menu_item_none">Cap</string>
     <string name="menu_item_hardware_decoding">Descodificació de maquinari</string>
-    <string name="external_player_not_supported_yet">El seguiment de la reproducció encara no és compatible amb el reproductor extern seleccionat. Poseu-vos en contacte amb els desenvolupadors per intentar fer-ho compatible.</string>
+    <string name="external_player_not_supported_yet">El seguiment de la reproducció encara no és compatible amb el reproductor extern seleccionat. Poseu-vos en contacte amb els desenvolupadors per a intentar fer-ho compatible.</string>
     <string name="external_player_invalid_player">No s\'ha seleccionat cap reproductor extern vàlid. El seguiment de reproducció està desactivat.</string>
     <string name="external_player_unknown_error">S\'ha produït un error desconegut en el reproductor extern. El seguiment de reproducció està desactivat.</string>
     <string name="pref_category_music_player">Reproductor de música</string>
@@ -106,13 +106,13 @@
     <string name="bluetooth_permission_continue">Continua</string>
     <string name="bluetooth_permission_title">Autoritzeu la connexió via Bluetooth?</string>
     <string name="bluetooth_permission_granted">S\'ha concedit el permís Bluetooth</string>
-    <string name="bluetooth_permission_message">L\'aplicació necessita accés a Bluetooth per detectar quan els auriculars o altaveus sense fils estan desconnectats. A Android, aquest permís es descriu com a accés a dispositius propers, i adverteix que els dispositius Bluetooth podrien ser utilitzats per a inferir la localització actual. Tot i això, l\'aplicació Jellyfin mai farà servir aquest permís per detectar la seva ubicació.</string>
+    <string name="bluetooth_permission_message">L\'aplicació necessita accés a Bluetooth per a detectar quan els auriculars o altaveus sense fils estan desconnectats. A Android, aquest permís es descriu com a accés a dispositius propers, i adverteix que els dispositius Bluetooth podrien ser utilitzats per a inferir la localització actual. Tot i això, l\'aplicació Jellyfin mai farà servir aquest permís per a detectar la seva ubicació.</string>
     <string name="wifi_only_summary">Els continguts multimèdia només es baixaran mitjançant wifi.</string>
     <string name="mobile_data_summary">Els continguts multimèdia es descarregaran mitjançant wifi i xarxes mòbils.</string>
     <string name="mobile_data_and_roaming_summary">Els continguts multimèdia es descarregaran mitjançant wifi, xarxes mòbils i d\'itinerància.</string>
-    <string name="pref_exoplayer_allow_press_speed_up">Mantingueu premut per accelerar</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Mantingueu premut per a accelerar</string>
     <string name="confirm_deletion">Confirmeu l\'eliminació</string>
-    <string name="pref_exoplayer_allow_press_speed_up_summary">Mantingueu premuda la pantalla per accelerar temporalment la reproducció</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Mantingueu premuda la pantalla per a accelerar temporalment la reproducció</string>
     <string name="external_player_mpvkt">Reproductor mpvKt</string>
     <string name="external_player_mpvkt_description">Un reproductor multimèdia basat en mpv-android amb l\'objectiu de proporcionar una interfície d\'usuari més agradable que l\'original.</string>
     <string name="confirm_deletion_desc">Desitgeu eliminar %1$s?</string>
