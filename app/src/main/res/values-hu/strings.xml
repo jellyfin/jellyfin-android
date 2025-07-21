@@ -114,4 +114,10 @@
     <string name="skip_media_segment">Átugrás</string>
     <string name="pref_exoplayer_allow_press_speed_up">Nyomva tartás a gyorsításhoz</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Érintsd meg és tartsd lenyomva a képernyőt hogy ideiglenesen gyorsítsd a lejátszást.</string>
+    <string name="external_player_mpvkt">mpvKt Lejátszó</string>
+    <string name="external_player_mpvkt_description">Egy mpv-android alapú médialejátszó, amely célja, hogy az eredetinél szebb, felhasználóbarátabb kezelőfelületet nyújtson.</string>
+    <string name="view_downloads">Letöltések megtekintése</string>
+    <string name="downloads">Letöltések</string>
+    <string name="download_notifications_description">Letöltési értesítések</string>
+    <string name="failed_thumbnail">Bélyegkép letöltése sikertelen</string>
 </resources>
