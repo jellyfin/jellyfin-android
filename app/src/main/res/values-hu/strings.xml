@@ -129,4 +129,7 @@
     <string name="store_videos_in_internal_storage">Videók tárolása a belső tárhelyen</string>
     <string name="yes">Igen</string>
     <string name="stored_videos_in_internal_storage_desc">A filmek és sorozatok az alkalmazás belső tárhelyén lesznek tárolva, így az appon belül hozzáférhetőek lesznek.</string>
+    <string name="downloading_desc">%1$d letöltés alatt</string>
+    <string name="downloaded">Letöltve: %1$s</string>
+    <string name="tv_show_desc">%1$s - évad%2$depizód%3$d</string>
 </resources>
