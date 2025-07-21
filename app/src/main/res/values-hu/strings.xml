@@ -111,4 +111,7 @@
     <string name="mobile_data_and_roaming_summary">A média WiFi és mobil hálózaton és roamingon keresztül is le lesz letöltve.</string>
     <string name="wifi_only_summary">A média csak WiFi hálózaton keresztül lesz letöltve.</string>
     <string name="mobile_data_summary">A média WiFi és mobil hálózaton keresztül is le lesz letöltve.</string>
+    <string name="skip_media_segment">Átugrás</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Nyomva tartás a gyorsításhoz</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Érintsd meg és tartsd lenyomva a képernyőt hogy ideiglenesen gyorsítsd a lejátszást.</string>
 </resources>
