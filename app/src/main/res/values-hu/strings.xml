@@ -120,4 +120,13 @@
     <string name="downloads">Letöltések</string>
     <string name="download_notifications_description">Letöltési értesítések</string>
     <string name="failed_thumbnail">Bélyegkép letöltése sikertelen</string>
+    <string name="confirm_deletion">Törlés megerősítése</string>
+    <string name="confirm_deletion_desc">Törölni szeretnéd a(z) %1$s?</string>
+    <string name="thumbnail_desc">Bélyegkép</string>
+    <string name="failed_information">Médiaadatok lekérése sikertelen</string>
+    <string name="failed_network_method_check">Kérlek, ellenőrizd a megengedett letöltési módjaidat</string>
+    <string name="no">Nem</string>
+    <string name="store_videos_in_internal_storage">Videók tárolása a belső tárhelyen</string>
+    <string name="yes">Igen</string>
+    <string name="stored_videos_in_internal_storage_desc">A filmek és sorozatok az alkalmazás belső tárhelyén lesznek tárolva, így az appon belül hozzáférhetőek lesznek.</string>
 </resources>
