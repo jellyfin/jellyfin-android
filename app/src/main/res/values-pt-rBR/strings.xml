@@ -130,4 +130,7 @@
     <string name="pref_exoplayer_allow_press_speed_up">Segure para acelerar</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Toque e segure a tela para acelerar a reprodução temporariamente</string>
     <string name="failed_information">Falha ao recuperar informações da mídia</string>
+    <string name="external_player_mpvkt">Reprodutor mpvKt</string>
+    <string name="skip_media_segment">Pular</string>
+    <string name="external_player_mpvkt_description">Um reprodutor de média baseado no mpv-android para oferecer uma interface de usuário mais agradável do que o original.</string>
 </resources>
