@@ -130,4 +130,5 @@
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="downloading_desc">S\'estan descarregant %1$d títols</string>
     <string name="downloaded">S\'ha descarregat %1$s</string>
+    <string name="skip_media_segment">Salta</string>
 </resources>
