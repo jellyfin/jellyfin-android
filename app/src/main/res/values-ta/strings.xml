@@ -131,4 +131,5 @@
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="downloading_desc">%1$d தலைப்புகளைப் பதிவிறக்குகிறது</string>
     <string name="downloaded">%1$s பதிவிறக்கப்பட்டது</string>
+    <string name="skip_media_segment">தவிர்</string>
 </resources>
