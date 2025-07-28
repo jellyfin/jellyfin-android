@@ -204,7 +204,7 @@ class DeviceProfileBuilder(
             // webm
             arrayOf("vp8", "vp9", "av1"),
             // mkv
-            arrayOf("mpeg1video", "mpeg2video", "h263", "mpeg4", "h264", "hevc", "av1", "vp8", "vp9", "av1"),
+            arrayOf("mpeg1video", "mpeg2video", "h263", "mpeg4", "h264", "hevc", "av1", "vp8", "vp9"),
             // mp3
             emptyArray(),
             // ogg
