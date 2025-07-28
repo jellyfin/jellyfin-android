@@ -111,4 +111,5 @@
     <string name="pref_subtitle_style_summary">आप एंड्रॉयड सेटिंग में उपशीर्षक स्टाइल बदल सकते हैं</string>
     <string name="pref_category_downloads">डाउनलोड</string>
     <string name="pref_download_location">डाउनलोड स्थान</string>
+    <string name="skip_media_segment">स्किप</string>
 </resources>
