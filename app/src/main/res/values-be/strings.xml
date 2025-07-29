@@ -114,4 +114,12 @@
     <string name="mobile_data_and_roaming_summary">Мультымедыя будзе спампоўвацца праз Wi-Fi, мабільную сетку і сетку ў роўмінгу.</string>
     <string name="mobile_data_summary">Мультымедыя будзе спампоўвацца праз Wi-Fi і мабільную сетку.</string>
     <string name="skip_media_segment">Прапусціць</string>
+    <string name="downloads">Спампоўкі</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Утрымлівайце, каб паскорыць</string>
+    <string name="external_player_mpvkt">mpvKt прайгравальнік</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Дакраніцеся і ўтрымлівайце экран для часовага паскарэння прайгравання</string>
+    <string name="external_player_mpvkt_description">Медыяплэер на базе mpv-android, мэтай якога з\'яўляецца забеспячэнне больш зручнага карыстальніцкага інтэрфейсу ў параўнанні з арыгіналам.</string>
+    <string name="view_downloads">Праглядзець спампаваныя файлы</string>
+    <string name="failed_thumbnail">Не ўдалося спампаваць мініяцюру</string>
+    <string name="download_notifications_description">Апавяшчэнні пра спампоўкі</string>
 </resources>
