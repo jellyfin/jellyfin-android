@@ -113,4 +113,5 @@
     <string name="wifi_only_summary">Мультымедыя будзе спампоўвацца толькі праз Wi-Fi.</string>
     <string name="mobile_data_and_roaming_summary">Мультымедыя будзе спампоўвацца праз Wi-Fi, мабільную сетку і сетку ў роўмінгу.</string>
     <string name="mobile_data_summary">Мультымедыя будзе спампоўвацца праз Wi-Fi і мабільную сетку.</string>
+    <string name="skip_media_segment">Прапусціць</string>
 </resources>
