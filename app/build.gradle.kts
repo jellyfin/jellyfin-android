@@ -36,7 +36,6 @@ android {
         targetSdk = 34
         versionName = project.getVersionName()
         versionCode = getVersionCode(versionName!!)
-        setProperty("archivesBaseName", "jellyfin-android-v$versionName")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -104,6 +103,8 @@ android {
         schemaDirectory("$projectDir/schemas")
     }
 }
+
+base.archivesName.set("jellyfin-android-v${project.getVersionName()}")
 
 dependencies {
     val proprietaryImplementation by configurations
