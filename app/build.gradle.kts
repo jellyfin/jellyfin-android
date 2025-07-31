@@ -144,8 +144,6 @@ dependencies {
             "unstable-snapshot" -> version { strictly(JellyfinSdk.SNAPSHOT_UNSTABLE) }
         }
     }
-    implementation(libs.okhttp)
-    implementation(libs.okio)
     implementation(libs.bundles.coil)
 
     // Media
