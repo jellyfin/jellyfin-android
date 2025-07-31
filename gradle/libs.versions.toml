@@ -37,8 +37,6 @@ compose-material-icons = "1.7.8"
 
 # Network
 jellyfin-sdk = "1.6.8"
-okhttp = "4.12.0"
-okio = "3.15.0"
 coil = "3.3.0"
 
 # Media
@@ -114,8 +112,6 @@ compose-material-icons-extended = { group = "androidx.compose.material", name = 
 
 # Network
 jellyfin-sdk = { group = "org.jellyfin.sdk", name = "jellyfin-core", version.ref = "jellyfin-sdk" }
-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
 coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 
