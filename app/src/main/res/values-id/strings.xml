@@ -110,4 +110,25 @@
     <string name="mobile_data_summary">Media akan di unduh melewati WiFi dan Jaringan Data Seluler</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Mencegah transkode dan menampilkan subtitle dengan style standar. Style subtitle lanjutan tidak akan tersedia jika diaktifkan</string>
     <string name="mobile_data_and_roaming_summary">Media akan di unduh dengan Wifi, Data Seluler dan Jaringan Roaming</string>
+    <string name="downloads">Semua pengunduhan</string>
+    <string name="failed_network_method_check">Silahkan periksametode pengunduhan yang diijinkan untuk anda</string>
+    <string name="skip_media_segment">Lewati</string>
+    <string name="external_player_mpvkt">Pemutar mpvKt</string>
+    <string name="confirm_deletion">Konfirmasi penghapusan</string>
+    <string name="confirm_deletion_desc">Apakah anda yakin untuk menghapus %1$s?</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Sentuh dan tahan untuk mempercepat pemutaran sementara</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Tahan untuk mempercepat</string>
+    <string name="external_player_mpvkt_description">Pemutar media berbasis mpv-android yang bertujuan untuk menyediakan antarmuka pengguna yang lebih bagus dibandingkan versi aslinya.</string>
+    <string name="view_downloads">Lihat semua pengunduhan</string>
+    <string name="failed_thumbnail">Gagal mengunduh gambar</string>
+    <string name="download_notifications_description">Pemberitahuan pengunduhan</string>
+    <string name="failed_information">Gagal mengambil informasi media</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="thumbnail_desc">Gambar kecil</string>
+    <string name="store_videos_in_internal_storage">Simpan video di penyimpanan internal</string>
+    <string name="stored_videos_in_internal_storage_desc">Video seperti film dan acara TV akan disimpan di penyimpanan internal aplikasi. Akses dapat dilakukan dari aplikasi.</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Pengunduhan %1$d titles</string>
+    <string name="downloaded">Terunduh %1$s</string>
 </resources>
