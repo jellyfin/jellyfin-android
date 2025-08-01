@@ -11,7 +11,7 @@
     <string name="failed_network_method_check">Verifica os métodos de transferência permitidos</string>
     <string name="stored_videos_in_internal_storage_desc">Vídeos, como filmes e séries, serão armazenados na memória interna da aplicação, permitindo o acesso a partir da própria app.</string>
     <string name="failed_information">Falha ao obter informações do conteúdo multimédia</string>
-    <string name="downloading">A transferir</string>
+    <string name="downloading">Baixando</string>
     <string name="no">Não</string>
     <string name="thumbnail_desc">Miniatura</string>
     <string name="tv_show_desc">%1$s - T%2$dE%3$d</string>
@@ -22,4 +22,16 @@
     <string name="yes">Sim</string>
     <string name="downloading_desc">A transferir %1$d títulos</string>
     <string name="downloaded">Transferido %1$s</string>
+    <string name="button_use_different_server">Use um servidor diferente</string>
+    <string name="available_servers_title">Servidores disponíveis</string>
+    <string name="toast_reopen_after_change">Por favor, reabra o aplicativo após as alterações serem feitas</string>
+    <string name="connect_to_server_title">Conecte-se ao servidor</string>
+    <string name="host_input_hint">Host</string>
+    <string name="dialog_button_ignore">Ignorar</string>
+    <string name="connect_button_text">Conectado</string>
+    <string name="connection_error_cannot_connect">A conexão não pode ser estabelecida\nPor favor, verifique o nome do host e a sua configuração de rede</string>
+    <string name="choose_server_button_text">Escolha um servidor</string>
+    <string name="bluetooth_permission_granted">Permissão de Bluetooth concedida</string>
+    <string name="bluetooth_permission_continue">Continuar</string>
+    <string name="bluetooth_permission_title">Permitir acesso ao Bluetooth?</string>
 </resources>
