@@ -34,4 +34,15 @@
     <string name="bluetooth_permission_granted">Permissão de Bluetooth concedida</string>
     <string name="bluetooth_permission_continue">Continuar</string>
     <string name="bluetooth_permission_title">Permitir acesso ao Bluetooth?</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Tentativa com %d candidato para entrada falhou.</item>
+        <item quantity="many">Foram testados %d candidatos para entrada, sem sucesso.</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="connection_error_unsupported_version_or_product">Versão ou produto não suportado</string>
+    <string name="bluetooth_permission_message">Para detectar quando fones de ouvido ou alto-falantes sem fio estão desconectados, o aplicativo requer acesso Bluetooth. No Android, essa permissão é descrita como acesso a dispositivos próximos e avisa que dispositivos Bluetooth podem ser usados para inferir a localização atual. No entanto, o aplicativo Jellyfin nunca usará essa permissão para detectar sua localização.</string>
+    <string name="network_message">Deseja permitir que o download seja executado por dados móveis ou redes de roaming? Podem ser cobradas taxas da sua operadora. Você pode alterar essa opção posteriormente nas configurações.</string>
+    <string name="network_title">Tipos de rede permitidos</string>
+    <string name="battery_optimizations_message">Desative as otimizações de bateria para reprodução de mídia enquanto a tela estiver desligada.</string>
+    <string name="connection_error_unable_to_reach_sever">Não é possível acessar o servidor</string>
 </resources>
