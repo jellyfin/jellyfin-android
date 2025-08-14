@@ -30,9 +30,9 @@ androidx-webkit = "1.14.0"
 modernandroidpreferences = "2.4.0-beta2"
 
 # Compose
-compose = "1.8.3"
-compose-foundation = "1.8.3"
-compose-material = "1.8.3"
+compose = "1.9.0"
+compose-foundation = "1.9.0"
+compose-material = "1.9.0"
 compose-material-icons = "1.7.8"
 
 # Network
