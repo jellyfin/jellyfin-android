@@ -29,11 +29,11 @@ kotlin {
 
 android {
     namespace = "org.jellyfin.mobile"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 36
         versionName = project.getVersionName()
         versionCode = getVersionCode(versionName!!)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
