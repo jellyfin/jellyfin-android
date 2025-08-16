@@ -40,7 +40,6 @@ import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER
 import org.jellyfin.mobile.utils.applyDefault
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.dip
-import org.jellyfin.mobile.utils.enableServiceWorkerWorkaround
 import org.jellyfin.mobile.utils.extensions.getParcelableCompat
 import org.jellyfin.mobile.utils.extensions.replaceFragment
 import org.jellyfin.mobile.utils.fadeIn
@@ -79,10 +78,6 @@ class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClien
         fileChooserCallback?.onReceiveValue(FileChooserParams.parseResult(result.resultCode, result.data))
     }
     private var fileChooserCallback: ValueCallback<Array<Uri>>? = null
-
-    init {
-        enableServiceWorkerWorkaround()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
