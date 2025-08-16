@@ -2,7 +2,6 @@ package org.jellyfin.mobile.downloads
 
 import android.app.Notification
 import android.content.Context
-import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.media3.common.util.NotificationUtil
 import androidx.media3.common.util.Util
@@ -37,7 +36,7 @@ class JellyfinDownloadService : DownloadService(
     }
 
     override fun getScheduler(): Scheduler? {
-        return if (Util.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) PlatformScheduler(this, jobId) else null
+        return PlatformScheduler(this, jobId)
     }
 
     @Suppress("MagicNumber")

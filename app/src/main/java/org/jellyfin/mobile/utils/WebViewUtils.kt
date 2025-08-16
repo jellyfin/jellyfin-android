@@ -29,7 +29,6 @@ import androidx.webkit.ServiceWorkerClientCompat
 import androidx.webkit.ServiceWorkerControllerCompat
 import androidx.webkit.WebViewAssetLoader
 import androidx.webkit.WebViewFeature
-import io.ktor.http.HttpStatusCode
 import timber.log.Timber
 import java.util.Locale
 
@@ -88,7 +87,7 @@ fun enableServiceWorkerWorkaround() {
             return when {
                 path.endsWith(Constants.SERVICE_WORKER_PATH) -> {
                     WebResourceResponse("application/javascript", "utf-8", null).apply {
-                        with(HttpStatusCode.NotFound) { setStatusCodeAndReasonPhrase(value, description) }
+                        setStatusCodeAndReasonPhrase(404, "Not Found")
                     }
                 }
                 else -> null
