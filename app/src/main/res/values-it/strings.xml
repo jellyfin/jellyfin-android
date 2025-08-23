@@ -112,4 +112,23 @@
     <string name="wifi_only_summary">I contenuti saranno scaricati solo tramite WiFi.</string>
     <string name="mobile_data_summary">I contenuti saranno scaricati tramite WiFi e rete mobile.</string>
     <string name="mobile_data_and_roaming_summary">I contenuti saranno scaricati tramite WiFi e rete mobile compreso roaming.</string>
+    <string name="skip_media_segment">Salta</string>
+    <string name="external_player_mpvkt_description">Un media player basato su mpv-android che mira a dare all\'utente un\'interfaccia migliore dell\'originale.</string>
+    <string name="failed_information">Fallito scaricamento delle informazioni sui media</string>
+    <string name="external_player_mpvkt">mpvKt Player</string>
+    <string name="view_downloads">Visualizza i download</string>
+    <string name="failed_thumbnail">Scaricamento del thumbnail fallito</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Tieni premuto per velocizzare</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Tocca e tieni premuto lo schermo per velocizzare temporaneamente la riproduzione</string>
+    <string name="downloads">Downloads</string>
+    <string name="download_notifications_description">Notifiche di download</string>
+    <string name="confirm_deletion">Conferma l\'eliminazione</string>
+    <string name="failed_network_method_check">Verifica i tuoi metodi di download permessi</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="store_videos_in_internal_storage">Salva i video nella memoria interna</string>
+    <string name="thumbnail_desc">Miniatura</string>
+    <string name="stored_videos_in_internal_storage_desc">Video come i film e serie TV saranno salvati nello memoria interna dell\'applicazione. Permetti accesso da dentro l\'applicazione.</string>
+    <string name="downloading_desc">Scaricando%1$d titoli</string>
+    <string name="downloaded">Scaricato %1$s</string>
 </resources>
