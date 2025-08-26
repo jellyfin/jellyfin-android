@@ -110,4 +110,25 @@
     <string name="pref_exoplayer_direct_play_ass">直接再生時にSSA/ASS字幕を許可する</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">ランドスケープモードの動画を横向きで再生する</string>
     <string name="bluetooth_permission_continue">続く</string>
+    <string name="skip_media_segment">スキップ</string>
+    <string name="view_downloads">ダウンロードをみる</string>
+    <string name="confirm_deletion_desc">%1$sを削除していいですか?</string>
+    <string name="thumbnail_desc">サムネール</string>
+    <string name="store_videos_in_internal_storage">内部ストレージに動画を保存</string>
+    <string name="external_player_mpvkt">mpvKtプレーヤー</string>
+    <string name="confirm_deletion">削除していいですか</string>
+    <string name="no">いいえ</string>
+    <string name="yes">はい</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">一時的に早めるにはスクリーンに触れて押してください</string>
+    <string name="failed_network_method_check">許可されたダウンロード方法をチェックしてください</string>
+    <string name="stored_videos_in_internal_storage_desc">映画やTV番組はアプリの内部ストレージに保存されます。アプリからのアクセスを許可してください。</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="pref_exoplayer_allow_press_speed_up">押して高速化</string>
+    <string name="external_player_mpvkt_description">オリジナルより良いユーザーインターフェースで補完する、mpv-androidをベースにしたメディアプレーヤー。</string>
+    <string name="downloads">ダウンロード</string>
+    <string name="download_notifications_description">ダウンロード通知</string>
+    <string name="failed_information">メディア情報取得失敗</string>
+    <string name="failed_thumbnail">サムネールダウンロード失敗</string>
+    <string name="downloading_desc">%1$d をダウンロード中</string>
+    <string name="downloaded">%1$sをダウンロード済み</string>
 </resources>
