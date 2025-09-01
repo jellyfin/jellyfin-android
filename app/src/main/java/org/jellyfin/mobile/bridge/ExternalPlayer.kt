@@ -228,14 +228,19 @@ class ExternalPlayer(
                     "user" -> {
                         val position = data.getIntExtra("position", -1)
                         val duration = data.getIntExtra("duration", -1)
-                        if (position > 0) {
-                            Timber.d("Playback stopped [player=$player, position=$position, duration=$duration]")
-                            notifyEvent(Constants.EVENT_TIME_UPDATE, "$position")
-                            notifyEvent(Constants.EVENT_ENDED)
-                        } else {
-                            Timber.d("Playback canceled [player=$player, position=$position, duration=$duration]")
-                            notifyEvent(Constants.EVENT_CANCELED)
-                            if (position < 0) {
+                        when {
+                            position > 0 -> {
+                                Timber.d("Playback stopped [player=$player, position=$position, duration=$duration]")
+                                notifyEvent(Constants.EVENT_TIME_UPDATE, "$position")
+                                notifyEvent(Constants.EVENT_ENDED)
+                            }
+                            position == 0 -> {
+                                Timber.d("Playback canceled [player=$player, position=$position, duration=$duration]")
+                                notifyEvent(Constants.EVENT_CANCELED)
+                            }
+                            else -> {
+                                Timber.d("Invalid state [player=$player, position=$position, duration=$duration]")
+                                notifyEvent(Constants.EVENT_CANCELED)
                                 context.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
                             }
                         }
@@ -271,18 +276,20 @@ class ExternalPlayer(
             Activity.RESULT_OK -> {
                 val extraPosition = data.getLongExtra("extra_position", -1L)
                 val extraDuration = data.getLongExtra("extra_duration", -1L)
-                if (extraDuration == extraPosition) {
-                    Timber.d("Playback completed [player=$player]")
-                    notifyEvent(Constants.EVENT_TIME_UPDATE)
-                    notifyEvent(Constants.EVENT_ENDED)
-                } else {
-                    if (extraPosition > 0L) {
+                when {
+                    extraDuration == extraPosition -> {
+                        Timber.d("Playback completed [player=$player]")
+                        notifyEvent(Constants.EVENT_TIME_UPDATE)
+                        notifyEvent(Constants.EVENT_ENDED)
+                    }
+                    extraPosition > 0L -> {
                         Timber.d(
                             "Playback stopped [player=$player, extraPosition=$extraPosition, extraDuration=$extraDuration]",
                         )
                         notifyEvent(Constants.EVENT_TIME_UPDATE, "$extraPosition")
                         notifyEvent(Constants.EVENT_ENDED)
-                    } else {
+                    }
+                    else -> {
                         Timber.d(
                             "Playback canceled [player=$player, extraPosition=$extraPosition, extraDuration=$extraDuration]",
                         )
