@@ -183,15 +183,22 @@ class ExternalPlayer(
         val player = "MPV Player"
         when (resultCode) {
             Activity.RESULT_OK -> {
-                val position = data.getIntExtra("position", 0)
-                if (position > 0) {
-                    Timber.d("Playback stopped [player=$player, position=$position]")
-                    notifyEvent(Constants.EVENT_TIME_UPDATE, "$position")
-                    notifyEvent(Constants.EVENT_ENDED)
-                } else {
-                    Timber.d("Playback completed [player=$player]")
-                    notifyEvent(Constants.EVENT_TIME_UPDATE)
-                    notifyEvent(Constants.EVENT_ENDED)
+                val position = data.getIntExtra("position", -1)
+                when {
+                    position > 0 -> {
+                        Timber.d("Playback stopped [player=$player, position=$position]")
+                        notifyEvent(Constants.EVENT_TIME_UPDATE, "$position")
+                        notifyEvent(Constants.EVENT_ENDED)
+                    }
+                    position == 0 -> {
+                        Timber.d("Playback canceled [player=$player]")
+                        notifyEvent(Constants.EVENT_CANCELED)
+                    }
+                    else -> {
+                        Timber.d("Playback completed [player=$player]")
+                        notifyEvent(Constants.EVENT_TIME_UPDATE)
+                        notifyEvent(Constants.EVENT_ENDED)
+                    }
                 }
             }
             Activity.RESULT_CANCELED -> {
@@ -219,16 +226,18 @@ class ExternalPlayer(
                         notifyEvent(Constants.EVENT_ENDED)
                     }
                     "user" -> {
-                        val position = data.getIntExtra("position", 0)
-                        val duration = data.getIntExtra("duration", 0)
+                        val position = data.getIntExtra("position", -1)
+                        val duration = data.getIntExtra("duration", -1)
                         if (position > 0) {
                             Timber.d("Playback stopped [player=$player, position=$position, duration=$duration]")
                             notifyEvent(Constants.EVENT_TIME_UPDATE, "$position")
                             notifyEvent(Constants.EVENT_ENDED)
                         } else {
-                            Timber.d("Invalid state [player=$player, position=$position, duration=$duration]")
+                            Timber.d("Playback canceled [player=$player, position=$position, duration=$duration]")
                             notifyEvent(Constants.EVENT_CANCELED)
-                            context.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
+                            if (position < 0) {
+                                context.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
+                            }
                         }
                     }
                     else -> {
@@ -260,25 +269,27 @@ class ExternalPlayer(
         val player = "VLC Player"
         when (resultCode) {
             Activity.RESULT_OK -> {
-                val extraPosition = data.getLongExtra("extra_position", 0L)
-                val extraDuration = data.getLongExtra("extra_duration", 0L)
-                if (extraPosition > 0L) {
-                    Timber.d(
-                        "Playback stopped [player=$player, extraPosition=$extraPosition, extraDuration=$extraDuration]",
-                    )
-                    notifyEvent(Constants.EVENT_TIME_UPDATE, "$extraPosition")
+                val extraPosition = data.getLongExtra("extra_position", -1L)
+                val extraDuration = data.getLongExtra("extra_duration", -1L)
+                if (extraDuration == extraPosition) {
+                    Timber.d("Playback completed [player=$player]")
+                    notifyEvent(Constants.EVENT_TIME_UPDATE)
                     notifyEvent(Constants.EVENT_ENDED)
                 } else {
-                    if (extraDuration == 0L && extraPosition == 0L) {
-                        Timber.d("Playback completed [player=$player]")
-                        notifyEvent(Constants.EVENT_TIME_UPDATE)
+                    if (extraPosition > 0L) {
+                        Timber.d(
+                            "Playback stopped [player=$player, extraPosition=$extraPosition, extraDuration=$extraDuration]",
+                        )
+                        notifyEvent(Constants.EVENT_TIME_UPDATE, "$extraPosition")
                         notifyEvent(Constants.EVENT_ENDED)
                     } else {
                         Timber.d(
-                            "Invalid state [player=$player, extraPosition=$extraPosition, extraDuration=$extraDuration]",
+                            "Playback canceled [player=$player, extraPosition=$extraPosition, extraDuration=$extraDuration]",
                         )
                         notifyEvent(Constants.EVENT_CANCELED)
-                        context.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
+                        if (extraPosition == -1L) {
+                            context.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
+                        }
                     }
                 }
             }
@@ -294,15 +305,22 @@ class ExternalPlayer(
         val player = "mpvKt Player"
         when (resultCode) {
             Activity.RESULT_OK -> {
-                val position = data.getIntExtra("position", 0)
-                if (position > 0) {
-                    Timber.d("Playback stopped [player=$player, position=$position]")
-                    notifyEvent(Constants.EVENT_TIME_UPDATE, "$position")
-                    notifyEvent(Constants.EVENT_ENDED)
-                } else {
-                    Timber.d("Playback completed [player=$player]")
-                    notifyEvent(Constants.EVENT_TIME_UPDATE)
-                    notifyEvent(Constants.EVENT_ENDED)
+                val position = data.getIntExtra("position", -1)
+                when {
+                    position > 0 -> {
+                        Timber.d("Playback stopped [player=$player, position=$position]")
+                        notifyEvent(Constants.EVENT_TIME_UPDATE, "$position")
+                        notifyEvent(Constants.EVENT_ENDED)
+                    }
+                    position == 0 -> {
+                        Timber.d("Playback canceled [player=$player]")
+                        notifyEvent(Constants.EVENT_CANCELED)
+                    }
+                    else -> {
+                        Timber.d("Playback completed [player=$player]")
+                        notifyEvent(Constants.EVENT_TIME_UPDATE)
+                        notifyEvent(Constants.EVENT_ENDED)
+                    }
                 }
             }
             else -> {
