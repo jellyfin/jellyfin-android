@@ -55,7 +55,7 @@ leakcanary = "2.14"
 
 # Testing
 junit = "5.13.4"
-kotest = "5.9.1"
+kotest = "6.0.3"
 mockk = "1.14.5"
 androidx-test-runner = "1.7.0"
 androidx-test-espresso = "3.7.0"
