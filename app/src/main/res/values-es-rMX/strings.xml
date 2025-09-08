@@ -112,4 +112,5 @@
     <string name="wifi_only_summary">Los medios se descargarán solamente a través de WiFi.</string>
     <string name="mobile_data_summary">Los medios se descargarán a través de WiFi y redes móviles.</string>
     <string name="mobile_data_and_roaming_summary">Los medios se descargarán a través de redes WiFi, móviles y de itineracia.</string>
+    <string name="skip_media_segment">Saltar</string>
 </resources>
