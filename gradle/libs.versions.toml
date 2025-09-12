@@ -74,6 +74,7 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 # KotlinX
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutines-guava = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-guava", version.ref = "coroutines" }
 kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization-json" }
 
 # Core
@@ -152,7 +153,7 @@ androidx-test-espresso = { group = "androidx.test.espresso", name = "espresso-co
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 
 [bundles]
-coroutines = ["coroutines-core", "coroutines-android"]
+coroutines = ["coroutines-core", "coroutines-android", "coroutines-guava"]
 koin = ["koin", "koin-compose"]
 coil = ["coil", "coil-network", "coil-compose"]
 androidx-lifecycle = [
