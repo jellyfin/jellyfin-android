@@ -131,4 +131,5 @@
     <string name="confirm_deletion_desc">Vil du slette %1$s?</string>
     <string name="no">Nej</string>
     <string name="downloading_desc">Downloader %1$d titler</string>
+    <string name="skip_media_segment">Spring over</string>
 </resources>
