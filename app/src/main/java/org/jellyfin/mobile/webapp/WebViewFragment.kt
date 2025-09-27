@@ -23,8 +23,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.webkit.WebViewAssetLoader.AssetsPathHandler
 import androidx.webkit.WebViewCompat
 import kotlinx.coroutines.launch
+import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.R
-import org.jellyfin.mobile.app.ApiClientController
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.bridge.MediaSegments
@@ -47,10 +47,11 @@ import org.jellyfin.mobile.utils.isOutdated
 import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
 import org.jellyfin.mobile.utils.runOnUiThread
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClient.FileChooserListener {
     val appPreferences: AppPreferences by inject()
-    private val apiClientController: ApiClientController by inject()
+    private val mainViewModel: MainViewModel by activityViewModel()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private lateinit var assetsPathHandler: AssetsPathHandler
     private lateinit var jellyfinWebViewClient: JellyfinWebViewClient
@@ -90,7 +91,7 @@ class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClien
             lifecycleScope,
             server,
             assetsPathHandler,
-            apiClientController,
+            mainViewModel,
         ) {
             override fun onConnectedToWebapp() {
                 val webViewBinding = webViewBinding ?: return

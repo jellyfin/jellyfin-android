@@ -11,7 +11,7 @@ import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewFeature
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.jellyfin.mobile.app.ApiClientController
+import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.initLocale
@@ -30,7 +30,7 @@ abstract class JellyfinWebViewClient(
     private val coroutineScope: CoroutineScope,
     private val server: ServerEntity,
     private val assetsPathHandler: AssetsPathHandler,
-    private val apiClientController: ApiClientController,
+    private val mainViewModel: MainViewModel,
 ) : WebViewClientCompat() {
 
     abstract fun onConnectedToWebapp()
@@ -67,7 +67,7 @@ abstract class JellyfinWebViewClient(
                     val storedServer = credentials.getJSONArray("Servers").getJSONObject(0)
                     val user = storedServer.getString("UserId").toUUID()
                     val token = storedServer.getString("AccessToken")
-                    apiClientController.setupUser(server.id, user, token)
+                    mainViewModel.setupUser(server.id, user, token)
                     webView.initLocale(user)
                 }
                 null

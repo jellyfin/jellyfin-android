@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.lifecycle.viewModelScope
@@ -23,7 +22,6 @@ import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
-import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
@@ -39,7 +37,6 @@ import org.jellyfin.sdk.model.api.ImageType
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
-import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinComponent {
@@ -48,7 +45,6 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     private val notificationManager: NotificationManager? by lazy { context.getSystemService() }
     private val imageApi: ImageApi = get<ApiClient>().imageApi
     private val imageLoader: ImageLoader by inject()
-    private val downloadDao: DownloadDao by inject()
     private val receiverRegistered = AtomicBoolean(false)
 
     val allowBackgroundAudio: Boolean
@@ -155,17 +151,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     }
 
     private suspend fun loadImage(mediaSource: JellyfinMediaSource) = when (mediaSource) {
-        is LocalJellyfinMediaSource -> {
-            val downloadFolder = File(
-                downloadDao
-                    .get(mediaSource.id)
-                    .let(::requireNotNull)
-                    .asMediaSource()
-                    .localDirectoryUri,
-            )
-            val thumbnailFile = File(downloadFolder, Constants.DOWNLOAD_THUMBNAIL_FILENAME)
-            BitmapFactory.decodeFile(thumbnailFile.canonicalPath)
-        }
+        is LocalJellyfinMediaSource -> null
         is RemoteJellyfinMediaSource -> {
             val height = context.resources.getDimensionPixelSize(R.dimen.media_notification_height)
 

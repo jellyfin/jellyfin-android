@@ -142,8 +142,6 @@
     <string name="failed_thumbnail">Failed to download thumbnail</string>
     <string name="failed_information">Failed to retrieve media information</string>
     <string name="failed_network_method_check">Please check your allowed download methods</string>
-    <string name="confirm_deletion">Confirm deletion</string>
-    <string name="confirm_deletion_desc">Do you want to delete %1$s?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="thumbnail_desc">Thumbnail</string>
@@ -153,4 +151,12 @@
     <string name="downloading_desc">Downloading %1$d titles</string>
     <string name="downloaded">Downloaded %1$s</string>
     <string name="special_episode">Special</string>
+    <string name="downloading_title">Downloading %1$s</string>
+    <string name="download_cancel">Cancel</string>
+    <string name="download_completed">Download completed</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Remove download</string>
+    <string name="download_remove_keep_local">Keep local file(s)</string>
+    <string name="download_remove_description">Do you want to remove "%1$s" from your downloads?</string>
+    <string name="download_incomplete">Download incomplete</string>
 </resources>
