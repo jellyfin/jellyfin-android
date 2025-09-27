@@ -20,7 +20,6 @@ import org.jellyfin.mobile.player.ui.PlayerFullscreenHelper
 import org.jellyfin.mobile.settings.SettingsFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.extensions.addFragment
-import org.jellyfin.mobile.utils.removeDownload
 import org.jellyfin.mobile.utils.requestDownload
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import timber.log.Timber
@@ -69,19 +68,15 @@ class ActivityEventHandler(
             is ActivityEvent.OpenUrl -> {
                 try {
                     val intent = Intent(Intent.ACTION_VIEW, event.uri.toUri())
+                    if (event.grantReadPermission) intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     startActivity(intent)
                 } catch (e: ActivityNotFoundException) {
                     Timber.e("openIntent: %s", e.message)
                 }
             }
-            is ActivityEvent.DownloadFile -> {
+            is ActivityEvent.DownloadItems -> {
                 lifecycleScope.launch {
-                    with(event) { requestDownload(uri, filename) }
-                }
-            }
-            is ActivityEvent.RemoveDownload -> {
-                lifecycleScope.launch {
-                    with(event) { removeDownload(download, force) }
+                    with(event) { requestDownload(itemIds) }
                 }
             }
             ActivityEvent.OpenDownloads -> {

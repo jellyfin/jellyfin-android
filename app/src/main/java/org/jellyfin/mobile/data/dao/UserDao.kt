@@ -44,6 +44,9 @@ interface UserDao {
     @Query("SELECT * FROM $TABLE_NAME WHERE $SERVER_ID = :serverId AND $USER_ID = :userId")
     fun getByUserId(serverId: Long, userId: UUID): UserEntity?
 
+    @Query("SELECT * FROM $TABLE_NAME WHERE $ID = :id")
+    fun getUser(id: Long): UserEntity?
+
     @Query("SELECT * FROM $TABLE_NAME WHERE $SERVER_ID = :serverId")
     fun getAllForServer(serverId: Long): List<UserEntity>
 

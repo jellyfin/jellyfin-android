@@ -6,7 +6,6 @@ import android.content.Intent
 import android.media.session.PlaybackState
 import android.webkit.JavascriptInterface
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.utils.Constants
@@ -25,6 +24,7 @@ import org.jellyfin.mobile.webapp.RemotePlayerService
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.util.AuthorizationHeaderBuilder
+import org.jellyfin.sdk.model.serializer.toUUID
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -32,6 +32,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
 import timber.log.Timber
+import java.util.UUID
 
 @Suppress("unused")
 class NativeInterface(private val context: Context) : KoinComponent {
@@ -126,16 +127,16 @@ class NativeInterface(private val context: Context) : KoinComponent {
     fun downloadFiles(args: String): Boolean {
         try {
             val files = JSONArray(args)
+            val itemIds = mutableSetOf<UUID>()
 
             repeat(files.length()) { index ->
                 val file = files.getJSONObject(index)
+                val itemId = file.getString("itemId").toUUID()
 
-                val title: String = file.getString("title")
-                val filename: String = file.getString("filename")
-                val url: String = file.getString("url")
-
-                emitEvent(ActivityEvent.DownloadFile(url.toUri(), title, filename))
+                itemIds.add(itemId)
             }
+
+            emitEvent(ActivityEvent.DownloadItems(itemIds))
         } catch (e: JSONException) {
             Timber.e("Download failed: %s", e.message)
             return false
