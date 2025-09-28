@@ -131,4 +131,6 @@
     <string name="stored_videos_in_internal_storage_desc">Video come i film e serie TV saranno salvati nello memoria interna dell\'applicazione. Permetti accesso da dentro l\'applicazione.</string>
     <string name="downloading_desc">Scaricando%1$d titoli</string>
     <string name="downloaded">Scaricato %1$s</string>
+    <string name="confirm_deletion_desc">Vuoi cancellare %1$s?</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
 </resources>
