@@ -97,4 +97,6 @@
     <string name="menu_item_auto">Automatikoa</string>
     <string name="pref_exoplayer_direct_play_ass">Onartu SSA/ASS azpitituluak zuzeneko erreprodukzioan</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Transkodetzea saihesten du eta oinarrizko estiloko azpitituluak bakarrik erakusten ditu. Azpititulu aurreratuaren estiloa ez da erabilgarri egongo gaituta badago.</string>
+    <string name="button_use_different_server">Erabili beste zerbitzari bat</string>
+    <string name="bluetooth_permission_title">Bluetooth sarbidea baimendu?</string>
 </resources>
