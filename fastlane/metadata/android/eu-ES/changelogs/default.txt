@@ -1,0 +1,3 @@
+Eskerrik asko Jellyfin Androiderako erabiltzeagatik! Beti gomendatzen da azken Jellyfin zerbitzaria erabiltzea.
+
+Informazio gehiago nahi izanez gero, ikusi gure bloga jellyfin.org helbidean, edo irakurri aldaketa-erregistro osoa GitHub-en.
