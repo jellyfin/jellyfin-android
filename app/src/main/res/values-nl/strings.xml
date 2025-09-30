@@ -36,7 +36,7 @@
     <string name="connection_error_cannot_connect">Er kan geen verbinding worden gemaakt.
 \nControleer de hostnaam en je netwerkverbinding.</string>
     <string name="video_player_external_description">Externe video-afspeelapplicaties zoals MX Player en VLC</string>
-    <string name="video_player_native_description">Gebaseerd op ExoPlayer, ondersteunt meer videoformaten en codecs, en is meer geïntegreerd in het besturingssysteem</string>
+    <string name="video_player_native_description">Gebaseerd op ExoPlayer; ondersteunt meer beeldindelingen en -codecs en is beter geïntegreerd in het besturingssysteem</string>
     <string name="video_player_web_description">De standaard HTML-videospeler van de webinterface</string>
     <string name="video_player_external">Externe speler</string>
     <string name="video_player_web">Webspeler</string>
@@ -44,7 +44,7 @@
     <string name="available_servers_title">Beschikbare servers</string>
     <string name="choose_server_button_text">Server kiezen</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Gebaren voor helderheid en volume</string>
-    <string name="external_player_mpv_description">Een simpele, kleine en vrije videospeler, die een groot aantal mediaformaten ondersteunt.</string>
+    <string name="external_player_mpv_description">Een eenvoudige, kleine en vrije videospeler, die een groot aantal media-indelingen ondersteunt.</string>
     <string name="external_player_mpv">MPV Player</string>
     <string name="external_player_app">Externe afspeelapplicatie</string>
     <string name="external_player_mx_player_pro_description">De betaalde versie van MX Player die een ongestoorde video-ervaring aanbiedt.</string>
