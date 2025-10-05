@@ -111,5 +111,25 @@
     <string name="wifi_only_summary">Meediafailide allalaadimine ainult läbi WiFi võrgu.</string>
     <string name="mobile_data_and_roaming_summary">Meediafailide allalaadimine läbi WiFi, mobiilside ja rändlusvõrkude.</string>
     <string name="mobile_data_summary">Meediafailide allalaadimine läbi WiFi ja mobiilside võrkude.</string>
-    <string name="pref_exoplayer_allow_press_speed_up">Kiirendamiseks hoia all</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Kiirendamiseks hoia</string>
+    <string name="downloads">Allalaadimised</string>
+    <string name="thumbnail_desc">Pisipilt</string>
+    <string name="skip_media_segment">Jäta vahele</string>
+    <string name="external_player_mpvkt">mpvKt pleier</string>
+    <string name="failed_network_method_check">Kontrolli lubatud allalaadimismeetodeid</string>
+    <string name="confirm_deletion">Kinnita kustutamine</string>
+    <string name="confirm_deletion_desc">Kas soovid kustutada %1$s?</string>
+    <string name="yes">Jah</string>
+    <string name="stored_videos_in_internal_storage_desc">Videod, näiteks filmid ja sarjad, salvestatakse rakenduse sisemisse salvestusruumi. Juurdepääs lubatakse rakendusest.</string>
+    <string name="downloaded">%1$s alla laetud</string>
+    <string name="view_downloads">Kuva allalaadimised</string>
+    <string name="download_notifications_description">Allalaadimisteated</string>
+    <string name="no">Ei</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Esituse ajutiseks kiirendamiseks puuduta ja hoia ekraani</string>
+    <string name="external_player_mpvkt_description">MPV-androidil põhinev meediapleier, mille eesmärk on pakkuda originaaliga võrreldes paremat kasutajaliidest.</string>
+    <string name="failed_thumbnail">Pisipildi allalaadimine nurjus</string>
+    <string name="failed_information">Meediateabe hankmine nurjus</string>
+    <string name="downloading_desc">%1$d nimetuse allalaadimine</string>
+    <string name="store_videos_in_internal_storage">Salvesta videod sisemisse salvestusruumi</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
 </resources>
