@@ -111,4 +111,5 @@
     <string name="wifi_only_summary">Meediafailide allalaadimine ainult läbi WiFi võrgu.</string>
     <string name="mobile_data_and_roaming_summary">Meediafailide allalaadimine läbi WiFi, mobiilside ja rändlusvõrkude.</string>
     <string name="mobile_data_summary">Meediafailide allalaadimine läbi WiFi ja mobiilside võrkude.</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Kiirendamiseks hoia all</string>
 </resources>
