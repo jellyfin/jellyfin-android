@@ -131,4 +131,5 @@
     <string name="pref_exoplayer_allow_press_speed_up_summary">Trykk og hold på skjermen for å midlertidig øke hastigheten på avspilling</string>
     <string name="external_player_mpvkt">mpvKt avspiller</string>
     <string name="external_player_mpvkt_description">En mediespiller basert på mpv-android med mål om å gi en bedre brukeropplevelse enn den originale.</string>
+    <string name="skip_media_segment">Hopp over</string>
 </resources>
