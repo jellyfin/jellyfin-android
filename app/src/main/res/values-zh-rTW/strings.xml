@@ -110,4 +110,25 @@
     <string name="wifi_only_summary">媒體將僅通過WiFi下載。</string>
     <string name="mobile_data_summary">媒體將通過WiFi和移動網絡下載。</string>
     <string name="mobile_data_and_roaming_summary">媒體將通過WiFi、移動網絡和漫遊服務下載。</string>
+    <string name="external_player_mpvkt_description">一款基於 mpv-android 的媒體播放器，旨在提供比原始版本更好的使用者介面。</string>
+    <string name="view_downloads">查看下載</string>
+    <string name="downloads">下載</string>
+    <string name="download_notifications_description">下載通知</string>
+    <string name="failed_information">無法取得媒體資訊</string>
+    <string name="failed_network_method_check">請檢查您允許的下載方式</string>
+    <string name="confirm_deletion">確認刪除</string>
+    <string name="confirm_deletion_desc">你確定要刪除%1$s嗎?</string>
+    <string name="yes">是</string>
+    <string name="thumbnail_desc">縮圖</string>
+    <string name="downloading_desc">正在下載%1$d個標題</string>
+    <string name="downloaded">%1$s已下載</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">長按螢幕可暫時加快播放速度</string>
+    <string name="pref_exoplayer_allow_press_speed_up">按住即可加速</string>
+    <string name="failed_thumbnail">下載縮圖失敗</string>
+    <string name="store_videos_in_internal_storage">將影片儲存到內部儲存空間</string>
+    <string name="stored_videos_in_internal_storage_desc">電影和電視節目等影片將儲存到應用程式的內部儲存空間，並允許從應用程式內部存取。</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="skip_media_segment">跳過</string>
+    <string name="external_player_mpvkt">mpvKt 播放器</string>
+    <string name="no">否</string>
 </resources>
