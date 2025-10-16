@@ -29,7 +29,7 @@
     <string name="host_input_hint">Host</string>
     <string name="dialog_button_ignore">Ignorar</string>
     <string name="connect_button_text">Conectado</string>
-    <string name="connection_error_cannot_connect">A conexão não pode ser estabelecida\nPor favor, verifique o nome do host e a sua configuração de rede</string>
+    <string name="connection_error_cannot_connect">A conexão não pode ser estabelecida\nPor favor, verifique o nome do host e a sua configuração de rede.</string>
     <string name="choose_server_button_text">Escolha um servidor</string>
     <string name="bluetooth_permission_granted">Permissão de Bluetooth concedida</string>
     <string name="bluetooth_permission_continue">Continuar</string>
