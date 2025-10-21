@@ -54,7 +54,7 @@ timber = "5.0.1"
 leakcanary = "2.14"
 
 # Testing
-junit = "5.13.4"
+junit = "6.0.0"
 kotest = "6.0.3"
 mockk = "1.14.6"
 androidx-test-runner = "1.7.0"
