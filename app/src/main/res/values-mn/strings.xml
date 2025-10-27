@@ -16,7 +16,7 @@
     <string name="dialog_button_close_app">Апп-г хаах</string>
     <string name="dialog_button_open_settings">Тохиргоо нээх</string>
     <string name="dialog_button_ignore">Умартах</string>
-    <string name="toast_reopen_after_change">Өөрчлөлтүүдийг хийсний дараа програмыг дахин нээнэ үү</string>
+    <string name="toast_reopen_after_change">Өөрчлөлтүүд хийгдсэний дараа апп-г дахин нээнэ үү</string>
     <string name="connect_to_server_title">Серверт холбогдох</string>
     <string name="host_input_hint">Хост</string>
     <string name="connection_error_cannot_connect">Холбогдох боломжгүй байна.\nТа hostname болон сүлжээний холболтоо шалгана уу.</string>
@@ -44,7 +44,7 @@
     <string name="mobile_data_summary">Медиа WiFi болон хөдөлгөөнт сүлжээгээр татагдана.</string>
     <string name="mobile_data_and_roaming_summary">Медиа WiFi, хөдөлгөөнт болон роуминг сүлжээгээр татагдана.</string>
     <string name="downloading">Татагдаж байна</string>
-    <string name="download_no_storage_permission">Агуулахын эрхгүйгээр файлыг татаж авах боломжгүй</string>
+    <string name="download_no_storage_permission">Хадгалах эрхгүйгээр файлуудыг татаж авах боломжгүй</string>
     <string name="media_service_generic_error">Алдаа гарлаа</string>
     <string name="media_service_item_not_found">Медиа зүйл олдсонгүй</string>
     <string name="media_service_car_section_recents">Саяхан тоглуулсан</string>
@@ -57,7 +57,7 @@
     <string name="notification_action_pause">Зогсоох</string>
     <string name="notification_action_fast_forward">Хурдан урагшлах</string>
     <string name="notification_action_next">Дараагийн</string>
-    <string name="notification_action_stop">Болих</string>
+    <string name="notification_action_stop">Зогсоох</string>
     <string name="player_error_invalid_play_options">Тоглуулах мэдээллийг шийдэх боломжгүй</string>
     <string name="player_error_network_failure">Серверээс медиа мэдээллийг ачааллах боломжгүй</string>
     <string name="player_error_unsupported_content">Энэ төхөөрөмжөөр медиа тоглуулах боломжгүй</string>
