@@ -6,7 +6,7 @@
     <string name="media_service_car_section_genres">Төрөл зүйл</string>
     <string name="media_service_car_section_songs">Дуунууд</string>
     <string name="media_service_car_section_artists">Зураачуд</string>
-    <string name="external_player_mx_player_pro">MX Player Pro хувилбар</string>
+    <string name="external_player_mx_player_pro">MX Player Pro</string>
     <string name="external_player_mx_player_free">MX Player үнэгүй</string>
     <string name="dialog_web_view_not_supported">WebView дэмжигдэхгүй</string>
     <string name="dialog_web_view_not_supported_message">Энэ төхөөрөмж WebView-г дэмжихгүй байна.\nТаарах WebView суулгах эсвэл дэмжигдсэн төхөөрөмж рүү шилжих шаардлагатай.</string>
@@ -110,7 +110,7 @@
     <string name="external_player_system_default">Системийн анхдагч</string>
     <string name="external_player_system_default_description">Системд тоглуулагчийн сонголтыг даалгах, зарим тоглуулагч бүрэн нийцэхгүй байж магадгүй.</string>
     <string name="pref_subtitle_style">Хадмалын хэв маягийг тохируулах</string>
-    <string name="pref_subtitle_style_summary">Хадмалын хэв маягийг Android-ийн тохиргооноос өөрчилж болно</string>
+    <string name="pref_subtitle_style_summary">Хадмалын хэв маягийг Android-ийн тохиргооноос өөрчилж болно.</string>
     <string name="pref_category_downloads">Таталт</string>
     <string name="pref_download_location">Татах байршил</string>
     <string name="view_downloads">Таталтыг харах</string>
