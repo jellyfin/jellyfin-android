@@ -1,6 +1,6 @@
 Vaše média, za vašich podmínek.
 
-Projekt Jellyfin je bezplatný mediální server s otevřeným zdrojovým kódem. Bez poplatků, sledování, či nekalých zájmů. Náš bezplatný server umožňuje spravovat zvuk, video, fotky, a další média na jednom místě.
+Projekt Jellyfin je bezplatný mediální server s otevřeným zdrojovým kódem. Bez poplatků, sledování či nekalých zájmů. Náš bezplatný server umožňuje spravovat zvuk, video, fotky a další média na jednom místě.
 
 Abyste mohli aplikaci používat, musíte mít k dispozici server Jellyfin. Další informace naleznete na webu <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
 
