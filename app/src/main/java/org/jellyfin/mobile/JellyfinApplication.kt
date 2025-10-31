@@ -14,8 +14,18 @@ import timber.log.Timber
 
 @Suppress("unused")
 class JellyfinApplication : Application() {
+
+    companion object {
+
+        @Volatile
+        private var instance: JellyfinApplication? = null
+
+        fun getInstance() = instance
+    }
+
     override fun onCreate() {
         super.onCreate()
+        instance = this
 
         // Setup logging
         Timber.plant(JellyTree())

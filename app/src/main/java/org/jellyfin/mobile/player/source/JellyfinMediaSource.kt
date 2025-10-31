@@ -1,8 +1,11 @@
 package org.jellyfin.mobile.player.source
 
+import org.jellyfin.mobile.JellyfinApplication
+import org.jellyfin.mobile.R
 import org.jellyfin.mobile.player.deviceprofile.CodecHelpers
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.model.api.BaseItemDto
+import org.jellyfin.sdk.model.api.BaseItemKind
 import org.jellyfin.sdk.model.api.MediaSourceInfo
 import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.MediaStreamType
@@ -20,7 +23,7 @@ sealed class JellyfinMediaSource(
     playbackDetails: PlaybackDetails?,
 ) {
     val id: String = requireNotNull(sourceInfo.id) { "Media source has no id" }
-    val name: String = item?.name ?: sourceInfo.name.orEmpty()
+    val name: String
 
     abstract val playMethod: PlayMethod
 
@@ -94,6 +97,45 @@ sealed class JellyfinMediaSource(
                 -> Unit // ignore
             }
         }
+
+        name = item?.let {
+            buildString {
+                val name = if (
+                    it.type in arrayOf(BaseItemKind.PROGRAM, BaseItemKind.RECORDING) &&
+                    (it.isSeries == true || !it.episodeTitle.isNullOrEmpty())
+                ) { it.episodeTitle } else { it.name }
+
+                val specialEpisode = JellyfinApplication.getInstance()?.getString(R.string.special_episode)
+                val extraInfo = when {
+                    it.type == BaseItemKind.TV_CHANNEL && !it.channelNumber.isNullOrEmpty() -> it.channelNumber
+                    it.type == BaseItemKind.EPISODE && it.parentIndexNumber == 0 -> specialEpisode
+                    it.type in arrayOf(BaseItemKind.EPISODE, BaseItemKind.RECORDING) &&
+                        it.indexNumber != null && it.parentIndexNumber != null ->
+                        "S${it.parentIndexNumber}:E${it.indexNumber}${it.indexNumberEnd?.let { n -> "-$n" } ?: ""}"
+                    else -> ""
+                }
+
+                val separator = " - "
+
+                if (!it.seriesName.isNullOrEmpty()) {
+                    append(it.seriesName)
+                    if (!name.isNullOrEmpty() || !extraInfo.isNullOrEmpty()) append(separator)
+                }
+
+                if (!extraInfo.isNullOrEmpty()) {
+                    append(extraInfo)
+                    if (!name.isNullOrEmpty()) append(separator)
+                }
+
+                append(name.orEmpty())
+
+                if (it.type == BaseItemKind.MOVIE && it.productionYear != null) {
+                    append(" (${it.productionYear})")
+                } else if (it.premiereDate != null) {
+                    append(" (${it.premiereDate!!.year})")
+                }
+            }.ifEmpty { null }
+        } ?: sourceInfo.name.orEmpty()
 
         audioStreams = audio
         subtitleStreams = subtitles
