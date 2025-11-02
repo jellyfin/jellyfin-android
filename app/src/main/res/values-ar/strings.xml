@@ -55,7 +55,7 @@
     <string name="notification_action_next">التالي</string>
     <string name="notification_action_fast_forward">تقديم سريع</string>
     <string name="notification_action_pause">إيقاف التشغيل</string>
-    <string name="notification_action_play">تشغيل</string>
+    <string name="notification_action_play">لعب</string>
     <string name="notification_action_rewind">الإرجاع</string>
     <string name="notification_action_previous">السابق</string>
     <string name="music_notification_channel_description">تستخدم للتحكم في تشغيل الموسيقى</string>
@@ -94,7 +94,7 @@
     <string name="dialog_web_view_outdated_message">تطبيق WebView الذي يستخدمه جهازك قديم.
 \nيرجى تحديثه إلى إصدار متوافق.</string>
     <string name="dialog_web_view_outdated">اصدار الWebView قديم</string>
-    <string name="dialog_web_view_not_supported_message">WebViews غير مدعومه على هذا الجهاز. \nقم بتثبيت تطبيق WebView متوافق أو قم بتبديل إلى جهاز مدعوم.</string>
+    <string name="dialog_web_view_not_supported_message">WebViews غير مدعومه على هذا الجهاز. \nقم بتثبيت تطبيق WebView متوافق أو قم بالتبديل إلى جهاز مدعوم.</string>
     <string name="video_player_integrated">القارئ المدمج</string>
     <string name="playback_info_stream_unknown_title">عنوان غير معروف</string>
     <string name="pref_exoplayer_direct_play_ass_summary">منع تحويل الشفرة وإظهار الترجمات مع النمط الأساسي فقط. لن يكون نمط الترجمة المتقدم متاحًا إذا تم تمكينه.</string>
@@ -134,4 +134,5 @@
     <string name="downloading_desc">جارٍ تنزيل %1$d عنوانًا</string>
     <string name="downloaded">تم تنزيل %1$s</string>
     <string name="tv_show_desc">%1$s - س%2$dي%3$d</string>
+    <string name="skip_media_segment">تخطي</string>
 </resources>
