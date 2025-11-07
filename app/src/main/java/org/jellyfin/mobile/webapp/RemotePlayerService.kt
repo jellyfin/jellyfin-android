@@ -468,8 +468,11 @@ class RemotePlayerService : Service(), CoroutineScope {
         super.onDestroy()
     }
 
-    class ServiceBinder(private val service: RemotePlayerService) : Binder() {
+    class ServiceBinder(internal val service: RemotePlayerService) : Binder() {
         val isPlaying: Boolean
             get() = service.playbackState?.state == PlaybackState.STATE_PLAYING
+
+        val sessionToken: MediaSession.Token?
+            get() = service.mediaSession?.sessionToken
     }
 }
