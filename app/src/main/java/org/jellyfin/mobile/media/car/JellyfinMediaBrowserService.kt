@@ -19,6 +19,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.data.dao.UserDao
+import org.jellyfin.mobile.webapp.RemotePlayerService
+import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.imageApi
 import org.jellyfin.sdk.api.client.extensions.itemsApi
@@ -41,8 +43,29 @@ class JellyfinMediaBrowserService : MediaBrowserServiceCompat() {
     private val apiClient: ApiClient by inject()
     private val appPreferences: AppPreferences by inject()
     private val userDao: UserDao by inject()
+    private val webappFunctionChannel: WebappFunctionChannel by inject()
     private val job = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Main + job)
+
+    private var remotePlayerBound = false
+    private val remotePlayerConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            Timber.d("RemotePlayerService connected")
+            val binder = service as RemotePlayerService.ServiceBinder
+
+            // Use RemotePlayerService's MediaSession token
+            binder.sessionToken?.let { token ->
+                sessionToken = MediaSessionCompat.Token.fromToken(token)
+                Timber.d("Set sessionToken from RemotePlayerService")
+                remotePlayerBound = true
+            }
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            Timber.d("RemotePlayerService disconnected")
+            remotePlayerBound = false
+        }
+    }
 
     companion object {
         private const val MEDIA_ROOT_ID = "__ROOT__"
@@ -57,27 +80,11 @@ class JellyfinMediaBrowserService : MediaBrowserServiceCompat() {
         super.onCreate()
         Timber.d("JellyfinMediaBrowserService created")
 
-        // Create MediaSessionCompat for Android Auto
-        val mediaSession = MediaSessionCompat(this, "JellyfinMediaBrowserService")
-        mediaSession.setFlags(
-            MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or
-            MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
-        )
-
-        // Set initial playback state
-        val stateBuilder = PlaybackStateCompat.Builder()
-            .setActions(
-                PlaybackStateCompat.ACTION_PLAY or
-                PlaybackStateCompat.ACTION_PAUSE or
-                PlaybackStateCompat.ACTION_SKIP_TO_NEXT or
-                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
-            )
-            .setState(PlaybackStateCompat.STATE_NONE, 0, 1.0f)
-        mediaSession.setPlaybackState(stateBuilder.build())
-        mediaSession.isActive = true
-
-        sessionToken = mediaSession.sessionToken
-        Timber.d("MediaSession created and token set")
+        // Start and bind to RemotePlayerService to use its MediaSession
+        val intent = Intent(this, RemotePlayerService::class.java)
+        startService(intent)  // Start it first to ensure it exists
+        bindService(intent, remotePlayerConnection, Context.BIND_AUTO_CREATE)
+        Timber.d("Started and bound to RemotePlayerService")
     }
 
     override fun onGetRoot(
@@ -114,6 +121,7 @@ class JellyfinMediaBrowserService : MediaBrowserServiceCompat() {
                     RECENT_AUDIOBOOKS_ID -> loadRecentAudiobooks()
                     RECENTLY_PLAYED_ID -> loadRecentlyPlayed()
                     ALL_AUDIOBOOKS_ID -> loadAllAudiobooks()
+                    MUSIC_ROOT_ID -> emptyList() // Music not implemented yet
                     else -> loadItemChildren(parentId)
                 }
                 result.sendResult(items.toMutableList())
@@ -310,6 +318,9 @@ class JellyfinMediaBrowserService : MediaBrowserServiceCompat() {
 
     override fun onDestroy() {
         job.cancel()
+        if (remotePlayerBound) {
+            unbindService(remotePlayerConnection)
+        }
         super.onDestroy()
         Timber.d("JellyfinMediaBrowserService destroyed")
     }

@@ -63,6 +63,7 @@ import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
 import org.jellyfin.mobile.utils.createMediaNotificationChannel
 import org.jellyfin.mobile.utils.setPlaybackState
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration.Companion.hours
 
@@ -412,6 +413,11 @@ class RemotePlayerService : Service(), CoroutineScope {
             setCallback(
                 @SuppressLint("MissingOnPlayFromSearch")
                 object : MediaSession.Callback() {
+                    override fun onPlayFromMediaId(mediaId: String, extras: android.os.Bundle?) {
+                        Timber.d("RemotePlayerService: onPlayFromMediaId called with mediaId: $mediaId")
+                        webappFunctionChannel.playItem(mediaId)
+                    }
+
                     override fun onPlay() {
                         webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PLAY)
                     }
