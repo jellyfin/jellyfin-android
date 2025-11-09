@@ -10,4 +10,6 @@
     <string name="dialog_button_ignore">Ignore</string>
     <string name="toast_reopen_after_change">Please reopen the app after changes are made</string>
     <string name="connect_to_server_title">Connect to Server</string>
+    <string name="host_input_hint">Host</string>
+    <string name="connection_error_cannot_connect">Connection cannot be established.\nPlease check the hostname and your network connection.</string>
 </resources>
