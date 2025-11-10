@@ -39,7 +39,7 @@ class DownloadsAdapter(
             val context = itemView.context
 
             val mediaItem: BaseItemDto? = downloadEntity.mediaSource.item
-            binding.textViewName.text = downloadEntity.mediaSource.name
+            binding.textViewName.text = downloadEntity.mediaSource.getName(context)
             binding.textViewDescription.text = when {
                 mediaItem?.seriesName != null -> context.getString(
                     R.string.tv_show_desc,

@@ -122,7 +122,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             }
 
             // Update title and player menus
-            toolbar.title = mediaSource.name
+            toolbar.title = context?.let { mediaSource.getName(it) } ?: ""
             playerMenus?.onQueueItemChanged(mediaSource, viewModel.queueManager.hasNext())
         }
 
