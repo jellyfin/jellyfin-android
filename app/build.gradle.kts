@@ -32,7 +32,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 29
         targetSdk = 36
         versionName = project.getVersionName()
         versionCode = getVersionCode(versionName!!)
