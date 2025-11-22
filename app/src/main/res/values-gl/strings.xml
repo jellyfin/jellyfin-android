@@ -19,4 +19,17 @@
     <string name="available_servers_title">Servidores dispoñibles</string>
     <string name="button_use_different_server">Usar un servidor diferente</string>
     <string name="bluetooth_permission_title">Permir acceso ao Bluetooth?</string>
+    <string name="bluetooth_permission_continue">Continuar</string>
+    <string name="wifi_only">Só WiFI</string>
+    <string name="downloading">Descargando</string>
+    <string name="media_service_generic_error">Houbo un erro</string>
+    <string name="media_service_car_section_artists">Artistas</string>
+    <string name="media_service_car_section_songs">Cancións</string>
+    <string name="media_service_car_section_genres">Xéneros</string>
+    <string name="notification_action_previous">Anterior</string>
+    <string name="notification_action_play">Reproducir</string>
+    <string name="notification_action_pause">Pausa</string>
+    <string name="notification_action_next">Seguinte</string>
+    <string name="no">Non</string>
+    <string name="skip_media_segment">Saltar</string>
 </resources>
