@@ -220,7 +220,7 @@ class DownloadUtils(
         }
 
         val downloadRequest = DownloadManager.Request(downloadURL.toUri())
-            .setTitle(jellyfinMediaSource.name)
+            .setTitle(jellyfinMediaSource.getName(context))
             .setDescription(context.getString(R.string.downloading))
             .setDestinationUri(Uri.fromFile(File(appPreferences.downloadLocation, filename)))
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
