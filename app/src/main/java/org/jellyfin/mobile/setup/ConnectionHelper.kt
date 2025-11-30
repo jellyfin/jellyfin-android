@@ -30,6 +30,7 @@ class ConnectionHelper(
         val badServers = mutableListOf<RecommendedServerInfo>()
         val goodServers = mutableListOf<RecommendedServerInfo>()
         val greatServer = jellyfin.discovery.getRecommendedServers(candidates).firstOrNull { recommendedServer ->
+            Timber.d("Server ${recommendedServer.address} score=${recommendedServer.score} systemInfo=${recommendedServer.systemInfo}")
             when (recommendedServer.score) {
                 RecommendedServerInfoScore.GREAT -> true
                 RecommendedServerInfoScore.GOOD -> {

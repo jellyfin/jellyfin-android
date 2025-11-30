@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.ui.screens.connect
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,12 +9,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,23 +38,39 @@ fun ConnectScreen(
     activityEventHandler: ActivityEventHandler = koinInject(),
 ) {
     Surface(color = MaterialTheme.colors.background) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .systemBarsPadding()
-                .padding(horizontal = 16.dp),
-        ) {
-            LogoHeader()
-            ServerSelection(
-                showExternalConnectionError = showExternalConnectionError,
-                onConnected = { hostname ->
-                    mainViewModel.switchServer(hostname)
-                },
-            )
-            StyledTextButton(
-                onClick = { activityEventHandler.emit(ActivityEvent.OpenDownloads) },
-                text = stringResource(R.string.view_downloads),
-            )
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .systemBarsPadding()
+                    .padding(horizontal = 16.dp),
+            ) {
+                LogoHeader()
+                ServerSelection(
+                    showExternalConnectionError = showExternalConnectionError,
+                    onConnected = { hostname ->
+                        mainViewModel.switchServer(hostname)
+                    },
+                )
+                StyledTextButton(
+                    onClick = { activityEventHandler.emit(ActivityEvent.OpenDownloads) },
+                    text = stringResource(R.string.view_downloads),
+                )
+            }
+            // Settings gear button in top-right corner
+            IconButton(
+                onClick = { activityEventHandler.emit(ActivityEvent.OpenSettings) },
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .systemBarsPadding()
+                    .padding(8.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = stringResource(R.string.activity_name_settings),
+                    tint = MaterialTheme.colors.onBackground,
+                )
+            }
         }
     }
 }

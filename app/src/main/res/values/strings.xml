@@ -124,6 +124,29 @@
 
     <string name="pref_category_downloads">Downloads</string>
     <string name="pref_download_location">Download location</string>
+
+    <string name="pref_category_proxy">Proxy</string>
+    <string name="pref_proxy_enabled">Enable proxy</string>
+    <string name="pref_proxy_enabled_summary">Route network traffic through a proxy server</string>
+    <string name="pref_proxy_type">Proxy type</string>
+    <string name="pref_proxy_type_http">HTTP/HTTPS</string>
+    <string name="pref_proxy_type_http_description">Standard HTTP/HTTPS proxy</string>
+    <string name="pref_proxy_type_socks4">SOCKS4</string>
+    <string name="pref_proxy_type_socks4_description">SOCKS version 4 proxy</string>
+    <string name="pref_proxy_type_socks5">SOCKS5</string>
+    <string name="pref_proxy_type_socks5_description">SOCKS version 5 proxy with optional authentication</string>
+    <string name="pref_proxy_host">Proxy host</string>
+    <string name="pref_proxy_host_summary">Hostname or IP address of the proxy server</string>
+    <string name="pref_proxy_port">Proxy port</string>
+    <string name="pref_proxy_port_summary">Port number of the proxy server (default: 8080)</string>
+    <string name="pref_proxy_auth_enabled">Enable authentication</string>
+    <string name="pref_proxy_auth_enabled_summary">Use username and password for proxy authentication</string>
+    <string name="pref_proxy_username">Username</string>
+    <string name="pref_proxy_username_summary">Proxy authentication username</string>
+    <string name="pref_proxy_password">Password</string>
+    <string name="pref_proxy_password_summary">Proxy authentication password</string>
+    <string name="pref_proxy_restart_required">App restart required for proxy changes to take effect</string>
+
     <string name="view_downloads">View downloads</string>
     <string name="downloads">Downloads</string>
     <string name="download_notifications_description">Download notifications</string>

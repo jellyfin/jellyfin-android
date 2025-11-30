@@ -45,6 +45,15 @@ object Constants {
     const val PREF_DOWNLOAD_INTERNAL = "pref_download_internal"
     const val PREF_MEDIA_SEGMENT_ACTIONS = "pref_media_segment_actions"
 
+    // Proxy preference keys
+    const val PREF_PROXY_ENABLED = "pref_proxy_enabled"
+    const val PREF_PROXY_TYPE = "pref_proxy_type"
+    const val PREF_PROXY_HOST = "pref_proxy_host"
+    const val PREF_PROXY_PORT = "pref_proxy_port"
+    const val PREF_PROXY_AUTH_ENABLED = "pref_proxy_auth_enabled"
+    const val PREF_PROXY_USERNAME = "pref_proxy_username"
+    const val PREF_PROXY_PASSWORD = "pref_proxy_password"
+
     // InputManager commands
     const val PLAYBACK_MANAGER_COMMAND_PLAY = "unpause"
     const val PLAYBACK_MANAGER_COMMAND_PAUSE = "pause"

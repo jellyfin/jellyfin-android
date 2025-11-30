@@ -38,6 +38,7 @@ import org.jellyfin.mobile.player.ui.PlayerFragment
 import org.jellyfin.mobile.setup.ConnectionHelper
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
+import org.jellyfin.mobile.utils.ProxyHelper
 import org.jellyfin.mobile.utils.extractId
 import org.jellyfin.mobile.utils.isLowRamDevice
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
@@ -57,7 +58,8 @@ private const val TS_SEARCH_PACKETS = 1800
 
 val applicationModule = module {
     single { AppPreferences(androidApplication()) }
-    single { OkHttpClient() }
+    single { ProxyHelper(get()) }
+    single { get<ProxyHelper>().createOkHttpClient() }
     single { ImageLoader(androidApplication()) }
     single { PermissionRequestHelper() }
     single { RemoteVolumeProvider(get()) }

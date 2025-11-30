@@ -8,6 +8,7 @@ import androidx.core.content.edit
 import org.jellyfin.mobile.player.mediasegments.MediaSegmentAction
 import org.jellyfin.mobile.player.mediasegments.toMediaSegmentActionsString
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
+import org.jellyfin.mobile.settings.ProxyType
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.model.api.MediaSegmentType
@@ -153,4 +154,42 @@ class AppPreferences(context: Context) {
     var externalPlayerApp: String
         get() = sharedPreferences.getString(Constants.PREF_EXTERNAL_PLAYER_APP, ExternalPlayerPackage.SYSTEM_DEFAULT)!!
         set(value) = sharedPreferences.edit { putString(Constants.PREF_EXTERNAL_PLAYER_APP, value) }
+
+    // Proxy settings
+    var proxyEnabled: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_PROXY_ENABLED, false)
+        set(value) {
+            sharedPreferences.edit {
+                putBoolean(Constants.PREF_PROXY_ENABLED, value)
+            }
+        }
+
+    @ProxyType
+    var proxyType: String
+        get() = sharedPreferences.getString(Constants.PREF_PROXY_TYPE, ProxyType.HTTP)!!
+        set(value) = sharedPreferences.edit { putString(Constants.PREF_PROXY_TYPE, value) }
+
+    var proxyHost: String
+        get() = sharedPreferences.getString(Constants.PREF_PROXY_HOST, "") ?: ""
+        set(value) = sharedPreferences.edit { putString(Constants.PREF_PROXY_HOST, value) }
+
+    var proxyPort: Int
+        get() = sharedPreferences.getString(Constants.PREF_PROXY_PORT, "8080")?.toIntOrNull() ?: 8080
+        set(value) = sharedPreferences.edit { putString(Constants.PREF_PROXY_PORT, value.toString()) }
+
+    var proxyAuthEnabled: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_PROXY_AUTH_ENABLED, false)
+        set(value) {
+            sharedPreferences.edit {
+                putBoolean(Constants.PREF_PROXY_AUTH_ENABLED, value)
+            }
+        }
+
+    var proxyUsername: String
+        get() = sharedPreferences.getString(Constants.PREF_PROXY_USERNAME, "") ?: ""
+        set(value) = sharedPreferences.edit { putString(Constants.PREF_PROXY_USERNAME, value) }
+
+    var proxyPassword: String
+        get() = sharedPreferences.getString(Constants.PREF_PROXY_PASSWORD, "") ?: ""
+        set(value) = sharedPreferences.edit { putString(Constants.PREF_PROXY_PASSWORD, value) }
 }

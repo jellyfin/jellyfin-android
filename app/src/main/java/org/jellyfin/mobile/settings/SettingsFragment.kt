@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import de.Maxr1998.modernpreferences.Preference
 import de.Maxr1998.modernpreferences.PreferencesAdapter
@@ -16,10 +17,12 @@ import de.Maxr1998.modernpreferences.helpers.checkBox
 import de.Maxr1998.modernpreferences.helpers.defaultOnCheckedChange
 import de.Maxr1998.modernpreferences.helpers.defaultOnClick
 import de.Maxr1998.modernpreferences.helpers.defaultOnSelectionChange
+import de.Maxr1998.modernpreferences.helpers.editText
 import de.Maxr1998.modernpreferences.helpers.pref
 import de.Maxr1998.modernpreferences.helpers.screen
 import de.Maxr1998.modernpreferences.helpers.singleChoice
 import de.Maxr1998.modernpreferences.preferences.CheckBoxPreference
+import de.Maxr1998.modernpreferences.preferences.EditTextPreference
 import de.Maxr1998.modernpreferences.preferences.choice.SelectionItem
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
@@ -45,6 +48,14 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
     private lateinit var backgroundAudioPreference: Preference
     private lateinit var directPlayAssPreference: Preference
     private lateinit var externalPlayerChoicePreference: Preference
+
+    // Proxy preferences
+    private lateinit var proxyTypePreference: Preference
+    private lateinit var proxyHostPreference: EditTextPreference
+    private lateinit var proxyPortPreference: EditTextPreference
+    private lateinit var proxyAuthEnabledPreference: CheckBoxPreference
+    private lateinit var proxyUsernamePreference: EditTextPreference
+    private lateinit var proxyPasswordPreference: EditTextPreference
 
     init {
         Preference.Config.titleMaxLines = 2
@@ -244,11 +255,119 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
             summaryRes = R.string.stored_videos_in_internal_storage_desc
             defaultValue = true
         }
+
+        // Proxy settings
+        categoryHeader(PREF_CATEGORY_PROXY) {
+            titleRes = R.string.pref_category_proxy
+        }
+
+        val proxyEnabledPreference = checkBox(Constants.PREF_PROXY_ENABLED) {
+            titleRes = R.string.pref_proxy_enabled
+            summaryRes = R.string.pref_proxy_enabled_summary
+            defaultOnCheckedChange { enabled ->
+                proxyTypePreference.enabled = enabled
+                proxyHostPreference.enabled = enabled
+                proxyPortPreference.enabled = enabled
+                proxyAuthEnabledPreference.enabled = enabled
+                proxyUsernamePreference.enabled = enabled && appPreferences.proxyAuthEnabled
+                proxyPasswordPreference.enabled = enabled && appPreferences.proxyAuthEnabled
+                showProxyRestartToast()
+            }
+        }
+
+        val proxyTypeOptions = listOf(
+            SelectionItem(
+                ProxyType.HTTP,
+                R.string.pref_proxy_type_http,
+                R.string.pref_proxy_type_http_description,
+            ),
+            SelectionItem(
+                ProxyType.SOCKS4,
+                R.string.pref_proxy_type_socks4,
+                R.string.pref_proxy_type_socks4_description,
+            ),
+            SelectionItem(
+                ProxyType.SOCKS5,
+                R.string.pref_proxy_type_socks5,
+                R.string.pref_proxy_type_socks5_description,
+            ),
+        )
+        proxyTypePreference = singleChoice(Constants.PREF_PROXY_TYPE, proxyTypeOptions) {
+            titleRes = R.string.pref_proxy_type
+            initialSelection = ProxyType.HTTP
+            enabled = appPreferences.proxyEnabled
+            defaultOnSelectionChange {
+                showProxyRestartToast()
+            }
+        }
+
+        proxyHostPreference = editText(Constants.PREF_PROXY_HOST) {
+            titleRes = R.string.pref_proxy_host
+            summaryRes = R.string.pref_proxy_host_summary
+            enabled = appPreferences.proxyEnabled
+            textChangeListener = EditTextPreference.OnTextChangeListener { _, _ ->
+                showProxyRestartToast()
+                true
+            }
+        }
+
+        proxyPortPreference = editText(Constants.PREF_PROXY_PORT) {
+            titleRes = R.string.pref_proxy_port
+            summaryRes = R.string.pref_proxy_port_summary
+            enabled = appPreferences.proxyEnabled
+            defaultValue = "8080"
+            textInputType = android.text.InputType.TYPE_CLASS_NUMBER
+            textChangeListener = EditTextPreference.OnTextChangeListener { _, _ ->
+                showProxyRestartToast()
+                true
+            }
+        }
+
+        proxyAuthEnabledPreference = checkBox(Constants.PREF_PROXY_AUTH_ENABLED) {
+            titleRes = R.string.pref_proxy_auth_enabled
+            summaryRes = R.string.pref_proxy_auth_enabled_summary
+            enabled = appPreferences.proxyEnabled
+            defaultOnCheckedChange { enabled ->
+                proxyUsernamePreference.enabled = appPreferences.proxyEnabled && enabled
+                proxyPasswordPreference.enabled = appPreferences.proxyEnabled && enabled
+                showProxyRestartToast()
+            }
+        }
+
+        proxyUsernamePreference = editText(Constants.PREF_PROXY_USERNAME) {
+            titleRes = R.string.pref_proxy_username
+            summaryRes = R.string.pref_proxy_username_summary
+            enabled = appPreferences.proxyEnabled && appPreferences.proxyAuthEnabled
+            textChangeListener = EditTextPreference.OnTextChangeListener { _, _ ->
+                showProxyRestartToast()
+                true
+            }
+        }
+
+        proxyPasswordPreference = editText(Constants.PREF_PROXY_PASSWORD) {
+            titleRes = R.string.pref_proxy_password
+            summaryRes = R.string.pref_proxy_password_summary
+            enabled = appPreferences.proxyEnabled && appPreferences.proxyAuthEnabled
+            textInputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+            textChangeListener = EditTextPreference.OnTextChangeListener { _, _ ->
+                showProxyRestartToast()
+                true
+            }
+        }
+    }
+
+    private fun showProxyRestartToast() {
+        Toast.makeText(
+            requireContext(),
+            R.string.pref_proxy_restart_required,
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     companion object {
         const val PREF_CATEGORY_MUSIC_PLAYER = "pref_category_music"
         const val PREF_CATEGORY_VIDEO_PLAYER = "pref_category_video"
         const val PREF_CATEGORY_DOWNLOADS = "pref_category_downloads"
+        const val PREF_CATEGORY_PROXY = "pref_category_proxy"
     }
 }

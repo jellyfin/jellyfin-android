@@ -8,6 +8,7 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.CookieManager
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.FileChooserParams
 import android.webkit.WebView
@@ -52,6 +53,7 @@ class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClien
     val appPreferences: AppPreferences by inject()
     private val apiClientController: ApiClientController by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
+    private val proxyHelper: org.jellyfin.mobile.utils.ProxyHelper by inject()
     private lateinit var assetsPathHandler: AssetsPathHandler
     private lateinit var jellyfinWebViewClient: JellyfinWebViewClient
     private val nativePlayer: NativePlayer by inject()
@@ -189,9 +191,45 @@ class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClien
         addJavascriptInterface(externalPlayer, "ExternalPlayer")
         addJavascriptInterface(mediaSegments, "MediaSegments")
 
-        loadUrl(server.hostname)
-        postDelayed(timeoutRunnable, Constants.INITIAL_CONNECTION_TIMEOUT)
-        postDelayed(showLoadingContainerRunnable, Constants.SHOW_PROGRESS_BAR_DELAY)
+        // Set ngrok bypass cookie if the server is an ngrok URL
+        setNgrokBypassCookie(server.hostname)
+
+        // Set up WebView proxy before loading URL
+        proxyHelper.setupWebViewProxy {
+            loadUrl(server.hostname)
+            postDelayed(timeoutRunnable, Constants.INITIAL_CONNECTION_TIMEOUT)
+            postDelayed(showLoadingContainerRunnable, Constants.SHOW_PROGRESS_BAR_DELAY)
+        }
+    }
+
+    /**
+     * Sets the ngrok bypass cookie to skip the interstitial page.
+     * This is needed for ngrok free tier URLs.
+     */
+    private fun setNgrokBypassCookie(serverUrl: String) {
+        try {
+            val uri = Uri.parse(serverUrl)
+            val host = uri.host ?: return
+
+            // Check if this is an ngrok URL
+            if (!host.endsWith(".ngrok-free.dev") && !host.endsWith(".ngrok.io")) {
+                return
+            }
+
+            val cookieManager = CookieManager.getInstance()
+            cookieManager.setAcceptCookie(true)
+
+            // Set the ngrok bypass cookie
+            val cookie = "abuse_interstitial=$host"
+            cookieManager.setCookie(serverUrl, cookie)
+
+            // Ensure cookies are flushed
+            cookieManager.flush()
+
+            timber.log.Timber.d("Set ngrok bypass cookie for host: $host")
+        } catch (e: Exception) {
+            timber.log.Timber.e(e, "Failed to set ngrok bypass cookie")
+        }
     }
 
     private fun showOutdatedWebViewDialog(webView: WebView) {
