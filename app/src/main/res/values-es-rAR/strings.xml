@@ -129,4 +129,8 @@
     <string name="view_downloads">Ver descargas</string>
     <string name="no">No</string>
     <string name="thumbnail_desc">Miniatura</string>
+    <string name="stored_videos_in_internal_storage_desc">Vídeos como películas y series se guardarán en el almacenamiento interno de la aplicación. Concediendo acceso desde la app.</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Descargando %1$d títulos</string>
+    <string name="downloaded">Se descargó %1$s</string>
 </resources>
