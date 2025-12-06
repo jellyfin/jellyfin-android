@@ -67,6 +67,7 @@ object Constants {
     // Music player constants
     const val SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS: Long = PlaybackState.ACTION_PLAY_PAUSE or
         PlaybackState.ACTION_PLAY or
+        PlaybackState.ACTION_PLAY_FROM_MEDIA_ID or
         PlaybackState.ACTION_PAUSE or
         PlaybackState.ACTION_STOP or
         PlaybackState.ACTION_SKIP_TO_NEXT or
