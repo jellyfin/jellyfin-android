@@ -113,4 +113,19 @@
     <string name="mobile_data_summary">Los medios se descargarán a través de WiFi y redes móviles.</string>
     <string name="mobile_data_and_roaming_summary">Los medios se descargarán a través de redes WiFi, móviles y de itineracia.</string>
     <string name="skip_media_segment">Saltar</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Mantén pulsado para acelerar el video</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Toca y mantén presionada la pantalla para acelerar la reproducción temporalmente</string>
+    <string name="external_player_mpvkt">Reproductor mpvKt</string>
+    <string name="external_player_mpvkt_description">Un reproductor basado en mpv-android que provee una bonita interfaz gráfica sobre el original.</string>
+    <string name="view_downloads">Ver las descargas</string>
+    <string name="downloads">Descargas</string>
+    <string name="download_notifications_description">Notificaciones de descargas</string>
+    <string name="failed_thumbnail">Error al descargar la miniatura</string>
+    <string name="failed_information">Error al obtener la informacion del archivo</string>
+    <string name="confirm_deletion">Confirmar eliminado</string>
+    <string name="confirm_deletion_desc">Tu quieres eliminar %1$s?</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="thumbnail_desc">\"Miniatura\"</string>
+    <string name="store_videos_in_internal_storage">Guardar videos en el almacenamiento interno</string>
 </resources>
