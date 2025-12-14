@@ -73,8 +73,7 @@
     <string name="dialog_web_view_outdated_message">La implementación de WebView utilizada por su dispositivo está desactualizada.
 \nActualice a una versión compatible.</string>
     <string name="dialog_web_view_outdated">WebView desactualizado</string>
-    <string name="dialog_web_view_not_supported_message">WebView no está soportado en este dispositivo.
-\nInstale una implementación compatible de WebView o cambie a un dispositivo compatible.</string>
+    <string name="dialog_web_view_not_supported_message">WebView no está soportado en este dispositivo.\nInstale una implementación compatible de WebView o cambie a un dispositivo compatible.</string>
     <string name="dialog_web_view_not_supported">WebView no soportado</string>
     <string name="pref_music_notification_always_dismissible_summary_on">La notificación se puede descartar incluso cuando se esta reproduciendo contenido</string>
     <string name="player_error_unsupported_content">No se pueden reproducir los medios desde este dispositivo</string>
