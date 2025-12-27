@@ -23,6 +23,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.webkit.WebViewAssetLoader.AssetsPathHandler
 import androidx.webkit.WebViewCompat
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.ApiClientController
 import org.jellyfin.mobile.app.AppPreferences
@@ -161,9 +162,12 @@ class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClien
 
         // Process JS functions called from other components (e.g. the PlayerActivity)
         lifecycleScope.launch {
+            Timber.d("WebViewFragment: Started listening to webappFunctionChannel")
             for (function in webappFunctionChannel) {
+                Timber.d("WebViewFragment: Executing JavaScript: $function")
                 webView.loadUrl("javascript:$function")
             }
+            Timber.d("WebViewFragment: Stopped listening to webappFunctionChannel")
         }
     }
 
