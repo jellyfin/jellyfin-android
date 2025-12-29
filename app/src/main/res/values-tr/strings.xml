@@ -32,7 +32,7 @@
     <string name="playback_info_transcoding">Dönüştürülüyor: %b</string>
     <string name="host_input_hint">Sunucu adı</string>
     <string name="external_player_mx_player_pro">MX Player Pro</string>
-    <string name="external_player_mx_player_free">MX Player Free</string>
+    <string name="external_player_mx_player_free">MX Player Ücretsiz</string>
     <string name="external_player_app">Harici oynatıcı uygulaması</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Videoların arka planda sadece ses olarak oynatılmalarına izin ver</string>
     <string name="pref_exoplayer_allow_background_audio">Arka planda ses</string>
