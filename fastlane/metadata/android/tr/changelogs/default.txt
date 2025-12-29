@@ -1,3 +1,3 @@
-Android için olan Jellyfin uygulamasını kullandığınız için teşekkür ederiz! En son yayınlanan Jellyfin Sunucusunun kullanılması her zaman tavsiye edilir.
+Android için olan Jellyfin uygulamasını kullandığınız için teşekkür ederiz! Her zaman son yayınlanan Jellyfin Sunucu sürümünün kullanılması tavsiye edilir.
 
-Daha fazla bilgi için lütfen jellyfin.org adresindeki blogumuza bakın veya GitHub'daki değişiklik günlüğünün tamamını okuyun.
+Daha fazla bilgi için jellyfin.org adresini ziyaret edin veya GitHub'daki tam değişiklik günlüğünü okuyun.
