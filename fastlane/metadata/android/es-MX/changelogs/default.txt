@@ -1,0 +1,3 @@
+Gracias por usar Jellyfin para Android! Usa siempre la version mas reciente de tu servidor Jellyfin
+
+Para mas información, por favor vea la documentacion de Github o el blog en jellyfin.org

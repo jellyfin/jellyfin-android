@@ -77,9 +77,9 @@
     <string name="bluetooth_permission_message">Juhtmeta kõrvaklappide või kõlarite lahtiühendamise tuvastamiseks vajab rakendus Bluetoothi juurdepääsu. Androidis kirjeldatakse seda luba kui juurdepääsu lähedalasuvatele seadmetele ja hoiatab, et Bluetooth-seadmeid saab kasutada praeguse asukoha tuletamiseks. Rakendus Jellyfin ei kasuta seda luba aga kunagi teie asukoha tuvastamiseks.</string>
     <string name="bluetooth_permission_continue">Jätka</string>
     <string name="battery_optimizations_message">Keela aku optimeerimine, et esitada meediat väljalülitatud ekraaniga.</string>
-    <string name="network_message">Kas soovite lubada allalaadimist mobiilse andmeside või rändlusvõrkude kaudu? Rakenduda võivad teie teenusepakkuja tasud. Sätet on võimalik hiljem seadistuste alt muuta.</string>
+    <string name="network_message">Kas lubada allalaadimine mobiilse andmeside või rändlusvõrkude kaudu? Rakenduda võivad teenusepakkuja tasud. Sätet on võimalik hiljem seadistuste alt muuta.</string>
     <string name="playback_info_transcoding">Ümberkodeerimine: %b</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Vältige ümberkodeerimist ja kuvage subtiitreid ainult põhistiiliga. Subtiitrite täpsem stiil pole saadaval, kui see on lubatud.</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Väldi ümberkodeerimist ja kuva subtiitreid ainult põhistiilis. Kui see on lubatud, pole subtiitrite täpsem kohandamine võimalik.</string>
     <string name="external_player_mpv_description">Lihtne, väike ja kerge, täiesti tasuta videopleier. Toetab laia valikut failivorminguid.</string>
     <string name="external_player_mx_player_free">MX Player Free</string>
     <string name="connection_error_unable_to_reach_sever">Serveriga ei saa ühendust</string>
@@ -102,9 +102,9 @@
     <string name="pref_music_notification_always_dismissible_title">Mängija keelamise teatis</string>
     <string name="pref_music_notification_always_dismissible_summary_off">Teatisest saab loobuda ainult siis, kui taasesitus on peatatud</string>
     <string name="pref_music_notification_always_dismissible_summary_on">Märguandest saab alati loobuda, isegi meedia esitamisel</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Käivitage horisontaalrežiimis videoid horisontaalpaigutusega</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">Käivita horisontaalrežiimis videod horisontaalpaigutusega</string>
     <string name="pref_exoplayer_allow_background_audio">Taustaheli</string>
-    <string name="pref_exoplayer_allow_background_audio_summary">Lubage videote esitamine taustal ainult heliga</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Luba videote taustal esitamine ainult heliga</string>
     <string name="pref_exoplayer_direct_play_ass">Luba SSA/ASS subtiitrid otseesituses</string>
     <string name="external_player_mx_player_free_description">Võimas videopleier täiustatud riistvaralise kiirenduse ja subtiitrite toega.</string>
     <string name="external_player_mx_player_pro">MX Player Pro</string>
