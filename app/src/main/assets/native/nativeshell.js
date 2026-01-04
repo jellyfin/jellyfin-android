@@ -6,6 +6,7 @@ const features = [
     "exit",
     "externallinks",
     "filedownload",
+    "fileinput",
     "htmlaudioautoplay",
     "htmlvideoautoplay",
     "multiserver",
