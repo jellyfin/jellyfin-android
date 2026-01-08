@@ -1,10 +1,10 @@
 [versions]
 # Plugins
-android-plugin = "8.13.1"
+android-plugin = "8.13.2"
 kotlin = "2.2.21"
-kotlin-ksp = "2.3.0"
+kotlin-ksp = "2.3.4"
 detekt = "1.23.8"
-android-junit5 = "1.14.0.0"
+android-junit5 = "2.0.0"
 
 # KotlinX
 coroutines = "1.10.2"
@@ -55,8 +55,8 @@ leakcanary = "2.14"
 
 # Testing
 junit = "6.0.1"
-kotest = "6.0.4"
-mockk = "1.14.6"
+kotest = "6.0.7"
+mockk = "1.14.7"
 androidx-test-runner = "1.7.0"
 androidx-test-espresso = "3.7.0"
 
