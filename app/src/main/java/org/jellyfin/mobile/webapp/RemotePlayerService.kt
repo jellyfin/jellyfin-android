@@ -7,7 +7,6 @@ import android.app.PendingIntent
 import android.app.Service
 import android.bluetooth.BluetoothA2dp
 import android.bluetooth.BluetoothHeadset
-import android.bluetooth.BluetoothHearingAid
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -67,6 +66,10 @@ import org.koin.android.ext.android.inject
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration.Companion.hours
 
+if (AndroidVersion.isAtLeastS) {
+    import android.bluetooth.BluetoothHearingAid
+}
+
 class RemotePlayerService : Service(), CoroutineScope {
 
     private lateinit var job: Job
@@ -113,12 +116,14 @@ class RemotePlayerService : Service(), CoroutineScope {
                         webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PAUSE)
                     }
                 }
-                BluetoothHearingAid.ACTION_CONNECTION_STATE_CHANGED -> {
-                    val extras = intent.extras ?: return
-                    val state = extras.getInt(BluetoothHearingAid.EXTRA_STATE)
-                    val previousState = extras.getInt(BluetoothHearingAid.EXTRA_PREVIOUS_STATE)
-                    if (state == BluetoothHearingAid.STATE_DISCONNECTED && previousState == BluetoothHearingAid.STATE_CONNECTED) {
-                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PAUSE)
+                if(AndroidVersion.isAtLeastS) {
+                    BluetoothHearingAid.ACTION_CONNECTION_STATE_CHANGED -> {
+                        val extras = intent.extras ?: return
+                        val state = extras.getInt(BluetoothHearingAid.EXTRA_STATE)
+                        val previousState = extras.getInt(BluetoothHearingAid.EXTRA_PREVIOUS_STATE)
+                        if (state == BluetoothHearingAid.STATE_DISCONNECTED && previousState == BluetoothHearingAid.STATE_CONNECTED) {
+                            webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PAUSE)
+                        }
                     }
                 }
             }
@@ -141,7 +146,9 @@ class RemotePlayerService : Service(), CoroutineScope {
             // Bluetooth related filters - needs BLUETOOTH permission
             addAction(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED)
             addAction(BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED)
-            addAction(BluetoothHearingAid.ACTION_CONNECTION_STATE_CHANGED)
+            if(AndroidVersion.isAtLeastS) {
+                addAction(BluetoothHearingAid.ACTION_CONNECTION_STATE_CHANGED)
+            }
         }
         registerReceiver(receiver, filter)
 

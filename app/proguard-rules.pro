@@ -30,5 +30,5 @@
 
 # Assume SDK >= 21 to remove unnecessary compat code
 -assumevalues class android.os.Build$VERSION {
-  int SDK_INT return 29..2147483647;
+  int SDK_INT return 21..2147483647;
 }
