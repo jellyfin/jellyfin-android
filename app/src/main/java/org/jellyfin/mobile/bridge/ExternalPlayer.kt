@@ -138,7 +138,7 @@ class ExternalPlayer(
                 component = getComponent(appPreferences.externalPlayerApp)
             }
             setDataAndType(url.toUri(), "video/*")
-            putExtra("title", source.name)
+            putExtra("title", source.getName(context))
             putExtra("position", source.startTime.inWholeMilliseconds.toInt())
             putExtra("return_result", true)
             putExtra("secure_uri", true)
@@ -167,7 +167,7 @@ class ExternalPlayer(
         }
         playerContract.launch(playerIntent)
         Timber.d(
-            "Starting playback [id=${source.itemId}, title=${source.name}, " +
+            "Starting playback [id=${source.itemId}, title=${source.getName(context)}, " +
                 "playMethod=${source.playMethod}, startTime=${source.startTime}]",
         )
     }

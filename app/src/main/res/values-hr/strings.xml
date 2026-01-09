@@ -112,4 +112,25 @@
     <string name="wifi_only_summary">Dozvoli preuzimanje medija samo preko WiFi mreže.</string>
     <string name="mobile_data_summary">Dozvoli preuzimanje medija preko WiFi i mobilne mreže.</string>
     <string name="mobile_data_and_roaming_summary">Dozvoli preuzimanje medija preko WiFi i mobilne mreže čak i u roamingu.</string>
+    <string name="skip_media_segment">Preskoči</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Zadrži za ubrzanje</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Pritisni i zadrži ekran za privremeno ubrzanje</string>
+    <string name="external_player_mpvkt">mpvKt Reproduktor</string>
+    <string name="external_player_mpvkt_description">Medijski reproduktor temeljen na mpv-androidu, čiji je cilj ponuditi ljepše i ugodnije korisničko sučelje od izvornog.</string>
+    <string name="view_downloads">Pregledaj preuzimanja</string>
+    <string name="downloads">Preuzimanja</string>
+    <string name="download_notifications_description">Preuzmi obavijesti</string>
+    <string name="failed_thumbnail">Preuzimanje sličice nije uspjelo</string>
+    <string name="failed_information">Preuzimanje informacija o mediju nije uspjelo</string>
+    <string name="failed_network_method_check">Molimo provjerite vaše dozvoljene metode preuzimanja</string>
+    <string name="confirm_deletion">Potvrdite brisanje</string>
+    <string name="confirm_deletion_desc">Sigurno želite obrisati %1$s?</string>
+    <string name="yes">Da</string>
+    <string name="no">Ne</string>
+    <string name="thumbnail_desc">Sličica</string>
+    <string name="store_videos_in_internal_storage">Spremi videozapise u internu pohranu</string>
+    <string name="stored_videos_in_internal_storage_desc">Videozapisi poput filmova i TV serija bit će pohranjeni u internu pohranu aplikacije, čime će im se omogućiti pristup iz same aplikacije.</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Preuzimanje %1$d naslova</string>
+    <string name="downloaded">Preuzeto %1$s</string>
 </resources>
