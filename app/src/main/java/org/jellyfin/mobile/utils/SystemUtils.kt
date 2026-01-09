@@ -112,7 +112,7 @@ suspend fun MainActivity.removeDownload(download: LocalJellyfinMediaSource, forc
         val confirmation = suspendCancellableCoroutine { continuation ->
             AlertDialog.Builder(this)
                 .setTitle(getString(R.string.confirm_deletion))
-                .setMessage(getString(R.string.confirm_deletion_desc, download.name))
+                .setMessage(getString(R.string.confirm_deletion_desc, download.getName(this)))
                 .setPositiveButton(getString(R.string.yes)) { _, _ ->
                     continuation.resume(true)
                 }
