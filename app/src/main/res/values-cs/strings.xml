@@ -134,4 +134,5 @@
     <string name="external_player_mpvkt">Přehrávač mpvKt</string>
     <string name="pref_exoplayer_allow_press_speed_up">Podržte pro zrychlení</string>
     <string name="skip_media_segment">Přeskočit</string>
+    <string name="special_episode">Speciál</string>
 </resources>
