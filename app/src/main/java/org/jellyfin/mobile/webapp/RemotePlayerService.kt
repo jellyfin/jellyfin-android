@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.bluetooth.BluetoothA2dp
 import android.bluetooth.BluetoothHeadset
+import android.bluetooth.BluetoothHearingAid
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -65,10 +66,6 @@ import org.jellyfin.mobile.utils.setPlaybackState
 import org.koin.android.ext.android.inject
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration.Companion.hours
-
-if (AndroidVersion.isAtLeastS) {
-    import android.bluetooth.BluetoothHearingAid
-}
 
 class RemotePlayerService : Service(), CoroutineScope {
 
