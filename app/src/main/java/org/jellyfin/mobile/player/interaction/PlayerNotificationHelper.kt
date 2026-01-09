@@ -105,7 +105,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                         setLargeIcon(mediaIcon)
                     }
                 }
-                setContentTitle(currentMediaSource.name)
+                setContentTitle(currentMediaSource.getName(context))
                 currentMediaSource.item?.artists?.joinToString()?.let { artists ->
                     setContentText(artists)
                 }
