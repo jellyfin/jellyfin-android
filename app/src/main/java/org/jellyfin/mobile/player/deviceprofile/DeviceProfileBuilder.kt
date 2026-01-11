@@ -4,11 +4,15 @@ import android.media.MediaCodecList
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.sdk.model.api.CodecProfile
+import org.jellyfin.sdk.model.api.CodecType
 import org.jellyfin.sdk.model.api.ContainerProfile
 import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.DirectPlayProfile
 import org.jellyfin.sdk.model.api.DlnaProfileType
 import org.jellyfin.sdk.model.api.MediaStreamProtocol
+import org.jellyfin.sdk.model.api.ProfileCondition
+import org.jellyfin.sdk.model.api.ProfileConditionType
+import org.jellyfin.sdk.model.api.ProfileConditionValue
 import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
 import org.jellyfin.sdk.model.api.SubtitleProfile
 import org.jellyfin.sdk.model.api.TranscodingProfile
@@ -18,6 +22,7 @@ class DeviceProfileBuilder(
 ) {
     private val supportedVideoCodecs: Array<Array<String>>
     private val supportedAudioCodecs: Array<Array<String>>
+    private val videoCodecsProfiles: Map<String, Set<String>>
 
     private val transcodingProfiles: List<TranscodingProfile>
 
@@ -66,6 +71,7 @@ class DeviceProfileBuilder(
                 audioCodecs.containsKey(codec) || codec in FORCED_AUDIO_CODECS
             }.toTypedArray()
         }
+        videoCodecsProfiles = videoCodecs.entries.associate { (k, v) -> k to v.profiles }
 
         transcodingProfiles = listOf(
             TranscodingProfile(
@@ -109,11 +115,14 @@ class DeviceProfileBuilder(
                 directPlayProfiles.add(
                     DirectPlayProfile(
                         type = DlnaProfileType.VIDEO,
-                        container = SUPPORTED_CONTAINER_FORMATS[i],
+                        container = container,
                         videoCodec = supportedVideoCodecs[i].joinToString(","),
                         audioCodec = supportedAudioCodecs[i].joinToString(","),
                     ),
                 )
+                for (videoCodec in supportedVideoCodecs[i]) {
+                    generateCodecProfile(container, videoCodec)?.let(codecProfiles::add)
+                }
             }
             if (supportedAudioCodecs[i].isNotEmpty()) {
                 containerProfiles.add(
@@ -146,6 +155,31 @@ class DeviceProfileBuilder(
             maxStreamingBitrate = MAX_STREAMING_BITRATE,
             maxStaticBitrate = MAX_STATIC_BITRATE,
             musicStreamingTranscodingBitrate = MAX_MUSIC_TRANSCODING_BITRATE,
+        )
+    }
+
+    private fun generateCodecProfile(
+        container: String,
+        videoCodec: String,
+    ): CodecProfile? {
+        val profilesSet = videoCodecsProfiles[videoCodec]
+        if (profilesSet?.isNotEmpty() != true) {
+            return null
+        }
+
+        return CodecProfile(
+            type = CodecType.VIDEO,
+            container = container,
+            codec = videoCodec,
+            applyConditions = listOf(),
+            conditions = listOf(
+                ProfileCondition(
+                    condition = ProfileConditionType.EQUALS_ANY,
+                    property = ProfileConditionValue.VIDEO_PROFILE,
+                    value = profilesSet.joinToString("|"),
+                    isRequired = false,
+                ),
+            ),
         )
     }
 
