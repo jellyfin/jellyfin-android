@@ -1,5 +1,7 @@
 package org.jellyfin.mobile.player.mediasegments
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.utils.extensions.duration
 import org.jellyfin.sdk.api.client.ApiClient
@@ -12,8 +14,6 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
 import kotlin.time.Duration.Companion.seconds
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 fun Map<MediaSegmentType, MediaSegmentAction>.toMediaSegmentActionsString(): String {
     return map { (key, value) ->
