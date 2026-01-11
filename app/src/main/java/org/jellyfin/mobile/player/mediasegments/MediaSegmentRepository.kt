@@ -1,5 +1,7 @@
 package org.jellyfin.mobile.player.mediasegments
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.utils.extensions.duration
 import org.jellyfin.sdk.api.client.ApiClient
@@ -91,9 +93,11 @@ class MediaSegmentRepository : KoinComponent {
     }
 
     suspend fun getSegmentsForItem(item: BaseItemDto): List<MediaSegmentDto> = runCatching {
-        mediaSegmentsApi.getItemSegments(
-            itemId = item.id,
-            includeSegmentTypes = SUPPORTED_TYPES,
-        ).content.items
+        withContext(Dispatchers.IO) {
+            mediaSegmentsApi.getItemSegments(
+                itemId = item.id,
+                includeSegmentTypes = SUPPORTED_TYPES,
+            ).content.items
+        }
     }.getOrDefault(emptyList())
 }

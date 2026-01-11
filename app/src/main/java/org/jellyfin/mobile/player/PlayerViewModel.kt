@@ -32,6 +32,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.PLAYER_EVENT_CHANNEL
@@ -168,10 +169,12 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         viewModelScope.launch {
             var customPrefs: Map<String, String?>? = null
             try {
-                val displayPreferencesDto by displayPreferencesApi.getDisplayPreferences(
-                    displayPreferencesId = Constants.DISPLAY_PREFERENCES_ID_USER_SETTINGS,
-                    client = Constants.DISPLAY_PREFERENCES_CLIENT_EMBY,
-                )
+                val displayPreferencesDto = withContext(Dispatchers.IO) {
+                    displayPreferencesApi.getDisplayPreferences(
+                        displayPreferencesId = Constants.DISPLAY_PREFERENCES_ID_USER_SETTINGS,
+                        client = Constants.DISPLAY_PREFERENCES_CLIENT_EMBY,
+                    ).content
+                }
 
                 customPrefs = displayPreferencesDto.customPrefs
             } catch (e: ApiClientException) {
@@ -188,7 +191,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
         viewModelScope.launch {
             try {
-                val userConfig = userApi.getCurrentUser().content.configuration
+                val userConfig = withContext(Dispatchers.IO) {
+                    userApi.getCurrentUser().content.configuration
+                }
                 autoPlayNextEpisodeEnabled = userConfig?.enableNextEpisodeAutoPlay ?: false
             } catch (e: ApiClientException) {
                 Timber.e(e, "Failed to load auto play preference")
@@ -363,22 +368,25 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
     private suspend fun Player.reportPlaybackStart(mediaSource: RemoteJellyfinMediaSource) {
         try {
-            playStateApi.reportPlaybackStart(
-                PlaybackStartInfo(
-                    itemId = mediaSource.itemId,
-                    playMethod = mediaSource.playMethod,
-                    playSessionId = mediaSource.playSessionId,
-                    audioStreamIndex = mediaSource.selectedAudioStream?.index,
-                    subtitleStreamIndex = mediaSource.selectedSubtitleStream?.index,
-                    isPaused = !isPlaying,
-                    isMuted = false,
-                    canSeek = true,
-                    positionTicks = mediaSource.startTime.inWholeTicks,
-                    volumeLevel = audioManager.getVolumeLevelPercent(),
-                    repeatMode = RepeatMode.REPEAT_NONE,
-                    playbackOrder = PlaybackOrder.DEFAULT,
-                ),
-            )
+            val isPaused = !isPlaying
+            withContext(Dispatchers.IO) {
+                playStateApi.reportPlaybackStart(
+                    PlaybackStartInfo(
+                        itemId = mediaSource.itemId,
+                        playMethod = mediaSource.playMethod,
+                        playSessionId = mediaSource.playSessionId,
+                        audioStreamIndex = mediaSource.selectedAudioStream?.index,
+                        subtitleStreamIndex = mediaSource.selectedSubtitleStream?.index,
+                        isPaused = isPaused,
+                        isMuted = false,
+                        canSeek = true,
+                        positionTicks = mediaSource.startTime.inWholeTicks,
+                        volumeLevel = audioManager.getVolumeLevelPercent(),
+                        repeatMode = RepeatMode.REPEAT_NONE,
+                        playbackOrder = PlaybackOrder.DEFAULT,
+                    ),
+                )
+            }
         } catch (e: ApiClientException) {
             Timber.e(e, "Failed to report playback start")
         }
@@ -416,23 +424,26 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             val stream = AudioManager.STREAM_MUSIC
             val volumeRange = audioManager.getVolumeRange(stream)
             val currentVolume = audioManager.getStreamVolume(stream)
+            val isPaused = !isPlaying
             try {
-                playStateApi.reportPlaybackProgress(
-                    PlaybackProgressInfo(
-                        itemId = mediaSource.itemId,
-                        playMethod = mediaSource.playMethod,
-                        playSessionId = mediaSource.playSessionId,
-                        audioStreamIndex = mediaSource.selectedAudioStream?.index,
-                        subtitleStreamIndex = mediaSource.selectedSubtitleStream?.index,
-                        isPaused = !isPlaying,
-                        isMuted = false,
-                        canSeek = true,
-                        positionTicks = playbackPosition.inWholeTicks,
-                        volumeLevel = (currentVolume - volumeRange.first) * Constants.PERCENT_MAX / volumeRange.width,
-                        repeatMode = RepeatMode.REPEAT_NONE,
-                        playbackOrder = PlaybackOrder.DEFAULT,
-                    ),
-                )
+                withContext(Dispatchers.IO) {
+                    playStateApi.reportPlaybackProgress(
+                        PlaybackProgressInfo(
+                            itemId = mediaSource.itemId,
+                            playMethod = mediaSource.playMethod,
+                            playSessionId = mediaSource.playSessionId,
+                            audioStreamIndex = mediaSource.selectedAudioStream?.index,
+                            subtitleStreamIndex = mediaSource.selectedSubtitleStream?.index,
+                            isPaused = isPaused,
+                            isMuted = false,
+                            canSeek = true,
+                            positionTicks = playbackPosition.inWholeTicks,
+                            volumeLevel = (currentVolume - volumeRange.first) * Constants.PERCENT_MAX / volumeRange.width,
+                            repeatMode = RepeatMode.REPEAT_NONE,
+                            playbackOrder = PlaybackOrder.DEFAULT,
+                        ),
+                    )
+                }
             } catch (e: ApiClientException) {
                 Timber.e(e, "Failed to report playback progress")
             }
@@ -452,19 +463,23 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 // Report stopped playback
-                playStateApi.reportPlaybackStopped(
-                    PlaybackStopInfo(
-                        itemId = mediaSource.itemId,
-                        positionTicks = lastPositionTicks,
-                        playSessionId = mediaSource.playSessionId,
-                        liveStreamId = mediaSource.liveStreamId,
-                        failed = false,
-                    ),
-                )
+                withContext(Dispatchers.IO) {
+                    playStateApi.reportPlaybackStopped(
+                        PlaybackStopInfo(
+                            itemId = mediaSource.itemId,
+                            positionTicks = lastPositionTicks,
+                            playSessionId = mediaSource.playSessionId,
+                            liveStreamId = mediaSource.liveStreamId,
+                            failed = false,
+                        ),
+                    )
+                }
 
                 // Mark video as watched if playback finished
                 if (hasFinished) {
-                    playStateApi.markPlayedItem(itemId = mediaSource.itemId)
+                    withContext(Dispatchers.IO) {
+                        playStateApi.markPlayedItem(itemId = mediaSource.itemId)
+                    }
                 }
 
                 // Stop active encoding if transcoding
@@ -477,10 +492,12 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
     suspend fun stopTranscoding(mediaSource: RemoteJellyfinMediaSource) {
         if (mediaSource.playMethod == PlayMethod.TRANSCODE) {
-            hlsSegmentApi.stopEncodingProcess(
-                deviceId = apiClient.deviceInfo.id,
-                playSessionId = mediaSource.playSessionId,
-            )
+            withContext(Dispatchers.IO) {
+                hlsSegmentApi.stopEncodingProcess(
+                    deviceId = apiClient.deviceInfo.id,
+                    playSessionId = mediaSource.playSessionId,
+                )
+            }
         }
     }
 
