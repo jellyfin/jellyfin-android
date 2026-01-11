@@ -12,6 +12,8 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
 import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 fun Map<MediaSegmentType, MediaSegmentAction>.toMediaSegmentActionsString(): String {
     return map { (key, value) ->
@@ -91,9 +93,11 @@ class MediaSegmentRepository : KoinComponent {
     }
 
     suspend fun getSegmentsForItem(item: BaseItemDto): List<MediaSegmentDto> = runCatching {
-        mediaSegmentsApi.getItemSegments(
-            itemId = item.id,
-            includeSegmentTypes = SUPPORTED_TYPES,
-        ).content.items
+        withContext(Dispatchers.IO) {
+            mediaSegmentsApi.getItemSegments(
+                itemId = item.id,
+                includeSegmentTypes = SUPPORTED_TYPES,
+            ).content.items
+        }
     }.getOrDefault(emptyList())
 }

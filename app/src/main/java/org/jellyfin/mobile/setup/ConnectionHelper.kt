@@ -4,6 +4,7 @@ import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.ui.state.CheckUrlState
 import org.jellyfin.sdk.Jellyfin
@@ -21,7 +22,9 @@ class ConnectionHelper(
     suspend fun checkServerUrl(enteredUrl: String): CheckUrlState {
         Timber.i("checkServerUrlAndConnection $enteredUrl")
 
-        val candidates = jellyfin.discovery.getAddressCandidates(enteredUrl)
+        val candidates = withContext(Dispatchers.IO) {
+            jellyfin.discovery.getAddressCandidates(enteredUrl)
+        }
         Timber.i("Address candidates are $candidates")
 
         // Find servers and classify them into groups.
@@ -29,7 +32,9 @@ class ConnectionHelper(
         // GOOD are kept if there's no GREAT one.
         val badServers = mutableListOf<RecommendedServerInfo>()
         val goodServers = mutableListOf<RecommendedServerInfo>()
-        val greatServer = jellyfin.discovery.getRecommendedServers(candidates).firstOrNull { recommendedServer ->
+        val greatServer = withContext(Dispatchers.IO) {
+            jellyfin.discovery.getRecommendedServers(candidates)
+        }.firstOrNull { recommendedServer ->
             when (recommendedServer.score) {
                 RecommendedServerInfoScore.GREAT -> true
                 RecommendedServerInfoScore.GOOD -> {
