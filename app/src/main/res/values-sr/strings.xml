@@ -133,4 +133,5 @@
     <string name="yes">Да</string>
     <string name="no">Не</string>
     <string name="thumbnail_desc">Сличица</string>
+    <string name="special_episode">Специјал</string>
 </resources>
