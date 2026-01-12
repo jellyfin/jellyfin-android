@@ -82,11 +82,11 @@
     <string name="player_error_network_failure">No se puede cargar la información de los medios desde el servidor</string>
     <string name="player_error_invalid_play_options">No se puede resolver la información de reproducción</string>
     <string name="connection_error_unsupported_version_or_product">Producto o versión no soportados</string>
-    <string name="connection_error_unable_to_reach_sever">No se puede acceder al servidor</string>
+    <string name="connection_error_unable_to_reach_sever">No se ha podido acceder al servidor</string>
     <plurals name="connection_error_prefix">
-        <item quantity="one">Intentado candidato %d para la entrada, sin éxito.</item>
-        <item quantity="many">Intentado %d candidatos para la entrada, sin éxito.</item>
-        <item quantity="other">Intentados los candidatos %d para la entrada, sin éxito.</item>
+        <item quantity="one">Intentado %d candidato para la entrada, sin éxito.</item>
+        <item quantity="many">Intentados %d candidatos para la entrada, sin éxito.</item>
+        <item quantity="other">Intentados %d candidatos para la entrada, sin éxito.</item>
     </plurals>
     <string name="toast_reopen_after_change">Vuelve a abrir la aplicación después de realizar los cambios</string>
     <string name="dialog_button_ignore">Ignorar</string>
