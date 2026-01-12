@@ -111,4 +111,26 @@
     <string name="wifi_only_summary">Θα γίνει λήψη των πολυμέσων μόνο μέσω WiFi.</string>
     <string name="mobile_data_summary">Θα γίνει λήψη των πολυμέσων μέσω WiFi και δεδομένων κινητής τηλεφωνίας.</string>
     <string name="mobile_data_and_roaming_summary">Θα γίνει λήψη των πολυμέσων μέσω WiFi, δεδομένων κινητής τηλεφωνίας και δικτύων περιαγωγής.</string>
+    <string name="special_episode">Σπέσιαλ</string>
+    <string name="skip_media_segment">Παράλειψη</string>
+    <string name="pref_exoplayer_allow_press_speed_up">Κρατήστε πατημένο για γρήγορη αναπαραγωγή</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">Αγγίξτε παρατεταμένα την οθόνη για να επιταχύνετε προσωρινά την αναπαραγωγή</string>
+    <string name="external_player_mpvkt">Πρόγραμμα αναπαραγωγής mpvKt</string>
+    <string name="external_player_mpvkt_description">Ενα πρόγραμμα αναπαραγωγής πολυμέσων βασισμένο στο mpv-android με στόχο να παρέχει μια καλύτερη διεπαφή χρήστη σε σχέση με το αρχικό.</string>
+    <string name="view_downloads">Προβολή λήψεων</string>
+    <string name="downloads">Λήψεις</string>
+    <string name="download_notifications_description">Ειδοποιήσεις λήψεων</string>
+    <string name="failed_thumbnail">Αποτυχία λήψης μικρογραφίας</string>
+    <string name="failed_information">Αποτυχία ανάκτησης πληροφοριών πολυμέσων</string>
+    <string name="failed_network_method_check">Παρακαλώ ελέγξτε τις επιτρεπόμενες μεθόδους λήψης</string>
+    <string name="confirm_deletion">Επιβεβαίωση διαγραφής</string>
+    <string name="confirm_deletion_desc">Θέλετε να διαγράψετε το %1$s;</string>
+    <string name="yes">Ναι</string>
+    <string name="no">Οχι</string>
+    <string name="thumbnail_desc">Μικρογραφία</string>
+    <string name="store_videos_in_internal_storage">Αποθήκευση βίντεο στον εσωτερικό χώρο αποθήκευσης</string>
+    <string name="stored_videos_in_internal_storage_desc">Βίντεο όπως ταινίες και τηλεοπτικές εκπομπές θα αποθηκεύονται στον εσωτερικό χώρο αποθήκευσης της εφαρμογής. Η πρόσβαση επιτρέπεται μέσα από την εφαρμογή.</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Λήψη %1$d τίτλων</string>
+    <string name="downloaded">Εγινε λήψη του %1$s</string>
 </resources>
