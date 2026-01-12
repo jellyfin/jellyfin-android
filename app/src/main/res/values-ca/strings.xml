@@ -131,4 +131,5 @@
     <string name="downloading_desc">S\'estan descarregant %1$d títols</string>
     <string name="downloaded">S\'ha descarregat %1$s</string>
     <string name="skip_media_segment">Salta</string>
+    <string name="special_episode">Especial</string>
 </resources>
