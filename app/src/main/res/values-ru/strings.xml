@@ -134,4 +134,5 @@
     <string name="no">Нет</string>
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="skip_media_segment">Пропустить</string>
+    <string name="special_episode">Спецэпизод</string>
 </resources>
