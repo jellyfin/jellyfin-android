@@ -43,6 +43,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
     private lateinit var pressSpeedUpPreference: CheckBoxPreference
     private lateinit var rememberBrightnessPreference: Preference
     private lateinit var backgroundAudioPreference: Preference
+    private lateinit var horizontalGesturePreference: Preference
     private lateinit var directPlayAssPreference: Preference
     private lateinit var externalPlayerChoicePreference: Preference
 
@@ -108,6 +109,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 rememberBrightnessPreference.enabled = selection == VideoPlayerType.EXO_PLAYER && swipeGesturesPreference.checked
                 pressSpeedUpPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                horizontalGesturePreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 directPlayAssPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
@@ -141,6 +143,12 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
             titleRes = R.string.pref_exoplayer_allow_background_audio
             summaryRes = R.string.pref_exoplayer_allow_background_audio_summary
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+        }
+        horizontalGesturePreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_HORIZONTAL_GESTURE) {
+            titleRes = R.string.pref_exoplayer_allow_horizontal_gesture
+            summaryRes = R.string.pref_exoplayer_allow_horizontal_gesture_summary
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+            defaultValue = true
         }
         directPlayAssPreference = checkBox(Constants.PREF_EXOPLAYER_DIRECT_PLAY_ASS) {
             titleRes = R.string.pref_exoplayer_direct_play_ass

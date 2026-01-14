@@ -102,6 +102,8 @@
     <string name="pref_exoplayer_allow_press_speed_up_summary">Touch and hold the screen to temporarily speed up playback</string>
     <string name="pref_exoplayer_allow_background_audio">Background audio</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Allow playing videos in the background with audio-only</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Horizontal gestures</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Allow horizontal gesture control for video seeking</string>
     <string name="pref_exoplayer_direct_play_ass">Allow SSA/ASS subtitles in direct play</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Prevent transcoding and show subtitles with basic styling only. Advanced subtitle styling will not be available if enabled.</string>
 

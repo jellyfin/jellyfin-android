@@ -286,6 +286,8 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     fun onFastForward() = viewModel.fastForward()
 
+    fun onSeekByOffset(offsetMs: Long) = viewModel.seekByOffset(offsetMs)
+
     fun onPreviousChapter() = viewModel.previousChapter()
 
     fun onNextChapter() = viewModel.nextChapter()

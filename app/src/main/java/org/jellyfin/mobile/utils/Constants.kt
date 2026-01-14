@@ -38,6 +38,7 @@ object Constants {
     const val PREF_EXOPLAYER_REMEMBER_BRIGHTNESS = "pref_exoplayer_remember_brightness"
     const val PREF_EXOPLAYER_BRIGHTNESS = "pref_exoplayer_brightness"
     const val PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO = "pref_exoplayer_allow_background_audio"
+    const val PREF_EXOPLAYER_ALLOW_HORIZONTAL_GESTURE = "pref_exoplayer_allow_horizontal_gesture"
     const val PREF_EXOPLAYER_DIRECT_PLAY_ASS = "pref_exoplayer_direct_play_ass"
     const val PREF_EXTERNAL_PLAYER_APP = "pref_external_player_app"
     const val PREF_SUBTITLE_STYLE = "pref_subtitle_style"
@@ -107,6 +108,10 @@ object Constants {
     const val DEFAULT_CONTROLS_TIMEOUT_MS = 2500
     const val SWIPE_GESTURE_EXCLUSION_SIZE_VERTICAL = 64
     const val DEFAULT_CENTER_OVERLAY_TIMEOUT_MS = 250
+    const val SWIPE_GESTURE_EXCLUSION_SIZE_HORIZONTAL = 48
+    const val HORIZONTAL_SWIPE_DISTANCE_PER_SECOND = 20 // base pixels needed to swipe for 1 second seek
+    const val SEEK_ACCELERATION_FACTOR = 2.5f // acceleration factor for non-linear seek
+    const val SEEK_ACCELERATION_FACTOR_PORTRAIT = 5.0f
     const val DISPLAY_PREFERENCES_ID_USER_SETTINGS = "usersettings"
     const val DISPLAY_PREFERENCES_CLIENT_EMBY = "emby"
     const val DISPLAY_PREFERENCES_SKIP_BACK_LENGTH = "skipBackLength"
