@@ -11,6 +11,7 @@ import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_OFF
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.core.content.getSystemService
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
@@ -24,6 +25,7 @@ import org.jellyfin.mobile.utils.brightness
 import org.jellyfin.mobile.utils.dip
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.Locale
 import kotlin.math.abs
 
 class PlayerGestureHelper(
@@ -37,6 +39,11 @@ class PlayerGestureHelper(
     private val gestureIndicatorOverlayLayout: LinearLayout by playerBinding::gestureOverlayLayout
     private val gestureIndicatorOverlayImage: ImageView by playerBinding::gestureOverlayImage
     private val gestureIndicatorOverlayProgress: ProgressBar by playerBinding::gestureOverlayProgress
+    private val seekOverlayLayout: LinearLayout by playerBinding::seekOverlayLayout
+    private val seekOverlayImage: ImageView by playerBinding::seekOverlayImage
+    private val seekOverlayText: TextView by playerBinding::seekOverlayText
+    private val seekPositionText: TextView by playerBinding::seekPositionText
+    private val seekOverlayProgress: ProgressBar by playerBinding::seekOverlayProgress
     private var isOnPressingSpeedUp = false
 
     init {
@@ -59,6 +66,26 @@ class PlayerGestureHelper(
     private var swipeGestureValueTracker = -1f
 
     /**
+     * Tracks whether a horizontal swipe seek gesture is in progress.
+     */
+    private var isHorizontalSeeking = false
+
+    /**
+     * Tracks accumulated seek time during horizontal swipe (in milliseconds).
+     */
+    private var seekTimeAccumulator = 0L
+
+    /**
+     * Tracks the initial playback position when seek gesture started.
+     */
+    private var seekStartPosition = 0L
+
+    /**
+     * Tracks total duration of current media.
+     */
+    private var mediaDuration = 0L
+
+    /**
      * Runnable that hides [playerView] controller
      */
     private val hidePlayerViewControllerAction = Runnable {
@@ -70,6 +97,13 @@ class PlayerGestureHelper(
      */
     private val hideGestureIndicatorOverlayAction = Runnable {
         gestureIndicatorOverlayLayout.isVisible = false
+    }
+
+    /**
+     * Runnable that hides [seekOverlayLayout]
+     */
+    private val hideSeekOverlayAction = Runnable {
+        seekOverlayLayout.isVisible = false
     }
 
     /**
@@ -149,18 +183,100 @@ class PlayerGestureHelper(
                     return false
                 }
 
-                // Check whether swipe was started in excluded region
-                val exclusionSize = playerView.resources.dip(Constants.SWIPE_GESTURE_EXCLUSION_SIZE_VERTICAL)
+                // Check whether swipe was started in excluded region (vertical)
+                val exclusionSizeVertical = playerView.resources.dip(Constants.SWIPE_GESTURE_EXCLUSION_SIZE_VERTICAL)
                 if (
                     firstEvent == null ||
-                    firstEvent.y < exclusionSize ||
-                    firstEvent.y > playerView.height - exclusionSize
+                    firstEvent.y < exclusionSizeVertical ||
+                    firstEvent.y > playerView.height - exclusionSizeVertical
                 ) {
                     return false
                 }
 
-                // Check whether swipe was oriented vertically
-                if (abs(distanceY / distanceX) < 2) {
+                // Check whether swipe was started in excluded region (horizontal) for horizontal gestures
+                val exclusionSizeHorizontal = playerView.resources.dip(Constants.SWIPE_GESTURE_EXCLUSION_SIZE_HORIZONTAL)
+
+                // Determine swipe direction based on distance ratio
+                val isVerticalSwipe = abs(distanceY / distanceX) >= 2
+                val isHorizontalSwipe = abs(distanceX / distanceY) >= 2
+
+                // Handle horizontal swipe for seek
+                if ((isHorizontalSwipe || isHorizontalSeeking) && appPreferences.exoPlayerAllowHorizontalGesture) {
+                    // Check horizontal exclusion zones (edges of screen)
+                    if (
+                        firstEvent.x < exclusionSizeHorizontal ||
+                        firstEvent.x > playerView.width - exclusionSizeHorizontal
+                    ) {
+                        return false
+                    }
+
+                    // Initialize seek start position on first swipe
+                    if (!isHorizontalSeeking) {
+                        val player = playerView.player
+                        if (player != null) {
+                            seekStartPosition = player.currentPosition
+                            mediaDuration = player.duration.coerceAtLeast(0)
+                        }
+                    }
+
+                    isHorizontalSeeking = true
+
+                    // Calculate seek time with non-linear acceleration
+                    // The further you swipe, the faster the seek time increases
+                    val baseSeekDeltaMs = (-distanceX * 1000 / Constants.HORIZONTAL_SWIPE_DISTANCE_PER_SECOND).toLong()
+
+                    // Apply acceleration based on accumulated distance
+                    val currentSeekSeconds = abs(seekTimeAccumulator / 1000f)
+                    val accelerationMultiplier = 1f + (currentSeekSeconds / 30f) * (Constants.SEEK_ACCELERATION_FACTOR - 1f)
+                    val acceleratedSeekDelta = (baseSeekDeltaMs * accelerationMultiplier).toLong()
+
+                    seekTimeAccumulator += acceleratedSeekDelta
+
+                    // Clamp the accumulated seek time to valid range
+                    val minSeek = -seekStartPosition
+                    val maxSeek = if (mediaDuration > 0) mediaDuration - seekStartPosition else Long.MAX_VALUE
+                    // Allow seeking up to media duration (if known). Do not enforce an artificial MAX_SEEK_TIME_MS limit.
+                    seekTimeAccumulator = seekTimeAccumulator.coerceIn(minSeek, maxSeek)
+
+                    // Update the seek overlay with mm:ss format
+                    val totalSeconds = abs(seekTimeAccumulator / 1000)
+                    val minutes = totalSeconds / 60
+                    val seconds = totalSeconds % 60
+                    val timeFormatted = String.format(Locale.US, "%02d:%02d", minutes, seconds)
+                    val seekText = if (seekTimeAccumulator >= 0) "+$timeFormatted" else "-$timeFormatted"
+                    seekOverlayText.text = seekText
+
+                    // Update position text (current position / duration)
+                    val targetPosition = (seekStartPosition + seekTimeAccumulator).coerceIn(0, mediaDuration)
+                    seekPositionText.text = "${formatTime(targetPosition)} / ${formatTime(mediaDuration)}"
+
+                    // Update progress bar
+                    if (mediaDuration > 0) {
+                        seekOverlayProgress.max = 1000
+                        seekOverlayProgress.progress = (targetPosition * 1000 / mediaDuration).toInt()
+                    }
+
+                    // Set appropriate icon based on direction
+                    val iconRes = if (seekTimeAccumulator >= 0) {
+                        R.drawable.ic_fast_forward_black_32dp
+                    } else {
+                        R.drawable.ic_rewind_black_32dp
+                    }
+                    seekOverlayImage.setImageResource(iconRes)
+
+                    seekOverlayLayout.isVisible = true
+                    return true
+                } else if (isHorizontalSeeking && !appPreferences.exoPlayerAllowHorizontalGesture) {
+                    // If horizontal gesture is disabled while a gesture was in progress, reset the state
+                    isHorizontalSeeking = false
+                    seekTimeAccumulator = 0L
+                    seekStartPosition = 0L
+                    mediaDuration = 0L
+                    seekOverlayLayout.isVisible = false
+                }
+
+                // Handle vertical swipe for brightness/volume (existing logic)
+                if (!isVerticalSwipe) {
                     return false
                 }
 
@@ -262,6 +378,23 @@ class PlayerGestureHelper(
                         onPressSpeedUp(false)
                     }
                 }
+
+                // Handle horizontal seek gesture completion
+                if (isHorizontalSeeking && seekTimeAccumulator != 0L) {
+                    fragment.onSeekByOffset(seekTimeAccumulator)
+                    seekOverlayLayout.apply {
+                        removeCallbacks(hideSeekOverlayAction)
+                        postDelayed(
+                            hideSeekOverlayAction,
+                            Constants.DEFAULT_CENTER_OVERLAY_TIMEOUT_MS.toLong(),
+                        )
+                    }
+                }
+                isHorizontalSeeking = false
+                seekTimeAccumulator = 0L
+                seekStartPosition = 0L
+                mediaDuration = 0L
+
                 // Hide gesture indicator after timeout, if shown
                 gestureIndicatorOverlayLayout.apply {
                     if (isVisible) {
@@ -284,5 +417,20 @@ class PlayerGestureHelper(
 
     private fun updateZoomMode(enabled: Boolean) {
         playerView.resizeMode = if (enabled) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FIT
+    }
+
+    /**
+     * Format time in milliseconds to mm:ss or h:mm:ss format
+     */
+    private fun formatTime(timeMs: Long): String {
+        val totalSeconds = timeMs / 1000
+        val hours = totalSeconds / 3600
+        val minutes = (totalSeconds % 3600) / 60
+        val seconds = totalSeconds % 60
+        return if (hours > 0) {
+            String.format(Locale.US, "%d:%02d:%02d", hours, minutes, seconds)
+        } else {
+            String.format(Locale.US, "%02d:%02d", minutes, seconds)
+        }
     }
 }

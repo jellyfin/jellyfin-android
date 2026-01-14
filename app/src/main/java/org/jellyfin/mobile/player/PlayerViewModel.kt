@@ -556,6 +556,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         playerOrNull?.seekToOffset(displayPreferences.skipForwardLength)
     }
 
+    fun seekByOffset(offsetMs: Long) {
+        playerOrNull?.seekToOffset(offsetMs)
+    }
+
     private fun getCurrentChapterStartPosition(chapters: List<ChapterInfo>, playbackPosition: Duration): Duration? {
         val startPositions = chapters.map { c -> c.startPositionTicks.ticks }
         return startPositions.findLast { pos -> playbackPosition >= pos }

@@ -63,6 +63,8 @@
     <string name="pref_music_notification_always_dismissible_title">可滑動關閉的播放器通知</string>
     <string name="external_player_app">外部播放器</string>
     <string name="pref_exoplayer_allow_background_audio_summary">允許在背景中播放純音訊</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">橫向手勢</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">允許使用橫向手勢控制影片進度</string>
     <string name="pref_exoplayer_remember_brightness">記住顯示亮度</string>
     <string name="video_player_web_description">Web UI中預設的HTML影片播放器</string>
     <string name="video_player_integrated">內建的播放器</string>
