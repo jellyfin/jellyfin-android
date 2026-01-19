@@ -1,0 +1,3 @@
+Asante kwa kutumia Jellyfin kwa Android! Kutumia Toleo la Seva ya Jellyfin lililotolewa hivi karibuni kunashauriwa kila wakati.
+
+Kwa maelezo zaidi, tafadhali tembelea blogu yetu katika jellyfin.org, au soma orodha kamili ya mabadiliko (changelog) kwenye GitHub.
