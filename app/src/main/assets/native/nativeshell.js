@@ -14,7 +14,6 @@ const features = [
     "remotecontrol",
     "subtitleappearancesettings",
     "subtitleburnsettings"
-//    'sharing'
 ];
 
 const plugins = [
@@ -156,23 +155,12 @@ function getDeviceProfile(profileBuilder, item) {
 
 window.NativeShell.AppHost = {
     init() {
-        try {
-            const result = JSON.parse(window.NativeInterface.getDeviceInformation());
-            // set globally so they can be used elsewhere
-            deviceId = result.deviceId;
-            deviceName = result.deviceName;
-            appName = result.appName;
-            appVersion = result.appVersion;
-
-            return Promise.resolve({
-                deviceId,
-                deviceName,
-                appName,
-                appVersion,
-            });
-        } catch (e) {
-            return Promise.reject(e);
-        }
+        const result = JSON.parse(window.NativeInterface.getDeviceInformation());
+        // set globally so they can be used elsewhere
+        deviceId = result.deviceId;
+        deviceName = result.deviceName;
+        appName = result.appName;
+        appVersion = result.appVersion;
     },
     getDefaultLayout() {
         return "mobile";
