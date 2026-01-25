@@ -60,8 +60,7 @@
 \nUuenda WebView ühilduvale versioonile.</string>
     <string name="dialog_button_ignore">Ignoreeri</string>
     <string name="pref_subtitle_style_summary">Sa saad muuta subtiirite stiili Android-i seadetes</string>
-    <string name="dialog_web_view_not_supported_message">See seade ei toeta WebView-d.
-\nInstalli ühilduv WebView või vaheta toetatud seadmele.</string>
+    <string name="dialog_web_view_not_supported_message">See seade ei toeta WebView-d. \nPaigalda ühilduv WebView või kasuta toetatud seadet.</string>
     <string name="dialog_web_view_outdated">Vananenud WebView</string>
     <string name="toast_reopen_after_change">Ava rakendus uuesti, et muudatused saaksid rakendada</string>
     <string name="connection_error_unsupported_version_or_product">Mitte ühilduv versioon või toode</string>
