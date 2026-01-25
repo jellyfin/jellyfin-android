@@ -133,4 +133,5 @@
     <string name="downloading_desc">Se descarcă %1$d titluri</string>
     <string name="downloaded">S-a descărcat %1$s</string>
     <string name="skip_media_segment">Omite</string>
+    <string name="special_episode">Special</string>
 </resources>
