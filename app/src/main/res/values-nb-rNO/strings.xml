@@ -132,4 +132,5 @@
     <string name="external_player_mpvkt">mpvKt avspiller</string>
     <string name="external_player_mpvkt_description">En mediespiller basert på mpv-android med mål om å gi en bedre brukeropplevelse enn den originale.</string>
     <string name="skip_media_segment">Hopp over</string>
+    <string name="special_episode">Spesial</string>
 </resources>
