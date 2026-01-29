@@ -80,9 +80,9 @@
     <string name="pref_music_notification_always_dismissible_summary_off">A notificação só pode ser descartada quando a reprodução estiver em pausa</string>
     <string name="player_error_invalid_play_options">Não foi possível obter informações de reprodução</string>
     <plurals name="connection_error_prefix">
-        <item quantity="one">Tentativa de %d como entrada sem sucesso.</item>
-        <item quantity="many">Tentativa de %d como entrada sem sucesso.</item>
-        <item quantity="other">Tentativa de %d como entrada sem sucesso.</item>
+        <item quantity="one">Tentada %d opção sem sucesso.</item>
+        <item quantity="many">Tentadas %d opções sem sucesso.</item>
+        <item quantity="other">Tentadas %d opções sem sucesso.</item>
     </plurals>
     <string name="pref_exoplayer_remember_brightness">Lembrar configurações de brilho</string>
     <string name="video_player_integrated">Reprodutor de mídia integrado</string>
