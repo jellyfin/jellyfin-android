@@ -131,4 +131,5 @@
     <string name="downloading_desc">Đang tải xuống %1$d tiêu đề</string>
     <string name="downloaded">Đã tải xuống %1$s</string>
     <string name="skip_media_segment">Bỏ qua</string>
+    <string name="special_episode">Đặc biệt</string>
 </resources>
