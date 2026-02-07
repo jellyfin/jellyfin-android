@@ -161,6 +161,16 @@ window.NativeShell.AppHost = {
         deviceName = result.deviceName;
         appName = result.appName;
         appVersion = result.appVersion;
+
+        // The Jellyfin SSO/OIDC redirect page expects the standard Jellyfin Web localStorage key.
+        // In the Android shell path, the device id comes from native code, so ensure it exists too.
+        try {
+            if (deviceId && !localStorage.getItem('_deviceId2')) {
+                localStorage.setItem('_deviceId2', deviceId);
+            }
+        } catch (e) {
+            // Ignore storage failures (private browsing / quota / etc).
+        }
     },
     getDefaultLayout() {
         return "mobile";
