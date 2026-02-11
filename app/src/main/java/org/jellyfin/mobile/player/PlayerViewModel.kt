@@ -225,6 +225,27 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
      * Setup a new [ExoPlayer] for video playback, register callbacks and set attributes
      */
     fun setupPlayer() {
+        // Refresh display preferences so settings changes take effect without app restart
+        viewModelScope.launch {
+            try {
+                val displayPreferencesDto = withContext(Dispatchers.IO) {
+                    displayPreferencesApi.getDisplayPreferences(
+                        displayPreferencesId = Constants.DISPLAY_PREFERENCES_ID_USER_SETTINGS,
+                        client = Constants.DISPLAY_PREFERENCES_CLIENT_EMBY,
+                    ).content
+                }
+                val customPrefs = displayPreferencesDto.customPrefs
+                displayPreferences = DisplayPreferences(
+                    skipBackLength = customPrefs?.get(Constants.DISPLAY_PREFERENCES_SKIP_BACK_LENGTH)?.toLongOrNull()
+                        ?: Constants.DEFAULT_SEEK_TIME_MS,
+                    skipForwardLength = customPrefs?.get(Constants.DISPLAY_PREFERENCES_SKIP_FORWARD_LENGTH)?.toLongOrNull()
+                        ?: Constants.DEFAULT_SEEK_TIME_MS,
+                )
+            } catch (e: ApiClientException) {
+                Timber.e(e, "Failed to refresh display preferences")
+            }
+        }
+
         val renderersFactory = DefaultRenderersFactory(getApplication()).apply {
             setEnableDecoderFallback(true) // Fallback only works if initialization fails, not decoding at playback time
             val rendererMode = when {
