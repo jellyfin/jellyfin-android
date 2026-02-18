@@ -132,4 +132,5 @@
     <string name="stored_videos_in_internal_storage_desc">Videot kuten elokuvat ja TV-ohjelmat tallennetaan sovelluksen sisäiseen muistiin. Pääsy annetaan sovelluksen sisältä.</string>
     <string name="downloading_desc">Ladataan %1$d ohjelmaa</string>
     <string name="downloaded">%1$s ladattu</string>
+    <string name="special_episode">Erikoisjakso</string>
 </resources>
