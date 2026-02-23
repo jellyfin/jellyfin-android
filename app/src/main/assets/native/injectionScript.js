@@ -11,5 +11,18 @@
         scriptElement.setAttribute('defer', '');
         document.body.appendChild(scriptElement);
     }
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .skinHeader {
+            padding-top: 60px !important;
+        }
+        .headerTop {
+            padding-top: 10px !important;
+        }
+        .mainDrawerButton, .headerRight, .headerLeft {
+            margin-top: 10px !important;
+        }
+    `;
+    document.head.appendChild(style);
     document.currentScript.remove();
 })();
