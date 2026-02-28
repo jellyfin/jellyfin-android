@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import android.widget.ImageButton
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -69,6 +70,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     private val playerControlsBinding: ExoPlayerControlViewBinding get() = _playerControlsBinding!!
     private val playerControlsView: View get() = playerControlsBinding.root
     private val toolbar: Toolbar get() = playerControlsBinding.toolbar
+    private val toolbarTitle: AppCompatTextView get() = playerControlsBinding.toolbarTitle
     private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
     private var playerMenus: PlayerMenus? = null
 
@@ -122,7 +124,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             }
 
             // Update title and player menus
-            toolbar.title = mediaSource.getName(requireContext())
+            toolbarTitle.text = mediaSource.getName(requireContext())
             playerMenus?.onQueueItemChanged(mediaSource, viewModel.queueManager.hasNext())
         }
 
