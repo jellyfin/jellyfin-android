@@ -1,23 +1,4 @@
 (() => {
-    const style = document.createElement('style');
-    style.textContent = `
-        /* Title and text wrapping for long filenames/strings */
-        .itemName, .parentName, .detailName, .primaryText, .secondaryText {
-            white-space: normal !important;
-            overflow-wrap: break-word !important;
-            word-wrap: break-word !important;
-            overflow: visible !important;
-            hyphens: auto !important;
-        }
-        /* Item descriptions should always wrap */
-        .itemDescription, .detailDescription {
-            overflow-wrap: break-word !important;
-            word-wrap: break-word !important;
-            white-space: normal !important;
-        }
-    `;
-    document.head.appendChild(style);
-
     const scripts = [
         '/native/nativeshell.js',
         '/native/EventEmitter.js',
