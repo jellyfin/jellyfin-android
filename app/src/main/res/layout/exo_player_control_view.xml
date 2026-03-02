@@ -16,8 +16,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        tools:title="Star Wars: A New Hope" />
+        app:navigationIcon="?attr/homeAsUpIndicator">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="56dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="3"
+            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+            android:textColor="?android:textColorPrimary"
+            android:breakStrategy="high_quality"
+            tools:text="Star Wars: A New Hope" />
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/previous_button"
