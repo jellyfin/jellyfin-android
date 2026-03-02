@@ -44,8 +44,7 @@
         <item quantity="many">Спрабаваў %d кандыдатаў для ўводу, але беспаспяхова.</item>
         <item quantity="other">Спрабаваў %d кандыдатаў для ўводу, але беспаспяхова.</item>
     </plurals>
-    <string name="connection_error_cannot_connect">Немагчыма ўсталяваць злучэнне.
-\nКалі ласка, праверце імя хаста і падлучэнне да сеткі.</string>
+    <string name="connection_error_cannot_connect">Немагчыма ўсталяваць злучэнне. \nПраверце назву хоста і падлучэнне да сеткі.</string>
     <string name="notification_action_rewind">Перамотаць назад</string>
     <string name="player_error_invalid_play_options">Немагчыма атрымаць інфармацыю аб прайграванні</string>
     <string name="player_error_unsupported_content">Медыя не можа прайгравацца на гэтай прыладзе</string>
