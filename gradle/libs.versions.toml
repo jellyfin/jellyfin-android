@@ -16,7 +16,7 @@ koin-compose = "4.1.1"
 androidx-core = "1.17.0"
 androidx-core-splashscreen = "1.2.0"
 androidx-appcompat = "1.7.1"
-androidx-activity = "1.11.0"
+androidx-activity = "1.12.4"
 androidx-fragment = "1.8.9"
 androiddesugarlibs = "2.1.5"
 
