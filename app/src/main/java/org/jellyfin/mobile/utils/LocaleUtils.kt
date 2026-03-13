@@ -15,7 +15,12 @@ suspend fun WebView.initLocale(userId: String) {
     val userSettings = suspendCoroutine { continuation ->
         evaluateJavascript("window.localStorage.getItem('$userId-language')") { result ->
             try {
-                continuation.resume(JSONObject("{locale:$result}").getString("locale"))
+                // Check if result is null or the string "null" (JavaScript null converted to string)
+                if (result == null || result == "null") {
+                    continuation.resume(null)
+                } else {
+                    continuation.resume(JSONObject("{locale:$result}").getString("locale"))
+                }
             } catch (e: JSONException) {
                 continuation.resume(null)
             }
