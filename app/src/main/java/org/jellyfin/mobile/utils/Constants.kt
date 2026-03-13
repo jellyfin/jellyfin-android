@@ -44,6 +44,7 @@ object Constants {
     const val PREF_DOWNLOAD_LOCATION = "pref_download_location"
     const val PREF_DOWNLOAD_INTERNAL = "pref_download_internal"
     const val PREF_MEDIA_SEGMENT_ACTIONS = "pref_media_segment_actions"
+    const val PREF_EXOPLAYER_BITRATE = "pref_exoplayer_bitrate"
 
     // InputManager commands
     const val PLAYBACK_MANAGER_COMMAND_PLAY = "unpause"
