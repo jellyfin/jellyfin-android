@@ -32,6 +32,8 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
         audioStreamIndex: Int? = null,
         subtitleStreamIndex: Int? = null,
         autoOpenLiveStream: Boolean = true,
+        enableDirectPlay: Boolean? = null,
+        enableDirectStream: Boolean? = null,
     ): Result<RemoteJellyfinMediaSource> {
         // Load media source info
         val playSessionId: String
@@ -50,6 +52,8 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
                         audioStreamIndex = audioStreamIndex,
                         subtitleStreamIndex = subtitleStreamIndex,
                         autoOpenLiveStream = autoOpenLiveStream,
+                        enableDirectPlay = enableDirectPlay,
+                        enableDirectStream = enableDirectStream,
                     ),
                 ).content
             }
