@@ -1,3 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="dialog_web_view_not_supported">唔支援 WebView</string>
+    <string name="dialog_web_view_not_supported_message">呢部裝置唔支援 WebView。\n請安裝兼容嘅 WebView 實作或者轉用受支援嘅裝置。</string>
+    <string name="dialog_web_view_outdated">WebView 版本太舊</string>
+    <string name="dialog_web_view_outdated_message">你部裝置用緊嘅 WebView 版本太舊。\n請更新到兼容版本。</string>
+    <string name="dialog_button_check_for_updates">檢查更新</string>
+    <string name="dialog_button_close_app">關閉應用程式</string>
+    <string name="dialog_button_open_settings">開啟設定</string>
+    <string name="dialog_button_ignore">略過</string>
+    <string name="toast_reopen_after_change">更改設定後唔該重新開啟應用程式</string>
+    <string name="connect_to_server_title">連接伺服器</string>
+    <string name="host_input_hint">主機位址</string>
+    <string name="connection_error_cannot_connect">連接唔到。\n請檢查主機位址同網路連線。</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="other">試過嘗試連接 %d 個位址，但唔成功。</item>
+    </plurals>
+    <string name="connection_error_unable_to_reach_sever">無法連接伺服器</string>
+    <string name="connection_error_unsupported_version_or_product">唔支援嘅版本或產品</string>
+    <string name="connect_button_text">連接</string>
+    <string name="choose_server_button_text">揀伺服器</string>
+    <string name="available_servers_title">可用伺服器</string>
+    <string name="button_use_different_server">使用其他伺服器</string>
+    <string name="bluetooth_permission_title">允許存取藍牙？</string>
+    <string name="bluetooth_permission_message">為咗偵測無線耳機或喇叭幾時斷開連接，本程式需要存取藍牙。喺 Android 系統，呢項權限被描述為「存取鄰近裝置」，並會警告話藍牙裝置可以用嚟推算目前位置。不過，Jellyfin 絕對唔會利用呢項權限嚟偵測你嘅位置。</string>
+    <string name="bluetooth_permission_continue">繼續</string>
+    <string name="bluetooth_permission_granted">已取得藍牙權限</string>
+    <string name="battery_optimizations_message">唔該停用電池最佳化，以確保螢幕關閉時依然正常播放媒體。</string>
+    <string name="network_title">允許使用嘅網路類型</string>
+    <string name="network_message">你係唔係要允許透過流動數據或漫遊網路進行下載？電信業者可能會向你收取費用。你稍後可以喺設定度更改呢個選項。</string>
+    <string name="wifi_only">只限 WiFi</string>
+    <string name="mobile_data">流動數據</string>
+    <string name="mobile_data_and_roaming">流動數據 &amp; 漫遊</string>
+    <string name="wifi_only_summary">媒體只會透過 WiFi 下載。</string>
+    <string name="mobile_data_summary">媒體會透過 WiFi 同流動網路下載。</string>
+    <string name="mobile_data_and_roaming_summary">媒體會透過 WiFi、流動網路同埋漫遊網路下載。</string>
+    <string name="downloading">下載中</string>
 </resources>
