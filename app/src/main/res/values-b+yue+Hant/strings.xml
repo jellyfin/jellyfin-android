@@ -9,20 +9,20 @@
     <string name="dialog_button_open_settings">開啟設定</string>
     <string name="dialog_button_ignore">略過</string>
     <string name="toast_reopen_after_change">更改設定後唔該重新開啟應用程式</string>
-    <string name="connect_to_server_title">連接伺服器</string>
+    <string name="connect_to_server_title">連線伺服器</string>
     <string name="host_input_hint">主機位址</string>
-    <string name="connection_error_cannot_connect">連接唔到。\n請檢查主機位址同網路連線。</string>
+    <string name="connection_error_cannot_connect">連線唔到。\n請檢查主機位址同網路連線。</string>
     <plurals name="connection_error_prefix">
-        <item quantity="other">試過嘗試連接 %d 個位址，但唔成功。</item>
+        <item quantity="other">試過嘗試連線 %d 個位址，但唔成功。</item>
     </plurals>
-    <string name="connection_error_unable_to_reach_sever">無法連接伺服器</string>
+    <string name="connection_error_unable_to_reach_sever">無法連線伺服器</string>
     <string name="connection_error_unsupported_version_or_product">唔支援嘅版本或產品</string>
-    <string name="connect_button_text">連接</string>
+    <string name="connect_button_text">連線</string>
     <string name="choose_server_button_text">揀伺服器</string>
     <string name="available_servers_title">可用伺服器</string>
     <string name="button_use_different_server">使用其他伺服器</string>
     <string name="bluetooth_permission_title">允許存取藍牙？</string>
-    <string name="bluetooth_permission_message">為咗偵測無線耳機或喇叭幾時斷開連接，本程式需要存取藍牙。喺 Android 系統，呢項權限被描述為「存取鄰近裝置」，並會警告話藍牙裝置可以用嚟推算目前位置。不過，Jellyfin 絕對唔會利用呢項權限嚟偵測你嘅位置。</string>
+    <string name="bluetooth_permission_message">為咗偵測無線耳機或喇叭幾時斷開連線，本程式需要存取藍牙。喺 Android 系統，呢項權限被描述為「存取鄰近裝置」，並會警告話藍牙裝置可以用嚟推算目前位置。不過，Jellyfin 絕對唔會利用呢項權限嚟偵測你嘅位置。</string>
     <string name="bluetooth_permission_continue">繼續</string>
     <string name="bluetooth_permission_granted">已取得藍牙權限</string>
     <string name="battery_optimizations_message">唔該停用電池最佳化，以確保螢幕關閉時依然正常播放媒體。</string>
