@@ -29,10 +29,7 @@ for (const plugin of plugins) {
     };
 }
 
-let deviceId;
-let deviceName;
-let appName;
-let appVersion;
+const { deviceId, deviceName, appName, appVersion } = JSON.parse(window.NativeInterface.getDeviceInformation());
 
 window.NativeShell = {
     enableFullscreen() {
@@ -144,25 +141,7 @@ function getDeviceProfile(profileBuilder, item) {
 }
 
 window.NativeShell.AppHost = {
-    init() {
-        try {
-            const result = JSON.parse(window.NativeInterface.getDeviceInformation());
-            // set globally so they can be used elsewhere
-            deviceId = result.deviceId;
-            deviceName = result.deviceName;
-            appName = result.appName;
-            appVersion = result.appVersion;
-
-            return Promise.resolve({
-                deviceId,
-                deviceName,
-                appName,
-                appVersion,
-            });
-        } catch (e) {
-            return Promise.reject(e);
-        }
-    },
+    init() {},
     getDefaultLayout() {
         return "mobile";
     },
