@@ -85,4 +85,17 @@
     <string name="video_player_external">外部播放器</string>
     <string name="video_player_web_description">來自網頁介面嘅預設 HTML 影片播放器</string>
     <string name="video_player_native_description">基於 ExoPlayer，支援更多影片格式同編碼，而且與作業系統嘅整合度更高</string>
+    <string name="video_player_external_description">外置影片播放程式，例如 MX Player 同 VLC</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">打橫嚟開始睇橫向影片</string>
+    <string name="pref_exoplayer_allow_brightness_volume_gesture">亮度同音量手勢</string>
+    <string name="pref_exoplayer_remember_brightness">記住顯示螢幕亮度</string>
+    <string name="pref_exoplayer_allow_press_speed_up">撳住加速</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">撳住螢幕可以暫時加快播放速度</string>
+    <string name="pref_exoplayer_allow_background_audio">背景音訊播放</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">允許喺背景播放影片（僅限音訊）</string>
+    <string name="pref_exoplayer_direct_play_ass">直接播放嗰陣允許 SSA/ASS 字幕</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">防止轉碼並僅以基本樣式顯示字幕。啟用後將無法使用高級字幕樣式。</string>
+    <string name="external_player_app">外部播放器應用程式</string>
+    <string name="external_player_mpv">MPV 播放器</string>
+    <string name="external_player_mpv_description">一款簡單、輕量、細小且自由開源嘅影片播放器。支援多種唔同嘅媒體檔案格式。</string>
 </resources>
