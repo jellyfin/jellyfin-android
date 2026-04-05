@@ -34,7 +34,7 @@
     <string name="wifi_only_summary">媒體只會透過 WiFi 下載。</string>
     <string name="mobile_data_summary">媒體會透過 WiFi 同流動網路下載。</string>
     <string name="mobile_data_and_roaming_summary">媒體會透過 WiFi、流動網路同埋漫遊網路下載。</string>
-    <string name="downloading">下載中</string>
+    <string name="downloading">下載緊</string>
     <string name="download_no_storage_permission">冇儲存權限，下載唔到檔案</string>
     <string name="media_service_generic_error">出錯</string>
     <string name="media_service_item_not_found">搵唔到媒體項目</string>
@@ -109,7 +109,7 @@
     <string name="external_player_system_default">系統預設</string>
     <string name="external_player_system_default_description">由系統決定播放器，部分播放器可能無法完全兼容。</string>
     <string name="pref_subtitle_style">自訂字幕樣式</string>
-    <string name="pref_subtitle_style_summary">你可以在 Android 設定中更改字幕樣式</string>
+    <string name="pref_subtitle_style_summary">你可以在 Android 設定入面更改字幕樣式</string>
     <string name="pref_category_downloads">下載項目</string>
     <string name="pref_download_location">下載位置</string>
     <string name="view_downloads">檢視下載項目</string>
