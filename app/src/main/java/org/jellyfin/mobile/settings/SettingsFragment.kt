@@ -44,6 +44,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
     private lateinit var rememberBrightnessPreference: Preference
     private lateinit var backgroundAudioPreference: Preference
     private lateinit var directPlayAssPreference: Preference
+    private lateinit var networkBufferPreference: Preference
     private lateinit var externalPlayerChoicePreference: Preference
 
     init {
@@ -109,6 +110,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 pressSpeedUpPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 directPlayAssPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                networkBufferPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
         }
@@ -145,6 +147,20 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
         directPlayAssPreference = checkBox(Constants.PREF_EXOPLAYER_DIRECT_PLAY_ASS) {
             titleRes = R.string.pref_exoplayer_direct_play_ass
             summaryRes = R.string.pref_exoplayer_direct_play_ass_summary
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+        }
+        val networkBufferOptions = listOf(
+            SelectionItem(Constants.NETWORK_BUFFER_AUTO, R.string.network_buffer_auto, R.string.network_buffer_auto_description),
+            SelectionItem(Constants.NETWORK_BUFFER_LARGE, R.string.network_buffer_large, R.string.network_buffer_large_description),
+            SelectionItem(
+                Constants.NETWORK_BUFFER_EXTRA_LARGE,
+                R.string.network_buffer_extra_large,
+                R.string.network_buffer_extra_large_description,
+            ),
+        )
+        networkBufferPreference = singleChoice(Constants.PREF_EXOPLAYER_NETWORK_BUFFER, networkBufferOptions) {
+            titleRes = R.string.pref_exoplayer_network_buffer
+            initialSelection = Constants.NETWORK_BUFFER_AUTO
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
         }
 
