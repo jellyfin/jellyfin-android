@@ -118,7 +118,7 @@
     <string name="failed_thumbnail">下載縮圖失敗</string>
     <string name="failed_information">攞唔到媒體資訊</string>
     <string name="failed_network_method_check">唔該check吓你允許嘅下載方式</string>
-    <string name="special_episode">特別篇</string>
+    <string name="special_episode">特輯</string>
     <string name="confirm_deletion">確認刪走</string>
     <string name="confirm_deletion_desc">你係咪確定要刪走 %1$s？</string>
     <string name="yes">係</string>
