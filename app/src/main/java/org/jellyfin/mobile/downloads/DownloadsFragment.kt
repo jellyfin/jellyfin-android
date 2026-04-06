@@ -9,7 +9,7 @@ class DownloadsFragment : ComposeFragment() {
     override fun Content() {
         DownloadsScreen(
             onBackPressed = {
-                !parentFragmentManager.isStateSaved && parentFragmentManager.popBackStackImmediate()
+                isAdded && !parentFragmentManager.isStateSaved && parentFragmentManager.popBackStackImmediate()
             },
         )
     }

@@ -57,6 +57,8 @@ fun DownloadItem(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    val apiClient: ApiClient = koinInject()
+
     ListItem(
         modifier = modifier,
         text = {
@@ -71,8 +73,6 @@ fun DownloadItem(
         },
         icon = {
             val maxSize = LocalResources.current.getDimensionPixelSize(R.dimen.movie_thumbnail_list_size)
-
-            val apiClient: ApiClient = koinInject()
             val url = remember(download.mediaSource.itemId) {
                 apiClient.imageApi.getItemImageUrl(
                     itemId = download.mediaSource.itemId,
