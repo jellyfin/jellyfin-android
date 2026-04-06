@@ -164,14 +164,16 @@ sealed class JellyfinMediaSource(
                 val name = if (
                     it.type in arrayOf(BaseItemKind.PROGRAM, BaseItemKind.RECORDING) &&
                     (it.isSeries == true || !it.episodeTitle.isNullOrEmpty())
-                ) { it.episodeTitle } else { it.name }
+                ) {
+                    it.episodeTitle
+                } else {
+                    it.name
+                }
 
-                val specialEpisode = context.getString(R.string.special_episode)
-                val extraInfo = when {
-                    it.type == BaseItemKind.TV_CHANNEL && !it.channelNumber.isNullOrEmpty() -> it.channelNumber
-                    it.type == BaseItemKind.EPISODE && it.parentIndexNumber == 0 -> specialEpisode
-                    it.type in arrayOf(BaseItemKind.EPISODE, BaseItemKind.RECORDING) &&
-                        it.indexNumber != null && it.parentIndexNumber != null ->
+                val extraInfo = when (it.type) {
+                    BaseItemKind.TV_CHANNEL if !it.channelNumber.isNullOrEmpty() -> it.channelNumber
+                    BaseItemKind.EPISODE if it.parentIndexNumber == 0 -> context.getString(R.string.special_episode)
+                    in arrayOf(BaseItemKind.EPISODE, BaseItemKind.RECORDING) if it.indexNumber != null && it.parentIndexNumber != null ->
                         "S${it.parentIndexNumber}:E${it.indexNumber}${it.indexNumberEnd?.let { n -> "-$n" } ?: ""}"
                     else -> ""
                 }

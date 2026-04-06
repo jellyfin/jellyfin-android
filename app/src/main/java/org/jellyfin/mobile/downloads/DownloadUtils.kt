@@ -154,7 +154,7 @@ class DownloadUtils(
             BaseItemKind.MUSIC_VIDEO,
         )
 
-    private suspend fun downloadFiles(jellyfinMediaSource: JellyfinMediaSource) {
+    private fun downloadFiles(jellyfinMediaSource: JellyfinMediaSource) {
         val jellyfinDownloadTracker = JellyfinDownloadTracker(jellyfinMediaSource)
         downloadTracker.addListener(jellyfinDownloadTracker)
         downloadMediaFile(jellyfinMediaSource)
