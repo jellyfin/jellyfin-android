@@ -150,8 +150,16 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
         }
         val networkBufferOptions = listOf(
-            SelectionItem(Constants.NETWORK_BUFFER_AUTO, R.string.network_buffer_auto, R.string.network_buffer_auto_description),
-            SelectionItem(Constants.NETWORK_BUFFER_LARGE, R.string.network_buffer_large, R.string.network_buffer_large_description),
+            SelectionItem(
+                Constants.NETWORK_BUFFER_AUTO,
+                R.string.network_buffer_auto,
+                R.string.network_buffer_auto_description,
+            ),
+            SelectionItem(
+                Constants.NETWORK_BUFFER_LARGE,
+                R.string.network_buffer_large,
+                R.string.network_buffer_large_description,
+            ),
             SelectionItem(
                 Constants.NETWORK_BUFFER_EXTRA_LARGE,
                 R.string.network_buffer_extra_large,
