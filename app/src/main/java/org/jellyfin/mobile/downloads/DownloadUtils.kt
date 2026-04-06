@@ -151,6 +151,7 @@ class DownloadUtils(
             BaseItemKind.EPISODE,
             BaseItemKind.MOVIE,
             BaseItemKind.VIDEO,
+            BaseItemKind.MUSIC_VIDEO,
         )
 
     private suspend fun downloadFiles(jellyfinMediaSource: JellyfinMediaSource) {
