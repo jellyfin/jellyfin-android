@@ -8,11 +8,15 @@ import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.annotation.StringRes
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import androidx.core.view.updateLayoutParams
+import androidx.media3.ui.DefaultTimeBar
+import androidx.media3.ui.TimeBar
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
@@ -59,16 +63,30 @@ class PlayerMenus(
     private val qualityMenu: PopupMenu = createQualityMenu()
     private val decoderMenu: PopupMenu = createDecoderMenu()
     private val chapterMarkingContainer: ConstraintLayout by playerControlsBinding::chapterMarkingContainer
+    private val exoProgress: DefaultTimeBar by playerControlsBinding::exoProgress
+    private val seekBarContainer: View by playerControlsBinding::seekBarContainer
+    private val trickplayContainer: View by playerControlsBinding::trickplayContainer
+    private val trickplayThumbnail: AppCompatImageView by playerControlsBinding::trickplayThumbnail
+    private val trickplayChapterName: AppCompatTextView by playerControlsBinding::trickplayChapterName
+    private val trickplayTime: AppCompatTextView by playerControlsBinding::trickplayTime
     private val skipSegmentButton: Button by playerBinding::skipSegmentButton
 
     private var subtitleCount = 0
     private var subtitlesEnabled = false
+
+    private val trickplayHelper = TrickplayHelper(trickplayContainer, trickplayThumbnail, seekBarContainer, trickplayChapterName, trickplayTime)
 
     private val playerMenuHelper: PlayerMenuHelper = PlayerMenuHelper(
         skipMediaSegmentButton = SkipMediaSegmentButton(skipSegmentButton, fragment::onSkipMediaSegment),
     )
 
     init {
+        exoProgress.addListener(object : TimeBar.OnScrubListener {
+            override fun onScrubStart(timeBar: TimeBar, position: Long) = trickplayHelper.onScrubMove(position)
+            override fun onScrubMove(timeBar: TimeBar, position: Long) = trickplayHelper.onScrubMove(position)
+            override fun onScrubStop(timeBar: TimeBar, position: Long, cancelled: Boolean) = trickplayHelper.onScrubStop()
+        })
+
         previousButton.setOnClickListener {
             fragment.onSkipToPrevious()
         }
@@ -128,6 +146,8 @@ class PlayerMenus(
     fun onQueueItemChanged(mediaSource: JellyfinMediaSource, hasNext: Boolean) {
         // previousButton is always enabled and will rewind if at the start of the queue
         nextButton.isEnabled = hasNext
+
+        trickplayHelper.onMediaSourceChanged(mediaSource)
 
         val chapters = mediaSource.item?.chapters
         updateLayoutConstraints(!chapters.isNullOrEmpty())
