@@ -266,7 +266,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:elevation="4dp"
+        android:background="#282828"
+        android:elevation="8dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/seek_bar_container"
         app:layout_constraintStart_toStartOf="parent">
@@ -282,33 +283,37 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:orientation="vertical"
-            android:padding="4dp">
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="8dp">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/trickplay_chapter_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:alpha="0.85"
+                android:alpha="0.9"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:shadowColor="#CC000000"
+                android:shadowColor="#FF000000"
                 android:shadowDx="0"
                 android:shadowDy="0"
-                android:shadowRadius="4"
+                android:shadowRadius="6"
                 android:textColor="@android:color/white"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/trickplay_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:shadowColor="#CC000000"
+                android:layout_marginTop="4dp"
+                android:shadowColor="#FF000000"
                 android:shadowDx="0"
                 android:shadowDy="0"
-                android:shadowRadius="4"
+                android:shadowRadius="6"
                 android:textColor="@android:color/white"
-                android:textSize="14sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </FrameLayout>
