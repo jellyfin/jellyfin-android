@@ -107,8 +107,9 @@ class TrickplayHelper(
         // Always update horizontal position regardless of tile change, centered above scrubber
         val fraction = position.toFloat() / durationMs.toFloat()
         val scrubberX = seekBarContainer.x + fraction * seekBarContainer.width
-        thumbnailContainer.x = (scrubberX - thumbnailDisplayWidth / 2f)
-            .coerceIn(seekBarContainer.x, seekBarContainer.x + seekBarContainer.width - thumbnailDisplayWidth)
+        val clampMin = seekBarContainer.x
+        val clampMax = (seekBarContainer.x + seekBarContainer.width - thumbnailDisplayWidth).coerceAtLeast(clampMin)
+        thumbnailContainer.x = (scrubberX - thumbnailDisplayWidth / 2f).coerceIn(clampMin, clampMax)
 
         // Update chapter name and timestamp on every move
         val chapterName = chapters?.lastOrNull { it.startPositionTicks <= position * Constants.TICKS_PER_MILLISECOND }?.name
