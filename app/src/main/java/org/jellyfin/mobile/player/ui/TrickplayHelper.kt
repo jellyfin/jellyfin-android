@@ -10,7 +10,6 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
-import kotlin.math.roundToInt
 import coil3.ImageLoader
 import coil3.network.NetworkHeaders
 import coil3.network.httpHeaders
@@ -34,6 +33,8 @@ import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.UUID
+import kotlin.math.roundToInt
+import kotlin.time.Duration.Companion.milliseconds
 
 class TrickplayHelper(
     private val thumbnailContainer: View,
@@ -73,36 +74,38 @@ class TrickplayHelper(
         chapters = null
         thumbnailContainer.visibility = View.GONE
 
-        if (source == null) return
-        val item = source.item ?: return
-        val resolvedMediaSourceId = source.id.toUUIDOrNull() ?: return
-        val info = item.trickplay?.get(source.id)?.values?.firstOrNull() ?: return
+        val item = source?.item
+        val resolvedSourceId = source?.id
+        val resolvedMediaSourceId = resolvedSourceId?.toUUIDOrNull()
+        val resolvedTrickPlayInfo = item?.trickplay?.get(resolvedSourceId)?.values?.firstOrNull()
+        if (item == null || resolvedMediaSourceId == null || resolvedTrickPlayInfo == null) return
 
-        trickPlayInfo = info
+        trickPlayInfo = resolvedTrickPlayInfo
         itemId = item.id
         mediaSourceId = resolvedMediaSourceId
         durationMs = source.runTime.inWholeMilliseconds
         chapters = item.chapters
-        thumbnailDisplayWidth = (thumbnailDisplayHeight * info.width.toFloat() / info.height).roundToInt()
+        thumbnailDisplayWidth = (thumbnailDisplayHeight * resolvedTrickPlayInfo.width.toFloat() / resolvedTrickPlayInfo.height).roundToInt()
         thumbnailView.updateLayoutParams<ViewGroup.LayoutParams> { width = thumbnailDisplayWidth }
     }
 
     fun onScrubMove(position: Long) {
         isScrubbing = true
-        val info = trickPlayInfo ?: return
-        val resolvedItemId = itemId ?: return
-        val resolvedMediaSourceId = mediaSourceId ?: return
-        if (durationMs <= 0) return
+        if (trickPlayInfo == null || itemId == null || mediaSourceId == null || durationMs <= 0) return
+
+        val resolvedTrickPlayInfo = trickPlayInfo!!
+        val resolvedItemId = itemId!!
+        val resolvedMediaSourceId = mediaSourceId!!
 
         // Calculate trickplay tile position and offset based on scrubberposition
-        val currentTile = position.floorDiv(info.interval).toInt()
-        val tileSize = info.tileWidth * info.tileHeight
+        val currentTile = position.floorDiv(resolvedTrickPlayInfo.interval).toInt()
+        val tileSize = resolvedTrickPlayInfo.tileWidth * resolvedTrickPlayInfo.tileHeight
         val tileOffset = currentTile % tileSize
         val tileIndex = currentTile / tileSize
-        val tileOffsetX = tileOffset % info.tileWidth
-        val tileOffsetY = tileOffset / info.tileWidth
-        val offsetX = tileOffsetX * info.width
-        val offsetY = tileOffsetY * info.height
+        val tileOffsetX = tileOffset % resolvedTrickPlayInfo.tileWidth
+        val tileOffsetY = tileOffset / resolvedTrickPlayInfo.tileWidth
+        val offsetX = tileOffsetX * resolvedTrickPlayInfo.width
+        val offsetY = tileOffsetY * resolvedTrickPlayInfo.height
 
         // Always update horizontal position regardless of tile change, centered above scrubber
         val fraction = position.toFloat() / durationMs.toFloat()
@@ -115,7 +118,7 @@ class TrickplayHelper(
         val chapterName = chapters?.lastOrNull { it.startPositionTicks <= position * Constants.TICKS_PER_MILLISECOND }?.name
         chapterNameView.isVisible = !chapterName.isNullOrEmpty()
         if (!chapterName.isNullOrEmpty()) chapterNameView.text = chapterName
-        timeView.text = DateUtils.formatElapsedTime(position / 1000)
+        timeView.text = formatPositionAsElapsedTime(position)
 
         // Same tile already pending or already displayed - position updated above, nothing else to do
         if (currentTile == pendingTile || currentTile == lastDispatchedTile) return
@@ -126,13 +129,13 @@ class TrickplayHelper(
 
         val url = api.trickplayApi.getTrickplayTileImageUrl(
             itemId = resolvedItemId,
-            width = info.width,
+            width = resolvedTrickPlayInfo.width,
             index = tileIndex,
             mediaSourceId = resolvedMediaSourceId,
         )
 
         val runnable = Runnable {
-            dispatchRequest(url, offsetX, offsetY, info.width, info.height, currentTile)
+            dispatchRequest(url, offsetX, offsetY, resolvedTrickPlayInfo.width, resolvedTrickPlayInfo.height, currentTile)
         }
         pendingRequest = runnable
 
@@ -189,5 +192,11 @@ class TrickplayHelper(
         currentRequest?.dispose()
         currentRequest = null
         thumbnailContainer.visibility = View.GONE
+    }
+
+    private fun formatPositionAsElapsedTime(positionMs: Long): String {
+        // Add half a second before truncating to match Media3's time display round-to-nearest behavior
+        val roundToNearestThresholdMs = 500L
+        return DateUtils.formatElapsedTime((positionMs + roundToNearestThresholdMs).milliseconds.inWholeSeconds)
     }
 }

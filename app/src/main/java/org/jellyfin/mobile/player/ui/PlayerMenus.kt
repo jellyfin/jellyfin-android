@@ -74,7 +74,13 @@ class PlayerMenus(
     private var subtitleCount = 0
     private var subtitlesEnabled = false
 
-    private val trickplayHelper = TrickplayHelper(trickplayContainer, trickplayThumbnail, seekBarContainer, trickplayChapterName, trickplayTime)
+    private val trickplayHelper = TrickplayHelper(
+        trickplayContainer,
+        trickplayThumbnail,
+        seekBarContainer,
+        trickplayChapterName,
+        trickplayTime,
+    )
 
     private val playerMenuHelper: PlayerMenuHelper = PlayerMenuHelper(
         skipMediaSegmentButton = SkipMediaSegmentButton(skipSegmentButton, fragment::onSkipMediaSegment),
