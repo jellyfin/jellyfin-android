@@ -28,6 +28,8 @@
             android:id="@+id/textViewName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:textSize="21sp"
             tools:text="Movie Name" />
 
@@ -35,6 +37,8 @@
             android:id="@+id/textViewDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="3"
             tools:text="This is a movie description" />
 
         <TextView

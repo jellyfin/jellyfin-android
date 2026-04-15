@@ -132,4 +132,5 @@
     <string name="failed_network_method_check">Kontrollera dina tillåtna nedladdningsmetoder</string>
     <string name="thumbnail_desc">Miniatyrbild</string>
     <string name="downloaded">%1$s Nedladdat</string>
+    <string name="special_episode">Special</string>
 </resources>
