@@ -131,4 +131,5 @@
     <string name="failed_thumbnail">サムネールダウンロード失敗</string>
     <string name="downloading_desc">%1$d をダウンロード中</string>
     <string name="downloaded">%1$sをダウンロード済み</string>
+    <string name="special_episode">スペシャル</string>
 </resources>
