@@ -468,8 +468,9 @@ class RemotePlayerService : Service(), CoroutineScope {
         super.onDestroy()
     }
 
-    class ServiceBinder(private val service: RemotePlayerService) : Binder() {
+    class ServiceBinder(service: RemotePlayerService) : Binder() {
+        private val serviceRef = java.lang.ref.WeakReference(service)
         val isPlaying: Boolean
-            get() = service.playbackState?.state == PlaybackState.STATE_PLAYING
+            get() = serviceRef.get()?.playbackState?.state == PlaybackState.STATE_PLAYING
     }
 }
