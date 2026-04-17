@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
+import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.EXTRA_ALBUM
 import org.jellyfin.mobile.utils.Constants.EXTRA_ARTIST
@@ -37,6 +38,7 @@ import timber.log.Timber
 class NativeInterface(private val context: Context) : KoinComponent {
     private val activityEventHandler: ActivityEventHandler = get()
     private val remoteVolumeProvider: RemoteVolumeProvider by inject()
+    private val deviceProfileBuilder: DeviceProfileBuilder by inject()
 
     @SuppressLint("HardwareIds")
     @JavascriptInterface
@@ -58,6 +60,9 @@ class NativeInterface(private val context: Context) : KoinComponent {
     } catch (e: JSONException) {
         null
     }
+
+    @JavascriptInterface
+    fun getCodecCapabilities(): String = deviceProfileBuilder.getWebCodecCapabilitiesJson()
 
     @JavascriptInterface
     fun enableFullscreen(): Boolean {
