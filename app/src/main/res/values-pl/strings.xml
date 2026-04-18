@@ -89,13 +89,11 @@
     <string name="music_notification_channel_description">Służy do sterowania odtwarzaniem muzyki</string>
     <string name="mobile_data_and_roaming">Dane komórkowe i roaming</string>
     <string name="network_message">Czy chcesz zezwolić na pobieranie danych przez sieć komórkową lub roaming? Opłaty mogą być naliczane przez twojego dostawcę. Później możesz zmienić tę opcję w ustawieniach.</string>
-    <string name="battery_optimizations_message">Proszę wyłączyć optymalizacje baterii dla odtwarzania multimediów, gdy ekran jest wyłączony.</string>
+    <string name="battery_optimizations_message">Wyłącz optymalizacje zużycia energii dla odtwarzania multimediów, gdy ekran jest wyłączony.</string>
     <string name="host_input_hint">Host</string>
-    <string name="dialog_web_view_outdated_message">Implementacja WebView używana przez urządzenie jest przestarzała.
-\nZaktualizuj do wersji kompatybilnej.</string>
-    <string name="dialog_web_view_outdated">WebView przestarzałe</string>
-    <string name="dialog_web_view_not_supported_message">WebViews nie jest obsługiwany na tym urządzeniu.
-\nZainstaluj kompatybilną implementację WebView lub zmień urządzenie na obsługiwane.</string>
+    <string name="dialog_web_view_outdated_message">Implementacja WebView używana przez urządzenie jest przestarzała. \nZaktualizuj do wyższej wersji.</string>
+    <string name="dialog_web_view_outdated">WebView w przestarzałej wersji</string>
+    <string name="dialog_web_view_not_supported_message">WebViews nie jest obsługiwane przez to urządzenie. \nZainstaluj kompatybilną implementację WebView lub zmień urządzenie na wspierane.</string>
     <string name="menu_item_auto">Automatycznie</string>
     <string name="pref_exoplayer_direct_play_ass">Zezwól na bezpośrednie odtwarzanie napisów SSA/ASS</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Zablokuje transkodowanie i pokaż napisy z podstawowym stylem. Zaawansowane style napisów nie będą dostępne jeśli ustawienie jest włączone.</string>
@@ -107,9 +105,9 @@
     <string name="menu_item_software_decoding">Dekodowanie programowe</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Rozpocznij film poziomy w orientacji poziomej</string>
     <string name="bluetooth_permission_continue">Kontynuuj</string>
-    <string name="bluetooth_permission_granted">Zezwolenie na Bluetooth zostało udzielone</string>
-    <string name="bluetooth_permission_title">Zezwolić na dostęp Bluetooth\?</string>
-    <string name="bluetooth_permission_message">Aby wykryć, kiedy bezprzewodowe słuchawki lub głośniki są odłączone, aplikacja wymaga dostępu Bluetooth. W systemie Android to uprawnienie jest opisywane jako dostęp do pobliskich urządzeń i ostrzega, że urządzenia Bluetooth mogą służyć do określania bieżącej lokalizacji. Jednak aplikacja Jellyfin nigdy nie użyje tego uprawnienia do wykrycia Twojej lokalizacji.</string>
+    <string name="bluetooth_permission_granted">Zgoda na korzystanie z Bluetooth została przyznana</string>
+    <string name="bluetooth_permission_title">Zezwolić na dostęp do Bluetooth?</string>
+    <string name="bluetooth_permission_message">Aby wykryć czy bezprzewodowe słuchawki i głośniki zostały rozłączone, aplikacja wymaga dostępu do Bluetooth. W systemie Android to uprawnienie jest opisywane jako dostęp do pobliskich urządzeń i ostrzega, że urządzenia Bluetooth mogą służyć do określania bieżącej lokalizacji. Jednak aplikacja Jellyfin nigdy nie użyje tej zgody do określenia Twojej lokalizacji.</string>
     <string name="wifi_only_summary">Multimedia będą pobierane wyłącznie przez Wi-Fi.</string>
     <string name="mobile_data_summary">Multimedia będą pobierane przez Wi-Fi i sieci komórkowe.</string>
     <string name="mobile_data_and_roaming_summary">Multimedia będą pobierane przez Wi-Fi, sieci komórkowe i roamingowe.</string>
