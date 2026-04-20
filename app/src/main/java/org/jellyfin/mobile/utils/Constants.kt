@@ -132,6 +132,8 @@ object Constants {
     const val VIDEO_PLAYER_NOTIFICATION_ID = 99
     const val DOWNLOAD_NOTIFICATION_ID = 80
     const val MAX_SKIP_TO_PREV_CHAPTER_MS = 10_000L
+    const val TICKS_PER_MILLISECOND = 10_000L
+    const val TRICKPLAY_TILE_REFRESH_WINDOW_MS = 100L
 
     // Video player intent extras
     const val EXTRA_MEDIA_PLAY_OPTIONS = "org.jellyfin.mobile.MEDIA_PLAY_OPTIONS"
