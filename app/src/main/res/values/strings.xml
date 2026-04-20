@@ -104,6 +104,13 @@
     <string name="pref_exoplayer_allow_background_audio_summary">Allow playing videos in the background with audio-only</string>
     <string name="pref_exoplayer_direct_play_ass">Allow SSA/ASS subtitles in direct play</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Prevent transcoding and show subtitles with basic styling only. Advanced subtitle styling will not be available if enabled.</string>
+    <string name="pref_exoplayer_network_buffer">Playback buffer size</string>
+    <string name="network_buffer_auto">Auto</string>
+    <string name="network_buffer_auto_description">Default buffer, suitable for most playback scenarios</string>
+    <string name="network_buffer_large">Large</string>
+    <string name="network_buffer_large_description">Larger buffer, may help on moderate or variable connections</string>
+    <string name="network_buffer_extra_large">Extra large</string>
+    <string name="network_buffer_extra_large_description">Maximum buffer, intended for slow or satellite connections</string>
 
     <string name="external_player_app">External player app</string>
     <string name="external_player_mpv">MPV Player</string>
