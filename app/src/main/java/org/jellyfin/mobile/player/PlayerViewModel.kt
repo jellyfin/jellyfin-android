@@ -138,6 +138,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private var progressUpdateJob: Job? = null
     private var chapterMarkingUpdateJob: Job? = null
     private var skipMediaSegmentUpdateJob: Job? = null
+    private var fallbackRetryJob: Job? = null
 
     /**
      * Returns the current ExoPlayer instance or null
@@ -762,8 +763,21 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             setupPlayer()
             queueManager.tryRestartPlayback()
         } else {
-            _error.postValue(error.localizedMessage.orEmpty())
+            Timber.w(error, "Playback error, attempting fallback")
+            val startPosition = (playerOrNull?.currentPosition ?: 0L).milliseconds
+            fallbackRetryJob?.cancel()
+            fallbackRetryJob = viewModelScope.launch {
+                val retried = queueManager.restartPlaybackWithFallback(startPosition)
+                if (!retried) {
+                    _error.postValue(error.localizedMessage.orEmpty())
+                }
+            }
         }
+    }
+
+    fun cancelFallbackRetry() {
+        fallbackRetryJob?.cancel()
+        fallbackRetryJob = null
     }
 
     override fun onCleared() {
