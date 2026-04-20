@@ -151,9 +151,10 @@ class DownloadUtils(
             BaseItemKind.EPISODE,
             BaseItemKind.MOVIE,
             BaseItemKind.VIDEO,
+            BaseItemKind.MUSIC_VIDEO,
         )
 
-    private suspend fun downloadFiles(jellyfinMediaSource: JellyfinMediaSource) {
+    private fun downloadFiles(jellyfinMediaSource: JellyfinMediaSource) {
         val jellyfinDownloadTracker = JellyfinDownloadTracker(jellyfinMediaSource)
         downloadTracker.addListener(jellyfinDownloadTracker)
         downloadMediaFile(jellyfinMediaSource)

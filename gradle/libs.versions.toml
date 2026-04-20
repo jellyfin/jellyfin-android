@@ -114,6 +114,7 @@ compose-material-icons-extended = { group = "androidx.compose.material", name = 
 jellyfin-sdk = { group = "org.jellyfin.sdk", name = "jellyfin-core", version.ref = "jellyfin-sdk" }
 coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 
 # Media
 androidx-media = { group = "androidx.media", name = "media", version.ref = "androidx-media" }
@@ -154,7 +155,7 @@ detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-form
 [bundles]
 coroutines = ["coroutines-core", "coroutines-android"]
 koin = ["koin", "koin-compose"]
-coil = ["coil", "coil-network"]
+coil = ["coil", "coil-network", "coil-compose"]
 androidx-lifecycle = [
     "androidx-lifecycle-viewmodel",
     "androidx-lifecycle-livedata",
