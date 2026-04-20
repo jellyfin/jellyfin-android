@@ -47,6 +47,14 @@ fun View.applyWindowInsetsAsMargins() {
     }
 }
 
+fun View.applyWindowInsetsAsPadding(extraTopDp: Int = 0) {
+    ViewCompat.setOnApplyWindowInsetsListener(this) { v, windowInsets ->
+        val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+        v.setPadding(insets.left, insets.top + resources.dip(extraTopDp), insets.right, insets.bottom)
+        windowInsets
+    }
+}
+
 fun View.fadeIn() {
     alpha = 0f
     isVisible = true
