@@ -22,6 +22,7 @@ import android.media.session.PlaybackState
 import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
+import android.view.KeyEvent
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
@@ -55,6 +56,7 @@ import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_FAST_FORWARD
 import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_NEXT
 import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_PAUSE
 import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_PLAY
+import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_PLAY_PAUSE
 import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_PREVIOUS
 import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_REWIND
 import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_STOP
@@ -412,6 +414,29 @@ class RemotePlayerService : Service(), CoroutineScope {
             setCallback(
                 @SuppressLint("MissingOnPlayFromSearch")
                 object : MediaSession.Callback() {
+                    // Hardware media keys (e.g. bluetooth headset clicks) reach this
+                    // callback even when the session is inactive and has no PlaybackState.
+                    // For local web video playback the JS-side MediaSessionSubscriber
+                    // skips updating the native session, so the framework's default
+                    // implementation has no actions to translate the key against and
+                    // silently drops the event. Route the keys to the JS playbackManager
+                    // directly to avoid that dependency.
+                    override fun onMediaButtonEvent(mediaButtonIntent: Intent): Boolean {
+                        @Suppress("DEPRECATION")
+                        val keyEvent: KeyEvent = mediaButtonIntent
+                            .getParcelableExtra(Intent.EXTRA_KEY_EVENT)
+                            ?: return super.onMediaButtonEvent(mediaButtonIntent)
+                        if (keyEvent.action != KeyEvent.ACTION_DOWN || keyEvent.repeatCount != 0) {
+                            // Consume ACTION_UP and key repeats so we don't double-fire,
+                            // but only if we'd handle the corresponding ACTION_DOWN.
+                            return commandForKeyCode(keyEvent.keyCode) != null
+                        }
+                        val command = commandForKeyCode(keyEvent.keyCode)
+                            ?: return super.onMediaButtonEvent(mediaButtonIntent)
+                        webappFunctionChannel.callPlaybackManagerAction(command)
+                        return true
+                    }
+
                     override fun onPlay() {
                         webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PLAY)
                     }
@@ -471,5 +496,21 @@ class RemotePlayerService : Service(), CoroutineScope {
     class ServiceBinder(private val service: RemotePlayerService) : Binder() {
         val isPlaying: Boolean
             get() = service.playbackState?.state == PlaybackState.STATE_PLAYING
+    }
+
+    private companion object {
+        fun commandForKeyCode(keyCode: Int): String? = when (keyCode) {
+            KeyEvent.KEYCODE_MEDIA_PLAY -> PLAYBACK_MANAGER_COMMAND_PLAY
+            KeyEvent.KEYCODE_MEDIA_PAUSE -> PLAYBACK_MANAGER_COMMAND_PAUSE
+            KeyEvent.KEYCODE_HEADSETHOOK,
+            KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE,
+            -> PLAYBACK_MANAGER_COMMAND_PLAY_PAUSE
+            KeyEvent.KEYCODE_MEDIA_NEXT -> PLAYBACK_MANAGER_COMMAND_NEXT
+            KeyEvent.KEYCODE_MEDIA_PREVIOUS -> PLAYBACK_MANAGER_COMMAND_PREVIOUS
+            KeyEvent.KEYCODE_MEDIA_STOP -> PLAYBACK_MANAGER_COMMAND_STOP
+            KeyEvent.KEYCODE_MEDIA_FAST_FORWARD -> PLAYBACK_MANAGER_COMMAND_FAST_FORWARD
+            KeyEvent.KEYCODE_MEDIA_REWIND -> PLAYBACK_MANAGER_COMMAND_REWIND
+            else -> null
+        }
     }
 }
