@@ -35,6 +35,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.app.PLAYER_EVENT_CHANNEL
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.player.interaction.PlayerLifecycleObserver
@@ -95,6 +96,7 @@ import kotlin.time.Duration.Companion.milliseconds
 @Suppress("TooManyFunctions")
 class PlayerViewModel(application: Application) : AndroidViewModel(application), KoinComponent, Player.Listener {
     private val apiClient: ApiClient = get()
+    private val appPreferences: AppPreferences by inject()
     private val displayPreferencesApi: DisplayPreferencesApi = apiClient.displayPreferencesApi
     private val playStateApi: PlayStateApi = apiClient.playStateApi
     private val hlsSegmentApi: HlsSegmentApi = apiClient.hlsSegmentApi
@@ -644,7 +646,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     suspend fun changeBitrate(bitrate: Int?): Boolean {
-        return queueManager.changeBitrate(bitrate)
+        val success = queueManager.changeBitrate(bitrate)
+        if (success) appPreferences.exoPlayerBitrate = bitrate
+        return success
     }
 
     /**

@@ -11,6 +11,7 @@ import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.MergingMediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.source.SingleSampleMediaSource
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
@@ -44,6 +45,7 @@ class QueueManager(
     private val videosApi: VideosApi = apiClient.videosApi
     private val mediaSourceResolver: MediaSourceResolver by inject()
     private val deviceProfileBuilder: DeviceProfileBuilder by inject()
+    private val appPreferences: AppPreferences by inject()
     private val deviceProfile = deviceProfileBuilder.getDeviceProfile()
 
     private var currentQueue: List<UUID> = emptyList()
@@ -80,7 +82,7 @@ class QueueManager(
             else -> startRemotePlayback(
                 itemId = itemId,
                 mediaSourceId = playOptions.mediaSourceId,
-                maxStreamingBitrate = null,
+                maxStreamingBitrate = appPreferences.exoPlayerBitrate,
                 startTime = playOptions.startPosition,
                 audioStreamIndex = playOptions.audioStreamIndex,
                 subtitleStreamIndex = playOptions.subtitleStreamIndex,
