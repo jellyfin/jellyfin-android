@@ -135,4 +135,11 @@
     <string name="pref_exoplayer_allow_press_speed_up">Podržte pro zrychlení</string>
     <string name="skip_media_segment">Přeskočit</string>
     <string name="special_episode">Speciál</string>
+    <string name="pref_exoplayer_network_buffer">Velikost mezipaměti přehrávače</string>
+    <string name="network_buffer_auto">Automatická</string>
+    <string name="network_buffer_auto_description">Výchozí mezipaměť, vhodná pro většinu přehrávacích aktivit</string>
+    <string name="network_buffer_large">Velká</string>
+    <string name="network_buffer_large_description">Větší mezipaměť, může pomoci na méně stabilních připojeních</string>
+    <string name="network_buffer_extra_large">Extra velké</string>
+    <string name="network_buffer_extra_large_description">Maximální velikost, vhodná pro pomalá nebo satelitní připojení</string>
 </resources>
