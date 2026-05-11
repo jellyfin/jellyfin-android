@@ -129,4 +129,8 @@
     <string name="tv_show_desc">%1$s - 第 %2$d 季第 %3$d 集</string>
     <string name="downloading_desc">正在下載 %1$d 個項目</string>
     <string name="downloaded">已下載 %1$s</string>
+    <string name="pref_exoplayer_network_buffer">播放緩衝大細</string>
+    <string name="network_buffer_auto">自動</string>
+    <string name="network_buffer_auto_description">預設緩衝，適合大部分嘅播放狀況</string>
+    <string name="network_buffer_large">大</string>
 </resources>
