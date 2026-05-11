@@ -132,7 +132,7 @@
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="skip_media_segment">Überspringen</string>
     <string name="special_episode">Special</string>
-    <string name="network_buffer_extra_large_description">Maximaler Puffer, gedacht für langsame oder Satellit-Verbindungen</string>
+    <string name="network_buffer_extra_large_description">Maximaler Puffer, gedacht für langsame oder Satelliten-Verbindungen</string>
     <string name="network_buffer_large_description">Größerer Puffer, könnte bei moderaten oder wechselhaften Verbindungen helfen</string>
     <string name="network_buffer_extra_large">Extra groß</string>
     <string name="network_buffer_large">Groß</string>
