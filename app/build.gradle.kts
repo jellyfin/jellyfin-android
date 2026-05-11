@@ -161,7 +161,6 @@ dependencies {
 
     // Monitoring
     implementation(libs.timber)
-    debugImplementation(libs.leakcanary)
 
     // Testing
     testImplementation(libs.junit.api)
