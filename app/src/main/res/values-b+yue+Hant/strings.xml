@@ -133,4 +133,7 @@
     <string name="network_buffer_auto">自動</string>
     <string name="network_buffer_auto_description">預設緩衝，適合大部分嘅播放狀況</string>
     <string name="network_buffer_large">大</string>
+    <string name="network_buffer_large_description">較大嘅緩衝，可能有助於一般或唔穩定嘅連線</string>
+    <string name="network_buffer_extra_large">特大</string>
+    <string name="network_buffer_extra_large_description">最大緩衝，針對慢速或衛星連線而設</string>
 </resources>
