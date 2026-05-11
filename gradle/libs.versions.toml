@@ -51,7 +51,6 @@ androidx-room = "2.7.2"
 
 # Monitoring
 timber = "5.0.1"
-leakcanary = "2.14"
 
 # Testing
 junit = "6.0.3"
@@ -137,7 +136,6 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 
 # Monitoring
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
-leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
 
 # Testing
 junit-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit" }
