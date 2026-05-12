@@ -133,4 +133,5 @@
     <string name="stored_videos_in_internal_storage_desc">Vaizdo įrašai, pvz., filmai ir TV laidos, bus saugomi vidinėje programėlės saugykloje. Prieiga iš programėlės.</string>
     <string name="downloaded">Atsisiųsta %1$s</string>
     <string name="skip_media_segment">Praleisti</string>
+    <string name="special_episode">Ypatingas</string>
 </resources>

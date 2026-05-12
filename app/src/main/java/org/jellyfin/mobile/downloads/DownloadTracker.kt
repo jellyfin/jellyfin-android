@@ -16,10 +16,9 @@ class DownloadTracker(downloadManager: DownloadManager) {
 
     private val listeners: CopyOnWriteArraySet<Listener> = CopyOnWriteArraySet()
     private val downloads: HashMap<Uri, Download> = HashMap()
-    private val downloadIndex: DownloadIndex
+    private val downloadIndex: DownloadIndex = downloadManager.downloadIndex
 
     init {
-        downloadIndex = downloadManager.downloadIndex
         downloadManager.addListener(DownloadManagerListener())
         loadDownloads()
     }

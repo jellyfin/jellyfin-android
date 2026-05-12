@@ -1,14 +1,14 @@
 [versions]
 # Plugins
 android-plugin = "8.13.2"
-kotlin = "2.3.10"
-kotlin-ksp = "2.3.6"
+kotlin = "2.3.21"
+kotlin-ksp = "2.3.7"
 detekt = "1.23.8"
 android-junit5 = "2.0.1"
 
 # KotlinX
-coroutines = "1.10.2"
-serialization-json = "1.10.0"
+coroutines = "1.11.0"
+serialization-json = "1.11.0"
 
 # Core
 koin = "4.1.1"
@@ -37,7 +37,7 @@ compose-material-icons = "1.7.8"
 
 # Network
 jellyfin-sdk = "1.7.1"
-coil = "3.3.0"
+coil = "3.4.0"
 
 # Media
 androidx-media = "1.7.1"
@@ -54,9 +54,9 @@ timber = "5.0.1"
 leakcanary = "2.14"
 
 # Testing
-junit = "6.0.2"
-kotest = "6.0.7"
-mockk = "1.14.7"
+junit = "6.0.3"
+kotest = "6.1.11"
+mockk = "1.14.9"
 androidx-test-runner = "1.7.0"
 androidx-test-espresso = "3.7.0"
 
@@ -114,6 +114,7 @@ compose-material-icons-extended = { group = "androidx.compose.material", name = 
 jellyfin-sdk = { group = "org.jellyfin.sdk", name = "jellyfin-core", version.ref = "jellyfin-sdk" }
 coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 
 # Media
 androidx-media = { group = "androidx.media", name = "media", version.ref = "androidx-media" }
@@ -154,7 +155,7 @@ detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-form
 [bundles]
 coroutines = ["coroutines-core", "coroutines-android"]
 koin = ["koin", "koin-compose"]
-coil = ["coil", "coil-network"]
+coil = ["coil", "coil-network", "coil-compose"]
 androidx-lifecycle = [
     "androidx-lifecycle-viewmodel",
     "androidx-lifecycle-livedata",

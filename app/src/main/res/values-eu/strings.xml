@@ -133,4 +133,11 @@
     <string name="stored_videos_in_internal_storage_desc">Film eta telesail bezalako bideoak aplikazioaren barne-biltegian gordeko dira. Aplikazioaren barrutik sarbidea baimenduta.</string>
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="special_episode">Berezia</string>
+    <string name="pref_exoplayer_network_buffer">Erreprodukzio-bufferraren tamaina</string>
+    <string name="network_buffer_auto">Auto</string>
+    <string name="network_buffer_auto_description">Lehenetsitako bufferra, erreprodukzio-egoera gehienetarako pentsatuta</string>
+    <string name="network_buffer_large">Handia</string>
+    <string name="network_buffer_large_description">Buffer handia, konexio moderatu edo aldakorretan lagun dezake</string>
+    <string name="network_buffer_extra_large">Extra handia</string>
+    <string name="network_buffer_extra_large_description">Buffer maximoa, konexio motel edo sateliteetarako pentsatua</string>
 </resources>

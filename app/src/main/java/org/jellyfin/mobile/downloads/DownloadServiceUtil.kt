@@ -48,16 +48,14 @@ object DownloadServiceUtil : KoinComponent {
     @Synchronized
     private fun ensureDownloadManagerInitialized(context: Context) {
         if (downloadManager == null) {
-            downloadManager =
-                DownloadManager(
-                    context,
-                    databaseProvider,
-                    downloadCache,
-                    dataSourceFactory,
-                    Executors.newFixedThreadPool(DOWNLOAD_THREADS),
-                )
-            downloadTracker =
-                DownloadTracker(downloadManager!!)
+            downloadManager = DownloadManager(
+                context,
+                databaseProvider,
+                downloadCache,
+                dataSourceFactory,
+                Executors.newFixedThreadPool(DOWNLOAD_THREADS),
+            )
+            downloadTracker = DownloadTracker(downloadManager!!)
         }
     }
 }

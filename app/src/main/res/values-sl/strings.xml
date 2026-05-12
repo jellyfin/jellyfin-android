@@ -134,4 +134,5 @@
     <string name="thumbnail_desc">Sličica</string>
     <string name="store_videos_in_internal_storage">Shrani posnetke v notranji pomnilnik</string>
     <string name="stored_videos_in_internal_storage_desc">Videoposnetki, kot so filmi in serije, bodo shranjeni v notranjem pomnilniku aplikacije. Dostop do njih bo omogočen iz aplikacije.</string>
+    <string name="special_episode">Posebna epizoda</string>
 </resources>

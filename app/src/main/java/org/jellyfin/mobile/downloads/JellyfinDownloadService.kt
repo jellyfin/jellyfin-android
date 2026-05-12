@@ -35,7 +35,7 @@ class JellyfinDownloadService : DownloadService(
         return downloadManager
     }
 
-    override fun getScheduler(): Scheduler? {
+    override fun getScheduler(): Scheduler {
         return PlatformScheduler(this, jobId)
     }
 

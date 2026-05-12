@@ -133,4 +133,11 @@
     <string name="pref_exoplayer_allow_press_speed_up_summary">Het scherm lang ingedrukt houden om het afspelen tijdelijk te versnellen</string>
     <string name="skip_media_segment">Overslaan</string>
     <string name="special_episode">Special</string>
+    <string name="pref_exoplayer_network_buffer">Afspeelbuffergrootte</string>
+    <string name="network_buffer_auto">Automatisch</string>
+    <string name="network_buffer_auto_description">Standaardbuffer, geschikt voor de meeste afspeelscenario\'s</string>
+    <string name="network_buffer_large">Groot</string>
+    <string name="network_buffer_large_description">Grotere buffer, kan helpen bij matige of variabele verbindingen</string>
+    <string name="network_buffer_extra_large">Extra groot</string>
+    <string name="network_buffer_extra_large_description">Maximale buffer, bedoeld voor langzame of satellietverbindingen</string>
 </resources>

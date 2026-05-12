@@ -72,9 +72,8 @@
     <string name="dialog_web_view_outdated_message">Implementacija WebViewa koju koristi vaš uređaj je zastarjela.
 \nAžurirajte ga na odgovarajuću verziju.</string>
     <string name="dialog_web_view_outdated">Zastarjeli WebView</string>
-    <string name="dialog_web_view_not_supported_message">Ovaj uređaj ne podržava WebViews.
-\nInstalirajte odgovarajuću implementaciju WebViewa ili koristite podržani uređaj.</string>
-    <string name="dialog_web_view_not_supported">WebView nije podržan</string>
+    <string name="dialog_web_view_not_supported_message">Ovaj uređaj ne podržava WebViews. \nInstaliraj odgovarajuću WebView implementaciju ili koristi podržani uređaj.</string>
+    <string name="dialog_web_view_not_supported">WebView nepodržan</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Dopusti reprodukciju zvuka videozapisa u pozadini</string>
     <string name="pref_exoplayer_remember_brightness">Zapamti svjetlinu zaslona</string>
     <string name="pref_music_notification_always_dismissible_summary_on">Obavijest uvijek može biti odbačena, čak i tijekom reprodukcije medija</string>

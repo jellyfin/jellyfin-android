@@ -115,7 +115,7 @@
     <string name="skip_media_segment">Salta</string>
     <string name="external_player_mpvkt_description">Un media player basato su mpv-android che mira a dare all\'utente un\'interfaccia migliore dell\'originale.</string>
     <string name="failed_information">Fallito scaricamento delle informazioni sui media</string>
-    <string name="external_player_mpvkt">mpvKt Player</string>
+    <string name="external_player_mpvkt">Lettore mpvKt</string>
     <string name="view_downloads">Visualizza i download</string>
     <string name="failed_thumbnail">Scaricamento del thumbnail fallito</string>
     <string name="pref_exoplayer_allow_press_speed_up">Tieni premuto per velocizzare</string>
