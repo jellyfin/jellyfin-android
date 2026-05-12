@@ -132,4 +132,11 @@
     <string name="downloaded">S\'ha descarregat %1$s</string>
     <string name="skip_media_segment">Salta</string>
     <string name="special_episode">Especial</string>
+    <string name="network_buffer_extra_large_description">Memòria intermèdia màxima, pensat per a connexions lentes o per satèl·lit</string>
+    <string name="network_buffer_extra_large">Extra gran</string>
+    <string name="network_buffer_large_description">Memòria intermèdia més gran, pot ajudar en connexions moderades o variables</string>
+    <string name="network_buffer_large">Gran</string>
+    <string name="network_buffer_auto_description">Memòria intermèdia per defecte, adequada per a la majoria d\'escenaris de reproducció</string>
+    <string name="network_buffer_auto">Automàtica</string>
+    <string name="pref_exoplayer_network_buffer">Mida de la memòria intermèdia de reproducció</string>
 </resources>
