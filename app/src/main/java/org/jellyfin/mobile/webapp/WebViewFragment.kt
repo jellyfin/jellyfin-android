@@ -162,7 +162,7 @@ class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClien
         // Process JS functions called from other components (e.g. the PlayerActivity)
         lifecycleScope.launch {
             for (function in webappFunctionChannel) {
-                webView.loadUrl("javascript:$function")
+                webView.evaluateJavascript(function, null)
             }
         }
     }
