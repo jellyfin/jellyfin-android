@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.app)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
@@ -53,7 +52,6 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-            aaptOptions.cruncherEnabled = false
 
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = releaseSigningConfig
@@ -61,7 +59,6 @@ android {
         getByName("debug") {
             applicationIdSuffix = ".debug"
             isDebuggable = true
-            aaptOptions.cruncherEnabled = false
         }
     }
 
@@ -164,7 +161,6 @@ dependencies {
 
     // Monitoring
     implementation(libs.timber)
-    debugImplementation(libs.leakcanary)
 
     // Testing
     testImplementation(libs.junit.api)

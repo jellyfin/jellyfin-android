@@ -133,4 +133,11 @@
     <string name="downloaded">Завантажено %1$s</string>
     <string name="skip_media_segment">Пропустити</string>
     <string name="special_episode">Спецвипуски</string>
+    <string name="pref_exoplayer_network_buffer">Обсяг буферизації</string>
+    <string name="network_buffer_auto">Автоматично</string>
+    <string name="network_buffer_auto_description">Стандартний буфер, підходить для більшості випадків відтворення</string>
+    <string name="network_buffer_large">Великий</string>
+    <string name="network_buffer_large_description">Збільшений буфер, може допомогти при середній або нестабільній швидкості з\'єднання</string>
+    <string name="network_buffer_extra_large">Максимальний</string>
+    <string name="network_buffer_extra_large_description">Максимальний буфер, призначений для повільного або супутникового з\'єднання</string>
 </resources>
