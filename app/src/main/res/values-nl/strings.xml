@@ -140,4 +140,9 @@
     <string name="network_buffer_large_description">Grotere buffer, kan helpen bij matige of variabele verbindingen</string>
     <string name="network_buffer_extra_large">Extra groot</string>
     <string name="network_buffer_extra_large_description">Maximale buffer, bedoeld voor langzame of satellietverbindingen</string>
+    <string name="media_service_unknown_page">Onbekende pagina</string>
+    <string name="media_service_no_items">Geen items gevonden</string>
+    <string name="media_service_invalid_id">Onbekend item-id</string>
+    <string name="media_service_car_section_favorites">Favorieten</string>
+    <string name="media_service_auth_expired">Open de app op je telefoon om je aan te melden bij je Jellyfin-server.</string>
 </resources>
