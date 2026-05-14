@@ -140,4 +140,9 @@
     <string name="network_buffer_large_description">Większy bufor może pomóc w przypadku połączeń o średniej lub zmiennej częstotliwości</string>
     <string name="network_buffer_extra_large">Bardzo duży</string>
     <string name="network_buffer_extra_large_description">Maksymalny bufor przeznaczony dla połączeń wolnych lub satelitarnych</string>
+    <string name="media_service_unknown_page">Nieznana strona</string>
+    <string name="media_service_no_items">Nie znaleziono elementów</string>
+    <string name="media_service_auth_expired">Otwórz aplikację na swoim telefonie, aby zalogować się do serwera Jellyfin.</string>
+    <string name="media_service_invalid_id">Nieprawidłowy identyfikator elementu</string>
+    <string name="media_service_car_section_favorites">Ulubione</string>
 </resources>
