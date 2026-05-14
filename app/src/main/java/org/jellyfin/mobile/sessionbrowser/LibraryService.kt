@@ -23,14 +23,10 @@ class LibraryService : MediaLibraryService() {
         .setUsage(C.USAGE_MEDIA)
         .build()
 
-    private val playerListener: Player.Listener = object : Player.Listener {
-    }
-
     private val exoPlayer: Player by lazy {
         ExoPlayer.Builder(this).build().apply {
             setAudioAttributes(playerAudioAttributes, true)
             setHandleAudioBecomingNoisy(true)
-            addListener(playerListener)
         }
     }
 

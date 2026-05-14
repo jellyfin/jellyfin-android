@@ -9,7 +9,7 @@ import org.jellyfin.sdk.model.api.ImageType
 import org.jellyfin.sdk.model.api.ItemSortBy
 
 val AlbumLibraryPage = { api: ApiClient ->
-    libraryPage<LibraryRoute.Album>(grid = true) { route, offset, limit ->
+    libraryPage<LibraryRoute.Album> { route, offset, limit ->
         val result by api.itemsApi.getItems(
             parentId = route.albumId,
             sortBy = listOf(ItemSortBy.SORT_NAME),

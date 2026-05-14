@@ -11,7 +11,7 @@ import org.jellyfin.sdk.model.api.ImageType
 import org.jellyfin.sdk.model.api.ItemSortBy
 
 val PlaylistsLibraryPage = { api: ApiClient ->
-    libraryPage<LibraryRoute.Playlists> { route, offset, limit ->
+    libraryPage<LibraryRoute.Playlists>(grid = true) { route, offset, limit ->
         val result by api.itemsApi.getItems(
             parentId = route.libraryId,
             includeItemTypes = listOf(BaseItemKind.PLAYLIST),
