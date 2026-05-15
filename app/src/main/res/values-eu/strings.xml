@@ -140,4 +140,9 @@
     <string name="network_buffer_large_description">Buffer handia, konexio moderatu edo aldakorretan lagun dezake</string>
     <string name="network_buffer_extra_large">Extra handia</string>
     <string name="network_buffer_extra_large_description">Buffer maximoa, konexio motel edo sateliteetarako pentsatua</string>
+    <string name="media_service_unknown_page">Orri ezezaguna</string>
+    <string name="media_service_no_items">Ez da elementurik aurkitu</string>
+    <string name="media_service_auth_expired">Ireki aplikazioa zure telefonoan Jellyfin zerbitzarian saioa hasteko.</string>
+    <string name="media_service_invalid_id">Elementu ID baliogabea</string>
+    <string name="media_service_car_section_favorites">Gogokoak</string>
 </resources>
