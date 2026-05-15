@@ -140,4 +140,9 @@
     <string name="network_buffer_large_description">Збільшений буфер, може допомогти при середній або нестабільній швидкості з\'єднання</string>
     <string name="network_buffer_extra_large">Максимальний</string>
     <string name="network_buffer_extra_large_description">Максимальний буфер, призначений для повільного або супутникового з\'єднання</string>
+    <string name="media_service_unknown_page">Невідома сторінка</string>
+    <string name="media_service_no_items">Нічого не знайдено</string>
+    <string name="media_service_auth_expired">Відкрийте програму на телефоні, щоб увійти на сервер Jellyfin.</string>
+    <string name="media_service_invalid_id">Недійсний ID елемента</string>
+    <string name="media_service_car_section_favorites">Улюблене</string>
 </resources>
