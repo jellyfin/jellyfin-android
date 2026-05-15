@@ -12,6 +12,7 @@ import org.jellyfin.mobile.data.entity.UserEntity.Key.ID
 import org.jellyfin.mobile.data.entity.UserEntity.Key.SERVER_ID
 import org.jellyfin.mobile.data.entity.UserEntity.Key.TABLE_NAME
 import org.jellyfin.mobile.data.entity.UserEntity.Key.USER_ID
+import java.util.UUID
 
 @Dao
 @Suppress("TooManyFunctions")
@@ -19,10 +20,10 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insert(entity: UserEntity): Long
 
-    fun insert(serverId: Long, userId: String, accessToken: String?) = insert(UserEntity(serverId, userId, accessToken))
+    fun insert(serverId: Long, userId: UUID, accessToken: String?) = insert(UserEntity(serverId, userId, accessToken))
 
     @Transaction
-    fun upsert(serverId: Long, userId: String, accessToken: String?): Long {
+    fun upsert(serverId: Long, userId: UUID, accessToken: String?): Long {
         return when (val user = getByUserId(serverId, userId)) {
             null -> insert(serverId, userId, accessToken)
             else -> {
@@ -33,22 +34,22 @@ interface UserDao {
     }
 
     @Transaction
-    @Query("SELECT * FROM $TABLE_NAME WHERE $SERVER_ID = :serverId AND $ID = :userId")
-    fun getServerUser(serverId: Long, userId: Long): ServerUser?
+    @Query("SELECT * FROM $TABLE_NAME WHERE $SERVER_ID = :serverId AND $ID = :id")
+    fun getServerUser(serverId: Long, id: Long): ServerUser?
 
     @Transaction
     @Query("SELECT * FROM $TABLE_NAME WHERE $SERVER_ID = :serverId AND $USER_ID = :userId")
-    fun getServerUser(serverId: Long, userId: String): ServerUser?
+    fun getServerUser(serverId: Long, userId: UUID): ServerUser?
 
     @Query("SELECT * FROM $TABLE_NAME WHERE $SERVER_ID = :serverId AND $USER_ID = :userId")
-    fun getByUserId(serverId: Long, userId: String): UserEntity?
+    fun getByUserId(serverId: Long, userId: UUID): UserEntity?
 
     @Query("SELECT * FROM $TABLE_NAME WHERE $SERVER_ID = :serverId")
     fun getAllForServer(serverId: Long): List<UserEntity>
 
-    @Query("UPDATE $TABLE_NAME SET access_token = :accessToken WHERE $ID = :userId")
-    fun update(userId: Long, accessToken: String?): Int
+    @Query("UPDATE $TABLE_NAME SET access_token = :accessToken WHERE $ID = :id")
+    fun update(id: Long, accessToken: String?): Int
 
-    @Query("UPDATE $TABLE_NAME SET $ACCESS_TOKEN = NULL WHERE $ID = :userId")
-    fun logout(userId: Long)
+    @Query("UPDATE $TABLE_NAME SET $ACCESS_TOKEN = NULL WHERE $ID = :id")
+    fun logout(id: Long)
 }

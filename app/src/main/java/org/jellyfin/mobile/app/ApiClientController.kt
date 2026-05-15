@@ -8,6 +8,7 @@ import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.sdk.Jellyfin
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.model.DeviceInfo
+import java.util.UUID
 
 class ApiClientController(
     private val appPreferences: AppPreferences,
@@ -29,7 +30,7 @@ class ApiClientController(
         apiClient.update(baseUrl = hostname)
     }
 
-    suspend fun setupUser(serverId: Long, userId: String, accessToken: String) {
+    suspend fun setupUser(serverId: Long, userId: UUID, accessToken: String) {
         appPreferences.currentUserId = withContext(Dispatchers.IO) {
             userDao.upsert(serverId, userId, accessToken)
         }
@@ -71,7 +72,7 @@ class ApiClientController(
         apiClient.update(baseUrl = server?.hostname)
     }
 
-    private fun configureApiClientUser(userId: String, accessToken: String) {
+    private fun configureApiClientUser(userId: UUID, accessToken: String) {
         apiClient.update(
             accessToken = accessToken,
             // Append user id to device id to ensure uniqueness across sessions
