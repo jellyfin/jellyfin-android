@@ -133,4 +133,16 @@
     <string name="downloading_desc">%1$d Başlıkları indiriliyor</string>
     <string name="skip_media_segment">Atla</string>
     <string name="special_episode">Özel</string>
+    <string name="media_service_unknown_page">Bilinmeyen sayfa</string>
+    <string name="media_service_no_items">Hiçbir öge bulunamadı</string>
+    <string name="media_service_auth_expired">Jellyfin sunucunuza giriş yapmak için lütfen telefonunuzdaki uygulamayı açın.</string>
+    <string name="media_service_invalid_id">Geçersiz öge kimliği</string>
+    <string name="media_service_car_section_favorites">Favoriler</string>
+    <string name="pref_exoplayer_network_buffer">Oynatma arabellek boyutu</string>
+    <string name="network_buffer_auto">Otomatik</string>
+    <string name="network_buffer_auto_description">Varsayılan arabellek, çoğu oynatma senaryosu için uygundur</string>
+    <string name="network_buffer_large">Büyük</string>
+    <string name="network_buffer_large_description">Daha büyük arabellek, orta veya değişken bağlantılarda yardımcı olabilir</string>
+    <string name="network_buffer_extra_large">Çok büyük</string>
+    <string name="network_buffer_extra_large_description">Yavaş veya uydu bağlantıları için tasarlanmış maksimum arabellek</string>
 </resources>
