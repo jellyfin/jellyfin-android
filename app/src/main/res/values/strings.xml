@@ -50,6 +50,7 @@
     <string name="media_service_car_section_recents">Recently played</string>
     <string name="media_service_car_section_favorites">Favorites</string>
     <string name="media_service_car_section_albums">Albums</string>
+    <string name="media_service_car_section_audiobooks">Audiobooks</string>
     <string name="media_service_car_section_artists">Artists</string>
     <string name="media_service_car_section_songs">Songs</string>
     <string name="media_service_car_section_genres">Genres</string>

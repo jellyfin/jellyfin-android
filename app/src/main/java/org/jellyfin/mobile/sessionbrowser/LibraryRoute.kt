@@ -4,6 +4,7 @@ package org.jellyfin.mobile.sessionbrowser
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
+import org.jellyfin.sdk.model.api.CollectionType
 import org.jellyfin.sdk.model.serializer.UUIDSerializer
 import java.util.UUID
 
@@ -22,13 +23,16 @@ sealed interface LibraryRoute {
     data class Search(val query: String? = null) : LibraryRoute
 
     @Serializable
-    data class Library(val libraryId: UUID) : LibraryRoute
+    data class Library(val libraryId: UUID, val collectionType: CollectionType? = null) : LibraryRoute
 
     @Serializable
     data class Albums(val libraryId: UUID, val startLetter: String? = null) : LibraryRoute
 
     @Serializable
     data class Album(val albumId: UUID) : LibraryRoute
+
+    @Serializable
+    data class AudioBooks(val libraryId: UUID, val startLetter: String? = null) : LibraryRoute
 
     @Serializable
     data class Artists(val libraryId: UUID, val startLetter: String? = null) : LibraryRoute
