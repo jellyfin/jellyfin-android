@@ -22,6 +22,7 @@ import org.jellyfin.mobile.sessionbrowser.page.AlbumLibraryPage
 import org.jellyfin.mobile.sessionbrowser.page.AlbumsLibraryPage
 import org.jellyfin.mobile.sessionbrowser.page.ArtistLibraryPage
 import org.jellyfin.mobile.sessionbrowser.page.ArtistsLibraryPage
+import org.jellyfin.mobile.sessionbrowser.page.AudioBooksLibraryPage
 import org.jellyfin.mobile.sessionbrowser.page.FavoritesLibraryPage
 import org.jellyfin.mobile.sessionbrowser.page.GenreLibraryPage
 import org.jellyfin.mobile.sessionbrowser.page.GenresLibraryPage
@@ -54,6 +55,7 @@ class SessionBrowserCallback(
         UserViewLibraryPage(context),
         AlbumsLibraryPage(api),
         AlbumLibraryPage(api),
+        AudioBooksLibraryPage(api),
         ArtistsLibraryPage(api),
         ArtistLibraryPage(api),
         FavoritesLibraryPage(api),

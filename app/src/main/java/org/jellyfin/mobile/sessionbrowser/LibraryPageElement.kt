@@ -60,6 +60,12 @@ sealed interface LibraryPageElement {
                     tag = albumPrimaryImageTag,
                 ).toUri()
 
+                parentId != null && parentPrimaryImageTag != null -> api.imageApi.getItemImageUrl(
+                    itemId = requireNotNull(parentId),
+                    imageType = ImageType.PRIMARY,
+                    tag = parentPrimaryImageTag,
+                ).toUri()
+
                 else -> null
             }
         }
