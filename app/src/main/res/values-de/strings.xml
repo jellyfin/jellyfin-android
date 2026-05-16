@@ -139,4 +139,9 @@
     <string name="network_buffer_auto_description">Standard-Puffer, geeignet für die meisten Wiedergabe-Szenarien</string>
     <string name="network_buffer_auto">Auto</string>
     <string name="pref_exoplayer_network_buffer">Wiedergabepuffergröße</string>
+    <string name="media_service_unknown_page">Unbekannte Seite</string>
+    <string name="media_service_no_items">Keine Titel gefunden</string>
+    <string name="media_service_auth_expired">Bitte öffnen Sie die Jellyfin App auf ihrem Smartphone um sich bei Ihrem Jellyfin Server anzumelden.</string>
+    <string name="media_service_invalid_id">Ungültige Titel ID</string>
+    <string name="media_service_car_section_favorites">Favoriten</string>
 </resources>
