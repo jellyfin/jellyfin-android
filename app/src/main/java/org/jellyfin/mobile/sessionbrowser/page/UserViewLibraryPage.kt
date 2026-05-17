@@ -18,6 +18,7 @@ val UserViewLibraryPage = { context: Context ->
                 add(
                     LibraryPageElement.Item(
                         title = context.getString(R.string.media_service_car_section_albums),
+                        iconRes = R.drawable.ic_album,
                         action = LibraryItemAction.Navigate(LibraryRoute.AlbumsAlpha(route.libraryId)),
                     ),
                 )
@@ -25,6 +26,7 @@ val UserViewLibraryPage = { context: Context ->
                 add(
                     LibraryPageElement.Item(
                         title = context.getString(R.string.media_service_car_section_artists),
+                        iconRes = R.drawable.ic_artist,
                         action = LibraryItemAction.Navigate(LibraryRoute.ArtistsAlpha(route.libraryId)),
                     ),
                 )
@@ -34,6 +36,7 @@ val UserViewLibraryPage = { context: Context ->
                 add(
                     LibraryPageElement.Item(
                         title = context.getString(R.string.media_service_car_section_audiobooks),
+                        iconRes = R.drawable.ic_audiobooks,
                         action = LibraryItemAction.Navigate(LibraryRoute.AudioBooksAlpha(route.libraryId)),
                     ),
                 )
@@ -42,6 +45,7 @@ val UserViewLibraryPage = { context: Context ->
             add(
                 LibraryPageElement.Item(
                     title = context.getString(R.string.media_service_car_section_favorites),
+                    iconRes = R.drawable.ic_favorite,
                     action = LibraryItemAction.Navigate(LibraryRoute.Favorites(route.libraryId)),
                 ),
             )
@@ -49,6 +53,7 @@ val UserViewLibraryPage = { context: Context ->
             add(
                 LibraryPageElement.Item(
                     title = context.getString(R.string.media_service_car_section_genres),
+                    iconRes = R.drawable.ic_genres,
                     action = LibraryItemAction.Navigate(LibraryRoute.Genres(route.libraryId)),
                 ),
             )
@@ -56,6 +61,7 @@ val UserViewLibraryPage = { context: Context ->
             add(
                 LibraryPageElement.Item(
                     title = context.getString(R.string.media_service_car_section_playlists),
+                    iconRes = R.drawable.ic_playlist,
                     action = LibraryItemAction.Navigate(LibraryRoute.Playlists(route.libraryId)),
                 ),
             )
@@ -63,6 +69,7 @@ val UserViewLibraryPage = { context: Context ->
             add(
                 LibraryPageElement.Item(
                     title = context.getString(R.string.media_service_car_section_recents),
+                    iconRes = R.drawable.ic_recently_played,
                     action = LibraryItemAction.Navigate(LibraryRoute.Recent(route.libraryId)),
                 ),
             )

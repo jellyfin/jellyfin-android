@@ -1,6 +1,8 @@
 package org.jellyfin.mobile.sessionbrowser
 
+import android.content.ContentResolver
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.media3.common.MediaItem
@@ -105,12 +107,24 @@ class SessionBrowserCallback(
                 setAlbumTitle(album)
                 setIsBrowsable(action is LibraryItemAction.Navigate)
                 setIsPlayable(action is LibraryItemAction.Play)
-                if (image != null) setArtworkUri(image)
+
+                if (image != null) {
+                    setArtworkUri(image)
+                } else if (iconRes != null) {
+                    setArtworkUri(iconRes.asResourceUri())
+                }
 
                 setExtras(extras)
             }.build(),
         )
     }.build()
+
+    private fun Int.asResourceUri() = Uri.Builder()
+        .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+        .authority(context.resources.getResourcePackageName(this))
+        .appendPath(context.resources.getResourceTypeName(this))
+        .appendPath(context.resources.getResourceEntryName(this))
+        .build()
 
     private fun List<LibraryPageElement>.toMediaItems(): List<MediaItem> = flatMap { element ->
         when (element) {

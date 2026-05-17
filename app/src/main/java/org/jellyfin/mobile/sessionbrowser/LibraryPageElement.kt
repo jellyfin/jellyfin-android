@@ -1,7 +1,9 @@
 package org.jellyfin.mobile.sessionbrowser
 
 import android.net.Uri
+import androidx.annotation.DrawableRes
 import androidx.core.net.toUri
+import org.jellyfin.mobile.R
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.imageApi
 import org.jellyfin.sdk.model.api.BaseItemDto
@@ -24,6 +26,7 @@ sealed interface LibraryPageElement {
         val artist: String? = null,
         val album: String? = null,
         val image: Uri? = null,
+        @DrawableRes val iconRes: Int? = null,
         val action: LibraryItemAction,
     ) : LibraryPageElement
 
@@ -35,12 +38,14 @@ sealed interface LibraryPageElement {
             artist: String? = item.artists?.joinToString(),
             album: String? = item.album,
             image: Uri? = item.getImage(api),
+            @DrawableRes iconRes: Int? = R.drawable.ic_notification,
             action: LibraryItemAction = LibraryItemAction.Play(item),
         ): Item = Item(
             title = title,
             artist = artist,
             album = album,
             image = image,
+            iconRes = iconRes,
             action = action,
         )
 
