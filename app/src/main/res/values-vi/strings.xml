@@ -132,4 +132,16 @@
     <string name="downloaded">Đã tải xuống %1$s</string>
     <string name="skip_media_segment">Bỏ qua</string>
     <string name="special_episode">Đặc biệt</string>
+    <string name="media_service_unknown_page">Trang không xác định</string>
+    <string name="media_service_no_items">Không tìm thấy mục nào</string>
+    <string name="media_service_auth_expired">Vui lòng mở ứng dụng trên điện thoại để đăng nhập vào máy chủ Jellyfin của bạn.</string>
+    <string name="media_service_invalid_id">ID mục không hợp lệ</string>
+    <string name="media_service_car_section_favorites">Yêu thích</string>
+    <string name="pref_exoplayer_network_buffer">Kích thước bộ đệm phát lại</string>
+    <string name="network_buffer_auto">Tự động</string>
+    <string name="network_buffer_auto_description">Bộ đệm mặc định, phù hợp với hầu hết các tình huống phát lại</string>
+    <string name="network_buffer_large">Lớn</string>
+    <string name="network_buffer_large_description">Bộ đệm lớn hơn, có thể trợ giúp trên các kết nối vừa phải hoặc thay đổi</string>
+    <string name="network_buffer_extra_large">Cực lớn</string>
+    <string name="network_buffer_extra_large_description">Bộ đệm tối đa, dành cho kết nối chậm hoặc vệ tinh</string>
 </resources>
