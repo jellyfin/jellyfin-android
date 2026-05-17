@@ -27,6 +27,7 @@ val RootLibraryPage = { api: ApiClient ->
                     api = api,
                     item = it,
                     image = null,
+                    iconRes = null,
                     action = LibraryItemAction.Navigate(LibraryRoute.Library(it.id, it.collectionType)),
                 )
             }
