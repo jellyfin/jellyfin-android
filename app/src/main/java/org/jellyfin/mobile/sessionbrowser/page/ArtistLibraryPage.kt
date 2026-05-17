@@ -12,8 +12,6 @@ import org.jellyfin.sdk.model.api.ItemSortBy
 
 val ArtistLibraryPage = { api: ApiClient ->
     libraryPage<LibraryRoute.Artist>(grid = true) { route, offset, limit ->
-        if (route.startLetter == null) return@libraryPage createAlphaBrowser { route.copy(startLetter = it) }
-
         val result by api.itemsApi.getItems(
             includeItemTypes = listOf(BaseItemKind.MUSIC_ALBUM),
             sortBy = listOf(ItemSortBy.SORT_NAME),
@@ -21,8 +19,6 @@ val ArtistLibraryPage = { api: ApiClient ->
             recursive = true,
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
-            nameLessThan = if (route.startLetter == ALPHA_BROWSER_OTHER) ALPHA_BROWSER_LETTERS[0].toString() else null,
-            nameStartsWith = if (route.startLetter == ALPHA_BROWSER_OTHER) null else route.startLetter,
             startIndex = offset,
             limit = limit,
         )

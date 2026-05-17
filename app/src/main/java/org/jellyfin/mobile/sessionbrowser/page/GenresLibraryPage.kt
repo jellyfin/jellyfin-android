@@ -11,15 +11,11 @@ import org.jellyfin.sdk.model.api.ItemSortBy
 
 val GenresLibraryPage = { api: ApiClient ->
     libraryPage<LibraryRoute.Genres> { route, offset, limit ->
-        if (route.startLetter == null) return@libraryPage createAlphaBrowser { route.copy(startLetter = it) }
-
         val result by api.genresApi.getGenres(
             parentId = route.libraryId,
             sortBy = listOf(ItemSortBy.SORT_NAME),
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
-            nameLessThan = if (route.startLetter == ALPHA_BROWSER_OTHER) ALPHA_BROWSER_LETTERS[0].toString() else null,
-            nameStartsWith = if (route.startLetter == ALPHA_BROWSER_OTHER) null else route.startLetter,
             startIndex = offset,
             limit = limit,
         )

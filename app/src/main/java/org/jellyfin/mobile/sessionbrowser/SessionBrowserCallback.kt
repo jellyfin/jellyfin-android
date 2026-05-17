@@ -19,9 +19,12 @@ import kotlinx.coroutines.guava.future
 import kotlinx.serialization.json.Json
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.sessionbrowser.page.AlbumLibraryPage
+import org.jellyfin.mobile.sessionbrowser.page.AlbumsAlphaLibraryPage
 import org.jellyfin.mobile.sessionbrowser.page.AlbumsLibraryPage
 import org.jellyfin.mobile.sessionbrowser.page.ArtistLibraryPage
+import org.jellyfin.mobile.sessionbrowser.page.ArtistsAlphaLibraryPage
 import org.jellyfin.mobile.sessionbrowser.page.ArtistsLibraryPage
+import org.jellyfin.mobile.sessionbrowser.page.AudioBooksAlphaLibraryPage
 import org.jellyfin.mobile.sessionbrowser.page.AudioBooksLibraryPage
 import org.jellyfin.mobile.sessionbrowser.page.FavoritesLibraryPage
 import org.jellyfin.mobile.sessionbrowser.page.GenreLibraryPage
@@ -54,9 +57,12 @@ class SessionBrowserCallback(
         RootLibraryPage(api),
         UserViewLibraryPage(context),
         AlbumsLibraryPage(api),
+        AlbumsAlphaLibraryPage,
         AlbumLibraryPage(api),
         AudioBooksLibraryPage(api),
+        AudioBooksAlphaLibraryPage,
         ArtistsLibraryPage(api),
+        ArtistsAlphaLibraryPage,
         ArtistLibraryPage(api),
         FavoritesLibraryPage(api),
         GenresLibraryPage(api),

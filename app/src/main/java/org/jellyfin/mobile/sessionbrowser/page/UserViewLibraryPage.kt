@@ -18,14 +18,14 @@ val UserViewLibraryPage = { context: Context ->
                 add(
                     LibraryPageElement.Item(
                         title = context.getString(R.string.media_service_car_section_albums),
-                        action = LibraryItemAction.Navigate(LibraryRoute.Albums(route.libraryId)),
+                        action = LibraryItemAction.Navigate(LibraryRoute.AlbumsAlpha(route.libraryId)),
                     ),
                 )
 
                 add(
                     LibraryPageElement.Item(
                         title = context.getString(R.string.media_service_car_section_artists),
-                        action = LibraryItemAction.Navigate(LibraryRoute.Artists(route.libraryId)),
+                        action = LibraryItemAction.Navigate(LibraryRoute.ArtistsAlpha(route.libraryId)),
                     ),
                 )
             }
@@ -34,7 +34,7 @@ val UserViewLibraryPage = { context: Context ->
                 add(
                     LibraryPageElement.Item(
                         title = context.getString(R.string.media_service_car_section_audiobooks),
-                        action = LibraryItemAction.Navigate(LibraryRoute.AudioBooks(route.libraryId)),
+                        action = LibraryItemAction.Navigate(LibraryRoute.AudioBooksAlpha(route.libraryId)),
                     ),
                 )
             }
