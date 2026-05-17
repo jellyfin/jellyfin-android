@@ -12,8 +12,6 @@ import org.jellyfin.sdk.model.api.ItemSortBy
 
 val AudioBooksLibraryPage = { api: ApiClient ->
     libraryPage<LibraryRoute.AudioBooks>(grid = true) { route, offset, limit ->
-        if (route.startLetter == null) return@libraryPage createAlphaBrowser { route.copy(startLetter = it) }
-
         val result by api.itemsApi.getItems(
             parentId = route.libraryId,
             includeItemTypes = listOf(BaseItemKind.AUDIO_BOOK),
@@ -22,7 +20,7 @@ val AudioBooksLibraryPage = { api: ApiClient ->
             imageTypeLimit = 1,
             enableImageTypes = listOf(ImageType.PRIMARY),
             nameLessThan = if (route.startLetter == ALPHA_BROWSER_OTHER) ALPHA_BROWSER_LETTERS[0].toString() else null,
-            nameStartsWith = if (route.startLetter == ALPHA_BROWSER_OTHER) null else route.startLetter,
+            nameStartsWith = route.startLetter.takeIf { it != ALPHA_BROWSER_OTHER },
             startIndex = offset,
             limit = limit,
         )
@@ -34,5 +32,11 @@ val AudioBooksLibraryPage = { api: ApiClient ->
                 action = LibraryItemAction.Play(it),
             )
         }
+    }
+}
+
+val AudioBooksAlphaLibraryPage = libraryPage<LibraryRoute.AudioBooksAlpha> { route, offset, limit ->
+    createAlphaBrowser(offset, limit) { startLetter ->
+        LibraryRoute.Albums(route.libraryId, startLetter)
     }
 }

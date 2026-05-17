@@ -26,28 +26,37 @@ sealed interface LibraryRoute {
     data class Library(val libraryId: UUID, val collectionType: CollectionType? = null) : LibraryRoute
 
     @Serializable
-    data class Albums(val libraryId: UUID, val startLetter: String? = null) : LibraryRoute
+    data class Albums(val libraryId: UUID, val startLetter: String) : LibraryRoute
+
+    @Serializable
+    data class AlbumsAlpha(val libraryId: UUID) : LibraryRoute
 
     @Serializable
     data class Album(val albumId: UUID) : LibraryRoute
 
     @Serializable
-    data class AudioBooks(val libraryId: UUID, val startLetter: String? = null) : LibraryRoute
+    data class AudioBooks(val libraryId: UUID, val startLetter: String) : LibraryRoute
 
     @Serializable
-    data class Artists(val libraryId: UUID, val startLetter: String? = null) : LibraryRoute
+    data class AudioBooksAlpha(val libraryId: UUID) : LibraryRoute
 
     @Serializable
-    data class Artist(val artistId: UUID, val startLetter: String? = null) : LibraryRoute
+    data class Artists(val libraryId: UUID, val startLetter: String) : LibraryRoute
+
+    @Serializable
+    data class ArtistsAlpha(val libraryId: UUID) : LibraryRoute
+
+    @Serializable
+    data class Artist(val artistId: UUID) : LibraryRoute
 
     @Serializable
     data class Favorites(val libraryId: UUID) : LibraryRoute
 
     @Serializable
-    data class Genres(val libraryId: UUID, val startLetter: String? = null) : LibraryRoute
+    data class Genres(val libraryId: UUID) : LibraryRoute
 
     @Serializable
-    data class Genre(val genreId: UUID, val startLetter: String? = null) : LibraryRoute
+    data class Genre(val genreId: UUID) : LibraryRoute
 
     @Serializable
     data class Playlists(val libraryId: UUID) : LibraryRoute
