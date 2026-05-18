@@ -41,10 +41,16 @@
 
     <string name="media_service_generic_error">An error occurred</string>
     <string name="media_service_item_not_found">Media item could not be found</string>
+    <string name="media_service_unknown_page">Unknown page</string>
+    <string name="media_service_no_items">No items found</string>
+    <string name="media_service_auth_expired">Please open the app on your phone to sign in to your Jellyfin server.</string>
+    <string name="media_service_invalid_id">Invalid item ID</string>
 
     <!-- MediaService / Car-related strings -->
     <string name="media_service_car_section_recents">Recently played</string>
+    <string name="media_service_car_section_favorites">Favorites</string>
     <string name="media_service_car_section_albums">Albums</string>
+    <string name="media_service_car_section_audiobooks">Audiobooks</string>
     <string name="media_service_car_section_artists">Artists</string>
     <string name="media_service_car_section_songs">Songs</string>
     <string name="media_service_car_section_genres">Genres</string>

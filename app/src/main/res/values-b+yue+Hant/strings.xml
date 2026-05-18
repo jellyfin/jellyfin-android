@@ -136,4 +136,9 @@
     <string name="network_buffer_large_description">較大嘅緩衝，可能有助於一般或唔穩定嘅連線</string>
     <string name="network_buffer_extra_large">特大</string>
     <string name="network_buffer_extra_large_description">最大緩衝，針對慢速或衛星連線而設</string>
+    <string name="media_service_unknown_page">未知頁面</string>
+    <string name="media_service_no_items">搵唔到任何項目</string>
+    <string name="media_service_auth_expired">請喺手機開啟應用程式，登入你嘅 Jellyfin 伺服器。</string>
+    <string name="media_service_invalid_id">項目 ID 無效</string>
+    <string name="media_service_car_section_favorites">經常心水</string>
 </resources>

@@ -16,6 +16,7 @@ import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.initLocale
 import org.jellyfin.mobile.utils.inject
+import org.jellyfin.sdk.model.serializer.toUUID
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
@@ -64,7 +65,7 @@ abstract class JellyfinWebViewClient(
                         }
                     }
                     val storedServer = credentials.getJSONArray("Servers").getJSONObject(0)
-                    val user = storedServer.getString("UserId")
+                    val user = storedServer.getString("UserId").toUUID()
                     val token = storedServer.getString("AccessToken")
                     apiClientController.setupUser(server.id, user, token)
                     webView.initLocale(user)

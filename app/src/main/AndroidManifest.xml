@@ -78,16 +78,26 @@
             android:exported="false"
             android:foregroundServiceType="mediaPlayback" />
 
-        <service android:name="org.jellyfin.mobile.downloads.JellyfinDownloadService"
+        <service
+            android:name="org.jellyfin.mobile.downloads.JellyfinDownloadService"
             android:exported="false"
             android:foregroundServiceType="dataSync">
             <!-- This is needed for Scheduler -->
             <intent-filter>
-                <action android:name="androidx.media3.exoplayer.downloadService.action.RESTART"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="androidx.media3.exoplayer.downloadService.action.RESTART" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
 
+        <service
+            android:name=".sessionbrowser.LibraryService"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback">
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaSessionService" />
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
 
         <receiver
             android:name="androidx.mediarouter.media.MediaTransferReceiver"
@@ -112,7 +122,10 @@
             android:resource="@xml/automotive_app_desc" />
         <meta-data
             android:name="com.google.android.gms.car.notification.SmallIcon"
-            android:resource="@mipmap/ic_launcher_round" />
+            android:resource="@drawable/ic_launcher_foreground" />
+        <meta-data
+            android:name="androidx.car.app.TintableAttributionIcon"
+            android:resource="@drawable/ic_launcher_foreground" />
         <meta-data
             android:name="android.webkit.WebView.EnableSafeBrowsing"
             android:value="false" />

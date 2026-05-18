@@ -136,4 +136,11 @@
     <string name="tv_show_desc">%1$s - س%2$dي%3$d</string>
     <string name="skip_media_segment">تخطي</string>
     <string name="special_episode">متميز</string>
+    <string name="pref_exoplayer_network_buffer">حجم مخزن التشغيل المؤقت</string>
+    <string name="network_buffer_auto">تلقائي</string>
+    <string name="network_buffer_auto_description">حجم التخزين المؤقت الافتراضي، مناسب لمعظم حالات التشغيل</string>
+    <string name="network_buffer_large">حجم تخزين مؤقت كبير للشبكة</string>
+    <string name="network_buffer_large_description">قد يساعد حجم التخزين المؤقت الأكبر في تحسين التشغيل عند استخدام اتصال متوسط أو غير مستقر</string>
+    <string name="network_buffer_extra_large">ضخم</string>
+    <string name="network_buffer_extra_large_description">أقصى حجم للتخزين المؤقت، مخصص للاتصالات البطيئة أو عبر الأقمار الصناعية</string>
 </resources>
