@@ -143,4 +143,10 @@
     <string name="network_buffer_large_description">قد يساعد حجم التخزين المؤقت الأكبر في تحسين التشغيل عند استخدام اتصال متوسط أو غير مستقر</string>
     <string name="network_buffer_extra_large">ضخم</string>
     <string name="network_buffer_extra_large_description">أقصى حجم للتخزين المؤقت، مخصص للاتصالات البطيئة أو عبر الأقمار الصناعية</string>
+    <string name="media_service_unknown_page">صفحة مجهولة</string>
+    <string name="media_service_no_items">تعذر العثور على العناصر</string>
+    <string name="media_service_auth_expired">يرجى فتح التطبيق من هاتفك و الولوج إلى خادم Jellyfin الخاص بك.</string>
+    <string name="media_service_invalid_id">تعريف عنصر خاطئ</string>
+    <string name="media_service_car_section_favorites">المفضلة</string>
+    <string name="media_service_car_section_audiobooks">كتب صوتية</string>
 </resources>
