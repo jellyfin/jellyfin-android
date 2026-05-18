@@ -144,4 +144,5 @@
     <string name="media_service_auth_expired">Bitte öffnen Sie die Jellyfin App auf ihrem Smartphone um sich bei Ihrem Jellyfin Server anzumelden.</string>
     <string name="media_service_invalid_id">Ungültige Titel ID</string>
     <string name="media_service_car_section_favorites">Favoriten</string>
+    <string name="media_service_car_section_audiobooks">Audiobücher</string>
 </resources>
