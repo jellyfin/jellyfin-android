@@ -133,4 +133,10 @@
     <string name="skip_media_segment">Pular</string>
     <string name="external_player_mpvkt_description">Um player de mídia baseado no mpv-android para oferecer uma interface de usuário mais agradável do que o original.</string>
     <string name="special_episode">Especial</string>
+    <string name="media_service_unknown_page">Página desconhecida</string>
+    <string name="media_service_no_items">Nenhum item encontrado</string>
+    <string name="media_service_auth_expired">Por favor, abra o aplicativo no seu celular para acessar o seu servidor do Jellyfin.</string>
+    <string name="media_service_invalid_id">ID do item inválido</string>
+    <string name="media_service_car_section_favorites">Favoritos</string>
+    <string name="media_service_car_section_audiobooks">Audiolivros</string>
 </resources>
