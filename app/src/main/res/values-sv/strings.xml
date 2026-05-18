@@ -133,4 +133,10 @@
     <string name="thumbnail_desc">Miniatyrbild</string>
     <string name="downloaded">%1$s Nedladdat</string>
     <string name="special_episode">Special</string>
+    <string name="media_service_unknown_page">Okänd sida</string>
+    <string name="media_service_no_items">Inget objekt hittat</string>
+    <string name="media_service_auth_expired">Öppna appen på din telefon för att logga in på din Jellyfinserver.</string>
+    <string name="media_service_invalid_id">Ogiltigt objekt-ID</string>
+    <string name="media_service_car_section_favorites">Favoriter</string>
+    <string name="media_service_car_section_audiobooks">Ljudböcker</string>
 </resources>
