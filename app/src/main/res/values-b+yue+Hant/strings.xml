@@ -141,4 +141,5 @@
     <string name="media_service_auth_expired">請喺手機開啟應用程式，登入你嘅 Jellyfin 伺服器。</string>
     <string name="media_service_invalid_id">項目 ID 無效</string>
     <string name="media_service_car_section_favorites">經常心水</string>
+    <string name="media_service_car_section_audiobooks">有聲書</string>
 </resources>
