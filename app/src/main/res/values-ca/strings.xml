@@ -139,4 +139,10 @@
     <string name="network_buffer_auto_description">Memòria intermèdia per defecte, adequada per a la majoria d\'escenaris de reproducció</string>
     <string name="network_buffer_auto">Automàtica</string>
     <string name="pref_exoplayer_network_buffer">Mida de la memòria intermèdia de reproducció</string>
+    <string name="media_service_car_section_audiobooks">Audiollibres</string>
+    <string name="media_service_unknown_page">Pàgina desconeguda</string>
+    <string name="media_service_no_items">No s\'han trobat elements</string>
+    <string name="media_service_car_section_favorites">Preferits</string>
+    <string name="media_service_invalid_id">Identificador invàlid d\'element</string>
+    <string name="media_service_auth_expired">Obriu l\'app del telèfon per a iniciar la sessió al vostre servidor de Jellyfin.</string>
 </resources>
