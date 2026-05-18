@@ -142,4 +142,9 @@
     <string name="network_buffer_large_description">Большой буфер, может помочь при нестабильном соединении</string>
     <string name="network_buffer_extra_large">Очень большой</string>
     <string name="network_buffer_extra_large_description">Самый большой буфер, предназначен для медленных/нестабильных соединений</string>
+    <string name="media_service_unknown_page">Неизвестная страница</string>
+    <string name="media_service_no_items">Элементы не найдены</string>
+    <string name="media_service_auth_expired">Откройте пожалуйста приложение на своём телефоне и войдите в свой сервер jellyfin.</string>
+    <string name="media_service_invalid_id">Неверный идентификатор элемента</string>
+    <string name="media_service_car_section_audiobooks">Аудиокниги</string>
 </resources>
