@@ -132,4 +132,17 @@
     <string name="pref_exoplayer_allow_press_speed_up">长按可加速播放</string>
     <string name="skip_media_segment">跳过</string>
     <string name="special_episode">特别篇</string>
+    <string name="media_service_unknown_page">未知页面</string>
+    <string name="media_service_no_items">未找到结果</string>
+    <string name="media_service_auth_expired">请打开您手机上的应用以登录您的Jellyfin服务器。</string>
+    <string name="media_service_invalid_id">无效的项目ID</string>
+    <string name="media_service_car_section_favorites">收藏夹</string>
+    <string name="media_service_car_section_audiobooks">有声书</string>
+    <string name="pref_exoplayer_network_buffer">播放缓冲区大小</string>
+    <string name="network_buffer_auto">自动</string>
+    <string name="network_buffer_auto_description">默认缓冲区，适用于大多数播放场景</string>
+    <string name="network_buffer_large">大</string>
+    <string name="network_buffer_large_description">较大的缓冲区，可能有助于改善一般或不稳定的网络连接</string>
+    <string name="network_buffer_extra_large">特大</string>
+    <string name="network_buffer_extra_large_description">最大缓冲区，适用于慢速连接或卫星连接</string>
 </resources>
