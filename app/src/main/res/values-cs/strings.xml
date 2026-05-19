@@ -142,4 +142,10 @@
     <string name="network_buffer_large_description">Větší mezipaměť, může pomoci na méně stabilních připojeních</string>
     <string name="network_buffer_extra_large">Extra velké</string>
     <string name="network_buffer_extra_large_description">Maximální velikost, vhodná pro pomalá nebo satelitní připojení</string>
+    <string name="media_service_unknown_page">Neznámá stránka</string>
+    <string name="media_service_no_items">Nenalezeny žádné položky</string>
+    <string name="media_service_auth_expired">Pro přihlášení k serveru Jellyfin prosím otevřete aplikaci na vašem telefonu.</string>
+    <string name="media_service_invalid_id">Neplatné ID položky</string>
+    <string name="media_service_car_section_favorites">Oblíbené</string>
+    <string name="media_service_car_section_audiobooks">Audioknihy</string>
 </resources>
