@@ -134,4 +134,8 @@
     <string name="downloading_desc">Sťahovanie %1$d titulov</string>
     <string name="skip_media_segment">Preskočiť</string>
     <string name="special_episode">Špeciál</string>
+    <string name="media_service_unknown_page">Neznáma stránka</string>
+    <string name="media_service_no_items">Nenašli sa žiadne položky</string>
+    <string name="media_service_auth_expired">Prosím otvorte aplikáciu na svojom mobilnom zariadení pre prihlásenie do svojho Jellyfin serveru.</string>
+    <string name="media_service_invalid_id">Nesprávny identifikátor predmetu</string>
 </resources>
