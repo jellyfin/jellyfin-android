@@ -146,4 +146,5 @@
     <string name="network_buffer_auto_description">Tampon par défaut, adéquat pour la plupart des scénarios de lecture</string>
     <string name="network_buffer_large">Large</string>
     <string name="network_buffer_large_description">Tampon large, peut aider pour les connections moyennes ou variables</string>
+    <string name="media_service_car_section_audiobooks">Livres audio</string>
 </resources>
