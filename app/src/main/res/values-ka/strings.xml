@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="dialog_web_view_not_supported">WebView არ არის მხარდაჭერილი</string>
-    <string name="dialog_web_view_not_supported_message">"ამ მოწყობილობაზე WebView მხარდაჭერილი არ არის\nდააინსტალირეთ თავსებადი WebView  ან გადაერთეთ მხარდაჭერილ მოწყობილობაზე"</string>
+    <string name="dialog_web_view_not_supported_message">ამ მოწყობილობაზე WebView მხარდაჭერილი არაა\nდააყენეთ თავსებადი WebView, ან გადაერთეთ მხარდაჭერილ მოწყობილობაზე.</string>
     <string name="dialog_web_view_outdated">WebView - ის ვერსია მოძველებულია</string>
-    <string name="dialog_web_view_outdated_message">თქვენს მოწყობილობაზე გამოყენებული WebView-ის ვერსია მოძველებულია. გთხოვთ, განაახლოთ იგი შესაბამის ვერსიამდე!</string>
+    <string name="dialog_web_view_outdated_message">თქვენს მოწყობილობაზე გამოყენებული WebView-ის ვერსია მოძველებულია.\nგანაახლეთ ის თავსებად ვერსიამდე.</string>
     <string name="dialog_button_check_for_updates">განახლების შემოწმება</string>
     <string name="dialog_button_close_app">აპლიკაციის დახურვა</string>
     <string name="dialog_button_open_settings">პარამეტრების გახსნა</string>
@@ -11,10 +11,10 @@
     <string name="toast_reopen_after_change">გთხოვთ, აპლიკაცია გახსნათ ხელახლა, ცვლილებების განხორციელების შემდეგ</string>
     <string name="connect_to_server_title">სერვერთან დაკავშირება</string>
     <string name="host_input_hint">Host</string>
-    <string name="connection_error_cannot_connect">კავშირის დამყარება ვერ მოხერხდა.\nგთხოვთ, შეამოწმოთ ჰოსტნეიმი ან/და თქვენი ქსელის კავშირი</string>
+    <string name="connection_error_cannot_connect">კავშირის დამყარება ვერ მოხერხდა.\nშეამოწმეთ ჰოსტის სახელი და თქვენი ქსელის კავშირი.</string>
     <plurals name="connection_error_prefix">
-        <item quantity="one">შეიყვანილია %d კანდიდატი, მაგრამ მცდელობა წარუმატებელია</item>
-        <item quantity="other">%d კანდიდატზე შესამოწმებლად სცადეს, მაგრამ ვერ მიიღეს შედეგი</item>
+        <item quantity="one">შეიყვანილია %d კანდიდატი, მაგრამ მცდელობა წარუმატებელია.</item>
+        <item quantity="other">შეიყვანილია %d კანდიდატი, მაგრამ მცდელობა წარუმატებელია.</item>
     </plurals>
     <string name="connection_error_unable_to_reach_sever">სერვერთან დაკავშირება შეუძლებელია</string>
     <string name="connection_error_unsupported_version_or_product">არასაპორტირებული ვერსია ან პროდუქტი</string>
@@ -33,7 +33,7 @@
     <string name="mobile_data">მობილური ინტერნეტი</string>
     <string name="mobile_data_and_roaming">მობილური ინტერნეტი და როუმინგი</string>
     <string name="wifi_only_summary">მედია მონაცემები ჩამოტვირთება მხოლოდ WiFi ქსელის საშუალებით.</string>
-    <string name="mobile_data_summary">მედია მონაცემები ჩამოიტვირთება უსადენო ინტერნეტის (WiFi) და მობილური ქსელის საშუალებით</string>
+    <string name="mobile_data_summary">მედია გადმოწერილი იქნება WiFi-ის და მობილური ქსელების საშუალებით.</string>
     <string name="mobile_data_and_roaming_summary">მედია მონაცემები ჩამოიტვირთება უსადენო ინტერნეტის (WiFi) , მობილური ინტერნეტის და როუმინგის ინტერნეტის საშუალებით.</string>
     <string name="downloading">ჩამოტვირთვა</string>
     <string name="download_no_storage_permission">ფაილების ჩამოტვირთვა შეუძლებელია არასაკმარისი ადგილის გამო</string>
