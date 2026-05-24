@@ -93,4 +93,10 @@
     <string name="external_player_system_default">სისტემის ნაგულისხმევი</string>
     <string name="pref_download_location">გადმოწერის მდებარეობა</string>
     <string name="view_downloads">გადმოწერების ნახვა</string>
+    <string name="download_notifications_description">გადმოწერის გაფრთხილებები</string>
+    <string name="confirm_deletion">წაშლის დადასტურება</string>
+    <string name="downloaded">%1$s გადმოწერილია</string>
+    <string name="external_player_mpvkt">დამკვრელი mpvKt</string>
+    <string name="network_buffer_extra_large">ძალიან დიდი</string>
+    <string name="media_service_unknown_page">უცნობი გვერდი</string>
 </resources>
