@@ -53,7 +53,7 @@ body:
     id: app-version
     attributes:
       label: Application version
-      description: The version of the installed Jellyfin Android app.
+      description: The version of the installed Jellyfin for Android app.
       placeholder: 2.6.1
     validations:
       required: true

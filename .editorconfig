@@ -28,3 +28,6 @@ ij_kotlin_packages_to_use_import_on_demand =
 charset = utf-8
 indent_style = space
 indent_size = 2
+
+[{*.md,*.yaml,*.yml}]
+trim_trailing_whitespace = false
