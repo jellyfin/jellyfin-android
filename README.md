@@ -1,4 +1,4 @@
-<h1 align="center">Jellyfin Android</h1>
+<h1 align="center">Jellyfin for Android</h1>
 <h3 align="center">Part of the <a href="https://jellyfin.org">Jellyfin Project</a></h3>
 
 ---
@@ -87,7 +87,7 @@ which can still be found [in the archives](https://github.com/jellyfin-archive/j
 
 ## Release Flavors
 
-There are two flavors (variants) of the Jellyfin Android app:
+There are two flavors (variants) of the Jellyfin for Android app:
 
 - The **proprietary** version comes with Google Chromecast support
 - The **libre** version comes without Google Chromecast support
