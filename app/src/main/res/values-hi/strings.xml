@@ -54,7 +54,6 @@
     <string name="media_service_car_section_artists">कलाकार</string>
     <string name="media_service_car_section_songs">गाने</string>
     <string name="media_service_car_section_genres">शैली</string>
-    <string name="media_service_car_section_playlists">प्लेलिस्ट</string>
     <string name="media_service_car_item_no_title">कोई शीर्षक नहीं</string>
     <string name="music_notification_channel">जेलिफ़िन संगीत प्लेयर</string>
     <string name="music_notification_channel_description">संगीत प्लेबैक नियंत्रण के लिए उपयोग किया जाता है</string>

@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">Folosit pentru comenzile de redare a muzicii</string>
     <string name="music_notification_channel">Jellyfin Music Player</string>
     <string name="media_service_car_item_no_title">Fără titlu</string>
-    <string name="media_service_car_section_playlists">Liste redare</string>
     <string name="media_service_car_section_genres">Genuri</string>
     <string name="media_service_car_section_songs">Melodii</string>
     <string name="media_service_car_section_artists">Artiști</string>

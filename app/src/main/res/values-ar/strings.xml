@@ -61,7 +61,6 @@
     <string name="music_notification_channel_description">تستخدم للتحكم في تشغيل الموسيقى</string>
     <string name="music_notification_channel">مشغل موسيقى Jellyfin</string>
     <string name="media_service_car_item_no_title">بلا عنوان</string>
-    <string name="media_service_car_section_playlists">قوائم التشغيل</string>
     <string name="media_service_car_section_genres">الأنواع</string>
     <string name="media_service_car_section_songs">الأغاني</string>
     <string name="media_service_car_section_artists">الفنانين</string>

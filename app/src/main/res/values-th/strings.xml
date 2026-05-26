@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">ใช้สำหรับควบคุมการเล่นเพลง</string>
     <string name="music_notification_channel">เครื่องเล่นเพลง Jellyfin</string>
     <string name="media_service_car_item_no_title">ไม่มีชื่อ</string>
-    <string name="media_service_car_section_playlists">เพลย์ลิสต์</string>
     <string name="media_service_car_section_genres">ประเภท</string>
     <string name="media_service_car_section_songs">เพลง</string>
     <string name="media_service_car_section_artists">ศิลปิน</string>

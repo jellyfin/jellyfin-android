@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">用于控制音乐播放</string>
     <string name="music_notification_channel">Jellyfin 音乐播放器</string>
     <string name="media_service_car_item_no_title">无标题</string>
-    <string name="media_service_car_section_playlists">播放列表</string>
     <string name="media_service_car_section_genres">风格</string>
     <string name="media_service_car_section_songs">歌曲</string>
     <string name="media_service_car_section_artists">艺术家</string>

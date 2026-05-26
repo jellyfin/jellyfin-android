@@ -20,7 +20,6 @@
     <string name="notification_action_previous">Попередній</string>
     <string name="music_notification_channel">Музичний плеєр Jellyfin</string>
     <string name="media_service_car_item_no_title">Без назви</string>
-    <string name="media_service_car_section_playlists">Список відтворення</string>
     <string name="media_service_car_section_genres">Жанри</string>
     <string name="media_service_car_section_songs">Пісні</string>
     <string name="media_service_car_section_albums">Альбоми</string>

@@ -20,7 +20,6 @@
     <string name="media_service_car_section_albums">Albumid</string>
     <string name="media_service_car_section_songs">Laulud</string>
     <string name="media_service_car_section_genres">Žanrid</string>
-    <string name="media_service_car_section_playlists">Esitusloendid</string>
     <string name="notification_action_rewind">Keri tagasi</string>
     <string name="notification_action_fast_forward">Keri edasi</string>
     <string name="playback_info_play_method">Esitusviis: %s</string>

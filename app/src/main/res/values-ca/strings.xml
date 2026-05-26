@@ -22,7 +22,6 @@
     <string name="media_service_car_section_artists">Artistes</string>
     <string name="media_service_car_section_songs">Cançons</string>
     <string name="media_service_car_section_genres">Gèneres</string>
-    <string name="media_service_car_section_playlists">Llistes de reproducció</string>
     <string name="music_notification_channel">Reproductor de música de Jellyfin</string>
     <string name="notification_action_previous">Anterior</string>
     <string name="notification_action_play">Reprodueix</string>

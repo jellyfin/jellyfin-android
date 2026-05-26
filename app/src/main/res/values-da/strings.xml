@@ -30,7 +30,6 @@
     <string name="music_notification_channel_description">Bruges til kontrol af musikafspilning</string>
     <string name="music_notification_channel">Jellyfin Musik afspiller</string>
     <string name="media_service_car_item_no_title">Ingen titel</string>
-    <string name="media_service_car_section_playlists">Afspilningslister</string>
     <string name="media_service_car_section_genres">Genre</string>
     <string name="media_service_car_section_songs">Sange</string>
     <string name="media_service_car_section_artists">Kunstnere</string>

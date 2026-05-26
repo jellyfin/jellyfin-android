@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">Gebruikt voor muziekafspeelknoppen</string>
     <string name="music_notification_channel">Jellyfin-muziekspeler</string>
     <string name="media_service_car_item_no_title">Geen titel</string>
-    <string name="media_service_car_section_playlists">Afspeellijsten</string>
     <string name="media_service_car_section_genres">Genres</string>
     <string name="media_service_car_section_songs">Nummers</string>
     <string name="media_service_car_section_artists">Artiesten</string>

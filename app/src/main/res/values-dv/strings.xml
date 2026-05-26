@@ -47,7 +47,6 @@
     <string name="mobile_data">މޯބައިލް ޑާޓާ</string>
     <string name="media_service_item_not_found">ހޯދަހޯދާވެސް ތިއައިޓަމެއް ނުފެނުނު</string>
     <string name="media_service_car_section_genres">ބާވަތްތައް</string>
-    <string name="media_service_car_section_playlists">ޕްލޭލިސްޓްތައް</string>
     <string name="music_notification_channel_description">މިއުޒިކް ޕްލޭބެކް ކޮންޓްރޯލް ކުރުމަށް</string>
     <string name="notification_action_previous">ފަހަތަށް</string>
     <string name="notification_action_stop">ހުއްޓާލާ</string>

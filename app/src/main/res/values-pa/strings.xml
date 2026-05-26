@@ -43,7 +43,6 @@
     <string name="music_notification_channel_description">ਸੰਗੀਤ ਪਲੇਅਬੈਕ ਨਿਯੰਤਰਣ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ</string>
     <string name="music_notification_channel">ਜੈਲੀਫਿਨ ਸੰਗੀਤ ਪਲੇਅਰ</string>
     <string name="media_service_car_item_no_title">ਕੋਈ ਸਿਰਲੇਖ ਨਹੀਂ</string>
-    <string name="media_service_car_section_playlists">ਪਲੇਲਿਸਟਸ</string>
     <string name="media_service_car_section_genres">ਸ਼ੈਲੀਆਂ</string>
     <string name="media_service_car_section_songs">ਗਾਣੇ</string>
     <string name="media_service_car_section_artists">ਕਲਾਕਾਰ</string>

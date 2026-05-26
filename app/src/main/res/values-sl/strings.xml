@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">Namenjeno nadzoru predvajanja glasbe</string>
     <string name="music_notification_channel">Predvajalnik glasbe Jellyfin</string>
     <string name="media_service_car_item_no_title">Brez naslova</string>
-    <string name="media_service_car_section_playlists">Seznami predvajanja</string>
     <string name="media_service_car_section_genres">Zvrsti</string>
     <string name="media_service_car_section_songs">Pesmi</string>
     <string name="media_service_car_section_artists">Avtorji</string>

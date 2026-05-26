@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">音楽再生のコントロールに使われます</string>
     <string name="music_notification_channel">Jellyfin ミュージック プレイヤー</string>
     <string name="media_service_car_item_no_title">タイトルなし</string>
-    <string name="media_service_car_section_playlists">プレイリスト</string>
     <string name="media_service_car_section_genres">ジャンル</string>
     <string name="media_service_car_section_songs">曲</string>
     <string name="media_service_car_section_artists">アーティスト</string>

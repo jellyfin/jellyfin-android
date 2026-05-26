@@ -57,7 +57,6 @@
     <string name="external_player_app">Application externe de lecture</string>
     <string name="music_notification_channel">Lecteur de musique Jellyfin</string>
     <string name="media_service_car_item_no_title">Aucun titre</string>
-    <string name="media_service_car_section_playlists">Listes de lecture</string>
     <string name="media_service_car_section_genres">Genres</string>
     <string name="media_service_car_section_songs">Chansons</string>
     <string name="media_service_car_section_artists">Artistes</string>

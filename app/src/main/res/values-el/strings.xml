@@ -48,7 +48,6 @@
     <string name="media_service_car_section_recents">Παίχτηκε πρόσφατα</string>
     <string name="media_service_car_section_albums">Άλμπουμ</string>
     <string name="media_service_car_section_genres">Είδη</string>
-    <string name="media_service_car_section_playlists">Λίστες αναπαραγωγής</string>
     <string name="media_service_car_item_no_title">Χωρίς τίτλο</string>
     <string name="music_notification_channel">Jellyfin Music Player</string>
     <string name="music_notification_channel_description">Χρησιμοποιείται για χειρισμό αναπαραγωγής μουσικής</string>

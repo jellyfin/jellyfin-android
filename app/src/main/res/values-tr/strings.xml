@@ -74,7 +74,6 @@
     <string name="notification_action_previous">Önceki</string>
     <string name="music_notification_channel">Jellyfin Müzik Çalar</string>
     <string name="media_service_car_item_no_title">Başlık yok</string>
-    <string name="media_service_car_section_playlists">Oynatma Listeleri</string>
     <string name="media_service_car_section_genres">Türler</string>
     <string name="media_service_car_section_songs">Şarkılar</string>
     <string name="media_service_car_section_artists">Sanatçılar</string>

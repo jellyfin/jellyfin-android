@@ -58,7 +58,6 @@
     <string name="media_service_car_item_no_title">Nimetön</string>
     <string name="music_notification_channel_description">Käytetään musiikin toiston ohjaukseen</string>
     <string name="music_notification_channel">Jellyfin-musiikkisoitin</string>
-    <string name="media_service_car_section_playlists">Soittolistat</string>
     <string name="media_service_car_section_genres">Tyylilajit</string>
     <string name="media_service_car_section_songs">Kappaleet</string>
     <string name="media_service_car_section_artists">Esittäjät</string>

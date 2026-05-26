@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">Používa sa pre ovládanie prehrávania hudby</string>
     <string name="music_notification_channel">Prehrávač hudby Jellyfin</string>
     <string name="media_service_car_item_no_title">Bez názvu</string>
-    <string name="media_service_car_section_playlists">Playlisty</string>
     <string name="media_service_car_section_genres">Žánre</string>
     <string name="media_service_car_section_songs">Skladby</string>
     <string name="media_service_car_section_artists">Interpreti</string>

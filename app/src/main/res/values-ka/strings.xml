@@ -44,7 +44,6 @@
     <string name="media_service_car_section_artists">მსახიობი</string>
     <string name="media_service_car_section_songs">სიმღერები</string>
     <string name="media_service_car_section_genres">ჟანრი</string>
-    <string name="media_service_car_section_playlists">ნაკრები</string>
     <string name="media_service_car_item_no_title">სათაური არ მოიძებნა</string>
     <string name="music_notification_channel">Jellyfin მუსიკის პლეერი</string>
     <string name="music_notification_channel_description">გამოიყენება მუსიკის დაკვრის კონტროლისთვის</string>

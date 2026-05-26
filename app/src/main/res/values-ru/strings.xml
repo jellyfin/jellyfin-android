@@ -58,7 +58,6 @@
     <string name="music_notification_channel">Проигрыватель музыки Jellyfin</string>
     <string name="music_notification_channel_description">Используется для управления воспроизведением музыки</string>
     <string name="media_service_car_item_no_title">Без названия</string>
-    <string name="media_service_car_section_playlists">Плей-листы</string>
     <string name="media_service_car_section_genres">Жанры</string>
     <string name="media_service_car_section_songs">Композиции</string>
     <string name="media_service_car_section_artists">Исполнители</string>

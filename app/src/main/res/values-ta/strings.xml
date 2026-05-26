@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">இசை பின்னணி கட்டுப்பாடுகளுக்கு பயன்படுத்தப்படுகிறது</string>
     <string name="music_notification_channel">ஜெல்லிஃபின் மியூசிக் பிளேயர்</string>
     <string name="media_service_car_item_no_title">தலைப்பு இல்லை</string>
-    <string name="media_service_car_section_playlists">பிளேலிஸ்ட்கள்</string>
     <string name="media_service_car_section_genres">வகைகள்</string>
     <string name="media_service_car_section_songs">பாடல்கள்</string>
     <string name="media_service_car_section_artists">கலைஞர்கள்</string>

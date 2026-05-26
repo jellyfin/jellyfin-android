@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">Được sử dụng để điều khiển phát nhạc</string>
     <string name="music_notification_channel">Trình Phát Nhạc Jellyfin</string>
     <string name="media_service_car_item_no_title">Không tiêu đề</string>
-    <string name="media_service_car_section_playlists">Danh Sách Phát</string>
     <string name="media_service_car_section_genres">Thể Loại</string>
     <string name="media_service_car_section_songs">Bài Hát</string>
     <string name="media_service_car_section_artists">Nghệ Sĩ</string>

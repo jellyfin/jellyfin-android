@@ -23,7 +23,6 @@
     <string name="dialog_web_view_not_supported">WebView није подржан</string>
     <string name="music_notification_channel">Jellyfin плејер за музику</string>
     <string name="media_service_car_item_no_title">Без наслова</string>
-    <string name="media_service_car_section_playlists">Плејлисте</string>
     <string name="media_service_car_section_genres">Жанрови</string>
     <string name="media_service_car_section_songs">Песме</string>
     <string name="media_service_car_section_artists">Уметници</string>

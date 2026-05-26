@@ -43,7 +43,6 @@
     <string name="media_service_car_section_artists">演出者</string>
     <string name="media_service_car_section_songs">歌曲</string>
     <string name="media_service_car_section_genres">曲風</string>
-    <string name="media_service_car_section_playlists">播放清單</string>
     <string name="media_service_car_item_no_title">無標題</string>
     <string name="music_notification_channel">Jellyfin 音樂播放器</string>
     <string name="music_notification_channel_description">用於音樂播放控制</string>

@@ -44,7 +44,6 @@
     <string name="media_service_car_section_artists">Artists</string>
     <string name="media_service_car_section_songs">Songs</string>
     <string name="media_service_car_section_genres">Genres</string>
-    <string name="media_service_car_section_playlists">Playlists</string>
     <string name="media_service_car_item_no_title">No title</string>
     <string name="music_notification_channel">Jellyfin Music Player</string>
     <string name="music_notification_channel_description">Used for music playback controls</string>

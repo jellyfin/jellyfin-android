@@ -22,7 +22,6 @@
     <string name="music_notification_channel_description">ಹಾಡುಗಳ ಪ್ಲೇಬ್ಯಾಕ್ ನಿಯಂತ್ರಣಕ್ಕೆ ಬಳಸಲಾಗುತ್ತದೆ</string>
     <string name="downloading">ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ</string>
     <string name="media_service_car_section_artists">ಕಲಾವಿದರು</string>
-    <string name="media_service_car_section_playlists">ಪ್ಲೇಪಟ್ಟಿಗಳು</string>
     <string name="notification_action_previous">ಹಿಂದಿನದು</string>
     <string name="notification_action_next">ಮುಂದಿನದು</string>
     <string name="connect_button_text">ಸಂಪರ್ಕಿಸಿ</string>

@@ -34,7 +34,6 @@
     <string name="music_notification_channel_description">Naudojamas muzikos grojimo valdikliams</string>
     <string name="music_notification_channel">Jellyfin Muzikos Grotuvas</string>
     <string name="media_service_car_item_no_title">Be pavadinimo</string>
-    <string name="media_service_car_section_playlists">Grojaraščiai</string>
     <string name="media_service_car_section_genres">Žanrai</string>
     <string name="media_service_car_section_songs">Dainos</string>
     <string name="media_service_car_section_artists">Atlikėjai</string>

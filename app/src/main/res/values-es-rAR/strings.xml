@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">Usado par control del reproductor musical</string>
     <string name="music_notification_channel">Reproductor Musical Jellfyfin</string>
     <string name="media_service_car_item_no_title">Sin Titulo</string>
-    <string name="media_service_car_section_playlists">Listas de Reproducción</string>
     <string name="media_service_car_section_genres">Generos</string>
     <string name="media_service_car_section_songs">Canciones</string>
     <string name="media_service_car_section_artists">Artistas</string>

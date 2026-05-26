@@ -55,7 +55,6 @@
     <string name="music_notification_channel_description">Brukes til kontroller for avspilling av musikk</string>
     <string name="music_notification_channel">Jellyfin musikkspiller</string>
     <string name="media_service_car_item_no_title">Uten tittel</string>
-    <string name="media_service_car_section_playlists">Spillelister</string>
     <string name="media_service_car_section_genres">Sjangere</string>
     <string name="media_service_car_section_songs">Sanger</string>
     <string name="media_service_car_section_artists">Artister</string>

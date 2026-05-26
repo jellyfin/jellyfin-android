@@ -60,7 +60,6 @@
     <string name="music_notification_channel">Reprodutor de música Jellyfin</string>
     <string name="wifi_only_summary">A mídia será baixada somente via WiFi.</string>
     <string name="media_service_car_section_songs">Sons</string>
-    <string name="media_service_car_section_playlists">Lista de Reprodução</string>
     <string name="music_notification_channel_description">Usado para controles de reprodução de música</string>
     <string name="notification_action_previous">Anterior</string>
     <string name="notification_action_rewind">Voltar</string>

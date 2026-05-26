@@ -70,7 +70,6 @@
     <string name="music_notification_channel_description">Използва се за контрол на възпроизвеждането на музика</string>
     <string name="music_notification_channel">Jellyfin музикален плейър</string>
     <string name="media_service_car_item_no_title">Без заглавие</string>
-    <string name="media_service_car_section_playlists">Плейлисти</string>
     <string name="media_service_car_section_genres">Жанрове</string>
     <string name="media_service_car_section_songs">Песни</string>
     <string name="media_service_car_section_artists">Изпълнители</string>

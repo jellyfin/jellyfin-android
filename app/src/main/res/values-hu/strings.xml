@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">A zenelejátszás vezérlésére szolgál</string>
     <string name="music_notification_channel">Jellyfin Zenelejátszó</string>
     <string name="media_service_car_item_no_title">Nincs cím</string>
-    <string name="media_service_car_section_playlists">Lejátszási listák</string>
     <string name="media_service_car_section_genres">Műfajok</string>
     <string name="media_service_car_section_songs">Dalok</string>
     <string name="media_service_car_section_artists">Előadók</string>

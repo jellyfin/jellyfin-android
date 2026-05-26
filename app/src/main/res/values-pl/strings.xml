@@ -21,7 +21,6 @@
     <string name="notification_action_previous">Poprzednie</string>
     <string name="music_notification_channel">Odtwarzacz muzyczny Jellyfin</string>
     <string name="media_service_car_item_no_title">Bez tytułu</string>
-    <string name="media_service_car_section_playlists">Playlisty</string>
     <string name="media_service_car_section_genres">Gatunki</string>
     <string name="media_service_car_section_songs">Piosenki</string>
     <string name="media_service_car_section_artists">Wykonawcy</string>

@@ -54,7 +54,6 @@
     <string name="music_notification_channel_description">Musikaren erreprodukzioa kontrolatzeko erabiltzen da</string>
     <string name="music_notification_channel">Jellyfin musika-erreproduzitzailea</string>
     <string name="media_service_car_item_no_title">Titulurik gabe</string>
-    <string name="media_service_car_section_playlists">Erreprodukzioen zerrenda</string>
     <string name="media_service_car_section_genres">Generoak</string>
     <string name="media_service_car_section_songs">Abestiak</string>
     <string name="media_service_car_section_artists">Artistak</string>

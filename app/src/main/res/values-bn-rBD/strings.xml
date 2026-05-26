@@ -50,7 +50,6 @@
     <string name="media_service_item_not_found">মিডিয়া আইটেম খুঁজে পাওয়া যায়নি</string>
     <string name="media_service_car_section_albums">এ্যালবামসমূহ</string>
     <string name="media_service_car_section_artists">শিল্পীগণ</string>
-    <string name="media_service_car_section_playlists">প্লেলিস্টগুলো</string>
     <string name="pref_category_music_player">মিউজিক প্লেয়ার</string>
     <string name="media_service_car_item_no_title">টাইটেল নেই</string>
     <string name="music_notification_channel">Jellyfin মিউজিক প্লেয়ার</string>

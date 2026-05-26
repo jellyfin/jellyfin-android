@@ -59,7 +59,6 @@
     <string name="external_player_mx_player_free_description">Snažan video player sa naprednim hardverskim ubrzanjem i podrškom za titlove.</string>
     <string name="music_notification_channel">Jellyfin Izvođač Glazbe</string>
     <string name="media_service_car_item_no_title">Bez naslova</string>
-    <string name="media_service_car_section_playlists">Liste za izvođenje</string>
     <string name="media_service_car_section_genres">Žanrovi</string>
     <string name="media_service_car_section_songs">Pjesme</string>
     <string name="media_service_car_section_artists">Izvođači</string>

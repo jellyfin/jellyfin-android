@@ -59,7 +59,6 @@
     <string name="music_notification_channel_description">Zur Steuerung der Musikwiedergabe verwendet</string>
     <string name="music_notification_channel">Jellyfin-Musikplayer</string>
     <string name="media_service_car_item_no_title">Kein Titel</string>
-    <string name="media_service_car_section_playlists">Wiedergabelisten</string>
     <string name="media_service_car_section_genres">Genre</string>
     <string name="media_service_car_section_songs">Lieder</string>
     <string name="media_service_car_section_artists">Künstler</string>

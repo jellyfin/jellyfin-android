@@ -49,7 +49,6 @@
     <string name="music_notification_channel_description">Untuk pengaturan pemutaran musik</string>
     <string name="music_notification_channel">Pemutar Musik Jellyfin</string>
     <string name="media_service_car_item_no_title">Tanpa judul</string>
-    <string name="media_service_car_section_playlists">Playlist</string>
     <string name="media_service_car_section_genres">Genre</string>
     <string name="media_service_car_section_songs">Lagu</string>
     <string name="media_service_car_section_artists">Artis</string>

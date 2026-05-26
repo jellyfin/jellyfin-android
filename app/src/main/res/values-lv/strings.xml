@@ -27,7 +27,6 @@
     <string name="music_notification_channel_description">Lietots mūzikas atskaņošanas pārvaldībai</string>
     <string name="music_notification_channel">Jellyfin Mūzikas Atskaņotājs</string>
     <string name="media_service_car_item_no_title">Nav nosaukuma</string>
-    <string name="media_service_car_section_playlists">Atskaņošanas Saraksti</string>
     <string name="media_service_car_section_genres">Žanri</string>
     <string name="media_service_car_section_songs">Dziesmas</string>
     <string name="media_service_car_section_artists">Izpildītāji</string>

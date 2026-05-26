@@ -30,7 +30,6 @@
     <string name="activity_name_settings">הגדרות Jellyfin</string>
     <string name="video_player_external">נגן חיצוני</string>
     <string name="dialog_web_view_outdated">WebView מיושן</string>
-    <string name="media_service_car_section_playlists">פלייליסטים</string>
     <string name="connect_to_server_title">התחבר לשרת</string>
     <string name="wifi_only">WiFi בלבד</string>
     <string name="media_service_car_section_recents">נוגן לאחרונה</string>

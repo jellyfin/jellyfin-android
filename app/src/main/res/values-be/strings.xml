@@ -63,7 +63,6 @@
     <string name="media_service_item_not_found">Медыяэлемент не знойдзены</string>
     <string name="media_service_car_section_albums">Альбомы</string>
     <string name="media_service_car_section_genres">Жанры</string>
-    <string name="media_service_car_section_playlists">Плэй-лісты</string>
     <string name="media_service_car_item_no_title">Без назвы</string>
     <string name="music_notification_channel_description">Выкарыстоўваецца для кіравання прайграваннем музыкі</string>
     <string name="notification_action_previous">Папярэдні</string>
