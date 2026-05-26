@@ -13,7 +13,6 @@ import org.jellyfin.sdk.model.api.ItemSortBy
 val PlaylistsLibraryPage = { api: ApiClient ->
     libraryPage<LibraryRoute.Playlists>(grid = true) { route, offset, limit ->
         val result by api.itemsApi.getItems(
-            parentId = route.libraryId,
             includeItemTypes = listOf(BaseItemKind.PLAYLIST),
             sortBy = listOf(ItemSortBy.SORT_NAME),
             recursive = true,
