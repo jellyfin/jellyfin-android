@@ -17,6 +17,7 @@ import com.google.common.collect.ImmutableList
 import com.google.common.util.concurrent.ListenableFuture
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.guava.await
 import kotlinx.coroutines.guava.future
 import kotlinx.serialization.json.Json
 import org.jellyfin.mobile.R
@@ -127,14 +128,19 @@ class SessionBrowserCallback(
 
     private fun List<LibraryPageElement>.toMediaItems(route: LibraryRoute): List<MediaItem> = flatMap { element ->
         when (element) {
-            is LibraryPageElement.Group -> element.items.map { item -> item.toMediaItem(route, groupTitle = element.title) }
+            is LibraryPageElement.Group -> element.items.map { item ->
+                item.toMediaItem(
+                    route = route,
+                    groupTitle = element.title,
+                )
+            }
             is LibraryPageElement.Item -> listOf(element.toMediaItem(route))
         }
     }
 
     private fun createPageMediaItem(route: LibraryRoute, page: LibraryPage<*> = route.page!!) = MediaItem.Builder().apply {
         val extras = Bundle()
-        val contentStyle = when (page.grid ?: false) {
+        val contentStyle = when (page.grid) {
             true -> MediaConstants.EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM
             false -> MediaConstants.EXTRAS_VALUE_CONTENT_STYLE_LIST_ITEM
         }
@@ -274,7 +280,12 @@ class SessionBrowserCallback(
                 val page = libraryMediaId.route.page
 
                 if (page == null) {
-                    LibraryResult.ofError(SessionError(SessionError.ERROR_NOT_SUPPORTED, context.getString(R.string.media_service_unknown_page)))
+                    LibraryResult.ofError(
+                        SessionError(
+                            SessionError.ERROR_NOT_SUPPORTED,
+                            context.getString(R.string.media_service_unknown_page),
+                        ),
+                    )
                 } else {
                     LibraryResult.ofItem(createPageMediaItem(libraryMediaId.route, page), null)
                 }
@@ -323,5 +334,46 @@ class SessionBrowserCallback(
                 setUri(playbackUri + "&ApiKey=${api.accessToken}")
             }.build()
         }
+    }
+
+    override fun onSetMediaItems(
+        mediaSession: MediaSession,
+        controller: MediaSession.ControllerInfo,
+        mediaItems: List<MediaItem>,
+        startIndex: Int,
+        startPositionMs: Long,
+    ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> = CoroutineScope(Dispatchers.IO).future {
+        Timber.d("onSetMediaItems $mediaSession $controller $mediaItems $startIndex $startPositionMs")
+
+        var expandedItems = mediaItems
+        var newStartIndex = startIndex
+
+        // Expand media item to full playlist
+        if (mediaItems.size == 1) {
+            val libraryMediaId = runCatching {
+                Json.decodeFromString<LibraryMediaId>(
+                    mediaItems.first().mediaId,
+                )
+            }.getOrNull()
+
+            if (libraryMediaId is LibraryMediaId.Item) {
+                val page = libraryMediaId.route.page
+
+                @Suppress("UNCHECKED_CAST")
+                expandedItems = (page as? LibraryPage<LibraryRoute>)
+                    ?.getContent(libraryMediaId.route, startIndex, MAX_PAGE_SIZE)
+                    ?.toMediaItems(libraryMediaId.route)
+                    .orEmpty()
+
+                newStartIndex = expandedItems
+                    .indexOfFirst {
+                        (Json.decodeFromString<LibraryMediaId>(it.mediaId) as? LibraryMediaId.Item)?.itemId == libraryMediaId.itemId
+                    }
+                    .coerceAtLeast(0)
+            }
+        }
+
+        expandedItems = onAddMediaItems(mediaSession, controller, expandedItems).await()
+        MediaSession.MediaItemsWithStartPosition(expandedItems, newStartIndex, startPositionMs)
     }
 }
