@@ -37,6 +37,6 @@ val ArtistsLibraryPage = { api: ApiClient ->
 
 val ArtistsAlphaLibraryPage = libraryPage<LibraryRoute.ArtistsAlpha> { route, offset, limit ->
     createAlphaBrowser(offset, limit) { startLetter ->
-        LibraryRoute.Albums(route.libraryId, startLetter)
+        LibraryRoute.Artists(route.libraryId, startLetter)
     }
 }

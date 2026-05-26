@@ -37,6 +37,6 @@ val AudioBooksLibraryPage = { api: ApiClient ->
 
 val AudioBooksAlphaLibraryPage = libraryPage<LibraryRoute.AudioBooksAlpha> { route, offset, limit ->
     createAlphaBrowser(offset, limit) { startLetter ->
-        LibraryRoute.Albums(route.libraryId, startLetter)
+        LibraryRoute.AudioBooks(route.libraryId, startLetter)
     }
 }
