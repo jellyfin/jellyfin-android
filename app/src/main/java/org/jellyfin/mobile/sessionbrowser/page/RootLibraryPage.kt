@@ -8,7 +8,7 @@ import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.userViewsApi
 import org.jellyfin.sdk.model.api.CollectionType
 
-private val collectionTypes = setOf(CollectionType.MUSIC, CollectionType.BOOKS)
+private val collectionTypes = setOf(CollectionType.MUSIC, CollectionType.BOOKS, CollectionType.PLAYLISTS)
 
 /**
  * Root library page that returns the available libraries (user views) for Android Auto playback.
@@ -28,7 +28,10 @@ val RootLibraryPage = { api: ApiClient ->
                     item = it,
                     image = null,
                     iconRes = null,
-                    action = LibraryItemAction.Navigate(LibraryRoute.Library(it.id, it.collectionType)),
+                    action = when (it.collectionType) {
+                        CollectionType.PLAYLISTS -> LibraryItemAction.Navigate(LibraryRoute.Playlists)
+                        else -> LibraryItemAction.Navigate(LibraryRoute.Library(it.id, it.collectionType))
+                    },
                 )
             }
     }

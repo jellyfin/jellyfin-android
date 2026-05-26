@@ -59,7 +59,7 @@ sealed interface LibraryRoute {
     data class Genre(val genreId: UUID) : LibraryRoute
 
     @Serializable
-    data class Playlists(val libraryId: UUID) : LibraryRoute
+    data object Playlists : LibraryRoute
 
     @Serializable
     data class Playlist(val playlistId: UUID) : LibraryRoute

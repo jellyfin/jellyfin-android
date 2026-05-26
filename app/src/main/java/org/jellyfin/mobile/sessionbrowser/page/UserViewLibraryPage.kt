@@ -60,14 +60,6 @@ val UserViewLibraryPage = { context: Context ->
 
             add(
                 LibraryPageElement.Item(
-                    title = context.getString(R.string.media_service_car_section_playlists),
-                    iconRes = R.drawable.ic_playlist,
-                    action = LibraryItemAction.Navigate(LibraryRoute.Playlists(route.libraryId)),
-                ),
-            )
-
-            add(
-                LibraryPageElement.Item(
                     title = context.getString(R.string.media_service_car_section_recents),
                     iconRes = R.drawable.ic_recently_played,
                     action = LibraryItemAction.Navigate(LibraryRoute.Recent(route.libraryId)),
