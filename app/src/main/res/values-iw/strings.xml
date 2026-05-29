@@ -141,4 +141,10 @@
     <string name="network_buffer_large_description">באפר גדול, עשוי לעזור בחיבורים יציבים למחצה</string>
     <string name="network_buffer_extra_large">גדול במיוחד</string>
     <string name="network_buffer_extra_large_description">גודל באפר מקסימלי, מיועד לחיבורים איטיים או לוויניים</string>
+    <string name="media_service_unknown_page">עמוד לא ידוע</string>
+    <string name="media_service_no_items">לא נמצאו פריטים</string>
+    <string name="media_service_auth_expired">נא לפתוח את האפליקציה בטלפון כדי להתחבר לשרת Jellyfin שלך.</string>
+    <string name="media_service_invalid_id">מזהה פריט שגוי</string>
+    <string name="media_service_car_section_favorites">מועדפים</string>
+    <string name="media_service_car_section_audiobooks">ספרים מוקלטים</string>
 </resources>
