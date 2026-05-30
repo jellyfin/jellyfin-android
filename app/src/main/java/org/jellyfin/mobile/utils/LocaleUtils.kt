@@ -18,7 +18,11 @@ suspend fun WebView.initLocale(userId: UUID) {
         val flatUserId = userId.toString().replace("-", "")
         evaluateJavascript("window.localStorage.getItem('$flatUserId-language')") { result ->
             try {
-                continuation.resume(JSONObject("{locale:$result}").getString("locale"))
+                if (result.isNullOrBlank() || result == "null") {
+                    continuation.resume(null)
+                } else {
+                    continuation.resume(JSONObject("{locale:$result}").getString("locale"))
+                }
             } catch (e: JSONException) {
                 continuation.resume(null)
             }
@@ -32,7 +36,7 @@ suspend fun WebView.initLocale(userId: UUID) {
 }
 
 private fun Context.setLocale(localeString: String?): Boolean {
-    if (localeString.isNullOrEmpty()) return false
+    if (localeString.isNullOrBlank() || localeString == "null") return false
 
     val localeSplit = localeString.split('-')
     val locale = when (localeSplit.size) {
