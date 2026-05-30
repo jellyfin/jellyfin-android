@@ -15,8 +15,11 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -38,7 +41,6 @@ import org.jellyfin.mobile.utils.BackPressInterceptor
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER
 import org.jellyfin.mobile.utils.applyDefault
-import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.dip
 import org.jellyfin.mobile.utils.extensions.getParcelableCompat
 import org.jellyfin.mobile.utils.extensions.replaceFragment
@@ -122,8 +124,13 @@ class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClien
         super.onViewCreated(view, savedInstanceState)
         val webView = webViewBinding!!.webView
 
-        // Apply window insets
-        webView.applyWindowInsetsAsMargins()
+        // Apply window insets: only padding for bottom (navigation bar)
+        // to keep the WebView background at the absolute top (taking whole screen)
+        ViewCompat.setOnApplyWindowInsetsListener(webView) { v, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(insets.left, 0, insets.right, insets.bottom)
+            windowInsets
+        }
 
         // Setup exclusion rects for gestures
         if (AndroidVersion.isAtLeastQ) {
