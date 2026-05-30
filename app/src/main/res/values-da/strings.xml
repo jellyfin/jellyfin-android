@@ -131,4 +131,18 @@
     <string name="no">Nej</string>
     <string name="downloading_desc">Downloader %1$d titler</string>
     <string name="skip_media_segment">Spring over</string>
+    <string name="media_service_unknown_page">Ukendt side</string>
+    <string name="media_service_no_items">Ingenting fundet</string>
+    <string name="media_service_auth_expired">Åben appen på din telefon for at logge ind på din Jellyfin-server.</string>
+    <string name="media_service_invalid_id">Ugyldigt ID</string>
+    <string name="media_service_car_section_favorites">Favoritter</string>
+    <string name="media_service_car_section_audiobooks">Lydbøger</string>
+    <string name="pref_exoplayer_network_buffer">Afspilningsbufferstørrelse</string>
+    <string name="network_buffer_auto">Automatisk</string>
+    <string name="network_buffer_auto_description">Standardbuffer, egnet til de fleste afspilningsscenarier</string>
+    <string name="network_buffer_large">Stor</string>
+    <string name="network_buffer_large_description">Større buffer, kan hjælpe ved moderate eller varierende forbindelser</string>
+    <string name="network_buffer_extra_large">Ekstra stor</string>
+    <string name="network_buffer_extra_large_description">Maksimal buffer, egnet til langsomme eller satellitforbindelser</string>
+    <string name="special_episode">Speciel</string>
 </resources>
