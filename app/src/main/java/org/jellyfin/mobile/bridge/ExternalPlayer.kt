@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.bridge
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -11,16 +12,19 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.LifecycleOwner
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayOptions
+import org.jellyfin.mobile.player.queue.DirectPlayHttpUrl
 import org.jellyfin.mobile.player.source.ExternalSubtitleStream
-import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceResolver
+import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
@@ -28,9 +32,13 @@ import org.jellyfin.mobile.utils.isPackageInstalled
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.jellyfin.sdk.api.client.ApiClient
+import org.jellyfin.sdk.api.client.exception.ApiClientException
+import org.jellyfin.sdk.api.client.extensions.mediaInfoApi
 import org.jellyfin.sdk.api.client.extensions.videosApi
+import org.jellyfin.sdk.api.operations.MediaInfoApi
 import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.model.api.DeviceProfile
+import org.jellyfin.sdk.model.api.MediaProtocol
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
@@ -52,12 +60,16 @@ class ExternalPlayer(
     private val externalPlayerProfile: DeviceProfile = deviceProfileBuilder.getExternalPlayerProfile()
     private val apiClient: ApiClient = get()
     private val videosApi: VideosApi = apiClient.videosApi
+    private val mediaInfoApi: MediaInfoApi = apiClient.mediaInfoApi
+    private var currentLiveStreamId: String? = null
 
     private val playerContract = registry.register(
         "externalplayer",
         lifecycleOwner,
         ActivityResultContracts.StartActivityForResult(),
     ) { result ->
+        closeCurrentLiveStream()
+
         val resultCode = result.resultCode
         val intent = result.data
         when (val action = intent?.action) {
@@ -103,7 +115,6 @@ class ExternalPlayer(
                 audioStreamIndex = playOptions.audioStreamIndex,
                 subtitleStreamIndex = playOptions.subtitleStreamIndex,
                 maxStreamingBitrate = Int.MAX_VALUE, // ensure we always direct play
-                autoOpenLiveStream = false,
             ).onSuccess { jellyfinMediaSource ->
                 playMediaSource(playOptions, jellyfinMediaSource)
             }.onFailure { error ->
@@ -117,14 +128,13 @@ class ExternalPlayer(
         }
     }
 
-    private fun playMediaSource(playOptions: PlayOptions, source: JellyfinMediaSource) {
-        // Create direct play URL
-        val url = videosApi.getVideoStreamUrl(
-            itemId = source.itemId,
-            static = true,
-            mediaSourceId = source.id,
-            playSessionId = source.playSessionId,
-        )
+    private fun playMediaSource(playOptions: PlayOptions, source: RemoteJellyfinMediaSource) {
+        val url = runCatching { createDirectPlayUrl(source) }.getOrElse {
+            Timber.e(it, "Unable to create direct play URL for external player")
+            closeLiveStream(source.liveStreamId)
+            context.toast(R.string.player_error_unsupported_content)
+            return
+        }
 
         // Select correct subtitle
         val selectedSubtitleStream = playOptions.subtitleStreamIndex?.let { index ->
@@ -165,11 +175,66 @@ class ExternalPlayer(
             // VLC
             if (enabledSubUrl != null) putExtra("subtitles_location", enabledSubUrl)
         }
-        playerContract.launch(playerIntent)
+        if (currentLiveStreamId != source.liveStreamId) {
+            closeCurrentLiveStream()
+        }
+        currentLiveStreamId = source.liveStreamId
+        try {
+            playerContract.launch(playerIntent)
+        } catch (e: ActivityNotFoundException) {
+            Timber.e(e, "No external player available")
+            closeCurrentLiveStream()
+            notifyEvent(Constants.EVENT_CANCELED)
+            context.toast(R.string.external_player_invalid_player, Toast.LENGTH_LONG)
+            return
+        }
+        val playbackMessage = "Starting playback [id=${source.itemId}, title=${source.getName(context)}, " +
+            "playMethod=${source.playMethod}, startTime=${source.startTime}]"
         Timber.d(
-            "Starting playback [id=${source.itemId}, title=${source.getName(context)}, " +
-                "playMethod=${source.playMethod}, startTime=${source.startTime}]",
+            playbackMessage,
         )
+    }
+
+    private fun createDirectPlayUrl(source: RemoteJellyfinMediaSource): String {
+        val sourceInfo = source.sourceInfo
+
+        return when (sourceInfo.protocol) {
+            MediaProtocol.FILE -> videosApi.getVideoStreamUrl(
+                itemId = source.itemId,
+                static = true,
+                mediaSourceId = source.id,
+                playSessionId = source.playSessionId,
+                deviceId = apiClient.deviceInfo.id,
+                liveStreamId = source.liveStreamId,
+            )
+            MediaProtocol.HTTP -> DirectPlayHttpUrl.resolve(
+                path = requireNotNull(sourceInfo.path),
+                serverBaseUrl = apiClient.baseUrl,
+                createServerUrl = apiClient::createUrl,
+            )
+            else -> throw IllegalArgumentException("Unsupported protocol ${sourceInfo.protocol}")
+        }
+    }
+
+    private fun closeCurrentLiveStream() {
+        val liveStreamId = currentLiveStreamId ?: return
+        currentLiveStreamId = null
+
+        closeLiveStream(liveStreamId)
+    }
+
+    private fun closeLiveStream(liveStreamId: String?) {
+        if (liveStreamId == null) return
+
+        coroutinesScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    mediaInfoApi.closeLiveStream(liveStreamId)
+                }
+            } catch (e: ApiClientException) {
+                Timber.e(e, "Failed to close external player live stream")
+            }
+        }
     }
 
     private fun notifyEvent(event: String, parameters: String = "") {
