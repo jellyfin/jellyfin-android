@@ -32,7 +32,7 @@ import org.jellyfin.mobile.downloads.JellyfinDownloadService
 import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.webapp.WebViewFragment
-import org.jellyfin.sdk.model.serializer.toUUID
+import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import org.koin.android.ext.android.get
 import timber.log.Timber
 import java.io.File
@@ -202,8 +202,9 @@ fun Uri.extractId(): String {
     val uri = toString()
     val idRegex = Regex("""/([a-f0-9]{32}|[a-f0-9-]{36})/""")
     val idResult = idRegex.find(uri)
-    val itemId = idResult?.groups?.get(1)?.value.toString()
-    var item = itemId.toUUID().toString()
+    val itemId = idResult?.groups?.get(1)?.value?.toUUIDOrNull()
+        ?: return uri
+    var item = itemId.toString()
 
     val subtitleRegex = Regex("""Subtitles/(\d+)/\d+/Stream.subrip|/(\d+).subrip""")
     val subtitleResult = subtitleRegex.find(uri)

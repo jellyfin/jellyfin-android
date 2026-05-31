@@ -16,6 +16,7 @@ class RemoteJellyfinMediaSource(
 ) : JellyfinMediaSource(itemId, item, sourceInfo, playSessionId, playbackDetails) {
     override val playMethod: PlayMethod = when {
         sourceInfo.supportsDirectPlay -> PlayMethod.DIRECT_PLAY
+        RemoteDirectPlaySupport.canPlayMpegTsHttpDirectly(sourceInfo) -> PlayMethod.DIRECT_PLAY
         sourceInfo.supportsDirectStream -> PlayMethod.DIRECT_STREAM
         sourceInfo.supportsTranscoding -> PlayMethod.TRANSCODE
         else -> throw IllegalArgumentException("No play method found for ${sourceInfo.name} ($itemId)")

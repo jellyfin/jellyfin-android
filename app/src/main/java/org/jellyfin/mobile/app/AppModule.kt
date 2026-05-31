@@ -149,9 +149,9 @@ val applicationModule = module {
             }
     }
 
-    single<MediaSource.Factory> {
+    single<DefaultExtractorsFactory> {
         val context: Context = get()
-        val extractorsFactory = DefaultExtractorsFactory().apply {
+        DefaultExtractorsFactory().apply {
             // https://github.com/google/ExoPlayer/issues/8571
             setTsExtractorTimestampSearchBytes(
                 when {
@@ -160,9 +160,19 @@ val applicationModule = module {
                 },
             )
         }
-        DefaultMediaSourceFactory(get<CacheDataSource.Factory>(), extractorsFactory)
     }
-    single { ProgressiveMediaSource.Factory(get<CacheDataSource.Factory>()) }
+    single<MediaSource.Factory> {
+        DefaultMediaSourceFactory(
+            get<CacheDataSource.Factory>(),
+            get<DefaultExtractorsFactory>(),
+        )
+    }
+    single {
+        ProgressiveMediaSource.Factory(
+            get<CacheDataSource.Factory>(),
+            get<DefaultExtractorsFactory>(),
+        )
+    }
     single { HlsMediaSource.Factory(get<CacheDataSource.Factory>()) }
     single { SingleSampleMediaSource.Factory(get<CacheDataSource.Factory>()) }
 }

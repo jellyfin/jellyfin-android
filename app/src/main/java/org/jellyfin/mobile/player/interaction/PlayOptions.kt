@@ -31,7 +31,7 @@ data class PlayOptions(
                         }
                     }
                 } ?: emptyList(),
-                mediaSourceId = json.optString("mediaSourceId"),
+                mediaSourceId = json.optString("mediaSourceId").ifBlank { null },
                 startIndex = json.optInt("startIndex"),
                 startPosition = (json.optLong("startPositionTicks").takeIf { it > 0 })?.ticks,
                 audioStreamIndex = json.optString("audioStreamIndex").toIntOrNull(),

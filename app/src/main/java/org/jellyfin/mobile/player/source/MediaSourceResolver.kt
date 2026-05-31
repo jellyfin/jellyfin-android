@@ -9,11 +9,11 @@ import org.jellyfin.sdk.api.client.extensions.mediaInfoApi
 import org.jellyfin.sdk.api.client.extensions.userLibraryApi
 import org.jellyfin.sdk.api.operations.MediaInfoApi
 import org.jellyfin.sdk.api.operations.UserLibraryApi
+import org.jellyfin.sdk.model.api.BaseItemKind
 import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.MediaSourceInfo
 import org.jellyfin.sdk.model.api.PlaybackInfoDto
 import org.jellyfin.sdk.model.extensions.inWholeTicks
-import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
 import java.util.UUID
 import kotlin.time.Duration
@@ -33,6 +33,8 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
         subtitleStreamIndex: Int? = null,
         autoOpenLiveStream: Boolean = true,
     ): Result<RemoteJellyfinMediaSource> {
+        val item = loadItem(itemId)
+
         // Load media source info
         val playSessionId: String
         val mediaSourceInfo: MediaSourceInfo = try {
@@ -43,7 +45,11 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
                         // We need to remove the dashes so that the server can find the correct media source.
                         // And if we didn't pass the mediaSourceId, our stream indices would silently get ignored.
                         // https://github.com/jellyfin/jellyfin/blob/9a35fd673203cfaf0098138b2768750f4818b3ab/Jellyfin.Api/Helpers/MediaInfoHelper.cs#L196-L201
-                        mediaSourceId = mediaSourceId ?: itemId.toString().replace("-", ""),
+                        mediaSourceId = playbackInfoMediaSourceId(
+                            requestedMediaSourceId = mediaSourceId,
+                            itemId = itemId,
+                            itemType = item?.type,
+                        ),
                         deviceProfile = deviceProfile,
                         maxStreamingBitrate = maxStreamingBitrate,
                         startTimeTicks = startTime?.inWholeTicks,
@@ -56,23 +62,13 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
 
             playSessionId = response.playSessionId ?: return Result.failure(PlayerException.UnsupportedContent())
 
-            response.mediaSources.let { sources ->
-                sources.find { source -> source.id?.toUUIDOrNull() == itemId } ?: sources.firstOrNull()
-            } ?: return Result.failure(PlayerException.UnsupportedContent())
+            MediaSourceSelector.select(
+                sources = response.mediaSources,
+                requestedMediaSourceId = mediaSourceId,
+            ) ?: return Result.failure(PlayerException.UnsupportedContent())
         } catch (e: ApiClientException) {
             Timber.e(e, "Failed to load media source $itemId")
             return Result.failure(PlayerException.NetworkFailure(e))
-        }
-
-        // Load additional item info if possible
-
-        val item = try {
-            withContext(Dispatchers.IO) {
-                userLibraryApi.getItem(itemId).content
-            }
-        } catch (e: ApiClientException) {
-            Timber.e(e, "Failed to load item for media source $itemId")
-            null
         }
 
         // Create JellyfinMediaSource
@@ -92,4 +88,22 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
             Result.failure(PlayerException.UnsupportedContent(e))
         }
     }
+
+    private suspend fun loadItem(itemId: UUID) = try {
+        withContext(Dispatchers.IO) {
+            userLibraryApi.getItem(itemId).content
+        }
+    } catch (e: ApiClientException) {
+        Timber.e(e, "Failed to load item for media source $itemId")
+        null
+    }
+}
+
+internal fun playbackInfoMediaSourceId(
+    requestedMediaSourceId: String?,
+    itemId: UUID,
+    itemType: BaseItemKind?,
+): String? = requestedMediaSourceId ?: when (itemType) {
+    BaseItemKind.TV_CHANNEL -> null
+    else -> itemId.toString().replace("-", "")
 }

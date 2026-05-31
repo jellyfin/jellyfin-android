@@ -25,6 +25,7 @@ import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.videosApi
 import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.model.api.MediaProtocol
+import org.jellyfin.sdk.model.api.MediaSourceInfo
 import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.MediaStreamProtocol
 import org.jellyfin.sdk.model.api.MediaStreamType
@@ -257,7 +258,7 @@ class QueueManager(
      * @return A [MediaSource]. The type of MediaSource depends on the playback method/protocol.
      */
     @CheckResult
-    private fun createVideoMediaSource(source: JellyfinMediaSource): MediaSource {
+    private fun createVideoMediaSource(source: RemoteJellyfinMediaSource): MediaSource {
         val sourceInfo = source.sourceInfo
         val (url, factory) = when (source.playMethod) {
             PlayMethod.DIRECT_PLAY -> {
@@ -269,16 +270,12 @@ class QueueManager(
                             playSessionId = source.playSessionId,
                             mediaSourceId = source.id,
                             deviceId = apiClient.deviceInfo.id,
+                            liveStreamId = source.liveStreamId,
                         )
 
                         url to get<ProgressiveMediaSource.Factory>()
                     }
-                    MediaProtocol.HTTP -> {
-                        val url = requireNotNull(sourceInfo.path)
-                        val factory = get<HlsMediaSource.Factory>().setAllowChunklessPreparation(true)
-
-                        url to factory
-                    }
+                    MediaProtocol.HTTP -> createDirectPlayHttpMediaSource(sourceInfo)
                     else -> throw IllegalArgumentException("Unsupported protocol ${sourceInfo.protocol}")
                 }
             }
@@ -290,6 +287,7 @@ class QueueManager(
                     playSessionId = source.playSessionId,
                     mediaSourceId = source.id,
                     deviceId = apiClient.deviceInfo.id,
+                    liveStreamId = source.liveStreamId,
                 )
 
                 url to get<ProgressiveMediaSource.Factory>()
@@ -311,6 +309,26 @@ class QueueManager(
             .build()
 
         return factory.createMediaSource(mediaItem)
+    }
+
+    private fun createDirectPlayHttpMediaSource(sourceInfo: MediaSourceInfo): Pair<String, MediaSource.Factory> {
+        val url = DirectPlayHttpUrl.resolve(
+            path = requireNotNull(sourceInfo.path),
+            serverBaseUrl = apiClient.baseUrl,
+            createServerUrl = apiClient::createUrl,
+        )
+        val factory: MediaSource.Factory = when (
+            DirectPlayHttpMediaSourceType.from(
+                container = sourceInfo.container,
+                path = url,
+                formats = sourceInfo.formats,
+            )
+        ) {
+            DirectPlayHttpMediaSourceType.PROGRESSIVE -> get<ProgressiveMediaSource.Factory>()
+            DirectPlayHttpMediaSourceType.HLS -> get<HlsMediaSource.Factory>().setAllowChunklessPreparation(true)
+        }
+
+        return url to factory
     }
 
     /**
