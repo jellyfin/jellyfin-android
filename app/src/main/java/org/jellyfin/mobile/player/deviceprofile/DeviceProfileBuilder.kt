@@ -19,6 +19,7 @@ import org.jellyfin.sdk.model.api.TranscodingProfile
 
 class DeviceProfileBuilder(
     private val appPreferences: AppPreferences,
+    private val deviceCodecs: DeviceCodecs = loadDeviceCodecs(),
 ) {
     private val supportedVideoCodecs: Array<Array<String>>
     private val supportedAudioCodecs: Array<Array<String>>
@@ -31,47 +32,18 @@ class DeviceProfileBuilder(
             SUPPORTED_CONTAINER_FORMATS.size == AVAILABLE_VIDEO_CODECS.size && SUPPORTED_CONTAINER_FORMATS.size == AVAILABLE_AUDIO_CODECS.size,
         )
 
-        // Load Android-supported codecs
-        val videoCodecs: MutableMap<String, DeviceCodec.Video> = HashMap()
-        val audioCodecs: MutableMap<String, DeviceCodec.Audio> = HashMap()
-        val androidCodecs = MediaCodecList(MediaCodecList.REGULAR_CODECS)
-        for (codecInfo in androidCodecs.codecInfos) {
-            if (codecInfo.isEncoder) continue
-
-            for (mimeType in codecInfo.supportedTypes) {
-                val codec = DeviceCodec.from(codecInfo.getCapabilitiesForType(mimeType)) ?: continue
-                val name = codec.name
-                when (codec) {
-                    is DeviceCodec.Video -> {
-                        if (videoCodecs.containsKey(name)) {
-                            videoCodecs[name] = videoCodecs[name]!!.mergeCodec(codec)
-                        } else {
-                            videoCodecs[name] = codec
-                        }
-                    }
-                    is DeviceCodec.Audio -> {
-                        if (audioCodecs.containsKey(mimeType)) {
-                            audioCodecs[name] = audioCodecs[name]!!.mergeCodec(codec)
-                        } else {
-                            audioCodecs[name] = codec
-                        }
-                    }
-                }
-            }
-        }
-
         // Build map of supported codecs from device support and hardcoded data
         supportedVideoCodecs = Array(AVAILABLE_VIDEO_CODECS.size) { i ->
             AVAILABLE_VIDEO_CODECS[i].filter { codec ->
-                videoCodecs.containsKey(codec)
+                deviceCodecs.video.containsKey(codec)
             }.toTypedArray()
         }
         supportedAudioCodecs = Array(AVAILABLE_AUDIO_CODECS.size) { i ->
             AVAILABLE_AUDIO_CODECS[i].filter { codec ->
-                audioCodecs.containsKey(codec) || codec in FORCED_AUDIO_CODECS
+                deviceCodecs.audio.containsKey(codec) || codec in FORCED_AUDIO_CODECS
             }.toTypedArray()
         }
-        videoCodecsProfiles = videoCodecs.entries.associate { (k, v) -> k to v.profiles }
+        videoCodecsProfiles = deviceCodecs.video.entries.associate { (k, v) -> k to v.profiles }
 
         transcodingProfiles = listOf(
             TranscodingProfile(
@@ -219,94 +191,30 @@ class DeviceProfileBuilder(
 
         /**
          * List of container formats supported by ExoPlayer
-         *
-         * IMPORTANT: Don't change without updating [AVAILABLE_VIDEO_CODECS] and [AVAILABLE_AUDIO_CODECS]
          */
-        private val SUPPORTED_CONTAINER_FORMATS = arrayOf(
-            "mp4", "fmp4", "webm", "mkv", "mp3", "ogg", "wav", "mpegts", "flv", "aac", "flac", "3gp",
-        )
+        private val SUPPORTED_CONTAINER_FORMATS = ExoPlayerDirectPlayProfile.containers
+            .map(ExoPlayerContainerSupport::container)
+            .toTypedArray()
 
         /**
-         * IMPORTANT: Must have same length as [SUPPORTED_CONTAINER_FORMATS],
-         * as it maps the codecs to the containers with the same index!
+         * Video codecs mapped to [SUPPORTED_CONTAINER_FORMATS] by index.
          */
-        private val AVAILABLE_VIDEO_CODECS = arrayOf(
-            // mp4
-            arrayOf("mpeg1video", "mpeg2video", "h263", "mpeg4", "h264", "hevc", "av1", "vp9"),
-            // fmp4
-            arrayOf("mpeg1video", "mpeg2video", "h263", "mpeg4", "h264", "hevc", "av1", "vp9"),
-            // webm
-            arrayOf("vp8", "vp9", "av1"),
-            // mkv
-            arrayOf("mpeg1video", "mpeg2video", "h263", "mpeg4", "h264", "hevc", "av1", "vp8", "vp9"),
-            // mp3
-            emptyArray(),
-            // ogg
-            emptyArray(),
-            // wav
-            emptyArray(),
-            // mpegts
-            arrayOf("mpeg1video", "mpeg2video", "mpeg4", "h264", "hevc"),
-            // flv
-            arrayOf("mpeg4", "h264"),
-            // aac
-            emptyArray(),
-            // flac
-            emptyArray(),
-            // 3gp
-            arrayOf("h263", "mpeg4", "h264", "hevc"),
-        )
+        private val AVAILABLE_VIDEO_CODECS = ExoPlayerDirectPlayProfile.containers
+            .map { container -> container.videoCodecs.toTypedArray() }
+            .toTypedArray()
 
         /**
-         * List of PCM codecs supported by ExoPlayer by default
+         * Audio codecs mapped to [SUPPORTED_CONTAINER_FORMATS] by index.
          */
-        private val PCM_CODECS = arrayOf(
-            "pcm_s8",
-            "pcm_s16be",
-            "pcm_s16le",
-            "pcm_s24le",
-            "pcm_s32le",
-            "pcm_f32le",
-            "pcm_alaw",
-            "pcm_mulaw",
-        )
-
-        /**
-         * IMPORTANT: Must have same length as [SUPPORTED_CONTAINER_FORMATS],
-         * as it maps the codecs to the containers with the same index!
-         */
-        private val AVAILABLE_AUDIO_CODECS = arrayOf(
-            // mp4
-            arrayOf("mp1", "mp2", "mp3", "aac", "alac", "ac3", "opus"),
-            // fmp4
-            arrayOf("mp3", "aac", "ac3", "eac3"),
-            // webm
-            arrayOf("vorbis", "opus"),
-            // mkv
-            arrayOf(*PCM_CODECS, "mp1", "mp2", "mp3", "aac", "vorbis", "opus", "flac", "alac", "ac3", "eac3", "dts", "mlp", "truehd"),
-            // mp3
-            arrayOf("mp3"),
-            // ogg
-            arrayOf("vorbis", "opus", "flac"),
-            // wav
-            PCM_CODECS,
-            // mpegts
-            arrayOf(*PCM_CODECS, "mp1", "mp2", "mp3", "aac", "ac3", "eac3", "dts", "mlp", "truehd"),
-            // flv
-            arrayOf("mp3", "aac"),
-            // aac
-            arrayOf("aac"),
-            // flac
-            arrayOf("flac"),
-            // 3gp
-            arrayOf("3gpp", "aac", "flac"),
-        )
+        private val AVAILABLE_AUDIO_CODECS = ExoPlayerDirectPlayProfile.containers
+            .map { container -> container.audioCodecs.toTypedArray() }
+            .toTypedArray()
 
         /**
          * List of audio codecs that will be added to the device profile regardless of [MediaCodecList] advertising them.
          * This is especially useful for codecs supported by decoders integrated to ExoPlayer or added through an extension.
          */
-        private val FORCED_AUDIO_CODECS = arrayOf(*PCM_CODECS, "alac", "aac", "ac3", "eac3", "dts", "mlp", "truehd")
+        private val FORCED_AUDIO_CODECS = ExoPlayerDirectPlayProfile.forcedAudioCodecs
 
         private val EXO_EMBEDDED_SUBTITLES = arrayOf("dvbsub", "pgssub", "srt", "subrip", "ttml")
         private val EXO_EXTERNAL_SUBTITLES = arrayOf("srt", "subrip", "ttml", "vtt", "webvtt")
@@ -332,5 +240,36 @@ class DeviceProfileBuilder(
          * https://github.com/jellyfin/jellyfin-web/blob/de690740f03c0568ba3061c4c586bd78b375d882/src/scripts/browserDeviceProfile.js#L373
          */
         private const val MAX_MUSIC_TRANSCODING_BITRATE = 384000
+
+        private fun loadDeviceCodecs(): DeviceCodecs {
+            val videoCodecs: MutableMap<String, DeviceCodec.Video> = HashMap()
+            val audioCodecs: MutableMap<String, DeviceCodec.Audio> = HashMap()
+            val androidCodecs = MediaCodecList(MediaCodecList.REGULAR_CODECS)
+
+            for (codecInfo in androidCodecs.codecInfos) {
+                if (codecInfo.isEncoder) continue
+
+                for (mimeType in codecInfo.supportedTypes) {
+                    val codec = DeviceCodec.from(codecInfo.getCapabilitiesForType(mimeType)) ?: continue
+                    addDeviceCodec(codec, videoCodecs, audioCodecs)
+                }
+            }
+
+            return DeviceCodecs(
+                video = videoCodecs,
+                audio = audioCodecs,
+            )
+        }
+
+        private fun addDeviceCodec(
+            codec: DeviceCodec,
+            videoCodecs: MutableMap<String, DeviceCodec.Video>,
+            audioCodecs: MutableMap<String, DeviceCodec.Audio>,
+        ) {
+            when (codec) {
+                is DeviceCodec.Video -> videoCodecs[codec.name] = videoCodecs[codec.name]?.mergeCodec(codec) ?: codec
+                is DeviceCodec.Audio -> audioCodecs[codec.name] = audioCodecs[codec.name]?.mergeCodec(codec) ?: codec
+            }
+        }
     }
 }
