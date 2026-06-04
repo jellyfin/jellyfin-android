@@ -138,4 +138,7 @@
     <string name="media_service_invalid_id">Ogiltigt objekt-ID</string>
     <string name="media_service_car_section_favorites">Favoriter</string>
     <string name="media_service_car_section_audiobooks">Ljudböcker</string>
+    <string name="pref_exoplayer_network_buffer">Bufferstorlek för spelning</string>
+    <string name="network_buffer_large">Stor</string>
+    <string name="network_buffer_extra_large">Extra stor</string>
 </resources>
