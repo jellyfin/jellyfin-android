@@ -1,7 +1,7 @@
 [versions]
 # Plugins
 android-plugin = "9.2.1"
-kotlin = "2.3.21"
+kotlin = "2.4.0"
 kotlin-ksp = "2.3.9"
 detekt = "1.23.8"
 android-junit5 = "2.0.1"
