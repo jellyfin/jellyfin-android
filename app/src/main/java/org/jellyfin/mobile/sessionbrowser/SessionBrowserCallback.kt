@@ -72,7 +72,7 @@ class SessionBrowserCallback(
         PlaylistLibraryPage(api),
         RecentLibraryPage(api),
         SuggestedLibraryPage(api),
-        SearchLibraryPage(api),
+        SearchLibraryPage(context, api),
     )
 
     private val LibraryRoute.page get() = pages.firstOrNull { page -> page.route == this::class }
