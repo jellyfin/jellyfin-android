@@ -42,6 +42,7 @@ import org.jellyfin.mobile.sessionbrowser.page.UserViewLibraryPage
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.universalAudioApi
 import org.jellyfin.sdk.api.client.extensions.userLibraryApi
+import org.jellyfin.sdk.model.api.BaseItemKind
 import org.jellyfin.sdk.model.api.MediaStreamProtocol
 import timber.log.Timber
 
@@ -373,7 +374,21 @@ class SessionBrowserCallback(
             }
         }
 
+        var resumePositionMs = startPositionMs
+        val currentLibraryMediaId = expandedItems.getOrNull(newStartIndex)?.mediaId?.let {
+            runCatching { Json.decodeFromString<LibraryMediaId>(it) }.getOrNull()
+        }
+        if (currentLibraryMediaId is LibraryMediaId.Item) {
+            runCatching {
+                val item by api.userLibraryApi.getItem(itemId = currentLibraryMediaId.itemId)
+                if (item.type == BaseItemKind.AUDIO_BOOK) {
+                    val positionTicks = item.userData?.playbackPositionTicks ?: 0L
+                    if (positionTicks > 0L) resumePositionMs = positionTicks / 10000L
+                }
+            }
+        }
+
         expandedItems = onAddMediaItems(mediaSession, controller, expandedItems).await()
-        MediaSession.MediaItemsWithStartPosition(expandedItems, newStartIndex, startPositionMs)
+        MediaSession.MediaItemsWithStartPosition(expandedItems, newStartIndex, resumePositionMs)
     }
 }
