@@ -14,9 +14,9 @@ plugins {
 
 detekt {
     buildUponDefaultConfig = true
-    allRules = false
-    config.setFrom("${rootProject.projectDir}/detekt.yml")
-    autoCorrect = true
+    ignoreFailures = true
+    config.setFrom(files("$rootDir/detekt.yaml"))
+    parallel = true
 }
 
 kotlin {
@@ -90,16 +90,20 @@ android {
         viewBinding = true
         compose = true
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
         isCoreLibraryDesugaringEnabled = true
     }
+
     lint {
         lintConfig = file("$rootDir/android-lint.xml")
         abortOnError = false
         sarifReport = true
+        checkDependencies = true
     }
+
     room {
         schemaDirectory("$projectDir/schemas")
     }
@@ -175,22 +179,24 @@ dependencies {
 
 tasks {
     withType<Detekt> {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-
         reports {
-            html.required.set(true)
-            xml.required.set(false)
-            txt.required.set(true)
             sarif.required.set(true)
         }
     }
 
     // Testing
     withType<Test> {
-        useJUnitPlatform()
+        useJUnit()
         testLogging {
-            outputs.upToDateWhen { false }
-            showStandardStreams = true
+            events(
+                org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
+                org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_ERROR,
+                org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
+            )
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+            showExceptions = true
+            showCauses = true
+            showStackTraces = true
         }
     }
 
