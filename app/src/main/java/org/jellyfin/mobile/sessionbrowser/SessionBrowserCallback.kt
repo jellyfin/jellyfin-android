@@ -53,6 +53,7 @@ class SessionBrowserCallback(
 ) : MediaLibrarySession.Callback {
     companion object {
         const val MAX_PAGE_SIZE = 250
+        private const val TICKS_PER_MILLISECOND = 10_000L
     }
 
     val pages = listOf(
@@ -383,7 +384,7 @@ class SessionBrowserCallback(
                 val item by api.userLibraryApi.getItem(itemId = currentLibraryMediaId.itemId)
                 if (item.type == BaseItemKind.AUDIO_BOOK) {
                     val positionTicks = item.userData?.playbackPositionTicks ?: 0L
-                    if (positionTicks > 0L) resumePositionMs = positionTicks / 10000L
+                    if (positionTicks > 0L) resumePositionMs = positionTicks / TICKS_PER_MILLISECOND
                 }
             }
         }
