@@ -1,8 +1,10 @@
 package org.jellyfin.mobile.sessionbrowser.page
 
+import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import org.jellyfin.mobile.R
 import org.jellyfin.mobile.sessionbrowser.LibraryItemAction
 import org.jellyfin.mobile.sessionbrowser.LibraryPageElement
 import org.jellyfin.mobile.sessionbrowser.LibraryRoute
@@ -30,7 +32,7 @@ private suspend fun search(
     }
 }
 
-val SearchLibraryPage = { api: ApiClient ->
+val SearchLibraryPage = { context: Context, api: ApiClient ->
     libraryPage<LibraryRoute.Search>(grid = true) { route, offset, limit ->
         if (route.query.isNullOrBlank()) return@libraryPage emptyList()
 
@@ -49,9 +51,9 @@ val SearchLibraryPage = { api: ApiClient ->
         }
 
         listOf(
-            LibraryPageElement.Group("Playlists", playlists),
-            LibraryPageElement.Group("Albums", albums),
-            LibraryPageElement.Group("Artists", artists),
+            LibraryPageElement.Group(context.getString(R.string.media_service_car_section_playlists), playlists),
+            LibraryPageElement.Group(context.getString(R.string.media_service_car_section_albums), albums),
+            LibraryPageElement.Group(context.getString(R.string.media_service_car_section_artists), artists),
         )
     }
 }
