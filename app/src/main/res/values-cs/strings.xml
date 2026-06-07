@@ -145,4 +145,12 @@
     <string name="media_service_invalid_id">Neplatné ID položky</string>
     <string name="media_service_car_section_favorites">Oblíbené</string>
     <string name="media_service_car_section_audiobooks">Audioknihy</string>
+    <string name="downloading_title">Stahuji %1$s</string>
+    <string name="download_cancel">Zrušit</string>
+    <string name="download_completed">Stahování dokončeno</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Odstranit stahování</string>
+    <string name="download_remove_keep_local">Ponechat místní soubor(y)</string>
+    <string name="download_remove_description">Opravdu chcete odstranit %1$s ze stažených?</string>
+    <string name="download_incomplete">Stahování nedokončeno</string>
 </resources>
