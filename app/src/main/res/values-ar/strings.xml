@@ -126,8 +126,6 @@
     <string name="downloads">التنزيلات</string>
     <string name="download_notifications_description">إشعارات التنزيل</string>
     <string name="failed_thumbnail">فشل في تنزيل الصورة المصغّرة</string>
-    <string name="confirm_deletion">تأكيد الحذف</string>
-    <string name="confirm_deletion_desc">هل تريد حذف %1$s؟</string>
     <string name="thumbnail_desc">صورة مصغّرة</string>
     <string name="stored_videos_in_internal_storage_desc">سيتم تخزين الفيديوهات مثل الأفلام والمسلسلات في الذاكرة الداخلية للتطبيق، مما يتيح الوصول إليها من داخل التطبيق.</string>
     <string name="downloading_desc">جارٍ تنزيل %1$d عنوانًا</string>

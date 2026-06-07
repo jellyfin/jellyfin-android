@@ -120,8 +120,6 @@
     <string name="view_downloads">Se nerladdningar</string>
     <string name="downloads">Nerladdningar</string>
     <string name="failed_thumbnail">Misslyckades med att ladda ner miniatyrbild</string>
-    <string name="confirm_deletion">Bekräfta borttagning</string>
-    <string name="confirm_deletion_desc">Vill du ta bort %1$s?</string>
     <string name="no">Nej</string>
     <string name="store_videos_in_internal_storage">Lagra videor på intern lagring</string>
     <string name="stored_videos_in_internal_storage_desc">Videos så som filmer och tvansnitt kommer att lagras i appens interna lagring. Tillåt åtkomst från appen.</string>

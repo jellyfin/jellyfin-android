@@ -123,8 +123,6 @@
     <string name="external_player_mpvkt">Reproductor mpvKt</string>
     <string name="yes">Si</string>
     <string name="failed_network_method_check">Compruebe los métodos de descarga permitidos</string>
-    <string name="confirm_deletion">Confirmar borrado</string>
-    <string name="confirm_deletion_desc">¿Quiere borrar %1$s?</string>
     <string name="no">No</string>
     <string name="thumbnail_desc">Miniaturas</string>
     <string name="stored_videos_in_internal_storage_desc">Los vídeos, como películas y programas de televisión, se guardarán en el almacenamiento interno de la aplicación. Esto permite acceder a ellos desde la aplicación.</string>

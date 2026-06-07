@@ -103,8 +103,6 @@
     <string name="player_error_unspecific_exception">Нещо се обърка с плейъра</string>
     <string name="view_downloads">Преглед на изтеглянията</string>
     <string name="downloads">Изтегляния</string>
-    <string name="confirm_deletion">Потвърдете изтриването</string>
-    <string name="confirm_deletion_desc">Искате ли да изтриете %1$s?</string>
     <string name="yes">Да</string>
     <string name="no">Не</string>
     <string name="bluetooth_permission_message">За да открие кога безжичните слушалки или високоговорители са изключени, приложението изисква достъп до Bluetooth. На Андроид това разрешение е описано като достъп до устройства наблизо и предупреждава, че Bluetooth устройства могат да бъдат използвани за определяне на текущото местоположение. Приложението Джелифин обаче никога няма да използва това разрешение, за да открие вашето местоположение.</string>

@@ -118,8 +118,6 @@
     <string name="failed_thumbnail">Thumbnail-ийг татаж чадсангүй</string>
     <string name="failed_information">Медиа мэдээллийг авч чадсангүй</string>
     <string name="failed_network_method_check">Зөвшөөрөгдсөн татах аргуудыг шалгана уу</string>
-    <string name="confirm_deletion">Устгахыг баталгаажуулах</string>
-    <string name="confirm_deletion_desc">Та %1$s-ийг устгахыг хүсэж байна уу?</string>
     <string name="yes">Тийм</string>
     <string name="no">Үгүй</string>
     <string name="thumbnail_desc">Тумбнейл</string>

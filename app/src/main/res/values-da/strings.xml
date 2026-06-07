@@ -113,7 +113,6 @@
     <string name="pref_exoplayer_allow_press_speed_up">Hold nede for at speede op</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Tryk og hold på skærmen for midlertidigt at afspille hurtigere</string>
     <string name="external_player_mpvkt_description">En medieafspiller baseret på mpv-android, der har til formål at give en pænere/bruger­venligere grænseflade end den originale.</string>
-    <string name="confirm_deletion">Bekræft sletning</string>
     <string name="downloads">Downloads</string>
     <string name="download_notifications_description">Download notifikationer</string>
     <string name="failed_thumbnail">Fejl ved download af miniaturebillede</string>
@@ -127,7 +126,6 @@
     <string name="tv_show_desc">%1$s - Sæ%2$dEp%3$d</string>
     <string name="view_downloads">Se downloads</string>
     <string name="failed_information">Hentning af medieinformation mislykkedes</string>
-    <string name="confirm_deletion_desc">Vil du slette %1$s?</string>
     <string name="no">Nej</string>
     <string name="downloading_desc">Downloader %1$d titler</string>
     <string name="skip_media_segment">Spring over</string>

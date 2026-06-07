@@ -110,11 +110,9 @@
     <string name="mobile_data_summary">Els continguts multimèdia es descarregaran mitjançant wifi i xarxes mòbils.</string>
     <string name="mobile_data_and_roaming_summary">Els continguts multimèdia es descarregaran mitjançant wifi, xarxes mòbils i d\'itinerància.</string>
     <string name="pref_exoplayer_allow_press_speed_up">Mantingueu premut per a accelerar</string>
-    <string name="confirm_deletion">Confirmeu l\'eliminació</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Mantingueu premuda la pantalla per a accelerar temporalment la reproducció</string>
     <string name="external_player_mpvkt">Reproductor mpvKt</string>
     <string name="external_player_mpvkt_description">Un reproductor multimèdia basat en mpv-android amb l\'objectiu de proporcionar una interfície d\'usuari més agradable que l\'original.</string>
-    <string name="confirm_deletion_desc">Desitgeu eliminar %1$s?</string>
     <string name="no">No</string>
     <string name="thumbnail_desc">Miniatura</string>
     <string name="stored_videos_in_internal_storage_desc">Els vídeos, com ara pel·lícules i programes de televisió, s\'emmagatzemaran a l\'emmagatzematge intern de l\'aplicació. Permetent-hi l\'accés des de dins l\'aplicació.</string>

@@ -134,8 +134,6 @@
     <string name="failed_thumbnail">थंबनेल डाउनलोड करना विफल रहा</string>
     <string name="failed_information">मीडिया जानकारी पाना विफल रहा</string>
     <string name="failed_network_method_check">कृपया अपने अनुमत डाउनलोड के तरीके चेक करें</string>
-    <string name="confirm_deletion">हटानें की पुष्टि करें</string>
-    <string name="confirm_deletion_desc">क्या आप %1$s को हटाना चाहते हैं?</string>
     <string name="yes">हाँ</string>
     <string name="no">नहीं</string>
     <string name="thumbnail_desc">थंबनेल</string>

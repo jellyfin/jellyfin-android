@@ -122,8 +122,6 @@
     <string name="failed_thumbnail">Αποτυχία λήψης μικρογραφίας</string>
     <string name="failed_information">Αποτυχία ανάκτησης πληροφοριών πολυμέσων</string>
     <string name="failed_network_method_check">Παρακαλώ ελέγξτε τις επιτρεπόμενες μεθόδους λήψης</string>
-    <string name="confirm_deletion">Επιβεβαίωση διαγραφής</string>
-    <string name="confirm_deletion_desc">Θέλετε να διαγράψετε το %1$s;</string>
     <string name="yes">Ναι</string>
     <string name="no">Οχι</string>
     <string name="thumbnail_desc">Μικρογραφία</string>

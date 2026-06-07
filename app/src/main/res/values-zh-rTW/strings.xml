@@ -115,8 +115,6 @@
     <string name="download_notifications_description">下載通知</string>
     <string name="failed_information">無法取得媒體資訊</string>
     <string name="failed_network_method_check">請檢查您允許的下載方式</string>
-    <string name="confirm_deletion">確認刪除</string>
-    <string name="confirm_deletion_desc">你確定要刪除%1$s嗎?</string>
     <string name="yes">是</string>
     <string name="thumbnail_desc">縮圖</string>
     <string name="downloading_desc">正在下載%1$d個標題</string>

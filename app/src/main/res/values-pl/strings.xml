@@ -112,8 +112,6 @@
     <string name="mobile_data_and_roaming_summary">Multimedia będą pobierane przez Wi-Fi, sieci komórkowe i roamingowe.</string>
     <string name="downloads">Pobrane</string>
     <string name="failed_network_method_check">Sprawdź dozwolone metody pobierania</string>
-    <string name="confirm_deletion">Potwierdź usunięcie</string>
-    <string name="confirm_deletion_desc">Czy chcesz usunąć %1$s?</string>
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
     <string name="thumbnail_desc">Miniaturka</string>

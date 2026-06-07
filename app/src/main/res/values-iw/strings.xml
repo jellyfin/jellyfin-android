@@ -120,14 +120,12 @@
     <string name="external_player_mpvkt">נגן mpvKt</string>
     <string name="external_player_mpvkt_description">נגן מדיה המבוסס על mpv-android שמטרתו לספק ממשק משתמש נחמד יותר בהשוואה למקורי.</string>
     <string name="failed_network_method_check">אנא בדוק את שיטות ההורדה המותרות לך</string>
-    <string name="confirm_deletion">אישור מחיקה</string>
     <string name="no">לא</string>
     <string name="stored_videos_in_internal_storage_desc">סרטונים כגון סרטים ותוכניות טלוויזיה יאוחסנו באחסון הפנימי של האפליקציה. גישה אליהם מתאפשרת מתוך האפליקציה.</string>
     <string name="failed_thumbnail">הורדת התמונה הממוזערת נכשלה</string>
     <string name="store_videos_in_internal_storage">אחסן סרטונים באחסון הפנימי</string>
     <string name="downloaded">%1$s ירד</string>
     <string name="failed_information">אחזור פרטי המדיה נכשל</string>
-    <string name="confirm_deletion_desc">האם ברצונך למחוק את %1$s?</string>
     <string name="yes">כן</string>
     <string name="thumbnail_desc">תמונה ממוזערת</string>
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>

@@ -116,11 +116,9 @@
     <string name="failed_thumbnail">Falló la descarga de la miniatura</string>
     <string name="failed_information">Falló la obtención de información del contenido</string>
     <string name="failed_network_method_check">Por favor, verifica tus métodos de descarga permitidos</string>
-    <string name="confirm_deletion">Confirmar eliminación</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Mantené apretado para acelerar temporalmente la reproducción</string>
     <string name="skip_media_segment">Saltear</string>
     <string name="download_notifications_description">Descargar notificaciones</string>
-    <string name="confirm_deletion_desc">¿Querés borrar %1$s?</string>
     <string name="store_videos_in_internal_storage">Guardar videos en el almacenamiento interno</string>
     <string name="pref_exoplayer_allow_press_speed_up">Mantener para acelerar</string>
     <string name="external_player_mpvkt">Reproductor mpvKt</string>

@@ -123,8 +123,6 @@
     <string name="failed_thumbnail">Nepodarilo sa stiahnuť thumbnail</string>
     <string name="failed_information">Nepodarilo sa načítať informácie o médiu</string>
     <string name="failed_network_method_check">Skontrolujte povolené spôsoby sťahovania</string>
-    <string name="confirm_deletion">Potvrďte vymazanie</string>
-    <string name="confirm_deletion_desc">Chcete vymazať %1$s?</string>
     <string name="yes">Áno</string>
     <string name="no">Nie</string>
     <string name="thumbnail_desc">Thumbnail</string>

@@ -113,12 +113,10 @@
     <string name="view_downloads">Ver arquivos</string>
     <string name="download_notifications_description">Notificações de transferência</string>
     <string name="failed_thumbnail">Falha ao baixar miniatura</string>
-    <string name="confirm_deletion">Confirme a remoção</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="downloading_desc">Baixando %1$d títulos</string>
-    <string name="confirm_deletion_desc">Gostaria de remover %1$s?</string>
     <string name="downloads">Arquivos</string>
     <string name="failed_network_method_check">Por favor verifique os métodos de transferência autorizados</string>
     <string name="thumbnail_desc">Miniatura</string>

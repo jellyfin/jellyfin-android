@@ -123,8 +123,6 @@
     <string name="failed_thumbnail">Önizleme resmi indirilemedi</string>
     <string name="failed_information">Medya bilgisi alınamadı</string>
     <string name="failed_network_method_check">Lütfen izin verilen indirme yöntemlerinizi kontrol edin</string>
-    <string name="confirm_deletion">Silmeyi onayla</string>
-    <string name="confirm_deletion_desc">%1$s\'i silmek istiyor musunuz?</string>
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
     <string name="stored_videos_in_internal_storage_desc">Film ve Dizi gibi videolar uygulamanın dahili depolama alanında saklanacaktır. Uygulama içinden erişime izin verilebilir.</string>

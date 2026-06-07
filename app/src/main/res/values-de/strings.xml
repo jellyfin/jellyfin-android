@@ -119,7 +119,6 @@
     <string name="stored_videos_in_internal_storage_desc">Videos wie Filme oder TV Shows werden im App internen Speicher abgelegt. Erlaube den Zugriff aus der App heraus.</string>
     <string name="downloading_desc">Lade %1$d Titel herunter</string>
     <string name="external_player_mpvkt">mpvKt Player</string>
-    <string name="confirm_deletion_desc">Möchtest du %1$s löschen?</string>
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
     <string name="thumbnail_desc">Vorschaubild</string>
@@ -127,7 +126,6 @@
     <string name="pref_exoplayer_allow_press_speed_up">Halten zum Beschleunigen des Videos</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Berühre und halte den Bildschirm gedrückt, um die Wiedergabe kurzzeitig zu beschleunigen</string>
     <string name="downloads">Downloads</string>
-    <string name="confirm_deletion">Löschen bestätigen</string>
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="skip_media_segment">Überspringen</string>
     <string name="special_episode">Special</string>

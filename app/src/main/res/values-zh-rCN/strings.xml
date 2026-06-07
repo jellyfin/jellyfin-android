@@ -117,10 +117,8 @@
     <string name="yes">是</string>
     <string name="view_downloads">查看下载</string>
     <string name="download_notifications_description">下载通知</string>
-    <string name="confirm_deletion_desc">您想删除 %1$s 吗？</string>
     <string name="no">否</string>
     <string name="failed_network_method_check">请检查您允许的下载方法</string>
-    <string name="confirm_deletion">确认删除</string>
     <string name="thumbnail_desc">缩略图</string>
     <string name="store_videos_in_internal_storage">将视频存储在内部存储器中</string>
     <string name="stored_videos_in_internal_storage_desc">电影和电视节目等视频将存储在应用程序的内部存储空间中。允许从应用程序内部访问。</string>

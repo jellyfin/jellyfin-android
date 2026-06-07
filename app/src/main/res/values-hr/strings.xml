@@ -121,8 +121,6 @@
     <string name="failed_thumbnail">Preuzimanje sličice nije uspjelo</string>
     <string name="failed_information">Preuzimanje informacija o mediju nije uspjelo</string>
     <string name="failed_network_method_check">Molimo provjerite vaše dozvoljene metode preuzimanja</string>
-    <string name="confirm_deletion">Potvrdite brisanje</string>
-    <string name="confirm_deletion_desc">Sigurno želite obrisati %1$s?</string>
     <string name="yes">Da</string>
     <string name="no">Ne</string>
     <string name="thumbnail_desc">Sličica</string>

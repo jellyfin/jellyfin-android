@@ -121,8 +121,6 @@
     <string name="download_notifications_description">Notificaciones de descargas</string>
     <string name="failed_thumbnail">Error al descargar la miniatura</string>
     <string name="failed_information">Error al obtener la informacion del archivo</string>
-    <string name="confirm_deletion">Confirmar eliminado</string>
-    <string name="confirm_deletion_desc">Tu quieres eliminar %1$s?</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
     <string name="thumbnail_desc">\"Miniatura\"</string>

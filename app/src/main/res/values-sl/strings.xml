@@ -126,8 +126,6 @@
     <string name="failed_information">Prenos informacij o predstavnosti ni uspel</string>
     <string name="failed_network_method_check">Preverite dovoljene načine prenosa</string>
     <string name="failed_thumbnail">Prenos sličice ni uspel</string>
-    <string name="confirm_deletion">Potrdi izbris</string>
-    <string name="confirm_deletion_desc">Ali želite izbrisati %1$s?</string>
     <string name="no">Ne</string>
     <string name="yes">Da</string>
     <string name="thumbnail_desc">Sličica</string>

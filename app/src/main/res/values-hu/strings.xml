@@ -119,8 +119,6 @@
     <string name="downloads">Letöltések</string>
     <string name="download_notifications_description">Letöltési értesítések</string>
     <string name="failed_thumbnail">Bélyegkép letöltése sikertelen</string>
-    <string name="confirm_deletion">Törlés megerősítése</string>
-    <string name="confirm_deletion_desc">Törölni szeretnéd a(z) %1$s?</string>
     <string name="thumbnail_desc">Bélyegkép</string>
     <string name="failed_information">Médiaadatok lekérése sikertelen</string>
     <string name="failed_network_method_check">Kérlek, ellenőrizd a megengedett letöltési módjaidat</string>

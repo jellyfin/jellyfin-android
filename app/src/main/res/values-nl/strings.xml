@@ -115,8 +115,6 @@
     <string name="failed_information">Media-informatie ophalen mislukt</string>
     <string name="yes">Ja</string>
     <string name="no">Nee</string>
-    <string name="confirm_deletion">Verwijderen bevestigen</string>
-    <string name="confirm_deletion_desc">Wil je \"%1$s\" verwijderen?</string>
     <string name="view_downloads">Downloads weergeven</string>
     <string name="download_notifications_description">Downloadmeldingen</string>
     <string name="thumbnail_desc">Miniatuur</string>
