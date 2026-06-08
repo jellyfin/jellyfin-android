@@ -143,4 +143,13 @@
     <string name="network_buffer_large_description">Maior armazenamento, pode ajudar em conexões moderadas ou variáveis</string>
     <string name="network_buffer_extra_large">Extra grande</string>
     <string name="network_buffer_extra_large_description">Armazenamento máximo, indicado para conexões de satélite lentas</string>
+    <string name="media_service_car_section_playlists">Lista de reprodução</string>
+    <string name="downloading_title">Baixando%1$s</string>
+    <string name="download_cancel">Cancelar</string>
+    <string name="download_completed">Baixado</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Remover arquivo</string>
+    <string name="download_remove_keep_local">Manter arquivo(s) local(is)</string>
+    <string name="download_remove_description">Você quer remover %1$s dos seus arquivos?</string>
+    <string name="download_incomplete">Arquivo incompleto</string>
 </resources>
