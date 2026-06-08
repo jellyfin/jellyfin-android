@@ -151,4 +151,5 @@
     <string name="download_remove_description">Wil je %1$s uit je downloads verwijderen?</string>
     <string name="download_incomplete">Download incompleet</string>
     <string name="downloading_title">%1$s downloaden</string>
+    <string name="media_service_car_section_playlists">Afspeellijsten</string>
 </resources>
