@@ -130,4 +130,12 @@
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="downloading_desc">Λήψη %1$d τίτλων</string>
     <string name="downloaded">Εγινε λήψη του %1$s</string>
+    <string name="download_incomplete">Η λήψη δεν ολοκληρώθηκε</string>
+    <string name="download_remove_description">Θέλετε να αφαιρέσετε το %1$s από τις λήψεις σας;</string>
+    <string name="download_remove_keep_local">Διατήρηση τοπικών αρχείων</string>
+    <string name="download_remove">Αφαίρεση λήψης</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_completed">Η λήψη ολοκληρώθηκε</string>
+    <string name="download_cancel">Ακυρο</string>
+    <string name="downloading_title">Λήψη του %1$s</string>
 </resources>
