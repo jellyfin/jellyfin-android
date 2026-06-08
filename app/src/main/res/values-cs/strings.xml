@@ -153,4 +153,5 @@
     <string name="download_remove_keep_local">Ponechat místní soubor(y)</string>
     <string name="download_remove_description">Opravdu chcete odstranit %1$s ze stažených?</string>
     <string name="download_incomplete">Stahování nedokončeno</string>
+    <string name="media_service_car_section_playlists">Seznamy skladeb</string>
 </resources>
