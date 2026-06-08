@@ -142,4 +142,14 @@
     <string name="media_service_auth_expired">Ireki aplikazioa zure telefonoan Jellyfin zerbitzarian saioa hasteko.</string>
     <string name="media_service_invalid_id">Elementu ID baliogabea</string>
     <string name="media_service_car_section_favorites">Gogokoak</string>
+    <string name="media_service_car_section_audiobooks">Audio-liburuak</string>
+    <string name="media_service_car_section_playlists">Erreprodukzio-zerrendak</string>
+    <string name="downloading_title">%1$s deskargatzen</string>
+    <string name="download_cancel">Utzi</string>
+    <string name="download_completed">Deskarga bukatuta</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Kendu deskarga</string>
+    <string name="download_remove_keep_local">Mantendu fitxategi lokala(k)</string>
+    <string name="download_remove_description">%1$s zure deskargetatik kendu nahi duzu?</string>
+    <string name="download_incomplete">Deskarga bukatu gabe</string>
 </resources>
