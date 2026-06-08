@@ -142,4 +142,13 @@
     <string name="network_buffer_large_description">较大的缓冲区，可能有助于改善一般或不稳定的网络连接</string>
     <string name="network_buffer_extra_large">特大</string>
     <string name="network_buffer_extra_large_description">最大缓冲区，适用于慢速连接或卫星连接</string>
+    <string name="media_service_car_section_playlists">播放列表</string>
+    <string name="downloading_title">正在下载%1$s</string>
+    <string name="download_cancel">取消</string>
+    <string name="download_completed">下载完成</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">移除下载项</string>
+    <string name="download_remove_keep_local">保留本地文件</string>
+    <string name="download_remove_description">您是否要从下载列表中移除%1$s？</string>
+    <string name="download_incomplete">下载未完成</string>
 </resources>
