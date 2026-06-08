@@ -143,4 +143,13 @@
     <string name="network_buffer_large_description">Búfer más grande, puede ayudar en conexiones moderadas o inestables</string>
     <string name="network_buffer_extra_large">Extragrande</string>
     <string name="network_buffer_extra_large_description">Búfer de tamaño máximo, para conexiones lentas o de satélite</string>
+    <string name="download_incomplete">Descarga incompleta</string>
+    <string name="media_service_car_section_playlists">Playlists</string>
+    <string name="downloading_title">Descargando %1$s</string>
+    <string name="download_cancel">Cancelar</string>
+    <string name="download_completed">Descarga completada</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Eliminar descarga</string>
+    <string name="download_remove_keep_local">Conservar archivo(s) local(es)</string>
+    <string name="download_remove_description">¿Deseas eliminar %1$s de las descargas?</string>
 </resources>
