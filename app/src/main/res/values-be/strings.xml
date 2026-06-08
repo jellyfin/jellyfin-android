@@ -131,4 +131,18 @@
     <string name="downloading_desc">Спампоўваецца %1$d файлаў</string>
     <string name="downloaded">Спампавана %1$s</string>
     <string name="special_episode">Спецвыпускі</string>
+    <string name="media_service_unknown_page">Невядомая старонка</string>
+    <string name="media_service_no_items">Элементаў не знойдзена</string>
+    <string name="media_service_auth_expired">Адкрыйце праграму на тэлефоне, каб увайсці на сервер Jellyfin.</string>
+    <string name="media_service_car_section_favorites">Абранае</string>
+    <string name="media_service_car_section_audiobooks">Аўдыякнігі</string>
+    <string name="media_service_car_section_playlists">Плэй-лісты</string>
+    <string name="downloading_title">Спампоўваецца %1$s</string>
+    <string name="download_cancel">Скасаваць</string>
+    <string name="download_completed">Спампоўванне завершана</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Выдаліць спампоўку</string>
+    <string name="download_remove_keep_local">Пакінуць лакальны(-я) файл(-ы)</string>
+    <string name="download_remove_description">Вы ўпэўнены, што хочаце выдаліць %1$s са спамповак?</string>
+    <string name="download_incomplete">Спампоўванне не завершана</string>
 </resources>
