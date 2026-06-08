@@ -143,4 +143,13 @@
     <string name="media_service_invalid_id">Érvénytelen elemazonosító</string>
     <string name="media_service_car_section_favorites">Kedvencek</string>
     <string name="media_service_car_section_audiobooks">Hangoskönyvek</string>
+    <string name="download_incomplete">A letöltés befejezetlen</string>
+    <string name="media_service_car_section_playlists">Lejátszási listák</string>
+    <string name="downloading_title">%1$s letöltése folyamatban</string>
+    <string name="download_cancel">Mégsem</string>
+    <string name="download_completed">Letöltés befejezve</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Letöltés eltávolítása</string>
+    <string name="download_remove_keep_local">Helyi fájl(ok) megtartása</string>
+    <string name="download_remove_description">El szeretnéd távolítani a(z) %1$s fájlt a letöltéseid közül?</string>
 </resources>
