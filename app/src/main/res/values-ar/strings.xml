@@ -146,4 +146,13 @@
     <string name="media_service_invalid_id">تعريف عنصر خاطئ</string>
     <string name="media_service_car_section_favorites">المفضلة</string>
     <string name="media_service_car_section_audiobooks">كتب صوتية</string>
+    <string name="media_service_car_section_playlists">لائحة تشغيل</string>
+    <string name="downloading_title">تحميل %1$s</string>
+    <string name="download_cancel">إلغاء</string>
+    <string name="download_completed">تم التحميل</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">حذف التحميل</string>
+    <string name="download_remove_keep_local">الاحتفاظ بالملف(ات) المحلية</string>
+    <string name="download_remove_description">هل ترغب في حذف %1$s من ملفات التحميل؟</string>
+    <string name="download_incomplete">لم يكتمل التحميل</string>
 </resources>
