@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.downloads
 
 import android.content.Context
+import android.net.Uri
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import kotlinx.coroutines.CancellationException
@@ -10,8 +11,11 @@ import org.jellyfin.mobile.app.StorageManager
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.sdk.api.client.ApiClient
+import org.jellyfin.sdk.api.client.extensions.imageApi
 import org.jellyfin.sdk.api.client.extensions.libraryApi
 import org.jellyfin.sdk.model.api.BaseItemDto
+import org.jellyfin.sdk.model.api.ImageFormat
+import org.jellyfin.sdk.model.api.ImageType
 
 class DownloadQueue(
     private val context: Context,
@@ -58,9 +62,9 @@ class DownloadQueue(
             val api = apiClientController.getApiClient(download.serverId, download.userId)
 
             val storageLocation = storageManager.getStorageLocation()
-            val itemLocation = storageLocation.findFile(download.path) ?: storageLocation.createDirectory(download.path) ?: error("Unable to find or create folder ${download.path}")
+            val itemLocation = storageLocation.findFile(download.path) ?: storageLocation.createDirectory(download.path)
+            ?: error("Unable to find or create folder ${download.path}")
 
-            // TODO: Download all mediastreams, thumbnail etc.
             download(
                 api = api,
                 item = download.item,
@@ -84,16 +88,51 @@ class DownloadQueue(
         itemLocation: DocumentFile,
         progressCallback: FileDownloader.ProgressCallback,
     ) {
-        val filename = item.path?.replace(Regex("^.*[\\\\/]"), "") ?: error("Missing item path")
+        // Main file
+        download(
+            api = api,
+            itemLocation = itemLocation,
+            fileName = item.path?.replace(Regex("^.*[\\\\/]"), "") ?: error("Missing item path"),
+            uri = api.libraryApi.getDownloadUrl(item.id).toUri(),
+            progressCallback = progressCallback,
+        )
 
-        val fileLocation = itemLocation.findFile(filename) ?: itemLocation.createFile("", filename) ?: error("Unable to find or create file $filename")
-        if (!fileLocation.canRead() || !fileLocation.canWrite()) error("Not allowed to read-write $fileLocation")
+        // Primary image
+        item.imageTags?.get(ImageType.PRIMARY)?.let { imageTag ->
+            download(
+                api = api,
+                itemLocation = itemLocation,
+                fileName = "primary.webp",
+                uri = api.imageApi.getItemImageUrl(
+                    itemId = item.id,
+                    imageType = ImageType.PRIMARY,
+                    tag = imageTag,
+                    format = ImageFormat.WEBP
+                ).toUri(),
+                progressCallback = progressCallback,
+            )
+        }
+    }
 
-        val fileDescriptor = context.contentResolver.openFileDescriptor(fileLocation.uri, "rw") ?: error("Unable to open file descriptor for $fileLocation")
+    private suspend fun download(
+        api: ApiClient,
+        itemLocation: DocumentFile,
+        fileName: String,
+        uri: Uri,
+        progressCallback: FileDownloader.ProgressCallback,
+    ) {
+        val documentFile = itemLocation.findFile(fileName)
+            ?: itemLocation.createFile("", fileName)
+            ?: error("Unable to find or create file $fileName")
+
+        if (!documentFile.canRead() || !documentFile.canWrite()) error("Not allowed to read-write $fileName")
+
+        val fileDescriptor = context.contentResolver.openFileDescriptor(documentFile.uri, "rw")
+            ?: error("Unable to open file descriptor for $fileName")
 
         _downloader.downloadAndSave(
-            api,
-            from = api.libraryApi.getDownloadUrl(item.id).toUri(),
+            api = api,
+            from = uri,
             to = fileDescriptor,
             progressCallback = progressCallback,
         )

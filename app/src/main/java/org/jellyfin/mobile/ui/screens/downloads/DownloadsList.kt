@@ -1,12 +1,14 @@
 package org.jellyfin.mobile.ui.screens.downloads
 
 import android.content.Context
+import android.net.Uri
 import android.text.format.Formatter
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.AlertDialog
@@ -27,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -43,10 +44,8 @@ import org.jellyfin.mobile.downloads.DownloadStatus
 import org.jellyfin.mobile.downloads.DownloadsViewModel
 import org.jellyfin.mobile.utils.lengthRecursive
 import org.jellyfin.sdk.api.client.ApiClient
-import org.jellyfin.sdk.api.client.extensions.imageApi
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.BaseItemKind
-import org.jellyfin.sdk.model.api.ImageType
 import org.koin.compose.koinInject
 
 @Composable
@@ -158,21 +157,24 @@ fun DownloadItem(
             )
         },
         icon = {
-            val maxSize = LocalResources.current.getDimensionPixelSize(R.dimen.movie_thumbnail_list_size)
-            val url = remember(apiClient, download.itemId, maxSize) {
-                apiClient.imageApi.getItemImageUrl(
-                    itemId = download.itemId,
-                    imageType = ImageType.PRIMARY,
-                    maxWidth = maxSize,
-                    maxHeight = maxSize,
-                )
+            val uri by produceState<Uri?>(initialValue = null, download) {
+                value = withContext(Dispatchers.IO) {
+                    storageManager.getStorageLocation()
+                        .findFile(download.path)
+                        ?.findFile("primary.webp")
+                        ?.uri
+                }
             }
 
             AsyncImage(
-                model = url,
+                model = uri,
                 placeholder = painterResource(R.drawable.ic_local_movies_white_64),
                 fallback = painterResource(R.drawable.ic_local_movies_white_64),
                 contentDescription = null,
+                modifier = Modifier.sizeIn(
+                    maxWidth = 64.dp,
+                    maxHeight = 64.dp,
+                )
             )
         },
         secondaryText = {
