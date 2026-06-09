@@ -141,4 +141,13 @@
     <string name="network_buffer_large_description">Bộ đệm lớn hơn, có thể trợ giúp trên các kết nối vừa phải hoặc thay đổi</string>
     <string name="network_buffer_extra_large">Cực lớn</string>
     <string name="network_buffer_extra_large_description">Bộ đệm tối đa, dành cho kết nối chậm hoặc vệ tinh</string>
+    <string name="media_service_car_section_audiobooks">Sách nói</string>
+    <string name="media_service_car_section_playlists">Danh sách phát</string>
+    <string name="downloading_title">Đang tải xuống %1$s</string>
+    <string name="download_cancel">Hủy bỏ</string>
+    <string name="download_completed">Đã Tải Xuống Hoàn Tất</string>
+    <string name="download_remove">Xóa bản tải xuống</string>
+    <string name="download_remove_keep_local">Giữ lại tập tin cục bộ</string>
+    <string name="download_remove_description">Bạn có muốn xóa %1$s khỏi các tệp tải xuống của mình không?</string>
+    <string name="download_incomplete">Tải xuống chưa hoàn tất</string>
 </resources>
