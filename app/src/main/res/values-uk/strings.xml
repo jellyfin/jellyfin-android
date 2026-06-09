@@ -143,4 +143,13 @@
     <string name="media_service_invalid_id">Недійсний ID елемента</string>
     <string name="media_service_car_section_favorites">Улюблене</string>
     <string name="media_service_car_section_audiobooks">Аудіокниги</string>
+    <string name="media_service_car_section_playlists">Плейлисти</string>
+    <string name="downloading_title">Завантаження %1$s</string>
+    <string name="download_cancel">Відміна</string>
+    <string name="download_completed">Завантаження завершено</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Видалити завантажене</string>
+    <string name="download_remove_keep_local">Зберегти локальний файл(и)</string>
+    <string name="download_remove_description">Ви бажаєте видалити %1$s із завантажень?</string>
+    <string name="download_incomplete">Завантаження не завершено</string>
 </resources>
