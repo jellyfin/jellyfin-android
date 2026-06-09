@@ -7,11 +7,13 @@ import android.os.Environment
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.data.entity.DownloadFiles
+import org.jellyfin.mobile.downloads.DownloadStatus
 import java.io.File
 
 class StorageManager(
     private val context: Context,
-    private val appPreferences: AppPreferences,
+    private val appPreferences: AppPreferences
 ) {
     private val defaultStorageLocation
         get() = Environment.getExternalStorageDirectory().absolutePath + File.separator + context.getString(R.string.app_name_short)
@@ -34,6 +36,20 @@ class StorageManager(
         )
         ensureNoMedia(documentFile)
         appPreferences.storageLocation = documentFile.uri.toString()
+    }
+
+    fun verify(download: DownloadFiles): Boolean {
+        if (download.files.isEmpty()) return false
+
+        for (file in download.files) {
+            if (file.status != DownloadStatus.DOWNLOADED) return false
+            val documentFile = DocumentFile.fromSingleUri(context, file.uri)
+            if (documentFile == null || !documentFile.exists() || documentFile.length() != file.size) {
+                return false
+            }
+        }
+
+        return true
     }
 
     private fun ensureNoMedia(documentFile: DocumentFile) {

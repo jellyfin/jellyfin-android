@@ -12,6 +12,7 @@ import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.app.StorageManager
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.data.entity.DownloadEntity
+import org.jellyfin.mobile.data.entity.DownloadFiles
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.interaction.PlayOptions
@@ -26,8 +27,8 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
     private val activityEventHandler: ActivityEventHandler by inject()
     private val storageManager: StorageManager by inject()
 
-    val downloads: StateFlow<List<DownloadEntity>> = downloadDao
-        .getAllDownloads()
+    val downloads: StateFlow<List<DownloadFiles>> = downloadDao
+        .getAllDownloadsWithFiles()
         .flowOn(Dispatchers.IO)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
