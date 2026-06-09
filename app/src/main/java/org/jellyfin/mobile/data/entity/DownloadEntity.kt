@@ -1,12 +1,15 @@
 package org.jellyfin.mobile.data.entity
 
+import android.content.Context
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import org.jellyfin.mobile.R
 import org.jellyfin.mobile.downloads.DownloadStatus
 import org.jellyfin.sdk.model.api.BaseItemDto
+import org.jellyfin.sdk.model.api.BaseItemKind
 import java.util.UUID
 
 @Entity(
@@ -42,4 +45,34 @@ data class DownloadEntity(
 
     @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "modified_at") var modifiedAt: Long = System.currentTimeMillis(),
-)
+) {
+    fun getDisplayName(context: Context) = buildString {
+        val name = if (
+            item.type in arrayOf(BaseItemKind.PROGRAM, BaseItemKind.RECORDING) &&
+            (item.isSeries == true || !item.episodeTitle.isNullOrEmpty())
+        ) {
+            item.episodeTitle
+        } else {
+            item.name
+        }
+
+        val extraInfo = when (item.type) {
+            BaseItemKind.TV_CHANNEL if !item.channelNumber.isNullOrEmpty() -> item.channelNumber
+            BaseItemKind.EPISODE if item.parentIndexNumber == 0 -> context.getString(R.string.special_episode)
+            in arrayOf(BaseItemKind.EPISODE, BaseItemKind.RECORDING) if item.indexNumber != null && item.parentIndexNumber != null ->
+                "S${item.parentIndexNumber}:E${item.indexNumber}${item.indexNumberEnd?.let { n -> "-$n" }.orEmpty()}"
+
+            else -> ""
+        }
+
+        listOf(item.seriesName, extraInfo, name)
+            .filter { str -> !str.isNullOrEmpty() }
+            .joinTo(this, separator = " - ")
+
+        if (item.type == BaseItemKind.MOVIE && item.productionYear != null) {
+            append(" (${item.productionYear})")
+        } else if (item.premiereDate != null) {
+            append(" (${item.premiereDate!!.year})")
+        }
+    }.ifEmpty { item.name }
+}

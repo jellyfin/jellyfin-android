@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.player.source
 
+import android.net.Uri
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.MediaSourceInfo
 import org.jellyfin.sdk.model.api.PlayMethod
@@ -11,7 +12,7 @@ class LocalJellyfinMediaSource(
     sourceInfo: MediaSourceInfo,
     playSessionId: String,
     playbackDetails: PlaybackDetails? = null,
-    val remoteFileUri: String,
+    val remoteFileUri: Uri,
 ) : JellyfinMediaSource(itemId, item, sourceInfo, playSessionId, playbackDetails) {
     override val playMethod: PlayMethod = PlayMethod.DIRECT_PLAY
 }

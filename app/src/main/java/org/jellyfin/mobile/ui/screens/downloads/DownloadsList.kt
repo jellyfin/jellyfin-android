@@ -1,14 +1,12 @@
 package org.jellyfin.mobile.ui.screens.downloads
 
-import android.content.Context
-import android.net.Uri
 import android.text.format.Formatter
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.AlertDialog
@@ -28,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,12 +39,10 @@ import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.StorageManager
 import org.jellyfin.mobile.data.entity.DownloadEntity
+import org.jellyfin.mobile.data.entity.DownloadFiles
+import org.jellyfin.mobile.downloads.DownloadFileType
 import org.jellyfin.mobile.downloads.DownloadStatus
 import org.jellyfin.mobile.downloads.DownloadsViewModel
-import org.jellyfin.mobile.utils.lengthRecursive
-import org.jellyfin.sdk.api.client.ApiClient
-import org.jellyfin.sdk.model.api.BaseItemDto
-import org.jellyfin.sdk.model.api.BaseItemKind
 import org.koin.compose.koinInject
 
 @Composable
@@ -66,7 +63,7 @@ fun DownloadsList(
             text = {
                 Column {
                     val name = remember(downloadToRemove, context) {
-                        downloadToRemove?.item?.getDownloadName(context).orEmpty()
+                        downloadToRemove?.getDisplayName(context).orEmpty()
                     }
                     Text(text = stringResource(R.string.download_remove_description, name))
                     Row(
@@ -104,13 +101,13 @@ fun DownloadsList(
     ) {
         items(
             downloads,
-            key = DownloadEntity::id,
-        ) { download ->
+            key = { it.download.id },
+        ) { downloadFiles ->
             DownloadItem(
-                download,
-                onOpen = { viewModel.openDownload(download) },
-                onDownload = { viewModel.download(download) },
-                onRemove = { downloadToRemove = download },
+                downloadFiles,
+                onOpen = { viewModel.openDownload(downloadFiles.download) },
+                onDownload = { viewModel.download(downloadFiles.download) },
+                onRemove = { downloadToRemove = downloadFiles.download },
             )
         }
     }
@@ -119,20 +116,19 @@ fun DownloadsList(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DownloadItem(
-    download: DownloadEntity,
+    downloadFiles: DownloadFiles,
     onOpen: () -> Unit,
     onDownload: () -> Unit,
     onRemove: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val (download, files) = downloadFiles
     val context = LocalContext.current
-    val apiClient: ApiClient = koinInject()
     val storageManager: StorageManager = koinInject()
 
-    val fileSize by produceState<Long?>(initialValue = 0L, download) {
+    val isVerified by produceState(initialValue = false, downloadFiles) {
         value = withContext(Dispatchers.IO) {
-            val itemLocation = storageManager.getStorageLocation().findFile(download.path)
-            itemLocation?.lengthRecursive()
+            storageManager.verify(downloadFiles)
         }
     }
 
@@ -140,7 +136,7 @@ fun DownloadItem(
         modifier = modifier
             .combinedClickable(
                 onClick = {
-                    if (fileSize == null) {
+                    if (!isVerified) {
                         onDownload()
                     } else {
                         onOpen()
@@ -149,7 +145,7 @@ fun DownloadItem(
                 onLongClick = { onRemove() },
             ),
         text = {
-            val name = remember(download.item, context) { download.item.getDownloadName(context) }
+            val name = remember(download, context) { download.getDisplayName(context).orEmpty() }
             Text(
                 text = name,
                 overflow = TextOverflow.Ellipsis,
@@ -157,13 +153,8 @@ fun DownloadItem(
             )
         },
         icon = {
-            val uri by produceState<Uri?>(initialValue = null, download) {
-                value = withContext(Dispatchers.IO) {
-                    storageManager.getStorageLocation()
-                        .findFile(download.path)
-                        ?.findFile("primary.webp")
-                        ?.uri
-                }
+            val uri = remember(files) {
+                files.find { it.type == DownloadFileType.IMAGE_PRIMARY }?.uri
             }
 
             AsyncImage(
@@ -171,18 +162,19 @@ fun DownloadItem(
                 placeholder = painterResource(R.drawable.ic_local_movies_white_64),
                 fallback = painterResource(R.drawable.ic_local_movies_white_64),
                 contentDescription = null,
-                modifier = Modifier.sizeIn(
-                    maxWidth = 64.dp,
-                    maxHeight = 64.dp,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.size(
+                    width = 64.dp,
+                    height = 64.dp,
                 )
             )
         },
         secondaryText = {
             if (download.status == DownloadStatus.DOWNLOADING || download.status == DownloadStatus.QUEUED) {
                 LinearProgressIndicator()
-            } else if (fileSize != null) {
+            } else if (isVerified) {
                 Text(
-                    text = Formatter.formatShortFileSize(context, fileSize!!),
+                    text = Formatter.formatShortFileSize(context, files.sumOf { it.size }),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                 )
@@ -198,32 +190,3 @@ fun DownloadItem(
         singleLineSecondaryText = true,
     )
 }
-
-private fun BaseItemDto.getDownloadName(context: Context) = buildString {
-    val name = if (
-        type in arrayOf(BaseItemKind.PROGRAM, BaseItemKind.RECORDING) &&
-        (isSeries == true || !episodeTitle.isNullOrEmpty())
-    ) {
-        episodeTitle
-    } else {
-        name
-    }
-
-    val extraInfo = when (type) {
-        BaseItemKind.TV_CHANNEL if !channelNumber.isNullOrEmpty() -> channelNumber
-        BaseItemKind.EPISODE if parentIndexNumber == 0 -> context.getString(R.string.special_episode)
-        in arrayOf(BaseItemKind.EPISODE, BaseItemKind.RECORDING) if indexNumber != null && parentIndexNumber != null ->
-            "S$parentIndexNumber:E${indexNumber}${indexNumberEnd?.let { n -> "-$n" } ?: ""}"
-        else -> ""
-    }
-
-    listOf(seriesName, extraInfo, name)
-        .filter { str -> !str.isNullOrEmpty() }
-        .joinTo(this, separator = " - ")
-
-    if (type == BaseItemKind.MOVIE && productionYear != null) {
-        append(" ($productionYear)")
-    } else if (premiereDate != null) {
-        append(" (${premiereDate!!.year})")
-    }
-}.ifEmpty { name.orEmpty() }
