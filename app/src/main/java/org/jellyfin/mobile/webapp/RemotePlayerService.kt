@@ -19,6 +19,7 @@ import android.media.MediaMetadata
 import android.media.session.MediaController
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
+import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
@@ -36,6 +37,9 @@ import kotlinx.coroutines.launch
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.sessionbrowser.AutoPlaybackCommand
+import org.jellyfin.mobile.sessionbrowser.PlaybackStateData
+import org.jellyfin.mobile.sessionbrowser.SharedPlaybackStateRepository
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.EXTRA_ALBUM
@@ -43,6 +47,7 @@ import org.jellyfin.mobile.utils.Constants.EXTRA_ARTIST
 import org.jellyfin.mobile.utils.Constants.EXTRA_CAN_SEEK
 import org.jellyfin.mobile.utils.Constants.EXTRA_DURATION
 import org.jellyfin.mobile.utils.Constants.EXTRA_IMAGE_URL
+import org.jellyfin.mobile.utils.Constants.EXTRA_IS_AUTO_PLAYER
 import org.jellyfin.mobile.utils.Constants.EXTRA_IS_LOCAL_PLAYER
 import org.jellyfin.mobile.utils.Constants.EXTRA_IS_PAUSED
 import org.jellyfin.mobile.utils.Constants.EXTRA_ITEM_ID
@@ -58,6 +63,7 @@ import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_PLAY
 import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_PREVIOUS
 import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_REWIND
 import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_STOP
+import org.jellyfin.mobile.utils.Constants.PLAYER_ACTION_PLAYBACK_STOP
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_MUSIC_PLAYER_PLAYBACK_ACTIONS
 import org.jellyfin.mobile.utils.applyDefaultLocalAudioAttributes
 import org.jellyfin.mobile.utils.createMediaNotificationChannel
@@ -75,6 +81,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     private val appPreferences: AppPreferences by inject()
     private val notificationManager: NotificationManager by lazy { getSystemService()!! }
     private val imageLoader: ImageLoader by inject()
+    private val sharedPlaybackStateRepository: SharedPlaybackStateRepository by inject()
 
     private val binder = ServiceBinder(this)
     private val webappFunctionChannel: WebappFunctionChannel by inject()
@@ -85,6 +92,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     private var mediaController: MediaController? = null
     private var largeItemIcon: Bitmap? = null
     private var currentItemId: String? = null
+    private var isAutoPlayer = false
 
     val playbackState: PlaybackState? get() = mediaSession?.controller?.playbackState
 
@@ -195,7 +203,7 @@ class RemotePlayerService : Service(), CoroutineScope {
 
     @Suppress("ComplexMethod", "LongMethod")
     private fun notify(handledIntent: Intent) {
-        if (handledIntent.getStringExtra(EXTRA_PLAYER_ACTION) == "playbackstop") {
+        if (handledIntent.getStringExtra(EXTRA_PLAYER_ACTION) == PLAYER_ACTION_PLAYBACK_STOP) {
             onStopped()
             return
         }
@@ -213,6 +221,24 @@ class RemotePlayerService : Service(), CoroutineScope {
             val canSeek = handledIntent.getBooleanExtra(EXTRA_CAN_SEEK, false)
             val isLocalPlayer = handledIntent.getBooleanExtra(EXTRA_IS_LOCAL_PLAYER, true)
             val isPaused = handledIntent.getBooleanExtra(EXTRA_IS_PAUSED, false)
+            val isAutoPlayerValue = handledIntent.getBooleanExtra(EXTRA_IS_AUTO_PLAYER, false)
+            isAutoPlayer = isAutoPlayerValue
+
+            if (!isAutoPlayerValue) {
+                sharedPlaybackStateRepository.updateWebappState(
+                    PlaybackStateData(
+                        itemId = itemId,
+                        title = title,
+                        artist = artist,
+                        album = album,
+                        artworkUri = if (!imageUrl.isNullOrEmpty()) Uri.parse(imageUrl) else null,
+                        positionMs = if (position != PlaybackState.PLAYBACK_POSITION_UNKNOWN) position else 0L,
+                        durationMs = duration,
+                        isPlaying = !isPaused,
+                        canSeek = canSeek,
+                    )
+                )
+            }
 
             // Resolve notification bitmap
             val cachedBitmap = largeItemIcon?.takeIf { itemId == currentItemId }
@@ -413,36 +439,68 @@ class RemotePlayerService : Service(), CoroutineScope {
                 @SuppressLint("MissingOnPlayFromSearch")
                 object : MediaSession.Callback() {
                     override fun onPlay() {
-                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PLAY)
+                        if (isAutoPlayer) {
+                            sharedPlaybackStateRepository.autoPlaybackCommands.tryEmit(AutoPlaybackCommand.Play)
+                        } else {
+                            webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PLAY)
+                        }
                     }
 
                     override fun onPause() {
-                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PAUSE)
+                        if (isAutoPlayer) {
+                            sharedPlaybackStateRepository.autoPlaybackCommands.tryEmit(AutoPlaybackCommand.Pause)
+                        } else {
+                            webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PAUSE)
+                        }
                     }
 
                     override fun onSkipToPrevious() {
-                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PREVIOUS)
+                        if (isAutoPlayer) {
+                            sharedPlaybackStateRepository.autoPlaybackCommands.tryEmit(AutoPlaybackCommand.SkipToPrevious)
+                        } else {
+                            webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PREVIOUS)
+                        }
                     }
 
                     override fun onSkipToNext() {
-                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_NEXT)
+                        if (isAutoPlayer) {
+                            sharedPlaybackStateRepository.autoPlaybackCommands.tryEmit(AutoPlaybackCommand.SkipToNext)
+                        } else {
+                            webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_NEXT)
+                        }
                     }
 
                     override fun onRewind() {
-                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_REWIND)
+                        if (isAutoPlayer) {
+                            sharedPlaybackStateRepository.autoPlaybackCommands.tryEmit(AutoPlaybackCommand.Rewind)
+                        } else {
+                            webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_REWIND)
+                        }
                     }
 
                     override fun onFastForward() {
-                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_FAST_FORWARD)
+                        if (isAutoPlayer) {
+                            sharedPlaybackStateRepository.autoPlaybackCommands.tryEmit(AutoPlaybackCommand.FastForward)
+                        } else {
+                            webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_FAST_FORWARD)
+                        }
                     }
 
                     override fun onStop() {
-                        webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_STOP)
+                        if (isAutoPlayer) {
+                            sharedPlaybackStateRepository.autoPlaybackCommands.tryEmit(AutoPlaybackCommand.Stop)
+                        } else {
+                            webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_STOP)
+                        }
                         onStopped()
                     }
 
                     override fun onSeekTo(pos: Long) {
-                        webappFunctionChannel.seekTo(pos)
+                        if (isAutoPlayer) {
+                            sharedPlaybackStateRepository.autoPlaybackCommands.tryEmit(AutoPlaybackCommand.SeekTo(pos))
+                        } else {
+                            webappFunctionChannel.seekTo(pos)
+                        }
                         val currentState = playbackState ?: return
                         val isPlaying = currentState.state == PlaybackState.STATE_PLAYING
                         val canSeek = (currentState.actions and PlaybackState.ACTION_SEEK_TO) != 0L
@@ -456,6 +514,10 @@ class RemotePlayerService : Service(), CoroutineScope {
     private fun onStopped() {
         notificationManager.cancel(MEDIA_PLAYER_NOTIFICATION_ID)
         mediaSession?.isActive = false
+        if (!isAutoPlayer) {
+            sharedPlaybackStateRepository.clearWebappState()
+        }
+        isAutoPlayer = false
         stopWakelock()
         stopSelf()
     }

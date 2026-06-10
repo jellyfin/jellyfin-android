@@ -112,7 +112,7 @@ class NativeInterface(private val context: Context) : KoinComponent {
     fun hideMediaSession(): Boolean {
         val intent = Intent(context, RemotePlayerService::class.java).apply {
             action = Constants.ACTION_REPORT
-            putExtra(EXTRA_PLAYER_ACTION, "playbackstop")
+            putExtra(EXTRA_PLAYER_ACTION, Constants.PLAYER_ACTION_PLAYBACK_STOP)
         }
         context.startService(intent)
         return true

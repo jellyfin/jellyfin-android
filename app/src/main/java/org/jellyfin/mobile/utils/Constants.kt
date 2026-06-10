@@ -101,6 +101,10 @@ object Constants {
     const val EXTRA_CAN_SEEK = "canSeek"
     const val EXTRA_IS_LOCAL_PLAYER = "isLocalPlayer"
     const val EXTRA_IS_PAUSED = "isPaused"
+    const val EXTRA_IS_AUTO_PLAYER = "isAutoPlayer"
+
+    // Player action values sent via EXTRA_PLAYER_ACTION
+    const val PLAYER_ACTION_PLAYBACK_STOP = "playbackstop"
 
     // Video player constants
     const val LANGUAGE_UNDEFINED = "und"
