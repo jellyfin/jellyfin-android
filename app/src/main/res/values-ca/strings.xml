@@ -142,4 +142,12 @@
     <string name="media_service_car_section_favorites">Preferits</string>
     <string name="media_service_invalid_id">Identificador invàlid d\'element</string>
     <string name="media_service_auth_expired">Obriu l\'app del telèfon per a iniciar la sessió al vostre servidor de Jellyfin.</string>
+    <string name="download_remove_description">Desitgeu eliminar %1$s de les descàrregues?</string>
+    <string name="download_remove_keep_local">Conserva el/s fitxer/s local/s</string>
+    <string name="download_remove">Elimina la descàrrega</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_completed">Descàrrega finalitzada</string>
+    <string name="download_cancel">Anul·la</string>
+    <string name="download_incomplete">Descàrrega inacabada</string>
+    <string name="downloading_title">S\'està descarregant %1$s</string>
 </resources>
