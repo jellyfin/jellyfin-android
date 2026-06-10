@@ -12,7 +12,11 @@ import java.util.UUID
 sealed interface LibraryMediaId {
     @Serializable
     @SerialName("item")
-    data class Item(val itemId: UUID, val route: LibraryRoute) : LibraryMediaId
+    data class Item(
+        val itemId: UUID,
+        val route: LibraryRoute,
+        val startPositionMs: Long = 0L,
+    ) : LibraryMediaId
 
     @Serializable
     @SerialName("route")

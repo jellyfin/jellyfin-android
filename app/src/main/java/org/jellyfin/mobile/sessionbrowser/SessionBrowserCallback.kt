@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import androidx.core.os.bundleOf
+import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.session.LibraryResult
@@ -42,8 +43,8 @@ import org.jellyfin.mobile.sessionbrowser.page.UserViewLibraryPage
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.universalAudioApi
 import org.jellyfin.sdk.api.client.extensions.userLibraryApi
-import org.jellyfin.sdk.model.api.BaseItemKind
 import org.jellyfin.sdk.model.api.MediaStreamProtocol
+import org.jellyfin.sdk.model.extensions.ticks
 import timber.log.Timber
 
 @Suppress("InjectDispatcher")
@@ -53,7 +54,6 @@ class SessionBrowserCallback(
 ) : MediaLibrarySession.Callback {
     companion object {
         const val MAX_PAGE_SIZE = 250
-        private const val TICKS_PER_MILLISECOND = 10_000L
     }
 
     val pages = listOf(
@@ -99,7 +99,8 @@ class SessionBrowserCallback(
             extras.putInt(MediaConstants.EXTRAS_KEY_CONTENT_STYLE_PLAYABLE, contentStyle)
             setMediaId(Json.encodeToString<LibraryMediaId>(LibraryMediaId.Route(action.route)))
         } else if (action is LibraryItemAction.Play) {
-            setMediaId(Json.encodeToString<LibraryMediaId>(LibraryMediaId.Item(action.item.id, route)))
+            val positionMs = action.item.userData?.playbackPositionTicks?.ticks?.inWholeMilliseconds ?: 0L
+            setMediaId(Json.encodeToString<LibraryMediaId>(LibraryMediaId.Item(action.item.id, route, positionMs)))
         }
 
         setMediaMetadata(
@@ -379,14 +380,9 @@ class SessionBrowserCallback(
         val currentLibraryMediaId = expandedItems.getOrNull(newStartIndex)?.mediaId?.let {
             runCatching { Json.decodeFromString<LibraryMediaId>(it) }.getOrNull()
         }
-        if (currentLibraryMediaId is LibraryMediaId.Item) {
-            runCatching {
-                val item by api.userLibraryApi.getItem(itemId = currentLibraryMediaId.itemId)
-                if (item.type == BaseItemKind.AUDIO_BOOK) {
-                    val positionTicks = item.userData?.playbackPositionTicks ?: 0L
-                    if (positionTicks > 0L) resumePositionMs = positionTicks / TICKS_PER_MILLISECOND
-                }
-            }
+        if (currentLibraryMediaId is LibraryMediaId.Item && (startPositionMs == 0L || startPositionMs == C.TIME_UNSET)) {
+            val positionMs = currentLibraryMediaId.startPositionMs
+            if (positionMs > 0L) resumePositionMs = positionMs
         }
 
         expandedItems = onAddMediaItems(mediaSession, controller, expandedItems).await()

@@ -29,7 +29,8 @@ val GenreLibraryPage = { api: ApiClient ->
                 item = it,
                 action = when (it.type) {
                     BaseItemKind.AUDIO_BOOK -> LibraryItemAction.Play(it)
-                    else -> LibraryItemAction.Navigate(LibraryRoute.Album(it.id))
+                    BaseItemKind.MUSIC_ALBUM -> LibraryItemAction.Navigate(LibraryRoute.Album(it.id))
+                    else -> error("Unknown item type ${it.type}")
                 },
             )
         }
