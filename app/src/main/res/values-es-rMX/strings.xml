@@ -125,4 +125,5 @@
     <string name="no">No</string>
     <string name="thumbnail_desc">\"Miniatura\"</string>
     <string name="store_videos_in_internal_storage">Guardar videos en el almacenamiento interno</string>
+    <string name="media_service_no_items">Elementos no encontrados</string>
 </resources>
