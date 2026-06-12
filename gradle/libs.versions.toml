@@ -1,4 +1,9 @@
 [versions]
+# Android
+android-compileSdk = "36"
+android-minSdk = "21"
+android-targetSdk = "36"
+
 # Plugins
 android-plugin = "9.2.1"
 kotlin = "2.4.0"
