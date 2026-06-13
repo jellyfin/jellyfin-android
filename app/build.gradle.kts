@@ -39,13 +39,25 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
-    val releaseSigningConfig = SigningHelper.loadSigningConfig(project)?.let { config ->
-        signingConfigs.create("release") {
-            storeFile = config.storeFile
-            storePassword = config.storePassword
-            keyAlias = config.keyAlias
-            keyPassword = config.keyPassword
+    signingConfigs {
+        val keystoreFile = getProperty("keystore.file")
+        val keystorePassword = getProperty("keystore.password")
+        val signingKeyAlias = getProperty("signing.key.alias")
+        val signingKeyPassword = getProperty("signing.key.password")
+
+        if (keystoreFile != null && keystorePassword != null && signingKeyAlias != null && signingKeyPassword != null) {
+            create("release") {
+                storeFile = file(keystoreFile)
+                storePassword = keystorePassword
+                keyAlias = signingKeyAlias
+                keyPassword = signingKeyPassword
+            }
         }
+    }
+
+    dependenciesInfo {
+        includeInBundle = false
+        includeInApk = false
     }
 
     buildTypes {
@@ -54,8 +66,9 @@ android {
             isShrinkResources = true
 
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = releaseSigningConfig
+            signingConfig = signingConfigs.findByName("release")
         }
+
         getByName("debug") {
             applicationIdSuffix = ".debug"
             isDebuggable = true
