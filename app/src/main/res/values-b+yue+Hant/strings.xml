@@ -43,7 +43,6 @@
     <string name="media_service_car_section_artists">演出者</string>
     <string name="media_service_car_section_songs">歌曲</string>
     <string name="media_service_car_section_genres">曲風</string>
-    <string name="media_service_car_section_playlists">播放清單</string>
     <string name="media_service_car_item_no_title">無標題</string>
     <string name="music_notification_channel">Jellyfin 音樂播放器</string>
     <string name="music_notification_channel_description">用於音樂播放控制</string>
@@ -119,8 +118,6 @@
     <string name="failed_information">攞唔到媒體資訊</string>
     <string name="failed_network_method_check">唔該check吓你允許嘅下載方式</string>
     <string name="special_episode">特輯</string>
-    <string name="confirm_deletion">確認刪走</string>
-    <string name="confirm_deletion_desc">你係咪確定要刪走 %1$s？</string>
     <string name="yes">係</string>
     <string name="no">唔係</string>
     <string name="thumbnail_desc">縮圖</string>
@@ -129,4 +126,26 @@
     <string name="tv_show_desc">%1$s - 第 %2$d 季第 %3$d 集</string>
     <string name="downloading_desc">正在下載 %1$d 個項目</string>
     <string name="downloaded">已下載 %1$s</string>
+    <string name="pref_exoplayer_network_buffer">播放緩衝大細</string>
+    <string name="network_buffer_auto">自動</string>
+    <string name="network_buffer_auto_description">預設緩衝，適合大部分嘅播放狀況</string>
+    <string name="network_buffer_large">大</string>
+    <string name="network_buffer_large_description">較大嘅緩衝，可能有助於一般或唔穩定嘅連線</string>
+    <string name="network_buffer_extra_large">特大</string>
+    <string name="network_buffer_extra_large_description">最大緩衝，針對慢速或衛星連線而設</string>
+    <string name="media_service_unknown_page">未知頁面</string>
+    <string name="media_service_no_items">搵唔到任何項目</string>
+    <string name="media_service_auth_expired">請喺手機開啟應用程式，登入你嘅 Jellyfin 伺服器。</string>
+    <string name="media_service_invalid_id">項目 ID 無效</string>
+    <string name="media_service_car_section_favorites">經常心水</string>
+    <string name="media_service_car_section_audiobooks">有聲書</string>
+    <string name="media_service_car_section_playlists">播放清單</string>
+    <string name="downloading_title">正喺度下載緊 %1$s</string>
+    <string name="download_cancel">取消</string>
+    <string name="download_completed">下載搞掂</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">刪走下載</string>
+    <string name="download_remove_keep_local">保留本機檔案</string>
+    <string name="download_remove_description">你想唔想響你嘅下載項目入面刪走 %1$s？</string>
+    <string name="download_incomplete">下載未完成</string>
 </resources>

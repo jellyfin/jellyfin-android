@@ -50,7 +50,6 @@
     <string name="media_service_car_section_artists">కళాకారులు</string>
     <string name="media_service_car_section_songs">పాటలు</string>
     <string name="media_service_car_section_genres">శైలులు</string>
-    <string name="media_service_car_section_playlists">ప్లేజాబితాలు</string>
     <string name="music_notification_channel">Jellyfin మ్యూజిక్ ప్లేయర్</string>
     <string name="music_notification_channel_description">సంగీత ప్లేబ్యాక్ నియంత్రణల కోసం ఉపయోగించబడుతుంది</string>
     <string name="notification_action_rewind">రివైండ్ చేయండి</string>

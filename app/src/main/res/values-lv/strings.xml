@@ -27,7 +27,6 @@
     <string name="music_notification_channel_description">Lietots mūzikas atskaņošanas pārvaldībai</string>
     <string name="music_notification_channel">Jellyfin Mūzikas Atskaņotājs</string>
     <string name="media_service_car_item_no_title">Nav nosaukuma</string>
-    <string name="media_service_car_section_playlists">Atskaņošanas Saraksti</string>
     <string name="media_service_car_section_genres">Žanri</string>
     <string name="media_service_car_section_songs">Dziesmas</string>
     <string name="media_service_car_section_artists">Izpildītāji</string>
@@ -115,8 +114,6 @@
     <string name="external_player_mpvkt">mpvKt Atskaņotājs</string>
     <string name="external_player_mpvkt_description">Mediju atskaņotājs, kurš balstīts uz mpv-android ar mērķi piedāvāt patīkamāku lietotāju saskarni pār oriģinālo.</string>
     <string name="view_downloads">Skatīt lejupielādes</string>
-    <string name="confirm_deletion">Apstiprināt dzēšanu</string>
-    <string name="confirm_deletion_desc">Vai Jūs vēlaties dzēst %1$s?</string>
     <string name="no">Nē</string>
     <string name="pref_exoplayer_allow_press_speed_up">Turēt, lai paātrinātu</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Pieskarties un turēt, lai īslaicīgi paātrinātu atskaņošanu</string>

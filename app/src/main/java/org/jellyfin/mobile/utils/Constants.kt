@@ -8,7 +8,7 @@ import org.jellyfin.mobile.BuildConfig
 @Suppress("MagicNumber")
 object Constants {
     // App Info
-    const val APP_INFO_NAME = "Jellyfin Android"
+    const val APP_INFO_NAME = "Jellyfin for Android"
     const val APP_INFO_VERSION: String = BuildConfig.VERSION_NAME
 
     // Webapp constants
@@ -39,10 +39,13 @@ object Constants {
     const val PREF_EXOPLAYER_BRIGHTNESS = "pref_exoplayer_brightness"
     const val PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO = "pref_exoplayer_allow_background_audio"
     const val PREF_EXOPLAYER_DIRECT_PLAY_ASS = "pref_exoplayer_direct_play_ass"
+    const val PREF_EXOPLAYER_NETWORK_BUFFER = "pref_exoplayer_network_buffer"
+    const val NETWORK_BUFFER_AUTO = "auto"
+    const val NETWORK_BUFFER_LARGE = "large"
+    const val NETWORK_BUFFER_EXTRA_LARGE = "extra_large"
     const val PREF_EXTERNAL_PLAYER_APP = "pref_external_player_app"
     const val PREF_SUBTITLE_STYLE = "pref_subtitle_style"
-    const val PREF_DOWNLOAD_LOCATION = "pref_download_location"
-    const val PREF_DOWNLOAD_INTERNAL = "pref_download_internal"
+    const val PREF_STORAGE_LOCATION = "pref_storage_location"
     const val PREF_MEDIA_SEGMENT_ACTIONS = "pref_media_segment_actions"
 
     // InputManager commands
@@ -154,5 +157,4 @@ object Constants {
     // Misc
     const val PERCENT_MAX = 100
     const val DOWNLOAD_PATH = "/MediaCache/"
-    const val DOWNLOAD_THUMBNAIL_FILENAME = "thumbnail.jpg"
 }

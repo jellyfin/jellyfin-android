@@ -48,7 +48,6 @@
     <string name="media_service_car_section_recents">Παίχτηκε πρόσφατα</string>
     <string name="media_service_car_section_albums">Άλμπουμ</string>
     <string name="media_service_car_section_genres">Είδη</string>
-    <string name="media_service_car_section_playlists">Λίστες αναπαραγωγής</string>
     <string name="media_service_car_item_no_title">Χωρίς τίτλο</string>
     <string name="music_notification_channel">Jellyfin Music Player</string>
     <string name="music_notification_channel_description">Χρησιμοποιείται για χειρισμό αναπαραγωγής μουσικής</string>
@@ -123,8 +122,6 @@
     <string name="failed_thumbnail">Αποτυχία λήψης μικρογραφίας</string>
     <string name="failed_information">Αποτυχία ανάκτησης πληροφοριών πολυμέσων</string>
     <string name="failed_network_method_check">Παρακαλώ ελέγξτε τις επιτρεπόμενες μεθόδους λήψης</string>
-    <string name="confirm_deletion">Επιβεβαίωση διαγραφής</string>
-    <string name="confirm_deletion_desc">Θέλετε να διαγράψετε το %1$s;</string>
     <string name="yes">Ναι</string>
     <string name="no">Οχι</string>
     <string name="thumbnail_desc">Μικρογραφία</string>
@@ -133,4 +130,12 @@
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="downloading_desc">Λήψη %1$d τίτλων</string>
     <string name="downloaded">Εγινε λήψη του %1$s</string>
+    <string name="download_incomplete">Η λήψη δεν ολοκληρώθηκε</string>
+    <string name="download_remove_description">Θέλετε να αφαιρέσετε το %1$s από τις λήψεις σας;</string>
+    <string name="download_remove_keep_local">Διατήρηση τοπικών αρχείων</string>
+    <string name="download_remove">Αφαίρεση λήψης</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_completed">Η λήψη ολοκληρώθηκε</string>
+    <string name="download_cancel">Ακυρο</string>
+    <string name="downloading_title">Λήψη του %1$s</string>
 </resources>

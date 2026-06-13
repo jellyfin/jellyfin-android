@@ -61,7 +61,6 @@
     <string name="music_notification_channel_description">تستخدم للتحكم في تشغيل الموسيقى</string>
     <string name="music_notification_channel">مشغل موسيقى Jellyfin</string>
     <string name="media_service_car_item_no_title">بلا عنوان</string>
-    <string name="media_service_car_section_playlists">قوائم التشغيل</string>
     <string name="media_service_car_section_genres">الأنواع</string>
     <string name="media_service_car_section_songs">الأغاني</string>
     <string name="media_service_car_section_artists">الفنانين</string>
@@ -127,8 +126,6 @@
     <string name="downloads">التنزيلات</string>
     <string name="download_notifications_description">إشعارات التنزيل</string>
     <string name="failed_thumbnail">فشل في تنزيل الصورة المصغّرة</string>
-    <string name="confirm_deletion">تأكيد الحذف</string>
-    <string name="confirm_deletion_desc">هل تريد حذف %1$s؟</string>
     <string name="thumbnail_desc">صورة مصغّرة</string>
     <string name="stored_videos_in_internal_storage_desc">سيتم تخزين الفيديوهات مثل الأفلام والمسلسلات في الذاكرة الداخلية للتطبيق، مما يتيح الوصول إليها من داخل التطبيق.</string>
     <string name="downloading_desc">جارٍ تنزيل %1$d عنوانًا</string>
@@ -136,4 +133,26 @@
     <string name="tv_show_desc">%1$s - س%2$dي%3$d</string>
     <string name="skip_media_segment">تخطي</string>
     <string name="special_episode">متميز</string>
+    <string name="pref_exoplayer_network_buffer">حجم مخزن التشغيل المؤقت</string>
+    <string name="network_buffer_auto">تلقائي</string>
+    <string name="network_buffer_auto_description">حجم التخزين المؤقت الافتراضي، مناسب لمعظم حالات التشغيل</string>
+    <string name="network_buffer_large">حجم تخزين مؤقت كبير للشبكة</string>
+    <string name="network_buffer_large_description">قد يساعد حجم التخزين المؤقت الأكبر في تحسين التشغيل عند استخدام اتصال متوسط أو غير مستقر</string>
+    <string name="network_buffer_extra_large">ضخم</string>
+    <string name="network_buffer_extra_large_description">أقصى حجم للتخزين المؤقت، مخصص للاتصالات البطيئة أو عبر الأقمار الصناعية</string>
+    <string name="media_service_unknown_page">صفحة مجهولة</string>
+    <string name="media_service_no_items">تعذر العثور على العناصر</string>
+    <string name="media_service_auth_expired">يرجى فتح التطبيق من هاتفك و الولوج إلى خادم Jellyfin الخاص بك.</string>
+    <string name="media_service_invalid_id">تعريف عنصر خاطئ</string>
+    <string name="media_service_car_section_favorites">المفضلة</string>
+    <string name="media_service_car_section_audiobooks">كتب صوتية</string>
+    <string name="media_service_car_section_playlists">لائحة تشغيل</string>
+    <string name="downloading_title">تحميل %1$s</string>
+    <string name="download_cancel">إلغاء</string>
+    <string name="download_completed">تم التحميل</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">حذف التحميل</string>
+    <string name="download_remove_keep_local">الاحتفاظ بالملف(ات) المحلية</string>
+    <string name="download_remove_description">هل ترغب في حذف %1$s من ملفات التحميل؟</string>
+    <string name="download_incomplete">لم يكتمل التحميل</string>
 </resources>

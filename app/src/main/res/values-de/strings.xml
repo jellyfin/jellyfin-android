@@ -59,7 +59,6 @@
     <string name="music_notification_channel_description">Zur Steuerung der Musikwiedergabe verwendet</string>
     <string name="music_notification_channel">Jellyfin-Musikplayer</string>
     <string name="media_service_car_item_no_title">Kein Titel</string>
-    <string name="media_service_car_section_playlists">Wiedergabelisten</string>
     <string name="media_service_car_section_genres">Genre</string>
     <string name="media_service_car_section_songs">Lieder</string>
     <string name="media_service_car_section_artists">Künstler</string>
@@ -120,7 +119,6 @@
     <string name="stored_videos_in_internal_storage_desc">Videos wie Filme oder TV Shows werden im App internen Speicher abgelegt. Erlaube den Zugriff aus der App heraus.</string>
     <string name="downloading_desc">Lade %1$d Titel herunter</string>
     <string name="external_player_mpvkt">mpvKt Player</string>
-    <string name="confirm_deletion_desc">Möchtest du %1$s löschen?</string>
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
     <string name="thumbnail_desc">Vorschaubild</string>
@@ -128,8 +126,29 @@
     <string name="pref_exoplayer_allow_press_speed_up">Halten zum Beschleunigen des Videos</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Berühre und halte den Bildschirm gedrückt, um die Wiedergabe kurzzeitig zu beschleunigen</string>
     <string name="downloads">Downloads</string>
-    <string name="confirm_deletion">Löschen bestätigen</string>
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="skip_media_segment">Überspringen</string>
     <string name="special_episode">Special</string>
+    <string name="network_buffer_extra_large_description">Maximaler Puffer, gedacht für langsame oder Satelliten-Verbindungen</string>
+    <string name="network_buffer_large_description">Größerer Puffer, könnte bei moderaten oder wechselhaften Verbindungen helfen</string>
+    <string name="network_buffer_extra_large">Extra groß</string>
+    <string name="network_buffer_large">Groß</string>
+    <string name="network_buffer_auto_description">Standard-Puffer, geeignet für die meisten Wiedergabe-Szenarien</string>
+    <string name="network_buffer_auto">Auto</string>
+    <string name="pref_exoplayer_network_buffer">Wiedergabepuffergröße</string>
+    <string name="media_service_unknown_page">Unbekannte Seite</string>
+    <string name="media_service_no_items">Keine Titel gefunden</string>
+    <string name="media_service_auth_expired">Bitte öffnen Sie die Jellyfin App auf ihrem Smartphone um sich bei Ihrem Jellyfin Server anzumelden.</string>
+    <string name="media_service_invalid_id">Ungültige Titel ID</string>
+    <string name="media_service_car_section_favorites">Favoriten</string>
+    <string name="media_service_car_section_audiobooks">Audiobücher</string>
+    <string name="media_service_car_section_playlists">Playlisten</string>
+    <string name="downloading_title">Downloade %1$s</string>
+    <string name="download_cancel">Abbrechen</string>
+    <string name="download_completed">Download abgeschlossen</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Download entfernen</string>
+    <string name="download_remove_keep_local">Lokale Datei(en) behalten</string>
+    <string name="download_remove_description">Möchtest Du %1$s aus deinen Downloads entfernen?</string>
+    <string name="download_incomplete">Download unvollständig</string>
 </resources>

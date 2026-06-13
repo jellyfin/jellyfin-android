@@ -1,14 +1,19 @@
 [versions]
+# Android
+android-compileSdk = "36"
+android-minSdk = "21"
+android-targetSdk = "36"
+
 # Plugins
-android-plugin = "8.13.2"
-kotlin = "2.3.10"
-kotlin-ksp = "2.3.6"
+android-plugin = "9.2.1"
+kotlin = "2.4.0"
+kotlin-ksp = "2.3.9"
 detekt = "1.23.8"
 android-junit5 = "2.0.1"
 
 # KotlinX
-coroutines = "1.10.2"
-serialization-json = "1.10.0"
+coroutines = "1.11.0"
+serialization-json = "1.11.0"
 
 # Core
 koin = "4.1.1"
@@ -17,7 +22,9 @@ androidx-core = "1.17.0"
 androidx-core-splashscreen = "1.2.0"
 androidx-appcompat = "1.7.1"
 androidx-activity = "1.11.0"
+androidx-documentfile = "1.1.0"
 androidx-fragment = "1.8.9"
+androidx-work = "2.10.5"
 androiddesugarlibs = "2.1.5"
 
 # Lifecycle extensions
@@ -37,7 +44,7 @@ compose-material-icons = "1.7.8"
 
 # Network
 jellyfin-sdk = "1.7.1"
-coil = "3.3.0"
+coil = "3.4.0"
 
 # Media
 androidx-media = "1.7.1"
@@ -51,18 +58,16 @@ androidx-room = "2.7.2"
 
 # Monitoring
 timber = "5.0.1"
-leakcanary = "2.14"
 
 # Testing
-junit = "6.0.2"
-kotest = "6.0.7"
-mockk = "1.14.7"
+junit = "6.1.0"
+kotest = "6.1.11"
+mockk = "1.14.11"
 androidx-test-runner = "1.7.0"
 androidx-test-espresso = "3.7.0"
 
 [plugins]
 android-app = { id = "com.android.application", version.ref = "android-plugin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "kotlin-ksp" }
@@ -75,6 +80,7 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 # KotlinX
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutines-guava = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-guava", version.ref = "coroutines" }
 kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization-json" }
 
 # Core
@@ -85,7 +91,9 @@ androidx-core = { group = "androidx.core", name = "core", version.ref = "android
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-core-splashscreen" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "androidx-activity" }
+androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "androidx-documentfile" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidx-fragment" }
+androidx-work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-work" }
 androiddesugarlibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androiddesugarlibs" }
 
 # Lifecycle Extensions
@@ -114,6 +122,7 @@ compose-material-icons-extended = { group = "androidx.compose.material", name = 
 jellyfin-sdk = { group = "org.jellyfin.sdk", name = "jellyfin-core", version.ref = "jellyfin-sdk" }
 coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 
 # Media
 androidx-media = { group = "androidx.media", name = "media", version.ref = "androidx-media" }
@@ -136,7 +145,6 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 
 # Monitoring
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
-leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
 
 # Testing
 junit-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit" }
@@ -152,9 +160,9 @@ androidx-test-espresso = { group = "androidx.test.espresso", name = "espresso-co
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 
 [bundles]
-coroutines = ["coroutines-core", "coroutines-android"]
+coroutines = ["coroutines-core", "coroutines-android", "coroutines-guava"]
 koin = ["koin", "koin-compose"]
-coil = ["coil", "coil-network"]
+coil = ["coil", "coil-network", "coil-compose"]
 androidx-lifecycle = [
     "androidx-lifecycle-viewmodel",
     "androidx-lifecycle-livedata",

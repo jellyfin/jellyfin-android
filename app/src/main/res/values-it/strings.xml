@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">Utilizzato per i controlli di riproduzione musicale</string>
     <string name="music_notification_channel">Lettore musicale Jellyfin</string>
     <string name="media_service_car_item_no_title">Senza titolo</string>
-    <string name="media_service_car_section_playlists">Playlist</string>
     <string name="media_service_car_section_genres">Generi</string>
     <string name="media_service_car_section_songs">Canzoni</string>
     <string name="media_service_car_section_artists">Artisti</string>
@@ -122,7 +121,6 @@
     <string name="pref_exoplayer_allow_press_speed_up_summary">Tocca e tieni premuto lo schermo per velocizzare temporaneamente la riproduzione</string>
     <string name="downloads">Downloads</string>
     <string name="download_notifications_description">Notifiche di download</string>
-    <string name="confirm_deletion">Conferma l\'eliminazione</string>
     <string name="failed_network_method_check">Verifica i tuoi metodi di download permessi</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
@@ -131,7 +129,13 @@
     <string name="stored_videos_in_internal_storage_desc">Video come i film e serie TV saranno salvati nello memoria interna dell\'applicazione. Permetti accesso da dentro l\'applicazione.</string>
     <string name="downloading_desc">Scaricando%1$d titoli</string>
     <string name="downloaded">Scaricato %1$s</string>
-    <string name="confirm_deletion_desc">Vuoi cancellare %1$s?</string>
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="special_episode">Speciale</string>
+    <string name="media_service_unknown_page">Pagina sconosciuta</string>
+    <string name="media_service_no_items">Nessun elemento trovato</string>
+    <string name="media_service_auth_expired">Si prega di aprire l\'applicazione dal telefono per accedere al server Jellyfin.</string>
+    <string name="media_service_car_section_favorites">Preferiti</string>
+    <string name="media_service_car_section_audiobooks">Audiolibri</string>
+    <string name="network_buffer_large">Grande</string>
+    <string name="network_buffer_extra_large">Molto grande</string>
 </resources>

@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.app)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
@@ -15,9 +14,9 @@ plugins {
 
 detekt {
     buildUponDefaultConfig = true
-    allRules = false
-    config.setFrom("${rootProject.projectDir}/detekt.yml")
-    autoCorrect = true
+    ignoreFailures = true
+    config.setFrom(files("$rootDir/detekt.yaml"))
+    parallel = true
 }
 
 kotlin {
@@ -29,11 +28,11 @@ kotlin {
 
 android {
     namespace = "org.jellyfin.mobile"
-    compileSdk = 36
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 21
-        targetSdk = 36
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionName = project.getVersionName()
         versionCode = getVersionCode(versionName!!)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -53,7 +52,6 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-            aaptOptions.cruncherEnabled = false
 
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = releaseSigningConfig
@@ -61,7 +59,6 @@ android {
         getByName("debug") {
             applicationIdSuffix = ".debug"
             isDebuggable = true
-            aaptOptions.cruncherEnabled = false
         }
     }
 
@@ -93,16 +90,20 @@ android {
         viewBinding = true
         compose = true
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
         isCoreLibraryDesugaringEnabled = true
     }
+
     lint {
         lintConfig = file("$rootDir/android-lint.xml")
         abortOnError = false
         sarifReport = true
+        checkDependencies = true
     }
+
     room {
         schemaDirectory("$projectDir/schemas")
     }
@@ -124,6 +125,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.fragment)
+    implementation(libs.androidx.documentfile)
+    implementation(libs.androidx.work.runtime)
     coreLibraryDesugaring(libs.androiddesugarlibs)
 
     // Lifecycle
@@ -164,7 +167,6 @@ dependencies {
 
     // Monitoring
     implementation(libs.timber)
-    debugImplementation(libs.leakcanary)
 
     // Testing
     testImplementation(libs.junit.api)
@@ -179,22 +181,24 @@ dependencies {
 
 tasks {
     withType<Detekt> {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-
         reports {
-            html.required.set(true)
-            xml.required.set(false)
-            txt.required.set(true)
             sarif.required.set(true)
         }
     }
 
     // Testing
     withType<Test> {
-        useJUnitPlatform()
+        useJUnit()
         testLogging {
-            outputs.upToDateWhen { false }
-            showStandardStreams = true
+            events(
+                org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
+                org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_ERROR,
+                org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
+            )
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+            showExceptions = true
+            showCauses = true
+            showStackTraces = true
         }
     }
 

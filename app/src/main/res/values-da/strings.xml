@@ -30,7 +30,6 @@
     <string name="music_notification_channel_description">Bruges til kontrol af musikafspilning</string>
     <string name="music_notification_channel">Jellyfin Musik afspiller</string>
     <string name="media_service_car_item_no_title">Ingen titel</string>
-    <string name="media_service_car_section_playlists">Afspilningslister</string>
     <string name="media_service_car_section_genres">Genre</string>
     <string name="media_service_car_section_songs">Sange</string>
     <string name="media_service_car_section_artists">Kunstnere</string>
@@ -114,7 +113,6 @@
     <string name="pref_exoplayer_allow_press_speed_up">Hold nede for at speede op</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Tryk og hold på skærmen for midlertidigt at afspille hurtigere</string>
     <string name="external_player_mpvkt_description">En medieafspiller baseret på mpv-android, der har til formål at give en pænere/bruger­venligere grænseflade end den originale.</string>
-    <string name="confirm_deletion">Bekræft sletning</string>
     <string name="downloads">Downloads</string>
     <string name="download_notifications_description">Download notifikationer</string>
     <string name="failed_thumbnail">Fejl ved download af miniaturebillede</string>
@@ -128,8 +126,21 @@
     <string name="tv_show_desc">%1$s - Sæ%2$dEp%3$d</string>
     <string name="view_downloads">Se downloads</string>
     <string name="failed_information">Hentning af medieinformation mislykkedes</string>
-    <string name="confirm_deletion_desc">Vil du slette %1$s?</string>
     <string name="no">Nej</string>
     <string name="downloading_desc">Downloader %1$d titler</string>
     <string name="skip_media_segment">Spring over</string>
+    <string name="media_service_unknown_page">Ukendt side</string>
+    <string name="media_service_no_items">Ingenting fundet</string>
+    <string name="media_service_auth_expired">Åben appen på din telefon for at logge ind på din Jellyfin-server.</string>
+    <string name="media_service_invalid_id">Ugyldigt ID</string>
+    <string name="media_service_car_section_favorites">Favoritter</string>
+    <string name="media_service_car_section_audiobooks">Lydbøger</string>
+    <string name="pref_exoplayer_network_buffer">Afspilningsbufferstørrelse</string>
+    <string name="network_buffer_auto">Automatisk</string>
+    <string name="network_buffer_auto_description">Standardbuffer, egnet til de fleste afspilningsscenarier</string>
+    <string name="network_buffer_large">Stor</string>
+    <string name="network_buffer_large_description">Større buffer, kan hjælpe ved moderate eller varierende forbindelser</string>
+    <string name="network_buffer_extra_large">Ekstra stor</string>
+    <string name="network_buffer_extra_large_description">Maksimal buffer, egnet til langsomme eller satellitforbindelser</string>
+    <string name="special_episode">Speciel</string>
 </resources>

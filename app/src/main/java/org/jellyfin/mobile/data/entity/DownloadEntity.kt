@@ -1,79 +1,78 @@
 package org.jellyfin.mobile.data.entity
 
+import android.content.Context
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Ignore
+import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
-import androidx.room.TypeConverters
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.Json.Default.decodeFromString
-import org.jellyfin.mobile.data.entity.DownloadEntity.Key.ITEM_ID
-import org.jellyfin.mobile.data.entity.DownloadEntity.Key.TABLE_NAME
-import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
-import org.jellyfin.mobile.utils.extensions.toFileSize
-import kotlin.time.Duration
+import org.jellyfin.mobile.R
+import org.jellyfin.mobile.downloads.DownloadStatus
+import org.jellyfin.sdk.model.api.BaseItemDto
+import org.jellyfin.sdk.model.api.BaseItemKind
+import java.util.UUID
 
 @Entity(
-    tableName = TABLE_NAME,
-    indices = [
-        Index(value = [ITEM_ID], unique = true),
+    tableName = "download",
+    indices = [Index(value = ["server_id"]), Index(value = ["user_id"]), Index(value = ["item_id"])],
+    foreignKeys = [
+        ForeignKey(
+            entity = ServerEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["server_id"],
+            onDelete = ForeignKey.CASCADE,
+        ),
+        ForeignKey(
+            entity = UserEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["user_id"],
+            onDelete = ForeignKey.CASCADE,
+        ),
     ],
 )
-@TypeConverters(LocalJellyfinMediaSourceConverter::class)
 data class DownloadEntity(
-    @PrimaryKey
-    @ColumnInfo(name = ITEM_ID)
-    val itemId: String,
-    @ColumnInfo(name = MEDIA_SOURCE)
-    val mediaSource: LocalJellyfinMediaSource,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id") val id: Long = 0L,
+
+    @ColumnInfo(name = "server_id") val serverId: Long,
+    @ColumnInfo(name = "user_id") val userId: Long,
+    @ColumnInfo(name = "item_id") val itemId: UUID,
+
+    @ColumnInfo(name = "path") val path: String,
+    @ColumnInfo(name = "item") val item: BaseItemDto,
+
+    @ColumnInfo(name = "status") val status: DownloadStatus = DownloadStatus.QUEUED,
+
+    @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "modified_at") var modifiedAt: Long = System.currentTimeMillis(),
 ) {
-    /**
-     * Converts the [mediaSource] string to a [LocalJellyfinMediaSource] object.
-     *
-     * @param startTime The start time as a [Duration]. If null, the default start time is used.
-     * @param audioStreamIndex The index of the audio stream to select. If null, the default audio stream is used.
-     * @param subtitleStreamIndex The index of the subtitle stream to select. If -1, subtitles are disabled. If null, the default subtitle stream is used.
-     */
-    fun asMediaSource(
-        startTime: Duration? = null,
-        audioStreamIndex: Int? = null,
-        subtitleStreamIndex: Int? = null,
-    ): LocalJellyfinMediaSource = mediaSource
-        .also { localJellyfinMediaSource ->
-            startTime
-                ?.let { localJellyfinMediaSource.startTime = it }
-            audioStreamIndex
-                ?.let { localJellyfinMediaSource.mediaStreams[it] }
-                ?.let(localJellyfinMediaSource::selectAudioStream)
-            subtitleStreamIndex
-                ?.run {
-                    takeUnless { it == -1 }
-                        ?.let { localJellyfinMediaSource.mediaStreams[it] }
-                        ?: localJellyfinMediaSource.selectSubtitleStream(null)
-                }
+    fun getDisplayName(context: Context) = buildString {
+        val name = if (
+            item.type in arrayOf(BaseItemKind.PROGRAM, BaseItemKind.RECORDING) &&
+            (item.isSeries == true || !item.episodeTitle.isNullOrEmpty())
+        ) {
+            item.episodeTitle
+        } else {
+            item.name
         }
 
-    constructor(mediaSource: LocalJellyfinMediaSource) :
-        this(mediaSource.id, mediaSource)
+        val extraInfo = when (item.type) {
+            BaseItemKind.TV_CHANNEL if !item.channelNumber.isNullOrEmpty() -> item.channelNumber
+            BaseItemKind.EPISODE if item.parentIndexNumber == 0 -> context.getString(R.string.special_episode)
+            in arrayOf(BaseItemKind.EPISODE, BaseItemKind.RECORDING) if item.indexNumber != null && item.parentIndexNumber != null ->
+                "S${item.parentIndexNumber}:E${item.indexNumber}${item.indexNumberEnd?.let { n -> "-$n" }.orEmpty()}"
 
-    @Ignore
-    val fileSize: String = mediaSource.downloadSize.toFileSize()
+            else -> ""
+        }
 
-    companion object Key {
-        const val BYTES_PER_BINARY_UNIT: Int = 1024
-        const val TABLE_NAME: String = "Download"
-        const val ID: String = "id"
-        const val ITEM_ID: String = "item_id"
-        const val MEDIA_SOURCE: String = "media_source"
-    }
-}
+        listOf(item.seriesName, extraInfo, name)
+            .filter { str -> !str.isNullOrEmpty() }
+            .joinTo(this, separator = " - ")
 
-class LocalJellyfinMediaSourceConverter {
-    @TypeConverter
-    fun toLocalJellyfinMediaSource(value: String): LocalJellyfinMediaSource = decodeFromString(value)
-
-    @TypeConverter
-    fun fromLocalJellyfinMediaSource(value: LocalJellyfinMediaSource): String = Json.encodeToString(value)
+        if (item.type == BaseItemKind.MOVIE && item.productionYear != null) {
+            append(" (${item.productionYear})")
+        } else if (item.premiereDate != null) {
+            append(" (${item.premiereDate!!.year})")
+        }
+    }.ifEmpty { item.name }
 }

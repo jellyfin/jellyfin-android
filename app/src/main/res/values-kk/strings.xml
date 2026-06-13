@@ -31,7 +31,6 @@
     <string name="music_notification_channel_description">Muzyka oinatudy basqaru üşın qoldanylady</string>
     <string name="music_notification_channel">Jellyfin muzyka oinatqyşy</string>
     <string name="media_service_car_item_no_title">Atauy joq</string>
-    <string name="media_service_car_section_playlists">Oinatu tızımderı</string>
     <string name="media_service_car_section_genres">Janrlar</string>
     <string name="media_service_car_section_songs">Äuender</string>
     <string name="media_service_car_section_artists">Oryndauşylar</string>

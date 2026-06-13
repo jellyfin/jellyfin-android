@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">இசை பின்னணி கட்டுப்பாடுகளுக்கு பயன்படுத்தப்படுகிறது</string>
     <string name="music_notification_channel">ஜெல்லிஃபின் மியூசிக் பிளேயர்</string>
     <string name="media_service_car_item_no_title">தலைப்பு இல்லை</string>
-    <string name="media_service_car_section_playlists">பிளேலிஸ்ட்கள்</string>
     <string name="media_service_car_section_genres">வகைகள்</string>
     <string name="media_service_car_section_songs">பாடல்கள்</string>
     <string name="media_service_car_section_artists">கலைஞர்கள்</string>
@@ -123,8 +122,6 @@
     <string name="download_notifications_description">பதிவிறக்க அறிவிப்புகள்</string>
     <string name="failed_information">மீடியா தகவலை மீட்டெடுக்க முடியவில்லை</string>
     <string name="failed_network_method_check">உங்களுக்கு அனுமதிக்கப்பட்ட பதிவிறக்க முறைகளைச் சரிபார்க்கவும்</string>
-    <string name="confirm_deletion">நீக்குதலை உறுதிப்படுத்தவும்</string>
-    <string name="confirm_deletion_desc">%1$s-ஐ நீக்க விரும்புகிறீர்களா?</string>
     <string name="yes">ஆம்</string>
     <string name="no">இல்லை</string>
     <string name="store_videos_in_internal_storage">வீடியோக்களை உள் சேமிப்பகத்தில் சேமிக்கவும்</string>

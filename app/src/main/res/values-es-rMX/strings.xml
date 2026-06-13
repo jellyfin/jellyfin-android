@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">Utilizado para controlar la reproducción de música</string>
     <string name="music_notification_channel">Reproductor de música de Jellyfin</string>
     <string name="media_service_car_item_no_title">Sin título</string>
-    <string name="media_service_car_section_playlists">Listas</string>
     <string name="media_service_car_section_genres">Géneros</string>
     <string name="media_service_car_section_songs">Canciones</string>
     <string name="media_service_car_section_artists">Artistas</string>
@@ -122,10 +121,9 @@
     <string name="download_notifications_description">Notificaciones de descargas</string>
     <string name="failed_thumbnail">Error al descargar la miniatura</string>
     <string name="failed_information">Error al obtener la informacion del archivo</string>
-    <string name="confirm_deletion">Confirmar eliminado</string>
-    <string name="confirm_deletion_desc">Tu quieres eliminar %1$s?</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
     <string name="thumbnail_desc">\"Miniatura\"</string>
     <string name="store_videos_in_internal_storage">Guardar videos en el almacenamiento interno</string>
+    <string name="media_service_no_items">Elementos no encontrados</string>
 </resources>

@@ -34,7 +34,6 @@
     <string name="music_notification_channel_description">Naudojamas muzikos grojimo valdikliams</string>
     <string name="music_notification_channel">Jellyfin Muzikos Grotuvas</string>
     <string name="media_service_car_item_no_title">Be pavadinimo</string>
-    <string name="media_service_car_section_playlists">Grojaraščiai</string>
     <string name="media_service_car_section_genres">Žanrai</string>
     <string name="media_service_car_section_songs">Dainos</string>
     <string name="media_service_car_section_artists">Atlikėjai</string>
@@ -115,7 +114,6 @@
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Ryškumo ir garsumo gestai</string>
     <string name="pref_exoplayer_remember_brightness">Prisiminti ekrano ryškumą</string>
     <string name="external_player_mpv_description">Paprastas, nedidelis ir lengvas nemokamas (kaip laisvėje) vaizdo įrašų grotuvas. Jis palaiko įvairius medijos failų formatus.</string>
-    <string name="confirm_deletion">Patvirtinti ištrynimą</string>
     <string name="pref_exoplayer_allow_press_speed_up">Laikykite, kad pagreitintumėte</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Palieskite ir palaikykite ekraną, kad laikinai pagreitintumėte atkūrimą</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Leisti atkurti vaizdo įrašus fone naudojant tik garsą</string>
@@ -127,7 +125,6 @@
     <string name="downloads">Atsisiuntimai</string>
     <string name="failed_information">Nepavyko gauti medijos informacijos</string>
     <string name="failed_network_method_check">Patikrinkite leidžiamus atsisiuntimo būdus</string>
-    <string name="confirm_deletion_desc">Ar norite ištrinti %1$s?</string>
     <string name="thumbnail_desc">Miniatiūra</string>
     <string name="store_videos_in_internal_storage">Saugoti vaizdo įrašus vidinėje saugykloje</string>
     <string name="stored_videos_in_internal_storage_desc">Vaizdo įrašai, pvz., filmai ir TV laidos, bus saugomi vidinėje programėlės saugykloje. Prieiga iš programėlės.</string>
