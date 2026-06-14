@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.webkit.WebView
 import org.json.JSONException
-import org.json.JSONObject
+import kotlinx.serialization.json.Json
 import timber.log.Timber
 import java.util.Locale
 import java.util.UUID
@@ -18,12 +18,9 @@ suspend fun WebView.initLocale(userId: UUID) {
         val flatUserId = userId.toString().replace("-", "")
         evaluateJavascript("window.localStorage.getItem('$flatUserId-language')") { result ->
             try {
-                // Check if result is null or the string "null" (JavaScript null converted to string)
-                if (result == null || result == "null") {
-                    continuation.resume(null)
-                } else {
-                    continuation.resume(JSONObject("{locale:$result}").getString("locale"))
-                }
+                continuation.resume(
+                    result?.let { runCatching { Json.decodeFromString<String?>(it) }.getOrNull() }
+                )
             } catch (e: JSONException) {
                 continuation.resume(null)
             }
