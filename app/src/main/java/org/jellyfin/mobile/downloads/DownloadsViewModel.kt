@@ -56,7 +56,7 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
                 viewModelScope.launch {
                     val fileUri = withContext(Dispatchers.IO) {
                         val storageLocation = storageManager.getStorageLocation()
-                        val itemLocation = storageLocation.findFile(download.path)
+                        val itemLocation = storageLocation?.findFile(download.path)
                         if (itemLocation != null && itemLocation.isDirectory) {
                             val filename = download.item.path?.replace(Regex("^.*[\\\\/]"), "")
                             if (filename != null) itemLocation.findFile(filename)?.uri else null

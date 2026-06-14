@@ -102,11 +102,14 @@ suspend fun MainActivity.requestDownload(itemIds: Collection<UUID>) {
         }
     }
 
-    if (permissionResult) {
-        val server = mainViewModel.serverState.value.server ?: return
-        val user = mainViewModel.userState.value.user ?: return
-        downloadManager.enqueueItems(server, user, itemIds)
+    // Automatically use a default download location
+    if (appPreferences.storageLocation == null) {
+
     }
+
+    val server = mainViewModel.serverState.value.server ?: return
+    val user = mainViewModel.userState.value.user ?: return
+    downloadManager.enqueueItems(server, user, itemIds)
 }
 
 fun Activity.isAutoRotateOn() = Settings.System.getInt(contentResolver, ACCELEROMETER_ROTATION, 0) == 1

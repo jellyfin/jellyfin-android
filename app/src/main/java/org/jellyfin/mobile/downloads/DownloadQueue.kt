@@ -119,8 +119,8 @@ class DownloadQueue(
 
     private suspend fun prepareFiles(api: ApiClient, downloadWithFiles: DownloadFiles): List<QueuedFile> {
         val storageLocation = storageManager.getStorageLocation()
-        val itemLocation = storageLocation.findFile(downloadWithFiles.download.path)
-            ?: storageLocation.createDirectory(downloadWithFiles.download.path)
+        val itemLocation = storageLocation?.findFile(downloadWithFiles.download.path)
+            ?: storageLocation?.createDirectory(downloadWithFiles.download.path)
             ?: error("Unable to find or create folder ${downloadWithFiles.download.path}")
 
         return buildList {
