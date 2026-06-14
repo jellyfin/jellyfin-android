@@ -81,10 +81,11 @@ public final class Chromecast implements IChromecast {
 
                 @Override
                 public void onMediaUpdate(JSONObject jsonMedia) {
-                    JSONArray out = new JSONArray();
-                    if (jsonMedia != null) {
-                        out.put(jsonMedia);
+                    if (jsonMedia == null) {
+                        return;
                     }
+                    JSONArray out = new JSONArray();
+                    out.put(jsonMedia);
                     sendEvent("MEDIA_UPDATE", out);
                 }
 

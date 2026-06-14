@@ -32,7 +32,7 @@ final class ChromecastUtilities {
     /**
      * Stores a cache of the queueItems for building Media Objects.
      */
-    private static JSONArray queueItems = null;
+    private static JSONArray queueItems = new JSONArray();
 
     private ChromecastUtilities() {
         //not called

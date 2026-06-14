@@ -1354,8 +1354,11 @@ execute('setup', function (err, args) {
             if (!_session) {
                 return;
             }
+            if (!media) {
+                return;
+            }
             _session._updateMedia(media);
-            _session._emitMediaUpdated(media ? !!media.isAlive : false);
+            _session._emitMediaUpdated(!!media.isAlive);
         },
         MEDIA_LOAD: function (media) {
             if (_session) {
