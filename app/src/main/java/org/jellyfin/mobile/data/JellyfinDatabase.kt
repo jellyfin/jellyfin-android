@@ -3,6 +3,7 @@ package org.jellyfin.mobile.data
 import android.net.Uri
 import androidx.room.AutoMigration
 import androidx.room.Database
+import androidx.room.DeleteTable
 import androidx.room.RenameTable
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
@@ -29,11 +30,11 @@ import java.util.UUID
         DownloadEntity::class,
         DownloadFileEntity::class,
     ],
-    version = 6,
+    version = 5,
     autoMigrations = [
         AutoMigration(from = 2, to = 3),
         AutoMigration(from = 3, to = 4, spec = JellyfinDatabase.MigrateV4::class),
-        AutoMigration(from = 5, to = 6),
+        AutoMigration(from = 4, to = 5, spec = JellyfinDatabase.MigrateV5::class),
     ],
 )
 @TypeConverters(JellyfinDatabase.Converters::class)
@@ -87,4 +88,7 @@ abstract class JellyfinDatabase : RoomDatabase() {
             cursor.close()
         }
     }
+
+    @DeleteTable(tableName = "Download")
+    class MigrateV5 : AutoMigrationSpec
 }
