@@ -10,29 +10,26 @@ import org.gradle.api.Project
  * v2.0.0 -> 2.0.0
  * null -> 0.0.0-dev.1 (unless different fallback set)
  */
-fun Project.getVersionName(fallback: String = "0.0.0-dev.1"): String {
-    val configuredVersion = System.getenv("JELLYFIN_VERSION")
-        ?: findProperty("jellyfin.version")?.toString()
-
-    return configuredVersion?.removePrefix("v") ?: fallback
-}
+fun Project.getVersionName(fallback: String = "0.0.0-dev.1") =
+    getProperty("jellyfin.version")
+        ?.removePrefix("v")
+        ?: fallback
 
 /**
  * Get the version code for a given semantic version.
  * Does not validate the input and thus will throw an exception when parts are missing.
  *
- * The pre-release part ("-rc.1", "-beta.1" etc.) defaults to 99 when not specified.
+ * The pre-release part ("-rc.1", "-beta.1" etc.) defaults to 99
  *
  * Sample output:
- * MA.MI.PA-PR   > MA MI PA PR
- * 0.0.0-dev.1   >           1
- * 0.0.0         >          99
- * 1.1.1         >  1 01 01 99
- * 0.7.0         >     7 00 99
- * 99.99.99      > 99 99 99 99
- * 2.0.0-rc.3    >  2 00 00 03
- * 2.0.0         >  2 00 00 99
- * 99.99.99-rc.1 > 99 99 99 01
+ * MA.MI.PA-PR   -> MAMIPAPR
+ * 0.0.0         ->       99
+ * 1.1.1         ->  1010199
+ * 0.7.0         ->    70099
+ * 99.99.99      -> 99999999
+ * 2.0.0-rc.3    ->  2000003
+ * 2.0.0         ->  2000099
+ * 99.99.99-rc.1 -> 99999901
  */
 fun getVersionCode(versionName: String): Int {
     // Split to core and pre release parts with a default for pre release (null)
