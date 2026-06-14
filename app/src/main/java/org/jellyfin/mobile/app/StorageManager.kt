@@ -9,33 +9,33 @@ import androidx.documentfile.provider.DocumentFile
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.data.entity.DownloadFiles
 import org.jellyfin.mobile.downloads.DownloadStatus
-import java.io.File
+import timber.log.Timber
 
 class StorageManager(
     private val context: Context,
     private val appPreferences: AppPreferences
 ) {
-    private val defaultStorageLocation
-        get() = Environment.getExternalStorageDirectory().absolutePath + File.separator + context.getString(R.string.app_name_short)
+    val defaultStorageLocation
+        get() = Environment.getExternalStorageDirectory().resolve(context.getString(R.string.app_name_short)).toUri()
 
-    init {
-        ensureNoMedia(getStorageLocation())
+    fun getStorageLocation() = appPreferences.storageLocation?.toUri()?.let {
+        DocumentFile.fromTreeUri(context, it)
     }
 
-    fun getStorageLocation(): DocumentFile = appPreferences.storageLocation?.toUri()?.let {
-        DocumentFile.fromTreeUri(context, it)
-    } ?: DocumentFile.fromFile(File(defaultStorageLocation))
+    fun changeStorageLocation(location: Uri): Boolean {
+        if (appPreferences.storageLocation?.toUri() == location) return true
 
-    fun changeStorageLocation(location: Uri) {
-        if (appPreferences.storageLocation?.toUri() == location) return
+        return runCatching {
+            context.contentResolver.takePersistableUriPermission(
+                location,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
+            )
 
-        val documentFile = DocumentFile.fromTreeUri(context, location) ?: error("Invalid location $location")
-        context.contentResolver.takePersistableUriPermission(
-            documentFile.uri,
-            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
-        )
-        ensureNoMedia(documentFile)
-        appPreferences.storageLocation = documentFile.uri.toString()
+            appPreferences.storageLocation = location.toString()
+            getStorageLocation()?.let(::ensureNoMedia)
+        }.onFailure { err ->
+            Timber.e(err, "Failed to change storage location to $location")
+        }.isFailure
     }
 
     fun verify(download: DownloadFiles): Boolean {

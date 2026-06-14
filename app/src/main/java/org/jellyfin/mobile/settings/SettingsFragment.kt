@@ -42,11 +42,11 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
 
     private val storageLocationPicker = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
         if (uri != null) {
-            storageManager.changeStorageLocation(uri)
+            val changed = storageManager.changeStorageLocation(uri)
 
             // Update preference
-            if (::downloadLocationPreference.isInitialized) {
-                downloadLocationPreference.summary = storageManager.getStorageLocation().name
+            if (changed && ::downloadLocationPreference.isInitialized) {
+                downloadLocationPreference.summary = storageManager.getStorageLocation()?.name
                 downloadLocationPreference.requestRebindAndHighlight()
             }
         }
@@ -281,10 +281,10 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
             val location = storageManager.getStorageLocation()
 
             titleRes = R.string.pref_download_location
-            summary = location.name
+            summary = location?.name ?: getString(R.string.menu_item_none)
 
             onClick {
-                storageLocationPicker.launch(location.uri)
+                storageLocationPicker.launch(location?.uri ?: storageManager.defaultStorageLocation)
                 false
             }
         }

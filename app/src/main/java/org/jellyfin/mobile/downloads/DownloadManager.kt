@@ -110,7 +110,7 @@ class DownloadManager(
 
         if (deleteFiles) {
             val storageLocation = storageManager.getStorageLocation()
-            storageLocation.findFile(download.path)?.delete()
+            storageLocation?.findFile(download.path)?.delete()
         }
 
         downloadDao.delete(id)
