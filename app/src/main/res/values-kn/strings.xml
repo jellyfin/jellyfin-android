@@ -45,7 +45,7 @@
     <string name="notification_action_play">ಪ್ಲೇ</string>
     <string name="media_service_generic_error">ದೋಷ ಸಂಭವಿಸಿದೆ</string>
     <plurals name="connection_error_prefix">
-        <item quantity="one">%d ಅಭ್ಯರ್ಥಿಗಳನ್ನು ಪ್ರಯತ್ನಿಸಿದೆ, ಆದರೆ ಯಶಸ್ವಿಯಾಗಿಲ್ಲ.</item>
+        <item quantity="one">%d ಅಭ್ಯರ್ಥಿಯನ್ನು ಪ್ರಯತ್ನಿಸಿದೆ, ಆದರೆ ಯಶಸ್ವಿಯಾಗಿಲ್ಲ.</item>
         <item quantity="other">%d ಅಭ್ಯರ್ಥಿಗಳನ್ನು ಪ್ರಯತ್ನಿಸಿದೆ, ಆದರೆ ಯಶಸ್ವಿಯಾಗಿಲ್ಲ.</item>
     </plurals>
     <string name="connection_error_unable_to_reach_sever">ಸರ್ವರ್‌ಗೆ ಸಂಪರ್ಕ ಸಾಧಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</string>
