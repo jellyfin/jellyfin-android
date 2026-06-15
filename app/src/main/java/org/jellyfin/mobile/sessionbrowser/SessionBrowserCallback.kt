@@ -99,8 +99,7 @@ class SessionBrowserCallback(
             extras.putInt(MediaConstants.EXTRAS_KEY_CONTENT_STYLE_PLAYABLE, contentStyle)
             setMediaId(Json.encodeToString<LibraryMediaId>(LibraryMediaId.Route(action.route)))
         } else if (action is LibraryItemAction.Play) {
-            val positionMs = action.item.userData?.playbackPositionTicks?.ticks?.inWholeMilliseconds ?: 0L
-            setMediaId(Json.encodeToString<LibraryMediaId>(LibraryMediaId.Item(action.item.id, route, positionMs)))
+            setMediaId(Json.encodeToString<LibraryMediaId>(LibraryMediaId.Item(action.item.id, route)))
         }
 
         setMediaMetadata(
@@ -381,7 +380,8 @@ class SessionBrowserCallback(
             runCatching { Json.decodeFromString<LibraryMediaId>(it) }.getOrNull()
         }
         if (currentLibraryMediaId is LibraryMediaId.Item && (startPositionMs == 0L || startPositionMs == C.TIME_UNSET)) {
-            val positionMs = currentLibraryMediaId.startPositionMs
+            val item by api.userLibraryApi.getItem(itemId = currentLibraryMediaId.itemId)
+            val positionMs = item.userData?.playbackPositionTicks?.ticks?.inWholeMilliseconds ?: 0L
             if (positionMs > 0L) resumePositionMs = positionMs
         }
 

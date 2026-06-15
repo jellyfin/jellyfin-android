@@ -15,7 +15,6 @@ sealed interface LibraryMediaId {
     data class Item(
         val itemId: UUID,
         val route: LibraryRoute,
-        val startPositionMs: Long = 0L,
     ) : LibraryMediaId
 
     @Serializable
