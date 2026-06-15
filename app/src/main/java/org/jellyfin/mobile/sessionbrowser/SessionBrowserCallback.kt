@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import androidx.core.os.bundleOf
+import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.session.LibraryResult
@@ -43,6 +44,7 @@ import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.universalAudioApi
 import org.jellyfin.sdk.api.client.extensions.userLibraryApi
 import org.jellyfin.sdk.model.api.MediaStreamProtocol
+import org.jellyfin.sdk.model.extensions.ticks
 import timber.log.Timber
 
 @Suppress("InjectDispatcher")
@@ -373,7 +375,17 @@ class SessionBrowserCallback(
             }
         }
 
+        var resumePositionMs = startPositionMs
+        val currentLibraryMediaId = expandedItems.getOrNull(newStartIndex)?.mediaId?.let {
+            runCatching { Json.decodeFromString<LibraryMediaId>(it) }.getOrNull()
+        }
+        if (currentLibraryMediaId is LibraryMediaId.Item && (startPositionMs == 0L || startPositionMs == C.TIME_UNSET)) {
+            val item by api.userLibraryApi.getItem(itemId = currentLibraryMediaId.itemId)
+            val positionMs = item.userData?.playbackPositionTicks?.ticks?.inWholeMilliseconds ?: 0L
+            if (positionMs > 0L) resumePositionMs = positionMs
+        }
+
         expandedItems = onAddMediaItems(mediaSession, controller, expandedItems).await()
-        MediaSession.MediaItemsWithStartPosition(expandedItems, newStartIndex, startPositionMs)
+        MediaSession.MediaItemsWithStartPosition(expandedItems, newStartIndex, resumePositionMs)
     }
 }
