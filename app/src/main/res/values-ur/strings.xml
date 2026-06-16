@@ -48,7 +48,6 @@
     <string name="media_service_car_section_albums">البمز</string>
     <string name="media_service_car_section_artists">فنکار</string>
     <string name="media_service_car_section_songs">گانے</string>
-    <string name="media_service_car_section_playlists">پلے لسٹس</string>
     <string name="media_service_car_item_no_title">بلا عنوان</string>
     <string name="music_notification_channel">(جیلی فن) موسیقی سازندہ</string>
     <string name="notification_action_rewind">دوبارہ چلانا</string>

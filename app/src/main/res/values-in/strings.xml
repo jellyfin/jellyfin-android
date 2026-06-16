@@ -49,7 +49,6 @@
     <string name="music_notification_channel_description">Untuk pengaturan pemutaran musik</string>
     <string name="music_notification_channel">Pemutar Musik Jellyfin</string>
     <string name="media_service_car_item_no_title">Tanpa judul</string>
-    <string name="media_service_car_section_playlists">Playlist</string>
     <string name="media_service_car_section_genres">Genre</string>
     <string name="media_service_car_section_songs">Lagu</string>
     <string name="media_service_car_section_artists">Artis</string>
@@ -114,8 +113,6 @@
     <string name="failed_network_method_check">Silahkan periksametode pengunduhan yang diijinkan untuk anda</string>
     <string name="skip_media_segment">Lewati</string>
     <string name="external_player_mpvkt">Pemutar mpvKt</string>
-    <string name="confirm_deletion">Konfirmasi penghapusan</string>
-    <string name="confirm_deletion_desc">Apakah anda yakin untuk menghapus %1$s?</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Sentuh dan tahan untuk mempercepat pemutaran sementara</string>
     <string name="pref_exoplayer_allow_press_speed_up">Tahan untuk mempercepat</string>
     <string name="external_player_mpvkt_description">Pemutar media berbasis mpv-android yang bertujuan untuk menyediakan antarmuka pengguna yang lebih bagus dibandingkan versi aslinya.</string>

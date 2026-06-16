@@ -1,8 +1,10 @@
 package org.jellyfin.mobile.player.deviceprofile
 
 import android.media.MediaCodecList
+import android.media.MediaFormat
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.utils.Constants
+import org.json.JSONObject
 import org.jellyfin.sdk.model.api.CodecProfile
 import org.jellyfin.sdk.model.api.CodecType
 import org.jellyfin.sdk.model.api.ContainerProfile
@@ -23,6 +25,7 @@ class DeviceProfileBuilder(
     private val supportedVideoCodecs: Array<Array<String>>
     private val supportedAudioCodecs: Array<Array<String>>
     private val videoCodecsProfiles: Map<String, Set<String>>
+    private val maxAvcRawLevel: Int
 
     private val transcodingProfiles: List<TranscodingProfile>
 
@@ -34,12 +37,21 @@ class DeviceProfileBuilder(
         // Load Android-supported codecs
         val videoCodecs: MutableMap<String, DeviceCodec.Video> = HashMap()
         val audioCodecs: MutableMap<String, DeviceCodec.Audio> = HashMap()
+        var maxAvcLevel = 0
         val androidCodecs = MediaCodecList(MediaCodecList.REGULAR_CODECS)
         for (codecInfo in androidCodecs.codecInfos) {
             if (codecInfo.isEncoder) continue
 
             for (mimeType in codecInfo.supportedTypes) {
-                val codec = DeviceCodec.from(codecInfo.getCapabilitiesForType(mimeType)) ?: continue
+                val capabilities = codecInfo.getCapabilitiesForType(mimeType)
+
+                if (mimeType == MediaFormat.MIMETYPE_VIDEO_AVC) {
+                    for (pl in capabilities.profileLevels) {
+                        if (pl.level > maxAvcLevel) maxAvcLevel = pl.level
+                    }
+                }
+
+                val codec = DeviceCodec.from(capabilities) ?: continue
                 val name = codec.name
                 when (codec) {
                     is DeviceCodec.Video -> {
@@ -59,6 +71,7 @@ class DeviceProfileBuilder(
                 }
             }
         }
+        maxAvcRawLevel = maxAvcLevel
 
         // Build map of supported codecs from device support and hardcoded data
         supportedVideoCodecs = Array(AVAILABLE_VIDEO_CODECS.size) { i ->
@@ -214,8 +227,13 @@ class DeviceProfileBuilder(
         musicStreamingTranscodingBitrate = Int.MAX_VALUE,
     )
 
+    fun getWebCodecCapabilitiesJson(): String = JSONObject().apply {
+        put("h264MaxLevel", CodecHelpers.getVideoLevel("h264", maxAvcRawLevel)?.toString() ?: DEFAULT_H264_MAX_LEVEL)
+    }.toString()
+
     companion object {
         private const val EXTERNAL_PLAYER_PROFILE_NAME = Constants.APP_INFO_NAME + " External Player"
+        private const val DEFAULT_H264_MAX_LEVEL = "41"
 
         /**
          * List of container formats supported by ExoPlayer

@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">用于控制音乐播放</string>
     <string name="music_notification_channel">Jellyfin 音乐播放器</string>
     <string name="media_service_car_item_no_title">无标题</string>
-    <string name="media_service_car_section_playlists">播放列表</string>
     <string name="media_service_car_section_genres">风格</string>
     <string name="media_service_car_section_songs">歌曲</string>
     <string name="media_service_car_section_artists">艺术家</string>
@@ -118,10 +117,8 @@
     <string name="yes">是</string>
     <string name="view_downloads">查看下载</string>
     <string name="download_notifications_description">下载通知</string>
-    <string name="confirm_deletion_desc">您想删除 %1$s 吗？</string>
     <string name="no">否</string>
     <string name="failed_network_method_check">请检查您允许的下载方法</string>
-    <string name="confirm_deletion">确认删除</string>
     <string name="thumbnail_desc">缩略图</string>
     <string name="store_videos_in_internal_storage">将视频存储在内部存储器中</string>
     <string name="stored_videos_in_internal_storage_desc">电影和电视节目等视频将存储在应用程序的内部存储空间中。允许从应用程序内部访问。</string>
@@ -132,4 +129,26 @@
     <string name="pref_exoplayer_allow_press_speed_up">长按可加速播放</string>
     <string name="skip_media_segment">跳过</string>
     <string name="special_episode">特别篇</string>
+    <string name="media_service_unknown_page">未知页面</string>
+    <string name="media_service_no_items">未找到结果</string>
+    <string name="media_service_auth_expired">请打开您手机上的应用以登录您的Jellyfin服务器。</string>
+    <string name="media_service_invalid_id">无效的项目ID</string>
+    <string name="media_service_car_section_favorites">收藏夹</string>
+    <string name="media_service_car_section_audiobooks">有声书</string>
+    <string name="pref_exoplayer_network_buffer">播放缓冲区大小</string>
+    <string name="network_buffer_auto">自动</string>
+    <string name="network_buffer_auto_description">默认缓冲区，适用于大多数播放场景</string>
+    <string name="network_buffer_large">大</string>
+    <string name="network_buffer_large_description">较大的缓冲区，可能有助于改善一般或不稳定的网络连接</string>
+    <string name="network_buffer_extra_large">特大</string>
+    <string name="network_buffer_extra_large_description">最大缓冲区，适用于慢速连接或卫星连接</string>
+    <string name="media_service_car_section_playlists">播放列表</string>
+    <string name="downloading_title">正在下载%1$s</string>
+    <string name="download_cancel">取消</string>
+    <string name="download_completed">下载完成</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">移除下载项</string>
+    <string name="download_remove_keep_local">保留本地文件</string>
+    <string name="download_remove_description">您是否要从下载列表中移除%1$s？</string>
+    <string name="download_incomplete">下载未完成</string>
 </resources>

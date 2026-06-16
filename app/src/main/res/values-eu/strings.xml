@@ -54,7 +54,6 @@
     <string name="music_notification_channel_description">Musikaren erreprodukzioa kontrolatzeko erabiltzen da</string>
     <string name="music_notification_channel">Jellyfin musika-erreproduzitzailea</string>
     <string name="media_service_car_item_no_title">Titulurik gabe</string>
-    <string name="media_service_car_section_playlists">Erreprodukzioen zerrenda</string>
     <string name="media_service_car_section_genres">Generoak</string>
     <string name="media_service_car_section_songs">Abestiak</string>
     <string name="media_service_car_section_artists">Artistak</string>
@@ -106,7 +105,6 @@
     <string name="store_videos_in_internal_storage">Gorde bideoak barneko biltegian</string>
     <string name="skip_media_segment">Saltatu</string>
     <string name="failed_network_method_check">Mesedez, egiaztatu baimendutako deskargatzeko metodoak</string>
-    <string name="confirm_deletion_desc">%1$s ezabatu nahi duzu?</string>
     <string name="no">Ez</string>
     <string name="downloading_desc">%1$d titulu deskargatzen</string>
     <string name="bluetooth_permission_message">Haririk gabeko entzungailuak edo bozgorailuak deskonektatuta daudenean detektatzeko, aplikazioak Bluetooth sarbidea behar du. Android-en, baimen hau inguruko gailuetarako sarbidea bezala deskribatzen da, eta Bluetooth gailuak uneko kokapena ondorioztatzeko erabil daitezkeela ohartarazten du. Hala ere, Jellyfin aplikazioak ez du inoiz baimen hau erabiliko zure kokapena detektatzeko.</string>
@@ -128,7 +126,6 @@
     <string name="downloads">Deskargak</string>
     <string name="failed_thumbnail">Ezin izan da miniatura deskargatu</string>
     <string name="download_notifications_description">Deskargatu jakinarazpenak</string>
-    <string name="confirm_deletion">Berretsi ezabatzea</string>
     <string name="thumbnail_desc">Miniatura</string>
     <string name="stored_videos_in_internal_storage_desc">Film eta telesail bezalako bideoak aplikazioaren barne-biltegian gordeko dira. Aplikazioaren barrutik sarbidea baimenduta.</string>
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
@@ -140,4 +137,19 @@
     <string name="network_buffer_large_description">Buffer handia, konexio moderatu edo aldakorretan lagun dezake</string>
     <string name="network_buffer_extra_large">Extra handia</string>
     <string name="network_buffer_extra_large_description">Buffer maximoa, konexio motel edo sateliteetarako pentsatua</string>
+    <string name="media_service_unknown_page">Orri ezezaguna</string>
+    <string name="media_service_no_items">Ez da elementurik aurkitu</string>
+    <string name="media_service_auth_expired">Ireki aplikazioa zure telefonoan Jellyfin zerbitzarian saioa hasteko.</string>
+    <string name="media_service_invalid_id">Elementu ID baliogabea</string>
+    <string name="media_service_car_section_favorites">Gogokoak</string>
+    <string name="media_service_car_section_audiobooks">Audio-liburuak</string>
+    <string name="media_service_car_section_playlists">Erreprodukzio-zerrendak</string>
+    <string name="downloading_title">%1$s deskargatzen</string>
+    <string name="download_cancel">Utzi</string>
+    <string name="download_completed">Deskarga bukatuta</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Kendu deskarga</string>
+    <string name="download_remove_keep_local">Mantendu fitxategi lokala(k)</string>
+    <string name="download_remove_description">%1$s zure deskargetatik kendu nahi duzu?</string>
+    <string name="download_incomplete">Deskarga bukatu gabe</string>
 </resources>

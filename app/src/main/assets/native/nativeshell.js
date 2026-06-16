@@ -32,6 +32,7 @@ for (const plugin of plugins) {
 }
 
 const { deviceId, deviceName, appName, appVersion } = JSON.parse(window.NativeInterface.getDeviceInformation());
+const codecCaps = JSON.parse(window.NativeInterface.getCodecCapabilities());
 
 window.NativeShell = {
     enableFullscreen() {
@@ -72,10 +73,6 @@ window.NativeShell = {
 
     openClientSettings() {
         window.NativeInterface.openClientSettings();
-    },
-
-    openDownloads() {
-        window.NativeInterface.openDownloads();
     },
 
     selectServer() {
@@ -135,7 +132,7 @@ function getDeviceProfile(profileBuilder, item) {
             {
                 Condition: "LessThanEqual",
                 Property: "VideoLevel",
-                Value: "41"
+                Value: codecCaps.h264MaxLevel
             }]
     });
 

@@ -21,7 +21,6 @@
     <string name="notification_action_previous">Poprzednie</string>
     <string name="music_notification_channel">Odtwarzacz muzyczny Jellyfin</string>
     <string name="media_service_car_item_no_title">Bez tytułu</string>
-    <string name="media_service_car_section_playlists">Playlisty</string>
     <string name="media_service_car_section_genres">Gatunki</string>
     <string name="media_service_car_section_songs">Piosenki</string>
     <string name="media_service_car_section_artists">Wykonawcy</string>
@@ -113,8 +112,6 @@
     <string name="mobile_data_and_roaming_summary">Multimedia będą pobierane przez Wi-Fi, sieci komórkowe i roamingowe.</string>
     <string name="downloads">Pobrane</string>
     <string name="failed_network_method_check">Sprawdź dozwolone metody pobierania</string>
-    <string name="confirm_deletion">Potwierdź usunięcie</string>
-    <string name="confirm_deletion_desc">Czy chcesz usunąć %1$s?</string>
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
     <string name="thumbnail_desc">Miniaturka</string>
@@ -140,4 +137,19 @@
     <string name="network_buffer_large_description">Większy bufor może pomóc w przypadku połączeń o średniej lub zmiennej częstotliwości</string>
     <string name="network_buffer_extra_large">Bardzo duży</string>
     <string name="network_buffer_extra_large_description">Maksymalny bufor przeznaczony dla połączeń wolnych lub satelitarnych</string>
+    <string name="media_service_unknown_page">Nieznana strona</string>
+    <string name="media_service_no_items">Nie znaleziono elementów</string>
+    <string name="media_service_auth_expired">Otwórz aplikację na swoim telefonie, aby zalogować się do serwera Jellyfin.</string>
+    <string name="media_service_invalid_id">Nieprawidłowy identyfikator elementu</string>
+    <string name="media_service_car_section_favorites">Ulubione</string>
+    <string name="media_service_car_section_audiobooks">Audiobooki</string>
+    <string name="downloading_title">Pobieranie %1$s</string>
+    <string name="download_cancel">Anuluj</string>
+    <string name="download_completed">Pobieranie ukończone</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Usuń pobrane</string>
+    <string name="download_remove_keep_local">Zachowaj plik(i) lokalny(-e)</string>
+    <string name="download_remove_description">Czy chcesz usunąć %1$s z pobranych plików?</string>
+    <string name="download_incomplete">Pobieranie niekompletne</string>
+    <string name="media_service_car_section_playlists">Playlisty</string>
 </resources>

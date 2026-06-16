@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">音楽再生のコントロールに使われます</string>
     <string name="music_notification_channel">Jellyfin ミュージック プレイヤー</string>
     <string name="media_service_car_item_no_title">タイトルなし</string>
-    <string name="media_service_car_section_playlists">プレイリスト</string>
     <string name="media_service_car_section_genres">ジャンル</string>
     <string name="media_service_car_section_songs">曲</string>
     <string name="media_service_car_section_artists">アーティスト</string>
@@ -112,11 +111,9 @@
     <string name="bluetooth_permission_continue">続く</string>
     <string name="skip_media_segment">スキップ</string>
     <string name="view_downloads">ダウンロードをみる</string>
-    <string name="confirm_deletion_desc">%1$sを削除していいですか?</string>
     <string name="thumbnail_desc">サムネール</string>
     <string name="store_videos_in_internal_storage">内部ストレージに動画を保存</string>
     <string name="external_player_mpvkt">mpvKtプレーヤー</string>
-    <string name="confirm_deletion">削除していいですか</string>
     <string name="no">いいえ</string>
     <string name="yes">はい</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">一時的に早めるにはスクリーンに触れて押してください</string>
@@ -132,4 +129,17 @@
     <string name="downloading_desc">%1$d をダウンロード中</string>
     <string name="downloaded">%1$sをダウンロード済み</string>
     <string name="special_episode">スペシャル</string>
+    <string name="media_service_unknown_page">ページが見つかりません</string>
+    <string name="media_service_no_items">アイテムが見つかりません</string>
+    <string name="media_service_auth_expired">お使いのスマートフォンでアプリを開いて、Jellyfinサーバーにサインインしてください。</string>
+    <string name="media_service_invalid_id">無効なアイテムID</string>
+    <string name="media_service_car_section_favorites">お気に入り</string>
+    <string name="media_service_car_section_audiobooks">オーディオブック</string>
+    <string name="pref_exoplayer_network_buffer">再生バッファサイズ</string>
+    <string name="network_buffer_auto">自動</string>
+    <string name="network_buffer_auto_description">多くの再生環境に適した標準バッファ</string>
+    <string name="network_buffer_large">大</string>
+    <string name="network_buffer_large_description">大きなバッファ。中程度または不安定な接続で役立つ場合があります</string>
+    <string name="network_buffer_extra_large">特大</string>
+    <string name="network_buffer_extra_large_description">最大バッファ。低速または衛星接続向け</string>
 </resources>

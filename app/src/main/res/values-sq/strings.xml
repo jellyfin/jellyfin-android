@@ -67,7 +67,6 @@
     <string name="music_notification_channel_description">Përdoret për kontollimin e lujtjes së muzikës</string>
     <string name="music_notification_channel">Luajtësi i muzikës Jellyfin</string>
     <string name="media_service_car_item_no_title">Pa titull</string>
-    <string name="media_service_car_section_playlists">Listat e dëgjimit</string>
     <string name="media_service_car_section_genres">Zhanret</string>
     <string name="media_service_car_section_songs">Këngët</string>
     <string name="media_service_car_section_artists">Artistët</string>

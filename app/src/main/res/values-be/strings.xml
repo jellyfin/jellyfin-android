@@ -63,7 +63,6 @@
     <string name="media_service_item_not_found">Медыяэлемент не знойдзены</string>
     <string name="media_service_car_section_albums">Альбомы</string>
     <string name="media_service_car_section_genres">Жанры</string>
-    <string name="media_service_car_section_playlists">Плэй-лісты</string>
     <string name="media_service_car_item_no_title">Без назвы</string>
     <string name="music_notification_channel_description">Выкарыстоўваецца для кіравання прайграваннем музыкі</string>
     <string name="notification_action_previous">Папярэдні</string>
@@ -123,15 +122,27 @@
     <string name="download_notifications_description">Апавяшчэнні пра спампоўкі</string>
     <string name="failed_network_method_check">Калі ласка, праверце дазволеныя спосабы спампавання</string>
     <string name="stored_videos_in_internal_storage_desc">Відэа, такія як фільмы і тэлеперадачы, будуць захоўвацца ва ўнутраным сховішчы праграмы. Гэта дазваляе атрымліваць доступ да іх непасрэдна праз праграму.</string>
-    <string name="confirm_deletion">Пацвердзіць выдаленне</string>
     <string name="no">Не</string>
     <string name="failed_information">Не ўдалося атрымаць інфармацыю пра медыяфайл</string>
     <string name="yes">Так</string>
     <string name="thumbnail_desc">Мініяцюра</string>
     <string name="store_videos_in_internal_storage">Захоўваць відэа ў унутраным сховішчы</string>
     <string name="tv_show_desc">%1$s - С%2$dЭ%3$d</string>
-    <string name="confirm_deletion_desc">Вы хочаце выдаліць %1$s?</string>
     <string name="downloading_desc">Спампоўваецца %1$d файлаў</string>
     <string name="downloaded">Спампавана %1$s</string>
     <string name="special_episode">Спецвыпускі</string>
+    <string name="media_service_unknown_page">Невядомая старонка</string>
+    <string name="media_service_no_items">Элементаў не знойдзена</string>
+    <string name="media_service_auth_expired">Адкрыйце праграму на тэлефоне, каб увайсці на сервер Jellyfin.</string>
+    <string name="media_service_car_section_favorites">Абранае</string>
+    <string name="media_service_car_section_audiobooks">Аўдыякнігі</string>
+    <string name="media_service_car_section_playlists">Плэй-лісты</string>
+    <string name="downloading_title">Спампоўваецца %1$s</string>
+    <string name="download_cancel">Скасаваць</string>
+    <string name="download_completed">Спампоўванне завершана</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Выдаліць спампоўку</string>
+    <string name="download_remove_keep_local">Пакінуць лакальны(-я) файл(-ы)</string>
+    <string name="download_remove_description">Вы ўпэўнены, што хочаце выдаліць %1$s са спамповак?</string>
+    <string name="download_incomplete">Спампоўванне не завершана</string>
 </resources>

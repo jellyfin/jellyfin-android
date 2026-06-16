@@ -22,7 +22,6 @@
     <string name="notification_action_play">Ludi</string>
     <string name="notification_action_rewind">Rebobenu</string>
     <string name="notification_action_previous">Antaŭa</string>
-    <string name="media_service_car_section_playlists">Ludlistoj</string>
     <string name="media_service_car_section_genres">Ĝenroj</string>
     <string name="media_service_car_section_songs">Kantoj</string>
     <string name="media_service_car_section_artists">Artistoj</string>

@@ -3,19 +3,22 @@ package org.jellyfin.mobile.utils
 import android.content.Context
 import android.content.res.Configuration
 import android.webkit.WebView
+import kotlinx.serialization.json.Json
 import org.json.JSONException
-import org.json.JSONObject
 import timber.log.Timber
 import java.util.Locale
+import java.util.UUID
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-suspend fun WebView.initLocale(userId: String) {
+suspend fun WebView.initLocale(userId: UUID) {
     // Try to set locale via user settings
     val userSettings = suspendCoroutine { continuation ->
-        evaluateJavascript("window.localStorage.getItem('$userId-language')") { result ->
+        // jellyfin-web uses dash-less user ids
+        val flatUserId = userId.toString().replace("-", "")
+        evaluateJavascript("window.localStorage.getItem('$flatUserId-language')") { result ->
             try {
-                continuation.resume(JSONObject("{locale:$result}").getString("locale"))
+                continuation.resume(Json.decodeFromString<String?>(result))
             } catch (e: JSONException) {
                 continuation.resume(null)
             }

@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">Se utiliza para controlar la reproducción de música</string>
     <string name="music_notification_channel">Reproductor de música de Jellyfin</string>
     <string name="media_service_car_item_no_title">Sin título</string>
-    <string name="media_service_car_section_playlists">Listas</string>
     <string name="media_service_car_section_genres">Géneros</string>
     <string name="media_service_car_section_songs">Canciones</string>
     <string name="media_service_car_section_artists">Artistas</string>
@@ -122,8 +121,6 @@
     <string name="external_player_mpvkt_description">Un reproductor basado en mpv-android para proveer una interfaz mas atractiva que la original.</string>
     <string name="failed_information">Fallo la obtención de información del contenido</string>
     <string name="failed_network_method_check">Por favor, revisa los métodos de descarga permitidos</string>
-    <string name="confirm_deletion">Confirma el borrado</string>
-    <string name="confirm_deletion_desc">¿Quiere borrar %1$s?</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
     <string name="thumbnail_desc">Miniatura</string>

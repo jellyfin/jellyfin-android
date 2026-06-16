@@ -23,7 +23,6 @@
     <string name="dialog_web_view_not_supported">WebView није подржан</string>
     <string name="music_notification_channel">Jellyfin плејер за музику</string>
     <string name="media_service_car_item_no_title">Без наслова</string>
-    <string name="media_service_car_section_playlists">Плејлисте</string>
     <string name="media_service_car_section_genres">Жанрови</string>
     <string name="media_service_car_section_songs">Песме</string>
     <string name="media_service_car_section_artists">Уметници</string>
@@ -90,8 +89,6 @@
     <string name="pref_subtitle_style_summary">Можете променити изглед титлова у подешавањима Андроида</string>
     <string name="downloads">Преузимања</string>
     <string name="download_notifications_description">Обавештења о преузимањима</string>
-    <string name="confirm_deletion_desc">Да ли желите да обришете %1$s?</string>
-    <string name="confirm_deletion">Потврдите брисање</string>
     <string name="store_videos_in_internal_storage">Чувај видее у унутрашњем складишту</string>
     <string name="stored_videos_in_internal_storage_desc">Видеи као што су филмови и серије биће чувани у унутрашњој меморији, тако да апликација може да им приступи.</string>
     <string name="button_use_different_server">Користи други сервер</string>
@@ -134,4 +131,26 @@
     <string name="no">Не</string>
     <string name="thumbnail_desc">Сличица</string>
     <string name="special_episode">Специјал</string>
+    <string name="download_incomplete">Недовршено преузимање</string>
+    <string name="media_service_unknown_page">Непозната страница</string>
+    <string name="media_service_no_items">Нема пронађених ставки</string>
+    <string name="media_service_auth_expired">Отворите апликацију на свом телефону и пријавите се на Jellyfin сервер.</string>
+    <string name="media_service_invalid_id">Неисправан идентификатор ставке</string>
+    <string name="media_service_car_section_favorites">Омиљено</string>
+    <string name="media_service_car_section_audiobooks">Аудио књиге</string>
+    <string name="media_service_car_section_playlists">Плејлисте</string>
+    <string name="pref_exoplayer_network_buffer">Величина бафера за репродукцију</string>
+    <string name="network_buffer_auto">Аутоматски</string>
+    <string name="network_buffer_auto_description">Подразумевани бафер, прикладан за већину случајева</string>
+    <string name="network_buffer_large">Велики</string>
+    <string name="network_buffer_large_description">Велики бафер, може помоћи код осредњих или променљивих веза</string>
+    <string name="network_buffer_extra_large">Екстра велики</string>
+    <string name="network_buffer_extra_large_description">Максимални бафер, предвиђен за споре или сателитске везе</string>
+    <string name="downloading_title">Преузимање %1$s</string>
+    <string name="download_cancel">Откажи</string>
+    <string name="download_completed">Преузимање завршено</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Уклони преузимање</string>
+    <string name="download_remove_keep_local">Задржи локалне датотеке</string>
+    <string name="download_remove_description">Да ли желите да уклоните %1$s из својих преузимања?</string>
 </resources>

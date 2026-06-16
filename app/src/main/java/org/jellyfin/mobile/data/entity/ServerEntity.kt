@@ -23,7 +23,7 @@ data class ServerEntity(
     constructor(hostname: String) : this(0, hostname, System.currentTimeMillis())
 
     companion object Key {
-        const val TABLE_NAME = "Server"
+        const val TABLE_NAME = "server"
         const val ID = "id"
         const val HOSTNAME = "hostname"
         const val LAST_USED_TIMESTAMP = "last_used_timestamp"

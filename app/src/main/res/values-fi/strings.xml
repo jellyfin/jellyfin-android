@@ -58,7 +58,6 @@
     <string name="media_service_car_item_no_title">Nimetön</string>
     <string name="music_notification_channel_description">Käytetään musiikin toiston ohjaukseen</string>
     <string name="music_notification_channel">Jellyfin-musiikkisoitin</string>
-    <string name="media_service_car_section_playlists">Soittolistat</string>
     <string name="media_service_car_section_genres">Tyylilajit</string>
     <string name="media_service_car_section_songs">Kappaleet</string>
     <string name="media_service_car_section_artists">Esittäjät</string>
@@ -124,8 +123,6 @@
     <string name="failed_thumbnail">Pikkukuvan lataus epäonnistui</string>
     <string name="failed_information">Mediatietojen nouto epäonnistui</string>
     <string name="failed_network_method_check">Tarkista sallimasi lataustavat</string>
-    <string name="confirm_deletion_desc">Haluatko poistaa kohteen %1$s?</string>
-    <string name="confirm_deletion">Vahvista poisto</string>
     <string name="no">Ei</string>
     <string name="thumbnail_desc">Pikkukuva</string>
     <string name="tv_show_desc">%1$s - K%2$dJ%3$d</string>

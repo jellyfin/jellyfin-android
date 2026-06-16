@@ -15,7 +15,6 @@
     <string name="media_service_car_section_albums">Албуми</string>
     <string name="media_service_car_section_artists">Изведувачи</string>
     <string name="media_service_car_section_songs">Песни</string>
-    <string name="media_service_car_section_playlists">Плејлисти</string>
     <string name="music_notification_channel">Jellyfin плеер за музика</string>
     <string name="music_notification_channel_description">Се користи за контрола на пуштање на музика</string>
     <string name="notification_action_previous">Претходно</string>

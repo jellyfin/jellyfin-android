@@ -20,7 +20,6 @@
     <string name="media_service_car_section_albums">Albumid</string>
     <string name="media_service_car_section_songs">Laulud</string>
     <string name="media_service_car_section_genres">Žanrid</string>
-    <string name="media_service_car_section_playlists">Esitusloendid</string>
     <string name="notification_action_rewind">Keri tagasi</string>
     <string name="notification_action_fast_forward">Keri edasi</string>
     <string name="playback_info_play_method">Esitusviis: %s</string>
@@ -116,8 +115,6 @@
     <string name="skip_media_segment">Jäta vahele</string>
     <string name="external_player_mpvkt">mpvKt pleier</string>
     <string name="failed_network_method_check">Kontrolli lubatud allalaadimismeetodeid</string>
-    <string name="confirm_deletion">Kinnita kustutamine</string>
-    <string name="confirm_deletion_desc">Kas soovid kustutada %1$s?</string>
     <string name="yes">Jah</string>
     <string name="stored_videos_in_internal_storage_desc">Videod, näiteks filmid ja sarjad, salvestatakse rakenduse sisemisse salvestusruumi. Juurdepääs lubatakse rakendusest.</string>
     <string name="downloaded">%1$s alla laetud</string>

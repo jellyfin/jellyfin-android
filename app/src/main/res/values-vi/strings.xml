@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">Được sử dụng để điều khiển phát nhạc</string>
     <string name="music_notification_channel">Trình Phát Nhạc Jellyfin</string>
     <string name="media_service_car_item_no_title">Không tiêu đề</string>
-    <string name="media_service_car_section_playlists">Danh Sách Phát</string>
     <string name="media_service_car_section_genres">Thể Loại</string>
     <string name="media_service_car_section_songs">Bài Hát</string>
     <string name="media_service_car_section_artists">Nghệ Sĩ</string>
@@ -114,8 +113,6 @@
     <string name="external_player_mpvkt_description">Một trình phát phương tiện dựa trên mpv-android nhằm mục đích cung cấp giao diện người dùng đẹp hơn so với bản gốc.</string>
     <string name="download_notifications_description">Thông báo tải xuống</string>
     <string name="failed_network_method_check">Vui lòng kiểm tra các phương thức tải xuống được phép của bạn</string>
-    <string name="confirm_deletion">Xác nhận xóa</string>
-    <string name="confirm_deletion_desc">Bạn có muốn xóa %1$s?</string>
     <string name="view_downloads">Xem tải xuống</string>
     <string name="downloads">Tải xuống</string>
     <string name="failed_thumbnail">Tải xuống hình thu nhỏ thất bại</string>
@@ -132,4 +129,25 @@
     <string name="downloaded">Đã tải xuống %1$s</string>
     <string name="skip_media_segment">Bỏ qua</string>
     <string name="special_episode">Đặc biệt</string>
+    <string name="media_service_unknown_page">Trang không xác định</string>
+    <string name="media_service_no_items">Không tìm thấy mục nào</string>
+    <string name="media_service_auth_expired">Vui lòng mở ứng dụng trên điện thoại để đăng nhập vào máy chủ Jellyfin của bạn.</string>
+    <string name="media_service_invalid_id">ID mục không hợp lệ</string>
+    <string name="media_service_car_section_favorites">Yêu thích</string>
+    <string name="pref_exoplayer_network_buffer">Kích thước bộ đệm phát lại</string>
+    <string name="network_buffer_auto">Tự động</string>
+    <string name="network_buffer_auto_description">Bộ đệm mặc định, phù hợp với hầu hết các tình huống phát lại</string>
+    <string name="network_buffer_large">Lớn</string>
+    <string name="network_buffer_large_description">Bộ đệm lớn hơn, có thể trợ giúp trên các kết nối vừa phải hoặc thay đổi</string>
+    <string name="network_buffer_extra_large">Cực lớn</string>
+    <string name="network_buffer_extra_large_description">Bộ đệm tối đa, dành cho kết nối chậm hoặc vệ tinh</string>
+    <string name="media_service_car_section_audiobooks">Sách nói</string>
+    <string name="media_service_car_section_playlists">Danh sách phát</string>
+    <string name="downloading_title">Đang tải xuống %1$s</string>
+    <string name="download_cancel">Hủy bỏ</string>
+    <string name="download_completed">Đã Tải Xuống Hoàn Tất</string>
+    <string name="download_remove">Xóa bản tải xuống</string>
+    <string name="download_remove_keep_local">Giữ lại tập tin cục bộ</string>
+    <string name="download_remove_description">Bạn có muốn xóa %1$s khỏi các tệp tải xuống của mình không?</string>
+    <string name="download_incomplete">Tải xuống chưa hoàn tất</string>
 </resources>

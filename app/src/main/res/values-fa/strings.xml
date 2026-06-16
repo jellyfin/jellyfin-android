@@ -51,7 +51,6 @@
     <string name="music_notification_channel_description">برای کنترل های پخش موسیقی استفاده می شود</string>
     <string name="music_notification_channel">پخش کننده موسیقی Jellyfin</string>
     <string name="media_service_car_item_no_title">بدون عنوان</string>
-    <string name="media_service_car_section_playlists">لیست های پخش</string>
     <string name="media_service_car_section_genres">ژانرها</string>
     <string name="media_service_car_section_songs">آهنگ ها</string>
     <string name="media_service_car_section_artists">هنرمندان</string>

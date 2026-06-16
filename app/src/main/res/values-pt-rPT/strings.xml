@@ -47,7 +47,6 @@
     <string name="music_notification_channel_description">Utilizado para controlo da reprodução de música</string>
     <string name="music_notification_channel">Leitor de música Jellyfin</string>
     <string name="media_service_car_item_no_title">Sem título</string>
-    <string name="media_service_car_section_playlists">Playlists</string>
     <string name="media_service_car_section_genres">Géneros</string>
     <string name="media_service_car_section_songs">Músicas</string>
     <string name="media_service_car_section_artists">Artistas</string>
@@ -117,7 +116,6 @@
     <string name="external_player_mpvkt">Leitor mpvKt</string>
     <string name="external_player_mpvkt_description">Um leitor multimédia baseado no mpv-android, com o objetivo de fornecer uma interface de utilizador mais agradável do que a original.</string>
     <string name="downloads">Transferências</string>
-    <string name="confirm_deletion">Confirmar eliminação</string>
     <string name="stored_videos_in_internal_storage_desc">Vídeos, como filmes e séries, serão armazenados na memória interna da aplicação, permitindo o acesso a partir da própria app.</string>
     <string name="tv_show_desc">%1$s - T%2$dE%3$d</string>
     <string name="no">Não</string>
@@ -129,7 +127,6 @@
     <string name="pref_exoplayer_allow_press_speed_up">Pressionar para acelerar</string>
     <string name="failed_information">Falha ao obter informações do conteúdo multimédia</string>
     <string name="failed_network_method_check">Verifica os métodos de transferência permitidos</string>
-    <string name="confirm_deletion_desc">Queres eliminar %1$s?</string>
     <string name="downloading_desc">A transferir %1$d títulos</string>
     <string name="downloaded">Transferido %1$s</string>
     <string name="skip_media_segment">Saltar</string>

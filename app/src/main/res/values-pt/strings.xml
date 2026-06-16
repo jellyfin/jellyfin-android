@@ -15,10 +15,8 @@
     <string name="no">Não</string>
     <string name="thumbnail_desc">Miniatura</string>
     <string name="tv_show_desc">%1$s - T%2$dE%3$d</string>
-    <string name="confirm_deletion_desc">Queres eliminar %1$s?</string>
     <string name="store_videos_in_internal_storage">Armazenar vídeos na memória interna</string>
     <string name="downloads">Transferências</string>
-    <string name="confirm_deletion">Confirmar eliminação</string>
     <string name="yes">Sim</string>
     <string name="downloading_desc">A transferir %1$d títulos</string>
     <string name="downloaded">Transferido %1$s</string>
@@ -60,7 +58,6 @@
     <string name="music_notification_channel">Reprodutor de música Jellyfin</string>
     <string name="wifi_only_summary">A mídia será baixada somente via WiFi.</string>
     <string name="media_service_car_section_songs">Sons</string>
-    <string name="media_service_car_section_playlists">Lista de Reprodução</string>
     <string name="music_notification_channel_description">Usado para controles de reprodução de música</string>
     <string name="notification_action_previous">Anterior</string>
     <string name="notification_action_rewind">Voltar</string>

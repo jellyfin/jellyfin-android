@@ -11,4 +11,4 @@ Mit dem Jellyfin Server kannst Du:
 * Deine Medien zu Deinem Android-Gerät streamen
 * Deine Kollektion mit einer einfach zu benutzenden Oberfläche ansehen.
 
-Dies ist die offizielle Jellyfin Kompanien-App für Android. Danke, dass Du Jellyfin verwendest!
+Dies ist die offizielle Jellyfin Kompanien-App für Android. Danke, dass du Jellyfin verwendest!

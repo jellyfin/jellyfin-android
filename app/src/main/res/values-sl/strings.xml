@@ -58,7 +58,6 @@
     <string name="music_notification_channel_description">Namenjeno nadzoru predvajanja glasbe</string>
     <string name="music_notification_channel">Predvajalnik glasbe Jellyfin</string>
     <string name="media_service_car_item_no_title">Brez naslova</string>
-    <string name="media_service_car_section_playlists">Seznami predvajanja</string>
     <string name="media_service_car_section_genres">Zvrsti</string>
     <string name="media_service_car_section_songs">Pesmi</string>
     <string name="media_service_car_section_artists">Avtorji</string>
@@ -127,8 +126,6 @@
     <string name="failed_information">Prenos informacij o predstavnosti ni uspel</string>
     <string name="failed_network_method_check">Preverite dovoljene načine prenosa</string>
     <string name="failed_thumbnail">Prenos sličice ni uspel</string>
-    <string name="confirm_deletion">Potrdi izbris</string>
-    <string name="confirm_deletion_desc">Ali želite izbrisati %1$s?</string>
     <string name="no">Ne</string>
     <string name="yes">Da</string>
     <string name="thumbnail_desc">Sličica</string>

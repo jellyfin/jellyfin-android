@@ -21,13 +21,18 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.source.SingleSampleMediaSource
 import androidx.media3.extractor.DefaultExtractorsFactory
 import androidx.media3.extractor.ts.TsExtractor
+import androidx.work.WorkManager
 import coil3.ImageLoader
 import kotlinx.coroutines.channels.Channel
 import okhttp3.OkHttpClient
 import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.bridge.MediaSegments
 import org.jellyfin.mobile.bridge.NativePlayer
+import org.jellyfin.mobile.downloads.DownloadManager
+import org.jellyfin.mobile.downloads.DownloadNotificationManager
+import org.jellyfin.mobile.downloads.DownloadQueue
 import org.jellyfin.mobile.downloads.DownloadsViewModel
+import org.jellyfin.mobile.downloads.FileDownloader
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayerEvent
@@ -62,6 +67,7 @@ val applicationModule = module {
     single { PermissionRequestHelper() }
     single { RemoteVolumeProvider(get()) }
     single(named(PLAYER_EVENT_CHANNEL)) { Channel<PlayerEvent>() }
+    factory { WorkManager.getInstance(get()) }
 
     // Controllers
     single { ApiClientController(get(), get(), get(), get(), get()) }
@@ -145,7 +151,7 @@ val applicationModule = module {
             .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
             .setCacheWriteDataSinkFactory(null)
             .setCacheKeyFactory { spec ->
-                spec.uri.extractId()
+                spec.key ?: spec.uri.extractId()
             }
     }
 
@@ -165,4 +171,10 @@ val applicationModule = module {
     single { ProgressiveMediaSource.Factory(get<CacheDataSource.Factory>()) }
     single { HlsMediaSource.Factory(get<CacheDataSource.Factory>()) }
     single { SingleSampleMediaSource.Factory(get<CacheDataSource.Factory>()) }
+
+    single(createdAtStart = true) { StorageManager(get(), get()) }
+    single { DownloadManager(get(), get(), get(), get(), get()) }
+    single { DownloadNotificationManager(get()) }
+    single { DownloadQueue(get(), get(), get(), get(), get(), get()) }
+    single { FileDownloader(get()) }
 }
