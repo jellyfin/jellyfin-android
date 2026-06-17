@@ -139,4 +139,17 @@
     <string name="pref_exoplayer_network_buffer">Bufferstorlek för spelning</string>
     <string name="network_buffer_large">Stor</string>
     <string name="network_buffer_extra_large">Extra stor</string>
+    <string name="media_service_car_section_playlists">Spellistor</string>
+    <string name="network_buffer_auto">Automatiskt</string>
+    <string name="network_buffer_auto_description">Standardbuffert, lämplig för de mesta uppspelningscenarion</string>
+    <string name="network_buffer_large_description">Större buffert, kan hjälpa till vid medelmåttiga eller instabila uppkopplingar</string>
+    <string name="network_buffer_extra_large_description">Max buffert, avsedd för långsamma eller satellituppkopplingar</string>
+    <string name="downloading_title">Laddar ned %1$s</string>
+    <string name="download_cancel">Avbryt</string>
+    <string name="download_completed">Nedladdning slutförd</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Ta bort nedladdning</string>
+    <string name="download_remove_keep_local">Behåll lokala fil(er)</string>
+    <string name="download_remove_description">Vill du ta bort %1$s från dina nedladdningar?</string>
+    <string name="download_incomplete">Nedladdning ej slutförd</string>
 </resources>
