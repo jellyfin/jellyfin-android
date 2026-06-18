@@ -154,4 +154,7 @@
     <string name="media_service_car_section_playlists">Afspeellijsten</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Horizontale gebaarbediening toestaan voor terug- en vooruitspoelen</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Horizontale gebaren</string>
+    <string name="select_folder">Map selecteren</string>
+    <string name="download_settings_dialog_title">Downloadlocatie kiezen</string>
+    <string name="download_settings_dialog_message">Kies waar gedownloade media wordt opgeslagen. Downloads gebruiken standaard alleen wifi.</string>
 </resources>
