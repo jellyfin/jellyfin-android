@@ -154,4 +154,9 @@
     <string name="media_service_car_section_playlists">Playlisty</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Gesty poziome</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Zezwól na sterowanie gestami poziomymi podczas wyszukiwania wideo</string>
+    <string name="downloads_empty">Brak pobrań</string>
+    <string name="downloads_empty_description">Możesz pobierać filmy i seriale, aby oglądać je offline. Szukaj ikony pobierania na stronie ze szczegółami pozycji.</string>
+    <string name="download_settings_dialog_title">Wybierz lokalizację pobierania</string>
+    <string name="download_settings_dialog_message">Wybierz miejsce, w którym chcesz zapisać pobrane multimedia. Pobierania domyślnie korzystają tylko z Wi-Fi.</string>
+    <string name="select_folder">Wybierz folder</string>
 </resources>
