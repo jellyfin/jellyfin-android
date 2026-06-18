@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.jellyfin.mobile.R
@@ -22,7 +23,7 @@ import org.jellyfin.mobile.data.entity.DownloadEntity
 
 @Composable
 fun DownloadRemoveDialog(
-    download: DownloadEntity,
+    downloads: List<DownloadEntity>,
     onConfirm: (Boolean) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -31,13 +32,25 @@ fun DownloadRemoveDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(text = stringResource(R.string.download_remove)) },
+        title = { Text(text = pluralStringResource(R.plurals.download_remove_title, downloads.size)) },
         text = {
             Column {
-                val name = remember(download, context) {
-                    download.getDisplayName(context).orEmpty()
+                val name = remember(downloads, context) {
+                    downloads
+                        .firstOrNull()
+                        .takeIf { downloads.size == 1 }
+                        ?.getDisplayName(context)
+                        .orEmpty()
                 }
-                Text(text = stringResource(R.string.download_remove_description, name))
+                Text(
+                    text = pluralStringResource(
+                        R.plurals.download_remove_description,
+                        downloads.size,
+                        downloads.size,
+                        name,
+                    )
+                )
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(top = 8.dp),
