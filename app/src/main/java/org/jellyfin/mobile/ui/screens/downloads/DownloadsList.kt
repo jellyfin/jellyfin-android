@@ -2,28 +2,18 @@ package org.jellyfin.mobile.ui.screens.downloads
 
 import android.text.format.Formatter
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Checkbox
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.ListItem
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -32,7 +22,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -42,61 +31,19 @@ import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.data.entity.DownloadFiles
 import org.jellyfin.mobile.downloads.DownloadFileType
 import org.jellyfin.mobile.downloads.DownloadStatus
-import org.jellyfin.mobile.downloads.DownloadsViewModel
 import org.koin.compose.koinInject
 
 @Composable
 fun DownloadsList(
-    viewModel: DownloadsViewModel = viewModel(),
+    downloads: List<DownloadFiles>,
+    onOpen: (DownloadEntity) -> Unit,
+    onDownload: (DownloadEntity) -> Unit,
+    onRemove: (DownloadEntity) -> Unit,
+    modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues.Zero,
 ) {
-    val downloads by viewModel.downloads.collectAsState()
-    var downloadToRemove by remember { mutableStateOf<DownloadEntity?>(null) }
-
-    if (downloadToRemove != null) {
-        val context = LocalContext.current
-        var keepLocalFiles by remember { mutableStateOf(false) }
-
-        AlertDialog(
-            onDismissRequest = { downloadToRemove = null },
-            title = { Text(text = stringResource(R.string.download_remove)) },
-            text = {
-                Column {
-                    val name = remember(downloadToRemove, context) {
-                        downloadToRemove?.getDisplayName(context).orEmpty()
-                    }
-                    Text(text = stringResource(R.string.download_remove_description, name))
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(top = 8.dp),
-                    ) {
-                        Checkbox(
-                            checked = keepLocalFiles,
-                            onCheckedChange = { keepLocalFiles = it },
-                        )
-                        Text(text = stringResource(R.string.download_remove_keep_local))
-                    }
-                }
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        downloadToRemove?.let { viewModel.removeDownload(it, deleteFiles = !keepLocalFiles) }
-                        downloadToRemove = null
-                    },
-                ) {
-                    Text(text = stringResource(R.string.yes))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { downloadToRemove = null }) {
-                    Text(text = stringResource(R.string.download_cancel))
-                }
-            },
-        )
-    }
-
     LazyColumn(
+        modifier = modifier,
         contentPadding = contentPadding,
     ) {
         items(
@@ -104,10 +51,10 @@ fun DownloadsList(
             key = { it.download.id },
         ) { downloadFiles ->
             DownloadItem(
-                downloadFiles,
-                onOpen = { viewModel.openDownload(downloadFiles.download) },
-                onDownload = { viewModel.download(downloadFiles.download) },
-                onRemove = { downloadToRemove = downloadFiles.download },
+                downloadFiles = downloadFiles,
+                onOpen = { onOpen(downloadFiles.download) },
+                onDownload = { onDownload(downloadFiles.download) },
+                onRemove = { onRemove(downloadFiles.download) },
             )
         }
     }

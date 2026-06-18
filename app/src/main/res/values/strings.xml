@@ -141,6 +141,8 @@
     <string name="pref_download_location">Download location</string>
     <string name="view_downloads">View downloads</string>
     <string name="downloads">Downloads</string>
+    <string name="downloads_empty">No downloads yet</string>
+    <string name="downloads_empty_description">You can download movies and TV shows to watch them offline. Look for the download icon on the item details page.</string>
     <string name="download_notifications_description">Download notifications</string>
     <string name="failed_thumbnail">Failed to download thumbnail</string>
     <string name="failed_information">Failed to retrieve media information</string>
