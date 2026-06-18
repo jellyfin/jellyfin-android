@@ -157,4 +157,6 @@
     <string name="select_folder">Map selecteren</string>
     <string name="download_settings_dialog_title">Downloadlocatie kiezen</string>
     <string name="download_settings_dialog_message">Kies waar gedownloade media wordt opgeslagen. Downloads gebruiken standaard alleen wifi.</string>
+    <string name="downloads_empty_description">Je kunt films en series downloaden om ze offline te kunnen kijken. Zoek naar het download-icoon op de detailpagina van het item.</string>
+    <string name="downloads_empty">Nog geen downloads</string>
 </resources>
