@@ -152,4 +152,6 @@
     <string name="download_incomplete">Download incompleet</string>
     <string name="downloading_title">%1$s downloaden</string>
     <string name="media_service_car_section_playlists">Afspeellijsten</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Horizontale gebaarbediening toestaan voor terug- en vooruitspoelen</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Horizontale gebaren</string>
 </resources>
