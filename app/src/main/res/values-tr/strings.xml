@@ -152,4 +152,11 @@
     <string name="download_remove_keep_local">Yerel dosyaları sakla</string>
     <string name="download_remove_description">İndirdiklerin arasından %1$s ögesini silmek istiyor musun?</string>
     <string name="download_incomplete">İndirme işlemi tamamlanmadı</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Yatay hareketler</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Videoda arama yapmak için yatay hareket kontrolüne izin ver</string>
+    <string name="downloads_empty">Henüz indirilen dosya yok</string>
+    <string name="downloads_empty_description">Filmleri ve dizileri indirip çevrimdışı olarak izleyebilirsiniz. İçerik ayrıntıları sayfasında indirme simgesini arayın.</string>
+    <string name="download_settings_dialog_title">İndirme konumunu seçin</string>
+    <string name="download_settings_dialog_message">Lütfen indirilen dosyaların nereye kaydedileceğini seçin. İndirme işlemleri varsayılan olarak yalnızca Wi-Fi üzerinden gerçekleştirilir.</string>
+    <string name="select_folder">Klasör seçin</string>
 </resources>
