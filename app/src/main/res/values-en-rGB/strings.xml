@@ -127,4 +127,26 @@
     <string name="downloading_desc">Downloading %1$d titles</string>
     <string name="downloaded">Downloaded %1$s</string>
     <string name="special_episode">Specijal</string>
+    <string name="media_service_unknown_page">Unknown page</string>
+    <string name="media_service_no_items">No items found</string>
+    <string name="media_service_auth_expired">Please open the app on your phone to sign in to your Jellyfin server.</string>
+    <string name="media_service_invalid_id">Invalid item ID</string>
+    <string name="media_service_car_section_favorites">Favourites</string>
+    <string name="media_service_car_section_audiobooks">Audiobooks</string>
+    <string name="media_service_car_section_playlists">Playlists</string>
+    <string name="pref_exoplayer_network_buffer">Playback buffer size</string>
+    <string name="network_buffer_auto">Auto</string>
+    <string name="network_buffer_auto_description">Default buffer, suitable for most playback scenarios</string>
+    <string name="network_buffer_large">Large</string>
+    <string name="network_buffer_large_description">Larger buffer, may help on moderate or variable connections</string>
+    <string name="network_buffer_extra_large">Extra large</string>
+    <string name="network_buffer_extra_large_description">Maximum buffer, intended for slow or satellite connections</string>
+    <string name="downloading_title">Downloading %1$s</string>
+    <string name="download_cancel">Cancel</string>
+    <string name="download_completed">Download completed</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Remove download</string>
+    <string name="download_remove_keep_local">Keep local file(s)</string>
+    <string name="download_remove_description">Do you want to remove %1$s from your downloads?</string>
+    <string name="download_incomplete">Download incomplete</string>
 </resources>
