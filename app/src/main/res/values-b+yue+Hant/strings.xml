@@ -148,4 +148,11 @@
     <string name="download_remove_keep_local">保留本機檔案</string>
     <string name="download_remove_description">你想唔想響你嘅下載項目入面刪走 %1$s？</string>
     <string name="download_incomplete">下載未完成</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">水平手勢</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">容許撳住左右拉動手勢嚟跳轉影片進度</string>
+    <string name="downloads_empty">暫時冇下載項目</string>
+    <string name="downloads_empty_description">你可以下載電影同電視節目嚟離線觀看。請喺項目嘅詳細資訊頁面搵返下載圖示。</string>
+    <string name="download_settings_dialog_title">揀下載位置</string>
+    <string name="download_settings_dialog_message">請揀你要將下載嘅媒體儲存喺邊度。預設情況下，下載只會用 WiFi。</string>
+    <string name="select_folder">揀資料夾</string>
 </resources>
