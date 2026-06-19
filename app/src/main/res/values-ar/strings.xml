@@ -155,4 +155,11 @@
     <string name="download_remove_keep_local">الاحتفاظ بالملف(ات) المحلية</string>
     <string name="download_remove_description">هل ترغب في حذف %1$s من ملفات التحميل؟</string>
     <string name="download_incomplete">لم يكتمل التحميل</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">إيماءات افقية</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">السماح بإيماءات التحكم الافقية لبحث الفيديو</string>
+    <string name="downloads_empty">لا تحميلات حاليا</string>
+    <string name="downloads_empty_description">بإمكانك تحميل أفلام و برامج تلفزيونية لمشاهدتها بغير اتصال. ابحث عن ايقونة التحميل على عنصر صفحة التفاصيل.</string>
+    <string name="download_settings_dialog_title">اختر موقع التحميل</string>
+    <string name="download_settings_dialog_message">برجى اختيار اين يمكن حفظ الوسائط المحملة. التحميلات افتراضيا التحميلات تستخدم فقط الواي فاي.</string>
+    <string name="select_folder">اختر المجلد</string>
 </resources>
