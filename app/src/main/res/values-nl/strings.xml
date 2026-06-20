@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="network_message">Wil je downloads toestaan via mobiele data of tijdens roaming? Je provider kan hiervoor kosten in rekening brengen. Je kunt deze optie later wijzigen in de instellingen.</string>
+    <string name="network_message">Wil je downloads toestaan via mobiele gegevens of tijdens roaming? Je provider kan hiervoor kosten in rekening brengen. Je kunt deze optie later wijzigen in de instellingen.</string>
     <string name="network_title">Toegestane netwerktypen</string>
     <string name="downloading">Downloaden</string>
-    <string name="mobile_data_and_roaming">Mobiele data &amp; roaming</string>
-    <string name="mobile_data">Mobiele data</string>
-    <string name="wifi_only">Alleen op WiFi</string>
+    <string name="mobile_data_and_roaming">Mobiele gegevens &amp; roaming</string>
+    <string name="mobile_data">Mobiele gegevens</string>
+    <string name="wifi_only">Alleen wifi</string>
     <string name="battery_optimizations_message">Zet batterijoptimalisatie uit om media af te spelen wanneer het scherm uit is.</string>
     <string name="host_input_hint">Host</string>
     <string name="connect_button_text">Verbinden</string>
@@ -40,7 +40,7 @@
     <string name="video_player_web_description">De standaard HTML-videospeler van de webinterface</string>
     <string name="video_player_external">Externe speler</string>
     <string name="video_player_web">Webspeler</string>
-    <string name="pref_video_player_type_title">Videospelertype</string>
+    <string name="pref_video_player_type_title">Soort videospeler</string>
     <string name="available_servers_title">Beschikbare servers</string>
     <string name="choose_server_button_text">Server kiezen</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Gebaren voor helderheid en volume</string>
@@ -107,9 +107,9 @@
     <string name="bluetooth_permission_message">De app vereist Bluetooth-toegang om te detecteren of er een draadloze koptelefoon of luidspreker is aangesloten. Op Android wordt deze machtiging beschreven als \"toegang tot apparaten in de buurt\" met de waarschuwing dat deze kan worden gebruikt om de huidige locatie te achterhalen. De Jellyfin-app zal deze machtiging echter nooit met dat doel gebruiken.</string>
     <string name="bluetooth_permission_title">Bluetooth-toegang toestaan\?</string>
     <string name="bluetooth_permission_granted">Bluetooth-toestemming is verleend</string>
-    <string name="mobile_data_summary">Media zal via WiFi en mobiele netwerken worden gedownload.</string>
-    <string name="wifi_only_summary">Media zal alleen via WiFi worden gedownload.</string>
-    <string name="mobile_data_and_roaming_summary">Media zal via WiFi, mobiele- en roaming-netwerken worden gedownload.</string>
+    <string name="mobile_data_summary">Media zal via wifi en mobiele netwerken worden gedownload.</string>
+    <string name="wifi_only_summary">Media zal alleen via wifi worden gedownload.</string>
+    <string name="mobile_data_and_roaming_summary">Media zal via wifi, mobiele- en roaming-netwerken worden gedownload.</string>
     <string name="downloads">Downloads</string>
     <string name="failed_thumbnail">Miniatuur downloaden mislukt</string>
     <string name="failed_information">Media-informatie ophalen mislukt</string>
