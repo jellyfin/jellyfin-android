@@ -168,9 +168,6 @@ val applicationModule = module {
         }
         DefaultMediaSourceFactory(get<CacheDataSource.Factory>(), extractorsFactory)
     }
-    single { ProgressiveMediaSource.Factory(get<CacheDataSource.Factory>()) }
-    single { HlsMediaSource.Factory(get<CacheDataSource.Factory>()) }
-    single { SingleSampleMediaSource.Factory(get<CacheDataSource.Factory>()) }
 
     single(createdAtStart = true) { StorageManager(get(), get()) }
     single { DownloadManager(get(), get(), get(), get(), get()) }
