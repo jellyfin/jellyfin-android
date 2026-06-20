@@ -54,6 +54,7 @@ class SessionBrowserCallback(
 ) : MediaLibrarySession.Callback {
     companion object {
         const val MAX_PAGE_SIZE = 250
+        const val MEDIA_ITEM_EXTRA_START_POSITION = "start_position"
     }
 
     val pages = listOf(
@@ -100,6 +101,9 @@ class SessionBrowserCallback(
             setMediaId(Json.encodeToString<LibraryMediaId>(LibraryMediaId.Route(action.route)))
         } else if (action is LibraryItemAction.Play) {
             setMediaId(Json.encodeToString<LibraryMediaId>(LibraryMediaId.Item(action.item.id, route)))
+            action.item.userData?.playbackPositionTicks?.ticks?.inWholeMilliseconds?.let {
+                extras.putLong(MEDIA_ITEM_EXTRA_START_POSITION, it)
+            }
         }
 
         setMediaMetadata(
@@ -375,17 +379,17 @@ class SessionBrowserCallback(
             }
         }
 
-        var resumePositionMs = startPositionMs
-        val currentLibraryMediaId = expandedItems.getOrNull(newStartIndex)?.mediaId?.let {
-            runCatching { Json.decodeFromString<LibraryMediaId>(it) }.getOrNull()
-        }
-        if (currentLibraryMediaId is LibraryMediaId.Item && (startPositionMs == 0L || startPositionMs == C.TIME_UNSET)) {
-            val item by api.userLibraryApi.getItem(itemId = currentLibraryMediaId.itemId)
-            val positionMs = item.userData?.playbackPositionTicks?.ticks?.inWholeMilliseconds ?: 0L
-            if (positionMs > 0L) resumePositionMs = positionMs
+        // Use the server-side stored position if there is no requested start position
+        val newStartPositionMs = when (startPositionMs) {
+            0L, C.TIME_UNSET -> expandedItems.firstOrNull()?.mediaMetadata?.extras?.getLong(
+                MEDIA_ITEM_EXTRA_START_POSITION,
+                startPositionMs
+            ) ?: startPositionMs
+
+            else -> startPositionMs
         }
 
         expandedItems = onAddMediaItems(mediaSession, controller, expandedItems).await()
-        MediaSession.MediaItemsWithStartPosition(expandedItems, newStartIndex, resumePositionMs)
+        MediaSession.MediaItemsWithStartPosition(expandedItems, newStartIndex, newStartPositionMs)
     }
 }
