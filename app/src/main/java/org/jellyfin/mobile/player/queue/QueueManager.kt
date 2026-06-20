@@ -6,11 +6,9 @@ import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.media3.common.MediaItem
-import androidx.media3.exoplayer.hls.HlsMediaSource
+import androidx.media3.common.MimeTypes
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.MergingMediaSource
-import androidx.media3.exoplayer.source.ProgressiveMediaSource
-import androidx.media3.exoplayer.source.SingleSampleMediaSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.data.dao.DownloadDao
@@ -256,12 +254,8 @@ class QueueManager(
     }
 
     private fun prepareStreams(source: RemoteJellyfinMediaSource): MediaSource {
-        val videoSource = createVideoMediaSource(source)
-        val subtitleSources = createExternalSubtitleMediaSources(source)
-        return when {
-            subtitleSources.isNotEmpty() -> MergingMediaSource(videoSource, *subtitleSources)
-            else -> videoSource
-        }
+        val subtitleConfigurations = createExternalSubtitleMediaSources(source)
+        return createVideoMediaSource(source, subtitleConfigurations)
     }
 
     /**
@@ -271,9 +265,12 @@ class QueueManager(
      * @return A [MediaSource]. The type of MediaSource depends on the playback method/protocol.
      */
     @CheckResult
-    private fun createVideoMediaSource(source: JellyfinMediaSource): MediaSource {
+    private fun createVideoMediaSource(
+        source: JellyfinMediaSource,
+        externalSubtitleConfigurations: List<MediaItem.SubtitleConfiguration>
+    ): MediaSource {
         val sourceInfo = source.sourceInfo
-        val (url, factory) = when (source.playMethod) {
+        val (url, forcedMimeType) = when (source.playMethod) {
             PlayMethod.DIRECT_PLAY -> {
                 when (sourceInfo.protocol) {
                     MediaProtocol.FILE -> {
@@ -285,13 +282,12 @@ class QueueManager(
                             deviceId = apiClient.deviceInfo.id,
                         )
 
-                        url to get<ProgressiveMediaSource.Factory>()
+                        url to null
                     }
                     MediaProtocol.HTTP -> {
                         val url = requireNotNull(sourceInfo.path)
-                        val factory = get<HlsMediaSource.Factory>().setAllowChunklessPreparation(true)
 
-                        url to factory
+                        url to MimeTypes.APPLICATION_M3U8
                     }
                     else -> throw IllegalArgumentException("Unsupported protocol ${sourceInfo.protocol}")
                 }
@@ -306,22 +302,26 @@ class QueueManager(
                     deviceId = apiClient.deviceInfo.id,
                 )
 
-                url to get<ProgressiveMediaSource.Factory>()
+                url to null
             }
             PlayMethod.TRANSCODE -> {
                 val transcodingPath = requireNotNull(sourceInfo.transcodingUrl) { "Missing transcode URL" }
                 val protocol = sourceInfo.transcodingSubProtocol
                 require(protocol == MediaStreamProtocol.HLS) { "Unsupported transcode protocol '$protocol'" }
                 val transcodingUrl = apiClient.createUrl(transcodingPath)
-                val factory = get<HlsMediaSource.Factory>().setAllowChunklessPreparation(true)
 
-                transcodingUrl to factory
+                transcodingUrl to MimeTypes.APPLICATION_M3U8
             }
         }
+
+        // DefaultMediaSourceFactory
+        val factory = get<MediaSource.Factory>()
 
         val mediaItem = MediaItem.Builder()
             .setMediaId(source.itemId.toString())
             .setUri(url)
+            .setMimeType(forcedMimeType)
+            .setSubtitleConfigurations(externalSubtitleConfigurations)
             .build()
 
         return factory.createMediaSource(mediaItem)
@@ -336,23 +336,21 @@ class QueueManager(
     @CheckResult
     private fun createExternalSubtitleMediaSources(
         source: JellyfinMediaSource,
-    ): Array<MediaSource> {
-        val factory = get<SingleSampleMediaSource.Factory>()
+    ): List<MediaItem.SubtitleConfiguration> {
         return source.externalSubtitleStreams.map { stream ->
             val uri = apiClient.createUrl(stream.deliveryUrl).toUri()
-            val mediaItem = MediaItem.SubtitleConfiguration.Builder(uri).apply {
+            MediaItem.SubtitleConfiguration.Builder(uri).apply {
                 setId("${ExternalSubtitleStream.ID_PREFIX}${stream.index}")
                 setLabel(stream.displayTitle)
                 setMimeType(stream.mimeType)
                 setLanguage(stream.language)
             }.build()
-            factory.createMediaSource(mediaItem, source.runTime.inWholeMilliseconds)
-        }.toTypedArray()
+        }.toList()
     }
 
     @CheckResult
     private fun createDownloadVideoMediaSource(mediaSourceId: String, fileUri: Uri): MediaSource {
-        val mediaSourceFactory: ProgressiveMediaSource.Factory = get()
+        val factory: MediaSource.Factory = get()
 
         val mediaItem = MediaItem.Builder()
             .setMediaId(mediaSourceId)
@@ -360,7 +358,7 @@ class QueueManager(
             .setCustomCacheKey(fileUri.toString())
             .build()
 
-        return mediaSourceFactory.createMediaSource(mediaItem)
+        return factory.createMediaSource(mediaItem)
     }
 
     /**
