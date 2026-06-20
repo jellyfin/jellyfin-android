@@ -153,7 +153,11 @@ class TrackSelectionHelper(
             SubtitleDeliveryMethod.EXTERNAL -> {
                 // For external subtitles, we can simply match the ID that we set when creating the player media source.
                 for (group in player.currentTracks.groups) {
-                    if (group.getTrackFormat(0).id == "${ExternalSubtitleStream.ID_PREFIX}${subtitleStream.index}") {
+                    val formatId = group.getTrackFormat(0).id ?: continue
+                    val originalFormatPrefixIndex = formatId.indexOf(ExternalSubtitleStream.ID_PREFIX)
+                    if (originalFormatPrefixIndex < 0) continue
+                    val originalFormatId = formatId.substring(originalFormatPrefixIndex)
+                    if (originalFormatId == "${ExternalSubtitleStream.ID_PREFIX}${subtitleStream.index}") {
                         return trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_TEXT, group.mediaTrackGroup)
                     }
                 }
