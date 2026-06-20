@@ -34,9 +34,7 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
 
     fun openDownload(download: DownloadEntity) {
         when (download.item.mediaType) {
-            MediaType.VIDEO,
-            MediaType.AUDIO,
-            -> {
+            MediaType.VIDEO -> {
                 val playOptions = PlayOptions(
                     ids = listOf(download.itemId),
                     mediaSourceId = download.itemId.toString(),
@@ -49,12 +47,12 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
                 activityEventHandler.emit(ActivityEvent.LaunchNativePlayer(playOptions))
             }
 
+            MediaType.AUDIO,
             MediaType.PHOTO,
             MediaType.BOOK,
-            MediaType.UNKNOWN,
-            -> {
+            MediaType.UNKNOWN -> {
                 viewModelScope.launch {
-                    val fileUri = withContext(Dispatchers.IO) {
+                    withContext(Dispatchers.IO) {
                         val storageLocation = storageManager.getStorageLocation()
                         val itemLocation = storageLocation?.findFile(download.path)
                         if (itemLocation != null && itemLocation.isDirectory) {
@@ -63,8 +61,9 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
                         } else {
                             null
                         }
+                    }?.let {
+                        activityEventHandler.emit(ActivityEvent.OpenUrl(it.toString(), true))
                     }
-                    fileUri?.let { activityEventHandler.emit(ActivityEvent.OpenUrl(it.toString(), true)) }
                 }
             }
         }
