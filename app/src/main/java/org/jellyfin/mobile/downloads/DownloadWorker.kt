@@ -23,14 +23,12 @@ class DownloadWorker(
         private val tag = DownloadWorker::class.qualifiedName!!
 
         fun start(context: Context, appPreferences: AppPreferences) {
-            val downloadMethod = appPreferences.downloadMethod ?: DownloadMethod.DEFAULT
-
             val request = OneTimeWorkRequestBuilder<DownloadWorker>().apply {
                 addTag(tag)
                 setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
                 setConstraints(
                     Constraints.Builder().apply {
-                        when (downloadMethod) {
+                        when (appPreferences.downloadMethod) {
                             DownloadMethod.WIFI_ONLY -> setRequiredNetworkType(NetworkType.UNMETERED)
                             DownloadMethod.MOBILE_DATA -> setRequiredNetworkType(NetworkType.NOT_ROAMING)
                             DownloadMethod.MOBILE_AND_ROAMING -> setRequiredNetworkType(NetworkType.CONNECTED)
