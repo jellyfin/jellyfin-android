@@ -52,6 +52,7 @@ object Constants {
     // InputManager commands
     const val PLAYBACK_MANAGER_COMMAND_PLAY = "unpause"
     const val PLAYBACK_MANAGER_COMMAND_PAUSE = "pause"
+    const val PLAYBACK_MANAGER_COMMAND_PLAY_PAUSE = "playPause"
     const val PLAYBACK_MANAGER_COMMAND_PREVIOUS = "previousTrack"
     const val PLAYBACK_MANAGER_COMMAND_NEXT = "nextTrack"
     const val PLAYBACK_MANAGER_COMMAND_REWIND = "rewind"

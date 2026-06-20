@@ -22,8 +22,10 @@ import android.media.session.PlaybackState
 import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
+import android.view.KeyEvent
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.IntentCompat
 import androidx.core.content.getSystemService
 import androidx.core.text.HtmlCompat
 import coil3.ImageLoader
@@ -55,6 +57,7 @@ import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_FAST_FORWARD
 import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_NEXT
 import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_PAUSE
 import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_PLAY
+import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_PLAY_PAUSE
 import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_PREVIOUS
 import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_REWIND
 import org.jellyfin.mobile.utils.Constants.PLAYBACK_MANAGER_COMMAND_STOP
@@ -96,6 +99,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                     // Pause playback when unplugging headphones
                     if (state == 0) webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PAUSE)
                 }
+
                 BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED -> {
                     val extras = intent.extras ?: return
                     val state = extras.getInt(BluetoothA2dp.EXTRA_STATE)
@@ -104,6 +108,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                         webappFunctionChannel.callPlaybackManagerAction(PLAYBACK_MANAGER_COMMAND_PAUSE)
                     }
                 }
+
                 BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED -> {
                     val extras = intent.extras ?: return
                     val state = extras.getInt(BluetoothHeadset.EXTRA_STATE)
@@ -181,10 +186,12 @@ class RemotePlayerService : Service(), CoroutineScope {
                 transportControls.play()
                 startWakelock()
             }
+
             Constants.ACTION_PAUSE -> {
                 transportControls.pause()
                 stopWakelock()
             }
+
             Constants.ACTION_FAST_FORWARD -> transportControls.fastForward()
             Constants.ACTION_REWIND -> transportControls.rewind()
             Constants.ACTION_PREVIOUS -> transportControls.skipToPrevious()
@@ -311,6 +318,7 @@ class RemotePlayerService : Service(), CoroutineScope {
                         R.string.notification_action_play,
                         Constants.ACTION_PLAY,
                     )
+
                     else -> generateAction(
                         R.drawable.ic_pause_black_42dp,
                         R.string.notification_action_pause,
@@ -447,6 +455,30 @@ class RemotePlayerService : Service(), CoroutineScope {
                         val isPlaying = currentState.state == PlaybackState.STATE_PLAYING
                         val canSeek = (currentState.actions and PlaybackState.ACTION_SEEK_TO) != 0L
                         setPlaybackState(isPlaying, pos, canSeek)
+                    }
+
+                    override fun onMediaButtonEvent(mediaButtonIntent: Intent): Boolean {
+                        val keyEvent = IntentCompat.getParcelableExtra(mediaButtonIntent, Intent.EXTRA_KEY_EVENT, KeyEvent::class.java)
+                            ?: return super.onMediaButtonEvent(mediaButtonIntent)
+
+                        val command = when (keyEvent.keyCode) {
+                            KeyEvent.KEYCODE_MEDIA_PLAY -> PLAYBACK_MANAGER_COMMAND_PLAY
+                            KeyEvent.KEYCODE_MEDIA_PAUSE -> PLAYBACK_MANAGER_COMMAND_PAUSE
+                            KeyEvent.KEYCODE_HEADSETHOOK -> PLAYBACK_MANAGER_COMMAND_PLAY_PAUSE
+                            KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> PLAYBACK_MANAGER_COMMAND_PLAY_PAUSE
+                            KeyEvent.KEYCODE_MEDIA_NEXT -> PLAYBACK_MANAGER_COMMAND_NEXT
+                            KeyEvent.KEYCODE_MEDIA_PREVIOUS -> PLAYBACK_MANAGER_COMMAND_PREVIOUS
+                            KeyEvent.KEYCODE_MEDIA_STOP -> PLAYBACK_MANAGER_COMMAND_STOP
+                            KeyEvent.KEYCODE_MEDIA_FAST_FORWARD -> PLAYBACK_MANAGER_COMMAND_FAST_FORWARD
+                            KeyEvent.KEYCODE_MEDIA_REWIND -> PLAYBACK_MANAGER_COMMAND_REWIND
+                            else -> null
+                        }
+
+                        if (keyEvent.action != KeyEvent.ACTION_DOWN || keyEvent.repeatCount != 0) return command != null
+                        else if (command == null) return super.onMediaButtonEvent(mediaButtonIntent)
+
+                        webappFunctionChannel.callPlaybackManagerAction(command)
+                        return true
                     }
                 },
             )
