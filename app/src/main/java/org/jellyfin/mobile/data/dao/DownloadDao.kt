@@ -21,6 +21,7 @@ interface DownloadDao {
     @Query("SELECT * FROM download ORDER BY created_at DESC")
     fun getAllDownloadsWithFiles(): Flow<List<DownloadFiles>>
 
+    @Transaction
     @Query("SELECT * FROM download WHERE status = 'QUEUED' OR status = 'DOWNLOADING' ORDER BY created_at ASC")
     fun getQueuedDownloads(): List<DownloadFiles>
 
