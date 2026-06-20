@@ -13,7 +13,7 @@ import org.jellyfin.sdk.model.api.ItemSortBy
 val GenreLibraryPage = { api: ApiClient ->
     libraryPage<LibraryRoute.Genre>(grid = true) { route, offset, limit ->
         val result by api.itemsApi.getItems(
-            includeItemTypes = listOf(BaseItemKind.MUSIC_ALBUM),
+            includeItemTypes = listOf(BaseItemKind.MUSIC_ALBUM, BaseItemKind.AUDIO_BOOK),
             sortBy = listOf(ItemSortBy.SORT_NAME),
             genreIds = listOf(route.genreId),
             recursive = true,
@@ -27,7 +27,11 @@ val GenreLibraryPage = { api: ApiClient ->
             LibraryPageElement.baseItem(
                 api = api,
                 item = it,
-                action = LibraryItemAction.Navigate(LibraryRoute.Album(it.id)),
+                action = when (it.type) {
+                    BaseItemKind.AUDIO_BOOK -> LibraryItemAction.Play(it)
+                    BaseItemKind.MUSIC_ALBUM -> LibraryItemAction.Navigate(LibraryRoute.Album(it.id))
+                    else -> error("Unknown item type ${it.type}")
+                },
             )
         }
     }

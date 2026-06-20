@@ -13,7 +13,7 @@ val FavoritesLibraryPage = { api: ApiClient ->
     libraryPage<LibraryRoute.Favorites> { route, offset, limit ->
         val result by api.itemsApi.getItems(
             parentId = route.libraryId,
-            includeItemTypes = listOf(BaseItemKind.AUDIO),
+            includeItemTypes = listOf(BaseItemKind.AUDIO, BaseItemKind.AUDIO_BOOK),
             isFavorite = true,
             sortBy = listOf(ItemSortBy.SORT_NAME),
             recursive = true,

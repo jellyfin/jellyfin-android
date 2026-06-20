@@ -15,7 +15,7 @@ val RecentLibraryPage = { api: ApiClient ->
     libraryPage<LibraryRoute.Recent>(grid = true) { route, offset, limit ->
         val result by api.itemsApi.getItems(
             parentId = route.libraryId,
-            includeItemTypes = listOf(BaseItemKind.AUDIO),
+            includeItemTypes = listOf(BaseItemKind.AUDIO, BaseItemKind.AUDIO_BOOK),
             filters = listOf(ItemFilter.IS_PLAYED),
             sortBy = listOf(ItemSortBy.DATE_PLAYED),
             sortOrder = listOf(SortOrder.DESCENDING),
