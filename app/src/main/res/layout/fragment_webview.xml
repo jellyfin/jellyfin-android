@@ -37,7 +37,7 @@
             app:layout_constraintTop_toBottomOf="@id/progress_indicator" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <WebView
+    <org.jellyfin.mobile.webapp.JellyfinWebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

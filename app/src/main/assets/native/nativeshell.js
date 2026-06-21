@@ -31,6 +31,26 @@ for (const plugin of plugins) {
     };
 }
 
+// In desktop mode (e.g. Samsung DeX) the web client adds 'mouseIdle' to <body>
+// after pointer inactivity but never removes it in the mobile layout, leaving
+// the cursor permanently hidden. Drive the hide/show cycle from our side.
+(function () {
+    const IDLE_MS = 3000;
+    let idleTimer = null;
+    document.addEventListener('pointermove', () => {
+        document.body.classList.remove('mouseIdle');
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => document.body.classList.add('mouseIdle'), IDLE_MS);
+    }, { capture: true, passive: true });
+}());
+
+// Prevent pointer lock from hiding the cursor in desktop mode.
+Object.defineProperty(Element.prototype, 'requestPointerLock', {
+    value: function() { return Promise.resolve(); },
+    writable: false,
+    configurable: false,
+});
+
 const { deviceId, deviceName, appName, appVersion } = JSON.parse(window.NativeInterface.getDeviceInformation());
 const codecCaps = JSON.parse(window.NativeInterface.getCodecCapabilities());
 
