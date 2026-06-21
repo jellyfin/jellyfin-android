@@ -37,6 +37,7 @@ import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.BackPressInterceptor
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER
+import org.jellyfin.mobile.utils.allowPlaybackCaptureByAll
 import org.jellyfin.mobile.utils.applyDefault
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
 import org.jellyfin.mobile.utils.dip
@@ -191,6 +192,10 @@ class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClien
         addJavascriptInterface(mediaSegments, "MediaSegments")
 
         loadUrl(server.hostname)
+
+        // WebView/Chromium resets the app playback capture policy during loadUrl().
+        post { requireContext().allowPlaybackCaptureByAll() }
+
         postDelayed(timeoutRunnable, Constants.INITIAL_CONNECTION_TIMEOUT)
         postDelayed(showLoadingContainerRunnable, Constants.SHOW_PROGRESS_BAR_DELAY)
     }
