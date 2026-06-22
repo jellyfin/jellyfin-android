@@ -137,4 +137,18 @@
     <string name="network_buffer_auto">Auto</string>
     <string name="network_buffer_large">Grande</string>
     <string name="downloads_empty">Sem downloads</string>
+    <string name="media_service_invalid_id">ID de item inválido</string>
+    <string name="media_service_car_section_audiobooks">Audiolivros</string>
+    <string name="media_service_car_section_playlists">Listas de reprodução</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Gestos horizontais</string>
+    <string name="network_buffer_extra_large_description">Buffer máximo, ideal para ligações lentas ou por satélite</string>
+    <string name="downloads_empty_description">Pode descarregar filmes e séries para assistir offline. Procure o ícone de download na página de detalhes do item.</string>
+    <string name="downloading_title">Baixando %1$s</string>
+    <string name="download_cancel">Cancelar</string>
+    <string name="download_completed">Download concluído</string>
+    <string name="download_remove">Remover download</string>
+    <string name="download_remove_keep_local">Manter arquivos locais</string>
+    <string name="download_remove_description">Pretende remover %1$s dos seus downloads?</string>
+    <string name="download_incomplete">Download incompleto</string>
+    <string name="download_settings_dialog_title">Escolha o local de download</string>
 </resources>
