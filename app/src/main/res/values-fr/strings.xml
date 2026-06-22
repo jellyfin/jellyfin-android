@@ -145,4 +145,19 @@
     <string name="network_buffer_large_description">Tampon large, peut aider pour les connections moyennes ou variables</string>
     <string name="media_service_car_section_audiobooks">Livres audio</string>
     <string name="media_service_car_section_playlists">Listes de lecture</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Gestes horizontaux</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Autoriser le contrôle par gestes horizontaux pour le défilement des vidéos</string>
+    <string name="downloads_empty">Aucun téléchargement pour l\'instant</string>
+    <string name="downloads_empty_description">Vous pouvez télécharger des films et des séries pour les regarder hors ligne. Recherchez l\'icône de téléchargement sur la page de détails du contenu.</string>
+    <string name="downloading_title">Téléchargement de %1$s</string>
+    <string name="download_cancel">Annuler</string>
+    <string name="download_completed">Téléchargement terminé</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove">Supprimer le téléchargement</string>
+    <string name="download_remove_keep_local">Conserver le(s) fichier(s) local(aux)</string>
+    <string name="download_remove_description">Souhaitez-vous supprimer %1$s de vos téléchargements ?</string>
+    <string name="download_incomplete">Téléchargement incomplet</string>
+    <string name="download_settings_dialog_title">Choisissez l\'emplacement de téléchargement</string>
+    <string name="download_settings_dialog_message">Veuillez choisir l\'emplacement où enregistrer les fichiers multimédias téléchargés. Par défaut, les téléchargements s\'effectuent uniquement via le Wi-Fi.</string>
+    <string name="select_folder">Sélectionner un dossier</string>
 </resources>
