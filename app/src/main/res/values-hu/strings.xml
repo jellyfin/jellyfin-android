@@ -152,4 +152,11 @@
     <string name="download_remove">Letöltés eltávolítása</string>
     <string name="download_remove_keep_local">Helyi fájl(ok) megtartása</string>
     <string name="download_remove_description">El szeretnéd távolítani a(z) %1$s fájlt a letöltéseid közül?</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Vízszintes gesztusok</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Vízszintes gesztusvezérlés engedélyezése videókereséshez</string>
+    <string name="downloads_empty">Még nincsenek letöltések</string>
+    <string name="downloads_empty_description">Letölthetsz filmeket és tévéműsorokat offline megtekintéshez. Keresd a letöltés ikont az elem részleteinek oldalán.</string>
+    <string name="download_settings_dialog_title">Letöltési hely kiválasztása</string>
+    <string name="download_settings_dialog_message">Kérjük, válassza ki, hová mentse a letöltött médiafájlokat. A letöltések alapértelmezés szerint csak Wi-Fi-t használnak.</string>
+    <string name="select_folder">Mappa kiválasztása</string>
 </resources>
