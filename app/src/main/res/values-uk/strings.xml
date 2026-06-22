@@ -152,4 +152,11 @@
     <string name="download_remove_keep_local">Зберегти локальний файл(и)</string>
     <string name="download_remove_description">Ви бажаєте видалити %1$s із завантажень?</string>
     <string name="download_incomplete">Завантаження не завершено</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Горизонтальні жести</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Дозволити горизонтальні жести для керування перемотуванням відео</string>
+    <string name="downloads_empty">Завантажень ще немає</string>
+    <string name="downloads_empty_description">Ви можете завантажувати фільми та телешоу, щоб дивитися їх офлайн. Шукайте іконку завантаження на сторінці з описом елемента.</string>
+    <string name="download_settings_dialog_title">Виберіть місце завантаження</string>
+    <string name="download_settings_dialog_message">Будь ласка, виберіть місце, куди потрібно зберігати завантажені медіафайли. За замовчуванням завантаження виконуються лише через Wi-Fi.</string>
+    <string name="select_folder">Виберіть папку</string>
 </resources>
