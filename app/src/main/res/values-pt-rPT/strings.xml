@@ -131,4 +131,10 @@
     <string name="downloaded">Transferido %1$s</string>
     <string name="skip_media_segment">Saltar</string>
     <string name="special_episode">Especial</string>
+    <string name="media_service_unknown_page">Página desconhecida</string>
+    <string name="media_service_no_items">Itens não encontrados</string>
+    <string name="media_service_car_section_favorites">Favoritos</string>
+    <string name="network_buffer_auto">Auto</string>
+    <string name="network_buffer_large">Grande</string>
+    <string name="downloads_empty">Sem downloads</string>
 </resources>
