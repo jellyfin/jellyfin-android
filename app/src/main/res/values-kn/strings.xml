@@ -64,4 +64,6 @@
     <string name="wifi_only_summary">ಮೀಡಿಯಾವನ್ನು ವೈ-ಫೈ ನಿಂದ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತದೆ.</string>
     <string name="mobile_data_summary">ಮೀಡಿಯಾವನ್ನು ವೈ-ಫೈ ಮತ್ತು ಮೊಬೈಲ್ ನೆಟ್‌ವರ್ಕ್‌ಗಳಿಂದ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತದೆ.</string>
     <string name="media_service_car_section_recents">ಇತ್ತೀಚೆಗೆ ಪ್ಲೇ ಮಾಡಿದ್ದು</string>
+    <string name="media_service_no_items">ಯಾವುದೇ ಅಂಶಗಳು ಕಂಡುಬರಲಿಲ್ಲ</string>
+    <string name="media_service_car_section_favorites">ಇಷ್ಟದ</string>
 </resources>
