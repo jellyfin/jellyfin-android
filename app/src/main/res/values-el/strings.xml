@@ -138,4 +138,11 @@
     <string name="download_completed">Η λήψη ολοκληρώθηκε</string>
     <string name="download_cancel">Ακυρο</string>
     <string name="downloading_title">Λήψη του %1$s</string>
+    <string name="downloads_empty_description">Μπορείτε να κατεβάσετε ταινίες και τηλεοπτικές εκπομπές για να τις παρακολουθήσετε εκτός σύνδεσης. Αναζητήστε το εικονίδιο λήψης στη σελίδα λεπτομερειών του στοιχείου.</string>
+    <string name="downloads_empty">Δεν υπάρχουν ακόμη λήψεις</string>
+    <string name="select_folder">Επιλέξτε φάκελο</string>
+    <string name="download_settings_dialog_message">Επιλέξτε πού θα αποθηκεύονται τα ληφθέντα πολυμέσα. Οι λήψεις χρησιμοποιούν μόνο WiFi από προεπιλογή.</string>
+    <string name="download_settings_dialog_title">Επιλέξτε τοποθεσία λήψης</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Να επιτρέπεται ο έλεγχος με οριζόντιες χειρονομίες για αναζήτηση σε βίντεο</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Οριζόντιες χειρονομίες</string>
 </resources>
