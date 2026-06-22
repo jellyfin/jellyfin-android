@@ -310,6 +310,11 @@ class PlayerGestureHelper(
                     gestureIndicatorOverlayProgress.progress = toSet
                 } else {
                     // Swiping on the left, change brightness
+                    // Except when in desktop mode, when it causes issues.
+                    val uiMode = fragment.requireActivity().resources.configuration.uiMode
+                    if ((uiMode and Configuration.UI_MODE_TYPE_MASK) == Configuration.UI_MODE_TYPE_DESK) {
+                        return false
+                    }
 
                     val window = fragment.requireActivity().window
                     val brightnessRange = BRIGHTNESS_OVERRIDE_OFF..BRIGHTNESS_OVERRIDE_FULL
