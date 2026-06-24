@@ -150,4 +150,12 @@
     <string name="download_cancel">Anul·la</string>
     <string name="download_incomplete">Descàrrega inacabada</string>
     <string name="downloading_title">S\'està descarregant %1$s</string>
+    <string name="media_service_car_section_playlists">Llistes de reproducció</string>
+    <string name="downloads_empty">Encara no hi ha cap descàrrega</string>
+    <string name="select_folder">Seleccioneu un directori</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Gestos horitzontals</string>
+    <string name="download_settings_dialog_title">Trieu la ubicació de les descàrregues</string>
+    <string name="downloads_empty_description">Podeu descarregar pel·lícules i programes de televisió per a veure\'ls fora de línia. Cerqueu la icona de descàrrega a la pàgina de detalls de l\'element.</string>
+    <string name="download_settings_dialog_message">Trieu on voleu que es desin els continguts multimèdia descarregats. Les descàrregues fan servir Wi-Fi només per defecte.</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Permet el control gestual horitzontal per a la cerca de vídeos</string>
 </resources>
