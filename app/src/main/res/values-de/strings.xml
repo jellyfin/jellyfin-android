@@ -151,4 +151,11 @@
     <string name="download_remove_keep_local">Lokale Datei(en) behalten</string>
     <string name="download_remove_description">Möchtest Du %1$s aus deinen Downloads entfernen?</string>
     <string name="download_incomplete">Download unvollständig</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Horizontale Gesten</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Horizontale Gestensteuerung zur Videosuche erlauben</string>
+    <string name="downloads_empty">Noch keine Downloads</string>
+    <string name="downloads_empty_description">Du kannst Filme und Serien herunterladen um sie offline zu schauen. Achte auf das Downloadicon auf der Element-Detailseite.</string>
+    <string name="download_settings_dialog_title">Downloadort wählen</string>
+    <string name="download_settings_dialog_message">Bitte wähle, wohin heruntergeladene Medien gespeichert werden sollen. Downloads verwenden standardmäßig nur WLAN.</string>
+    <string name="select_folder">Ordner wählen</string>
 </resources>
