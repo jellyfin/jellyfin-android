@@ -90,7 +90,11 @@ class PlayerMenus(
         exoProgress.addListener(object : TimeBar.OnScrubListener {
             override fun onScrubStart(timeBar: TimeBar, position: Long) = trickplayHelper.onScrubMove(position)
             override fun onScrubMove(timeBar: TimeBar, position: Long) = trickplayHelper.onScrubMove(position)
-            override fun onScrubStop(timeBar: TimeBar, position: Long, cancelled: Boolean) = trickplayHelper.onScrubStop()
+            override fun onScrubStop(
+                timeBar: TimeBar,
+                position: Long,
+                cancelled: Boolean,
+            ) = trickplayHelper.onScrubStop()
         })
 
         previousButton.setOnClickListener {

@@ -91,7 +91,8 @@ class TrickplayHelper(
 
     fun onScrubMove(position: Long) {
         isScrubbing = true
-        if (trickPlayInfo == null || itemId == null || mediaSourceId == null || durationMs <= 0) return
+        if (trickPlayInfo == null || itemId == null || mediaSourceId == null) return
+        if (durationMs <= 0) return
 
         val resolvedTrickPlayInfo = trickPlayInfo!!
         val resolvedItemId = itemId!!
@@ -135,12 +136,22 @@ class TrickplayHelper(
         )
 
         val runnable = Runnable {
-            dispatchRequest(url, offsetX, offsetY, resolvedTrickPlayInfo.width, resolvedTrickPlayInfo.height, currentTile)
+            dispatchRequest(
+                url,
+                offsetX,
+                offsetY,
+                resolvedTrickPlayInfo.width,
+                resolvedTrickPlayInfo.height,
+                currentTile,
+            )
         }
         pendingRequest = runnable
 
         // Run immediately if next dispatch time has passed, otherwise schedule for the remaining time
-        handler.postAtTime(runnable, maxOf(SystemClock.uptimeMillis(), nextDispatchAt))
+        handler.postAtTime(
+            runnable, 
+            maxOf(SystemClock.uptimeMillis(), nextDispatchAt),
+        )
     }
 
     private fun dispatchRequest(url: String, offsetX: Int, offsetY: Int, tileWidth: Int, tileHeight: Int, tile: Int) {
