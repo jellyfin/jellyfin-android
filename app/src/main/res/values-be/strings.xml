@@ -142,6 +142,11 @@
     <string name="download_completed">Спампоўванне завершана</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Пакінуць лакальны(-я) файл(-ы)</string>
-    <string name="download_remove_description">Вы ўпэўнены, што хочаце выдаліць %1$s са спамповак?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Вы ўпэўнены, што хочаце выдаліць %1$s са спамповак?</item>
+        <item quantity="few"></item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="download_incomplete">Спампоўванне не завершана</string>
 </resources>
