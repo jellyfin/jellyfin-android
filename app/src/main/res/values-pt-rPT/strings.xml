@@ -147,7 +147,11 @@
     <string name="download_cancel">Cancelar</string>
     <string name="download_completed">Download concluído</string>
     <string name="download_remove_keep_local">Manter arquivos locais</string>
-    <string name="download_remove_description">Pretende remover %1$s dos seus downloads?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Pretende remover %1$s dos seus downloads?</item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="download_incomplete">Download incompleto</string>
     <string name="download_settings_dialog_title">Escolha o local de download</string>
 </resources>
