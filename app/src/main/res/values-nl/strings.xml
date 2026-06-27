@@ -148,8 +148,8 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Lokale bestanden behouden</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Wil je %1$s uit je downloads verwijderen?</item>
-        <item quantity="other"></item>
+        <item quantity="one">Wil je \"%2$s\" uit je downloads verwijderen?</item>
+        <item quantity="other">Wil je deze %1$d downloads verwijderen?</item>
     </plurals>
     <string name="download_incomplete">Download incompleet</string>
     <string name="downloading_title">%1$s downloaden</string>
@@ -161,4 +161,11 @@
     <string name="download_settings_dialog_message">Kies waar gedownloade media wordt opgeslagen. Downloads gebruiken standaard alleen wifi.</string>
     <string name="downloads_empty_description">Je kunt films en series downloaden om ze offline te kunnen kijken. Zoek naar het download-icoon op de detailpagina van het item.</string>
     <string name="downloads_empty">Nog geen downloads</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Download verwijderen</item>
+        <item quantity="other">Downloads verwijderen</item>
+    </plurals>
+    <string name="select_all">Alles selecteren</string>
+    <string name="deselect_all">Selectie opheffen</string>
+    <string name="selected_count">%1$d geselecteerd</string>
 </resources>
