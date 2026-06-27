@@ -110,6 +110,8 @@ fun ServerSelection(
     }
 
     fun onSubmit() {
+        if (checkUrlState == CheckUrlState.Pending) return
+
         externalError = false
         checkUrlState = CheckUrlState.Pending
         coroutineScope.launch {
