@@ -146,6 +146,9 @@
     <string name="download_completed">Download completed</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Keep local file(s)</string>
-    <string name="download_remove_description">Do you want to remove %1$s from your downloads?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Do you want to remove %1$s from your downloads?</item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="download_incomplete">Download incomplete</string>
 </resources>
