@@ -148,6 +148,8 @@
     <string name="download_completed">下载完成</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">保留本地文件</string>
-    <string name="download_remove_description">您是否要从下载列表中移除%1$s？</string>
+    <plurals name="download_remove_description">
+        <item quantity="other">您是否要从下载列表中移除%1$s？</item>
+    </plurals>
     <string name="download_incomplete">下载未完成</string>
 </resources>
