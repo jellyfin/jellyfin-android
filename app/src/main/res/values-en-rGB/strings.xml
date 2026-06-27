@@ -148,7 +148,10 @@
     <string name="download_remove_keep_local">Keep local file(s)</string>
     <plurals name="download_remove_description">
         <item quantity="one">Do you want to remove %1$s from your downloads?</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="download_incomplete">Download incomplete</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Horizontal gestures</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Allow horizontal gesture control for video seeking</string>
+    <string name="downloads_empty">No downloads yet</string>
 </resources>
