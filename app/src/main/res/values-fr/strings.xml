@@ -154,7 +154,11 @@
     <string name="download_completed">Téléchargement terminé</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Conserver le(s) fichier(s) local(aux)</string>
-    <string name="download_remove_description">Souhaitez-vous supprimer %1$s de vos téléchargements ?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Souhaitez-vous supprimer %1$s de vos téléchargements ?</item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="download_incomplete">Téléchargement incomplet</string>
     <string name="download_settings_dialog_title">Choisissez l\'emplacement de téléchargement</string>
     <string name="download_settings_dialog_message">Veuillez choisir l\'emplacement où enregistrer les fichiers multimédias téléchargés. Par défaut, les téléchargements s\'effectuent uniquement via le Wi-Fi.</string>
