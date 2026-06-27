@@ -131,7 +131,10 @@
     <string name="downloading_desc">Λήψη %1$d τίτλων</string>
     <string name="downloaded">Εγινε λήψη του %1$s</string>
     <string name="download_incomplete">Η λήψη δεν ολοκληρώθηκε</string>
-    <string name="download_remove_description">Θέλετε να αφαιρέσετε το %1$s από τις λήψεις σας;</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Θέλετε να αφαιρέσετε το %1$s από τις λήψεις σας;</item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="download_remove_keep_local">Διατήρηση τοπικών αρχείων</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_completed">Η λήψη ολοκληρώθηκε</string>
