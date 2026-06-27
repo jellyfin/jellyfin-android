@@ -149,10 +149,10 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Zachowaj plik(i) lokalny(-e)</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Czy chcesz usunąć %1$s z pobranych plików?</item>
-        <item quantity="few"></item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">Czy chcesz usunąć „%2$s” z pobranych?</item>
+        <item quantity="few">Czy chcesz usunąć te „%2$s” z pobranych?</item>
+        <item quantity="many">Czy chcesz usunąć te „%2$s” z pobranych?</item>
+        <item quantity="other">Czy chcesz usunąć te „%2$s” z pobranych?</item>
     </plurals>
     <string name="download_incomplete">Pobieranie niekompletne</string>
     <string name="media_service_car_section_playlists">Playlisty</string>
@@ -163,4 +163,13 @@
     <string name="download_settings_dialog_title">Wybierz lokalizację pobierania</string>
     <string name="download_settings_dialog_message">Wybierz miejsce, w którym chcesz zapisać pobrane multimedia. Pobierania domyślnie korzystają tylko z Wi-Fi.</string>
     <string name="select_folder">Wybierz folder</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Usuń pobrany</item>
+        <item quantity="few">Usuń pobrane</item>
+        <item quantity="many">Usuń pobrane</item>
+        <item quantity="other">Usuń pobrane</item>
+    </plurals>
+    <string name="select_all">Zaznacz wszystko</string>
+    <string name="deselect_all">Odznacz wszystko</string>
+    <string name="selected_count">%1$d zaznaczono</string>
 </resources>
