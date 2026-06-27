@@ -151,5 +151,9 @@
     <string name="download_completed">Преузимање завршено</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Задржи локалне датотеке</string>
-    <string name="download_remove_description">Да ли желите да уклоните %1$s из својих преузимања?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Да ли желите да уклоните %1$s из својих преузимања?</item>
+        <item quantity="few"></item>
+        <item quantity="other"></item>
+    </plurals>
 </resources>
