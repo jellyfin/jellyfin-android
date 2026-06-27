@@ -148,7 +148,10 @@
     <string name="download_completed">Download abgeschlossen</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Lokale Datei(en) behalten</string>
-    <string name="download_remove_description">Möchtest Du %1$s aus deinen Downloads entfernen?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Möchtest Du %1$s aus deinen Downloads entfernen?</item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="download_incomplete">Download unvollständig</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Horizontale Gesten</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Horizontale Gestensteuerung zur Videosuche erlauben</string>
