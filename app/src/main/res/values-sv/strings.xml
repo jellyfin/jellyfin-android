@@ -149,6 +149,9 @@
     <string name="download_completed">Nedladdning slutförd</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Behåll lokala fil(er)</string>
-    <string name="download_remove_description">Vill du ta bort %1$s från dina nedladdningar?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Vill du ta bort %1$s från dina nedladdningar?</item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="download_incomplete">Nedladdning ej slutförd</string>
 </resources>
