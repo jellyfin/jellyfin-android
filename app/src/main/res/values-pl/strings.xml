@@ -148,7 +148,12 @@
     <string name="download_completed">Pobieranie ukończone</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Zachowaj plik(i) lokalny(-e)</string>
-    <string name="download_remove_description">Czy chcesz usunąć %1$s z pobranych plików?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Czy chcesz usunąć %1$s z pobranych plików?</item>
+        <item quantity="few"></item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="download_incomplete">Pobieranie niekompletne</string>
     <string name="media_service_car_section_playlists">Playlisty</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Gesty poziome</string>
