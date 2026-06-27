@@ -149,7 +149,12 @@
     <string name="download_completed">Завантаження завершено</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Зберегти локальний файл(и)</string>
-    <string name="download_remove_description">Ви бажаєте видалити %1$s із завантажень?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Ви бажаєте видалити %1$s із завантажень?</item>
+        <item quantity="few"></item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="download_incomplete">Завантаження не завершено</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Горизонтальні жести</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Дозволити горизонтальні жести для керування перемотуванням відео</string>
