@@ -147,7 +147,10 @@
     <string name="download_completed">Download voltooid</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Lokale bestanden behouden</string>
-    <string name="download_remove_description">Wil je %1$s uit je downloads verwijderen?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Wil je %1$s uit je downloads verwijderen?</item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="download_incomplete">Download incompleet</string>
     <string name="downloading_title">%1$s downloaden</string>
     <string name="media_service_car_section_playlists">Afspeellijsten</string>
