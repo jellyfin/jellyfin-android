@@ -152,7 +152,14 @@
     <string name="download_completed">تم التحميل</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">الاحتفاظ بالملف(ات) المحلية</string>
-    <string name="download_remove_description">هل ترغب في حذف %1$s من ملفات التحميل؟</string>
+    <plurals name="download_remove_description">
+        <item quantity="zero">هل ترغب في حذف %1$s من ملفات التحميل؟</item>
+        <item quantity="one"></item>
+        <item quantity="two"></item>
+        <item quantity="few"></item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="download_incomplete">لم يكتمل التحميل</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">إيماءات افقية</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">السماح بإيماءات التحكم الافقية لبحث الفيديو</string>
