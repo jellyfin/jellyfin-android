@@ -150,7 +150,10 @@
     <string name="download_completed">Letöltés befejezve</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Helyi fájl(ok) megtartása</string>
-    <string name="download_remove_description">El szeretnéd távolítani a(z) %1$s fájlt a letöltéseid közül?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">El szeretnéd távolítani a(z) %1$s fájlt a letöltéseid közül?</item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="pref_exoplayer_allow_horizontal_gesture">Vízszintes gesztusok</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Vízszintes gesztusvezérlés engedélyezése videókereséshez</string>
     <string name="downloads_empty">Még nincsenek letöltések</string>
