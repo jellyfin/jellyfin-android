@@ -14,6 +14,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.media3.common.Player
 import coil3.ImageLoader
 import coil3.request.ImageRequest
+import coil3.request.allowHardware
 import coil3.toBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -162,7 +163,10 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                 tag = mediaSource.item?.imageTags?.get(ImageType.PRIMARY),
             )
 
-            val imageRequest = ImageRequest.Builder(context).data(imageUrl).build()
+            val imageRequest = ImageRequest.Builder(context)
+                .data(imageUrl)
+                .allowHardware(false)
+                .build()
             imageLoader.execute(imageRequest).image?.toBitmap()
         }
     }

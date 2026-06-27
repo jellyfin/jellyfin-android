@@ -30,6 +30,7 @@ import androidx.core.content.getSystemService
 import androidx.core.text.HtmlCompat
 import coil3.ImageLoader
 import coil3.request.ImageRequest
+import coil3.request.allowHardware
 import coil3.toBitmap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -224,7 +225,10 @@ class RemotePlayerService : Service(), CoroutineScope {
             // Resolve notification bitmap
             val cachedBitmap = largeItemIcon?.takeIf { itemId == currentItemId }
             val bitmap = cachedBitmap ?: if (!imageUrl.isNullOrEmpty()) {
-                val request = ImageRequest.Builder(this@RemotePlayerService).data(imageUrl).build()
+                val request = ImageRequest.Builder(this@RemotePlayerService)
+                    .data(imageUrl)
+                    .allowHardware(false)
+                    .build()
                 imageLoader.execute(request).image?.toBitmap()?.also { bitmap ->
                     largeItemIcon = bitmap // Cache bitmap for later use
                 }
