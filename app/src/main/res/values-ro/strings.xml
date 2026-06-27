@@ -154,7 +154,11 @@
     <string name="download_completed">Descărcare finalizată</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Păstrați fișierele locale</string>
-    <string name="download_remove_description">Doriți să eliminați %1$s din descărcări?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Doriți să eliminați %1$s din descărcări?</item>
+        <item quantity="few"></item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="download_incomplete">Descărcarea incompletă</string>
     <string name="download_settings_dialog_title">Alegeți locația de descărcare</string>
     <string name="download_settings_dialog_message">Vă rugăm să alegeți unde doriți să fie salvate fișierele media descărcate. Descărcările utilizează în mod implicit doar WiFi.</string>
