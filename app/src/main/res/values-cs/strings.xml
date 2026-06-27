@@ -150,7 +150,12 @@
     <string name="download_completed">Stahování dokončeno</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Ponechat místní soubor(y)</string>
-    <string name="download_remove_description">Opravdu chcete odstranit %1$s ze stažených?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Opravdu chcete odstranit %1$s ze stažených?</item>
+        <item quantity="few"></item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="download_incomplete">Stahování nedokončeno</string>
     <string name="media_service_car_section_playlists">Seznamy skladeb</string>
 </resources>
