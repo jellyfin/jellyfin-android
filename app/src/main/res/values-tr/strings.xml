@@ -149,7 +149,10 @@
     <string name="download_completed">İndirme tamamlandı</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Yerel dosyaları sakla</string>
-    <string name="download_remove_description">İndirdiklerin arasından %1$s ögesini silmek istiyor musun?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">İndirdiklerin arasından %1$s ögesini silmek istiyor musun?</item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="download_incomplete">İndirme işlemi tamamlanmadı</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Yatay hareketler</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Videoda arama yapmak için yatay hareket kontrolüne izin ver</string>
