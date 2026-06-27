@@ -223,13 +223,8 @@ class RemotePlayerService : Service(), CoroutineScope {
 
             // Resolve notification bitmap
             val cachedBitmap = largeItemIcon?.takeIf { itemId == currentItemId }
-            val bitmap = cachedBitmap ?: if (!imageUrl.isNullOrEmpty()) {
-                val request = ImageRequest.Builder(this@RemotePlayerService).data(imageUrl).build()
-                imageLoader.execute(request).image?.toBitmap()?.also { bitmap ->
-                    largeItemIcon = bitmap // Cache bitmap for later use
-                }
-            } else {
-                null
+            val bitmap = cachedBitmap ?: imageUrl?.let { url ->
+                loadNotificationBitmap(url)?.also { largeItemIcon = it }
             }
 
             // Set/update media metadata if item changed
@@ -367,6 +362,16 @@ class RemotePlayerService : Service(), CoroutineScope {
 
             // Activate MediaSession
             mediaSession.isActive = true
+        }
+    }
+
+    private suspend fun loadNotificationBitmap(imageUrl: String): Bitmap? {
+        val request = ImageRequest.Builder(this).data(imageUrl).build()
+        val loadedBitmap = imageLoader.execute(request).image?.toBitmap() ?: return null
+        return if (loadedBitmap.config == Bitmap.Config.HARDWARE) {
+            loadedBitmap.copy(Bitmap.Config.ARGB_8888, false)
+        } else {
+            loadedBitmap
         }
     }
 
