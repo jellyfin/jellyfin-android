@@ -150,5 +150,9 @@
     <string name="download_completed">Descarga completada</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Conservar archivo(s) local(es)</string>
-    <string name="download_remove_description">¿Deseas eliminar %1$s de las descargas?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">¿Deseas eliminar %1$s de las descargas?</item>
+        <item quantity="many"></item>
+        <item quantity="other"></item>
+    </plurals>
 </resources>
