@@ -150,7 +150,10 @@
     <string name="download_completed">Yükləmə tamamlandı</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Lokal fayl(lar)ı saxla</string>
-    <string name="download_remove_description">%1$s elementini yükləmələrdən silmək istəyirsiniz?</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">%1$s elementini yükləmələrdən silmək istəyirsiniz?</item>
+        <item quantity="other"></item>
+    </plurals>
     <string name="download_incomplete">Yükləmə tamamlanmadı</string>
     <string name="download_settings_dialog_title">Yükləmə yerini seç</string>
     <string name="download_settings_dialog_message">Yüklənmiş medianın harada saxlanılacağını seçin. Yükləmələr standart olaraq yalnız Wi-Fi üzərindən həyata keçirilir.</string>
