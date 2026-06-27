@@ -146,7 +146,6 @@
     <string name="download_cancel">Annuleren</string>
     <string name="download_completed">Download voltooid</string>
     <string name="download_progress">%1$d%%</string>
-    <string name="download_remove">Download verwijderen</string>
     <string name="download_remove_keep_local">Lokale bestanden behouden</string>
     <string name="download_remove_description">Wil je %1$s uit je downloads verwijderen?</string>
     <string name="download_incomplete">Download incompleet</string>

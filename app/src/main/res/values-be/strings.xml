@@ -141,7 +141,6 @@
     <string name="download_cancel">Скасаваць</string>
     <string name="download_completed">Спампоўванне завершана</string>
     <string name="download_progress">%1$d%%</string>
-    <string name="download_remove">Выдаліць спампоўку</string>
     <string name="download_remove_keep_local">Пакінуць лакальны(-я) файл(-ы)</string>
     <string name="download_remove_description">Вы ўпэўнены, што хочаце выдаліць %1$s са спамповак?</string>
     <string name="download_incomplete">Спампоўванне не завершана</string>

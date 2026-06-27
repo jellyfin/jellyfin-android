@@ -153,7 +153,6 @@
     <string name="download_cancel">Anulează</string>
     <string name="download_completed">Descărcare finalizată</string>
     <string name="download_progress">%1$d%%</string>
-    <string name="download_remove">Eliminați descărcarea</string>
     <string name="download_remove_keep_local">Păstrați fișierele locale</string>
     <string name="download_remove_description">Doriți să eliminați %1$s din descărcări?</string>
     <string name="download_incomplete">Descărcarea incompletă</string>

@@ -148,7 +148,6 @@
     <string name="download_cancel">Відміна</string>
     <string name="download_completed">Завантаження завершено</string>
     <string name="download_progress">%1$d%%</string>
-    <string name="download_remove">Видалити завантажене</string>
     <string name="download_remove_keep_local">Зберегти локальний файл(и)</string>
     <string name="download_remove_description">Ви бажаєте видалити %1$s із завантажень?</string>
     <string name="download_incomplete">Завантаження не завершено</string>

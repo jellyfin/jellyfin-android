@@ -144,7 +144,6 @@
     <string name="download_cancel">取消</string>
     <string name="download_completed">下載搞掂</string>
     <string name="download_progress">%1$d%%</string>
-    <string name="download_remove">刪走下載</string>
     <string name="download_remove_keep_local">保留本機檔案</string>
     <string name="download_remove_description">你想唔想響你嘅下載項目入面刪走 %1$s？</string>
     <string name="download_incomplete">下載未完成</string>

@@ -149,7 +149,6 @@
     <string name="download_cancel">Ləğv et</string>
     <string name="download_completed">Yükləmə tamamlandı</string>
     <string name="download_progress">%1$d%%</string>
-    <string name="download_remove">Yükləməni sil</string>
     <string name="download_remove_keep_local">Lokal fayl(lar)ı saxla</string>
     <string name="download_remove_description">%1$s elementini yükləmələrdən silmək istəyirsiniz?</string>
     <string name="download_incomplete">Yükləmə tamamlanmadı</string>

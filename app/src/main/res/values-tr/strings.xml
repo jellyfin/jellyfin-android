@@ -148,7 +148,6 @@
     <string name="download_cancel">İptal</string>
     <string name="download_completed">İndirme tamamlandı</string>
     <string name="download_progress">%1$d%%</string>
-    <string name="download_remove">İndirilen dosyayı kaldır</string>
     <string name="download_remove_keep_local">Yerel dosyaları sakla</string>
     <string name="download_remove_description">İndirdiklerin arasından %1$s ögesini silmek istiyor musun?</string>
     <string name="download_incomplete">İndirme işlemi tamamlanmadı</string>

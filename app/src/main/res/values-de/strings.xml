@@ -147,7 +147,6 @@
     <string name="download_cancel">Abbrechen</string>
     <string name="download_completed">Download abgeschlossen</string>
     <string name="download_progress">%1$d%%</string>
-    <string name="download_remove">Download entfernen</string>
     <string name="download_remove_keep_local">Lokale Datei(en) behalten</string>
     <string name="download_remove_description">Möchtest Du %1$s aus deinen Downloads entfernen?</string>
     <string name="download_incomplete">Download unvollständig</string>

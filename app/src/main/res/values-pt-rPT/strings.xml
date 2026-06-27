@@ -146,7 +146,6 @@
     <string name="downloading_title">Baixando %1$s</string>
     <string name="download_cancel">Cancelar</string>
     <string name="download_completed">Download concluído</string>
-    <string name="download_remove">Remover download</string>
     <string name="download_remove_keep_local">Manter arquivos locais</string>
     <string name="download_remove_description">Pretende remover %1$s dos seus downloads?</string>
     <string name="download_incomplete">Download incompleto</string>

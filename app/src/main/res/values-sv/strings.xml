@@ -148,7 +148,6 @@
     <string name="download_cancel">Avbryt</string>
     <string name="download_completed">Nedladdning slutförd</string>
     <string name="download_progress">%1$d%%</string>
-    <string name="download_remove">Ta bort nedladdning</string>
     <string name="download_remove_keep_local">Behåll lokala fil(er)</string>
     <string name="download_remove_description">Vill du ta bort %1$s från dina nedladdningar?</string>
     <string name="download_incomplete">Nedladdning ej slutförd</string>

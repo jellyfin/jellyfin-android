@@ -148,7 +148,6 @@
     <string name="download_cancel">Cancelar</string>
     <string name="download_completed">Baixado</string>
     <string name="download_progress">%1$d%%</string>
-    <string name="download_remove">Remover arquivo</string>
     <string name="download_remove_keep_local">Manter arquivo(s) local(is)</string>
     <string name="download_remove_description">Você quer remover %1$s dos seus arquivos?</string>
     <string name="download_incomplete">Arquivo incompleto</string>

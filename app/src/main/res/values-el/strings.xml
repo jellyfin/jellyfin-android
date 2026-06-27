@@ -133,7 +133,6 @@
     <string name="download_incomplete">Η λήψη δεν ολοκληρώθηκε</string>
     <string name="download_remove_description">Θέλετε να αφαιρέσετε το %1$s από τις λήψεις σας;</string>
     <string name="download_remove_keep_local">Διατήρηση τοπικών αρχείων</string>
-    <string name="download_remove">Αφαίρεση λήψης</string>
     <string name="download_progress">%1$d%%</string>
     <string name="download_completed">Η λήψη ολοκληρώθηκε</string>
     <string name="download_cancel">Ακυρο</string>
