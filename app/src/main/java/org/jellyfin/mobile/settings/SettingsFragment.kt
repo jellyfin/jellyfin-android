@@ -275,6 +275,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
         )
         singleChoice(Constants.PREF_DOWNLOAD_METHOD, downloadMethods) {
             titleRes = R.string.network_title
+            initialSelection = DownloadMethod.DEFAULT.intValue
         }
 
         downloadLocationPreference = pref(Constants.PREF_STORAGE_LOCATION) {
