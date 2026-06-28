@@ -168,4 +168,8 @@
     <string name="select_all">Alles selecteren</string>
     <string name="deselect_all">Selectie opheffen</string>
     <string name="selected_count">%1$d geselecteerd</string>
+    <string name="download_location_inaccessible">Downloadlocatie niet toegankelijk</string>
+    <string name="download_location_inaccessible_description">De geselecteerde downloadlocatie is niet meer toegankelijk. Kies een andere map om verder te gaan met downloaden.</string>
+    <string name="download_location_not_set">Geen downloadlocatie</string>
+    <string name="download_location_not_set_description">Selecteer de map waarin gedownloade mediabestanden zullen worden bewaard.</string>
 </resources>
