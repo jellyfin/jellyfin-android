@@ -140,6 +140,7 @@ class SessionBrowserCallback(
                     groupTitle = element.title,
                 )
             }
+
             is LibraryPageElement.Item -> listOf(element.toMediaItem(route))
         }
     }
@@ -169,7 +170,12 @@ class SessionBrowserCallback(
         pageIndex: Int,
         pageSize: Int,
     ): LibraryResult<ImmutableList<MediaItem>> {
-        val page = route.page ?: return LibraryResult.ofError(SessionError(SessionError.ERROR_BAD_VALUE, context.getString(R.string.media_service_unknown_page)))
+        val page = route.page ?: return LibraryResult.ofError(
+            SessionError(
+                SessionError.ERROR_BAD_VALUE,
+                context.getString(R.string.media_service_unknown_page)
+            )
+        )
 
         if (api.baseUrl == null || api.accessToken == null) {
             return LibraryResult.ofError(
@@ -354,28 +360,49 @@ class SessionBrowserCallback(
         var expandedItems = mediaItems
         var newStartIndex = startIndex
 
-        // Expand media item to full playlist
+        // Modify playlist when a single item is requested
         if (mediaItems.size == 1) {
+            val firstItem = mediaItems.first()
+
+            // Expand media item to full playlist
             val libraryMediaId = runCatching {
-                Json.decodeFromString<LibraryMediaId>(
-                    mediaItems.first().mediaId,
-                )
+                Json.decodeFromString<LibraryMediaId>(firstItem.mediaId)
             }.getOrNull()
 
-            if (libraryMediaId is LibraryMediaId.Item) {
-                val page = libraryMediaId.route.page
+            when {
+                // Play via search
+                firstItem.mediaId == MediaItem.DEFAULT_MEDIA_ID && firstItem.requestMetadata.mediaUri == null -> {
+                    val search = firstItem.requestMetadata.searchQuery
+                    Timber.d("Search requested $search")
 
-                @Suppress("UNCHECKED_CAST")
-                expandedItems = (page as? LibraryPage<LibraryRoute>)
-                    ?.getContent(libraryMediaId.route, startIndex, MAX_PAGE_SIZE)
-                    ?.toMediaItems(libraryMediaId.route)
-                    .orEmpty()
+                    val route = if (search.isNullOrEmpty()) LibraryRoute.Suggested
+                    else LibraryRoute.Search(search)
 
-                newStartIndex = expandedItems
-                    .indexOfFirst {
-                        (Json.decodeFromString<LibraryMediaId>(it.mediaId) as? LibraryMediaId.Item)?.itemId == libraryMediaId.itemId
-                    }
-                    .coerceAtLeast(0)
+                    @Suppress("UNCHECKED_CAST")
+                    expandedItems = (route.page as? LibraryPage<LibraryRoute>)
+                        ?.getContent(route, 0, MAX_PAGE_SIZE)
+                        ?.toMediaItems(route)
+                        .orEmpty()
+                    newStartIndex = 0
+                }
+
+                // Expand media item to full playlist
+                libraryMediaId is LibraryMediaId.Item -> {
+                    Timber.d("Expanding item $libraryMediaId")
+                    val page = libraryMediaId.route.page
+
+                    @Suppress("UNCHECKED_CAST")
+                    expandedItems = (page as? LibraryPage<LibraryRoute>)
+                        ?.getContent(libraryMediaId.route, startIndex, MAX_PAGE_SIZE)
+                        ?.toMediaItems(libraryMediaId.route)
+                        .orEmpty()
+
+                    newStartIndex = expandedItems
+                        .indexOfFirst {
+                            (Json.decodeFromString<LibraryMediaId>(it.mediaId) as? LibraryMediaId.Item)?.itemId == libraryMediaId.itemId
+                        }
+                        .coerceAtLeast(0)
+                }
             }
         }
 
