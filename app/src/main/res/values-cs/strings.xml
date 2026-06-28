@@ -151,11 +151,31 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Ponechat místní soubor(y)</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Opravdu chcete odstranit %1$s ze stažených?</item>
-        <item quantity="few"></item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">Chcete odstranit „%2$s“ ze stažených?</item>
+        <item quantity="few">Chcete odstranit tyto %1$d stažené položky?</item>
+        <item quantity="many">Chcete odstranit těchto %1$d stažených položek?</item>
+        <item quantity="other">Chcete odstranit těchto %1$d stažených položek?</item>
     </plurals>
     <string name="download_incomplete">Stahování nedokončeno</string>
     <string name="media_service_car_section_playlists">Seznamy skladeb</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Horizontální gesta</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Povolit ovládání pomocí horizontálních gest pro posun ve videu</string>
+    <string name="downloads_empty">Zatím žádná stahování</string>
+    <string name="downloads_empty_description">Můžete si stahovat filmy a seriály a sledovat je offline. Hledejte ikonu stahování na stránce s podrobnostmi o položce.</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Odstranit stahování</item>
+        <item quantity="few">Odstranit stahování</item>
+        <item quantity="many">Odstranit stahování</item>
+        <item quantity="other">Odstranit stahování</item>
+    </plurals>
+    <string name="download_settings_dialog_title">Vyberte umístění stahování</string>
+    <string name="download_settings_dialog_message">Vyberte, kam mají být uložena stažená média. Stahování bude ve výchozím nastavení probíhat pouze přes Wi-Fi.</string>
+    <string name="select_folder">Vybrat složku</string>
+    <string name="select_all">Vybrat vše</string>
+    <string name="deselect_all">Zrušit výběr všeho</string>
+    <string name="selected_count">Vybráno %1$d</string>
+    <string name="download_location_not_set">Žádné umístění stahování</string>
+    <string name="download_location_not_set_description">Pro stažení médií prosím vyberte složku, kam mají být soubory uloženy.</string>
+    <string name="download_location_inaccessible">Umístění stahování není dostupné</string>
+    <string name="download_location_inaccessible_description">Vybrané umístění stahování již není dostupné. Pro pokračování ve stahování prosím vyberte jinou složku.</string>
 </resources>
