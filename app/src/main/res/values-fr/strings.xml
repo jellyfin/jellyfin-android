@@ -155,12 +155,24 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Conserver le(s) fichier(s) local(aux)</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Souhaitez-vous supprimer %1$s de vos téléchargements ?</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">Souhaitez-vous supprimer \"%2$s\" de vos téléchargements ?</item>
+        <item quantity="many">Souhaitez-vous supprimer %1$s de vos téléchargements ?</item>
+        <item quantity="other">Souhaitez-vous supprimer %1$s de vos téléchargements ?</item>
     </plurals>
     <string name="download_incomplete">Téléchargement incomplet</string>
     <string name="download_settings_dialog_title">Choisissez l\'emplacement de téléchargement</string>
     <string name="download_settings_dialog_message">Veuillez choisir l\'emplacement où enregistrer les fichiers multimédias téléchargés. Par défaut, les téléchargements s\'effectuent uniquement via le Wi-Fi.</string>
     <string name="select_folder">Sélectionner un dossier</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Supprimer téléchargement</item>
+        <item quantity="many">Supprimer téléchargements</item>
+        <item quantity="other">Supprimer téléchargements</item>
+    </plurals>
+    <string name="select_all">Tous sélectionner</string>
+    <string name="deselect_all">Tous désélectionner</string>
+    <string name="selected_count">%1$d sélectionné</string>
+    <string name="download_location_not_set">Aucun emplacement de téléchargement</string>
+    <string name="download_location_not_set_description">Pour télécharger des fichiers multimédias, veuillez sélectionner un dossier dans lequel les fichiers doivent être enregistrés.</string>
+    <string name="download_location_inaccessible">Emplacement de téléchargement inaccessible</string>
+    <string name="download_location_inaccessible_description">L\'emplacement de téléchargement sélectionné n\'est plus accessible. Veuillez choisir un autre dossier pour reprendre les téléchargements.</string>
 </resources>
