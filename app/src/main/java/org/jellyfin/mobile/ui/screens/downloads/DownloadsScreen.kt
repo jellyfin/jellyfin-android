@@ -1,6 +1,8 @@
 package org.jellyfin.mobile.ui.screens.downloads
 
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
@@ -15,9 +17,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material.Card
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
@@ -25,6 +29,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
@@ -42,6 +47,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -54,11 +60,17 @@ fun DownloadsScreen(
     onBackPressed: () -> Unit = {},
 ) {
     val downloads by viewModel.downloads.collectAsState()
+    val storageLocation by viewModel.storageLocation.collectAsState()
+    val storageLocationAccessible by viewModel.storageLocationAccessible.collectAsState()
     val selection = remember { mutableStateSetOf<Long>() }
     var showDeleteConfirm by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
 
     val selectionMode = selection.isNotEmpty()
+
+    val storageLocationPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
+        if (uri != null) viewModel.changeStorageLocation(uri)
+    }
 
     BackHandler(enabled = selectionMode) {
         selection.clear()
@@ -193,53 +205,131 @@ fun DownloadsScreen(
             )
         },
         content = { innerPadding ->
-            if (downloads.isEmpty()) {
-                DownloadsEmpty(
-                    contentPadding = innerPadding,
-                )
-            } else {
-                DownloadsList(
-                    downloads = downloads,
-                    onOpen = { viewModel.openDownload(it) },
-                    onDownload = { viewModel.download(it) },
-                    selection = selection,
-                    onToggleSelection = { download ->
-                        if (selection.contains(download.id)) selection.remove(download.id)
-                        else selection.add(download.id)
-                    },
-                    contentPadding = innerPadding,
-                )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            ) {
+                if (storageLocation == null) {
+                    StorageLocationNotSetCard(
+                        onFix = { storageLocationPicker.launch(null) },
+                        modifier = Modifier.padding(16.dp),
+                    )
+                } else if (!storageLocationAccessible) {
+                    StorageLocationInaccessibleCard(
+                        onFix = { storageLocationPicker.launch(null) },
+                        modifier = Modifier.padding(16.dp),
+                    )
+                }
+
+                if (downloads.isEmpty()) {
+                    DownloadsEmpty(modifier = Modifier.weight(1f))
+                } else {
+                    DownloadsList(
+                        downloads = downloads,
+                        onOpen = { viewModel.openDownload(it) },
+                        onDownload = { viewModel.download(it) },
+                        selection = selection,
+                        onToggleSelection = { download ->
+                            if (selection.contains(download.id)) selection.remove(download.id)
+                            else selection.add(download.id)
+                        },
+                        modifier = Modifier.weight(1f),
+                    )
+                }
             }
         },
     )
 }
 
 @Composable
+fun StorageLocationNotSetCard(
+    onFix: () -> Unit,
+    modifier: Modifier = Modifier,
+) = Card(
+    modifier = modifier.fillMaxWidth(),
+    elevation = 4.dp,
+    backgroundColor = MaterialTheme.colors.error.copy(alpha = 0.2f),
+) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text(
+            text = stringResource(R.string.download_location_not_set),
+            style = MaterialTheme.typography.subtitle1,
+            fontWeight = FontWeight.Bold,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = stringResource(R.string.download_location_not_set_description),
+            style = MaterialTheme.typography.body2,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextButton(
+            onClick = onFix,
+            modifier = Modifier.align(Alignment.End),
+        ) {
+            Text(text = stringResource(R.string.select_folder))
+        }
+    }
+}
+
+@Composable
+fun StorageLocationInaccessibleCard(
+    onFix: () -> Unit,
+    modifier: Modifier = Modifier,
+) = Card(
+    modifier = modifier.fillMaxWidth(),
+    elevation = 4.dp,
+    backgroundColor = MaterialTheme.colors.error.copy(alpha = 0.2f),
+) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text(
+            text = stringResource(R.string.download_location_inaccessible),
+            style = MaterialTheme.typography.subtitle1,
+            fontWeight = FontWeight.Bold,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = stringResource(R.string.download_location_inaccessible_description),
+            style = MaterialTheme.typography.body2,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextButton(
+            onClick = onFix,
+            modifier = Modifier.align(Alignment.End),
+        ) {
+            Text(text = stringResource(R.string.select_folder))
+        }
+    }
+}
+
+@Composable
 fun DownloadsEmpty(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues.Zero,
+) = Box(
+    modifier = modifier
+        .fillMaxSize()
+        .padding(contentPadding),
+    contentAlignment = Alignment.Center,
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(contentPadding),
-        contentAlignment = Alignment.Center,
+    Column(
+        modifier = Modifier.padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                text = stringResource(R.string.downloads_empty),
-                style = MaterialTheme.typography.h6,
-                textAlign = TextAlign.Center,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(R.string.downloads_empty_description),
-                style = MaterialTheme.typography.body2,
-                textAlign = TextAlign.Center,
-            )
-        }
+        Text(
+            text = stringResource(R.string.downloads_empty),
+            style = MaterialTheme.typography.h6,
+            textAlign = TextAlign.Center,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = stringResource(R.string.downloads_empty_description),
+            style = MaterialTheme.typography.body2,
+            textAlign = TextAlign.Center,
+        )
     }
 }

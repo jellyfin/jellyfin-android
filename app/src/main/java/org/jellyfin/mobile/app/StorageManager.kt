@@ -22,6 +22,11 @@ class StorageManager(
         DocumentFile.fromTreeUri(context, it)
     }
 
+    fun isStorageLocationAccessible(): Boolean {
+        val documentFile = getStorageLocation()
+        return documentFile != null && documentFile.exists() && documentFile.canWrite()
+    }
+
     fun changeStorageLocation(location: Uri): Boolean {
         if (appPreferences.storageLocation?.toUri() == location) return true
 

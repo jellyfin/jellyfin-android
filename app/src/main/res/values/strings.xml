@@ -176,4 +176,8 @@
     <string name="select_all">Select all</string>
     <string name="deselect_all">Deselect all</string>
     <string name="selected_count">%1$d selected</string>
+    <string name="download_location_not_set">No download location</string>
+    <string name="download_location_not_set_description">To download media, please select a folder where the files should be stored.</string>
+    <string name="download_location_inaccessible">Download location inaccessible</string>
+    <string name="download_location_inaccessible_description">The selected download location is no longer accessible. Please select a different folder to resume downloads.</string>
 </resources>

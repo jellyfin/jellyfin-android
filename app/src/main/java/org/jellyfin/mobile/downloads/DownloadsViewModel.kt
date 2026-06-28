@@ -3,8 +3,10 @@ package org.jellyfin.mobile.downloads
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -31,6 +33,12 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
         .getAllDownloadsWithFiles()
         .flowOn(Dispatchers.IO)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+
+    private val _storageLocation = MutableStateFlow(storageManager.getStorageLocation())
+    val storageLocation = _storageLocation.asStateFlow()
+
+    private val _storageLocationAccessible = MutableStateFlow(storageManager.isStorageLocationAccessible())
+    val storageLocationAccessible = _storageLocationAccessible.asStateFlow()
 
     fun openDownload(download: DownloadEntity) {
         when (download.item.mediaType) {
@@ -79,5 +87,11 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
         viewModelScope.launch {
             downloadManager.delete(download.id, deleteFiles)
         }
+    }
+
+    fun changeStorageLocation(uri: android.net.Uri) {
+        storageManager.changeStorageLocation(uri)
+        _storageLocation.value = storageManager.getStorageLocation()
+        _storageLocationAccessible.value = storageManager.isStorageLocationAccessible()
     }
 }
