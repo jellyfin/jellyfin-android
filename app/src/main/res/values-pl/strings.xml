@@ -150,9 +150,9 @@
     <string name="download_remove_keep_local">Zachowaj plik(i) lokalny(-e)</string>
     <plurals name="download_remove_description">
         <item quantity="one">Czy chcesz usunąć „%2$s” z pobranych?</item>
-        <item quantity="few">Czy chcesz usunąć te „%2$s” z pobranych?</item>
-        <item quantity="many">Czy chcesz usunąć te „%2$s” z pobranych?</item>
-        <item quantity="other">Czy chcesz usunąć te „%2$s” z pobranych?</item>
+        <item quantity="few">Czy chcesz usunąć te „%1$d” z pobranych?</item>
+        <item quantity="many">Czy chcesz usunąć te „%1$d” z pobranych?</item>
+        <item quantity="other">Czy chcesz usunąć te „%1$d” z pobranych?</item>
     </plurals>
     <string name="download_incomplete">Pobieranie niekompletne</string>
     <string name="media_service_car_section_playlists">Playlisty</string>
@@ -172,4 +172,8 @@
     <string name="select_all">Zaznacz wszystko</string>
     <string name="deselect_all">Odznacz wszystko</string>
     <string name="selected_count">%1$d zaznaczono</string>
+    <string name="download_location_not_set">Brak lokalizacji pobierania</string>
+    <string name="download_location_not_set_description">Aby pobrać multimedia, wybierz folder, w którym mają być zapisane.</string>
+    <string name="download_location_inaccessible">Lokalizacja pobierania jest niedostępna</string>
+    <string name="download_location_inaccessible_description">Wybrana lokalizacja pobierania nie jest już dostępna. Wybierz inny folder, aby wznowić pobieranie.</string>
 </resources>
