@@ -152,7 +152,7 @@
     <string name="download_remove_keep_local">Helyi fájl(ok) megtartása</string>
     <plurals name="download_remove_description">
         <item quantity="one">El szeretnéd távolítani a(z) %1$s fájlt a letöltéseid közül?</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="pref_exoplayer_allow_horizontal_gesture">Vízszintes gesztusok</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Vízszintes gesztusvezérlés engedélyezése videókereséshez</string>
@@ -161,4 +161,14 @@
     <string name="download_settings_dialog_title">Letöltési hely kiválasztása</string>
     <string name="download_settings_dialog_message">Kérjük, válassza ki, hová mentse a letöltött médiafájlokat. A letöltések alapértelmezés szerint csak Wi-Fi-t használnak.</string>
     <string name="select_folder">Mappa kiválasztása</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Letöltés eltávolítása</item>
+        <item quantity="other">Letöltések eltávolítása</item>
+    </plurals>
+    <string name="select_all">Összes kijelölése</string>
+    <string name="deselect_all">Összes kijelölés törlése</string>
+    <string name="download_location_not_set">Nincs letöltési hely</string>
+    <string name="download_location_not_set_description">Média letöltéséhez kérjük, válasszon ki egy mappát, ahová a fájlokat tárolni szeretné.</string>
+    <string name="download_location_inaccessible">A letöltési hely nem érhető el</string>
+    <string name="download_location_inaccessible_description">A kiválasztott letöltési hely már nem érhető el. Kérjük, válasszon egy másik mappát a letöltések folytatásához.</string>
 </resources>
