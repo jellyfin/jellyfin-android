@@ -156,8 +156,8 @@
     <string name="download_remove_keep_local">Conserver le(s) fichier(s) local(aux)</string>
     <plurals name="download_remove_description">
         <item quantity="one">Souhaitez-vous supprimer \"%2$s\" de vos téléchargements ?</item>
-        <item quantity="many">Souhaitez-vous supprimer %1$s de vos téléchargements ?</item>
-        <item quantity="other">Souhaitez-vous supprimer %1$s de vos téléchargements ?</item>
+        <item quantity="many">Souhaitez-vous supprimer ces %1$d téléchargements ?</item>
+        <item quantity="other">Souhaitez-vous supprimer ces %1$d téléchargements ?</item>
     </plurals>
     <string name="download_incomplete">Téléchargement incomplet</string>
     <string name="download_settings_dialog_title">Choisissez l\'emplacement de téléchargement</string>
