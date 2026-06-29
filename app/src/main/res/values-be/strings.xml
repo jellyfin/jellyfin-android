@@ -143,10 +143,16 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Пакінуць лакальны(-я) файл(-ы)</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Вы ўпэўнены, што хочаце выдаліць %1$s са спамповак?</item>
-        <item quantity="few"></item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">Вы ўпэўнены, што хочаце выдаліць %2$s са спамповак?</item>
+        <item quantity="few">Вы ўпэўнены, што хочаце выдаліць %1$s спампоўкі?</item>
+        <item quantity="many">Вы ўпэўнены, што хочаце выдаліць %1$s спамповак?</item>
+        <item quantity="other">Вы ўпэўнены, што хочаце выдаліць %1$s спамповак?</item>
     </plurals>
     <string name="download_incomplete">Спампоўванне не завершана</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Выдаліць спампоўку</item>
+        <item quantity="few">Выдаліць спампоўкі</item>
+        <item quantity="many">Выдаліць спампоўкі</item>
+        <item quantity="other">Выдаліць спампоўкі</item>
+    </plurals>
 </resources>
