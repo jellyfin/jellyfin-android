@@ -146,7 +146,7 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">保留本機檔案</string>
     <plurals name="download_remove_description">
-        <item quantity="other">你想唔想響你嘅下載項目入面刪走 %1$s？</item>
+        <item quantity="other">你係咪想從你嘅下載項目入面刪走 %1$d？</item>
     </plurals>
     <string name="download_incomplete">下載未完成</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">水平手勢</string>
@@ -156,4 +156,14 @@
     <string name="download_settings_dialog_title">揀下載位置</string>
     <string name="download_settings_dialog_message">請揀你要將下載嘅媒體儲存喺邊度。預設情況下，下載只會用 WiFi。</string>
     <string name="select_folder">揀資料夾</string>
+    <plurals name="download_remove_title">
+        <item quantity="other">移除下載項目</item>
+    </plurals>
+    <string name="select_all">揀嗮全部</string>
+    <string name="deselect_all">取消全揀</string>
+    <string name="selected_count">已揀 %1$d</string>
+    <string name="download_location_not_set">冇下載目標點</string>
+    <string name="download_location_not_set_description">要下載媒體檔案，唔該揀返用嚟儲存檔案嘅資料夾。</string>
+    <string name="download_location_inaccessible">下載位置無法存取</string>
+    <string name="download_location_inaccessible_description">你所揀嘅資料夾無法存取，唔該揀返第個同級或上級資料夾嚟繼續下載。</string>
 </resources>
