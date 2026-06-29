@@ -144,8 +144,8 @@
     <string name="media_service_auth_expired">Obriu l\'app del telèfon per a iniciar la sessió al vostre servidor de Jellyfin.</string>
     <plurals name="download_remove_description">
         <item quantity="one">Desitgeu eliminar %1$s de les descàrregues?</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="many">"Desitgeu eliminar aquestes  %1$d descàrregues?"</item>
+        <item quantity="other">"Desitgeu eliminar aquestes  %1$d descàrregues?"</item>
     </plurals>
     <string name="download_remove_keep_local">Conserva el/s fitxer/s local/s</string>
     <string name="download_progress">%1$d%%</string>
@@ -161,4 +161,16 @@
     <string name="downloads_empty_description">Podeu descarregar pel·lícules i programes de televisió per a veure\'ls fora de línia. Cerqueu la icona de descàrrega a la pàgina de detalls de l\'element.</string>
     <string name="download_settings_dialog_message">Trieu on voleu que es desin els continguts multimèdia descarregats. Les descàrregues fan servir Wi-Fi només per defecte.</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Permet el control gestual horitzontal per a la cerca de vídeos</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Elimina la descàrrega</item>
+        <item quantity="many">Elimina les descàrregues</item>
+        <item quantity="other">Elimina les descàrregues</item>
+    </plurals>
+    <string name="select_all">Selecciona-ho tot</string>
+    <string name="deselect_all">Desselecciona-ho tot</string>
+    <string name="selected_count">%1$d seleccionat</string>
+    <string name="download_location_not_set">Cap ubicació on descarregar</string>
+    <string name="download_location_inaccessible">Ubicació de descàrrega inaccessible</string>
+    <string name="download_location_not_set_description">Per a descarregar contingut multimèdia, seleccioneu un directori on desar els fitxers.</string>
+    <string name="download_location_inaccessible_description">No s\'ha pogut accedir a la ubicació seleccionada de descàrrega. Trieu un directori nou per a reprendre les descàrregues.</string>
 </resources>
