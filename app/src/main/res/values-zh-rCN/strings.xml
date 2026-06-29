@@ -149,7 +149,24 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">保留本地文件</string>
     <plurals name="download_remove_description">
-        <item quantity="other">您是否要从下载列表中移除%1$s？</item>
+        <item quantity="other">您确定要从下载中移除这%1$d个项目吗？</item>
     </plurals>
     <string name="download_incomplete">下载未完成</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">水平手势</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">允许使用水平手势控制视频跳转</string>
+    <string name="downloads_empty">暂无下载</string>
+    <string name="downloads_empty_description">您可以下载电影和电视剧以便离线观看。在项目详情页面上寻找下载图标即可。</string>
+    <plurals name="download_remove_title">
+        <item quantity="other">删除下载项</item>
+    </plurals>
+    <string name="download_settings_dialog_title">选择下载位置</string>
+    <string name="download_settings_dialog_message">请选择下载媒体的保存位置。默认仅使用 Wi-Fi 下载。</string>
+    <string name="select_folder">选择文件夹</string>
+    <string name="select_all">全选</string>
+    <string name="deselect_all">取消全选</string>
+    <string name="selected_count">已选择%1$d个</string>
+    <string name="download_location_not_set">未设置下载位置</string>
+    <string name="download_location_not_set_description">如需下载媒体，请选择用于存储媒体文件的文件夹。</string>
+    <string name="download_location_inaccessible">无法访问下载地址</string>
+    <string name="download_location_inaccessible_description">当前选择的下载位置已无法访问。请选择其他文件夹以继续下载。</string>
 </resources>
