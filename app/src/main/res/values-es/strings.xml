@@ -151,9 +151,9 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Conservar archivo(s) local(es)</string>
     <plurals name="download_remove_description">
-        <item quantity="one">¿Deseas eliminar %1$s de las descargas?</item>
-        <item quantity="many"/>
-        <item quantity="other"/>
+        <item quantity="one">¿Deseas eliminar \"%2$s\" de las descargas?</item>
+        <item quantity="many">¿Deseas eliminar estas %1$d descargas?</item>
+        <item quantity="other">¿Deseas eliminar estas %1$d descargas?</item>
     </plurals>
     <string name="pref_exoplayer_allow_horizontal_gesture">Gestos horizontales</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Permitir hacer gestos horizontales para navegar por el vídeo</string>
