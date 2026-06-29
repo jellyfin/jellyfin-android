@@ -150,10 +150,10 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Зберегти локальний файл(и)</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Ви бажаєте видалити %1$s із завантажень?</item>
-        <item quantity="few"></item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">Ви бажаєте видалити \"%2$s\" із завантажень?</item>
+        <item quantity="few">Ви бажаєте видалити ці \"%1$d\"завантаження?</item>
+        <item quantity="many">Ви бажаєте видалити ці \"%1$d\" завантажень?</item>
+        <item quantity="other">Ви бажаєте видалити ці \"%1$d\" завантажень?</item>
     </plurals>
     <string name="download_incomplete">Завантаження не завершено</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Горизонтальні жести</string>
@@ -163,4 +163,17 @@
     <string name="download_settings_dialog_title">Виберіть місце завантаження</string>
     <string name="download_settings_dialog_message">Будь ласка, виберіть місце, куди потрібно зберігати завантажені медіафайли. За замовчуванням завантаження виконуються лише через Wi-Fi.</string>
     <string name="select_folder">Виберіть папку</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Видалити завантаження</item>
+        <item quantity="few">Видалити завантаження</item>
+        <item quantity="many">Видалити завантажень</item>
+        <item quantity="other">Видалити завантажень</item>
+    </plurals>
+    <string name="select_all">Вибрати все</string>
+    <string name="deselect_all">Зняти вибір із усіх</string>
+    <string name="selected_count">%1$d вибрано</string>
+    <string name="download_location_not_set">Не вибрано місце збереження</string>
+    <string name="download_location_not_set_description">Щоб завантажити медіафайли, виберіть папку, у якій мають зберігатися файли.</string>
+    <string name="download_location_inaccessible">Місце для завантаження недоступне</string>
+    <string name="download_location_inaccessible_description">Вибране місце для завантаження більше недоступне. Будь ласка, виберіть іншу папку, щоб відновити завантаження.</string>
 </resources>
