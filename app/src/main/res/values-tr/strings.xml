@@ -169,7 +169,7 @@
     <string name="download_location_inaccessible">İndirme konumuna erişilemiyor</string>
     <string name="download_location_inaccessible_description">Seçilen indirme konumuna artık erişilemiyor. İndirmeye devam etmek için lütfen farklı bir klasör seçin.</string>
     <plurals name="download_remove_title">
-        <item quantity="one">İndirilen dosyayı kaldır</item>
-        <item quantity="other">İndirilen dosyaları kaldır</item>
+        <item quantity="one">İndirilen dosyayı sil</item>
+        <item quantity="other">İndirilen dosyaları sil</item>
     </plurals>
 </resources>
