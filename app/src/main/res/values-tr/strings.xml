@@ -150,8 +150,8 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Yerel dosyaları sakla</string>
     <plurals name="download_remove_description">
-        <item quantity="one">İndirdiklerin arasından %1$s ögesini silmek istiyor musun?</item>
-        <item quantity="other"></item>
+        <item quantity="one">İndirdiklerin arasından \"%2$s\" ögesini silmek istiyor musun?</item>
+        <item quantity="other">İndirdiklerin arasından bu \"%1$d\" ögeyi silmek istiyor musun?</item>
     </plurals>
     <string name="download_incomplete">İndirme işlemi tamamlanmadı</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Yatay hareketler</string>
@@ -161,4 +161,15 @@
     <string name="download_settings_dialog_title">İndirme konumunu seçin</string>
     <string name="download_settings_dialog_message">Lütfen indirilen dosyaların nereye kaydedileceğini seçin. İndirme işlemleri varsayılan olarak yalnızca Wi-Fi üzerinden gerçekleştirilir.</string>
     <string name="select_folder">Klasör seçin</string>
+    <string name="select_all">Tümünü seç</string>
+    <string name="deselect_all">Tüm seçimleri kaldır</string>
+    <string name="selected_count">%1$d öge seçildi</string>
+    <string name="download_location_not_set">İndirme konumu yok</string>
+    <string name="download_location_not_set_description">Medya dosyalarını indirmek için lütfen dosyaların kaydedileceği bir klasör seçin.</string>
+    <string name="download_location_inaccessible">İndirme konumuna erişilemiyor</string>
+    <string name="download_location_inaccessible_description">Seçilen indirme konumuna artık erişilemiyor. İndirmeye devam etmek için lütfen farklı bir klasör seçin.</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">İndirilen dosyayı kaldır</item>
+        <item quantity="other">İndirilen dosyaları kaldır</item>
+    </plurals>
 </resources>
