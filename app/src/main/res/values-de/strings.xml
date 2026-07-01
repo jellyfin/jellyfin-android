@@ -149,8 +149,8 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Lokale Datei(en) behalten</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Möchtest Du %1$s aus deinen Downloads entfernen?</item>
-        <item quantity="other"></item>
+        <item quantity="one">Möchtest Du \"%2$s\" aus deinen Downloads entfernen?</item>
+        <item quantity="other">Möchtest Du diese %1$d Downloads entfernen?</item>
     </plurals>
     <string name="download_incomplete">Download unvollständig</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Horizontale Gesten</string>
@@ -160,4 +160,15 @@
     <string name="download_settings_dialog_title">Downloadort wählen</string>
     <string name="download_settings_dialog_message">Bitte wähle, wohin heruntergeladene Medien gespeichert werden sollen. Downloads verwenden standardmäßig nur WLAN.</string>
     <string name="select_folder">Ordner wählen</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Download entfernen</item>
+        <item quantity="other">Downloads entfernen</item>
+    </plurals>
+    <string name="select_all">Alle auswählen</string>
+    <string name="deselect_all">Alle abwählen</string>
+    <string name="selected_count">%1$d ausgewählt</string>
+    <string name="download_location_not_set">Kein Ort für Downloads</string>
+    <string name="download_location_not_set_description">Um Medien herunterzuladen, gebe bitte einen Ordner an, in den Dateien gespeichert werden sollen.</string>
+    <string name="download_location_inaccessible">Downloadort nicht zugänglich</string>
+    <string name="download_location_inaccessible_description">Der gewählte Ort für Downloads ist nicht mehr zugänglich. Bitte wähle einen anderen Ordner um Downloads fortzusetzen.</string>
 </resources>
