@@ -132,8 +132,8 @@
     <string name="downloaded">Εγινε λήψη του %1$s</string>
     <string name="download_incomplete">Η λήψη δεν ολοκληρώθηκε</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Θέλετε να αφαιρέσετε το %1$s από τις λήψεις σας;</item>
-        <item quantity="other"></item>
+        <item quantity="one">Θέλετε να αφαιρέσετε το \"%2$s\" από τις λήψεις σας;</item>
+        <item quantity="other">Θέλετε να αφαιρέσετε τα %1$d από τις λήψεις σας;</item>
     </plurals>
     <string name="download_remove_keep_local">Διατήρηση τοπικών αρχείων</string>
     <string name="download_progress">%1$d%%</string>
@@ -147,4 +147,15 @@
     <string name="download_settings_dialog_title">Επιλέξτε τοποθεσία λήψης</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Να επιτρέπεται ο έλεγχος με οριζόντιες χειρονομίες για αναζήτηση σε βίντεο</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Οριζόντιες χειρονομίες</string>
+    <string name="download_location_inaccessible_description">Η επιλεγμένη τοποθεσία λήψης δεν είναι πλέον προσβάσιμη. Παρακαλώ επιλέξτε διαφορετικό φάκελο για να συνεχίσετε τις λήψεις.</string>
+    <string name="download_location_inaccessible">Η τοποθεσία λήψης δεν είναι προσβάσιμη</string>
+    <string name="download_location_not_set_description">Για να κάνετε λήψη πολυμέσων, επιλέξτε έναν φάκελο όπου θα αποθηκευτούν τα αρχεία.</string>
+    <string name="download_location_not_set">Δεν υπάρχει τοποθεσία λήψης</string>
+    <string name="selected_count">%1$d επιλέχθηκαν</string>
+    <string name="deselect_all">Αποεπιλογή όλων</string>
+    <string name="select_all">Επιλογή όλων</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Αφαίρεση λήψης</item>
+        <item quantity="other">Αφαίρεση λήψεων</item>
+    </plurals>
 </resources>
