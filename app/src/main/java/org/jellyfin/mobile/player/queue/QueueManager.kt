@@ -47,7 +47,6 @@ class QueueManager(
     private val mediaSourceResolver: MediaSourceResolver by inject()
     private val deviceProfileBuilder: DeviceProfileBuilder by inject()
     private val downloadDao: DownloadDao by inject()
-    private val deviceProfile = deviceProfileBuilder.getDeviceProfile()
 
     private var currentQueue: List<UUID> = emptyList()
     private var currentQueueIndex: Int = 0
@@ -154,7 +153,7 @@ class QueueManager(
         mediaSourceResolver.resolveMediaSource(
             itemId = itemId,
             mediaSourceId = mediaSourceId,
-            deviceProfile = deviceProfile,
+            deviceProfile = deviceProfileBuilder.getDeviceProfile(),
             maxStreamingBitrate = maxStreamingBitrate,
             startTime = startTime,
             audioStreamIndex = audioStreamIndex,

@@ -119,6 +119,16 @@
     <string name="network_buffer_large_description">Larger buffer, may help on moderate or variable connections</string>
     <string name="network_buffer_extra_large">Extra large</string>
     <string name="network_buffer_extra_large_description">Maximum buffer, intended for slow or satellite connections</string>
+    <string name="pref_exoplayer_preferred_audio_codec_title">Preferred audio codec</string>
+    <string name="pref_exoplayer_preferred_audio_codec_summary">Codec to request when the audio track needs transcoding</string>
+    <string name="audio_codec_auto">Automatic</string>
+    <string name="audio_codec_auto_description">Let the server decide (default)</string>
+    <string name="audio_codec_aac">AAC</string>
+    <string name="audio_codec_aac_description">Best quality and compatibility for mobile</string>
+    <string name="audio_codec_ac3">AC3 (Dolby Digital)</string>
+    <string name="audio_codec_ac3_description">For receivers/devices that prefer AC3</string>
+    <string name="audio_codec_mp3">MP3</string>
+    <string name="audio_codec_mp3_description">Maximum compatibility, lower quality</string>
 
     <string name="external_player_app">External player app</string>
     <string name="external_player_mpv">MPV Player</string>

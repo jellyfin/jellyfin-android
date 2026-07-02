@@ -61,6 +61,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
     private lateinit var horizontalGesturePreference: Preference
     private lateinit var directPlayAssPreference: Preference
     private lateinit var networkBufferPreference: Preference
+    private lateinit var preferredAudioCodecPreference: Preference
     private lateinit var externalPlayerChoicePreference: Preference
     private lateinit var downloadLocationPreference: Preference
 
@@ -129,6 +130,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 horizontalGesturePreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 directPlayAssPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 networkBufferPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                preferredAudioCodecPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
         }
@@ -193,6 +195,18 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
         networkBufferPreference = singleChoice(Constants.PREF_EXOPLAYER_NETWORK_BUFFER, networkBufferOptions) {
             titleRes = R.string.pref_exoplayer_network_buffer
             initialSelection = Constants.NETWORK_BUFFER_AUTO
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+        }
+        val audioCodecOptions = listOf(
+            SelectionItem(PreferredAudioCodec.AUTO, R.string.audio_codec_auto, R.string.audio_codec_auto_description),
+            SelectionItem(PreferredAudioCodec.AAC, R.string.audio_codec_aac, R.string.audio_codec_aac_description),
+            SelectionItem(PreferredAudioCodec.AC3, R.string.audio_codec_ac3, R.string.audio_codec_ac3_description),
+            SelectionItem(PreferredAudioCodec.MP3, R.string.audio_codec_mp3, R.string.audio_codec_mp3_description),
+        )
+        preferredAudioCodecPreference = singleChoice(Constants.PREF_EXOPLAYER_PREFERRED_AUDIO_CODEC, audioCodecOptions) {
+            titleRes = R.string.pref_exoplayer_preferred_audio_codec_title
+            summaryRes = R.string.pref_exoplayer_preferred_audio_codec_summary
+            initialSelection = PreferredAudioCodec.AUTO
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
         }
 
