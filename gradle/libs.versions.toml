@@ -44,7 +44,7 @@ compose-material-icons = "1.7.8"
 
 # Network
 jellyfin-sdk = "1.7.1"
-coil = "3.4.0"
+coil = "3.5.0"
 
 # Media
 androidx-media = "1.7.1"
