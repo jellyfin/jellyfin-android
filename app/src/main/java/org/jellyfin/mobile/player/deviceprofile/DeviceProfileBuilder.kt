@@ -3,6 +3,7 @@ package org.jellyfin.mobile.player.deviceprofile
 import android.media.MediaCodecList
 import android.media.MediaFormat
 import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.settings.MaxTranscodeResolution
 import org.jellyfin.mobile.utils.Constants
 import org.json.JSONObject
 import org.jellyfin.sdk.model.api.CodecProfile
@@ -114,10 +115,29 @@ class DeviceProfileBuilder(
         )
     }
 
+    /**
+     * Build a height cap condition from the user's maximum transcode resolution setting.
+     * Applied to the video transcoding profiles only, so it caps the transcode output
+     * without making high-resolution sources ineligible for direct play.
+     */
+    private fun buildMaxResolutionConditions(): List<ProfileCondition> {
+        val maxResolution = appPreferences.exoPlayerMaxTranscodeResolution
+        if (maxResolution == MaxTranscodeResolution.AUTO) return emptyList()
+        return listOf(
+            ProfileCondition(
+                condition = ProfileConditionType.LESS_THAN_EQUAL,
+                property = ProfileConditionValue.HEIGHT,
+                value = maxResolution,
+                isRequired = false,
+            ),
+        )
+    }
+
     fun getDeviceProfile(): DeviceProfile {
         val containerProfiles = ArrayList<ContainerProfile>()
         val directPlayProfiles = ArrayList<DirectPlayProfile>()
         val codecProfiles = ArrayList<CodecProfile>()
+        val maxResolutionConditions = buildMaxResolutionConditions()
 
         for (i in SUPPORTED_CONTAINER_FORMATS.indices) {
             val container = SUPPORTED_CONTAINER_FORMATS[i]
@@ -161,7 +181,15 @@ class DeviceProfileBuilder(
         return DeviceProfile(
             name = Constants.APP_INFO_NAME,
             directPlayProfiles = directPlayProfiles,
-            transcodingProfiles = transcodingProfiles,
+            transcodingProfiles = when {
+                maxResolutionConditions.isEmpty() -> transcodingProfiles
+                else -> transcodingProfiles.map { profile ->
+                    when (profile.type) {
+                        DlnaProfileType.VIDEO -> profile.copy(conditions = maxResolutionConditions)
+                        else -> profile
+                    }
+                }
+            },
             containerProfiles = containerProfiles,
             codecProfiles = codecProfiles,
             subtitleProfiles = subtitleProfiles,

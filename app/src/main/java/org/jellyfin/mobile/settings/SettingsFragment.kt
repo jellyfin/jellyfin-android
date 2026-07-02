@@ -61,6 +61,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
     private lateinit var horizontalGesturePreference: Preference
     private lateinit var directPlayAssPreference: Preference
     private lateinit var networkBufferPreference: Preference
+    private lateinit var maxTranscodeResolutionPreference: Preference
     private lateinit var externalPlayerChoicePreference: Preference
     private lateinit var downloadLocationPreference: Preference
 
@@ -129,6 +130,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 horizontalGesturePreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 directPlayAssPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 networkBufferPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                maxTranscodeResolutionPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
         }
@@ -193,6 +195,18 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
         networkBufferPreference = singleChoice(Constants.PREF_EXOPLAYER_NETWORK_BUFFER, networkBufferOptions) {
             titleRes = R.string.pref_exoplayer_network_buffer
             initialSelection = Constants.NETWORK_BUFFER_AUTO
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+        }
+        val maxResolutionOptions = listOf(
+            SelectionItem(MaxTranscodeResolution.AUTO, R.string.max_resolution_auto, R.string.max_resolution_auto_description),
+            SelectionItem(MaxTranscodeResolution.P1080, R.string.max_resolution_1080, R.string.max_resolution_1080_description),
+            SelectionItem(MaxTranscodeResolution.P720, R.string.max_resolution_720, R.string.max_resolution_720_description),
+            SelectionItem(MaxTranscodeResolution.P480, R.string.max_resolution_480, R.string.max_resolution_480_description),
+        )
+        maxTranscodeResolutionPreference = singleChoice(Constants.PREF_EXOPLAYER_MAX_TRANSCODE_RESOLUTION, maxResolutionOptions) {
+            titleRes = R.string.pref_exoplayer_max_transcode_resolution_title
+            summaryRes = R.string.pref_exoplayer_max_transcode_resolution_summary
+            initialSelection = MaxTranscodeResolution.AUTO
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
         }
 

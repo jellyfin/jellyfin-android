@@ -119,6 +119,16 @@
     <string name="network_buffer_large_description">Larger buffer, may help on moderate or variable connections</string>
     <string name="network_buffer_extra_large">Extra large</string>
     <string name="network_buffer_extra_large_description">Maximum buffer, intended for slow or satellite connections</string>
+    <string name="pref_exoplayer_max_transcode_resolution_title">Maximum resolution</string>
+    <string name="pref_exoplayer_max_transcode_resolution_summary">Resolution cap when the video needs transcoding, independent of the bitrate selection</string>
+    <string name="max_resolution_auto">Automatic</string>
+    <string name="max_resolution_auto_description">Let the server decide based on bitrate (default)</string>
+    <string name="max_resolution_1080">1080p</string>
+    <string name="max_resolution_1080_description">Cap transcodes at Full HD</string>
+    <string name="max_resolution_720">720p</string>
+    <string name="max_resolution_720_description">Cap transcodes at HD</string>
+    <string name="max_resolution_480">480p</string>
+    <string name="max_resolution_480_description">Cap transcodes at SD</string>
 
     <string name="external_player_app">External player app</string>
     <string name="external_player_mpv">MPV Player</string>
