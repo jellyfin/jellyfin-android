@@ -150,8 +150,23 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Behåll lokala fil(er)</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Vill du ta bort %1$s från dina nedladdningar?</item>
-        <item quantity="other"></item>
+        <item quantity="one">Vill du ta bort %1\"%2$s\" från dina nedladdningar?</item>
+        <item quantity="other">Vill du ta bort dessa %1$s %1$d nedladdningar?</item>
     </plurals>
     <string name="download_incomplete">Nedladdning ej slutförd</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Horisontella gester</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Tillåt horisontella gester för att bläddra mellan videor</string>
+    <string name="downloads_empty">Inga nedladdningar ännu</string>
+    <string name="downloads_empty_description">Du kan ladda ner filmer och TV och se på dem offline. Titta efter nedladdningsikonen på detaljsidan.</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Ta bort nedladdning</item>
+        <item quantity="other">Ta bort nedladdningar</item>
+    </plurals>
+    <string name="download_settings_dialog_title">Välj nedladdningsplats</string>
+    <string name="download_settings_dialog_message">Välj vart nedladdad media ska sparas. Nedladdningar görs över enbart WiFi som standard.</string>
+    <string name="select_folder">Välj mapp</string>
+    <string name="select_all">Välj alla</string>
+    <string name="selected_count">%1$d vald</string>
+    <string name="download_location_not_set_description">För att ladda ner media, välj en mapp där filerna ska sparas.</string>
+    <string name="download_location_inaccessible">Nedladdningsplats ej åtkomlig</string>
 </resources>
