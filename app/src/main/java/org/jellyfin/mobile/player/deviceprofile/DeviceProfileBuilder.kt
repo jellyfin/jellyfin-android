@@ -3,6 +3,7 @@ package org.jellyfin.mobile.player.deviceprofile
 import android.media.MediaCodecList
 import android.media.MediaFormat
 import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.settings.PreferredAudioCodec
 import org.jellyfin.mobile.utils.Constants
 import org.json.JSONObject
 import org.jellyfin.sdk.model.api.CodecProfile
@@ -26,8 +27,6 @@ class DeviceProfileBuilder(
     private val supportedAudioCodecs: Array<Array<String>>
     private val videoCodecsProfiles: Map<String, Set<String>>
     private val maxAvcRawLevel: Int
-
-    private val transcodingProfiles: List<TranscodingProfile>
 
     init {
         require(
@@ -85,34 +84,48 @@ class DeviceProfileBuilder(
             }.toTypedArray()
         }
         videoCodecsProfiles = videoCodecs.entries.associate { (k, v) -> k to v.profiles }
-
-        transcodingProfiles = listOf(
-            TranscodingProfile(
-                type = DlnaProfileType.VIDEO,
-                container = "ts",
-                videoCodec = "h264",
-                audioCodec = "mp1,mp2,mp3,aac,ac3,eac3,dts,mlp,truehd",
-                protocol = MediaStreamProtocol.HLS,
-                conditions = emptyList(),
-            ),
-            TranscodingProfile(
-                type = DlnaProfileType.VIDEO,
-                container = "mkv",
-                videoCodec = "h264",
-                audioCodec = AVAILABLE_AUDIO_CODECS[SUPPORTED_CONTAINER_FORMATS.indexOf("mkv")].joinToString(","),
-                protocol = MediaStreamProtocol.HLS,
-                conditions = emptyList(),
-            ),
-            TranscodingProfile(
-                type = DlnaProfileType.AUDIO,
-                container = "mp3",
-                videoCodec = "",
-                audioCodec = "mp3",
-                protocol = MediaStreamProtocol.HTTP,
-                conditions = emptyList(),
-            ),
-        )
     }
+
+    /**
+     * Reorder a comma-separated codec priority list so the user's preferred audio codec comes first.
+     * Returns the list unchanged for [PreferredAudioCodec.AUTO] or if the preferred codec isn't in the list.
+     */
+    private fun applyPreferredAudioCodec(codecs: String): String {
+        val preferred = appPreferences.exoPlayerPreferredAudioCodec
+        if (preferred == PreferredAudioCodec.AUTO) return codecs
+        val list = codecs.split(',').map(String::trim).filter(String::isNotEmpty)
+        if (preferred !in list) return codecs
+        return (listOf(preferred) + list.filter { it != preferred }).joinToString(",")
+    }
+
+    private fun buildTranscodingProfiles(): List<TranscodingProfile> = listOf(
+        TranscodingProfile(
+            type = DlnaProfileType.VIDEO,
+            container = "ts",
+            videoCodec = "h264",
+            audioCodec = applyPreferredAudioCodec("mp1,mp2,mp3,aac,ac3,eac3,dts,mlp,truehd"),
+            protocol = MediaStreamProtocol.HLS,
+            conditions = emptyList(),
+        ),
+        TranscodingProfile(
+            type = DlnaProfileType.VIDEO,
+            container = "mkv",
+            videoCodec = "h264",
+            audioCodec = applyPreferredAudioCodec(
+                AVAILABLE_AUDIO_CODECS[SUPPORTED_CONTAINER_FORMATS.indexOf("mkv")].joinToString(","),
+            ),
+            protocol = MediaStreamProtocol.HLS,
+            conditions = emptyList(),
+        ),
+        TranscodingProfile(
+            type = DlnaProfileType.AUDIO,
+            container = "mp3",
+            videoCodec = "",
+            audioCodec = "mp3",
+            protocol = MediaStreamProtocol.HTTP,
+            conditions = emptyList(),
+        ),
+    )
 
     fun getDeviceProfile(): DeviceProfile {
         val containerProfiles = ArrayList<ContainerProfile>()
@@ -161,7 +174,7 @@ class DeviceProfileBuilder(
         return DeviceProfile(
             name = Constants.APP_INFO_NAME,
             directPlayProfiles = directPlayProfiles,
-            transcodingProfiles = transcodingProfiles,
+            transcodingProfiles = buildTranscodingProfiles(),
             containerProfiles = containerProfiles,
             codecProfiles = codecProfiles,
             subtitleProfiles = subtitleProfiles,
