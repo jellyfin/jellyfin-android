@@ -12,7 +12,8 @@
         android:layout_height="match_parent"
         android:foreground="@drawable/ripple_background"
         app:pause_icon="@drawable/ic_pause_black_42dp"
-        app:play_icon="@drawable/ic_play_black_42dp" />
+        app:play_icon="@drawable/ic_play_black_42dp"
+        app:surface_type="texture_view" />
 
     <FrameLayout
         android:id="@+id/player_overlay"

@@ -211,6 +211,9 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         // Disable controller animations
         playerView.setControllerAnimationEnabled(false)
 
+        // Prevent the ripple foreground from brightening the video on cursor hover.
+        playerView.setOnHoverListener { _, _ -> true }
+
         playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
         playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)
 
