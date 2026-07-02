@@ -40,6 +40,7 @@ import org.jellyfin.mobile.player.mediasegments.MediaSegmentRepository
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.player.ui.PlayerFragment
+import org.jellyfin.mobile.sessionbrowser.SharedPlaybackStateRepository
 import org.jellyfin.mobile.setup.ConnectionHelper
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
@@ -90,6 +91,9 @@ val applicationModule = module {
 
     // Connection helper
     single { ConnectionHelper(get(), get()) }
+
+    // Shared playback state bridge between webapp and Android Auto
+    single { SharedPlaybackStateRepository() }
 
     // Media player helpers
     single { MediaSourceResolver(get()) }
