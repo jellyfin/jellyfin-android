@@ -171,4 +171,8 @@
     <string name="select_all">اختيار الكل</string>
     <string name="deselect_all">عدم اختيار الكل</string>
     <string name="selected_count">%1$d مختار</string>
+    <string name="download_location_not_set">لا يوجد موقع للتحميل</string>
+    <string name="download_location_not_set_description">لتحميل الوسيطة, يرجى اختيار مجلد حيث يتم حفظ الملفات فيه.</string>
+    <string name="download_location_inaccessible">تعذر الوصول لموقع التحميل</string>
+    <string name="download_location_inaccessible_description">يتعذر الوصول للموقع المختار للتحميل. يرجى اختيار مجلد آخر لإستكمال التجميل.</string>
 </resources>
