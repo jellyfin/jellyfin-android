@@ -16,6 +16,12 @@ const features = [
     "subtitleburnsettings"
 ];
 
+// Chromecast only works in the proprietary flavor; the libre build ships a no-op
+// cast stub, so only advertise support when the native bridge confirms it.
+if (window.NativeInterface.hasChromecast()) {
+    features.push("chromecast");
+}
+
 const plugins = [
     'NavigationPlugin',
     'ExoPlayerPlugin',

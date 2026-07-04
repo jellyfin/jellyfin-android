@@ -6,6 +6,7 @@ import android.content.Intent
 import android.media.session.PlaybackState
 import android.webkit.JavascriptInterface
 import androidx.core.content.ContextCompat
+import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
@@ -64,6 +65,11 @@ class NativeInterface(private val context: Context) : KoinComponent {
 
     @JavascriptInterface
     fun getCodecCapabilities(): String = deviceProfileBuilder.getWebCodecCapabilitiesJson()
+
+    // Only the proprietary flavor bundles the Cast SDK (libre ships a no-op stub), so the web
+    // client should only surface Cast options like the Google Cast streaming quality setting.
+    @JavascriptInterface
+    fun hasChromecast(): Boolean = BuildConfig.IS_PROPRIETARY
 
     @JavascriptInterface
     fun enableFullscreen(): Boolean {
