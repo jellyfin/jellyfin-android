@@ -67,8 +67,8 @@
     <string name="media_service_item_not_found">Não foi possível encontrar este item</string>
     <string name="pref_music_notification_always_dismissible_summary_off">A notificação só pode ser ignorada quando o playback está pausado</string>
     <string name="playback_info_stream_unknown_title">Titulo desconhecido</string>
-    <string name="player_error_unsupported_content">Media incapaz de reprodução por este dispositivo</string>
-    <string name="player_error_network_failure">Incapaz de carregar informação de media do servidor</string>
+    <string name="player_error_unsupported_content">Não é possível reproduzir este conteúdo multimédia neste dispositivo</string>
+    <string name="player_error_network_failure">Não foi possível carregar as informações multimédia do servidor</string>
     <string name="player_error_invalid_play_options">Incapaz de resolver informação de playback</string>
     <string name="connection_error_unsupported_version_or_product">Versão ou produto não suportado</string>
     <string name="connection_error_unable_to_reach_sever">Incapaz de chegar ao servidor</string>
@@ -88,8 +88,8 @@
     <string name="dialog_web_view_not_supported">WebView não suportado</string>
     <string name="toast_reopen_after_change">Reabra a aplicação após fazer as alterações</string>
     <string name="dialog_button_ignore">Ignorar</string>
-    <string name="pref_download_location">Localização das descargas</string>
-    <string name="pref_category_downloads">Descargas</string>
+    <string name="pref_download_location">Localização das transferências</string>
+    <string name="pref_category_downloads">Transferências</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Permitir a reprodução de vídeos em segundo plano apenas com o áudio</string>
     <string name="pref_exoplayer_remember_brightness">Lembrar configurações de brilho</string>
     <string name="video_player_integrated">Reprodutor integrado</string>
@@ -108,9 +108,9 @@
     <string name="bluetooth_permission_title">Permitir acesso Bluetooth\?</string>
     <string name="bluetooth_permission_continue">Continuar</string>
     <string name="bluetooth_permission_message">Para detectar se os auscultadores ou colunas estão desconectados, a aplicação necessita de acesso ao Bluetooth. No android, esta permissão chama-se acesso a dispositivos nas redondezas, e avisa que dispositivos Bluetooth podem ser usados para uma localização mais precisa. No entanto, a aplicação Jellyfin nunca irá usar esta permissão para detectar a sua localização.</string>
-    <string name="wifi_only_summary">Média será transferida apenas por WiFi.</string>
-    <string name="mobile_data_summary">Média será transferida por WiFi e redes móveis.</string>
-    <string name="mobile_data_and_roaming_summary">Média será transferida por WiFi e redes móveis, incluindo em roaming.</string>
+    <string name="wifi_only_summary">Os conteúdos multimédia serão transferidos apenas por Wi-Fi.</string>
+    <string name="mobile_data_summary">Os conteúdos multimédia serão transferidos por Wi-Fi e dados móveis.</string>
+    <string name="mobile_data_and_roaming_summary">Os conteúdos multimédia serão transferidos por Wi-Fi, dados móveis e redes em roaming.</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Pressiona o ecrã para acelerar temporariamente a reprodução</string>
     <string name="failed_thumbnail">Falha ao transferir a miniatura</string>
     <string name="external_player_mpvkt">Leitor mpvKt</string>
@@ -136,22 +136,28 @@
     <string name="media_service_car_section_favorites">Favoritos</string>
     <string name="network_buffer_auto">Auto</string>
     <string name="network_buffer_large">Grande</string>
-    <string name="downloads_empty">Sem downloads</string>
+    <string name="downloads_empty">Sem transferências</string>
     <string name="media_service_invalid_id">ID de item inválido</string>
     <string name="media_service_car_section_audiobooks">Audiolivros</string>
-    <string name="media_service_car_section_playlists">Listas de reprodução</string>
+    <string name="media_service_car_section_playlists">Playlists</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Gestos horizontais</string>
     <string name="network_buffer_extra_large_description">Buffer máximo, ideal para ligações lentas ou por satélite</string>
-    <string name="downloads_empty_description">Pode descarregar filmes e séries para assistir offline. Procure o ícone de download na página de detalhes do item.</string>
-    <string name="downloading_title">Baixando %1$s</string>
+    <string name="downloads_empty_description">Podes transferir filmes e séries para os veres offline. Procura o ícone de transferência na página de detalhes do item.</string>
+    <string name="downloading_title">A transferir %1$s</string>
     <string name="download_cancel">Cancelar</string>
-    <string name="download_completed">Download concluído</string>
-    <string name="download_remove_keep_local">Manter arquivos locais</string>
+    <string name="download_completed">Transferência concluída</string>
+    <string name="download_remove_keep_local">Manter ficheiros locais</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Pretende remover %1$s dos seus downloads?</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">Queres remover “%2$s” das tuas transferências?</item>
+        <item quantity="many">Queres remover estas %1$d transferências?</item>
+        <item quantity="other">Queres remover estas %1$d transferências?</item>
     </plurals>
     <string name="download_incomplete">Download incompleto</string>
     <string name="download_settings_dialog_title">Escolha o local de download</string>
+    <string name="download_progress">%1$d%%</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Remover transferência</item>
+        <item quantity="many">Remover transferências</item>
+        <item quantity="other">Remover transferências</item>
+    </plurals>
 </resources>
