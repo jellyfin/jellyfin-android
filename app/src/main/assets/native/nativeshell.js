@@ -16,12 +16,6 @@ const features = [
     "subtitleburnsettings"
 ];
 
-// Chromecast only works in the proprietary flavor; the libre build ships a no-op
-// cast stub, so only advertise support when the native bridge confirms it.
-if (window.NativeInterface.hasChromecast()) {
-    features.push("chromecast");
-}
-
 const plugins = [
     'NavigationPlugin',
     'ExoPlayerPlugin',
@@ -159,7 +153,13 @@ window.NativeShell.AppHost = {
         return "mobile";
     },
     supports(command) {
-        return features.includes(command.toLowerCase());
+        command = command.toLowerCase();
+        // Chromecast only works in the proprietary flavor (libre ships a no-op cast
+        // stub), so query the native side instead of advertising it statically.
+        if (command === "chromecast") {
+            return window.NativeInterface.hasChromecast();
+        }
+        return features.includes(command);
     },
     getDeviceProfile,
     getSyncProfile: getDeviceProfile,
