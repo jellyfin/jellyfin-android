@@ -114,13 +114,13 @@
     <string name="view_downloads">檢視下載項目</string>
     <string name="downloads">下載項目</string>
     <string name="download_notifications_description">下載通知</string>
-    <string name="failed_thumbnail">下載縮圖失敗</string>
+    <string name="failed_thumbnail">下載預覽圖失敗</string>
     <string name="failed_information">攞唔到媒體資訊</string>
     <string name="failed_network_method_check">唔該check吓你允許嘅下載方式</string>
     <string name="special_episode">特輯</string>
     <string name="yes">係</string>
     <string name="no">唔係</string>
-    <string name="thumbnail_desc">縮圖</string>
+    <string name="thumbnail_desc">預覽圖</string>
     <string name="store_videos_in_internal_storage">將影片儲存喺內部儲存空間</string>
     <string name="stored_videos_in_internal_storage_desc">電影同電視節目等影片將會儲存喺應用程式嘅內部儲存空間，並可直接透過程式存取。</string>
     <string name="tv_show_desc">%1$s - 第 %2$d 季第 %3$d 集</string>
