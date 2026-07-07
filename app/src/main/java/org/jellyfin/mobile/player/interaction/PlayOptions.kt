@@ -2,11 +2,15 @@ package org.jellyfin.mobile.player.interaction
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import org.jellyfin.mobile.utils.extensions.size
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.intOrNull
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.longOrNull
 import org.jellyfin.sdk.model.extensions.ticks
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
-import org.json.JSONException
-import org.json.JSONObject
 import timber.log.Timber
 import java.util.UUID
 import kotlin.time.Duration
@@ -22,23 +26,18 @@ data class PlayOptions(
     val playFromDownloads: Boolean?,
 ) : Parcelable {
     companion object {
-        fun fromJson(json: JSONObject): PlayOptions? = try {
+        fun fromJson(json: String): PlayOptions? = try {
+            val jsonObject = Json.parseToJsonElement(json).jsonObject
             PlayOptions(
-                ids = json.optJSONArray("ids")?.let { array ->
-                    ArrayList<UUID>().apply {
-                        for (i in 0 until array.size) {
-                            array.getString(i).toUUIDOrNull()?.let(this::add)
-                        }
-                    }
-                } ?: emptyList(),
-                mediaSourceId = json.optString("mediaSourceId"),
-                startIndex = json.optInt("startIndex"),
-                startPosition = (json.optLong("startPositionTicks").takeIf { it > 0 })?.ticks,
-                audioStreamIndex = json.optString("audioStreamIndex").toIntOrNull(),
-                subtitleStreamIndex = json.optString("subtitleStreamIndex").toIntOrNull(),
+                ids = jsonObject["ids"]?.jsonArray?.mapNotNull { it.jsonPrimitive.contentOrNull?.toUUIDOrNull() } ?: emptyList(),
+                mediaSourceId = jsonObject["mediaSourceId"]?.jsonPrimitive?.contentOrNull,
+                startIndex = jsonObject["startIndex"]?.jsonPrimitive?.intOrNull ?: 0,
+                startPosition = (jsonObject["startPositionTicks"]?.jsonPrimitive?.longOrNull?.takeIf { it > 0 })?.ticks,
+                audioStreamIndex = jsonObject["audioStreamIndex"]?.jsonPrimitive?.contentOrNull?.toIntOrNull(),
+                subtitleStreamIndex = jsonObject["subtitleStreamIndex"]?.jsonPrimitive?.contentOrNull?.toIntOrNull(),
                 playFromDownloads = false,
             )
-        } catch (e: JSONException) {
+        } catch (e: Exception) {
             Timber.e(e, "Failed to parse playback options: %s", json)
             null
         }
