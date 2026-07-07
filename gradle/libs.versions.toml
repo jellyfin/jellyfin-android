@@ -60,7 +60,7 @@ androidx-room = "2.7.2"
 timber = "5.0.1"
 
 # Testing
-junit = "6.1.0"
+junit = "6.1.1"
 kotest = "6.2.1"
 mockk = "1.14.11"
 androidx-test-runner = "1.7.0"
