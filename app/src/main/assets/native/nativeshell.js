@@ -153,7 +153,11 @@ window.NativeShell.AppHost = {
         return "mobile";
     },
     supports(command) {
-        return features.includes(command.toLowerCase());
+        command = command.toLowerCase();
+        if (command === "chromecast") {
+            return window.NativeInterface.hasChromecast();
+        }
+        return features.includes(command);
     },
     getDeviceProfile,
     getSyncProfile: getDeviceProfile,
