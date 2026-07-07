@@ -148,7 +148,7 @@
     <string name="download_completed">Đã Tải Xuống Hoàn Tất</string>
     <string name="download_remove_keep_local">Giữ lại tập tin cục bộ</string>
     <plurals name="download_remove_description">
-        <item quantity="other">Bạn có muốn xóa %1$s khỏi các tệp tải xuống của mình không?</item>
+        <item quantity="other">Bạn có muốn xóa các tệp tải xuống %1$d này không?</item>
     </plurals>
     <string name="download_incomplete">Tải xuống chưa hoàn tất</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Cử chỉ chiều ngang</string>
@@ -159,4 +159,8 @@
     <string name="download_settings_dialog_title">Chọn vị trí tải xuống</string>
     <string name="download_settings_dialog_message">Vui lòng chọn nơi lưu phương tiện đã tải xuống. Tải xuống chỉ sử dụng WiFi theo mặc định.</string>
     <string name="select_folder">Chọn thư mục</string>
+    <plurals name="download_remove_title">
+        <item quantity="other">Xóa tải xuống</item>
+    </plurals>
+    <string name="select_all">Chọn tất cả</string>
 </resources>
