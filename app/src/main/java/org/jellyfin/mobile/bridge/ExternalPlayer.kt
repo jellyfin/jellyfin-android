@@ -32,7 +32,6 @@ import org.jellyfin.sdk.api.client.extensions.videosApi
 import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
-import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -84,7 +83,7 @@ class ExternalPlayer(
 
     @JavascriptInterface
     fun initPlayer(args: String) {
-        val playOptions = PlayOptions.fromJson(JSONObject(args))
+        val playOptions = PlayOptions.fromJson(args)
         val itemId = playOptions?.run {
             ids.firstOrNull() ?: mediaSourceId?.toUUIDOrNull() // fallback if ids is empty
         }

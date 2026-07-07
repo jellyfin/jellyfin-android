@@ -6,6 +6,15 @@ import android.content.Intent
 import android.media.session.PlaybackState
 import android.webkit.JavascriptInterface
 import androidx.core.content.ContextCompat
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.booleanOrNull
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.longOrNull
+import kotlinx.serialization.json.put
 import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
@@ -28,8 +37,6 @@ import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.util.AuthorizationHeaderBuilder
 import org.jellyfin.sdk.model.serializer.toUUID
 import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -49,8 +56,8 @@ class NativeInterface(private val context: Context) : KoinComponent {
         val deviceInfo = apiClient.deviceInfo
         val clientInfo = apiClient.clientInfo
 
-        JSONObject().apply {
-            put("deviceId", deviceInfo.id)
+        buildJsonObject {
+            put("deviceId", deviceInfo.id.toString())
             // normalize the name by removing special characters
             // and making sure it's at least 1 character long
             // otherwise the webui will fail to send it to the server
@@ -59,7 +66,7 @@ class NativeInterface(private val context: Context) : KoinComponent {
             put("appName", clientInfo.name)
             put("appVersion", clientInfo.version)
         }.toString()
-    } catch (e: JSONException) {
+    } catch (e: Exception) {
         null
     }
 
@@ -90,24 +97,24 @@ class NativeInterface(private val context: Context) : KoinComponent {
     @JavascriptInterface
     fun updateMediaSession(args: String): Boolean {
         val options = try {
-            JSONObject(args)
-        } catch (e: JSONException) {
+            Json.parseToJsonElement(args).jsonObject
+        } catch (e: Exception) {
             Timber.e("updateMediaSession: %s", e.message)
             return false
         }
         val intent = Intent(context, RemotePlayerService::class.java).apply {
             action = Constants.ACTION_REPORT
-            putExtra(EXTRA_PLAYER_ACTION, options.optString(EXTRA_PLAYER_ACTION))
-            putExtra(EXTRA_ITEM_ID, options.optString(EXTRA_ITEM_ID))
-            putExtra(EXTRA_TITLE, options.optString(EXTRA_TITLE))
-            putExtra(EXTRA_ARTIST, options.optString(EXTRA_ARTIST))
-            putExtra(EXTRA_ALBUM, options.optString(EXTRA_ALBUM))
-            putExtra(EXTRA_IMAGE_URL, options.optString(EXTRA_IMAGE_URL))
-            putExtra(EXTRA_POSITION, options.optLong(EXTRA_POSITION, PlaybackState.PLAYBACK_POSITION_UNKNOWN))
-            putExtra(EXTRA_DURATION, options.optLong(EXTRA_DURATION))
-            putExtra(EXTRA_CAN_SEEK, options.optBoolean(EXTRA_CAN_SEEK))
-            putExtra(EXTRA_IS_LOCAL_PLAYER, options.optBoolean(EXTRA_IS_LOCAL_PLAYER, true))
-            putExtra(EXTRA_IS_PAUSED, options.optBoolean(EXTRA_IS_PAUSED, true))
+            putExtra(EXTRA_PLAYER_ACTION, options[EXTRA_PLAYER_ACTION]?.jsonPrimitive?.contentOrNull ?: "")
+            putExtra(EXTRA_ITEM_ID, options[EXTRA_ITEM_ID]?.jsonPrimitive?.contentOrNull ?: "")
+            putExtra(EXTRA_TITLE, options[EXTRA_TITLE]?.jsonPrimitive?.contentOrNull ?: "")
+            putExtra(EXTRA_ARTIST, options[EXTRA_ARTIST]?.jsonPrimitive?.contentOrNull ?: "")
+            putExtra(EXTRA_ALBUM, options[EXTRA_ALBUM]?.jsonPrimitive?.contentOrNull ?: "")
+            putExtra(EXTRA_IMAGE_URL, options[EXTRA_IMAGE_URL]?.jsonPrimitive?.contentOrNull ?: "")
+            putExtra(EXTRA_POSITION, options[EXTRA_POSITION]?.jsonPrimitive?.longOrNull ?: PlaybackState.PLAYBACK_POSITION_UNKNOWN)
+            putExtra(EXTRA_DURATION, options[EXTRA_DURATION]?.jsonPrimitive?.longOrNull ?: 0L)
+            putExtra(EXTRA_CAN_SEEK, options[EXTRA_CAN_SEEK]?.jsonPrimitive?.booleanOrNull ?: false)
+            putExtra(EXTRA_IS_LOCAL_PLAYER, options[EXTRA_IS_LOCAL_PLAYER]?.jsonPrimitive?.booleanOrNull ?: true)
+            putExtra(EXTRA_IS_PAUSED, options[EXTRA_IS_PAUSED]?.jsonPrimitive?.booleanOrNull ?: true)
         }
 
         ContextCompat.startForegroundService(context, intent)
@@ -135,18 +142,20 @@ class NativeInterface(private val context: Context) : KoinComponent {
     @JavascriptInterface
     fun downloadFiles(args: String): Boolean {
         try {
-            val files = JSONArray(args)
+            val files = Json.parseToJsonElement(args).jsonArray
             val itemIds = mutableSetOf<UUID>()
 
-            repeat(files.length()) { index ->
-                val file = files.getJSONObject(index)
-                val itemId = file.getString("itemId").toUUID()
+            files.forEach { element ->
+                val file = element.jsonObject
+                val itemId = file["itemId"]?.jsonPrimitive?.contentOrNull?.toUUID()
 
-                itemIds.add(itemId)
+                if (itemId != null) {
+                    itemIds.add(itemId)
+                }
             }
 
             emitEvent(ActivityEvent.DownloadItems(itemIds))
-        } catch (e: JSONException) {
+        } catch (e: Exception) {
             Timber.e("Download failed: %s", e.message)
             return false
         }
