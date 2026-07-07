@@ -66,8 +66,6 @@ class NativeInterface(private val context: Context) : KoinComponent {
     @JavascriptInterface
     fun getCodecCapabilities(): String = deviceProfileBuilder.getWebCodecCapabilitiesJson()
 
-    // Only the proprietary flavor bundles the Cast SDK (libre ships a no-op stub), so the web
-    // client should only surface Cast options like the Google Cast streaming quality setting.
     @JavascriptInterface
     fun hasChromecast(): Boolean = BuildConfig.IS_PROPRIETARY
 

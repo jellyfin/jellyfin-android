@@ -154,8 +154,6 @@ window.NativeShell.AppHost = {
     },
     supports(command) {
         command = command.toLowerCase();
-        // Chromecast only works in the proprietary flavor (libre ships a no-op cast
-        // stub), so query the native side instead of advertising it statically.
         if (command === "chromecast") {
             return window.NativeInterface.hasChromecast();
         }
