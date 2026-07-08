@@ -1,3 +1,3 @@
-Cảm ơn bạn đã sử dụng Jellyfin cho Android! Luôn khuyến khích sử dụng Jellyfin Server được phát hành mới nhất.
+Cảm ơn bạn đã sử dụng Jellyfin cho Android! Chúng tôi luôn khuyến khích bạn sử dụng phiên bản Jellyfin Server mới nhất.
 
-Để biết thêm thông tin, vui lòng xem blog của chúng tôi tại Jellyfin.org hoặc đọc nhật ký thay đổi đầy đủ trên GitHub.
+Để biết thêm thông tin chi tiết, vui lòng xem blog của chúng tôi tại jellyfin.org hoặc đọc toàn bộ nhật ký thay đổi trên GitHub.
