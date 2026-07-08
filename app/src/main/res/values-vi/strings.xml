@@ -163,4 +163,10 @@
         <item quantity="other">Xóa tải xuống</item>
     </plurals>
     <string name="select_all">Chọn tất cả</string>
+    <string name="deselect_all">Bỏ chọn tất cả</string>
+    <string name="selected_count">%1$d đã chọn</string>
+    <string name="download_location_not_set">Không có vị trí tải xuống</string>
+    <string name="download_location_not_set_description">Để tải xuống các tệp đa phương tiện, vui lòng chọn thư mục nơi bạn muốn lưu trữ chúng.</string>
+    <string name="download_location_inaccessible">Vị trí tải xuống không thể truy cập</string>
+    <string name="download_location_inaccessible_description">Vị trí tải xuống đã chọn không còn truy cập được. Vui lòng chọn thư mục khác để tiếp tục tải xuống.</string>
 </resources>
