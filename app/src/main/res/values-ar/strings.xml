@@ -154,11 +154,11 @@
     <string name="download_remove_keep_local">الاحتفاظ بالملف(ات) المحلية</string>
     <plurals name="download_remove_description">
         <item quantity="zero">هل ترغب في حذف %1$s من ملفات التحميل؟</item>
-        <item quantity="one">ملف</item>
-        <item quantity="two">ملفان</item>
-        <item quantity="few">بعض</item>
-        <item quantity="many">عدة</item>
-        <item quantity="other">اخرى</item>
+        <item quantity="one">حذف ملف تحميل</item>
+        <item quantity="two">حذف ملفي تحميل</item>
+        <item quantity="few">حذف بعض ملفات تحميل</item>
+        <item quantity="many">حذف عدة ملفات تحميل</item>
+        <item quantity="other">حذف ملفات تحميل اخرى</item>
     </plurals>
     <string name="download_incomplete">لم يكتمل التحميل</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">إيماءات افقية</string>
