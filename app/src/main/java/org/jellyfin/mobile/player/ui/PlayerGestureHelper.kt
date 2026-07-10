@@ -65,6 +65,17 @@ class PlayerGestureHelper(
      */
     private var swipeGestureValueTracker = -1f
 
+    private enum class GestureDirection {
+        NONE,
+        HORIZONTAL,
+        VERTICAL,
+    }
+
+    /**
+     * Tracks the current active swipe gesture.
+     */
+    private var currentGesture = GestureDirection.NONE
+
     /**
      * Tracks whether a horizontal swipe seek gesture is in progress.
      */
@@ -179,32 +190,41 @@ class PlayerGestureHelper(
                 distanceX: Float,
                 distanceY: Float,
             ): Boolean {
+                if (firstEvent == null) return false
+
                 // Check whether swipe was started in excluded region (vertical)
                 val exclusionSizeVertical = playerView.resources.dip(Constants.SWIPE_GESTURE_EXCLUSION_SIZE_VERTICAL)
                 if (
-                    firstEvent == null ||
                     firstEvent.y < exclusionSizeVertical ||
                     firstEvent.y > playerView.height - exclusionSizeVertical
                 ) {
                     return false
                 }
 
-                // Check whether swipe was started in excluded region (horizontal) for horizontal gestures
-                val exclusionSizeHorizontal = playerView.resources.dip(Constants.SWIPE_GESTURE_EXCLUSION_SIZE_HORIZONTAL)
+                // Determine/lock gesture direction
+                if (currentGesture == GestureDirection.NONE) {
+                    val deltaX = currentEvent.x - firstEvent.x
+                    val deltaY = currentEvent.y - firstEvent.y
 
-                // Determine swipe direction based on distance ratio
-                val isVerticalSwipe = abs(distanceY / distanceX) >= 2
-                val isHorizontalSwipe = abs(distanceX / distanceY) >= 2
+                    currentGesture = if (abs(deltaX) > abs(deltaY) * 2) GestureDirection.HORIZONTAL
+                    else if (abs(deltaY) > abs(deltaX) * 2) GestureDirection.VERTICAL
+                    else return false
+                }
 
                 // Handle horizontal swipe for seek
-                if ((isHorizontalSwipe || isHorizontalSeeking) && appPreferences.exoPlayerAllowHorizontalGesture) {
+                if (currentGesture == GestureDirection.HORIZONTAL && appPreferences.exoPlayerAllowHorizontalGesture) {
                     // Check horizontal exclusion zones (edges of screen)
+                    val exclusionSizeHorizontal = playerView.resources.dip(Constants.SWIPE_GESTURE_EXCLUSION_SIZE_HORIZONTAL)
                     if (
                         firstEvent.x < exclusionSizeHorizontal ||
                         firstEvent.x > playerView.width - exclusionSizeHorizontal
                     ) {
                         return false
                     }
+
+                    // Hide vertical overlay
+                    gestureIndicatorOverlayLayout.isVisible = false
+                    gestureIndicatorOverlayLayout.removeCallbacks(hideGestureIndicatorOverlayAction)
 
                     // Initialize seek start position on first swipe
                     if (!isHorizontalSeeking) {
@@ -268,8 +288,9 @@ class PlayerGestureHelper(
 
                     seekOverlayLayout.isVisible = true
                     return true
-                } else if (isHorizontalSeeking && !appPreferences.exoPlayerAllowHorizontalGesture) {
+                } else if (currentGesture == GestureDirection.HORIZONTAL && !appPreferences.exoPlayerAllowHorizontalGesture) {
                     // If horizontal gesture is disabled while a gesture was in progress, reset the state
+                    currentGesture = GestureDirection.NONE
                     isHorizontalSeeking = false
                     seekTimeAccumulator = 0L
                     seekStartPosition = 0L
@@ -282,9 +303,13 @@ class PlayerGestureHelper(
                     return false
                 }
                 // Handle vertical swipe for brightness/volume (existing logic)
-                if (!isVerticalSwipe) {
+                if (currentGesture != GestureDirection.VERTICAL) {
                     return false
                 }
+
+                // Hide horizontal overlay
+                seekOverlayLayout.isVisible = false
+                seekOverlayLayout.removeCallbacks(hideSeekOverlayAction)
 
                 val viewCenterX = playerView.measuredWidth / 2
 
@@ -377,7 +402,7 @@ class PlayerGestureHelper(
             } else {
                 unlockDetector.onTouchEvent(event)
             }
-            if (event.action == MotionEvent.ACTION_UP) {
+            if (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_CANCEL) {
                 if (isOnPressingSpeedUp) {
                     isOnPressingSpeedUp = false
                     with(fragment) {
@@ -386,7 +411,7 @@ class PlayerGestureHelper(
                 }
 
                 // Handle horizontal seek gesture completion
-                if (isHorizontalSeeking && seekTimeAccumulator != 0L) {
+                if (event.action == MotionEvent.ACTION_UP && currentGesture == GestureDirection.HORIZONTAL && isHorizontalSeeking && seekTimeAccumulator != 0L) {
                     fragment.onSeekByOffset(seekTimeAccumulator)
                     seekOverlayLayout.apply {
                         removeCallbacks(hideSeekOverlayAction)
@@ -396,6 +421,7 @@ class PlayerGestureHelper(
                         )
                     }
                 }
+                currentGesture = GestureDirection.NONE
                 isHorizontalSeeking = false
                 seekTimeAccumulator = 0L
                 seekStartPosition = 0L
