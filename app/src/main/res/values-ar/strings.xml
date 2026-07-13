@@ -155,7 +155,7 @@
     <plurals name="download_remove_description">
         <item quantity="zero">هل ترغب في حذف %1$s من ملفات التحميل؟</item>
         <item quantity="one">حذف ملف تحميل</item>
-        <item quantity="two">حذف ملفي تحميل</item>
+        <item quantity="two">حذف ملفا تحميل</item>
         <item quantity="few">حذف بعض ملفات تحميل</item>
         <item quantity="many">حذف عدة ملفات تحميل</item>
         <item quantity="other">حذف ملفات تحميل اخرى</item>
