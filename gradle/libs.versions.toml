@@ -6,8 +6,8 @@ android-targetSdk = "36"
 
 # Plugins
 android-plugin = "9.2.1"
-kotlin = "2.4.0"
-kotlin-ksp = "2.3.9"
+kotlin = "2.4.10"
+kotlin-ksp = "2.3.10"
 detekt = "1.23.8"
 android-junit5 = "2.0.1"
 
@@ -60,8 +60,8 @@ androidx-room = "2.7.2"
 timber = "5.0.1"
 
 # Testing
-junit = "6.1.1"
-kotest = "6.2.1"
+junit = "6.1.2"
+kotest = "6.2.2"
 mockk = "1.14.11"
 androidx-test-runner = "1.7.0"
 androidx-test-espresso = "3.7.0"

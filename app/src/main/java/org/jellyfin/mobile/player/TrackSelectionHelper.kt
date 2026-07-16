@@ -4,6 +4,7 @@ import androidx.media3.common.C
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import org.jellyfin.mobile.player.source.ExternalSubtitleStream
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.utils.clearSelectionAndDisableRendererByType
 import org.jellyfin.mobile.utils.selectTrackByTypeAndGroup
 import org.jellyfin.sdk.model.api.MediaStream
@@ -137,12 +138,21 @@ class TrackSelectionHelper(
         }
 
         val player = viewModel.playerOrNull ?: return false
-        when (subtitleStream.deliveryMethod) {
+        val deliveryMethod = when (mediaSource) {
+            is LocalJellyfinMediaSource -> when {
+                subtitleStream.isExternal -> SubtitleDeliveryMethod.EXTERNAL
+                else -> SubtitleDeliveryMethod.EMBED
+            }
+
+            else -> subtitleStream.deliveryMethod
+        }
+        when (deliveryMethod) {
             SubtitleDeliveryMethod.ENCODE -> {
                 // Normally handled in selectSubtitleTrack(int) by restarting playback,
                 // initial selection is always considered successful
                 return true
             }
+
             SubtitleDeliveryMethod.EMBED -> {
                 // For embedded subtitles, we can match by the index of this stream in all embedded streams.
                 val embeddedStreamIndex = mediaSource.getEmbeddedStreamIndex(subtitleStream)
@@ -150,6 +160,7 @@ class TrackSelectionHelper(
 
                 return trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_TEXT, subtitleGroup.mediaTrackGroup)
             }
+
             SubtitleDeliveryMethod.EXTERNAL -> {
                 // For external subtitles, we can simply match the ID that we set when creating the player media source.
                 for (group in player.currentTracks.groups) {
@@ -163,6 +174,7 @@ class TrackSelectionHelper(
                 }
                 return false
             }
+
             else -> return false
         }
     }

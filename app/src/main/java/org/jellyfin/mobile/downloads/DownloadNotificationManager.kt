@@ -37,7 +37,7 @@ class DownloadNotificationManager(
     fun createForegroundInfo() = ForegroundInfo(
         67,
         NotificationCompat.Builder(context, CHANNEL_ID).apply {
-            setContentTitle("Downloads")
+            setContentTitle(context.getString(R.string.downloads))
             setSmallIcon(android.R.drawable.stat_sys_download)
         }.build(),
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC else 0,
@@ -89,11 +89,13 @@ class NotificationProgressCallback(
         if (progress == 100) {
             builder.apply {
                 setContentText(context.getString(R.string.download_completed))
+                setSubText(null)
                 setProgress(0, 0, false)
                 setSmallIcon(android.R.drawable.stat_sys_download_done)
             }
         } else {
             builder.apply {
+                setContentText(null)
                 setSubText(context.getString(R.string.download_progress, progress))
                 setProgress(100, progress, false)
                 setOngoing(false)
