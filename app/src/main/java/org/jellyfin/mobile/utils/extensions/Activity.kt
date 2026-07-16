@@ -4,6 +4,18 @@ import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.view.Surface
+import org.jellyfin.mobile.utils.AndroidVersion
+
+private const val LARGE_SCREEN_SMALLEST_WIDTH_DP = 600
+
+/**
+ * Checks whether requests via [Activity.setRequestedOrientation] are ignored by the system.
+ *
+ * Starting with Android 16, orientation requests of apps targeting SDK 36 are ignored
+ * on displays with a smallest width of at least 600dp, such as tablets and unfolded foldables.
+ */
+val Activity.isOrientationRequestIgnored: Boolean
+    get() = AndroidVersion.isAtLeastB && resources.configuration.smallestScreenWidthDp >= LARGE_SCREEN_SMALLEST_WIDTH_DP
 
 @Suppress("DEPRECATION")
 fun Activity.lockOrientation() {

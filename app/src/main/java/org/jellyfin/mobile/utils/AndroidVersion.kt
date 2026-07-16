@@ -89,4 +89,12 @@ object AndroidVersion {
      */
     inline val isAtLeastT: Boolean
         get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+
+    /**
+     * Checks whether the current Android version is at least Android 16 Baklava, API 36.
+     *
+     * @see Build.VERSION_CODES.BAKLAVA
+     */
+    inline val isAtLeastB: Boolean
+        get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA
 }

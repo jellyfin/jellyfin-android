@@ -49,6 +49,7 @@ import org.jellyfin.mobile.utils.brightness
 import org.jellyfin.mobile.utils.extensions.aspectRational
 import org.jellyfin.mobile.utils.extensions.getParcelableCompat
 import org.jellyfin.mobile.utils.extensions.isLandscape
+import org.jellyfin.mobile.utils.extensions.isOrientationRequestIgnored
 import org.jellyfin.mobile.utils.extensions.keepScreenOn
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaSegmentDto
@@ -122,8 +123,14 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
                 // For portrait videos, immediately enable fullscreen
                 playerFullscreenHelper.enableFullscreen()
             } else if (appPreferences.exoPlayerStartLandscapeVideoInLandscape) {
-                // Auto-switch to landscape for landscape videos if enabled
-                requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                if (requireActivity().isOrientationRequestIgnored) {
+                    // On large screens, where the orientation request would be ignored,
+                    // enable fullscreen in the current orientation instead
+                    playerFullscreenHelper.enableFullscreen()
+                } else {
+                    // Auto-switch to landscape for landscape videos if enabled
+                    requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                }
             }
 
             // Update title and player menus
@@ -253,7 +260,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
                 // Landscape orientation is always fullscreen
                 playerFullscreenHelper.enableFullscreen()
             }
-            currentVideoStream?.isLandscape != false -> {
+            currentVideoStream?.isLandscape != false && !requireActivity().isOrientationRequestIgnored -> {
                 // Disable fullscreen for landscape video in portrait orientation
                 playerFullscreenHelper.disableFullscreen()
             }
@@ -265,10 +272,12 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
      *
      * If playing a portrait video, this just hides the status and navigation bars.
      * For landscape videos, additionally the screen gets rotated.
+     * On large screens, where the system ignores orientation requests,
+     * only the status and navigation bars are toggled instead.
      */
     private fun toggleFullscreen() {
         val videoTrack = currentVideoStream
-        if (videoTrack == null || videoTrack.isLandscape) {
+        if ((videoTrack == null || videoTrack.isLandscape) && !requireActivity().isOrientationRequestIgnored) {
             val current = resources.configuration.orientation
             requireActivity().requestedOrientation = when (current) {
                 Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
