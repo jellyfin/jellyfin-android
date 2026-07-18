@@ -112,4 +112,30 @@
     <string name="pref_exoplayer_allow_brightness_volume_gesture">სიკაშკაშის და ხმის დონის ჟესტები</string>
     <string name="failed_thumbnail">მინიატურის გადმოწერა ჩავარდა</string>
     <string name="pref_exoplayer_allow_press_speed_up">ასაჩქარებლად გეჭიროთ</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">გადმოწერის წაშლა</item>
+        <item quantity="other">გადმოწერების წაშლა</item>
+    </plurals>
+    <plurals name="download_remove_description">
+        <item quantity="one">გნებავთ წაშალოთ \"%2$s\" თქვენი გადმოწერებიდან?</item>
+        <item quantity="other">გნებავთ წაშალოთ \'%1$d\' თქვენი გადმოწერებიდან?</item>
+    </plurals>
+    <string name="download_cancel">გაუქმება</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="media_service_car_section_playlists">დასაკრავი სიები</string>
+    <string name="downloading_title">%1$s-ის გადმოწერა</string>
+    <string name="download_completed">გადმოწერა დასრულდა</string>
+    <string name="download_incomplete">გადმოწერა დაუსრულებელია</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">ჰორიზონტალური ჟესტები</string>
+    <string name="select_folder">საქაღალდის არჩევა</string>
+    <string name="select_all">ყველას მონიშვნა</string>
+    <string name="deselect_all">ყველას მონიშვნის გაუქმება</string>
+    <string name="selected_count">მონიშნულია %1$d</string>
+    <string name="download_remove_keep_local">ლოკალური ფაილ(ებ)-ის შენარჩუნება</string>
+    <string name="download_settings_dialog_title">აირჩიეთ გადმოწერის მდებარეობა</string>
+    <string name="downloads_empty">ჯერ გადმოწერილი არაფერია</string>
+    <string name="download_location_not_set">გადმოწერის მდებარეობის გარეშე</string>
+    <string name="download_location_inaccessible">გადმოწერის მდებარეობა ხელმიუწვდომელია</string>
+    <string name="failed_information">მედიის ინფორმაციის მიღება ჩავარდა</string>
+    <string name="store_videos_in_internal_storage">ვიდეოების დამახსოვრება შიდა საცავზე</string>
 </resources>
