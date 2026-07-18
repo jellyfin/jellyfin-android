@@ -153,12 +153,12 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">الاحتفاظ بالملف(ات) المحلية</string>
     <plurals name="download_remove_description">
-        <item quantity="zero">هل لا ترغب في حذف هذا الملف%1$d من ملفات التحميل؟</item>
-        <item quantity="one">هل ترغب في حذف ملف%1$d من ملفات التحميل؟</item>
-        <item quantity="two">هل ترغب في حذف ملفي %2$s من ملفات التحميل؟</item>
-        <item quantity="few">هل ترغب في حذف بعض ملفات%2$s من ملفات التحميل؟</item>
-        <item quantity="many">هل ترغب في حذف عدة ملفات %2$s من ملفات التحميل؟</item>
-        <item quantity="other">هل ترغب في حذف ملفات %2$s اخرى من ملفات التحميل؟</item>
+        <item quantity="zero">هل ترغب في عدم حذف الملف \"%2$s\" من ملفات التحميل؟</item>
+        <item quantity="one">هل ترغب في حذف الملف \"%2$s\" من ملفات التحميل؟</item>
+        <item quantity="two">هل ترغب في حذف الملفين %1$d من ملفات التحميل؟</item>
+        <item quantity="few">هل ترغب في حذف بعض ملفات %1$d من ملفات التحميل؟</item>
+        <item quantity="many">هل ترغب في حذف عدة ملفات %1$d من ملفات التحميل؟</item>
+        <item quantity="other">هل ترغب في حذف ملفات %1$d اخرى من ملفات التحميل؟</item>
     </plurals>
     <string name="download_incomplete">لم يكتمل التحميل</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">إيماءات افقية</string>
