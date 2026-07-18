@@ -2,7 +2,6 @@ package org.jellyfin.mobile.events
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
@@ -48,12 +47,9 @@ class ActivityEventHandler(
             is ActivityEvent.ChangeFullscreen -> {
                 val fullscreenHelper = PlayerFullscreenHelper(window)
                 if (event.isFullscreen) {
-                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                     fullscreenHelper.enableFullscreen()
                     window.setBackgroundDrawable(null)
                 } else {
-                    // Reset screen orientation
-                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
                     fullscreenHelper.disableFullscreen()
                     // Reset window background color
                     window.setBackgroundDrawableResource(R.color.theme_background)

@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.IBinder
 import android.provider.Settings
-import android.view.OrientationEventListener
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.SystemBarStyle
@@ -32,7 +31,6 @@ import org.jellyfin.mobile.utils.BackPressInterceptor
 import org.jellyfin.mobile.utils.BluetoothPermissionHelper
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
-import org.jellyfin.mobile.utils.SmartOrientationListener
 import org.jellyfin.mobile.utils.extensions.replaceFragment
 import org.jellyfin.mobile.utils.isWebViewSupported
 import org.jellyfin.mobile.webapp.RemotePlayerService
@@ -60,8 +58,6 @@ class MainActivity : AppCompatActivity() {
             serviceBinder = null
         }
     }
-
-    private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(this) }
 
     /**
      * Passes back press events onto the currently visible [Fragment] if it implements the [BackPressInterceptor] interface.
@@ -145,11 +141,6 @@ class MainActivity : AppCompatActivity() {
         chromecast.initializePlugin(this)
     }
 
-    override fun onStart() {
-        super.onStart()
-        orientationListener.enable()
-    }
-
     private fun handleServerState(state: ServerState) {
         with(supportFragmentManager) {
             val currentFragment = findFragmentById(R.id.fragment_container)
@@ -197,11 +188,6 @@ class MainActivity : AppCompatActivity() {
                 fragment.onUserLeaveHint()
             }
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        orientationListener.disable()
     }
 
     override fun onDestroy() {
