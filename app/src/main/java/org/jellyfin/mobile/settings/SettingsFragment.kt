@@ -132,10 +132,6 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
         }
-        startLandscapeVideoInLandscapePreference = checkBox(Constants.PREF_EXOPLAYER_START_LANDSCAPE_VIDEO_IN_LANDSCAPE) {
-            titleRes = R.string.pref_exoplayer_start_landscape_video_in_landscape
-            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
-        }
         swipeGesturesPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_SWIPE_GESTURES) {
             titleRes = R.string.pref_exoplayer_allow_brightness_volume_gesture
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
