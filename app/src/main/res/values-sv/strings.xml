@@ -169,4 +169,7 @@
     <string name="selected_count">%1$d vald</string>
     <string name="download_location_not_set_description">För att ladda ner media, välj en mapp där filerna ska sparas.</string>
     <string name="download_location_inaccessible">Nedladdningsplats ej åtkomlig</string>
+    <string name="deselect_all">Avmarkera alla</string>
+    <string name="download_location_not_set">Ingen nedladdningsplats</string>
+    <string name="download_location_inaccessible_description">Den valda nedladdningsplatsen är inte längre tillgänglig. Välj en annan mapp för att återuppta nedladdningarna.</string>
 </resources>
