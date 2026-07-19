@@ -36,7 +36,7 @@
     <string name="available_servers_title">Dostępne serwery</string>
     <string name="choose_server_button_text">Wybierz serwer</string>
     <string name="connect_button_text">Połącz</string>
-    <string name="connection_error_unsupported_version_or_product">Nie wspierana wersja lub produkt</string>
+    <string name="connection_error_unsupported_version_or_product">Niewspierana wersja lub produkt</string>
     <string name="connection_error_unable_to_reach_sever">Nie można odnaleźć serwera</string>
     <string name="connection_error_cannot_connect">Nie można nawiązać połączenia.
 \nSprawdź nazwę hosta i połączenie sieciowe.</string>
@@ -92,7 +92,7 @@
     <string name="host_input_hint">Host</string>
     <string name="dialog_web_view_outdated_message">Implementacja WebView używana przez urządzenie jest przestarzała. \nZaktualizuj do wyższej wersji.</string>
     <string name="dialog_web_view_outdated">WebView w przestarzałej wersji</string>
-    <string name="dialog_web_view_not_supported_message">WebViews nie jest obsługiwane przez to urządzenie. \nZainstaluj kompatybilną implementację WebView lub zmień urządzenie na wspierane.</string>
+    <string name="dialog_web_view_not_supported_message">WebViews nie są obsługiwane przez te urządzenie. \nZainstaluj kompatybilną implementację WebView lub zmień urządzenie na wspierane.</string>
     <string name="menu_item_auto">Automatycznie</string>
     <string name="pref_exoplayer_direct_play_ass">Zezwól na bezpośrednie odtwarzanie napisów SSA/ASS</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Zablokuje transkodowanie i pokaż napisy z podstawowym stylem. Zaawansowane style napisów nie będą dostępne jeśli ustawienie jest włączone.</string>
