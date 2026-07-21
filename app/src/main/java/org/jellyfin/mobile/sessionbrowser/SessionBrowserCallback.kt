@@ -417,6 +417,14 @@ class SessionBrowserCallback(
         }
 
         expandedItems = onAddMediaItems(mediaSession, controller, expandedItems).await()
+
+        Timber.d("onSetMediaItems resulted in ${expandedItems.size} items")
+        if (expandedItems.isEmpty()) {
+            mediaSession.sendError(
+                controller,
+                SessionError(SessionError.ERROR_BAD_VALUE, context.getString(R.string.media_service_no_items))
+            )
+        }
         MediaSession.MediaItemsWithStartPosition(expandedItems, newStartIndex, newStartPositionMs)
     }
 }
