@@ -138,4 +138,6 @@
     <string name="media_service_car_section_audiobooks">Audiolibri</string>
     <string name="network_buffer_large">Grande</string>
     <string name="network_buffer_extra_large">Molto grande</string>
+    <string name="media_service_invalid_id">Elemento con ID invalido</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Gesture orizzontali</string>
 </resources>
