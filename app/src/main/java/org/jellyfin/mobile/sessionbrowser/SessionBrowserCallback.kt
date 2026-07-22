@@ -383,6 +383,17 @@ class SessionBrowserCallback(
                         ?.getContent(route, 0, MAX_PAGE_SIZE)
                         ?.toMediaItems(route)
                         .orEmpty()
+
+                    // Android Auto does not support session error reporting
+                    // but Google Play requires feedback on all search requests
+                    // so fallback to random item playback if no search results are found
+                    if (expandedItems.isEmpty()) {
+                        @Suppress("UNCHECKED_CAST")
+                        expandedItems = (LibraryRoute.Suggested.page as LibraryPage<LibraryRoute>)
+                            .getContent(LibraryRoute.Suggested, 0, MAX_PAGE_SIZE)
+                            .toMediaItems(route)
+                    }
+
                     newStartIndex = 0
                 }
 
