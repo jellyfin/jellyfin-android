@@ -69,11 +69,9 @@
     <string name="pref_category_downloads">Downloads</string>
     <string name="dialog_button_close_app">Chiudi l\'app</string>
     <string name="dialog_button_check_for_updates">Controlla gli aggiornamenti</string>
-    <string name="dialog_web_view_outdated_message">L\'implementazione di WebView utilizzata dal tuo device è obsoleta.
-\nAggiornala ad una versione compatibile.</string>
+    <string name="dialog_web_view_outdated_message">L\'implementazione di WebView utilizzata dal tuo dispositivo è obsoleta. \nAggiornala ad una versione compatibile.</string>
     <string name="dialog_web_view_outdated">WebView obsoleta</string>
-    <string name="dialog_web_view_not_supported_message">WebView non supportata da questo device.
-\nInstalla un\'implementazione compatibile or utilizza un device supportato.</string>
+    <string name="dialog_web_view_not_supported_message">WebView non supportata da questo device. \nInstalla un\'implementazione compatibile con WebView oppure utilizza un dispositivo compatibile.</string>
     <string name="dialog_web_view_not_supported">WebView non supportata</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Permetti la riproduzione dei video anche con solo l\'audio di sottofondo</string>
     <string name="pref_music_notification_always_dismissible_summary_on">La notifica può sempre essere rimossa, anche durante la visione</string>
@@ -83,7 +81,7 @@
     <string name="player_error_invalid_play_options">Impossibile elaborare le informazioni di riproduzione</string>
     <string name="connection_error_unsupported_version_or_product">Versione o prodotto non supportati</string>
     <string name="connection_error_unable_to_reach_sever">Impossibile contattare il server</string>
-    <string name="toast_reopen_after_change">Perfavore, riapri l\'app dopo aver fatto le modifiche</string>
+    <string name="toast_reopen_after_change">Si prega di riaprire l\'app dopo aver apportato le modifiche</string>
     <string name="dialog_button_ignore">Ignora</string>
     <string name="dialog_button_open_settings">Impostazioni</string>
     <string name="pref_exoplayer_remember_brightness">Ricorda la luminisità del display</string>
@@ -140,4 +138,39 @@
     <string name="network_buffer_extra_large">Molto grande</string>
     <string name="media_service_invalid_id">Elemento con ID invalido</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Gesture orizzontali</string>
+    <string name="media_service_car_section_playlists">Playlists</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Consenti lo spostamento nel video con gesto orizzontale</string>
+    <string name="pref_exoplayer_network_buffer">Dimensione buffer di riproduzione</string>
+    <string name="network_buffer_auto">Auto</string>
+    <string name="network_buffer_auto_description">Buffer di default, adatto per la maggior parte dei tipi di riproduzione</string>
+    <string name="network_buffer_large_description">Buffer più grande, potrebbe aiutare su connessioni moderate o variabili</string>
+    <string name="network_buffer_extra_large_description">Buffer massimo, inteso per connessioni lente o satellitari</string>
+    <string name="downloads_empty">Ancora nessun download</string>
+    <string name="downloads_empty_description">Puoi scaricare film e serie TV per guardarle offline. Cerca l\'icona del download sulla pagina dei dettagli di un oggetto.</string>
+    <string name="downloading_title">Scaricando %1$s</string>
+    <string name="download_cancel">Cancella</string>
+    <string name="download_completed">Download Completato</string>
+    <string name="download_progress">%1$d%%</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Rimuovi download</item>
+        <item quantity="many">Rimuovi downloads</item>
+        <item quantity="other">Rimuovi downloads</item>
+    </plurals>
+    <string name="download_remove_keep_local">Mantieni file locali</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Vuoi rimuovere \"%2$s\" dai tuoi download?</item>
+        <item quantity="many">Vuoi rimuovere queste %1$d dai tuoi downloads?</item>
+        <item quantity="other">Vuoi rimuovere queste %1$d dai tuoi downloads?</item>
+    </plurals>
+    <string name="download_incomplete">Download incompleto</string>
+    <string name="download_settings_dialog_title">Scegli il percorso del download</string>
+    <string name="download_settings_dialog_message">Scegli dove salvare i file multimediali. I download usano il WiFi di default.</string>
+    <string name="select_folder">Scegli una cartella</string>
+    <string name="select_all">Seleziona tutto</string>
+    <string name="deselect_all">Deseleziona tutto</string>
+    <string name="selected_count">%1$d selezionati</string>
+    <string name="download_location_not_set">Nessun percorso di download</string>
+    <string name="download_location_not_set_description">Per scariare dei file multimediali, scegli una cartella dove i file verrano conservati.</string>
+    <string name="download_location_inaccessible">Percorso di download innaccessibile</string>
+    <string name="download_location_inaccessible_description">Il percorso dei download non è più accessibile. Si prega di selezionare un percorso diverso per riprendere i downloads.</string>
 </resources>
