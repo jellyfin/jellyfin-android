@@ -97,7 +97,6 @@
     <string name="player_error_unspecific_exception">Noe gikk galt med spilleren</string>
     <string name="menu_item_auto">Auto</string>
     <string name="menu_item_software_decoding">Software dekoding</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Start liggende videoer i liggende retning</string>
     <string name="pref_exoplayer_direct_play_ass">Tillat SSA/ASS undertekster i direkteavspilling</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Forhindre omkoding og vis undertekster kun med grunnleggende stil. Avansert undertekststil vil ikke være tilgjengelig hvis aktivert.</string>
     <string name="pref_subtitle_style">Tilpass undertekststil</string>

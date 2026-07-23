@@ -65,7 +65,6 @@
     <string name="player_error_unspecific_exception">Ir notikusi kaut kāda kļūda ar atskaņotāju</string>
     <string name="menu_item_hardware_decoding">Dekodēšana ar Aparatūru</string>
     <string name="menu_item_software_decoding">Dekodēšana ar Programmatūru</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Uzsākt ainavas veida video ainavas orientācijā</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Atļaut atskaņot veido fonā tikai ar skaņu</string>
     <string name="pref_exoplayer_direct_play_ass">Atļaut SSA/ASS subtitrus tiešā atskaņošaņā</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Spilgtuma un skaļuma žesti</string>

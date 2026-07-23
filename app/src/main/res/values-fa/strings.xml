@@ -104,7 +104,6 @@
     <string name="bluetooth_permission_title">آیا دسترسی به بلوتوث می‌دهید؟</string>
     <string name="bluetooth_permission_message">برای تشخیص قطع شدن هدفون یا اسپیکر بی‌سیم شما، برنامه نیاز به دسترسی به بلوتوث دارد. در اندروید، این دسترسی به نام دسترسی به دستگاه‌های مجاور توصیف شده، و هشدار می‌دهد که دستگاه‌های بلوتوث برای تشخیص موقعیت فعلی می‌توانند استفاده شوند. با این حال برنامه Jellyfin هیح‌گاه از این دسترسی برای تشخیص موقعیت شما استفاده نمی‌کند.</string>
     <string name="wifi_only_summary">رسانه‌ها فقط با WiFi بارگیری می‌شوند.</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">شروع نمایش‎‌های افقی در حالت افقی</string>
     <string name="mobile_data_summary">رسانه‌ها با WiFi و داده تلفن بارگیری می‌شوند.</string>
     <string name="player_error_unspecific_exception">برای پخش کننده مشکلی پیش آمده</string>
     <string name="menu_item_hardware_decoding">رمزگشایی سخت افزاری</string>

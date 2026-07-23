@@ -102,7 +102,6 @@
     <string name="button_use_different_server">Użyj innego serwera</string>
     <string name="menu_item_hardware_decoding">Dekodowanie sprzętowe</string>
     <string name="menu_item_software_decoding">Dekodowanie programowe</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Rozpocznij film poziomy w orientacji poziomej</string>
     <string name="bluetooth_permission_continue">Kontynuuj</string>
     <string name="bluetooth_permission_granted">Zgoda na korzystanie z Bluetooth została przyznana</string>
     <string name="bluetooth_permission_title">Zezwolić na dostęp do Bluetooth?</string>

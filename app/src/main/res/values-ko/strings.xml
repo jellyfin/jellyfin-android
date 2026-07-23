@@ -95,7 +95,6 @@
     <string name="mobile_data_and_roaming_summary">미디어 다운로드에 WiFi, 모바일 네트워크와 로밍 네트워크를 사용합니다.</string>
     <string name="menu_item_auto">자동</string>
     <string name="menu_item_software_decoding">소프트웨어 디코딩</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">가로 모드 비디오를 가로 모드로 재생 시작</string>
     <string name="pref_subtitle_style_summary">안드로이드 설정에서 자막 스타일을 변경할 수 있습니다</string>
     <string name="bluetooth_permission_title">Bluetooth 권한을 허용 하시겠습니까?</string>
     <string name="bluetooth_permission_message">Jellyfin은 무선 헤드폰이나 스피커의 연결 해제 감지를 위해 Bluetooth 권한이 필요합니다. Android에서 근처 기기 액세스 권한으로 표시되며, 기기 간 상대적 위치를 파악할 수 있다고 경고할 수 있습니다. 하지만 Jellyfin은 사용자의 위치 정보를 얻기 위해 이 권한을 사용하지 않습니다.</string>

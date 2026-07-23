@@ -102,7 +102,6 @@
     <string name="menu_item_software_decoding">Decodificação de Software</string>
     <string name="menu_item_hardware_decoding">Decodificação de Hardware</string>
     <string name="button_use_different_server">Usar um servidor diferente</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Iniciar vídeos no modo paisagem na orientação paisagem</string>
     <string name="bluetooth_permission_message">Para detectar quando fones de ouvido sem fio ou alto-falantes forem desconectados, este aplicativo precisa de acesso ao Bluetooth. No Android, esta permissão está contida no acesso aos dispositivos próximos, e ao garantir acesso alerta que dispositivos Bluetooth podem ser utilizados para deduzir a localização atual. No entanto, o app Jellyfin nunca utilizará esta permissão para detectar sua localização.</string>
     <string name="bluetooth_permission_title">Permitir acesso ao Bluetooth\?</string>
     <string name="bluetooth_permission_continue">Continuar</string>
@@ -151,8 +150,8 @@
     <string name="download_remove_keep_local">Manter arquivo(s) local(is)</string>
     <plurals name="download_remove_description">
         <item quantity="one">Você quer remover %1$s dos seus arquivos?</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="many"/>
+        <item quantity="other"/>
     </plurals>
     <string name="download_incomplete">Arquivo incompleto</string>
 </resources>

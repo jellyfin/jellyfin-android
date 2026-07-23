@@ -90,7 +90,6 @@
     <string name="video_player_integrated">इंटीग्रेटेड प्लेयर</string>
     <string name="video_player_external">बाहरी प्लेयर</string>
     <string name="video_player_external_description">MX प्लेयर और VLC जैसे बाहरी वीडियो प्लेबैक ऐप्स</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">लैंडस्केप मोड वीडियो को लैंडस्केप ओरिएंटेशन में शुरू करें</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">ब्राइटनेस और वॉल्यूम जेस्चर</string>
     <string name="pref_exoplayer_remember_brightness">डिस्प्ले की ब्राइटनेस याद रखें</string>
     <string name="pref_exoplayer_allow_background_audio">बैकग्राउंड ऑडियो</string>

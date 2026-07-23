@@ -101,7 +101,6 @@
     <string name="player_error_unspecific_exception">Щось пішло не так з плеєром</string>
     <string name="menu_item_software_decoding">Програмне декодування</string>
     <string name="button_use_different_server">Використовувати інший сервер</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Почати відтворення відео в ландшафтному режимі (альбомна орієнтація)</string>
     <string name="pref_subtitle_style_summary">Ви можете змінити стиль субтитрів у налаштуваннях Android</string>
     <string name="bluetooth_permission_continue">Продовжити</string>
     <string name="bluetooth_permission_granted">Надано дозвіл на використання Bluetooth</string>

@@ -111,7 +111,6 @@
     <string name="bluetooth_permission_granted">Bluetooth baimena eman da</string>
     <string name="external_player_mpvkt_description">mpv-android-en oinarritutako multimedia erreproduzitzailea, jatorrizkoa baino erabiltzaile-interfaze hobea eskaintzeko helburuarekin.</string>
     <string name="mobile_data_and_roaming_summary">Multimedia WiFi, mugikorreko eta roaming sareen bidez deskargatuko da.</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Hasi paisaia moduko bideoak paisaia-orientazioan</string>
     <string name="wifi_only_summary">Multimedia WiFi bidez soilik deskargatuko da.</string>
     <string name="menu_item_hardware_decoding">Hardwarearen deskodetzea</string>
     <string name="downloaded">%1$s deskargatu da</string>
@@ -151,7 +150,7 @@
     <string name="download_remove_keep_local">Mantendu fitxategi lokala(k)</string>
     <plurals name="download_remove_description">
         <item quantity="one">%1$s zure deskargetatik kendu nahi duzu?</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="download_incomplete">Deskarga bukatu gabe</string>
 </resources>

@@ -79,7 +79,6 @@
     <string name="video_player_external">Εξωτερικό πρόγραμμα αναπαραγωγής</string>
     <string name="video_player_web_description">Το προεπιλεγμένο πρόγραμμα αναπαραγωγής βίντεο HTML από το περιβάλλον εργασίας Web</string>
     <string name="video_player_native_description">Βασισμένο στο ExoPlayer, υποστηρίζει περισσότερες μορφές βίντεο και κωδικοποιητές και είναι πιο ενσωματωμένο στο λειτουργικό σύστημα</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Ξεκινήστε τα βίντεο σε οριζόντιο προσανατολισμό</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Χειρονομίες φωτεινότητας και έντασης</string>
     <string name="pref_exoplayer_remember_brightness">Να θυμάται τη φωτεινότητα της οθόνης</string>
     <string name="pref_exoplayer_allow_background_audio">Ήχος Παρασκηνίου</string>

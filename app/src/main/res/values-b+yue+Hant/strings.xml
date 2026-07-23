@@ -85,7 +85,6 @@
     <string name="video_player_web_description">來自網頁介面嘅預設 HTML 影片播放器</string>
     <string name="video_player_native_description">基於 ExoPlayer，支援更多影片格式同編碼，而且與作業系統嘅整合度更高</string>
     <string name="video_player_external_description">外置影片播放程式，例如 MX Player 同 VLC</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">打橫嚟開始睇橫向影片</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">亮度同音量手勢</string>
     <string name="pref_exoplayer_remember_brightness">記住顯示螢幕亮度</string>
     <string name="pref_exoplayer_allow_press_speed_up">撳住加速</string>

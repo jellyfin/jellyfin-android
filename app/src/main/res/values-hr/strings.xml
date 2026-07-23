@@ -96,7 +96,6 @@
     <string name="pref_subtitle_style">Prilagodi stil titlova</string>
     <string name="menu_item_auto">Automatski</string>
     <string name="pref_exoplayer_direct_play_ass">Dopusti SSA/ASS titlove u direktnoj reprodukciji</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Pokreni videozapise položenog načina u položenom načinu</string>
     <string name="player_error_unspecific_exception">Nešto je pošlo po krivu s reproduktorom</string>
     <string name="button_use_different_server">Koristi drugi poslužitelj</string>
     <string name="menu_item_hardware_decoding">Hardversko Dekodiranje</string>

@@ -88,7 +88,6 @@
     <string name="video_player_web_description">Вэб UI-ийн анхдагч HTML видео тоглуулагч</string>
     <string name="video_player_native_description">ExoPlayer-д суурилсан, илүү олон видео формат ба кодек дэмждэг, мөн OS-тэй илүү нэгдсэн</string>
     <string name="video_player_external_description">MX Player, VLC зэрэг гадаад видео тоглуулах аппууд</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Хэвтээ горимтой видеог хэвтээ чиглэлээр эхлүүлэх</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Гэрэл болон дууны дохио зангаа</string>
     <string name="pref_exoplayer_remember_brightness">Дэлгэцийн гэрэлтлийг санах</string>
     <string name="pref_exoplayer_allow_press_speed_up">Дараад хурдлах</string>

@@ -77,7 +77,6 @@
     <string name="video_player_integrated">Подразумевани плејер</string>
     <string name="video_player_native_description">Заснован на ExoPlayer-у, подржава више формата и боље је интегрисан у оперативни систем</string>
     <string name="video_player_external_description">Спољни видео плејери као MX Player и VLC</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Започни положене видее у положеној орјентацији</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Дозволи репродукцију видеа у позадини само са звуком</string>
     <string name="pref_exoplayer_direct_play_ass">Дозволи SSA/ASS титлове у директној репродукцији</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Онемогућу транскодовање и прикажи титлове са основним изгледом. Ако изаберете ову опцију, неће бити могуће детаљно мењање изгледа титлова.</string>
@@ -153,7 +152,7 @@
     <string name="download_remove_keep_local">Задржи локалне датотеке</string>
     <plurals name="download_remove_description">
         <item quantity="one">Да ли желите да уклоните %1$s из својих преузимања?</item>
-        <item quantity="few"></item>
-        <item quantity="other"></item>
+        <item quantity="few"/>
+        <item quantity="other"/>
     </plurals>
 </resources>

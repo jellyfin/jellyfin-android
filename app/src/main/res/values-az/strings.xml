@@ -93,7 +93,6 @@
     <string name="video_player_web_description">Veb interfeysinin standart HTML video pleyeri</string>
     <string name="video_player_native_description">ExoPlayer əsasında hazırlanıb, daha çox video formatı və kodeki dəstəkləyir, həmçinin əməliyyat sistemi ilə daha sıx inteqrasiya olunub</string>
     <string name="video_player_external_description">MX Player və VLC kimi xarici video pleyerlər</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Üfüqi videoları üfüqi rejimdə başladın</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Parlaqlıq və səs jestləri</string>
     <string name="pref_exoplayer_remember_brightness">Ekran parlaqlığını yadda saxla</string>
     <string name="pref_exoplayer_allow_press_speed_up">Sürətləndirmək üçün basılı saxla</string>
@@ -152,7 +151,7 @@
     <string name="download_remove_keep_local">Lokal fayl(lar)ı saxla</string>
     <plurals name="download_remove_description">
         <item quantity="one">%1$s elementini yükləmələrdən silmək istəyirsiniz?</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="download_incomplete">Yükləmə tamamlanmadı</string>
     <string name="download_settings_dialog_title">Yükləmə yerini seç</string>

@@ -98,7 +98,6 @@
     <string name="video_player_integrated">Reproductor integrado</string>
     <string name="pref_subtitle_style">Personalizar estilo de subtítulos</string>
     <string name="button_use_different_server">Usar otro servidor</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Empezar videos de modo horizontal en orientación horizontal</string>
     <string name="pref_exoplayer_direct_play_ass">Permitir subtítulos SSA/ASS en preproducción directa</string>
     <string name="pref_subtitle_style_summary">Podes cambiar el estilo de los subtítulos en la configuración de Android</string>
     <string name="menu_item_software_decoding">Decodificación por Software</string>
@@ -154,14 +153,14 @@
     <string name="download_progress">%1$d%%</string>
     <plurals name="download_remove_title">
         <item quantity="one">Eliminar descarga</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="many"/>
+        <item quantity="other"/>
     </plurals>
     <string name="download_remove_keep_local">Conservar archivo(s) locales</string>
     <plurals name="download_remove_description">
         <item quantity="one">¿Quieres eliminar \"%2$s\" de tus descargas?</item>
         <item quantity="many">¿Quieres eliminar estas descargas %1$d?</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="download_incomplete">Descarga incompleta</string>
     <string name="download_settings_dialog_title">Elegir ubicación de descarga</string>

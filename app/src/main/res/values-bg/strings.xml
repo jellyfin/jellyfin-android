@@ -111,7 +111,6 @@
     <string name="menu_item_auto">Автоматично</string>
     <string name="menu_item_hardware_decoding">Хардуерно декодиране</string>
     <string name="menu_item_software_decoding">Софтуерно декодиране</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Стартиране на видеоклипове в пейзажен режим в пейзажна ориентация</string>
     <string name="pref_exoplayer_allow_press_speed_up">Задръжте, за да ускорите</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Докоснете и задръжте екрана, за да ускорите временно възпроизвеждането</string>
     <string name="pref_exoplayer_direct_play_ass">Позволяване на SSA/ASS субтитри при директно възпроизвеждане</string>

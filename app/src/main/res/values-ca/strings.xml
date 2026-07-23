@@ -37,7 +37,6 @@
     <string name="activity_name_settings">Configuració de Jellyfin</string>
     <string name="video_player_web">Reproductor web</string>
     <string name="video_player_external">Reproductor extern</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Iniciar vídeos en mode paisatge en orientació paisatge</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Gestos de brillantor i volum</string>
     <string name="pref_exoplayer_allow_background_audio">Àudio en segon pla</string>
     <string name="external_player_app">Aplicació de reproductor extern</string>

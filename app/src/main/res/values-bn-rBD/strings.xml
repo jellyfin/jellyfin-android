@@ -89,7 +89,6 @@
     <string name="video_player_integrated">ইন্টিগ্রেটেড প্লেয়ার</string>
     <string name="video_player_native_description">এক্সোপ্লেয়ারের উপর ভিত্তি করে তৈরী, আরও ভিডিও ফর্ম্যাট এবং কোডেক সমর্থন করে এবং আরও ওএসের সাথে ইনট্রিগ্রেটেড</string>
     <string name="video_player_external_description">এক্সটার্নাল ভিডিও প্লেয়ার যেমন এমএক্স প্লেয়ার এবং ভিএলসি</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">ল্যান্ডস্কেপ ওরিয়েন্টেশনে ল্যান্ডস্কেপ মোড ভিডিওগুলি চালু করুন</string>
     <string name="pref_exoplayer_allow_background_audio">ব্যাকগ্রাউন্ড অডিও</string>
     <string name="pref_exoplayer_allow_background_audio_summary">শুধুমাত্র অডিও দিয়ে ব্যাকগ্রাউন্ডে ভিডিওগুলি প্লে করার অনুমতি দিন</string>
     <string name="pref_exoplayer_direct_play_ass_summary">ট্রান্সকোডিং বাদ দিয়ে শুধুমাত্র বেসিক স্টাইলিং সহ সাবটাইটেল দেখান। চালু করা হলে উন্নত সাবটাইটেল স্টাইলিং এবেইলএবল হবে না।</string>

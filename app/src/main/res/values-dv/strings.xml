@@ -87,7 +87,6 @@
     <string name="pref_exoplayer_remember_brightness">ސްކްރީންގެ އަލި ބެހެއްޓި މިންވަރު ހަނދާން ބަހައްޓާ</string>
     <string name="video_player_native_description">އެކްސޯ ޕްލޭޔަރަށް ބިނާކޮށް، އެތަކެއް ވީޑިއޯ ފޯމެޓްތަކާއި ކޮޑެކްތައް ސަޕޯޓް ކުރާ ގޮތަށް، އޮޕަރޭޓިން ސިސްޓަމްއާއި އެކުލެވިފައިވާ ޕްލޭޔަރެއް</string>
     <string name="video_player_external_description">އެޕުގެ ބޭރުން ވީޑިއޯ ޕްލޭކުރަން ބޭނުންކުރާ ވީއެލްސީ އަދި އެމްއެކްސް ޕްލޭޔަރު ފަދަ ޕްލޭޔަރު ތައް</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">ލޭންޑްސްކޭޕް ވީޑިއޯތައް ބަލަން ފެށުމުން އަމިއްލައަށް ލޭންޑްސްކޭޕްއަށް ބަދަލުކޮއްލާ</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">ސްލައިޑް ކޮއްގެން އަލި އަދި އަޑު ކޮންޓްރޯލް ކޮއްލާ</string>
     <string name="external_player_mx_player_free">އެމްއެކްސް ޕްލޭޔަރު ފްރީ</string>
     <string name="external_player_mx_player_pro">އެމްއެކްސް ޕްލޭޔަރ ޕްރޯ</string>

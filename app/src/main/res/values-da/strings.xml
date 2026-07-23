@@ -99,7 +99,6 @@
     <string name="button_use_different_server">Brug en anden server</string>
     <string name="menu_item_software_decoding">Software Decoder</string>
     <string name="pref_subtitle_style_summary">Du kan tilpasse underteksterne i Android indstillinger</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Start vandret videoer i vandret orientering</string>
     <string name="pref_exoplayer_direct_play_ass">Tillad SSA/ASS undertekster i afspilleren</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Stop transcoding og vis undertekster med minimal design. Avanceret undertekst tilpasning vil ikke blive brugt, hvis det er slået til.</string>
     <string name="pref_subtitle_style">Tilpas undertekst udseende</string>

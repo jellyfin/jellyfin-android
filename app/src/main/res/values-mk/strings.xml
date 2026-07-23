@@ -95,7 +95,6 @@
     <string name="video_player_web_description">Зададениот HTML плеер за видео од Web UI</string>
     <string name="video_player_native_description">Базиран на ExoPlayer, поддржува повеќе видео формати и кодеци и е повеќе интегриран во ОС</string>
     <string name="video_player_external_description">Надворешни апликации за репродукција на видео како MX Player и VLC</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Започнете ги видеата во режим на пејзаж во ориентација на пејзаж</string>
     <string name="pref_exoplayer_remember_brightness">Запомни ја осветленоста на екранот</string>
     <string name="pref_exoplayer_allow_background_audio">Аудио во позадина</string>
     <string name="pref_exoplayer_direct_play_ass">Дозволете SSA/ASS преводи во директна репродукција</string>

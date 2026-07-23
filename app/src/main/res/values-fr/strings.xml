@@ -101,7 +101,6 @@
     <string name="menu_item_hardware_decoding">Décodage matériel</string>
     <string name="player_error_unspecific_exception">Un problème est survenu avec le lecteur</string>
     <string name="menu_item_software_decoding">Décodage logiciel</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Démarrer les vidéos en mode paysage en orientation paysage</string>
     <string name="pref_subtitle_style_summary">Vous pouvez changer les sous-titres dans les paramètres d\'Android</string>
     <string name="button_use_different_server">Utiliser un serveur différent</string>
     <string name="bluetooth_permission_message">Pour détecter lorsque des écouteurs ou des haut-parleurs sans fil sont déconnectés, l\'application nécessite un accès Bluetooth. Sur Android, cette autorisation est décrite comme l\'accès aux appareils à proximité et avertit que les appareils Bluetooth peuvent être utilisés pour déduire l\'emplacement actuel. Cependant, l\'application Jellyfin n\'utilisera jamais cette autorisation pour détecter votre position.</string>

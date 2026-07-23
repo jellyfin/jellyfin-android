@@ -96,7 +96,6 @@
     <string name="pref_category_video_player">Відэа прайгравальнік</string>
     <string name="pref_video_player_type_title">Тып відэа прайгравальніка</string>
     <string name="pref_music_notification_always_dismissible_summary_on">Апавяшчэнне заўсёды можна адхіліць, нават падчас прайгравання мультымедыі</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">Пачынаць ландшафтныя відэа ў ландшафтнай арыентацыі</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Дазволіць прайграванне відэа ў фонавым рэжыме толькі з аўдыя</string>
     <string name="pref_exoplayer_direct_play_ass">Дазволіць субцітры SSA/ASS у прамым прайграванні</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Забараніць перакадзіраванне і паказваць субцітры толькі з базавым стылем. Пашыраны стыль субцітраў не будзе даступны, калі ён уключаны.</string>

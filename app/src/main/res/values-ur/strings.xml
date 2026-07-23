@@ -76,7 +76,6 @@
     <string name="video_player_web_description">ویب یو آئی سے ڈیفالٹ ایچ ٹی ایم ایل پلیئر</string>
     <string name="video_player_native_description">ایکسو پلیئر پر مبنی، مزید ویڈیو فارمیٹس اور کوڈیکس کو سپورٹ کرتا ہے، اور او ایس میں مزید مربوط ہے</string>
     <string name="video_player_external_description">بیرونی ویڈیو پلے بیک ایپس جیسے ایم ایکس پلیئر اور وی ایل سی</string>
-    <string name="pref_exoplayer_start_landscape_video_in_landscape">لینڈ اسکیپ موڈ ویڈیوز لینڈ اسکیپ اورینٹیشن میں شروع کریں</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">چمک (برائٹنس) اور حجم (والیم) کے اشارے</string>
     <string name="pref_exoplayer_allow_background_audio_summary">صرف آڈیو کے ساتھ بیک گراؤنڈ(پس منظر) میں ویڈیوز چلانے کی اجازت دیں</string>
     <string name="pref_exoplayer_direct_play_ass">براہ راست پلے میں ایس ایس اے/اے ایس ایس سب ٹائٹلز کی اجازت دیں</string>
