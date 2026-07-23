@@ -129,4 +129,11 @@
     <string name="downloading_desc">Pengunduhan %1$d titles</string>
     <string name="downloaded">Terunduh %1$s</string>
     <string name="special_episode">Spesial</string>
+    <string name="media_service_car_section_playlists">Daftar Putar</string>
+    <string name="media_service_car_section_favorites">Kegemaran</string>
+    <string name="media_service_invalid_id">ID item tidak valid</string>
+    <string name="media_service_unknown_page">Halaman tidak dikenal</string>
+    <string name="media_service_no_items">Item tidak ditemukan</string>
+    <string name="media_service_auth_expired">Silakan buka aplikasi di ponsel untuk masuk ke server Jellyfin Anda.</string>
+    <string name="media_service_car_section_audiobooks">Buku Audio</string>
 </resources>
