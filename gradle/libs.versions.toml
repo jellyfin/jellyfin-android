@@ -61,7 +61,7 @@ timber = "5.0.1"
 
 # Testing
 junit = "6.1.2"
-kotest = "6.2.2"
+kotest = "6.2.3"
 mockk = "1.14.11"
 androidx-test-runner = "1.7.0"
 androidx-test-espresso = "3.7.0"
