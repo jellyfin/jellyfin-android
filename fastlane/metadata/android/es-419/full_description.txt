@@ -1,4 +1,4 @@
-Tu contenido multimedia, en tus términos
+Tu contenido multimedia, en tus términos.
 
 El proyecto Jellyfin es un servidor de multimedia gratuito y de código abierto. Sin cargos, sin rastrearte y sin intenciones ocultas. Obtén nuestro servidor gratuito para recopilar todo tu audio, video, fotos y más en un solo lugar.
 
@@ -6,9 +6,9 @@ Para usar la aplicación, deberás tener un servidor Jellyfin configurado y corr
 
 Con un servidor Jellyfin podrás:
 
-* Mirar TV en vivo y grabar programas desde tu servidor Jellyfin (require hardware/servicios adicionales)
-* Transmitir hacia un dispositivo Chromecast en tu red
-* Consumir to multimedia a tu dispositivo Android
+* Mirar TV en vivo y programas grabados desde tu servidor Jellyfin (require hardware/servicios adicionales).
+* Transmitir hacia un dispositivo Chromecast en tu red.
+* Transmitir tus medios a tu dispositivo Android.
 * Ver tu coleccion en una interfaz fácil de usar
 
 Esta es la aplicacion complementaria oficial de Jellyfin para Android. Gracias por usar Jellyfin!
