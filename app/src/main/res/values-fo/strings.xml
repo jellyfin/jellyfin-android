@@ -22,7 +22,7 @@
     <string name="media_service_car_section_favorites">Yndis</string>
     <string name="media_service_car_section_albums">Útgávur</string>
     <string name="media_service_car_section_audiobooks">Ljóðbøkur</string>
-    <string name="media_service_car_section_artists">Listafólk</string>
+    <string name="media_service_car_section_artists">Tónlistafólk</string>
     <string name="media_service_car_section_songs">Sangir</string>
     <string name="media_service_car_section_genres">Greinar</string>
     <string name="media_service_car_item_no_title">Einki heiti</string>
