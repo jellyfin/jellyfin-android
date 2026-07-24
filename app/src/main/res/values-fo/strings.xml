@@ -144,6 +144,7 @@
     <string name="playback_info_transcoding">Umkotar: %b</string>
     <string name="pref_music_notification_always_dismissible_summary_off">Fráboðanin kann bert frávísast um einki verður spælt</string>
     <string name="external_player_not_supported_yet">Spælisporing er enn ikki ein møgulleiki við tí valda ytri spælaranum. Set teg í samband við mennararnar fyri at fáa virkisføri ment.</string>
-    <string name="external_player_unknown_error">Ókend villa í ytri spælaranum. Spælisporing er óvirkt.</string>
+    <string name="external_player_unknown_error">Ókend villa kom fyri í ytra spælaranum. Spælisporing er óvirkt.</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Virkja video-spolan við handabrøgdum</string>
+    <string name="video_player_external_description">Aðrar videospælara-appir so sum MX Player og VLC</string>
 </resources>
