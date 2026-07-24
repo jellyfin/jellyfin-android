@@ -82,7 +82,7 @@
     <string name="download_location_not_set">Einki niðurtøkustað</string>
     <string name="dialog_web_view_not_supported">WebView er ikki ein møgulleiki</string>
     <string name="dialog_web_view_not_supported_message">WebViews eru ikki møgulligar á hesi eindini.\nInnlegg eina sínamillumvirkna WebView-verkseting ella skift til eina virkisføra eind.</string>
-    <string name="dialog_web_view_outdated">WebView er útgingið</string>
+    <string name="dialog_web_view_outdated">WebView er ótíðarhóskandi</string>
     <string name="dialog_web_view_outdated_message">WebView-verksetingin á hesi eindini er ov gomul.\nVinaliga uppstiga til eina útgávu ið er sínamillumvirkin.</string>
     <string name="dialog_button_check_for_updates">Kanna eftir dagføringum</string>
     <string name="dialog_button_ignore">Legg ikki í</string>
