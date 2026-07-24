@@ -141,4 +141,9 @@
     <string name="downloads_empty_description">Tú kanst niðurtaka filmar og sjónvarpsrøðir til tess at hyggja eftir teimum í avlinjustøðu. Leita eftir niðurtøkuímyndini á miðlaupplýsingasíðuni.</string>
     <string name="downloading_desc">Niðurtekur %1$d miðlar</string>
     <string name="downloaded">%1$s niðurtikin</string>
+    <string name="playback_info_transcoding">Umkotar: %b</string>
+    <string name="pref_music_notification_always_dismissible_summary_off">Fráboðanin kann bert frávísast um einki verður spælt</string>
+    <string name="external_player_not_supported_yet">Spælisporing er enn ikki ein møgulleiki við tí valda ytri spælaranum. Set teg í samband við mennararnar fyri at fáa virkisføri ment.</string>
+    <string name="external_player_unknown_error">Ókend villa í ytri spælaranum. Spælisporing er óvirkt.</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Virkja video-spolan við handabrøgdum</string>
 </resources>
