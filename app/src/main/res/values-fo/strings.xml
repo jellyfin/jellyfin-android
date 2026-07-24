@@ -136,4 +136,9 @@
     </plurals>
     <string name="video_player_integrated">Innbygdur spælari</string>
     <string name="pref_subtitle_style_summary">Sniðið á undirtekstum kann tillagast í Android-stillingum</string>
+    <string name="media_service_no_items">Eingir miðlar funnir</string>
+    <string name="media_service_invalid_id">Ógildigt miðlaeyðmerki</string>
+    <string name="downloads_empty_description">Tú kanst niðurtaka filmar og sjónvarpsrøðir til tess at hyggja eftir teimum í avlinjustøðu. Leita eftir niðurtøkuímyndini á miðlaupplýsingasíðuni.</string>
+    <string name="downloading_desc">Niðurtekur %1$d miðlar</string>
+    <string name="downloaded">%1$s niðurtikin</string>
 </resources>
