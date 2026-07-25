@@ -126,4 +126,37 @@
     <string name="thumbnail_desc">\"Miniatura\"</string>
     <string name="store_videos_in_internal_storage">Guardar videos en el almacenamiento interno</string>
     <string name="media_service_no_items">Elementos no encontrados</string>
+    <string name="media_service_unknown_page">Página desconocida</string>
+    <string name="media_service_auth_expired">Porfavor abra la aplicación en su celular para iniciar sesión en su servidor Jellyfin.</string>
+    <string name="media_service_invalid_id">ID de artículo inválido</string>
+    <string name="media_service_car_section_favorites">Favoritos</string>
+    <string name="media_service_car_section_audiobooks">Audiolibros</string>
+    <string name="media_service_car_section_playlists">Listas de reproducción</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Gestos horizontales</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">"Permitir gestos horizontales para controlar  ubicación en video"</string>
+    <string name="pref_exoplayer_network_buffer">Tamaño del búfer de reproducción</string>
+    <string name="network_buffer_auto">Auto</string>
+    <string name="network_buffer_auto_description">Búfer predeterminado, adecuado para la mayoría de los escenarios de reproducción.</string>
+    <string name="network_buffer_large">Grande</string>
+    <string name="network_buffer_large_description">Búfer más grande, puede ser útil en conexiones moderadas o variables.</string>
+    <string name="network_buffer_extra_large">Extra grande</string>
+    <string name="network_buffer_extra_large_description">Búfer máximo, para conexiones lentas o de satélite</string>
+    <string name="downloads_empty">No hay descargas</string>
+    <string name="downloads_empty_description">Puedes descargar películas y series de televisión para verlas sin conexión. Busca el icono de descarga en la página de detalles del producto.</string>
+    <string name="failed_network_method_check">Porfavor cheque sus métodos de descarga permitidos</string>
+    <string name="stored_videos_in_internal_storage_desc">Videos de películas y series de televisión se almacenarán en el almacenamiento interno de la aplicación, permitiendo el acceso desde dentro de la aplicación misma.</string>
+    <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="downloading_desc">Descargando %1$d títulos</string>
+    <string name="downloaded">%1$s Descargadas</string>
+    <string name="special_episode">Especial</string>
+    <string name="downloading_title">Descargando %1$s</string>
+    <string name="download_cancel">Cancelar</string>
+    <string name="download_completed">Descarga completada</string>
+    <string name="download_progress">%1$d%%</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Remover descarga</item>
+        <item quantity="many">Remover descargas</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="download_remove_keep_local">Cuidar archivos locales</string>
 </resources>
