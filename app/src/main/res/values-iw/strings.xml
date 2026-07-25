@@ -145,4 +145,33 @@
     <string name="media_service_invalid_id">מזהה פריט שגוי</string>
     <string name="media_service_car_section_favorites">מועדפים</string>
     <string name="media_service_car_section_audiobooks">ספרים מוקלטים</string>
+    <string name="media_service_car_section_playlists">רשימות השמעה</string>
+    <string name="downloads_empty">אין הורדות עדיין</string>
+    <string name="downloads_empty_description">אפשר להוריד סרטים וסדרות כדי לצפות בהם בלי חיבור אינטרנט. חפשו את סמל ההורדות בדף פרטי התוכן.</string>
+    <string name="downloading_title">מוריד %1$s</string>
+    <string name="download_cancel">ביטול</string>
+    <string name="download_completed">הורדה הושלמה</string>
+    <string name="download_progress">%1$d%%</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">הסר הורדה</item>
+        <item quantity="two">הסר הורדות</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="download_remove_keep_local">שמירת קבצים מקומיים</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">האם ברצונך להסיר \"%2$s\" מההרדות שלך ?</item>
+        <item quantity="two">"האם ברצונך להסיר את %1$d  ההורדות האלה ?"</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="download_incomplete">הורדה מחוסרת</string>
+    <string name="download_settings_dialog_title">בחר‬‬‬‫‫‬/י מיקום הורדה</string>
+    <string name="download_settings_dialog_message">נא לבחור את מיקום שמירת המדיה. בברירת מחדל הורדות משתמשות בוויפי בלבד .</string>
+    <string name="select_folder">בחר/י תיקייה</string>
+    <string name="select_all">בחר הכול</string>
+    <string name="deselect_all">הסר בחירה מהכל</string>
+    <string name="selected_count">%1$d נבחרו</string>
+    <string name="download_location_not_set">חסר מיקום הורדה</string>
+    <string name="download_location_not_set_description">כדי להוריד מדיה, נא לבחור מיקום בו ישמרו הקבצים.</string>
+    <string name="download_location_inaccessible">אין אפשרות לגשת למיקום הורדות זה</string>
+    <string name="download_location_inaccessible_description">מיקום ההורדה הנבחר כבר אינו זמין. נא לבחור תיקייה אחרת כדי להמשיך הורדה.</string>
 </resources>
