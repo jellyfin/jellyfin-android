@@ -2,6 +2,7 @@ package org.jellyfin.mobile.player.ui
 
 import android.app.Activity
 import android.app.PictureInPictureParams
+import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Rect
 import android.os.Build
@@ -9,6 +10,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import android.view.OrientationEventListener
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
@@ -41,6 +43,7 @@ import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.PIP_MAX_RATIONAL
 import org.jellyfin.mobile.utils.Constants.PIP_MIN_RATIONAL
+import org.jellyfin.mobile.utils.SmartOrientationListener
 import org.jellyfin.mobile.utils.brightness
 import org.jellyfin.mobile.utils.extensions.aspectRational
 import org.jellyfin.mobile.utils.extensions.getParcelableCompat
@@ -76,6 +79,16 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     private val currentVideoStream: MediaStream?
         get() = viewModel.mediaSourceOrNull?.selectedVideoStream
 
+    /**
+     * Listener that watches the current device orientation.
+     * It makes sure that the orientation sensor can still be used (if enabled)
+     * after toggling the orientation through the fullscreen button.
+     *
+     * If the requestedOrientation was reset directly after setting it in the fullscreenSwitcher click handler,
+     * the orientation would get reverted before the user had any chance to rotate the device to the desired position.
+     */
+    private val orientationListener: OrientationEventListener by lazy { SmartOrientationListener(requireActivity()) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -106,6 +119,9 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             if (mediaSource.selectedVideoStream?.isLandscape == false) {
                 // For portrait videos, immediately enable fullscreen
                 playerFullscreenHelper.enableFullscreen()
+            } else if (appPreferences.exoPlayerStartLandscapeVideoInLandscape) {
+                // Auto-switch to landscape for landscape videos if enabled
+                requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
             }
 
             // Update title and player menus
@@ -193,13 +209,18 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         // Disable controller animations
         playerView.setControllerAnimationEnabled(false)
 
-        playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding)
+        playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
         playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)
 
         // Handle fullscreen switcher
         fullscreenSwitcher.setOnClickListener {
             toggleFullscreen()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        orientationListener.enable()
     }
 
     override fun onResume() {
@@ -238,10 +259,25 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     }
 
     /**
-     * Toggle fullscreen
+     * Toggle fullscreen.
+     *
+     * If playing a portrait video, this just hides the status and navigation bars.
+     * For landscape videos, additionally the screen gets rotated.
      */
     private fun toggleFullscreen() {
-        playerFullscreenHelper.toggleFullscreen()
+        val videoTrack = currentVideoStream
+        if (videoTrack == null || videoTrack.isLandscape) {
+            val current = resources.configuration.orientation
+            requireActivity().requestedOrientation = when (current) {
+                Configuration.ORIENTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            }
+            // No need to call playerFullscreenHelper in this case,
+            // since the configuration change triggers updateFullscreenState,
+            // which does it for us.
+        } else {
+            playerFullscreenHelper.toggleFullscreen()
+        }
     }
 
     /**
@@ -377,6 +413,11 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        orientationListener.disable()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         // Detach player from PlayerView
@@ -391,6 +432,8 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     override fun onDestroy() {
         super.onDestroy()
         with(requireActivity()) {
+            // Reset screen orientation
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             playerFullscreenHelper.disableFullscreen()
             // Reset screen brightness
             window.brightness = BRIGHTNESS_OVERRIDE_NONE
