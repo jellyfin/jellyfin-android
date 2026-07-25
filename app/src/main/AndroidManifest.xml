@@ -116,5 +116,8 @@
         <meta-data
             android:name="android.webkit.WebView.EnableSafeBrowsing"
             android:value="false" />
+
+        <!-- Temporarily opt-out of new Android 16 behavior to allow setRequestedOrientation() calls -->
+        <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true" />
     </application>
 </manifest>
