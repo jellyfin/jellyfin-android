@@ -159,4 +159,6 @@
     <string name="external_player_system_default_description">Lat spælaraval upp til kervið. Allir spælarar hava ikki líka gott sínamillumvirkni.</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Loyv videospæli við einans ljóði í bakgrundini</string>
     <string name="pref_exoplayer_allow_background_audio">Ljóð í bakgrundini</string>
+    <string name="stored_videos_in_internal_storage_desc">Video so sum filmar og sjónvarpsrøðir verða varðveitt í inngoymslu apparinnar, ið gevur atgongd til tey frá sjálvari appini.</string>
+    <string name="tv_show_desc">%1$s - T%2$dP%3$d</string>
 </resources>
