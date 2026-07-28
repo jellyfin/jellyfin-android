@@ -79,7 +79,7 @@
     <string name="download_settings_dialog_title">Vel niðurtøkustað</string>
     <string name="download_settings_dialog_message">Vinaliga áset hvar niðurtiknir miðlar skulu goymast. Niðurtøkur verða einans gjørdar umvegis WiFi um annað ikki er stillað.</string>
     <string name="select_folder">Vel skjáttu</string>
-    <string name="download_location_not_set">Einki niðurtøkustað</string>
+    <string name="download_location_not_set">Eingin skjátta ásett til niðurtøkur</string>
     <string name="dialog_web_view_not_supported">WebView er ikki ein møgulleiki</string>
     <string name="dialog_web_view_not_supported_message">WebViews eru ikki møgulligar á hesi eindini.\nInnlegg eina sínamillumvirkna WebView-verkseting ella skift til eina virkisføra eind.</string>
     <string name="dialog_web_view_outdated">WebView er ótíðarhóskandi</string>
@@ -116,7 +116,7 @@
     <string name="pref_music_notification_always_dismissible_title">Frávísilig spælarafráboðan</string>
     <string name="pref_music_notification_always_dismissible_summary_on">Fráboðanin kann altíð frávísast, enntá ímeðan spælt verður</string>
     <string name="pref_category_video_player">Video-spælari</string>
-    <string name="pref_video_player_type_title">Video-spælaraslag</string>
+    <string name="pref_video_player_type_title">Video-spælari</string>
     <string name="video_player_web_description">Forsetti HTML video-spælarni í vev-nýtslumarkamótinum</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Nert og hald á skíggjanum fyri at fyribils skunda undir spælingina</string>
     <string name="network_buffer_auto_description">Forsett tippi, hóskandi til flestu spæliumstøður</string>
