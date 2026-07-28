@@ -165,4 +165,14 @@
     <string name="download_location_not_set_description">Para descargar archivos, por favor, seleccione la carpeta donde deben ser guardados.</string>
     <string name="download_location_inaccessible">No se puede acceder a la carpeta de descargas</string>
     <string name="download_location_inaccessible_description">La ubicación de descargas no es acccesible. Por favor seleccione otra carpeta para continuar las descargas.</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Quitar la descarga</item>
+        <item quantity="many">Quitar las descargas</item>
+        <item quantity="other">Quitrar el resto</item>
+    </plurals>
+    <plurals name="download_remove_description">
+        <item quantity="one">Quiere quitar \"%2$s\" de sus descargas ?</item>
+        <item quantity="many">Quiere quitar \"%2$s\" de sus descargas ?</item>
+        <item quantity="other">Quiere quitar el resto de las descargas ?</item>
+    </plurals>
 </resources>
