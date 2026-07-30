@@ -35,6 +35,7 @@ import coil3.toBitmap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
@@ -69,6 +70,7 @@ import org.jellyfin.mobile.utils.setPlaybackState
 import org.koin.android.ext.android.inject
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
 
 class RemotePlayerService : Service(), CoroutineScope {
 
@@ -89,6 +91,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     private var mediaController: MediaController? = null
     private var largeItemIcon: Bitmap? = null
     private var currentItemId: String? = null
+    private var staleNotificationWatchdog: Job? = null
 
     val playbackState: PlaybackState? get() = mediaSession?.controller?.playbackState
 
@@ -371,6 +374,22 @@ class RemotePlayerService : Service(), CoroutineScope {
 
             // Activate MediaSession
             mediaSession.isActive = true
+
+            // If the web app never reports that playback stopped (e.g. a Cast/remote
+            // session is ended externally and the event is missed), this notification
+            // and media session would otherwise linger forever, non-dismissible, until
+            // the app is force quit. Only the "playing" state is non-dismissible
+            // (see setOngoing below), so only guard that state; a paused notification
+            // can already be swiped away and may legitimately sit idle for a long time.
+            staleNotificationWatchdog?.cancel()
+            staleNotificationWatchdog = if (!isPaused) {
+                launch {
+                    delay(STALE_NOTIFICATION_TIMEOUT)
+                    onStopped()
+                }
+            } else {
+                null
+            }
         }
     }
 
@@ -490,6 +509,7 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     private fun onStopped() {
+        staleNotificationWatchdog?.cancel()
         notificationManager.cancel(MEDIA_PLAYER_NOTIFICATION_ID)
         mediaSession?.isActive = false
         stopWakelock()
@@ -497,11 +517,19 @@ class RemotePlayerService : Service(), CoroutineScope {
     }
 
     override fun onDestroy() {
+        staleNotificationWatchdog?.cancel()
         unregisterReceiver(receiver)
         job.cancel()
         mediaSession?.release()
         mediaSession = null
         super.onDestroy()
+    }
+
+    private companion object {
+        // Web app sends periodic progress updates during active playback (well under a
+        // minute apart); if none arrive for this long, assume the session ended without
+        // us being told and clear the stuck notification/media session ourselves.
+        val STALE_NOTIFICATION_TIMEOUT = 5.minutes
     }
 
     class ServiceBinder(private val service: RemotePlayerService) : Binder() {
