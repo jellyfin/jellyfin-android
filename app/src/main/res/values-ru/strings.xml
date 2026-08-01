@@ -121,10 +121,10 @@
     <string name="failed_network_method_check">Пожалуйста, проверьте ваши доступные методы скачивания</string>
     <string name="thumbnail_desc">Миниатюра</string>
     <string name="stored_videos_in_internal_storage_desc">Видео, такие как фильмы и сериалы, будут сохраняться во внутренней памяти приложения. Разрешает доступ из приложения.</string>
-    <string name="downloading_desc">Скачивание %1$d элемента(ов)</string>
+    <string name="downloading_desc">Загрузка %1$d элемента(ов)</string>
     <string name="external_player_mpvkt">Плеер mpvKt</string>
     <string name="store_videos_in_internal_storage">Сохранять видео во внутреннем хранилище</string>
-    <string name="downloaded">Скачано %1$s</string>
+    <string name="downloaded">Загружено %1$s</string>
     <string name="failed_thumbnail">Не удалось скачать миниатюру</string>
     <string name="failed_information">Не удалось получить информацию о медиа</string>
     <string name="yes">Да</string>
@@ -145,4 +145,24 @@
     <string name="media_service_invalid_id">Неверный идентификатор элемента</string>
     <string name="media_service_car_section_audiobooks">Аудиокниги</string>
     <string name="media_service_car_section_favorites">Избранное</string>
+    <string name="media_service_car_section_playlists">Плейлисты</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Горизонтальные жесты</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Разрешить горизонтальные жесты для перемотки</string>
+    <string name="downloads_empty">Загрузок пока нет</string>
+    <string name="downloads_empty_description">Вы можете скачивать фильмы и сериалы, чтобы смотреть их без интернета. Поищите значок загрузки на странице с описанием.</string>
+    <string name="downloading_title">Загрузка%1$s</string>
+    <string name="download_cancel">Отменить</string>
+    <string name="download_completed">Загрузка завершена</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_incomplete">Загрузка не завершена</string>
+    <string name="download_settings_dialog_title">Выберите место для загрузки</string>
+    <string name="download_settings_dialog_message">Выберите место для сохранения загруженных медиафайлов. По умолчанию скачивание работает только по Wi-Fi.</string>
+    <string name="select_folder">Выберите папку</string>
+    <string name="select_all">Выбрать всё</string>
+    <string name="deselect_all">Отменить всё</string>
+    <string name="selected_count">%1$d выбрано</string>
+    <string name="download_location_not_set">Место для загрузки не выбрано</string>
+    <string name="download_location_not_set_description">Чтобы загружать медиафайлы, выберите папку для их хранения.</string>
+    <string name="download_location_inaccessible">Выбранное место для загрузки недоступно</string>
+    <string name="download_location_inaccessible_description">Выбранное место для загрузки больше недоступно. Выберите другую папку, чтобы продолжить загрузку.</string>
 </resources>
