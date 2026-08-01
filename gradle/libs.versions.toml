@@ -31,7 +31,7 @@ androiddesugarlibs = "2.1.5"
 androidx-lifecycle = "2.9.4"
 
 # UI
-androidx-constraintlayout = "2.2.1"
+androidx-constraintlayout = "2.2.2"
 google-material = "1.13.0"
 androidx-webkit = "1.14.0"
 modernandroidpreferences = "2.4.0-beta2"
