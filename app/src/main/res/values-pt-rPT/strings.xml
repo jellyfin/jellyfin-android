@@ -160,4 +160,7 @@
         <item quantity="many">Remover transferências</item>
         <item quantity="other">Remover transferências</item>
     </plurals>
+    <string name="media_service_auth_expired">Por favor abra a aplicação no seu telemóvel para iniciar sessão no seu servidor do Jellyfin.</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Permitir controlo por gestos horizontais para navegar no vídeo</string>
+    <string name="pref_exoplayer_network_buffer">Tamanho do buffer de reprodução</string>
 </resources>

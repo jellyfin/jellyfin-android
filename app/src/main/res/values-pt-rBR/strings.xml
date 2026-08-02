@@ -150,9 +150,28 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Manter arquivo(s) local(is)</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Você quer remover %1$s dos seus arquivos?</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">Deseja remover \"%2$s\" do seu download?</item>
+        <item quantity="many">Deseja remover estes %1$d downloads?</item>
+        <item quantity="other">Deseja remover estes %1$d downloads?</item>
     </plurals>
     <string name="download_incomplete">Arquivo incompleto</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Gestos horizontais</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Permitir controle por gestos horizontais para avançar/retroceder o vídeo</string>
+    <string name="downloads_empty">Nenhum download ainda</string>
+    <string name="downloads_empty_description">Você pode baixar filmes e séries para assistir off-line. Procure pelo ícone de download na página de detalhes do item.</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Remover download</item>
+        <item quantity="many">Remover downloads</item>
+        <item quantity="other">Remover downloads</item>
+    </plurals>
+    <string name="download_settings_dialog_title">Escolha o local de download</string>
+    <string name="download_settings_dialog_message">Por favor, escolha onde as mídias baixadas devem ser salvas. Por padrão, os downloads usam apenas Wi-Fi.</string>
+    <string name="select_all">Marcar todos</string>
+    <string name="select_folder">Marcar pasta</string>
+    <string name="deselect_all">Desmarcar todos</string>
+    <string name="selected_count">%1$d Selecionado</string>
+    <string name="download_location_not_set">Nenhum local de download definido</string>
+    <string name="download_location_not_set_description">Para fazer o download, selecione uma pasta para salvar os arquivos.</string>
+    <string name="download_location_inaccessible">Não foi possível acessar o local de download.</string>
+    <string name="download_location_inaccessible_description">O local de download está inacessível. Selecione outra pasta para retomar os downloads.</string>
 </resources>
