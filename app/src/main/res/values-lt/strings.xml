@@ -143,4 +143,10 @@
     <string name="network_buffer_auto_description">Numatytasis buferis, tinkantis daugumai atkūrimo scenarijų</string>
     <string name="network_buffer_large">Didelis</string>
     <string name="network_buffer_large_description">Didesnis buferis gali padėti esant vidutinio stiprumo arba kintamiems ryšiams</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Pašalinti atsisiuntimą</item>
+        <item quantity="few">Pašalinti atsisiuntimus</item>
+        <item quantity="many">Pašalinti atsisiuntimų</item>
+        <item quantity="other">Pašalinti atsisiuntimų</item>
+    </plurals>
 </resources>
