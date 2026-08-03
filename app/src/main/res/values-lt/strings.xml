@@ -131,4 +131,16 @@
     <string name="downloaded">Atsisiųsta %1$s</string>
     <string name="skip_media_segment">Praleisti</string>
     <string name="special_episode">Ypatingas</string>
+    <string name="media_service_unknown_page">Nežinomas puslapis</string>
+    <string name="media_service_no_items">Nerasta jokių elementų</string>
+    <string name="media_service_auth_expired">Norėdami prisijungti prie Jellyfin serverio, atidarykite programėlę savo telefone.</string>
+    <string name="media_service_car_section_favorites">Mėgstamiausi</string>
+    <string name="media_service_car_section_audiobooks">Audio knygos</string>
+    <string name="media_service_car_section_playlists">Grojaraščiai</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Horizontalūs gestai</string>
+    <string name="pref_exoplayer_network_buffer">Atkūrimo buferio dydis</string>
+    <string name="network_buffer_auto">Automatinis</string>
+    <string name="network_buffer_auto_description">Numatytasis buferis, tinkantis daugumai atkūrimo scenarijų</string>
+    <string name="network_buffer_large">Didelis</string>
+    <string name="network_buffer_large_description">Didesnis buferis gali padėti esant vidutinio stiprumo arba kintamiems ryšiams</string>
 </resources>
