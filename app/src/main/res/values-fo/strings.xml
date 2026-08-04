@@ -103,7 +103,7 @@
     <string name="music_notification_channel_description">Verður brúkt at stýra tónleikaspæli</string>
     <string name="notification_action_previous">Undanfarni</string>
     <string name="notification_action_next">Næsti</string>
-    <string name="notification_action_stop">Stoppa</string>
+    <string name="notification_action_stop">Steðga</string>
     <string name="player_error_invalid_play_options">Bar ikki til at greina spæliupplýsingar</string>
     <string name="player_error_network_failure">Bar ikki til at útvega miðlaupplýsingar frá ambætaranum</string>
     <string name="player_error_unsupported_content">Hendan eindin kann ikki spæla hendan miðilin</string>
@@ -147,7 +147,7 @@
     <string name="external_player_unknown_error">Ókend villa kom fyri í ytra spælaranum. Spælisporing er óvirkt.</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Virkja kykmyndaspolan við handabrøgdum</string>
     <string name="video_player_external_description">Aðrar kykmyndaspælara-appir so sum MX Player og VLC</string>
-    <string name="notification_action_pause">Steðga</string>
+    <string name="notification_action_pause">Pausa</string>
     <string name="external_player_invalid_player">Spælisporing er óvirkt tí at valdi ytri spælarin ikki hevur virkisføri fyri tí.</string>
     <string name="pref_exoplayer_direct_play_ass">Loyv SSA/ASS undirtekstum undir beinleiðis spæling</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Byrja liggjandi kykmyndir í liggjandi støðu</string>
