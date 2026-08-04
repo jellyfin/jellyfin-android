@@ -149,4 +149,26 @@
         <item quantity="many">Pašalinti atsisiuntimų</item>
         <item quantity="other">Pašalinti atsisiuntimų</item>
     </plurals>
+    <string name="network_buffer_extra_large">Labai didelis</string>
+    <string name="network_buffer_extra_large_description">Maksimalus buferis, skirtas lėtiems arba palydoviniams ryšiams</string>
+    <string name="downloads_empty">Kol kas nėra atsisiuntimų</string>
+    <string name="downloads_empty_description">Galite atsisiųsti filmus ir TV serialus, kad galėtumėte juos žiūrėti neprisijungę. Elemento informacijos puslapyje ieškokite atsisiuntimo piktogramos.</string>
+    <string name="downloading_title">Atsisiunčiama %1$s</string>
+    <string name="download_cancel">Atšaukti</string>
+    <string name="download_completed">Atsisiuntimas baigtas</string>
+    <string name="download_progress">%1$d%%</string>
+    <string name="download_remove_keep_local">Išsaugoti vietinį(-ius) failą(-us)</string>
+    <string name="download_incomplete">Atsisiuntimas nebaigtas</string>
+    <string name="download_settings_dialog_title">Pasirinkite atsisiuntimo vietą</string>
+    <string name="download_settings_dialog_message">Pasirinkite, kur turėtų būti išsaugota atsisiųsta medija. Pagal numatytuosius nustatymus atsisiuntimai naudoja tik „Wi-Fi“.</string>
+    <string name="select_folder">Pasirinkite aplanką</string>
+    <string name="select_all">Pasirinkti viską</string>
+    <string name="deselect_all">Atšaukti visų žymėjimą</string>
+    <string name="selected_count">Pasirinkta %1$d</string>
+    <string name="download_location_not_set">Nėra atsisiuntimo vietos</string>
+    <string name="download_location_not_set_description">Norėdami atsisiųsti medijos failus, pasirinkite aplanką, kuriame norite juos išsaugoti.</string>
+    <string name="download_location_inaccessible">Atsisiuntimo vieta nepasiekiama</string>
+    <string name="download_location_inaccessible_description">Pasirinkta atsisiuntimo vieta nebepasiekiama. Norėdami tęsti atsisiuntimus, pasirinkite kitą aplanką.</string>
+    <string name="media_service_invalid_id">Neteisingas elemento ID</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Leisti horizontalius gestų valdymo veiksmus vaizdo įrašų paieškai</string>
 </resources>
