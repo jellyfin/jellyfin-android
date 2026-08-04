@@ -171,4 +171,10 @@
     <string name="download_location_inaccessible_description">Pasirinkta atsisiuntimo vieta nebepasiekiama. Norėdami tęsti atsisiuntimus, pasirinkite kitą aplanką.</string>
     <string name="media_service_invalid_id">Neteisingas elemento ID</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Leisti horizontalius gestų valdymo veiksmus vaizdo įrašų paieškai</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Ar norite pašalinti %2$s atsisiuntimą?</item>
+        <item quantity="few">Ar norite pašalinti šiuos %1$d atsisiuntimus?</item>
+        <item quantity="many">Ar norite pašalinti %1$d atsisiuntimų?</item>
+        <item quantity="other">Ar norite pašalinti %1$d atsisiuntimų?</item>
+    </plurals>
 </resources>
