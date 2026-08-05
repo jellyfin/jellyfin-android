@@ -42,7 +42,15 @@ class JellyfinWebChromeClient(
             return true
         }
 
-        fileChooserListener.onShowFileChooser(fileChooserParams.createIntent(), filePathCallback)
+        val intent = fileChooserParams.createIntent().apply {
+            // The file requests from jellyfin-web often use extensions, but Android only allows mime types
+            // the default mapping from most webview implementations is too limited so we remove them
+            // jellyfin-web validates chosen files to avoid wrong file types from being used
+            removeExtra(Intent.EXTRA_MIME_TYPES)
+            type = "*/*"
+        }
+
+        fileChooserListener.onShowFileChooser(intent, filePathCallback)
         return true
     }
 
