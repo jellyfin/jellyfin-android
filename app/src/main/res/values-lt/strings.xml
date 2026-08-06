@@ -15,7 +15,7 @@
     <string name="playback_info_stream_unknown_title">Nežinomas pavadinimas</string>
     <string name="playback_info_audio_streams">Garso įrašų srautai</string>
     <string name="playback_info_video_streams">Vaizdo įrašų srautai</string>
-    <string name="playback_info_transcoding">Perkoduojama: %b</string>
+    <string name="playback_info_transcoding">Transkoduojama: %b</string>
     <string name="playback_info_play_method">Leidimo metodas: %s</string>
     <string name="menu_item_none">tuščia</string>
     <string name="available_servers_title">Galimi serveriai</string>
@@ -86,9 +86,9 @@
     <string name="bluetooth_permission_title">Leisti Bluetooth prieigą?</string>
     <string name="bluetooth_permission_message">Programa reikalauja Bluetooth prieigos, kad atpažinti kada atjungiamos bevielės ausinės ar garsiakalbiai. Android operacinėje sistemoje, tai vadinama prieiga prie artimų įrenginių, bei joje įspėjama, kad Bluetooth įrenginiai gali būti naudojami gauti dabartinę lokaciją. Jellyfin programa niekada nenaudos šios prieigos aptikti lokaciją.</string>
     <string name="menu_item_auto">Automatiškai</string>
-    <string name="video_player_native_description">Remiantis „ExoPlayer“, palaikoma daugiau vaizdo įrašų formatų ir kodekų, jis labiau integruotas į operacinę sistemą</string>
+    <string name="video_player_native_description">Remiantis ExoPlayer, palaikoma daugiau vaizdo įrašų formatų ir kodekų, jis labiau integruotas į operacinę sistemą</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Paleisti horizontaliojo režimo vaizdo įrašus horizontalia orientacija</string>
-    <string name="external_player_mx_player_pro_description">Mokama „MX Player“ versija, užtikrinanti nepertraukiamą vaizdo įrašų peržiūrą.</string>
+    <string name="external_player_mx_player_pro_description">Mokama MX Player versija, užtikrinanti nepertraukiamą vaizdo įrašų peržiūrą.</string>
     <string name="external_player_vlc_player_description">Nemokamas atvirojo kodo daugiaplatformis daugialypės terpės grotuvas, kuriuo atkuriama dauguma daugialypės terpės failų.</string>
     <string name="external_player_mpvkt_description">Žiniatinklio grotuvas, pagrįstas mpv-android, kurio tikslas - sukurti gražesnę naudotojo sąsają, palyginti su originalu.</string>
     <string name="external_player_app">Išorinio grotuvo programa</string>
@@ -108,7 +108,7 @@
     <string name="external_player_mx_player_free_description">Galingas vaizdo įrašų grotuvas su pažangiu aparatiniu pagreitinimu ir subtitrų palaikymu.</string>
     <string name="pref_category_downloads">Atsisiuntimai</string>
     <string name="external_player_vlc_player">VLC grotuvas</string>
-    <string name="video_player_external_description">Išorinės vaizdo įrašų atkūrimo programos, tokios kaip „MX Player“ ir VLC</string>
+    <string name="video_player_external_description">Išorinės vaizdo įrašų atkūrimo programos, tokios kaip MX Player ir VLC</string>
     <string name="external_player_mx_player_pro">MX Player Pro</string>
     <string name="external_player_mpv">MPV Player</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Ryškumo ir garsumo gestai</string>
@@ -120,7 +120,7 @@
     <string name="pref_exoplayer_direct_play_ass">Leisti naudoti SSA/ASS subtitrus tiesioginio rodymo metu</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Neleisti transkoduoti ir rodyti tik pagrindinio stiliaus subtitrus. Jei įjungta, išplėstinis subtitrų stilius nebus prieinamas.</string>
     <string name="pref_subtitle_style">Pritaikyti subtitrų stilių</string>
-    <string name="pref_subtitle_style_summary">Subtitrų stilių galite pakeisti „Android“ nustatymuose</string>
+    <string name="pref_subtitle_style_summary">Subtitrų stilių galite pakeisti Android nustatymuose</string>
     <string name="view_downloads">Peržiūrėti atsisiuntimus</string>
     <string name="downloads">Atsisiuntimai</string>
     <string name="failed_information">Nepavyko gauti medijos informacijos</string>
@@ -160,7 +160,7 @@
     <string name="download_remove_keep_local">Išsaugoti vietinį(-ius) failą(-us)</string>
     <string name="download_incomplete">Atsisiuntimas nebaigtas</string>
     <string name="download_settings_dialog_title">Pasirinkite atsisiuntimo vietą</string>
-    <string name="download_settings_dialog_message">Pasirinkite, kur turėtų būti išsaugota atsisiųsta medija. Pagal numatytuosius nustatymus atsisiuntimai naudoja tik „Wi-Fi“.</string>
+    <string name="download_settings_dialog_message">Pasirinkite, kur turėtų būti išsaugota atsisiųsta medija. Pagal numatytuosius nustatymus atsisiuntimai naudoja tik Wi-Fi.</string>
     <string name="select_folder">Pasirinkite aplanką</string>
     <string name="select_all">Pasirinkti viską</string>
     <string name="deselect_all">Atšaukti visų žymėjimą</string>
