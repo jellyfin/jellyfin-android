@@ -25,8 +25,8 @@
     <string name="player_error_unsupported_content">Nepalaikomas failo formatas</string>
     <string name="player_error_network_failure">Nepavyko įkelti informacijos iš serverio</string>
     <string name="player_error_invalid_play_options">Klaidinga atkūrimo informacija</string>
-    <string name="notification_action_stop">Stabdyti</string>
-    <string name="notification_action_next">Kitas</string>
+    <string name="notification_action_stop">Sustabdyti</string>
+    <string name="notification_action_next">Sekantis</string>
     <string name="notification_action_fast_forward">Prasukti</string>
     <string name="notification_action_pause">Pauzė</string>
     <string name="notification_action_rewind">Atsukti</string>
