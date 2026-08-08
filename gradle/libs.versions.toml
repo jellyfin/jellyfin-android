@@ -47,7 +47,7 @@ jellyfin-sdk = "1.7.1"
 coil = "3.4.0"
 
 # Media
-androidx-media = "1.7.1"
+androidx-media = "1.8.0"
 androidx-mediarouter = "1.8.1"
 androidx-media3 = "1.8.0"
 jellyfin-androidx-media = "1.8.0+1"
