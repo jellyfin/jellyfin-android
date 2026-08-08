@@ -47,6 +47,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     private val imageApi: ImageApi = get<ApiClient>().imageApi
     private val imageLoader: ImageLoader by inject()
     private val receiverRegistered = AtomicBoolean(false)
+    private val serviceStarted = AtomicBoolean(false)
 
     val allowBackgroundAudio: Boolean
         get() = appPreferences.exoPlayerAllowBackgroundAudio
@@ -127,7 +128,14 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
                 setOngoing(player.isPlaying)
             }.build()
 
-            nm.notify(VIDEO_PLAYER_NOTIFICATION_ID, notification)
+            // The notification is owned by a foreground service so the process keeps playing while
+            // the UI is hidden. Once started, update it directly instead of restarting the service.
+            when {
+                serviceStarted.get() -> nm.notify(VIDEO_PLAYER_NOTIFICATION_ID, notification)
+                PlayerService.start(context, notification) -> serviceStarted.set(true)
+                // Starting the service failed, fall back to a regular notification
+                else -> nm.notify(VIDEO_PLAYER_NOTIFICATION_ID, notification)
+            }
         }
 
         if (receiverRegistered.compareAndSet(false, true)) {
@@ -145,6 +153,9 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     }
 
     fun dismissNotification() {
+        if (serviceStarted.compareAndSet(true, false)) {
+            PlayerService.stop(context)
+        }
         notificationManager?.cancel(VIDEO_PLAYER_NOTIFICATION_ID)
         if (receiverRegistered.compareAndSet(true, false)) {
             context.unregisterReceiver(notificationActionReceiver)
