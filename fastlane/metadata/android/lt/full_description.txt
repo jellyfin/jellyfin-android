@@ -2,7 +2,7 @@ Tavo turinys, su tavo taisyklėm.
  
 Jellyfin projektas yra atviro kodo, nemokamas turinio serveris. Jokių mokesčių, sekimo ar paslėptos agendos. Paleisk mūsų nemokamą serverį kad galėtum groti visą savo muziką, vaizdus, nuotraukas ir dar daugiau vienoje vietoje. 
  
-Kad naudotis aplikacija, tu turi turėti Jellyfin serverį. Sužinok daugiau čia: <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>. 
+Kad naudotis programėle, tu turi turėti Jellyfin serverį. Sužinok daugiau čia: <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>. 
  
 Su Jellyfin serveriu tu gali:
  
@@ -11,4 +11,4 @@ Su Jellyfin serveriu tu gali:
 * Siųsti srautu savo turinį į savo Android įrenginį
 * Peržiūrėti savo kolekciją su paprasta naudoti vartotojo sąsasaja.
 
-Tai yra oficiali Jellyfin aplikacija skirta Android. Ačiū kad naudojatės Jellyfin!
+Tai yra oficiali Jellyfin programėlė skirta Android. Ačiū kad naudojatės Jellyfin!
