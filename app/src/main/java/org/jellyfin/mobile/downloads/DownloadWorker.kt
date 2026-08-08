@@ -11,9 +11,11 @@ import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import kotlinx.coroutines.CancellationException
 import org.jellyfin.mobile.app.AppPreferences
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.io.IOException
 
 class DownloadWorker(
     context: Context,
@@ -57,11 +59,18 @@ class DownloadWorker(
 
     override suspend fun doWork(): Result {
         val canProcess = downloadQueue.prepare()
-        if (!canProcess) return Result.failure()
+        if (!canProcess) return Result.success()
 
         setForeground(getForegroundInfo())
-        downloadQueue.process()
-
-        return Result.success()
+        return try {
+            downloadQueue.process()
+            Result.success()
+        } catch (e: CancellationException) {
+            throw e
+        } catch (_: IOException) {
+            Result.retry()
+        } catch (_: Exception) {
+            Result.failure()
+        }
     }
 }

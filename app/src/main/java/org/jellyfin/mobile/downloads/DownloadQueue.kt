@@ -16,6 +16,7 @@ import org.jellyfin.sdk.api.client.extensions.imageApi
 import org.jellyfin.sdk.api.client.extensions.libraryApi
 import org.jellyfin.sdk.model.api.ImageFormat
 import org.jellyfin.sdk.model.api.ImageType
+import java.io.IOException
 
 class DownloadQueue(
     private val context: Context,
@@ -70,11 +71,15 @@ class DownloadQueue(
 
             notificationProgressCallback.onEnd()
             downloadDao.update(downloadWithFiles.download.copy(status = DownloadStatus.DOWNLOADED))
-        } catch (_: CancellationException) {
+        } catch (e: CancellationException) {
             downloadDao.update(downloadWithFiles.download.copy(status = DownloadStatus.QUEUED))
-        } catch (error: Throwable) {
+            throw e
+        } catch (e: IOException) {
+            downloadDao.update(downloadWithFiles.download.copy(status = DownloadStatus.QUEUED))
+            throw e
+        } catch (e: Exception) {
             downloadDao.update(downloadWithFiles.download.copy(status = DownloadStatus.ERROR))
-            throw error
+            throw e
         }
     }
 
@@ -111,6 +116,9 @@ class DownloadQueue(
                     status = DownloadStatus.DOWNLOADED,
                 ),
             )
+        } catch (e: IOException) {
+            downloadDao.updateFile(file.copy(status = DownloadStatus.QUEUED))
+            throw e
         } catch (e: Exception) {
             downloadDao.updateFile(file.copy(status = DownloadStatus.ERROR))
             throw e
