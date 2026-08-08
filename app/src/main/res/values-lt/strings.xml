@@ -127,7 +127,7 @@
     <string name="failed_network_method_check">Patikrinkite leidžiamus atsisiuntimo būdus</string>
     <string name="thumbnail_desc">Miniatiūra</string>
     <string name="store_videos_in_internal_storage">Saugoti vaizdo įrašus vidinėje saugykloje</string>
-    <string name="stored_videos_in_internal_storage_desc">Vaizdo įrašai, pvz., filmai ir TV laidos, bus saugomi vidinėje programėlės saugykloje. Prieiga iš programėlės.</string>
+    <string name="stored_videos_in_internal_storage_desc">Vaizdo įrašai, pvz., filmai ir TV laidos, bus saugomi programos vidinėje atmintyje. Prieiga leidžiama iš programos.</string>
     <string name="downloaded">Atsisiųsta %1$s</string>
     <string name="skip_media_segment">Praleisti</string>
     <string name="special_episode">Specialus</string>
@@ -152,7 +152,7 @@
     <string name="network_buffer_extra_large">Labai didelis</string>
     <string name="network_buffer_extra_large_description">Maksimalus buferis, skirtas lėtiems arba palydoviniams ryšiams</string>
     <string name="downloads_empty">Kol kas nėra atsisiuntimų</string>
-    <string name="downloads_empty_description">Galite atsisiųsti filmus ir TV serialus, kad galėtumėte juos žiūrėti neprisijungę. Elemento informacijos puslapyje ieškokite atsisiuntimo piktogramos.</string>
+    <string name="downloads_empty_description">Galite atsisiųsti filmus ir TV laidas, kad galėtumėte juos žiūrėti neprisijungę. Elemento informacijos puslapyje ieškokite atsisiuntimo piktogramos.</string>
     <string name="downloading_title">Atsisiunčiama %1$s</string>
     <string name="download_cancel">Atšaukti</string>
     <string name="download_completed">Atsisiuntimas baigtas</string>
