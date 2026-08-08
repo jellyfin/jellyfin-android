@@ -1,6 +1,6 @@
 Tavo turinys, su tavo taisyklėm. 
  
-Jellyfin projektas yra atviro kodo, nemokamas turinio serveris. Jokių mokesčių, sekimo ar paslėptos agendos. Paleisk mūsų nemokamą serverį kad galėtum groti visą savo muziką, vaizdus, nuotraukas ir dar daugiau vienoje vietoje. 
+Jellyfin projektas yra atviro kodo, nemokamas turinio serveris. Jokių mokesčių, sekimo ar paslėptos agendos. Paleisk mūsų nemokamą serverį kad galėtum atkurti visą savo muziką, vaizdus, nuotraukas ir dar daugiau vienoje vietoje. 
  
 Kad naudotis programėle, tu turi turėti Jellyfin serverį. Sužinok daugiau čia: <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>. 
  
