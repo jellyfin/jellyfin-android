@@ -1,14 +1,14 @@
-Tavo turinys, su tavo taisyklėm. 
+Jūsų medija, jūsų sąlygomis. 
  
-Jellyfin projektas yra atviro kodo, nemokamas turinio serveris. Jokių mokesčių, sekimo ar paslėptos agendos. Paleisk mūsų nemokamą serverį kad galėtum atkurti visą savo muziką, vaizdus, nuotraukas ir dar daugiau vienoje vietoje. 
+Jellyfin projektas yra atvirojo kodo, nemokamos programinės įrangos medijos serveris. Jokių mokesčių, jokio sekimo, jokių paslėptų planų. Gaukite mūsų nemokamą serverį, kad surinktumėte visus savo garso, vaizdo įrašus, nuotraukas ir dar daugiau vienoje vietoje. 
  
-Kad naudotis programėle, tu turi turėti Jellyfin serverį. Sužinok daugiau čia: <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>. 
+Norėdami naudoti programėlę, turite turėti įdiegtą ir veikiantį Jellyfin serverį. Sužinokite daugiau adresu <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
  
-Su Jellyfin serveriu tu gali:
+Su Jellyfin serveriu galite:
  
-* Žiūrėti tiesiogines transliacijas ir įrašytas laidas iš savo Jellyfin serverio (reikalinga papildoma aparatinė ar programinė įranga)
+* Žiūrėti tiesioginę TV ir įrašytas laidas iš savo Jellyfin serverio (reikalinga papildoma įranga / paslaugos)
 * Siųsti srautu į Chromecast įrenginį savo tinkle
-* Siųsti srautu savo turinį į savo Android įrenginį
+* Siųsti srautu savo mediją į savo Android įrenginį
 * Peržiūrėti savo kolekciją su paprasta naudoti vartotojo sąsasaja.
 
 Tai yra oficiali Jellyfin programėlė skirta Android. Ačiū kad naudojatės Jellyfin!
