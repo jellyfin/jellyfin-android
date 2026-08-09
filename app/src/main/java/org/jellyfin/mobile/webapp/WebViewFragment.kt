@@ -190,7 +190,7 @@ class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClien
         addJavascriptInterface(externalPlayer, "ExternalPlayer")
         addJavascriptInterface(mediaSegments, "MediaSegments")
 
-        loadUrl(server.hostname)
+        loadUrl("${server.hostname.trimEnd('/')}/")
         postDelayed(timeoutRunnable, Constants.INITIAL_CONNECTION_TIMEOUT)
         postDelayed(showLoadingContainerRunnable, Constants.SHOW_PROGRESS_BAR_DELAY)
     }
