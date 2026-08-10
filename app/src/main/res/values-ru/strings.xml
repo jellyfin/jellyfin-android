@@ -165,4 +165,5 @@
     <string name="download_location_not_set_description">Чтобы загружать медиафайлы, выберите папку для их хранения.</string>
     <string name="download_location_inaccessible">Выбранное место для загрузки недоступно</string>
     <string name="download_location_inaccessible_description">Выбранное место для загрузки больше недоступно. Выберите другую папку, чтобы продолжить загрузку.</string>
+    <string name="download_remove_keep_local">Оставить локальные файл(ы)</string>
 </resources>
