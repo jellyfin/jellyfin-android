@@ -72,7 +72,11 @@ class DownloadQueue(
             notificationProgressCallback.onEnd()
             downloadDao.update(downloadWithFiles.download.copy(status = DownloadStatus.DOWNLOADED))
         } catch (e: CancellationException) {
-            downloadDao.update(downloadWithFiles.download.copy(status = DownloadStatus.QUEUED))
+            // The download could've been canceled by the app, in which case we need to refresh it before making changes
+            val download = downloadDao.getDownload(downloadWithFiles.download.id)
+            if (download?.status == DownloadStatus.DOWNLOADING) {
+                downloadDao.update(download.copy(status = DownloadStatus.QUEUED))
+            }
             throw e
         } catch (e: IOException) {
             downloadDao.update(downloadWithFiles.download.copy(status = DownloadStatus.QUEUED))
