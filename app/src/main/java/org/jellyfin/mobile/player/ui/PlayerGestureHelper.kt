@@ -59,6 +59,11 @@ class PlayerGestureHelper(
     private var isZoomEnabled = false
 
     /**
+     * When true, gestures are limited to the video pane above the hinge (tabletop / Flex Mode).
+     */
+    private var isTabletopMode = false
+
+    /**
      * Tracks a value during a swipe gesture (between multiple onScroll calls).
      * When the gesture starts it's reset to an initial value and gets increased or decreased
      * (depending on the direction) as the gesture progresses.
@@ -137,8 +142,11 @@ class PlayerGestureHelper(
         playerView.context,
         object : GestureDetector.SimpleOnGestureListener() {
             override fun onDoubleTap(e: MotionEvent): Boolean {
+                // Ignore double-taps on the controls pane in tabletop / Flex Mode
+                if (isOutsideVideoPane(e.y)) return false
+
                 val viewWidth = playerView.measuredWidth
-                val viewHeight = playerView.measuredHeight
+                val viewHeight = gestureHeight()
                 val viewCenterX = viewWidth / 2
                 val viewCenterY = viewHeight / 2
                 val isFastForward = e.x.toInt() > viewCenterX
@@ -158,11 +166,11 @@ class PlayerGestureHelper(
                 // Fast-forward/rewind
                 with(fragment) { if (isFastForward) onFastForward() else onRewind() }
 
-                // Cancel previous runnable to not hide controller while seeking
-                playerView.removeCallbacks(hidePlayerViewControllerAction)
-
-                // Ensure controller gets hidden after seeking
-                playerView.postDelayed(hidePlayerViewControllerAction, Constants.DEFAULT_CONTROLS_TIMEOUT_MS.toLong())
+                // Keep controls open in tabletop; otherwise restore normal auto-hide
+                if (!isTabletopMode) {
+                    playerView.removeCallbacks(hidePlayerViewControllerAction)
+                    playerView.postDelayed(hidePlayerViewControllerAction, Constants.DEFAULT_CONTROLS_TIMEOUT_MS.toLong())
+                }
                 return true
             }
 
@@ -192,11 +200,15 @@ class PlayerGestureHelper(
             ): Boolean {
                 if (firstEvent == null) return false
 
+                // Gestures only apply on the video pane in tabletop / Flex Mode
+                if (isOutsideVideoPane(firstEvent.y)) return false
+
                 // Check whether swipe was started in excluded region (vertical)
                 val exclusionSizeVertical = playerView.resources.dip(Constants.SWIPE_GESTURE_EXCLUSION_SIZE_VERTICAL)
+                val paneHeight = gestureHeight()
                 if (
                     firstEvent.y < exclusionSizeVertical ||
-                    firstEvent.y > playerView.height - exclusionSizeVertical
+                    firstEvent.y > paneHeight - exclusionSizeVertical
                 ) {
                     return false
                 }
@@ -314,7 +326,7 @@ class PlayerGestureHelper(
                 val viewCenterX = playerView.measuredWidth / 2
 
                 // Distance to swipe to go from min to max
-                val distanceFull = playerView.measuredHeight * Constants.FULL_SWIPE_RANGE_SCREEN_RATIO
+                val distanceFull = gestureHeight() * Constants.FULL_SWIPE_RANGE_SCREEN_RATIO
                 val ratioChange = distanceY / distanceFull
 
                 if (firstEvent.x.toInt() > viewCenterX) {
@@ -376,7 +388,8 @@ class PlayerGestureHelper(
     private val zoomGestureDetector = ScaleGestureDetector(
         playerView.context,
         object : ScaleGestureDetector.OnScaleGestureListener {
-            override fun onScaleBegin(detector: ScaleGestureDetector): Boolean = fragment.isLandscape()
+            override fun onScaleBegin(detector: ScaleGestureDetector): Boolean =
+                !isTabletopMode && fragment.isLandscape()
 
             override fun onScale(detector: ScaleGestureDetector): Boolean {
                 val scaleFactor = detector.scaleFactor
@@ -444,7 +457,26 @@ class PlayerGestureHelper(
     }
 
     fun handleConfiguration(newConfig: Configuration) {
-        updateZoomMode(fragment.isLandscape(newConfig) && isZoomEnabled)
+        updateZoomMode(!isTabletopMode && fragment.isLandscape(newConfig) && isZoomEnabled)
+    }
+
+    fun onTabletopChanged(enabled: Boolean) {
+        isTabletopMode = enabled
+        if (enabled) {
+            // PlayerFoldHelper owns resizeMode while tabletop
+            isZoomEnabled = false
+        }
+    }
+
+    private fun gestureHeight(): Int {
+        val tabletopHeight = fragment.tabletopVideoPaneHeight
+        return if (isTabletopMode && tabletopHeight > 0) tabletopHeight else playerView.measuredHeight
+    }
+
+    private fun isOutsideVideoPane(y: Float): Boolean {
+        if (!isTabletopMode) return false
+        val paneHeight = fragment.tabletopVideoPaneHeight
+        return paneHeight > 0 && y > paneHeight
     }
 
     private fun updateZoomMode(enabled: Boolean) {

@@ -105,8 +105,8 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/playback_info"
+        <ScrollView
+            android:id="@+id/playback_info_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|top"
@@ -116,10 +116,20 @@
             android:layout_marginBottom="96dp"
             android:background="@drawable/playback_info_background"
             android:clickable="true"
-            android:padding="16dp"
+            android:fadeScrollbars="false"
+            android:focusable="true"
+            android:maxHeight="360dp"
+            android:scrollbars="vertical"
             android:visibility="gone"
             tools:ignore="KeyboardInaccessibleWidget"
-            tools:visibility="visible" />
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/playback_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp" />
+        </ScrollView>
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/unlock_screen_button"

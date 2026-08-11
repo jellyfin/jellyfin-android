@@ -33,8 +33,9 @@ import org.koin.core.component.inject
 import java.util.Locale
 
 /**
- *  Provides a menu UI for audio, subtitle and video stream selection
+ * Provides a menu UI for audio, subtitle and video stream selection
  */
+@Suppress("TooManyFunctions")
 class PlayerMenus(
     private val fragment: PlayerFragment,
     private val playerBinding: FragmentPlayerBinding,
@@ -56,6 +57,7 @@ class PlayerMenus(
     private val qualityButton: View by playerControlsBinding::qualityButton
     private val decoderButton: View by playerControlsBinding::decoderButton
     private val infoButton: View by playerControlsBinding::infoButton
+    private val playbackInfoContainer: View by playerBinding::playbackInfoContainer
     private val playbackInfo: TextView by playerBinding::playbackInfo
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
@@ -144,10 +146,15 @@ class PlayerMenus(
             decoderMenu.show()
         }
         infoButton.setOnClickListener {
-            playbackInfo.isVisible = !playbackInfo.isVisible
+            val show = !playbackInfoContainer.isVisible
+            playbackInfoContainer.isVisible = show
+            // Keep controller up while reading/scrolling stream info
+            fragment.suppressControllerAutoHide(show)
         }
-        playbackInfo.setOnClickListener {
-            dismissPlaybackInfo()
+        // Swallow touches so scrolling the info panel doesn't hit player gestures
+        playbackInfoContainer.setOnTouchListener { view, _ ->
+            view.parent?.requestDisallowInterceptTouchEvent(true)
+            false
         }
 
         fragment.setPlayerMenuHelper(playerMenuHelper)
@@ -201,7 +208,6 @@ class PlayerMenus(
         val videoTracksInfo = buildMediaStreamsInfo(
             mediaStreams = listOfNotNull(videoStream),
             prefix = R.string.playback_info_video_streams,
-            maxStreams = MAX_VIDEO_STREAMS_DISPLAY,
             streamSuffix = { stream ->
                 stream.bitRate?.let { bitrate -> " (${formatBitrate(bitrate.toDouble())})" }.orEmpty()
             },
@@ -209,7 +215,6 @@ class PlayerMenus(
         val audioTracksInfo = buildMediaStreamsInfo(
             mediaStreams = audioStreams,
             prefix = R.string.playback_info_audio_streams,
-            maxStreams = MAX_AUDIO_STREAMS_DISPLAY,
             streamSuffix = { stream ->
                 stream.language?.let { lang -> " ($lang)" }.orEmpty()
             },
@@ -257,13 +262,10 @@ class PlayerMenus(
     private fun buildMediaStreamsInfo(
         mediaStreams: List<MediaStream>,
         @StringRes prefix: Int,
-        maxStreams: Int,
         streamSuffix: (MediaStream) -> String,
     ): String = mediaStreams.joinToString(
-        "\n",
-        "${fragment.getString(prefix)}:\n",
-        limit = maxStreams,
-        truncated = fragment.getString(R.string.playback_info_and_x_more, mediaStreams.size - maxStreams),
+        separator = "\n",
+        prefix = "${fragment.getString(prefix)}:\n",
     ) { stream ->
         val title = stream.displayTitle?.takeUnless(String::isEmpty)
             ?: fragment.getString(R.string.playback_info_stream_unknown_title)
@@ -403,7 +405,8 @@ class PlayerMenus(
     }
 
     fun dismissPlaybackInfo() {
-        playbackInfo.isVisible = false
+        playbackInfoContainer.isVisible = false
+        fragment.suppressControllerAutoHide(false)
     }
 
     override fun onDismiss(menu: PopupMenu) {
@@ -429,9 +432,6 @@ class PlayerMenus(
         private const val SPEED_MENU_GROUP = 2
         private const val QUALITY_MENU_GROUP = 3
         private const val DECODER_MENU_GROUP = 4
-
-        private const val MAX_VIDEO_STREAMS_DISPLAY = 3
-        private const val MAX_AUDIO_STREAMS_DISPLAY = 5
 
         private const val BITRATE_MEGA_BIT = 1_000_000
         private const val BITRATE_KILO_BIT = 1_000
