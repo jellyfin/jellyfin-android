@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -24,6 +25,7 @@ class DownloadBroadcastReceiver : BroadcastReceiver(), KoinComponent {
     }
 
     private val downloadManager by inject<DownloadManager>()
+    private val coroutineScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == ACTION_DOWNLOAD_CANCEL) {
@@ -31,12 +33,10 @@ class DownloadBroadcastReceiver : BroadcastReceiver(), KoinComponent {
             if (id == -1L) return
 
             val pendingResult = goAsync()
-            CoroutineScope(SupervisorJob()).launch {
-                try {
-                    downloadManager.cancel(id)
-                } finally {
-                    pendingResult.finish()
-                }
+            coroutineScope.launch {
+                downloadManager.cancel(id)
+            }.invokeOnCompletion {
+                pendingResult.finish()
             }
         }
     }
