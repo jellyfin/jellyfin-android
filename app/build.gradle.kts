@@ -148,6 +148,7 @@ dependencies {
     // UI
     implementation(libs.google.material)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.window)
     implementation(libs.androidx.webkit)
     implementation(libs.modernandroidpreferences)
 
@@ -201,7 +202,7 @@ tasks {
 
     // Testing
     withType<Test> {
-        useJUnit()
+        useJUnitPlatform()
         testLogging {
             events(
                 org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,

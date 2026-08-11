@@ -2,6 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="auto">
 
+    <!-- androidx.window 1.5+ requires minSdk 23; foldables are far above that. Keep app minSdk 21. -->
+    <uses-sdk tools:overrideLibrary="androidx.window.core,androidx.window" />
+
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission

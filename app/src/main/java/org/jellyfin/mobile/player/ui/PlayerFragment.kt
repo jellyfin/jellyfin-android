@@ -75,6 +75,14 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     private lateinit var playerFullscreenHelper: PlayerFullscreenHelper
     lateinit var playerLockScreenHelper: PlayerLockScreenHelper
     lateinit var playerGestureHelper: PlayerGestureHelper
+    private var playerFoldHelper: PlayerFoldHelper? = null
+
+    val isTabletopMode: Boolean
+        get() = playerFoldHelper?.isTabletop == true
+
+    /** Height of the video region in tabletop mode; 0 when not in tabletop. */
+    val tabletopVideoPaneHeight: Int
+        get() = playerFoldHelper?.videoPaneHeight ?: 0
 
     private val currentVideoStream: MediaStream?
         get() = viewModel.mediaSourceOrNull?.selectedVideoStream
@@ -119,7 +127,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             if (mediaSource.selectedVideoStream?.isLandscape == false) {
                 // For portrait videos, immediately enable fullscreen
                 playerFullscreenHelper.enableFullscreen()
-            } else if (appPreferences.exoPlayerStartLandscapeVideoInLandscape) {
+            } else if (appPreferences.exoPlayerStartLandscapeVideoInLandscape && !isTabletopMode) {
                 // Auto-switch to landscape for landscape videos if enabled
                 requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
             }
@@ -212,6 +220,23 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
         playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)
 
+        playerFoldHelper = PlayerFoldHelper(
+            fragment = this,
+            playerBinding = playerBinding,
+            playerControlsView = playerControlsView,
+            onTabletopChanged = { tabletop ->
+                if (tabletop) {
+                    // Prefer unlocked orientation so Flex Mode can settle naturally
+                    requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+                    playerFullscreenHelper.enableFullscreen()
+                    playerGestureHelper.onTabletopChanged(true)
+                } else {
+                    playerGestureHelper.onTabletopChanged(false)
+                    updateFullscreenState(resources.configuration)
+                }
+            },
+        ).also { it.start(viewLifecycleOwner) }
+
         // Handle fullscreen switcher
         fullscreenSwitcher.setOnClickListener {
             toggleFullscreen()
@@ -227,7 +252,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         super.onResume()
 
         // When returning from another app, fullscreen mode for landscape orientation has to be set again
-        if (isLandscape()) {
+        if (!isTabletopMode && isLandscape()) {
             playerFullscreenHelper.enableFullscreen()
         }
 
@@ -243,6 +268,12 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     private fun updateFullscreenState(configuration: Configuration) {
         // Do not handle any orientation changes while being in Picture-in-Picture mode
         if (AndroidVersion.isAtLeastN && activity?.isInPictureInPictureMode == true) {
+            return
+        }
+
+        // Tabletop / Flex Mode manages its own chrome; don't force landscape fullscreen
+        if (isTabletopMode) {
+            playerFullscreenHelper.enableFullscreen()
             return
         }
 
@@ -263,8 +294,14 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
      *
      * If playing a portrait video, this just hides the status and navigation bars.
      * For landscape videos, additionally the screen gets rotated.
+     * In tabletop / Flex Mode, only system bars are toggled (no orientation lock).
      */
     private fun toggleFullscreen() {
+        if (isTabletopMode) {
+            playerFullscreenHelper.toggleFullscreen()
+            return
+        }
+
         val videoTrack = currentVideoStream
         if (videoTrack == null || videoTrack.isLandscape) {
             val current = resources.configuration.orientation
@@ -422,6 +459,8 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        playerFoldHelper?.stop()
+        playerFoldHelper = null
         // Detach player from PlayerView
         playerView.player = null
 
