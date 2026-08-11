@@ -48,6 +48,11 @@ class DownloadWorker(
             WorkManager.getInstance(context).cancelUniqueWork(tag).await()
         }
 
+        suspend fun restart(context: Context, appPreferences: AppPreferences) {
+            stop(context)
+            start(context, appPreferences)
+        }
+
         suspend fun isActive(context: Context): Boolean = WorkManager.getInstance(context)
             .getWorkInfosForUniqueWork(tag)
             .await()
