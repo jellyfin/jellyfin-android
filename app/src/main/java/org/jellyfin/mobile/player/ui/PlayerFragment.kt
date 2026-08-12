@@ -27,6 +27,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.Player
 import androidx.media3.ui.PlayerView
+import io.github.peerless2012.ass.media.AssHandler
+import io.github.peerless2012.ass.media.widget.AssSubtitleView
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
@@ -59,6 +61,7 @@ import androidx.media3.ui.R as Media3R
 @Suppress("TooManyFunctions")
 class PlayerFragment : Fragment(), BackPressInterceptor {
     private val appPreferences: AppPreferences by inject()
+    private val assHandler: AssHandler by inject()
     private val viewModel: PlayerViewModel by viewModels()
     private var _playerBinding: FragmentPlayerBinding? = null
     private val playerBinding: FragmentPlayerBinding get() = _playerBinding!!
@@ -208,6 +211,10 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
         // Disable controller animations
         playerView.setControllerAnimationEnabled(false)
+
+        playerView.subtitleView?.apply {
+            addView(AssSubtitleView(this.context, assHandler))
+        }
 
         playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
         playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)

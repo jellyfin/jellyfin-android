@@ -52,6 +52,7 @@ androidx-mediarouter = "1.8.1"
 androidx-media3 = "1.11.0"
 jellyfin-androidx-media = "1.9.0+1"
 playservices = "22.3.1"
+libass-media = "0.5.1"
 
 # Room
 androidx-room = "2.8.4"
@@ -137,6 +138,7 @@ androidx-media3-cast = { module = "androidx.media3:media3-cast", version.ref = "
 playservices-cast = { group = "com.google.android.gms", name = "play-services-cast", version.ref = "playservices" }
 playservices-castframework = { group = "com.google.android.gms", name = "play-services-cast-framework", version.ref = "playservices" }
 jellyfin-androidx-media3-ffmpeg-decoder = { module = "org.jellyfin.media3:media3-ffmpeg-decoder", version.ref = "jellyfin-androidx-media" }
+libass-media = { module = "io.github.peerless2012:ass-media", version.ref = "libass-media" }
 
 # Room
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
