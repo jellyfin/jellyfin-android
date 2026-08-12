@@ -1,7 +1,7 @@
 [versions]
 # Android
 android-compileSdk = "36"
-android-minSdk = "21"
+android-minSdk = "23"
 android-targetSdk = "36"
 
 # Plugins

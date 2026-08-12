@@ -62,10 +62,7 @@ object Constants {
     const val PLAYBACK_MANAGER_COMMAND_VOL_DOWN = "volumeDown"
 
     // Notification
-    val PENDING_INTENT_FLAGS = PendingIntent.FLAG_UPDATE_CURRENT or when {
-        AndroidVersion.isAtLeastM -> PendingIntent.FLAG_IMMUTABLE
-        else -> 0
-    }
+    const val PENDING_INTENT_FLAGS = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     const val MEDIA_NOTIFICATION_CHANNEL_ID = "org.jellyfin.mobile.media.NOW_PLAYING"
     const val DOWNLOAD_NOTIFICATION_CHANNEL_ID = "org.jellyfin.mobile.download.DOWNLOAD_PROGRESS"
 

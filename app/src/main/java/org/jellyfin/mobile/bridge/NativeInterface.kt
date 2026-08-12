@@ -57,7 +57,7 @@ class NativeInterface(private val context: Context) : KoinComponent {
         val clientInfo = apiClient.clientInfo
 
         buildJsonObject {
-            put("deviceId", deviceInfo.id.toString())
+            put("deviceId", deviceInfo.id)
             // normalize the name by removing special characters
             // and making sure it's at least 1 character long
             // otherwise the webui will fail to send it to the server
