@@ -4,12 +4,12 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.ServiceInfo
-import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.PendingIntentCompat
 import androidx.core.content.getSystemService
 import androidx.work.ForegroundInfo
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.utils.AndroidVersion
 
 class DownloadNotificationManager(
     val context: Context,
@@ -22,7 +22,7 @@ class DownloadNotificationManager(
     private val notificationManager = requireNotNull(context.getSystemService<NotificationManager>())
 
     init {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (AndroidVersion.isAtLeastO) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
                 context.getString(R.string.downloads),
@@ -40,7 +40,7 @@ class DownloadNotificationManager(
             setContentTitle(context.getString(R.string.downloads))
             setSmallIcon(android.R.drawable.stat_sys_download)
         }.build(),
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC else 0,
+        if (AndroidVersion.isAtLeastQ) ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC else 0,
     )
 
     fun downloadFile(id: Long, name: String) = NotificationProgressCallback(context, notificationManager, id, name)
