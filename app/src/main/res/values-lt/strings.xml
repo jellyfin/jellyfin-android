@@ -60,11 +60,9 @@
     <string name="dialog_button_open_settings">Atidaryti nustatymus</string>
     <string name="dialog_button_close_app">Uždaryti programą</string>
     <string name="dialog_button_check_for_updates">Tikrinti, ar yra atnaujinimų</string>
-    <string name="dialog_web_view_outdated_message">Jūsų prietaise naudojama WebView realizacija yra pasenusi
-\nAtnaujinkite ją į suderinamą versiją.</string>
+    <string name="dialog_web_view_outdated_message">Jūsų įrenginyje naudojama WebView realizacija yra pasenusi \nAtnaujinkite ją į suderinamą versiją.</string>
     <string name="dialog_web_view_outdated">WebView pasenęs</string>
-    <string name="dialog_web_view_not_supported_message">Šis prietaisas nepalaiko WebViews.
-\nĮdiekite suderinamą WebView realizaciją arba pereikite prie palaikomo įrenginio.</string>
+    <string name="dialog_web_view_not_supported_message">Šis įrenginys nepalaiko WebViews. \nĮdiekite suderinamą WebView realizaciją arba pereikite prie palaikomo įrenginio.</string>
     <string name="dialog_web_view_not_supported">WebView nepalaikomas</string>
     <string name="connection_error_unsupported_version_or_product">Nepalaikoma versija ar produktas</string>
     <string name="bluetooth_permission_continue">Tęsti</string>
@@ -85,7 +83,7 @@
     <string name="menu_item_hardware_decoding">Aparatūrinis dekodavimas</string>
     <string name="bluetooth_permission_title">Leisti Bluetooth prieigą?</string>
     <string name="bluetooth_permission_message">Programa reikalauja Bluetooth prieigos, kad atpažinti kada atjungiamos bevielės ausinės ar garsiakalbiai. Android operacinėje sistemoje, tai vadinama prieiga prie artimų įrenginių, bei joje įspėjama, kad Bluetooth įrenginiai gali būti naudojami gauti dabartinę lokaciją. Jellyfin programa niekada nenaudos šios prieigos aptikti lokaciją.</string>
-    <string name="menu_item_auto">Automatiškai</string>
+    <string name="menu_item_auto">Auto</string>
     <string name="video_player_native_description">Remiantis ExoPlayer, palaikoma daugiau vaizdo įrašų formatų ir kodekų, jis labiau integruotas į operacinę sistemą</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Paleisti horizontaliojo režimo vaizdo įrašus horizontalia orientacija</string>
     <string name="external_player_mx_player_pro_description">Mokama MX Player versija, užtikrinanti nepertraukiamą vaizdo įrašų peržiūrą.</string>
@@ -139,7 +137,7 @@
     <string name="media_service_car_section_playlists">Grojaraščiai</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Horizontalūs gestai</string>
     <string name="pref_exoplayer_network_buffer">Atkūrimo buferio dydis</string>
-    <string name="network_buffer_auto">Automatinis</string>
+    <string name="network_buffer_auto">Auto</string>
     <string name="network_buffer_auto_description">Numatytasis buferis, tinkantis daugumai atkūrimo scenarijų</string>
     <string name="network_buffer_large">Didelis</string>
     <string name="network_buffer_large_description">Didesnis buferis gali padėti esant vidutinio stiprumo arba kintamiems ryšiams</string>
