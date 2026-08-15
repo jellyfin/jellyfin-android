@@ -104,10 +104,6 @@ function getDeviceProfile(profileBuilder, item) {
         enableMkvProgressive: false
     });
 
-    profile.CodecProfiles = profile.CodecProfiles.filter(function (i) {
-        return i.Type === "Audio";
-    });
-
     profile.CodecProfiles.push({
         Type: "Video",
         Container: "avi",
