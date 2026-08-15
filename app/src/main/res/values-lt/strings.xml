@@ -44,7 +44,7 @@
     <string name="video_player_web_description">Žiniatinklio naudotojo sąsajos numatytasis HTML vaizdo įrašų grotuvas</string>
     <string name="video_player_web">Internetinis grotuvas</string>
     <string name="pref_video_player_type_title">Vaizdo grotuvo tipas</string>
-    <string name="pref_music_notification_always_dismissible_summary_on">Pranešimą galima visada išjungti, net ir paleidus grotuvą</string>
+    <string name="pref_music_notification_always_dismissible_summary_on">Pranešimą visada galima atmesti, net ir atkuriant mediją</string>
     <string name="pref_music_notification_always_dismissible_summary_off">Pranešimą galima išjungti tik pristabdžius atkūrimą</string>
     <string name="pref_music_notification_always_dismissible_title">Išjungti grotuvo pranešimus</string>
     <string name="pref_category_music_player">Muzikos grotuvas</string>
@@ -114,7 +114,7 @@
     <string name="external_player_mpv_description">Paprastas, mažas, lengvas ir nemokamas (kaip ir laisvėje) vaizdo grotuvas. Palaiko įvairius medijos failų formatus.</string>
     <string name="pref_exoplayer_allow_press_speed_up">Laikykite, kad pagreitintumėte</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Palieskite ir palaikykite ekraną, kad laikinai pagreitintumėte atkūrimą</string>
-    <string name="pref_exoplayer_allow_background_audio_summary">Leisti paleisti vaizdo įrašus fone naudojant tik garsą</string>
+    <string name="pref_exoplayer_allow_background_audio_summary">Leisti atkurti vaizdo įrašus fone naudojant tik garsą</string>
     <string name="pref_exoplayer_direct_play_ass">Leisti naudoti SSA/ASS subtitrus tiesioginio rodymo metu</string>
     <string name="pref_exoplayer_direct_play_ass_summary">Neleisti transkoduoti ir rodyti tik pagrindinio stiliaus subtitrus. Jei įjungta, išplėstinis subtitrų stilius nebus prieinamas.</string>
     <string name="pref_subtitle_style">Pritaikyti subtitrų stilių</string>
