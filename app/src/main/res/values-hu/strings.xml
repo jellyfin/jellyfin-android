@@ -152,7 +152,7 @@
     <string name="download_remove_keep_local">Helyi fájl(ok) megtartása</string>
     <plurals name="download_remove_description">
         <item quantity="one">El szeretnéd távolítani a(z) %1$s fájlt a letöltéseid közül?</item>
-        <item quantity="other"/>
+        <item quantity="other">El szeretnétek távolítani a(z) %1$d fájlt a letöltéseitek közül?</item>
     </plurals>
     <string name="pref_exoplayer_allow_horizontal_gesture">Vízszintes gesztusok</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Vízszintes gesztusvezérlés engedélyezése videókereséshez</string>
@@ -171,4 +171,5 @@
     <string name="download_location_not_set_description">Média letöltéséhez kérjük, válasszon ki egy mappát, ahová a fájlokat tárolni szeretné.</string>
     <string name="download_location_inaccessible">A letöltési hely nem érhető el</string>
     <string name="download_location_inaccessible_description">A kiválasztott letöltési hely már nem érhető el. Kérjük, válasszon egy másik mappát a letöltések folytatásához.</string>
+    <string name="selected_count">%1$d kijelölve</string>
 </resources>
