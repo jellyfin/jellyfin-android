@@ -4,7 +4,7 @@
     <string name="mobile_data_and_roaming">Mobilius ir tarptinklinius tinklus</string>
     <string name="mobile_data">Mobilius tinklus</string>
     <string name="wifi_only">Tik WiFi</string>
-    <string name="network_message">Ar norite leisti duomenų siuntimą per mobilius arba tarptinklinius tinklus? Gali būti taikomi tiekėjo mokesčiai. Šį nustatymą galėsite pakeisti vėliau.</string>
+    <string name="network_message">Ar norite leisti duomenų siuntimą per mobilius arba tarptinklinius tinklus? Gali būti taikomi teikėjo mokesčiai. Šį nustatymą galėsite pakeisti vėliau.</string>
     <string name="network_title">Leidžiamos tinklo rūšys</string>
     <string name="battery_optimizations_message">Prašome išjungti baterijos optimizavimą, tam kad medijos atkūrimas veiktų išjungus ekraną.</string>
     <string name="activity_name_settings">Jellyfin Nustatymai</string>
@@ -17,7 +17,7 @@
     <string name="playback_info_video_streams">Vaizdo įrašų srautai</string>
     <string name="playback_info_transcoding">Transkoduojama: %b</string>
     <string name="playback_info_play_method">Paleidimo metodas: %s</string>
-    <string name="menu_item_none">tuščia</string>
+    <string name="menu_item_none">Nėra</string>
     <string name="available_servers_title">Galimi serveriai</string>
     <string name="media_service_car_section_recents">Neseniai paleista</string>
     <string name="notification_action_play">Paleisti</string>
