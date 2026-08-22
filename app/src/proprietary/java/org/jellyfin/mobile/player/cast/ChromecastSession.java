@@ -81,6 +81,7 @@ public class ChromecastSession {
     public void setSession(CastSession castSession) {
         activity.runOnUiThread(() -> {
             if (castSession == null) {
+                session = null;
                 client = null;
                 return;
             }
