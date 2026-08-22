@@ -435,6 +435,7 @@ final class ChromecastUtilities {
                 out.put("media", createMediaArray(session));
                 out.put("receiver", createReceiverObject(session));
                 out.put("sessionId", session.getSessionId());
+                out.put("status", session.isConnected() ? "connected" : "disconnected");
             }
         } catch (JSONException | NullPointerException | IllegalStateException ignored) {
         }
