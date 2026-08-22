@@ -14,15 +14,16 @@ import androidx.media3.datasource.cache.Cache
 import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.datasource.cache.NoOpCacheEvictor
 import androidx.media3.datasource.cache.SimpleCache
-import androidx.media3.exoplayer.hls.HlsMediaSource
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.MediaSource
-import androidx.media3.exoplayer.source.ProgressiveMediaSource
-import androidx.media3.exoplayer.source.SingleSampleMediaSource
 import androidx.media3.extractor.DefaultExtractorsFactory
 import androidx.media3.extractor.ts.TsExtractor
 import androidx.work.WorkManager
 import coil3.ImageLoader
+import io.github.peerless2012.ass.media.AssHandler
+import io.github.peerless2012.ass.media.kt.withAssMkvSupport
+import io.github.peerless2012.ass.media.parser.AssSubtitleParserFactory
+import io.github.peerless2012.ass.media.type.AssRenderType
 import kotlinx.coroutines.channels.Channel
 import okhttp3.OkHttpClient
 import org.jellyfin.mobile.MainViewModel
@@ -68,6 +69,7 @@ val applicationModule = module {
     single { RemoteVolumeProvider(get()) }
     single(named(PLAYER_EVENT_CHANNEL)) { Channel<PlayerEvent>() }
     factory { WorkManager.getInstance(get()) }
+    single { AssHandler(AssRenderType.OVERLAY_OPEN_GL) }
 
     // Controllers
     single { ApiClientController(get(), get(), get(), get(), get()) }
@@ -157,6 +159,8 @@ val applicationModule = module {
 
     single<MediaSource.Factory> {
         val context: Context = get()
+        val assHandler: AssHandler = get()
+        val assSubtitleParserFactory = AssSubtitleParserFactory(assHandler)
         val extractorsFactory = DefaultExtractorsFactory().apply {
             // https://github.com/google/ExoPlayer/issues/8571
             setTsExtractorTimestampSearchBytes(
@@ -165,8 +169,9 @@ val applicationModule = module {
                     else -> TsExtractor.DEFAULT_TIMESTAMP_SEARCH_BYTES
                 },
             )
-        }
+        }.withAssMkvSupport(assSubtitleParserFactory, assHandler)
         DefaultMediaSourceFactory(get<CacheDataSource.Factory>(), extractorsFactory)
+            .setSubtitleParserFactory(assSubtitleParserFactory)
     }
 
     single(createdAtStart = true) { StorageManager(get(), get()) }

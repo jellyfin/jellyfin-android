@@ -27,6 +27,8 @@ import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.util.EventLogger
+import io.github.peerless2012.ass.media.AssHandler
+import io.github.peerless2012.ass.media.kt.withAssSupport
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -239,6 +241,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 .build()
             else -> DefaultLoadControl()
         }
+        val assHandler: AssHandler = get()
         val renderersFactory = DefaultRenderersFactory(getApplication()).apply {
             setEnableDecoderFallback(true) // Fallback only works if initialization fails, not decoding at playback time
             val rendererMode = when {
@@ -272,7 +275,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
                 filteredDecoderList
             }
-        }
+        }.withAssSupport(assHandler)
         _player.value = ExoPlayer.Builder(getApplication(), renderersFactory, get()).apply {
             setUsePlatformDiagnostics(false)
             setTrackSelector(trackSelector)
@@ -281,6 +284,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }.build().apply {
             addListener(this@PlayerViewModel)
             applyDefaultAudioAttributes(C.AUDIO_CONTENT_TYPE_MOVIE)
+            assHandler.init(this)
         }
     }
 
