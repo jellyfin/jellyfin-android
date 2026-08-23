@@ -143,9 +143,9 @@
     <string name="media_service_invalid_id">Identificador invàlid d\'element</string>
     <string name="media_service_auth_expired">Obriu l\'app del telèfon per a iniciar la sessió al vostre servidor de Jellyfin.</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Desitgeu eliminar %1$s de les descàrregues?</item>
-        <item quantity="many">"Desitgeu eliminar aquestes  %1$d descàrregues?"</item>
-        <item quantity="other">"Desitgeu eliminar aquestes  %1$d descàrregues?"</item>
+        <item quantity="one">Desitgeu eliminar %2$s de les descàrregues?</item>
+        <item quantity="many">Desitgeu eliminar aquestes %1$d descàrregues?</item>
+        <item quantity="other">Desitgeu eliminar aquestes %1$d descàrregues?</item>
     </plurals>
     <string name="download_remove_keep_local">Conserva el/s fitxer/s local/s</string>
     <string name="download_progress">%1$d%%</string>
