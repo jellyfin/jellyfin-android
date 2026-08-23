@@ -57,7 +57,7 @@ playservices = "22.3.1"
 androidx-room = "2.8.4"
 
 # Monitoring
-slf4j-timber = "0.0.4"
+slf4j-timber = "0.0.8"
 timber = "5.0.1"
 
 # Testing
