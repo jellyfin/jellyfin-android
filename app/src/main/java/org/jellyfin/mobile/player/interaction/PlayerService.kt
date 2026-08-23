@@ -8,6 +8,7 @@ import android.content.pm.ServiceInfo
 import android.os.IBinder
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.IntentCompat
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.Constants.VIDEO_PLAYER_NOTIFICATION_ID
 import timber.log.Timber
@@ -24,9 +25,12 @@ class PlayerService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val notification = pendingNotification
+        val notification = intent?.let {
+            IntentCompat.getParcelableExtra(it, EXTRA_NOTIFICATION, Notification::class.java)
+        }
         if (notification == null) {
-            stopSelf()
+            Timber.w("Player service started without a notification")
+            stopSelf(startId)
             return START_NOT_STICKY
         }
 
@@ -44,30 +48,21 @@ class PlayerService : Service() {
     }
 
     companion object {
-        /**
-         * The notification to start the service in the foreground with.
-         *
-         * Kept after the service stops so a start command that is still queued can always reach
-         * startForeground.
-         */
-        @Volatile
-        private var pendingNotification: Notification? = null
+        private const val EXTRA_NOTIFICATION = "org.jellyfin.mobile.intent.extra.NOTIFICATION"
 
         /**
          * Start the service in the foreground with the given [notification].
          *
-         * @return true if the service was started, false if it wasn't allowed to start
+         * Safe to call repeatedly, a start command on an already running service only updates the notification.
          */
-        fun start(context: Context, notification: Notification): Boolean {
-            pendingNotification = notification
-            return try {
-                ContextCompat.startForegroundService(context, Intent(context, PlayerService::class.java))
-                true
+        fun start(context: Context, notification: Notification) {
+            val intent = Intent(context, PlayerService::class.java).putExtra(EXTRA_NOTIFICATION, notification)
+            try {
+                ContextCompat.startForegroundService(context, intent)
             } catch (e: IllegalStateException) {
-                // Includes ForegroundServiceStartNotAllowedException on Android 12 and above
-                Timber.e(e, "Failed to start player foreground service")
-                pendingNotification = null
-                false
+                // Includes ForegroundServiceStartNotAllowedException on Android 12 and above.
+                // The notification was already posted by the caller, playback just won't survive in the background.
+                Timber.w(e, "Not allowed to start player foreground service")
             }
         }
 
