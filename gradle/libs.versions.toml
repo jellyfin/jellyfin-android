@@ -57,6 +57,7 @@ playservices = "22.3.1"
 androidx-room = "2.8.4"
 
 # Monitoring
+slf4j-timber = "0.0.4"
 timber = "5.0.1"
 
 # Testing
@@ -143,6 +144,7 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
 
 # Monitoring
+slf4j-timber = { module = "io.github.unveloper:slf4j-timber", version.ref = "slf4j-timber" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
 # Testing
