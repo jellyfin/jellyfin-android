@@ -78,7 +78,7 @@ sealed class DeviceCodec(
                         mimeType = mimeType,
                         profiles = profiles,
                         levels = levels,
-                        maxBitrate = codecCapabilities.videoCapabilities.bitrateRange.upper,
+                        maxBitrate = codecCapabilities.videoCapabilities!!.bitrateRange.upper,
                     )
                 }
                 audioCodec != null -> {
@@ -91,9 +91,9 @@ sealed class DeviceCodec(
                         name = audioCodec,
                         mimeType = mimeType,
                         profiles = profiles,
-                        maxBitrate = codecCapabilities.audioCapabilities.bitrateRange.upper,
-                        maxChannels = codecCapabilities.audioCapabilities.maxInputChannelCount,
-                        maxSampleRate = codecCapabilities.audioCapabilities.supportedSampleRateRanges
+                        maxBitrate = codecCapabilities.audioCapabilities!!.bitrateRange.upper,
+                        maxChannels = codecCapabilities.audioCapabilities!!.maxInputChannelCount,
+                        maxSampleRate = codecCapabilities.audioCapabilities!!.supportedSampleRateRanges
                             .maxOfOrNull(Range<Int>::getUpper),
                     )
                 }

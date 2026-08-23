@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.Configuration
 import android.webkit.WebView
 import kotlinx.serialization.json.Json
-import org.json.JSONException
 import timber.log.Timber
 import java.util.Locale
 import java.util.UUID
@@ -19,7 +18,7 @@ suspend fun WebView.initLocale(userId: UUID) {
         evaluateJavascript("window.localStorage.getItem('$flatUserId-language')") { result ->
             try {
                 continuation.resume(Json.decodeFromString<String?>(result))
-            } catch (e: JSONException) {
+            } catch (e: Exception) {
                 continuation.resume(null)
             }
         }

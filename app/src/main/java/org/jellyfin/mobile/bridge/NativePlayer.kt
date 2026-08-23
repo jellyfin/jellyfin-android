@@ -9,7 +9,6 @@ import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.sdk.model.extensions.ticks
-import org.json.JSONObject
 import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("unused")
@@ -24,7 +23,7 @@ class NativePlayer(
 
     @JavascriptInterface
     fun loadPlayer(args: String) {
-        PlayOptions.fromJson(JSONObject(args))?.let { options ->
+        PlayOptions.fromJson(args)?.let { options ->
             activityEventHandler.emit(ActivityEvent.LaunchNativePlayer(options))
         }
     }

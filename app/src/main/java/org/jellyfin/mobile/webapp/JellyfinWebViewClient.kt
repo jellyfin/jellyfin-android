@@ -11,14 +11,17 @@ import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewFeature
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.initLocale
 import org.jellyfin.mobile.utils.inject
-import org.jellyfin.sdk.model.serializer.toUUID
-import org.json.JSONException
-import org.json.JSONObject
+import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
 import java.io.Reader
 import java.util.Locale
@@ -56,17 +59,25 @@ abstract class JellyfinWebViewClient(
                             "JSON.parse(window.localStorage.getItem('jellyfin_credentials'))",
                         ) { result ->
                             try {
-                                continuation.resume(JSONObject(result))
-                            } catch (e: JSONException) {
+                                continuation.resume(Json.parseToJsonElement(result).jsonObject)
+                            } catch (e: Exception) {
                                 val message = "Failed to extract credentials"
                                 Timber.e(e, message)
                                 continuation.resumeWithException(Exception(message, e))
                             }
                         }
                     }
-                    val storedServer = credentials.getJSONArray("Servers").getJSONObject(0)
-                    val user = storedServer.getString("UserId").toUUID()
-                    val token = storedServer.getString("AccessToken")
+
+                    val storedServer = credentials["Servers"]?.jsonArray?.get(0)?.jsonObject
+                    val user = storedServer?.get("UserId")?.jsonPrimitive?.contentOrNull?.toUUIDOrNull()
+                    val token = storedServer?.get("AccessToken")?.jsonPrimitive?.contentOrNull
+
+                    if (user == null || token == null) {
+                        Timber.e("Unable to find user in webview credentials")
+                        onErrorReceived()
+                        return@launch
+                    }
+
                     mainViewModel.setupUser(server.id, user, token)
                     webView.initLocale(user)
                 }

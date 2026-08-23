@@ -2,9 +2,13 @@ package org.jellyfin.mobile.player.deviceprofile
 
 import android.media.MediaCodecList
 import android.media.MediaFormat
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder.Companion.AVAILABLE_AUDIO_CODECS
+import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder.Companion.AVAILABLE_VIDEO_CODECS
+import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder.Companion.SUPPORTED_CONTAINER_FORMATS
 import org.jellyfin.mobile.utils.Constants
-import org.json.JSONObject
 import org.jellyfin.sdk.model.api.CodecProfile
 import org.jellyfin.sdk.model.api.CodecType
 import org.jellyfin.sdk.model.api.ContainerProfile
@@ -227,7 +231,7 @@ class DeviceProfileBuilder(
         musicStreamingTranscodingBitrate = Int.MAX_VALUE,
     )
 
-    fun getWebCodecCapabilitiesJson(): String = JSONObject().apply {
+    fun getWebCodecCapabilitiesJson(): String = buildJsonObject {
         put("h264MaxLevel", CodecHelpers.getVideoLevel("h264", maxAvcRawLevel)?.toString() ?: DEFAULT_H264_MAX_LEVEL)
     }.toString()
 

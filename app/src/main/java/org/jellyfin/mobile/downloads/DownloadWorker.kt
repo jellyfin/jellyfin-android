@@ -11,9 +11,13 @@ import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import androidx.work.await
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.guava.await
 import org.jellyfin.mobile.app.AppPreferences
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.io.IOException
 
 class DownloadWorker(
     context: Context,
@@ -22,7 +26,7 @@ class DownloadWorker(
     companion object {
         private val tag = DownloadWorker::class.qualifiedName!!
 
-        fun start(context: Context, appPreferences: AppPreferences) {
+        suspend fun start(context: Context, appPreferences: AppPreferences) {
             val request = OneTimeWorkRequestBuilder<DownloadWorker>().apply {
                 addTag(tag)
                 setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
@@ -37,16 +41,21 @@ class DownloadWorker(
                 )
             }.build()
 
-            WorkManager.getInstance(context).enqueueUniqueWork(tag, ExistingWorkPolicy.REPLACE, request)
+            WorkManager.getInstance(context).enqueueUniqueWork(tag, ExistingWorkPolicy.REPLACE, request).await()
         }
 
-        fun stop(context: Context) {
-            WorkManager.getInstance(context).cancelUniqueWork(tag)
+        suspend fun stop(context: Context) {
+            WorkManager.getInstance(context).cancelUniqueWork(tag).await()
         }
 
-        fun isActive(context: Context): Boolean = WorkManager.getInstance(context)
+        suspend fun restart(context: Context, appPreferences: AppPreferences) {
+            stop(context)
+            start(context, appPreferences)
+        }
+
+        suspend fun isActive(context: Context): Boolean = WorkManager.getInstance(context)
             .getWorkInfosForUniqueWork(tag)
-            .get()
+            .await()
             .any { workInfo -> workInfo.state == WorkInfo.State.RUNNING }
     }
 
@@ -57,11 +66,18 @@ class DownloadWorker(
 
     override suspend fun doWork(): Result {
         val canProcess = downloadQueue.prepare()
-        if (!canProcess) return Result.failure()
+        if (!canProcess) return Result.success()
 
         setForeground(getForegroundInfo())
-        downloadQueue.process()
-
-        return Result.success()
+        return try {
+            downloadQueue.process()
+            Result.success()
+        } catch (e: CancellationException) {
+            throw e
+        } catch (_: IOException) {
+            Result.retry()
+        } catch (_: Exception) {
+            Result.failure()
+        }
     }
 }

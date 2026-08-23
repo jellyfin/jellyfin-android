@@ -135,4 +135,46 @@
     <string name="media_service_no_items">Nenašli sa žiadne položky</string>
     <string name="media_service_auth_expired">Prosím otvorte aplikáciu na svojom mobilnom zariadení pre prihlásenie do svojho Jellyfin serveru.</string>
     <string name="media_service_invalid_id">Nesprávny identifikátor predmetu</string>
+    <string name="media_service_car_section_favorites">Obľúbené</string>
+    <string name="media_service_car_section_audiobooks">Audioknihy</string>
+    <string name="media_service_car_section_playlists">Playlisty</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Horizontálne gestá</string>
+    <string name="pref_exoplayer_network_buffer">Veľkosť vyrovnávacej pamäte prehrávania</string>
+    <string name="network_buffer_auto">Automaticky</string>
+    <string name="network_buffer_large">Veľká</string>
+    <string name="network_buffer_extra_large">Extra veľká</string>
+    <string name="downloads_empty_description">Filmy a seriály si môžete stiahnuť a pozerať ich offline. Ikonu sťahovania nájdete na stránke s podrobnosťami o položke.</string>
+    <string name="downloading_title">Sťahovanie %1$s</string>
+    <string name="download_cancel">Zrušiť</string>
+    <string name="download_completed">Sťahovanie dokončené</string>
+    <string name="download_progress">%1$d%%</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Odstrániť sťahovanie</item>
+        <item quantity="few">Odstrániť sťahovania</item>
+        <item quantity="many">Odstrániť sťahovania</item>
+        <item quantity="other">Odstrániť sťahovania</item>
+    </plurals>
+    <string name="download_remove_keep_local">Ponechať súbor(y) lokálne</string>
+    <string name="download_incomplete">Sťahovanie nedokončené</string>
+    <string name="download_settings_dialog_title">Vybrať umiestnenie sťahovania</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Povoliť ovládanie pretáčania videa horizontálnymi gestami</string>
+    <string name="network_buffer_auto_description">Predvolená vyrovnávacia pamäť vhodná pre väčšinu prípadov prehrávania</string>
+    <string name="network_buffer_large_description">Väčšia vyrovnávacia pamäť, ktorá môže pomôcť pri stredne rýchlom alebo kolísavom pripojení</string>
+    <string name="network_buffer_extra_large_description">Maximálna vyrovnávacia pamäť určená pre pomalé alebo satelitné pripojenie</string>
+    <string name="downloads_empty">Zatiaľ žiadne stiahnuté súbory</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Chcete odstrániť „%2$s“ zo stiahnutých položiek?</item>
+        <item quantity="few">Chcete odstrániť týchto %1$d stiahnutých položiek?</item>
+        <item quantity="many">Chcete odstrániť týchto %1$d stiahnutých položiek?</item>
+        <item quantity="other">Chcete odstrániť týchto %1$d stiahnutých položiek?</item>
+    </plurals>
+    <string name="download_settings_dialog_message">Vyberte, kam sa majú uložiť stiahnuté médiá. Predvolene sa sťahuje iba cez Wi-Fi.</string>
+    <string name="select_folder">Vybrať priečinok</string>
+    <string name="select_all">Vybrať všetko</string>
+    <string name="deselect_all">Zrušiť výber všetkého</string>
+    <string name="selected_count">%1$d vybrané</string>
+    <string name="download_location_not_set">Žiadne umiestnenie sťahovania</string>
+    <string name="download_location_not_set_description">Ak chcete sťahovať médiá, vyberte priečinok, do ktorého sa majú súbory uložiť.</string>
+    <string name="download_location_inaccessible">Umiestnenie sťahovania nie je dostupné</string>
+    <string name="download_location_inaccessible_description">Vybrané umiestnenie sťahovania už nie je dostupné. Ak chcete pokračovať v sťahovaní, vyberte iný priečinok.</string>
 </resources>

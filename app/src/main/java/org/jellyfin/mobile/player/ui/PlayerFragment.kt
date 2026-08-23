@@ -242,7 +242,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
      */
     private fun updateFullscreenState(configuration: Configuration) {
         // Do not handle any orientation changes while being in Picture-in-Picture mode
-        if (AndroidVersion.isAtLeastN && requireActivity().isInPictureInPictureMode) {
+        if (AndroidVersion.isAtLeastN && activity?.isInPictureInPictureMode == true) {
             return
         }
 
@@ -408,6 +408,8 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         Handler(Looper.getMainLooper()).post {
+            if (!isAdded) return@post
+
             updateFullscreenState(newConfig)
             playerGestureHelper.handleConfiguration(newConfig)
         }

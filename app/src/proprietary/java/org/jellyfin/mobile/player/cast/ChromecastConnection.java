@@ -69,6 +69,17 @@ public class ChromecastConnection {
     @NonNull
     private String appId;
 
+    // Fires for every session end, whoever caused it - our own endSession() or the chromecast receiver (idle timeout, TV home, etc.)
+    // Status must be "stopped", the only value chrome.cast.js reports as dead,
+    // so jellyfin-web correctly drops the player instead of staying "connected"
+    private final SessionListener sessionListener = new SessionListener() {
+        @Override
+        public void onSessionEnded(@NonNull CastSession castSession, int error) {
+            chromecastSession.setSession(null);
+            listener.onSessionEnd(ChromecastUtilities.createSessionObject(castSession, "stopped"));
+        }
+    };
+
     /**
      * Constructor.
      *
@@ -90,6 +101,7 @@ public class ChromecastConnection {
         // CastContext and prep it for searching for a session to rejoin
         // Also adds the receiver update callback
         getContext().addCastStateListener(listener);
+        getSessionManager().addSessionManagerListener(sessionListener, CastSession.class);
     }
 
     /**
@@ -140,10 +152,14 @@ public class ChromecastConnection {
                             // Since we have a receiver we may also have an active session
                             CastSession session = getSessionManager().getCurrentCastSession();
                             // If we do have a session
-                            if (session != null) {
+                            if (session != null && session.isConnected()) {
                                 // Let the client know
                                 chromecastSession.setSession(session);
                                 listener.onSessionRejoin(ChromecastUtilities.createSessionObject(session));
+                            } else {
+                                // Session object can be stale (e.g. receiver-side timeout while backgrounded)
+                                // Let the client know it's dead explicitly
+                                listener.onSessionEnd(ChromecastUtilities.createSessionObject(session, "stopped"));
                             }
                         }
                     }
@@ -341,7 +357,7 @@ public class ChromecastConnection {
     public void requestSession(RequestSessionCallback callback) {
         activity.runOnUiThread(() -> {
             CastSession session = getSession();
-            if (session == null) {
+            if (session == null || !session.isConnected()) {
                 // show the "choose a connection" dialog
 
                 // Add the connection listener callback
@@ -496,15 +512,14 @@ public class ChromecastConnection {
     void endSession(boolean stopCasting, JavascriptCallback callback) {
         activity.runOnUiThread(new Runnable() {
             public void run() {
+                // sessionListener reports the end to JS, this one just resolves the caller
                 getSessionManager().addSessionManagerListener(new SessionListener() {
                     @Override
                     public void onSessionEnded(@NonNull CastSession castSession, int error) {
                         getSessionManager().removeSessionManagerListener(this, CastSession.class);
-                        chromecastSession.setSession(null);
                         if (callback != null) {
                             callback.success();
                         }
-                        listener.onSessionEnd(ChromecastUtilities.createSessionObject(castSession, stopCasting ? "stopped" : "disconnected"));
                     }
                 }, CastSession.class);
 
@@ -515,6 +530,7 @@ public class ChromecastConnection {
 
     public void destroy() {
         getSessionManager().removeSessionManagerListener(newConnectionListener, CastSession.class);
+        getSessionManager().removeSessionManagerListener(sessionListener, CastSession.class);
         handler.removeCallbacksAndMessages(null);
         activity = null;
     }

@@ -95,24 +95,26 @@ class DownloadManager(
     }
 
     suspend fun cancel(id: Long) = withContext(Dispatchers.IO) {
-        val download = downloadDao.getDownload(id)
-        if (download != null) {
-            DownloadWorker.stop(context)
-            downloadDao.update(download.copy(status = DownloadStatus.CANCELLED))
-            DownloadWorker.start(context, appPreferences)
+        val download = downloadDao.getDownload(id) ?: return@withContext
+        downloadDao.update(download.copy(status = DownloadStatus.CANCELLED))
+
+        if (download.status == DownloadStatus.DOWNLOADING) {
+            DownloadWorker.restart(context, appPreferences)
         }
     }
 
     suspend fun delete(id: Long, deleteFiles: Boolean) = withContext(Dispatchers.IO) {
         val download = downloadDao.getDownload(id) ?: return@withContext
 
-        if (download.status == DownloadStatus.DOWNLOADING) DownloadWorker.stop(context)
+        downloadDao.delete(id)
+
+        if (download.status == DownloadStatus.DOWNLOADING) {
+            DownloadWorker.restart(context, appPreferences)
+        }
 
         if (deleteFiles) {
             val storageLocation = storageManager.getStorageLocation()
             storageLocation?.findFile(download.path)?.delete()
         }
-
-        downloadDao.delete(id)
     }
 }

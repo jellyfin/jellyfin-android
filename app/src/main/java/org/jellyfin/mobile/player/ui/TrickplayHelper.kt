@@ -28,7 +28,7 @@ import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.trickplayApi
 import org.jellyfin.sdk.api.client.util.AuthorizationHeaderBuilder
 import org.jellyfin.sdk.model.api.ChapterInfo
-import org.jellyfin.sdk.model.api.TrickplayInfo
+import org.jellyfin.sdk.model.api.TrickplayInfoDto
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -50,7 +50,7 @@ class TrickplayHelper(
     private val thumbnailDisplayHeight = context.resources.getDimensionPixelSize(R.dimen.trickplay_thumbnail_height)
     private var thumbnailDisplayWidth = 0
 
-    private var trickPlayInfo: TrickplayInfo? = null
+    private var trickPlayInfo: TrickplayInfoDto? = null
     private var itemId: UUID? = null
     private var mediaSourceId: UUID? = null
     private var durationMs: Long = 0L
@@ -149,7 +149,7 @@ class TrickplayHelper(
 
         // Run immediately if next dispatch time has passed, otherwise schedule for the remaining time
         handler.postAtTime(
-            runnable, 
+            runnable,
             maxOf(SystemClock.uptimeMillis(), nextDispatchAt),
         )
     }

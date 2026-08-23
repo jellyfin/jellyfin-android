@@ -33,26 +33,24 @@ import java.util.UUID
 import kotlin.coroutines.resume
 
 fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
-    if (AndroidVersion.isAtLeastM) {
-        val powerManager = requireContext().getSystemService(Activity.POWER_SERVICE) as PowerManager
-        if (
-            !appPreferences.ignoreBatteryOptimizations &&
-            !powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)
-        ) {
-            Snackbar.make(rootView, R.string.battery_optimizations_message, Snackbar.LENGTH_INDEFINITE).apply {
-                setAction(android.R.string.ok) {
-                    try {
-                        val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
-                        startActivity(intent)
-                    } catch (e: ActivityNotFoundException) {
-                        Timber.e(e)
-                    }
-
-                    // Ignore after the user interacted with the snackbar at least once
-                    appPreferences.ignoreBatteryOptimizations = true
+    val powerManager = requireContext().getSystemService(Activity.POWER_SERVICE) as PowerManager
+    if (
+        !appPreferences.ignoreBatteryOptimizations &&
+        !powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)
+    ) {
+        Snackbar.make(rootView, R.string.battery_optimizations_message, Snackbar.LENGTH_INDEFINITE).apply {
+            setAction(android.R.string.ok) {
+                try {
+                    val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+                    startActivity(intent)
+                } catch (e: ActivityNotFoundException) {
+                    Timber.e(e)
                 }
-                show()
+
+                // Ignore after the user interacted with the snackbar at least once
+                appPreferences.ignoreBatteryOptimizations = true
             }
+            show()
         }
     }
 }
