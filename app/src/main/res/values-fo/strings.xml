@@ -47,12 +47,12 @@
     <string name="pref_exoplayer_network_buffer">Spælitippistødd</string>
     <string name="network_buffer_auto">Sjálvvirkandi</string>
     <string name="network_buffer_large">Stór</string>
-    <string name="network_buffer_large_description">Størri tippi, ið kann verða gagnligur á toluligum ella skiftandi sambondum</string>
+    <string name="network_buffer_large_description">Størri tippi, ið kann vera gagnligur á toluligum ella skiftandi sambondum</string>
     <string name="network_buffer_extra_large">Eyka stórur</string>
-    <string name="network_buffer_extra_large_description">Stórsti tippi, ætlaður seinum ella fylgisveinasambondum</string>
+    <string name="network_buffer_extra_large_description">Størsti tippi, ætlaður seinum ella fylgisveinasambondum</string>
     <string name="external_player_app">Ytri spælaraapp</string>
     <string name="external_player_system_default">Kerviforsettur</string>
-    <string name="pref_subtitle_style">Tillaga undirtekstastavsnið</string>
+    <string name="pref_subtitle_style">Tillaga undirtekstasnið</string>
     <string name="pref_category_downloads">Niðurtøkur</string>
     <string name="pref_download_location">Niðurtøkustað</string>
     <string name="view_downloads">Sí niðurtøkur</string>
@@ -91,7 +91,7 @@
     <string name="connection_error_unsupported_version_or_product">Ósambærilig útgáva ella ritbúnaður</string>
     <string name="battery_optimizations_message">Vinaliga óvirkja battarí-albøtanina fyri at miðlaspæl við slóktum skíggja ikki verður ávirkað.</string>
     <string name="network_title">Loyvd netsløg</string>
-    <string name="network_message">Ynskir tú at loyva niðurtøkum umvegis farnet ella reikandi farnetum? Hetta kann viðføra øktar kostnaðir frá tínum veitara. Hetta kann broytast seinni undir stillingum.</string>
+    <string name="network_message">Ynskir tú at loyva niðurtøkum umvegis farnet ella reikandi farnetum? Hetta kann viðføra øktan kostnað frá tínum veitara. Hetta kann broytast seinni undir stillingum.</string>
     <string name="mobile_data">Farnetsdáta</string>
     <string name="mobile_data_and_roaming">Farnetdáta og reikandi farnetdáta</string>
     <string name="wifi_only_summary">Margmiðlar verða einans niðurtiknir umvegis WiFi.</string>
@@ -117,10 +117,10 @@
     <string name="pref_music_notification_always_dismissible_summary_on">Fráboðanin kann altíð frávísast, enntá ímeðan spælt verður</string>
     <string name="pref_category_video_player">Kykmyndaspælari</string>
     <string name="pref_video_player_type_title">Kykmyndaspælari</string>
-    <string name="video_player_web_description">Forsetti HTML kykmyndaspælarin í vev-nýtslumarkamótinum</string>
+    <string name="video_player_web_description">Forsetti HTML-kykmyndaspælarin í vevnýtslumarkamótinum</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Nert og hald á skíggjanum fyri at fyribils skunda undir spælingina</string>
     <string name="network_buffer_auto_description">Forsett tippi, hóskandi til flestu spæliumstøður</string>
-    <string name="failed_information">Miseydnaðist at útvega upplýsingar miðilsins</string>
+    <string name="failed_information">Miseydnaðist at útvega upplýsingar um miðilin</string>
     <string name="failed_network_method_check">Vinaliga kanna loyvdu niðurtøkuháttirnar</string>
     <string name="special_episode">Eyka</string>
     <string name="download_progress">%1$d%%</string>
@@ -131,8 +131,8 @@
     <string name="download_location_inaccessible">Vantar atgongd til niðurtøkustað</string>
     <string name="download_location_inaccessible_description">Atgongd fæst ikki longur til valda niðurtøkustaðið. Vinaliga vel eina aðra skjáttu til tess at halda áfram við niðurtøkum.</string>
     <plurals name="connection_error_prefix">
-        <item quantity="one">Royndi %d uppskot til ambætara uttan úrslit.</item>
-        <item quantity="other">Royndi %d uppskot til ambætara uttan úrslit.</item>
+        <item quantity="one">Royndi %d uppskot sum ambætara uttan úrslit.</item>
+        <item quantity="other">Royndi %d uppskot sum ambætara uttan úrslit.</item>
     </plurals>
     <string name="video_player_integrated">Innbygdur spælari</string>
     <string name="pref_subtitle_style_summary">Sniðið á undirtekstum kann tillagast í Android-stillingum</string>
@@ -151,15 +151,22 @@
     <string name="external_player_invalid_player">Spælisporing er óvirkt tí at valdi ytri spælarin ikki hevur virkisføri fyri tí.</string>
     <string name="pref_exoplayer_direct_play_ass">Loyv SSA/ASS undirtekstum undir beinleiðis spæling</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Byrja liggjandi kykmyndir í liggjandi støðu</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Hindrar umkoting og vísur undirtekstir uttan víðkað stavsnið. Er hetta virkja verður tillagað undirtekstastavsnið ikki brúkt.</string>
+    <string name="pref_exoplayer_direct_play_ass_summary">Hindrar umkoting og vísir undirtekstir uttan víðkað tekstsnið. Er hetta virkt verður tillagað undirtekstasnið ikki brúkt.</string>
     <string name="external_player_mpvkt_description">Ein margmiðlaspælari grundaður á mpv-android ið miðar eftir einum betri nýtslumarkamóti.</string>
     <string name="store_videos_in_internal_storage">Goym kykmyndir í inngoymslu</string>
-    <string name="video_player_native_description">Grundaður á ExoPlayer, hevur virkisføri fyri fleiri kykmyndasniðum og er meira innbygdur í stýrikervið</string>
+    <string name="video_player_native_description">Grundaður á ExoPlayer. Hevur virkisføri fyri fleiri kykmyndasniðum og er meira innbygdur í stýrikervið</string>
     <string name="external_player_mpv_description">Ein einfaldur, lítil og kravlítil ókeypis (og frælsur) kykmyndaspælari ið hevur virkisføri fyri fleiri ymisk margmiðlasnið.</string>
     <string name="external_player_system_default_description">Lat spælaraval upp til kervið. Allir spælarar hava ikki líka gott sínamillumvirkni.</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Loyv kykmyndaspæli við einans ljóði í bakgrundini</string>
     <string name="pref_exoplayer_allow_background_audio">Ljóð í bakgrundini</string>
     <string name="stored_videos_in_internal_storage_desc">Kykmyndir so sum filmar og sjónvarpsrøðir verða varðveittar í inngoymslu apparinnar, ið gevur atgongd til tær frá sjálvari appini.</string>
-    <string name="tv_show_desc">%1$s - S%2$dP%3$d</string>
-    <string name="external_player_mx_player_free_description">Dugnaligur kykmyndaspælari við víkaðari tólbúnaðarstyðjan og undirtekstavirkisføri.</string>
+    <string name="tv_show_desc">%1$s - U%2$dP%3$d</string>
+    <string name="external_player_mx_player_free_description">Dugnaligur kykmyndaspælari við víðkaðari tólbúnaðarstyðjan og undirtekstavirkisføri.</string>
+    <string name="external_player_vlc_player_description">Ókeypis margmiðlaspælari hvørs keldukota er alment tøk. Virkar á fleiri stýrikervum og er førur fyri at spæla flestu margmiðlafílur.</string>
+    <string name="external_player_mx_player_pro_description">MX Player útgávan ið fæst til keyps og gevur eina kykmyndauppliving uttan lýsingar.</string>
+    <string name="external_player_mx_player_free">MX Player Free</string>
+    <string name="external_player_mx_player_pro">MX Player Pro</string>
+    <string name="external_player_vlc_player">VLC Player</string>
+    <string name="external_player_mpvkt">mpvKt Player</string>
+    <string name="external_player_mpv">MPV Player</string>
 </resources>

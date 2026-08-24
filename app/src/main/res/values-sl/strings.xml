@@ -132,4 +132,9 @@
     <string name="store_videos_in_internal_storage">Shrani posnetke v notranji pomnilnik</string>
     <string name="stored_videos_in_internal_storage_desc">Videoposnetki, kot so filmi in serije, bodo shranjeni v notranjem pomnilniku aplikacije. Dostop do njih bo omogočen iz aplikacije.</string>
     <string name="special_episode">Posebna epizoda</string>
+    <string name="media_service_unknown_page">Neznana stran</string>
+    <string name="media_service_no_items">Najdenih ni bilo nobenih elementov</string>
+    <string name="media_service_auth_expired">Prosimo, odprite aplikacijo na svojem telefonu, da se prijavite v svoj strežnik Jellyfin.</string>
+    <string name="media_service_car_section_favorites">Priljubljene</string>
+    <string name="media_service_car_section_audiobooks">Zvočne knjige</string>
 </resources>

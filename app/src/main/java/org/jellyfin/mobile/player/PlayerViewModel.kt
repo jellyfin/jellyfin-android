@@ -278,6 +278,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             setTrackSelector(trackSelector)
             setAnalyticsCollector(analyticsCollector)
             setLoadControl(loadControl)
+            setHandleAudioBecomingNoisy(true)
         }.build().apply {
             addListener(this@PlayerViewModel)
             applyDefaultAudioAttributes(C.AUDIO_CONTENT_TYPE_MOVIE)

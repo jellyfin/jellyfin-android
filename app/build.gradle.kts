@@ -178,6 +178,7 @@ dependencies {
     ksp(libs.androidx.room.compiler)
 
     // Monitoring
+    implementation(libs.slf4j.timber)
     implementation(libs.timber)
 
     // Testing

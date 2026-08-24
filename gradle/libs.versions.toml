@@ -1,11 +1,11 @@
 [versions]
 # Android
-android-compileSdk = "36"
+android-compileSdk = "37"
 android-minSdk = "23"
 android-targetSdk = "36"
 
 # Plugins
-android-plugin = "9.3.1"
+android-plugin = "9.3.2"
 kotlin = "2.4.10"
 kotlin-ksp = "2.3.11"
 detekt = "1.23.8"
@@ -18,7 +18,7 @@ serialization-json = "1.11.0"
 # Core
 koin = "4.2.2"
 koin-compose = "4.2.2"
-androidx-core = "1.18.0"
+androidx-core = "1.19.0"
 androidx-core-splashscreen = "1.2.0"
 androidx-appcompat = "1.8.0"
 androidx-activity = "1.13.0"
@@ -28,7 +28,7 @@ androidx-work = "2.11.2"
 androiddesugarlibs = "2.1.5"
 
 # Lifecycle extensions
-androidx-lifecycle = "2.10.0"
+androidx-lifecycle = "2.11.0"
 
 # UI
 androidx-constraintlayout = "2.2.2"
@@ -37,9 +37,9 @@ androidx-webkit = "1.15.0"
 modernandroidpreferences = "2.4.0-beta2"
 
 # Compose
-compose = "1.11.4"
-compose-foundation = "1.11.4"
-compose-material = "1.11.4"
+compose = "1.12.0"
+compose-foundation = "1.12.0"
+compose-material = "1.12.0"
 compose-material-icons = "1.7.8"
 
 # Network
@@ -57,6 +57,7 @@ playservices = "22.3.1"
 androidx-room = "2.8.4"
 
 # Monitoring
+slf4j-timber = "0.0.4"
 timber = "5.0.1"
 
 # Testing
@@ -143,6 +144,7 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
 
 # Monitoring
+slf4j-timber = { module = "io.github.unveloper:slf4j-timber", version.ref = "slf4j-timber" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
 # Testing

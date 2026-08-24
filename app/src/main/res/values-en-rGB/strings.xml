@@ -148,10 +148,24 @@
     <string name="download_remove_keep_local">Keep local file(s)</string>
     <plurals name="download_remove_description">
         <item quantity="one">Do you want to remove %1$s from your downloads?</item>
-        <item quantity="other"/>
+        <item quantity="other">Do you want to remove these %1$d downloads?</item>
     </plurals>
     <string name="download_incomplete">Download incomplete</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Horizontal gestures</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Allow horizontal gesture control for video seeking</string>
     <string name="downloads_empty">No downloads yet</string>
+    <string name="downloads_empty_description">You can download movies and TV shows to watch them offline. Look for the download icon on the item details page.</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Remove download</item>
+        <item quantity="other">Remove downloads</item>
+    </plurals>
+    <string name="download_settings_dialog_title">Choose download location</string>
+    <string name="download_settings_dialog_message">Please choose where downloaded media should be saved. Downloads use WiFi only by default.</string>
+    <string name="select_folder">Select folder</string>
+    <string name="select_all">Select all</string>
+    <string name="deselect_all">Unselect all</string>
+    <string name="download_location_not_set">No download location</string>
+    <string name="download_location_not_set_description">To download media, please select a folder where the files should be stored.</string>
+    <string name="download_location_inaccessible">Download location inaccessible</string>
+    <string name="download_location_inaccessible_description">The selected download location is no longer accessible. Please select a different folder to resume downloads.</string>
 </resources>
