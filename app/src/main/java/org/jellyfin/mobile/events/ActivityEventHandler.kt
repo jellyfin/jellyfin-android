@@ -62,6 +62,7 @@ class ActivityEventHandler(
             is ActivityEvent.LaunchNativePlayer -> {
                 val args = Bundle().apply {
                     putParcelable(Constants.EXTRA_MEDIA_PLAY_OPTIONS, event.playOptions)
+                    putParcelable(Constants.EXTRA_WEB_PREFERENCES, event.preferences)
                 }
                 supportFragmentManager.addFragment<PlayerFragment>(args)
             }
