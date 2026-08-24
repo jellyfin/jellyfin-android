@@ -42,10 +42,14 @@ class MediaSourceResolver(private val apiClient: ApiClient) {
                 mediaInfoApi.getPostedPlaybackInfo(
                     itemId = itemId,
                     data = PlaybackInfoDto(
-                        // We need to remove the dashes so that the server can find the correct media source.
-                        // And if we didn't pass the mediaSourceId, our stream indices would silently get ignored.
+                        // The server filters media sources by this id and returns none when it matches
+                        // nothing. For most items the media source id equals the item id, but for Live TV
+                        // it is the tuner's stream id, so only substitute the item id when stream indices
+                        // are actually requested - otherwise the response would come back empty.
                         // https://github.com/jellyfin/jellyfin/blob/9a35fd673203cfaf0098138b2768750f4818b3ab/Jellyfin.Api/Helpers/MediaInfoHelper.cs#L196-L201
-                        mediaSourceId = mediaSourceId ?: itemId.toString().replace("-", ""),
+                        mediaSourceId = mediaSourceId ?: itemId.toString().replace("-", "").takeIf {
+                            audioStreamIndex != null || subtitleStreamIndex != null
+                        },
                         deviceProfile = deviceProfile,
                         maxStreamingBitrate = maxStreamingBitrate,
                         startTimeTicks = startTime?.inWholeTicks,
