@@ -1,12 +1,13 @@
 package org.jellyfin.mobile.events
 
 import org.jellyfin.mobile.player.interaction.PlayOptions
+import org.jellyfin.mobile.player.interaction.PlayerWebPreferences
 import org.json.JSONArray
 import java.util.UUID
 
 sealed class ActivityEvent {
     class ChangeFullscreen(val isFullscreen: Boolean) : ActivityEvent()
-    class LaunchNativePlayer(val playOptions: PlayOptions) : ActivityEvent()
+    class LaunchNativePlayer(val playOptions: PlayOptions, val preferences: PlayerWebPreferences? = null) : ActivityEvent()
     class OpenUrl(val uri: String, val grantReadPermission: Boolean = false) : ActivityEvent()
     class DownloadItems(val itemIds: Collection<UUID>) : ActivityEvent()
     class CastMessage(val action: String, val args: JSONArray) : ActivityEvent()

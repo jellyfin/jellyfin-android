@@ -17,6 +17,7 @@ import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayOptions
+import org.jellyfin.mobile.player.interaction.PlayerWebPreferences
 import org.jellyfin.mobile.player.source.ExternalSubtitleStream
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
 import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
@@ -24,6 +25,7 @@ import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.player.source.PlaybackDetails
 import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
 import org.jellyfin.sdk.api.client.ApiClient
+import org.jellyfin.sdk.api.client.extensions.systemApi
 import org.jellyfin.sdk.api.client.extensions.videosApi
 import org.jellyfin.sdk.api.operations.VideosApi
 import org.jellyfin.sdk.model.api.MediaProtocol
@@ -67,7 +69,7 @@ class QueueManager(
      *
      * @return an error of type [PlayerException] or null on success.
      */
-    suspend fun initializePlaybackQueue(playOptions: PlayOptions): PlayerException? {
+    suspend fun initializePlaybackQueue(playOptions: PlayOptions, preferences: PlayerWebPreferences? = null): PlayerException? {
         currentQueue = playOptions.ids
         currentQueueIndex = playOptions.startIndex
         resetPlaybackFallback()
@@ -76,6 +78,16 @@ class QueueManager(
             currentQueue.isNotEmpty() -> currentQueue[currentQueueIndex]
             else -> playOptions.mediaSourceId?.toUUIDOrNull()
         } ?: return PlayerException.InvalidPlayOptions()
+
+        val maxStreamingBitrate = preferences?.let {
+            withContext(Dispatchers.IO) {
+                runCatching {
+                    val endpoint by apiClient.systemApi.getEndpointInfo()
+                    if (endpoint.isInNetwork) it.maxStreamingBitrateLocal
+                    else it.maxStreamingBitrateRemote
+                }
+            }.getOrNull()
+        }
 
         when (playOptions.playFromDownloads) {
             true -> playOptions.mediaSourceId?.let {
@@ -87,7 +99,7 @@ class QueueManager(
             else -> startRemotePlayback(
                 itemId = itemId,
                 mediaSourceId = playOptions.mediaSourceId,
-                maxStreamingBitrate = null,
+                maxStreamingBitrate = maxStreamingBitrate,
                 startTime = playOptions.startPosition,
                 audioStreamIndex = playOptions.audioStreamIndex,
                 subtitleStreamIndex = playOptions.subtitleStreamIndex,

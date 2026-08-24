@@ -2,11 +2,13 @@ package org.jellyfin.mobile.bridge
 
 import android.webkit.JavascriptInterface
 import kotlinx.coroutines.channels.Channel
+import kotlinx.serialization.json.Json
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.interaction.PlayerEvent
+import org.jellyfin.mobile.player.interaction.PlayerWebPreferences
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.sdk.model.extensions.ticks
 import kotlin.time.Duration.Companion.milliseconds
@@ -22,10 +24,11 @@ class NativePlayer(
     fun isEnabled() = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
 
     @JavascriptInterface
-    fun loadPlayer(args: String) {
-        PlayOptions.fromJson(args)?.let { options ->
-            activityEventHandler.emit(ActivityEvent.LaunchNativePlayer(options))
-        }
+    fun loadPlayer(playOptionsRaw: String, preferencesRaw: String) {
+        val playOptions = PlayOptions.fromJson(playOptionsRaw) ?: return
+        val preferences = Json.decodeFromString<PlayerWebPreferences>(preferencesRaw)
+
+        activityEventHandler.emit(ActivityEvent.LaunchNativePlayer(playOptions, preferences))
     }
 
     @JavascriptInterface

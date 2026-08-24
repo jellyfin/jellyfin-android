@@ -1,9 +1,10 @@
 export class ExoPlayerPlugin {
-    constructor({ events, playbackManager, loading }) {
+    constructor({ events, playbackManager, appSettings, loading }) {
         window['ExoPlayer'] = this;
 
         this.events = events;
         this.playbackManager = playbackManager;
+        this.appSettings = appSettings;
         this.loading = loading;
 
         this.name = 'ExoPlayer';
@@ -26,8 +27,13 @@ export class ExoPlayerPlugin {
         options.ids = options.items.map(item => item.Id);
         delete options.items;
 
+        const preferences = {
+            maxStreamingBitrateLocal: this.appSettings.maxStreamingBitrate(true, 'Video'),
+            maxStreamingBitrateRemote: this.appSettings.maxStreamingBitrate(false, 'Video'),
+        };
+
         this._paused = false;
-        this._nativePlayer.loadPlayer(JSON.stringify(options));
+        this._nativePlayer.loadPlayer(JSON.stringify(options), JSON.stringify(preferences));
         this.loading.hide();
     }
 
