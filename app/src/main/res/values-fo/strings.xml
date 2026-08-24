@@ -117,7 +117,7 @@
     <string name="pref_music_notification_always_dismissible_summary_on">Fráboðanin kann altíð frávísast, enntá ímeðan spælt verður</string>
     <string name="pref_category_video_player">Kykmyndaspælari</string>
     <string name="pref_video_player_type_title">Kykmyndaspælari</string>
-    <string name="video_player_web_description">Forsetti HTML kykmyndaspælarin í vev-nýtslumarkamótinum</string>
+    <string name="video_player_web_description">Forsetti HTML-kykmyndaspælarin í vevnýtslumarkamótinum</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Nert og hald á skíggjanum fyri at fyribils skunda undir spælingina</string>
     <string name="network_buffer_auto_description">Forsett tippi, hóskandi til flestu spæliumstøður</string>
     <string name="failed_information">Miseydnaðist at útvega upplýsingar um miðilin</string>
