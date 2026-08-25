@@ -100,47 +100,7 @@ window.NativeShell = {
 };
 
 function getDeviceProfile(profileBuilder, item) {
-    const profile = profileBuilder({
-        enableMkvProgressive: false
-    });
-
-    profile.CodecProfiles.push({
-        Type: "Video",
-        Container: "avi",
-        Conditions: [
-            {
-                Condition: "NotEquals",
-                Property: "VideoCodecTag",
-                Value: "xvid"
-            }
-        ]
-    });
-
-    profile.CodecProfiles.push({
-        Type: "Video",
-        Codec: "h264",
-        Conditions: [
-            {
-                Condition: "EqualsAny",
-                Property: "VideoProfile",
-                Value: "high|main|baseline|constrained baseline"
-            },
-            {
-                Condition: "LessThanEqual",
-                Property: "VideoLevel",
-                Value: codecCaps.h264MaxLevel
-            }]
-    });
-
-    profile.TranscodingProfiles.reduce(function (profiles, p) {
-        if (p.Type === "Video" && p.CopyTimestamps === true && p.VideoCodec === "h264") {
-            p.AudioCodec += ",ac3";
-            profiles.push(p);
-        }
-        return profiles;
-    }, []);
-
-    return profile;
+    return profileBuilder();
 }
 
 window.NativeShell.AppHost = {
@@ -156,7 +116,6 @@ window.NativeShell.AppHost = {
         return features.includes(command);
     },
     getDeviceProfile,
-    getSyncProfile: getDeviceProfile,
     deviceName() {
         return deviceName;
     },
