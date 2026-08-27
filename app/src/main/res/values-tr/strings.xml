@@ -171,4 +171,5 @@
         <item quantity="one">İndirilen dosyayı sil</item>
         <item quantity="other">İndirilen dosyaları sil</item>
     </plurals>
+    <string name="pref_exoplayer_direct_play_ass_description">Deneysel olan istemci tarafından altyazı oluşturma yöntemini kullanın; bu yöntem her zaman düzgün çalışmayabilir</string>
 </resources>
