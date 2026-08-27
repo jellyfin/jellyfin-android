@@ -35,4 +35,17 @@
     <string name="network_title">Pwede na Network Types</string>
     <string name="wifi_only">WiFi lang</string>
     <string name="downloading">nag da-download</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">isahan</item>
+        <item quantity="other">maramihan</item>
+    </plurals>
+    <string name="battery_optimizations_message">Mangyaring i-disable ang mga optimization ng baterya para sa pag-playback ng media habang ang screen ay off.</string>
+    <string name="network_message">Nais mo bang payagan ang pag-download na magpatakbo sa mga mobile data o mga roaming network? Maaaring mag-apply ang mga singil mula sa iyong provider. Maaari mong baguhin ang pagpipiliang ito sa ibang pagkakataon mula sa mga setting.</string>
+    <string name="mobile_data_and_roaming">Mobile Data &amp; Roaming</string>
+    <string name="mobile_data_summary">Ang media ay mai-download sa pamamagitan ng WiFi at mga mobile network.</string>
+    <string name="mobile_data_and_roaming_summary">Ida-download ang media sa pamamagitan ng WiFi, mobile at roaming network.</string>
+    <string name="download_no_storage_permission">Hindi mai-download ang mga file nang walang mga pahintulot sa pag-iimbak</string>
+    <string name="media_service_generic_error">May naganap na error</string>
+    <string name="media_service_item_not_found">Hindi mahanap ang item ng media</string>
+    <string name="media_service_unknown_page">Hindi kilalang pahina</string>
 </resources>
