@@ -48,4 +48,6 @@
     <string name="media_service_generic_error">May naganap na error</string>
     <string name="media_service_item_not_found">Hindi mahanap ang item ng media</string>
     <string name="media_service_unknown_page">Hindi kilalang pahina</string>
+    <string name="notification_action_stop">Itigil</string>
+    <string name="player_error_invalid_play_options">Hindi masolusyonan ang impormasyon sa pag-playback</string>
 </resources>
