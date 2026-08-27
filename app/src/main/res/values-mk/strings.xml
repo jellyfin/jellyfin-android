@@ -99,7 +99,6 @@
     <string name="pref_exoplayer_remember_brightness">Запомни ја осветленоста на екранот</string>
     <string name="pref_exoplayer_allow_background_audio">Аудио во позадина</string>
     <string name="pref_exoplayer_direct_play_ass">Дозволете SSA/ASS преводи во директна репродукција</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Спречете транскодирање и прикажувајте преводи само со основен стил. Напредниот стил на титл нема да биде достапен ако е овозможено.</string>
     <string name="external_player_mpv_description">Едноставен, мал и лесен бесплатен (како во слобода) видео плеер. Поддржува широк спектар на формати на медиумски датотеки.</string>
     <string name="external_player_mx_player_free">MX плеер (бесплатен)</string>
     <string name="external_player_mx_player_free_description">Моќен видео плеер со напредно хардверско забрзување и поддршка за преводи.</string>

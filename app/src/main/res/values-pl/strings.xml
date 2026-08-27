@@ -95,7 +95,6 @@
     <string name="dialog_web_view_not_supported_message">WebViews nie są obsługiwane przez te urządzenie. \nZainstaluj kompatybilną implementację WebView lub zmień urządzenie na wspierane.</string>
     <string name="menu_item_auto">Automatycznie</string>
     <string name="pref_exoplayer_direct_play_ass">Zezwól na bezpośrednie odtwarzanie napisów SSA/ASS</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Zablokuje transkodowanie i pokaż napisy z podstawowym stylem. Zaawansowane style napisów nie będą dostępne jeśli ustawienie jest włączone.</string>
     <string name="player_error_unspecific_exception">Problem z odtwarzaczem</string>
     <string name="pref_subtitle_style">Dostosuj styl napisów</string>
     <string name="pref_subtitle_style_summary">Możesz zmienić styl napisów w ustawieniach Androida</string>

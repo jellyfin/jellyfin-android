@@ -151,7 +151,6 @@
     <string name="external_player_invalid_player">Spælisporing er óvirkt tí at valdi ytri spælarin ikki hevur virkisføri fyri tí.</string>
     <string name="pref_exoplayer_direct_play_ass">Loyv SSA/ASS undirtekstum undir beinleiðis spæling</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Byrja liggjandi kykmyndir í liggjandi støðu</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Hindrar umkoting og vísir undirtekstir uttan víðkað tekstsnið. Er hetta virkt verður tillagað undirtekstasnið ikki brúkt.</string>
     <string name="external_player_mpvkt_description">Ein margmiðlaspælari grundaður á mpv-android ið miðar eftir einum betri nýtslumarkamóti.</string>
     <string name="store_videos_in_internal_storage">Goym kykmyndir í inngoymslu</string>
     <string name="video_player_native_description">Grundaður á ExoPlayer. Hevur virkisføri fyri fleiri kykmyndasniðum og er meira innbygdur í stýrikervið</string>

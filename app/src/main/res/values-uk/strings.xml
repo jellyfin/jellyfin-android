@@ -95,7 +95,6 @@
     <string name="dialog_web_view_not_supported">WebView не підтримується</string>
     <string name="menu_item_auto">Автоматичний</string>
     <string name="pref_exoplayer_direct_play_ass">Дозволити субтитри SSA/ASS у прямому відтворенні</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Заборонити перекодування та відображати субтитри лише з основним стилем. Розширений стиль не буде доступний, якщо його ввімкнено.</string>
     <string name="pref_subtitle_style">Налаштувати стиль субтитрів</string>
     <string name="menu_item_hardware_decoding">Апаратне декодування</string>
     <string name="player_error_unspecific_exception">Щось пішло не так з плеєром</string>

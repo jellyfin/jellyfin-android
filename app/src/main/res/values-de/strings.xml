@@ -93,7 +93,6 @@
     <string name="video_player_integrated">Integrierter Player</string>
     <string name="playback_info_stream_unknown_title">Unbekannter Titel</string>
     <string name="menu_item_auto">Automatisch</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Transkodieren vermeiden und Untertitel nur mit einfachem Erscheinungsbild anzeigen. Wenn aktiviert, ist die erweiterte Untertitelgestaltung nicht verfügbar.</string>
     <string name="pref_exoplayer_direct_play_ass">Direktwiedergabe von SSA-/ASS-Untertiteln zulassen</string>
     <string name="menu_item_software_decoding">Software-Dekodierung</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Querformat-Videos in Querformat-Ausrichtung starten</string>

@@ -94,7 +94,6 @@
     <string name="dialog_button_open_settings">Abrir ajustes</string>
     <string name="menu_item_auto">Automático</string>
     <string name="pref_exoplayer_direct_play_ass">Permitir legendas SSA/ASS em reprodução direta</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Impedir transcodificação e exibir legendas com estilo básico. Estilos avançados para legendas não estarão disponíveis se ativado.</string>
     <string name="pref_subtitle_style">Personalizar estilo de legenda</string>
     <string name="pref_subtitle_style_summary">Você pode alterar o estilo da legenda nas configurações do Android</string>
     <string name="player_error_unspecific_exception">Algo deu errado com o player</string>

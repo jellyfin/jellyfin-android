@@ -103,7 +103,6 @@
     <string name="pref_exoplayer_allow_horizontal_gesture">Üfüqi jestlər</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Videoda irəli-geri keçid üçün üfüqi jest idarəetməsinə icazə ver</string>
     <string name="pref_exoplayer_direct_play_ass">Birbaşa oxutmada SSA/ASS altyazılarına icazə ver</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Transkodlaşdırmanın qarşısını al və altyazıları yalnız sadə üslubla göstər. Bu seçim aktiv olduqda inkişaf etmiş altyazı üslubları əlçatan olmayacaq</string>
     <string name="pref_exoplayer_network_buffer">Oxutma buferinin ölçüsü</string>
     <string name="network_buffer_auto">Auto</string>
     <string name="network_buffer_auto_description">Standart bufer ölçüsü, əksər oxutma ssenariləri üçün uyğundur</string>
@@ -152,7 +151,7 @@
     <string name="download_remove_keep_local">Lokal fayl(lar)ı saxla</string>
     <plurals name="download_remove_description">
         <item quantity="one">%1$s elementini yükləmələrdən silmək istəyirsiniz?</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="download_incomplete">Yükləmə tamamlanmadı</string>
     <string name="download_settings_dialog_title">Yükləmə yerini seç</string>

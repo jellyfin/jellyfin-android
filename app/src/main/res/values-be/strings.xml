@@ -99,7 +99,6 @@
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Пачынаць ландшафтныя відэа ў ландшафтнай арыентацыі</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Дазволіць прайграванне відэа ў фонавым рэжыме толькі з аўдыя</string>
     <string name="pref_exoplayer_direct_play_ass">Дазволіць субцітры SSA/ASS у прамым прайграванні</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Забараніць перакадзіраванне і паказваць субцітры толькі з базавым стылем. Пашыраны стыль субцітраў не будзе даступны, калі ён уключаны.</string>
     <string name="external_player_app">Праграма знешняга прайгравальніка</string>
     <string name="external_player_mpv_description">Просты, маленькі і лёгкі бясплатны (свабодны) відэа прайгравальнік. Ён падтрымлівае шырокі спектр фарматаў медыяфайлаў.</string>
     <string name="external_player_mx_player_free_description">Магутны відэа прайгравальнік з удасканаленым апаратным паскарэннем і падтрымкай субцітраў.</string>

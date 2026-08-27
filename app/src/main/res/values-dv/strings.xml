@@ -95,7 +95,6 @@
     <string name="pref_exoplayer_allow_background_audio_summary">ވީޑިއޯތައް ބެކްގްރައުންޑުން ހަމަ އެކަނި އޯޑިއޯގެ ގޮތުގައި ޕްލޭކުރަން ހުއްދަދީ</string>
     <string name="pref_exoplayer_direct_play_ass">ޑައިރެކްޓްކޮށް ބަލާއިރު އެސްއެސްއޭ/އޭއެސްއެސް ސަބްޓައިޓަލް ދެއްކިޔަސް އޯކޭ</string>
     <string name="external_player_mpv">އެމްޕީވީ ޕްލޭޔަރ</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">ޓްރާންސްކޯޑިން ހުއްޓާލައި ސަބްޓައިޓަލް ހަމައެކަނި ބޭސިކް ސްޓައިލްގައި ދައްކާ. މި އޮޕްޝަން ހިޔާރުކޮއްފިނަމަ ސަބްޓައިޓަލް ސްޓައިލަށް ގެނެވުނު މޮޅެތި ބަދަލުތަކެއް ނުފެންނާނެ.</string>
     <string name="external_player_app">އެޕުންބޭރު ޕްލޭޔަރު އެޕްލިކޭޝަން</string>
     <string name="external_player_mpv_description">ސިންޕަލް، ކުޑަކުޑަ ލައިޓް-ވެއިޓް ފްރީ (އޯޕަންސޯސް) ވީޑިއޯ ޕްލޭޔަރެއް. ވަރަށްގިނަ ވައްތަރުގެ ވީޑިއޯތައް ސަޕޯޓް ކުރާ ގޮތަށް ހަދާފައިވާ ޕްލޭޔަރެއް.</string>
     <string name="external_player_mx_player_free_description">އެޑްވާންސް ހާޑްވެއަރ އެކްސެލެރޭޝަން އަދި ސަބްޓައިޓަލް ސަޕޯޓް ކުރާ ގޮތަށް ހަދާފައިވާ މޮޅު ޕްލޭޔަރެއް.</string>

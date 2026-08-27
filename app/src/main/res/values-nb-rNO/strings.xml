@@ -99,7 +99,6 @@
     <string name="menu_item_software_decoding">Software dekoding</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Start liggende videoer i liggende retning</string>
     <string name="pref_exoplayer_direct_play_ass">Tillat SSA/ASS undertekster i direkteavspilling</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Forhindre omkoding og vis undertekster kun med grunnleggende stil. Avansert undertekststil vil ikke være tilgjengelig hvis aktivert.</string>
     <string name="pref_subtitle_style">Tilpass undertekststil</string>
     <string name="pref_subtitle_style_summary">Du kan endre undertekststilen i Android-innstillingene</string>
     <string name="button_use_different_server">Bruk en annen tjener</string>

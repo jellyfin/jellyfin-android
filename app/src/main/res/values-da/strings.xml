@@ -101,7 +101,6 @@
     <string name="pref_subtitle_style_summary">Du kan tilpasse underteksterne i Android indstillinger</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Start vandret videoer i vandret orientering</string>
     <string name="pref_exoplayer_direct_play_ass">Tillad SSA/ASS undertekster i afspilleren</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Forhindr transkodning, og vis kun undertekster med grundlæggende formatering. Avanceret formatering af undertekster vil ikke være tilgængelig, hvis dette er aktiveret.</string>
     <string name="pref_subtitle_style">Tilpas undertekst udseende</string>
     <string name="bluetooth_permission_title">Tillad Bluetooth adgang\?</string>
     <string name="bluetooth_permission_continue">Fortsæt</string>

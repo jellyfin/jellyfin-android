@@ -94,7 +94,6 @@
     <string name="pref_exoplayer_remember_brightness">Se souvenir de la luminosité</string>
     <string name="video_player_integrated">Lecteur integré</string>
     <string name="playback_info_stream_unknown_title">Titre inconnu</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Empêcher le transcodage et afficher les sous-titres avec un style de base uniquement. Le style de sous-titre avancé ne sera pas disponible s\'il est activé.</string>
     <string name="menu_item_auto">Automatique</string>
     <string name="pref_exoplayer_direct_play_ass">Autoriser les sous-titres SSA/ASS en lecture directe</string>
     <string name="pref_subtitle_style">Personnaliser le style des sous-titres</string>

@@ -107,7 +107,6 @@
     <string name="bluetooth_permission_message">Untuk mendeteksi headphone wireless atau speaker saat tidak tersambung, aplikasi membutuhkan akses Bluetooth. Di android, perizinan ini di desckripsikan sebagai \"Akses ke perangkat sekitar\", dan memberitahu bahwa Bluetooth dapat di akses di lokasi sekarang. Akan tetapi, Jellyfin tidak akan menggunakan perizinan ini untuk mendeteksi lokasimu.</string>
     <string name="wifi_only_summary">Media akan di unduk hanya menggunakan WiFi saja</string>
     <string name="mobile_data_summary">Media akan di unduh melewati WiFi dan Jaringan Data Seluler</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Mencegah transkode dan menampilkan subtitle dengan style standar. Style subtitle lanjutan tidak akan tersedia jika diaktifkan</string>
     <string name="mobile_data_and_roaming_summary">Media akan di unduh dengan Wifi, Data Seluler dan Jaringan Roaming</string>
     <string name="downloads">Semua pengunduhan</string>
     <string name="failed_network_method_check">Silahkan periksametode pengunduhan yang diijinkan untuk anda</string>

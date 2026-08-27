@@ -22,7 +22,6 @@
     <string name="external_player_not_supported_yet">चयनित बाहरी प्लेयर में प्लेबैक ट्रैकिंग अभी तक समर्थित नहीं है। इसका समर्थन जोड़ने का प्रयास करने के लिए डेवलपर्स से संपर्क करें।</string>
     <string name="video_player_web_description">Web UI से डिफ़ॉल्ट HTML वीडियो प्लेयर</string>
     <string name="video_player_native_description">ExoPlayer पर आधारित, अधिक वीडियो फॉर्मेट और codecs का समर्थन करता है, और ओएस में अधिक एकीकृत है</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">ट्रांसकोडिंग रोकें और केवल मूल स्टाइलिंग के साथ उपशीर्षक दिखाएं। सक्षम होने पर एडवांस्ड उपशीर्षक स्टाइलिंग उपलब्ध नहीं होगी।</string>
     <string name="dialog_button_close_app">ऐप बंद करें</string>
     <string name="dialog_button_open_settings">सेटिंग खोलें</string>
     <string name="dialog_button_check_for_updates">अपडेट की जांच करें</string>

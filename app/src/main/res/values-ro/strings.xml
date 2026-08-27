@@ -101,7 +101,6 @@
     <string name="menu_item_hardware_decoding">Decodare Hardware</string>
     <string name="player_error_unspecific_exception">A apărut o problemă cu player-ul</string>
     <string name="pref_exoplayer_direct_play_ass">Permite subtitrări SSA/ASS în redarea directă</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Previne transcodare și afișează subtitrările doar cu styling de bază. Styling-ul avansat de subtitrări nu va fi valabil dacă această opțiune este pornită.</string>
     <string name="button_use_different_server">Folosiți un alt server</string>
     <string name="menu_item_software_decoding">Decodare Software</string>
     <string name="bluetooth_permission_message">Pentru a detecta când căștile sau difuzoarele fără fir sunt deconectate, aplicația necesită acces la Bluetooth. Pe Android, această permisiune este descrisă ca acces la dispozitivele din apropiere și avertizează că dispozitivele Bluetooth pot fi folosite pentru a deduce locația curentă. Cu toate acestea, aplicația Jellyfin nu va folosi niciodată această permisiune pentru a vă detecta locația.</string>
@@ -156,8 +155,8 @@
     <string name="download_remove_keep_local">Păstrați fișierele locale</string>
     <plurals name="download_remove_description">
         <item quantity="one">Doriți să eliminați %1$s din descărcări?</item>
-        <item quantity="few"></item>
-        <item quantity="other"></item>
+        <item quantity="few"/>
+        <item quantity="other"/>
     </plurals>
     <string name="download_incomplete">Descărcarea incompletă</string>
     <string name="download_settings_dialog_title">Alegeți locația de descărcare</string>

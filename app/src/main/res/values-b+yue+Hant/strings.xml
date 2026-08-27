@@ -93,7 +93,6 @@
     <string name="pref_exoplayer_allow_background_audio">背景音訊播放</string>
     <string name="pref_exoplayer_allow_background_audio_summary">允許喺背景播放影片（僅限音訊）</string>
     <string name="pref_exoplayer_direct_play_ass">直接播放嗰陣允許 SSA/ASS 字幕</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">防止轉碼並僅以基本樣式顯示字幕。啟用後將無法使用高級字幕樣式。</string>
     <string name="external_player_app">外部播放器應用程式</string>
     <string name="external_player_mpv">MPV 播放器</string>
     <string name="external_player_mpv_description">一款簡單、輕量、細小且自由開源嘅影片播放器。支援多種唔同嘅媒體檔案格式。</string>

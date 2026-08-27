@@ -116,7 +116,6 @@
     <string name="pref_exoplayer_allow_press_speed_up_summary">Palieskite ir palaikykite ekraną, kad laikinai pagreitintumėte atkūrimą</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Leisti atkurti vaizdo įrašus fone naudojant tik garsą</string>
     <string name="pref_exoplayer_direct_play_ass">Leisti naudoti SSA/ASS subtitrus tiesioginio rodymo metu</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Neleisti transkoduoti ir rodyti tik pagrindinio stiliaus subtitrus. Jei įjungta, išplėstinis subtitrų stilius nebus prieinamas.</string>
     <string name="pref_subtitle_style">Pritaikyti subtitrų stilių</string>
     <string name="pref_subtitle_style_summary">Subtitrų stilių galite pakeisti Android nustatymuose</string>
     <string name="view_downloads">Peržiūrėti atsisiuntimus</string>

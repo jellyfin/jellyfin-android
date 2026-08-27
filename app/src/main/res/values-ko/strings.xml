@@ -106,7 +106,6 @@
     <string name="player_error_unspecific_exception">플레이어에 문제가 발생했습니다</string>
     <string name="menu_item_hardware_decoding">하드웨어 디코딩</string>
     <string name="button_use_different_server">다른 서버 사용</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">트랜스코딩을 억제하고 기본 서식만을 사용해 자막을 보여줍니다. 활성화하면 고급 자막 서식은 사용할 수 없게 됩니다.</string>
     <string name="wifi_only_summary">미디어 다운로드에 WiFi 만 사용합니다.</string>
     <string name="mobile_data_summary">미디어 다운로드에 WiFi와 모바일 네트워크를 사용합니다.</string>
 </resources>

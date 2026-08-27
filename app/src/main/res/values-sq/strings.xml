@@ -106,7 +106,6 @@
     <string name="bluetooth_permission_continue">Vazhdo</string>
     <string name="playback_info_stream_unknown_title">i/e panjohur</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Luaj videot në modalitetin landscape me orientim landscape</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Parandalo transkodimin dhe shfaq titrat vetëm me stilim bazë. Stilimi i avancuar i titrave nuk do të jetë i disponueshëm nëse kjo veçori është e aktivizuar.</string>
     <string name="pref_subtitle_style_summary">Mund ta ndryshosh stilin e titrave në cilësimet e Android-it</string>
     <string name="pref_subtitle_style">Përshtat stilin e titrave</string>
     <string name="bluetooth_permission_message">Për të gjetur kur shkëputen kufjet ose altoparlantët wireless, aplikacioni kërkon akses në Bluetooth. Në Android, kjo leje përshkruhet si akses në pajisjet afër dhe paralajmëron se pajisjet Bluetooth mund të përdoren për të përcaktuar vendndodhjen aktuale. Megjithatë, aplikacioni Jellyfin nuk do ta përdorë kurrë këtë leje për të zbuluar vendndodhjen tënde.</string>

@@ -96,7 +96,6 @@
     <string name="pref_exoplayer_allow_background_audio">Арын дуу</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Видео ард дууны горимоор тоглуулахыг зөвшөөрөх</string>
     <string name="pref_exoplayer_direct_play_ass">Direct Play-д SSA/ASS хадмалыг зөвшөөрөх</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Хувиргалтыг хориглож, дэд гарчгийг зөвхөн энгийн хэв маягаар харуулах. Идэвхжүүлсэн тохиолдолд дэвшилтэт дэд гарчгийн хэв маяг ашиглах боломжгүй.</string>
     <string name="external_player_app">Гадаад тоглуулагч апп</string>
     <string name="external_player_mpv">MPV тоглуулагч</string>
     <string name="external_player_mpv_description">Энгийн, жижиг, хөнгөн, үнэгүй (эрх чөлөөгөөр) видео тоглуулагч. Олон төрлийн медиа файлын форматыг дэмждэг.</string>

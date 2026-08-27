@@ -93,7 +93,6 @@
     <string name="pref_exoplayer_remember_brightness">Recorda la brillantor de la pantalla</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Permet la reproducció de vídeos en segon pla només amb àudio</string>
     <string name="pref_exoplayer_direct_play_ass">Permet subtítols SSA/ASS en reproducció directa</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Evita la transcodificació i mostra només subtítols amb un estil bàsic. L\'estil avançat dels subtítols no estarà disponible si s\'activa aquesta opció.</string>
     <string name="external_player_mpv_description">Un reproductor de vídeo lliure, simple, petit i lleuger. Admet una gran varietat de formats de fitxers multimèdia.</string>
     <string name="external_player_mx_player_free">MX Player lliure</string>
     <string name="external_player_mx_player_free_description">Reproductor de vídeo potent amb acceleració de maquinari avançada i suport per a subtítols.</string>
