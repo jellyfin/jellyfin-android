@@ -172,4 +172,5 @@
     <string name="download_location_inaccessible">Ubicació de descàrrega inaccessible</string>
     <string name="download_location_not_set_description">Per a descarregar contingut multimèdia, seleccioneu un directori on desar els fitxers.</string>
     <string name="download_location_inaccessible_description">No s\'ha pogut accedir a la ubicació seleccionada de descàrrega. Trieu un directori nou per a reprendre les descàrregues.</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Fa servir la renderització experimental de subtítols del costat del client, pot no funcionar sempre</string>
 </resources>
