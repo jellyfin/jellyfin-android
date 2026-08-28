@@ -154,4 +154,8 @@
         <item quantity="many">Выдаліць спампоўкі</item>
         <item quantity="other">Выдаліць спампоўкі</item>
     </plurals>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Гарызантальныя жэсты</string>
+    <string name="select_folder">Выберыце папку</string>
+    <string name="select_all">Выбраць усе</string>
+    <string name="selected_count">Выбрана %1$d</string>
 </resources>
