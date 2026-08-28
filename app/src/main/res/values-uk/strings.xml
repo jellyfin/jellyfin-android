@@ -175,4 +175,5 @@
     <string name="download_location_not_set_description">Щоб завантажити медіафайли, виберіть папку, у якій мають зберігатися файли.</string>
     <string name="download_location_inaccessible">Місце для завантаження недоступне</string>
     <string name="download_location_inaccessible_description">Вибране місце для завантаження більше недоступне. Будь ласка, виберіть іншу папку, щоб відновити завантаження.</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Використовувати експериментальний клієнтський рендеринг субтитрів, може працювати не завжди</string>
 </resources>
