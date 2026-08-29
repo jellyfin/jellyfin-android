@@ -176,4 +176,5 @@
     <string name="download_location_not_set_description">Ak chcete sťahovať médiá, vyberte priečinok, do ktorého sa majú súbory uložiť.</string>
     <string name="download_location_inaccessible">Umiestnenie sťahovania nie je dostupné</string>
     <string name="download_location_inaccessible_description">Vybrané umiestnenie sťahovania už nie je dostupné. Ak chcete pokračovať v sťahovaní, vyberte iný priečinok.</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Použiť experimentálne vykresľovanie titulkov na strane klienta. Nemusí vždy fungovať spoľahlivo</string>
 </resources>
