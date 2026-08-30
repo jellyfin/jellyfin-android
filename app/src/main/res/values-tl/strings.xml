@@ -50,4 +50,5 @@
     <string name="media_service_unknown_page">Hindi kilalang pahina</string>
     <string name="notification_action_stop">Itigil</string>
     <string name="player_error_invalid_play_options">Hindi masolusyonan ang impormasyon sa pag-playback</string>
+    <string name="player_error_unsupported_content">Hindi maaaring i-play ng device na ito ang media</string>
 </resources>
