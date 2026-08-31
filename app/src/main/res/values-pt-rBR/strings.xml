@@ -172,4 +172,5 @@
     <string name="download_location_not_set_description">Para fazer o download, selecione uma pasta para salvar os arquivos.</string>
     <string name="download_location_inaccessible">Não foi possível acessar o local de download.</string>
     <string name="download_location_inaccessible_description">O local de download está inacessível. Selecione outra pasta para retomar os downloads.</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Usar renderização experimental de legendas do lado do cliente, pode nem sempre funcionar</string>
 </resources>
