@@ -174,4 +174,5 @@
         <item quantity="many">Ar norite pašalinti %1$d atsisiuntimų?</item>
         <item quantity="other">Ar norite pašalinti %1$d atsisiuntimų?</item>
     </plurals>
+    <string name="pref_exoplayer_direct_play_ass_description">Naudoti eksperimentinį subtitrų atvaizdavimą kliento pusėje, gali ne visada veikti</string>
 </resources>
