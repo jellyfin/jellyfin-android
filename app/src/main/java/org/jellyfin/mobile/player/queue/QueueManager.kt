@@ -93,6 +93,9 @@ class QueueManager(
             true -> playOptions.mediaSourceId?.let {
                 startDownloadPlayback(
                     itemId = itemId,
+                    startTime = playOptions.startPosition,
+                    audioStreamIndex = playOptions.audioStreamIndex,
+                    subtitleStreamIndex = playOptions.subtitleStreamIndex,
                     playWhenReady = true,
                 )
             }
@@ -128,6 +131,8 @@ class QueueManager(
         val mainFile = files.find { it.type == DownloadFileType.ITEM } ?: return PlayerException.NetworkFailure()
 
         val mediaSource = LocalJellyfinMediaSource(
+            serverId = download.serverId,
+            userId = download.userId,
             itemId = download.itemId,
             item = download.item,
             sourceInfo = download.item.mediaSources!!.first(),
