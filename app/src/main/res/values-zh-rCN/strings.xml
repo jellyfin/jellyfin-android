@@ -168,4 +168,5 @@
     <string name="download_location_not_set_description">如需下载媒体，请选择用于存储媒体文件的文件夹。</string>
     <string name="download_location_inaccessible">无法访问下载地址</string>
     <string name="download_location_inaccessible_description">当前选择的下载位置已无法访问。请选择其他文件夹以继续下载。</string>
+    <string name="pref_exoplayer_direct_play_ass_description">使用实验性的客户端字幕渲染，可能并非始终有效</string>
 </resources>
