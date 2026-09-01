@@ -20,7 +20,7 @@
     <string name="media_service_unknown_page">Ókend síða</string>
     <string name="media_service_auth_expired">Vinaliga lat appina upp á tíni telefon til tess at rita inn á tín Jellyfin ambætara.</string>
     <string name="media_service_car_section_favorites">Yndis</string>
-    <string name="media_service_car_section_albums">Plátuútgávur</string>
+    <string name="media_service_car_section_albums">Tónleikaútgávur</string>
     <string name="media_service_car_section_audiobooks">Ljóðbøkur</string>
     <string name="media_service_car_section_artists">Tónlistafólk</string>
     <string name="media_service_car_section_songs">Sangir</string>
