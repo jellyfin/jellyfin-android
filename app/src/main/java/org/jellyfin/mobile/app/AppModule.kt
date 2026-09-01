@@ -37,6 +37,7 @@ import org.jellyfin.mobile.downloads.FileDownloader
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayerEvent
+import org.jellyfin.mobile.sync.PlaybackSyncManager
 import org.jellyfin.mobile.player.mediasegments.MediaSegmentRepository
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
 import org.jellyfin.mobile.player.source.MediaSourceResolver
@@ -186,4 +187,5 @@ val applicationModule = module {
     single { DownloadNotificationManager(get()) }
     single { DownloadQueue(get(), get(), get(), get(), get(), get()) }
     single { FileDownloader(get()) }
+    single { PlaybackSyncManager(get(), get(), get(), get()) }
 }
