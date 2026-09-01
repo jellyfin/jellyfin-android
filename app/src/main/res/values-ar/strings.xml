@@ -182,4 +182,5 @@
         <item quantity="many">حذف عدة ملفات تحميل</item>
         <item quantity="other">حذف ملفات تجميل اخرى</item>
     </plurals>
+    <string name="pref_exoplayer_direct_play_ass_description">استخدم التصيير التجريبي للترجمات, قد لا يعمل دائما</string>
 </resources>
