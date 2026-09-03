@@ -168,4 +168,5 @@
     <string name="download_location_not_set_description">Để tải xuống các tệp đa phương tiện, vui lòng chọn thư mục nơi bạn muốn lưu trữ chúng.</string>
     <string name="download_location_inaccessible">Vị trí tải xuống không thể truy cập</string>
     <string name="download_location_inaccessible_description">Vị trí tải xuống đã chọn không còn truy cập được. Vui lòng chọn thư mục khác để tiếp tục tải xuống.</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Sử dụng tính năng hiển thị phụ đề thử nghiệm phía máy khách, có thể không phải lúc nào cũng hoạt động</string>
 </resources>
