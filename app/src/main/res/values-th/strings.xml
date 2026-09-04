@@ -22,7 +22,7 @@
     <string name="mobile_data_and_roaming">ข้อมูลมือถือและเครือข่ายโรมมิ่ง</string>
     <string name="mobile_data">ข้อมูลมือถือ</string>
     <string name="wifi_only">WiFi เท่านั้น</string>
-    <string name="network_message">คุณต้องการอนุญาตให้ดาวน์โหลดผ่านข้อมูลมือถือหรือเครือข่ายโรมมิ่งหรือไม่? Charges from your provider may apply.</string>
+    <string name="network_message">คุณต้องการอนุญาตให้ดาวน์โหลดผ่านข้อมูลมือถือหรือเครือข่ายโรมมิ่งหรือไม่? อาจมีค่าใช้จ่ายเพิ่มเติมจากผู้ให้บริการของคุณ คุณสามารถเปลี่ยนตัวเลือกนี้ได้ในภายหลังจากการตั้งค่า</string>
     <string name="network_title">ประเภทเครือข่ายที่อนุญาต</string>
     <string name="battery_optimizations_message">โปรดปิดการใช้งานการเพิ่มประสิทธิภาพแบตเตอรี่เพื่อเล่นสื่อในขณะที่หน้าจอปิดอยู่</string>
     <string name="connect_button_text">เชื่อมต่อ</string>
@@ -83,4 +83,10 @@
     <string name="toast_reopen_after_change">โปรดออกแอปเข้าใหม่อีกครั้งหลังจากการเปลี่ยนแปลง</string>
     <string name="dialog_button_ignore">ไม่สนใจ</string>
     <string name="dialog_button_open_settings">เปิดการตั้งค่า</string>
+    <string name="button_use_different_server">ใช้เซิร์ฟเวอร์อื่น</string>
+    <string name="bluetooth_permission_title">อนุญาตให้เข้าถึงผ่านบลูทูธหรือไม่?</string>
+    <string name="bluetooth_permission_message">ในการตรวจจับเมื่อหูฟังหรือลำโพงไร้สายถูกตัดการเชื่อมต่อ แอปจำเป็นต้องเข้าถึงบลูทูธ บนระบบ Android การอนุญาตนี้จะถูกอธิบายว่าเป็นสิทธิ์ในการเข้าถึงอุปกรณ์ใกล้เคียง และมีคำเตือนว่าอุปกรณ์บลูทูธสามารถใช้เพื่อคาดเดาตำแหน่งปัจจุบันได้ อย่างไรก็ตาม แอป Jellyfin จะไม่ใช้สิทธิ์นี้เพื่อตรวจจับตำแหน่งของคุณ</string>
+    <string name="bluetooth_permission_continue">ดำเนินการต่อ</string>
+    <string name="bluetooth_permission_granted">ได้รับอนุญาตการใช้งานบลูทูธแล้ว</string>
+    <string name="wifi_only_summary">สื่อต่างๆ จะถูกดาวน์โหลดผ่าน Wi-Fi เท่านั้น</string>
 </resources>
