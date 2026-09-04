@@ -88,5 +88,10 @@
     <string name="bluetooth_permission_message">ในการตรวจจับเมื่อหูฟังหรือลำโพงไร้สายถูกตัดการเชื่อมต่อ แอปจำเป็นต้องเข้าถึงบลูทูธ บนระบบ Android การอนุญาตนี้จะถูกอธิบายว่าเป็นสิทธิ์ในการเข้าถึงอุปกรณ์ใกล้เคียง และมีคำเตือนว่าอุปกรณ์บลูทูธสามารถใช้เพื่อคาดเดาตำแหน่งปัจจุบันได้ อย่างไรก็ตาม แอป Jellyfin จะไม่ใช้สิทธิ์นี้เพื่อตรวจจับตำแหน่งของคุณ</string>
     <string name="bluetooth_permission_continue">ดำเนินการต่อ</string>
     <string name="bluetooth_permission_granted">ได้รับอนุญาตการใช้งานบลูทูธแล้ว</string>
-    <string name="wifi_only_summary">สื่อต่างๆ จะถูกดาวน์โหลดผ่าน Wi-Fi เท่านั้น</string>
+    <string name="wifi_only_summary">สื่อจะถูกดาวน์โหลดผ่าน Wi-Fi เท่านั้น</string>
+    <string name="mobile_data_summary">สื่อจะถูกดาวน์โหลดผ่าน Wi-Fi และเครือข่ายมือถือ</string>
+    <string name="mobile_data_and_roaming_summary">สื่อจะถูกดาวน์โหลดผ่าน Wi-Fi เครือข่ายมือถือ และเครือข่ายโรมมิ่ง</string>
+    <string name="media_service_unknown_page">ไม่รู้จักหน้านี้</string>
+    <string name="media_service_no_items">ไม่พบรายการ</string>
+    <string name="media_service_auth_expired">โปรดเปิดแอปบนโทรศัพท์ของคุณเพื่อเข้าสู่ระบบเซิร์ฟเวอร์ Jellyfin</string>
 </resources>
