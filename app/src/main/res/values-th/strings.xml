@@ -75,7 +75,7 @@
     <string name="connection_error_unsupported_version_or_product">เวอร์ชันหรือผลิตภัณฑ์ไม่รองรับ</string>
     <string name="connection_error_unable_to_reach_sever">ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้</string>
     <plurals name="connection_error_prefix">
-        <item quantity="other">ลอง %d รายการจากข้อมูลที่ระบุแล้ว แต่ไม่สำเร็จ</item>
+        <item quantity="other">ลองแล้ว %d รายการจากข้อมูลที่ระบุ แต่ไม่สำเร็จ</item>
     </plurals>
     <string name="toast_reopen_after_change">โปรดปิดแล้วเปิดแอปใหม่อีกครั้งหลังจากเปลี่ยนการตั้งค่า</string>
     <string name="dialog_button_ignore">ข้าม</string>
