@@ -48,11 +48,13 @@ import org.jellyfin.mobile.player.mediasegments.MediaSegmentAction
 import org.jellyfin.mobile.player.mediasegments.MediaSegmentRepository
 import org.jellyfin.mobile.player.queue.QueueManager
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
 import org.jellyfin.mobile.player.ui.DecoderType
 import org.jellyfin.mobile.player.ui.DisplayPreferences
 import org.jellyfin.mobile.player.ui.PlayState
 import org.jellyfin.mobile.player.ui.playermenuhelper.PlayerMenuHelper
+import org.jellyfin.mobile.sync.PlaybackSyncManager
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
 import org.jellyfin.mobile.utils.applyDefaultAudioAttributes
@@ -105,6 +107,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private val userApi: UserApi = apiClient.userApi
 
     private val appPreferences: AppPreferences by inject()
+    private val playbackSyncManager: PlaybackSyncManager by inject()
     private val lifecycleObserver = PlayerLifecycleObserver(this)
     private val audioManager: AudioManager by lazy { getApplication<Application>().getSystemService()!! }
     val notificationHelper: PlayerNotificationHelper by lazy { PlayerNotificationHelper(this) }
@@ -328,11 +331,39 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     private fun startProgressUpdates() {
-        if (mediaSourceOrNull != null && mediaSourceOrNull !is RemoteJellyfinMediaSource) return
         progressUpdateJob = viewModelScope.launch {
             while (true) {
                 delay(Constants.PLAYER_TIME_UPDATE_RATE)
-                playerOrNull?.reportPlaybackState()
+                when (val mediaSource = mediaSourceOrNull) {
+                    is RemoteJellyfinMediaSource -> playerOrNull?.reportPlaybackState()
+                    is LocalJellyfinMediaSource -> {
+                        val player = playerOrNull
+                        if (player != null && player.playbackState != Player.STATE_ENDED) {
+                            val playbackPosition = player.currentPosition.milliseconds
+                            val positionTicks = playbackPosition.inWholeTicks
+                            // Report progress directly to the server when online, fall back to
+                            // local recording when the server is unreachable
+                            val synced = playbackSyncManager.reportProgress(
+                                serverId = mediaSource.serverId,
+                                userId = mediaSource.userId,
+                                itemId = mediaSource.itemId,
+                                positionTicks = positionTicks,
+                                isPaused = !player.isPlaying,
+                            )
+                            if (!synced) {
+                                playbackSyncManager.recordPlayback(
+                                    serverId = mediaSource.serverId,
+                                    userId = mediaSource.userId,
+                                    itemId = mediaSource.itemId,
+                                    positionTicks = positionTicks,
+                                    runTimeTicks = mediaSource.runTime.inWholeTicks,
+                                    isFinished = false,
+                                )
+                            }
+                        }
+                    }
+                    null -> Unit
+                }
             }
         }
     }
@@ -473,41 +504,74 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     private fun reportPlaybackStop() {
-        val mediaSource = mediaSourceOrNull as? RemoteJellyfinMediaSource ?: return
+        val mediaSource = mediaSourceOrNull ?: return
         val player = playerOrNull ?: return
+        // An item counts as finished only when the player reaches the end state; the server
+        // decides the watched state from the reported stop position (see UpdatePlayState).
         val hasFinished = player.playbackState == Player.STATE_ENDED
         val lastPositionTicks = when {
             hasFinished -> mediaSource.runTime.inWholeTicks
             else -> player.currentPosition.milliseconds.inWholeTicks
         }
 
-        // viewModelScope may already be cancelled at this point, so we need to fallback
-        CoroutineScope(Dispatchers.Main).launch {
-            try {
-                // Report stopped playback
-                withContext(Dispatchers.IO) {
-                    playStateApi.reportPlaybackStopped(
-                        PlaybackStopInfo(
-                            itemId = mediaSource.itemId,
-                            positionTicks = lastPositionTicks,
-                            playSessionId = mediaSource.playSessionId,
-                            liveStreamId = mediaSource.liveStreamId,
-                            failed = false,
-                        ),
-                    )
-                }
+        when (mediaSource) {
+            is RemoteJellyfinMediaSource -> {
+                // viewModelScope may already be cancelled at this point, so we need to fallback
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        // Report stopped playback
+                        withContext(Dispatchers.IO) {
+                            playStateApi.reportPlaybackStopped(
+                                PlaybackStopInfo(
+                                    itemId = mediaSource.itemId,
+                                    positionTicks = lastPositionTicks,
+                                    playSessionId = mediaSource.playSessionId,
+                                    liveStreamId = mediaSource.liveStreamId,
+                                    failed = false,
+                                ),
+                            )
+                        }
 
-                // Mark video as watched if playback finished
-                if (hasFinished) {
-                    withContext(Dispatchers.IO) {
-                        playStateApi.markPlayedItem(itemId = mediaSource.itemId)
+                        // Mark video as watched if playback finished
+                        if (hasFinished) {
+                            withContext(Dispatchers.IO) {
+                                playStateApi.markPlayedItem(itemId = mediaSource.itemId)
+                            }
+                        }
+
+                        // Stop active encoding if transcoding
+                        stopTranscoding(mediaSource)
+                    } catch (e: ApiClientException) {
+                        Timber.e(e, "Failed to report playback stop")
                     }
                 }
-
-                // Stop active encoding if transcoding
-                stopTranscoding(mediaSource)
-            } catch (e: ApiClientException) {
-                Timber.e(e, "Failed to report playback stop")
+            }
+            is LocalJellyfinMediaSource -> {
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        // Report stop directly when online, queue it for later sync when offline
+                        val synced = playbackSyncManager.reportStopped(
+                            serverId = mediaSource.serverId,
+                            userId = mediaSource.userId,
+                            itemId = mediaSource.itemId,
+                            positionTicks = lastPositionTicks,
+                            isFinished = hasFinished,
+                        )
+                        if (!synced) {
+                            playbackSyncManager.recordPlayback(
+                                serverId = mediaSource.serverId,
+                                userId = mediaSource.userId,
+                                itemId = mediaSource.itemId,
+                                positionTicks = lastPositionTicks,
+                                runTimeTicks = mediaSource.runTime.inWholeTicks,
+                                isFinished = hasFinished,
+                            )
+                            playbackSyncManager.scheduleSync()
+                        }
+                    } catch (e: Exception) {
+                        Timber.e(e, "Failed to record local playback stop")
+                    }
+                }
             }
         }
     }

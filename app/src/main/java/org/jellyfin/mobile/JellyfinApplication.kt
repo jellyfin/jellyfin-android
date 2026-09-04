@@ -5,6 +5,7 @@ import android.webkit.WebView
 import org.jellyfin.mobile.app.apiModule
 import org.jellyfin.mobile.app.applicationModule
 import org.jellyfin.mobile.data.databaseModule
+import org.jellyfin.mobile.sync.PlaybackSyncWorker
 import org.jellyfin.mobile.utils.JellyTree
 import org.jellyfin.mobile.utils.isWebViewSupported
 import org.koin.android.ext.koin.androidContext
@@ -36,6 +37,19 @@ class JellyfinApplication : Application() {
                 apiModule,
                 databaseModule,
             )
+        }
+
+        // Sync any pending offline playback events on app start.
+        // WorkManager handles connectivity constraints internally, so no
+        // separate network callback is needed.
+        schedulePlaybackSync()
+    }
+
+    private fun schedulePlaybackSync() {
+        try {
+            PlaybackSyncWorker.enqueue(this)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to schedule playback sync")
         }
     }
 }
