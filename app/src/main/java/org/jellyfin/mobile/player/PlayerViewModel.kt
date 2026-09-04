@@ -672,6 +672,23 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     /**
+     * Update the media session playback state, including the current playback speed,
+     * so the notification and lock screen extrapolate the position at the correct rate.
+     */
+    private fun updateMediaSessionPlaybackState() {
+        val player = playerOrNull ?: return
+
+        var playbackActions = SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
+        if (queueManager.hasPrevious()) {
+            playbackActions = playbackActions or PlaybackState.ACTION_SKIP_TO_PREVIOUS
+        }
+        if (queueManager.hasNext()) {
+            playbackActions = playbackActions or PlaybackState.ACTION_SKIP_TO_NEXT
+        }
+        mediaSession.setPlaybackState(player, playbackActions)
+    }
+
+    /**
      * Set the playback speed to [speed]
      *
      * @return true if the speed was changed
@@ -682,6 +699,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val parameters = player.playbackParameters
         if (parameters.speed != speed) {
             player.playbackParameters = parameters.withSpeed(speed)
+            updateMediaSessionPlaybackState()
             return true
         }
         return false
@@ -744,14 +762,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         }
 
         // Update media session
-        var playbackActions = SUPPORTED_VIDEO_PLAYER_PLAYBACK_ACTIONS
-        if (queueManager.hasPrevious()) {
-            playbackActions = playbackActions or PlaybackState.ACTION_SKIP_TO_PREVIOUS
-        }
-        if (queueManager.hasNext()) {
-            playbackActions = playbackActions or PlaybackState.ACTION_SKIP_TO_NEXT
-        }
-        mediaSession.setPlaybackState(player, playbackActions)
+        updateMediaSessionPlaybackState()
 
         // Force update playback state and position
         viewModelScope.launch {
