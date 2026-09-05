@@ -761,7 +761,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 }
                 Player.STATE_ENDED -> {
                     reportPlaybackStop()
-                    if (!autoPlayNextEpisodeEnabled || !queueManager.next()) {
+                    val shouldAutoPlayNext = autoPlayNextEpisodeEnabled || (appPreferences.autoPlayNextPart && queueManager.isNextItemSameEpisode())
+                    if (!shouldAutoPlayNext || !queueManager.next()) {
                         releasePlayer()
                     }
                 }
