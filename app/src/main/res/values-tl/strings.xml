@@ -15,7 +15,7 @@
     <string name="media_service_car_section_songs">Mga Kanta</string>
     <string name="media_service_car_section_genres">Mga Genre</string>
     <string name="media_service_car_item_no_title">Walang Pamagat</string>
-    <string name="music_notification_channel">Player pangkanta ng Jellyfin</string>
+    <string name="music_notification_channel">Music Player ng Jellyfin</string>
     <string name="dialog_web_view_not_supported">Hindi man supportado ng WebView</string>
     <string name="button_use_different_server">Gumamit na iba na Server</string>
     <string name="bluetooth_permission_message">para ma detect kapag nag disconnect ang headphones or speakers, kailangang nang app yung Bluetooth access. kapag nasa android, yung bluetooth access naglalagay nang babala na may access sa iba na mnga devices, at baka makita yung lugar mo depende sa device. pero ang Jellyfin hindi man mag gagamit or magtanong nang lugar mo.</string>
@@ -51,4 +51,6 @@
     <string name="notification_action_stop">Itigil</string>
     <string name="player_error_invalid_play_options">Hindi masolusyonan ang impormasyon sa pag-playback</string>
     <string name="player_error_unsupported_content">Hindi maaaring i-play ng device na ito ang media</string>
+    <string name="music_notification_channel_description">Ginagamit para sa mga kontrol sa pag-playback ng musika</string>
+    <string name="notification_action_previous">Nauna</string>
 </resources>
