@@ -12,6 +12,7 @@ import androidx.media3.exoplayer.source.MergingMediaSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.data.dao.DownloadDao
+import org.jellyfin.mobile.data.dao.UserDao
 import org.jellyfin.mobile.downloads.DownloadFileType
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
@@ -23,9 +24,13 @@ import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.player.source.PlaybackDetails
 import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.sdk.api.client.ApiClient
+import org.jellyfin.sdk.api.client.extensions.userLibraryApi
 import org.jellyfin.sdk.api.client.extensions.videosApi
+import org.jellyfin.sdk.api.operations.UserLibraryApi
 import org.jellyfin.sdk.api.operations.VideosApi
+import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.MediaProtocol
 import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.MediaStreamProtocol
@@ -44,6 +49,9 @@ class QueueManager(
 ) : KoinComponent {
     private val apiClient: ApiClient = get()
     private val videosApi: VideosApi = apiClient.videosApi
+    private val userLibraryApi: UserLibraryApi = apiClient.userLibraryApi
+    private val appPreferences: AppPreferences by inject()
+    private val userDao: UserDao by inject()
     private val mediaSourceResolver: MediaSourceResolver by inject()
     private val deviceProfileBuilder: DeviceProfileBuilder by inject()
     private val downloadDao: DownloadDao by inject()
@@ -51,6 +59,8 @@ class QueueManager(
 
     private var currentQueue: List<UUID> = emptyList()
     private var currentQueueIndex: Int = 0
+
+    private val currentSiblingIds = mutableSetOf<UUID>()
 
     private var playbackRetries = 0
     private var lastPlaybackError = 0L
@@ -68,14 +78,23 @@ class QueueManager(
      * @return an error of type [PlayerException] or null on success.
      */
     suspend fun initializePlaybackQueue(playOptions: PlayOptions): PlayerException? {
-        currentQueue = playOptions.ids
-        currentQueueIndex = playOptions.startIndex
-        resetPlaybackFallback()
-
         val itemId = when {
-            currentQueue.isNotEmpty() -> currentQueue[currentQueueIndex]
+            playOptions.ids.isNotEmpty() -> playOptions.ids[playOptions.startIndex]
             else -> playOptions.mediaSourceId?.toUUIDOrNull()
         } ?: return PlayerException.InvalidPlayOptions()
+
+        // Initialize queue and siblings
+        val initialIds = playOptions.ids.toMutableList()
+        if (initialIds.isEmpty()) initialIds.add(itemId)
+
+        currentQueue = initialIds
+        currentQueueIndex = if (playOptions.ids.isNotEmpty()) playOptions.startIndex else 0
+        resetPlaybackFallback()
+
+        // Populate siblings and expand queue if it's a multi-part
+        if (appPreferences.autoPlayNextPart) {
+            refreshSiblingIds(itemId)
+        }
 
         when (playOptions.playFromDownloads) {
             true -> playOptions.mediaSourceId?.let {
@@ -151,6 +170,10 @@ class QueueManager(
         enableDirectPlay: Boolean? = null,
         enableDirectStream: Boolean? = null,
     ): PlayerException? {
+        if (appPreferences.autoPlayNextPart) {
+            refreshSiblingIds(itemId)
+        }
+
         mediaSourceResolver.resolveMediaSource(
             itemId = itemId,
             mediaSourceId = mediaSourceId,
@@ -301,6 +324,74 @@ class QueueManager(
             null -> return false
         }
         return true
+    }
+
+    /**
+     * Checks if the next item in the queue is a part of the same episode or movie as the current item.
+     */
+    fun isNextItemSameEpisode(): Boolean {
+        if (!hasNext()) return false
+        val nextId = currentQueue[currentQueueIndex + 1]
+
+        val isSibling = currentSiblingIds.contains(nextId)
+        Timber.d("Checking if next item %s is a sibling: %b", nextId, isSibling)
+        return isSibling
+    }
+
+    private suspend fun refreshSiblingIds(itemId: UUID) {
+        // If the item is already a known sibling, we don't need to refresh
+        if (currentSiblingIds.contains(itemId)) return
+
+        currentSiblingIds.clear()
+        currentSiblingIds.add(itemId)
+
+        val siblings = getAdditionalParts(itemId)
+        if (siblings.isNotEmpty()) {
+            val siblingIds = siblings.map { it.id }
+            currentSiblingIds.addAll(siblingIds)
+            Timber.d("Found %d siblings for item %s: %s", siblings.size, itemId, siblingIds)
+
+            // Expand the current queue with missing siblings if we are in a single-item or small queue
+            // and the next items aren't already the siblings.
+            // This ensures Part 2, 3 etc are available in the queue.
+            expandQueueWithSiblings(siblingIds)
+        }
+    }
+
+    private fun expandQueueWithSiblings(siblingIds: List<UUID>) {
+        val newQueue = currentQueue.toMutableList()
+        var changed = false
+
+        // Find where to insert siblings (immediately after current item)
+        var insertIndex = currentQueueIndex + 1
+
+        siblingIds.forEach { id ->
+            if (!newQueue.contains(id)) {
+                newQueue.add(insertIndex++, id)
+                changed = true
+            }
+        }
+
+        if (changed) {
+            currentQueue = newQueue
+            Timber.d("Expanded queue with siblings. New size: %d", currentQueue.size)
+        }
+    }
+
+    private suspend fun getAdditionalParts(itemId: UUID): List<BaseItemDto> {
+        val userId = appPreferences.currentUserId?.let {
+            withContext(Dispatchers.IO) {
+                userDao.getUser(it)?.userId
+            }
+        }
+        return try {
+            withContext(Dispatchers.IO) {
+                videosApi.getAdditionalPart(itemId, userId).content.items.orEmpty()
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to fetch additional parts for $itemId")
+            emptyList()
+        }
     }
 
     /**

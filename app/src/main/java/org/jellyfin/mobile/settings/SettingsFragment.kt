@@ -157,6 +157,12 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
             defaultValue = true
         }
+        checkBox(Constants.PREF_AUTO_PLAY_NEXT_PART) {
+            titleRes = R.string.pref_exoplayer_auto_play_next_part
+            summaryRes = R.string.pref_exoplayer_auto_play_next_part_summary
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+            defaultValue = true
+        }
         backgroundAudioPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO) {
             titleRes = R.string.pref_exoplayer_allow_background_audio
             summaryRes = R.string.pref_exoplayer_allow_background_audio_summary
