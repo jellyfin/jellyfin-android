@@ -134,6 +134,9 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
+    private val _playbackSpeed = MutableLiveData<Float>()
+    val playbackSpeed: LiveData<Float> = _playbackSpeed
+
     private val eventLogger = EventLogger()
     private var analyticsCollector = buildAnalyticsCollector()
     private val initialTracksSelected = AtomicBoolean(false)
@@ -144,6 +147,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private var chapterMarkingUpdateJob: Job? = null
     private var skipMediaSegmentUpdateJob: Job? = null
     private var fallbackRetryJob: Job? = null
+    private var liveCatchUpJob: Job? = null
 
     /**
      * Returns the current ExoPlayer instance or null
@@ -365,6 +369,40 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
     private fun stopSkipMediaSegmentUpdates() {
         skipMediaSegmentUpdateJob?.cancel()
+    }
+
+    /**
+     * While a live stream is played back faster than normal speed (e.g. to catch up after seeking behind
+     * the live edge), regularly check how far the current position is from the live edge. Once it gets
+     * close enough, reset the speed to normal instead of letting the player run out of buffer and stall,
+     * mirroring the behavior of other live-streaming clients (e.g. YouTube).
+     */
+    private fun startLiveCatchUpUpdates() {
+        liveCatchUpJob = viewModelScope.launch {
+            while (true) {
+                delay(Constants.LIVE_CATCH_UP_CHECK_INTERVAL_MS)
+                playerOrNull?.resetSpeedIfCaughtUpToLiveEdge()
+            }
+        }
+    }
+
+    private fun stopLiveCatchUpUpdates() {
+        liveCatchUpJob?.cancel()
+    }
+
+    private fun Player.resetSpeedIfCaughtUpToLiveEdge() {
+        if (!isCurrentMediaItemLive || playbackParameters.speed <= 1f) return
+        if (duration == C.TIME_UNSET) return
+
+        // The HLS live streams served by Jellyfin don't expose enough info for ExoPlayer to compute
+        // currentLiveOffset, so use the distance to the end of the live window (the encoder's frontier)
+        // as a proxy for the real live edge: at faster than real-time speed, this shrinks as we catch up.
+        val distanceToEdge = duration - currentPosition
+        if (distanceToEdge in 0..Constants.LIVE_CATCH_UP_EDGE_THRESHOLD_MS) {
+            playbackParameters = playbackParameters.withSpeed(1f)
+            playSpeed = 1f
+            _playbackSpeed.postValue(1f)
+        }
     }
 
     /**
@@ -682,6 +720,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         val parameters = player.playbackParameters
         if (parameters.speed != speed) {
             player.playbackParameters = parameters.withSpeed(speed)
+            _playbackSpeed.value = speed
             return true
         }
         return false
@@ -731,6 +770,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
         // Setup or stop regular progress updates
         if (playbackState == Player.STATE_READY && playWhenReady) {
             startProgressUpdates()
+            startLiveCatchUpUpdates()
             if (!playerMenuHelper?.chapterMarkings?.markings.isNullOrEmpty()) {
                 startChapterMarkingUpdates()
             }
@@ -739,6 +779,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             }
         } else {
             stopProgressUpdates()
+            stopLiveCatchUpUpdates()
             stopChapterMarkingUpdates()
             stopSkipMediaSegmentUpdates()
         }
