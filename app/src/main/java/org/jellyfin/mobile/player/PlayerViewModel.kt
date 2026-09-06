@@ -120,7 +120,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     // ExoPlayer
     private val _player = MutableLiveData<ExoPlayer?>()
     private val _playerState = MutableLiveData<Int>()
-    private val _decoderType = MutableLiveData<DecoderType>()
+    private val _decoderType = MutableLiveData(appPreferences.exoPlayerDecoderType)
     val player: LiveData<ExoPlayer?> get() = _player
     val playerState: LiveData<Int> get() = _playerState
     val decoderType: LiveData<DecoderType> get() = _decoderType
@@ -263,7 +263,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                     DecoderType.HARDWARE -> decoderInfoList.filter(MediaCodecInfo::hardwareAccelerated)
                     DecoderType.SOFTWARE -> decoderInfoList.filterNot(MediaCodecInfo::hardwareAccelerated)
                     else -> decoderInfoList
-                }
+                }.ifEmpty { decoderInfoList }
                 // Update the decoderType based on the first decoder selected
                 filteredDecoderList.firstOrNull()?.let { decoder ->
                     val decoderType = when {
