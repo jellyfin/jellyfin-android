@@ -127,5 +127,16 @@
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="downloaded">Lejupielādēti %1$s</string>
     <string name="stored_videos_in_internal_storage_desc">Video kā filmas un TV šovi tiks turēti aplikācijas iebūvētajā atmiņā. Ļaujot piekļuvi no aplikācijas.</string>
-    <string name="downloading_desc">Lejupielādē %1$d medijus</string>
+    <string name="downloading_desc">Lejupielādē %1$d vienumu(s)</string>
+    <string name="media_service_unknown_page">Nezināma lapa</string>
+    <plurals name="download_remove_title">
+        <item quantity="zero">Noņemt lejupielādes</item>
+        <item quantity="one">Noņemt lejupielādi</item>
+        <item quantity="other">Noņemt lejupielādes</item>
+    </plurals>
+    <plurals name="download_remove_description">
+        <item quantity="zero">Vai tiešām vēlaties noņemt šīs %1$d lejupielādes?</item>
+        <item quantity="one">Vai tiešām vēlaties noņemt \"%2$s\" no lejupielādēm?</item>
+        <item quantity="other">Vai tiešām vēlaties noņemt šīs %1$d lejupielādes?</item>
+    </plurals>
 </resources>
