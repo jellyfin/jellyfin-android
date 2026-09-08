@@ -102,7 +102,6 @@
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Iniciar videos horizontales en orientación horizontal</string>
     <string name="pref_subtitle_style">Personalizar estilo de subtítulos</string>
     <string name="pref_exoplayer_direct_play_ass">Permitir subtítulos SSA/ASS en reproducción directa</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Evitar transcodificar y solo mostrar subtítulos con estilo básico. Estilos avanzados de subtítulos no estarán disponibles si se habilita.</string>
     <string name="pref_subtitle_style_summary">Puedes cambiar el estilo de subtítulos en las configuraciones de Android</string>
     <string name="bluetooth_permission_title">¿Permitir acceso a Bluetooth\?</string>
     <string name="bluetooth_permission_granted">El permiso Bluetooth fue concedido</string>

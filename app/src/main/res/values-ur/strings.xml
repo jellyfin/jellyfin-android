@@ -80,7 +80,6 @@
     <string name="pref_exoplayer_allow_brightness_volume_gesture">چمک (برائٹنس) اور حجم (والیم) کے اشارے</string>
     <string name="pref_exoplayer_allow_background_audio_summary">صرف آڈیو کے ساتھ بیک گراؤنڈ(پس منظر) میں ویڈیوز چلانے کی اجازت دیں</string>
     <string name="pref_exoplayer_direct_play_ass">براہ راست پلے میں ایس ایس اے/اے ایس ایس سب ٹائٹلز کی اجازت دیں</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">ٹرانس کوڈنگ کو روکیں اور صرف بنیادی اسٹائل کے ساتھ سب ٹائٹلز دکھائیں۔ فعال ہونے پر، اعلی درجے کی سب ٹائٹل اسٹائلنگ دستیاب نہیں ہوگی۔</string>
     <string name="external_player_mpv">ایم پی وی پلئیر</string>
     <string name="external_player_mpv_description">ایک سادہ، چھوٹا اور ہلکا پھلکا مفت (جیسا کہ آزادی) ویڈیو پلیئر۔ یہ میڈیا فائل فارمیٹس کی وسیع اقسام کو چلا سکتا ہے۔</string>
     <string name="external_player_mx_player_free">ایم ایکس پلیئر مفت</string>

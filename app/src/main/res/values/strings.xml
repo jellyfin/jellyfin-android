@@ -111,7 +111,7 @@
     <string name="pref_exoplayer_allow_horizontal_gesture">Horizontal gestures</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Allow horizontal gesture control for video seeking</string>
     <string name="pref_exoplayer_direct_play_ass">Allow SSA/ASS subtitles in direct play</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Prevent transcoding and show subtitles with basic styling only. Advanced subtitle styling will not be available if enabled.</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Use experimental client-side subtitle rendering, may not always work</string>
     <string name="pref_exoplayer_network_buffer">Playback buffer size</string>
     <string name="network_buffer_auto">Auto</string>
     <string name="network_buffer_auto_description">Default buffer, suitable for most playback scenarios</string>

@@ -19,8 +19,8 @@
     <string name="media_service_generic_error">Ein villa kom fyri</string>
     <string name="media_service_unknown_page">Ókend síða</string>
     <string name="media_service_auth_expired">Vinaliga lat appina upp á tíni telefon til tess at rita inn á tín Jellyfin ambætara.</string>
-    <string name="media_service_car_section_favorites">Yndis</string>
-    <string name="media_service_car_section_albums">Plátuútgávur</string>
+    <string name="media_service_car_section_favorites">Yndislisti</string>
+    <string name="media_service_car_section_albums">Tónleikaútgávur</string>
     <string name="media_service_car_section_audiobooks">Ljóðbøkur</string>
     <string name="media_service_car_section_artists">Tónlistafólk</string>
     <string name="media_service_car_section_songs">Sangir</string>
@@ -117,7 +117,7 @@
     <string name="pref_music_notification_always_dismissible_summary_on">Fráboðanin kann altíð frávísast, enntá ímeðan spælt verður</string>
     <string name="pref_category_video_player">Kykmyndaspælari</string>
     <string name="pref_video_player_type_title">Kykmyndaspælari</string>
-    <string name="video_player_web_description">Forsetti HTML kykmyndaspælarin í vev-nýtslumarkamótinum</string>
+    <string name="video_player_web_description">Forsetti HTML-kykmyndaspælarin í vevnýtslumarkamótinum</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Nert og hald á skíggjanum fyri at fyribils skunda undir spælingina</string>
     <string name="network_buffer_auto_description">Forsett tippi, hóskandi til flestu spæliumstøður</string>
     <string name="failed_information">Miseydnaðist at útvega upplýsingar um miðilin</string>
@@ -151,7 +151,6 @@
     <string name="external_player_invalid_player">Spælisporing er óvirkt tí at valdi ytri spælarin ikki hevur virkisføri fyri tí.</string>
     <string name="pref_exoplayer_direct_play_ass">Loyv SSA/ASS undirtekstum undir beinleiðis spæling</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Byrja liggjandi kykmyndir í liggjandi støðu</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Hindrar umkoting og vísir undirtekstir uttan víðkað tekstsnið. Er hetta virkt verður tillagað undirtekstasnið ikki brúkt.</string>
     <string name="external_player_mpvkt_description">Ein margmiðlaspælari grundaður á mpv-android ið miðar eftir einum betri nýtslumarkamóti.</string>
     <string name="store_videos_in_internal_storage">Goym kykmyndir í inngoymslu</string>
     <string name="video_player_native_description">Grundaður á ExoPlayer. Hevur virkisføri fyri fleiri kykmyndasniðum og er meira innbygdur í stýrikervið</string>
@@ -169,4 +168,5 @@
     <string name="external_player_vlc_player">VLC Player</string>
     <string name="external_player_mpvkt">mpvKt Player</string>
     <string name="external_player_mpv">MPV Player</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Brúka royndarendurgeving av undirtekstum á hesi viðskiftaraeindini. Hetta riggar ikki neyðturviliga í øllum førum</string>
 </resources>

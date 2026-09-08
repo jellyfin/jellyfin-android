@@ -93,7 +93,6 @@
     <string name="pref_exoplayer_remember_brightness">Recorda la brillantor de la pantalla</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Permet la reproducció de vídeos en segon pla només amb àudio</string>
     <string name="pref_exoplayer_direct_play_ass">Permet subtítols SSA/ASS en reproducció directa</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Evita la transcodificació i mostra només subtítols amb un estil bàsic. L\'estil avançat dels subtítols no estarà disponible si s\'activa aquesta opció.</string>
     <string name="external_player_mpv_description">Un reproductor de vídeo lliure, simple, petit i lleuger. Admet una gran varietat de formats de fitxers multimèdia.</string>
     <string name="external_player_mx_player_free">MX Player lliure</string>
     <string name="external_player_mx_player_free_description">Reproductor de vídeo potent amb acceleració de maquinari avançada i suport per a subtítols.</string>
@@ -143,9 +142,9 @@
     <string name="media_service_invalid_id">Identificador invàlid d\'element</string>
     <string name="media_service_auth_expired">Obriu l\'app del telèfon per a iniciar la sessió al vostre servidor de Jellyfin.</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Desitgeu eliminar %1$s de les descàrregues?</item>
-        <item quantity="many">"Desitgeu eliminar aquestes  %1$d descàrregues?"</item>
-        <item quantity="other">"Desitgeu eliminar aquestes  %1$d descàrregues?"</item>
+        <item quantity="one">Desitgeu eliminar %2$s de les descàrregues?</item>
+        <item quantity="many">Desitgeu eliminar aquestes %1$d descàrregues?</item>
+        <item quantity="other">Desitgeu eliminar aquestes %1$d descàrregues?</item>
     </plurals>
     <string name="download_remove_keep_local">Conserva el/s fitxer/s local/s</string>
     <string name="download_progress">%1$d%%</string>
@@ -173,4 +172,5 @@
     <string name="download_location_inaccessible">Ubicació de descàrrega inaccessible</string>
     <string name="download_location_not_set_description">Per a descarregar contingut multimèdia, seleccioneu un directori on desar els fitxers.</string>
     <string name="download_location_inaccessible_description">No s\'ha pogut accedir a la ubicació seleccionada de descàrrega. Trieu un directori nou per a reprendre les descàrregues.</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Fa servir la renderització experimental de subtítols del costat del client, pot no funcionar sempre</string>
 </resources>

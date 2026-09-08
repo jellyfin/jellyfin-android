@@ -92,7 +92,6 @@
     <string name="pref_exoplayer_start_landscape_video_in_landscape">ল্যান্ডস্কেপ ওরিয়েন্টেশনে ল্যান্ডস্কেপ মোড ভিডিওগুলি চালু করুন</string>
     <string name="pref_exoplayer_allow_background_audio">ব্যাকগ্রাউন্ড অডিও</string>
     <string name="pref_exoplayer_allow_background_audio_summary">শুধুমাত্র অডিও দিয়ে ব্যাকগ্রাউন্ডে ভিডিওগুলি প্লে করার অনুমতি দিন</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">ট্রান্সকোডিং বাদ দিয়ে শুধুমাত্র বেসিক স্টাইলিং সহ সাবটাইটেল দেখান। চালু করা হলে উন্নত সাবটাইটেল স্টাইলিং এবেইলএবল হবে না।</string>
     <string name="external_player_app">এক্সটার্নাল প্লেয়ার এপ</string>
     <string name="external_player_mpv">MPV প্লেয়ার</string>
     <string name="external_player_mpv_description">একটি সহজ, ছোট এবং হালকা মুক্ত(স্বাধীনতা হিসাবে) ভিডিও প্লেয়ার। এটি বিভিন্ন ধরণের মিডিয়া ফাইল ফর্ম্যাট সমর্থন করে।</string>

@@ -66,4 +66,9 @@
     <string name="media_service_car_section_recents">ಇತ್ತೀಚೆಗೆ ಪ್ಲೇ ಮಾಡಿದ್ದು</string>
     <string name="media_service_no_items">ಯಾವುದೇ ಅಂಶಗಳು ಕಂಡುಬರಲಿಲ್ಲ</string>
     <string name="media_service_car_section_favorites">ಇಷ್ಟದ</string>
+    <string name="media_service_unknown_page">ತಿಳಿಯದ ಪುಟ</string>
+    <string name="media_service_auth_expired">ನಿಮ್ಮ ಜೆಲ್ಲಿಫಿನ್ (Jellyfin) ಸರ್ವರ್‌ಗೆ ಸೈನ್ ಇನ್ ಮಾಡಲು, ದಯವಿಟ್ಟು ನಿಮ್ಮ ಫೋನ್‌ನಲ್ಲಿರುವ ಆ್ಯಪ್ ಅನ್ನು ತೆರೆಯಿರಿ.</string>
+    <string name="media_service_invalid_id">ಅಮಾನ್ಯವಾದ ಐಟಂ ಐಡಿ</string>
+    <string name="media_service_car_section_audiobooks">ಆಡಿಯೋ ಪುಸ್ತಕಗಳು</string>
+    <string name="media_service_car_section_playlists">ಪ್ಲೇಲಿಸ್ಟ್‌ಗಳು</string>
 </resources>

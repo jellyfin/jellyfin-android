@@ -85,7 +85,6 @@
     <string name="pref_exoplayer_allow_background_audio">నేపథ్య ఆడియో</string>
     <string name="pref_exoplayer_allow_background_audio_summary">ఆడియో మాత్రమే బ్యాక్‌గ్రౌండ్‌లో వీడియోలను ప్లే చేయడానికి అనుమతించండి</string>
     <string name="pref_exoplayer_direct_play_ass">డైరెక్ట్ ప్లేలో SSA/ASS ఉపశీర్షికలను అనుమతించండి</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">ట్రాన్స్‌కోడింగ్‌ను నిరోధించండి మరియు ప్రాథమిక స్టైలింగ్‌తో మాత్రమే ఉపశీర్షికలను చూపండి. ప్రారంభించబడితే అధునాతన ఉపశీర్షిక స్టైలింగ్ అందుబాటులో ఉండదు.</string>
     <string name="external_player_mpv_description">ఒక సాధారణ, చిన్న మరియు తక్కువ బరువు లేని (స్వేచ్ఛలో వలె) వీడియో ప్లేయర్. ఇది అనేక రకాల మీడియా ఫైల్ ఫార్మాట్‌లకు మద్దతు ఇస్తుంది.</string>
     <string name="external_player_mx_player_free">ఉచిత MX Player</string>
     <string name="external_player_mx_player_free_description">అధునాతన హార్డ్‌వేర్ త్వరణం మరియు ఉపశీర్షిక మద్దతుతో శక్తివంతమైన వీడియో ప్లేయర్.</string>

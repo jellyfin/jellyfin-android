@@ -94,7 +94,6 @@
     <string name="pref_exoplayer_remember_brightness">Se souvenir de la luminosité</string>
     <string name="video_player_integrated">Lecteur integré</string>
     <string name="playback_info_stream_unknown_title">Titre inconnu</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Empêcher le transcodage et afficher les sous-titres avec un style de base uniquement. Le style de sous-titre avancé ne sera pas disponible s\'il est activé.</string>
     <string name="menu_item_auto">Automatique</string>
     <string name="pref_exoplayer_direct_play_ass">Autoriser les sous-titres SSA/ASS en lecture directe</string>
     <string name="pref_subtitle_style">Personnaliser le style des sous-titres</string>
@@ -175,4 +174,5 @@
     <string name="download_location_not_set_description">Pour télécharger des fichiers multimédias, veuillez sélectionner un dossier dans lequel les fichiers doivent être enregistrés.</string>
     <string name="download_location_inaccessible">Emplacement de téléchargement inaccessible</string>
     <string name="download_location_inaccessible_description">L\'emplacement de téléchargement sélectionné n\'est plus accessible. Veuillez choisir un autre dossier pour reprendre les téléchargements.</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Utiliser la fonctionnalité expérimentale de rendu des sous-titres côté client, peut ne pas toujours fonctionner</string>
 </resources>

@@ -32,4 +32,16 @@
     <string name="notification_action_next">Seguinte</string>
     <string name="no">Non</string>
     <string name="skip_media_segment">Saltar</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">Intentado %d candidato para a entrada, sen éxito.</item>
+        <item quantity="other">Intentados %d candidatos para a entrada, sen éxito.</item>
+    </plurals>
+    <plurals name="download_remove_title">
+        <item quantity="one">Eliminar descarga</item>
+        <item quantity="other">Eliminar descargas</item>
+    </plurals>
+    <plurals name="download_remove_description">
+        <item quantity="one">Desexa eliminar \"%2$s\" das súas descargas?</item>
+        <item quantity="other">Desexa eliminar estas %1$d descargas?</item>
+    </plurals>
 </resources>

@@ -1,12 +1,12 @@
 Mediat e tua, sipas kushteve të tua.
 
-Projekti Jellyfin është një server mediatik me kod të hapur dhe softuer pa kosto. Pa tarifa, pa gjurmime, pa axhenda të fshehta. Shkarko serverin tonë falas për të mbledhur gjithë audiot, videot, fotot dhe më shumë në një vend.
+Projekti Jellyfin është një server mediatik me kod të hapur dhe pa kosto. Pa tarifa, pa gjurmime, pa axhenda të fshehta. Shkarko serverin tonë falas për të mbledhur gjithë audiot, videot, fotot dhe më shumë në një vend.
 
 Për të përdorur aplikacionin, duhet të kesh një server Jellyfin të instaluar dhe funksional. Mëso më shumë në <a href="https://jellyfin.org/" target="_blank">jellyfin.org</a>.
 
 Me një server Jellyfin, mund të:
 
-- Shikosh TV dhe emisione të regjistruara nga serveri Jellyfin (kërkohet pajisje/shërbime shtesë)
+- Shikosh Live TV dhe emisione të regjistruara nga serveri Jellyfin (kërkohet pajisje/shërbime shtesë)
 - Transmetosh në një pajisje Chromecast në rrjetin tënd
 - Transmetosh mediat e tua në pajisjen Android
 - Shikosh koleksionin tënd në një ndërfaqe të lehtë për t'u përdorur

@@ -102,7 +102,6 @@
     <string name="menu_item_hardware_decoding">Decodificación con hardware</string>
     <string name="menu_item_software_decoding">Decodificacióon con software</string>
     <string name="pref_subtitle_style_summary">Puedes cambiar el estilo de subtítulos en las configuraciones de Android</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Evitar transcodificar y solo mostrar subtítulos con estilo básico. Estilos avanzados de subtítulos no estarán disponibles si se habilita.</string>
     <string name="pref_subtitle_style">Personalizar estilo de subtítulos</string>
     <string name="bluetooth_permission_title">¿Permitir acceso a Bluetooth\?</string>
     <string name="bluetooth_permission_message">Para detectar la desconexión de audífonos y bocinas, la aplicación requiere acceso al Bluetooth. En Android, este permiso es descrito como acceso a dispositivos cercanos, y advierte que los dispositivos Bluetooth pueden ser usados para inferir la ubicación actual. Sin embargo, Jellifyn nunca usará el permiso para detectar su ubicación.</string>
@@ -156,7 +155,7 @@
     <plurals name="download_remove_title">
         <item quantity="one">Remover descarga</item>
         <item quantity="many">Remover descargas</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="download_remove_keep_local">Cuidar archivos locales</string>
 </resources>

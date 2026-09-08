@@ -94,7 +94,6 @@
     <string name="dialog_button_open_settings">Abrir ajustes</string>
     <string name="menu_item_auto">Automático</string>
     <string name="pref_exoplayer_direct_play_ass">Permitir legendas SSA/ASS em reprodução direta</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Impedir transcodificação e exibir legendas com estilo básico. Estilos avançados para legendas não estarão disponíveis se ativado.</string>
     <string name="pref_subtitle_style">Personalizar estilo de legenda</string>
     <string name="pref_subtitle_style_summary">Você pode alterar o estilo da legenda nas configurações do Android</string>
     <string name="player_error_unspecific_exception">Algo deu errado com o player</string>
@@ -173,4 +172,5 @@
     <string name="download_location_not_set_description">Para fazer o download, selecione uma pasta para salvar os arquivos.</string>
     <string name="download_location_inaccessible">Não foi possível acessar o local de download.</string>
     <string name="download_location_inaccessible_description">O local de download está inacessível. Selecione outra pasta para retomar os downloads.</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Usar renderização experimental de legendas do lado do cliente, pode nem sempre funcionar</string>
 </resources>

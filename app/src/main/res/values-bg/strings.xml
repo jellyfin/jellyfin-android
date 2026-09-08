@@ -115,7 +115,6 @@
     <string name="pref_exoplayer_allow_press_speed_up">Задръжте, за да ускорите</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Докоснете и задръжте екрана, за да ускорите временно възпроизвеждането</string>
     <string name="pref_exoplayer_direct_play_ass">Позволяване на SSA/ASS субтитри при директно възпроизвеждане</string>
-    <string name="pref_exoplayer_direct_play_ass_summary">Предотвратяване на транскодирането и показване на субтитри само с основен стил. Разширеният стил на субтитрите няма да е наличен, ако е активирано.</string>
     <string name="external_player_mpvkt_description">Медиен плейър, базиран на mpv-android, чиято цел е да осигури по-приятен потребителски интерфейс в сравнение с оригинала.</string>
     <string name="thumbnail_desc">Миниатюра</string>
     <string name="pref_subtitle_style_summary">Можете да промените стила на субтитрите в настройките на Android</string>

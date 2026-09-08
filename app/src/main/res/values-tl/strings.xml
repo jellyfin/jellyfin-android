@@ -15,7 +15,7 @@
     <string name="media_service_car_section_songs">Mga Kanta</string>
     <string name="media_service_car_section_genres">Mga Genre</string>
     <string name="media_service_car_item_no_title">Walang Pamagat</string>
-    <string name="music_notification_channel">Player pangkanta ng Jellyfin</string>
+    <string name="music_notification_channel">Music Player ng Jellyfin</string>
     <string name="dialog_web_view_not_supported">Hindi man supportado ng WebView</string>
     <string name="button_use_different_server">Gumamit na iba na Server</string>
     <string name="bluetooth_permission_message">para ma detect kapag nag disconnect ang headphones or speakers, kailangang nang app yung Bluetooth access. kapag nasa android, yung bluetooth access naglalagay nang babala na may access sa iba na mnga devices, at baka makita yung lugar mo depende sa device. pero ang Jellyfin hindi man mag gagamit or magtanong nang lugar mo.</string>
@@ -35,4 +35,22 @@
     <string name="network_title">Pwede na Network Types</string>
     <string name="wifi_only">WiFi lang</string>
     <string name="downloading">nag da-download</string>
+    <plurals name="connection_error_prefix">
+        <item quantity="one">isahan</item>
+        <item quantity="other">maramihan</item>
+    </plurals>
+    <string name="battery_optimizations_message">Mangyaring i-disable ang mga optimization ng baterya para sa pag-playback ng media habang ang screen ay off.</string>
+    <string name="network_message">Nais mo bang payagan ang pag-download na magpatakbo sa mga mobile data o mga roaming network? Maaaring mag-apply ang mga singil mula sa iyong provider. Maaari mong baguhin ang pagpipiliang ito sa ibang pagkakataon mula sa mga setting.</string>
+    <string name="mobile_data_and_roaming">Mobile Data &amp; Roaming</string>
+    <string name="mobile_data_summary">Ang media ay mai-download sa pamamagitan ng WiFi at mga mobile network.</string>
+    <string name="mobile_data_and_roaming_summary">Ida-download ang media sa pamamagitan ng WiFi, mobile at roaming network.</string>
+    <string name="download_no_storage_permission">Hindi mai-download ang mga file nang walang mga pahintulot sa pag-iimbak</string>
+    <string name="media_service_generic_error">May naganap na error</string>
+    <string name="media_service_item_not_found">Hindi mahanap ang item ng media</string>
+    <string name="media_service_unknown_page">Hindi kilalang pahina</string>
+    <string name="notification_action_stop">Itigil</string>
+    <string name="player_error_invalid_play_options">Hindi masolusyonan ang impormasyon sa pag-playback</string>
+    <string name="player_error_unsupported_content">Hindi maaaring i-play ng device na ito ang media</string>
+    <string name="music_notification_channel_description">Ginagamit para sa mga kontrol sa pag-playback ng musika</string>
+    <string name="notification_action_previous">Nauna</string>
 </resources>
