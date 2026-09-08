@@ -173,4 +173,5 @@
     <string name="download_location_not_set_description">Para poder descargar medios, por favor, seleccioné la carpeta donde se deben guardar los archivos.</string>
     <string name="download_location_inaccessible">Ubicación de descarga inaccesible</string>
     <string name="download_location_inaccessible_description">La ubicación de descarga seleccionada ya no es accesible. Por favor, seleccione una carpeta diferente para resumir las descargas.</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Usa renderizado experimental de subtítulos del lado del cliente, puede que no siempre funcione</string>
 </resources>
