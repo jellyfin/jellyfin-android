@@ -56,9 +56,9 @@
     <string name="connect_button_text">Prisijungti</string>
     <string name="choose_server_button_text">Pasirinkite serverį</string>
     <string name="connect_to_server_title">Prisijungti prie serverio</string>
-    <string name="toast_reopen_after_change">Atlikę pakeitimus iš naujo atidarykite programą</string>
+    <string name="toast_reopen_after_change">Atlikę pakeitimus, prašome iš naujo atidaryti programėlę</string>
     <string name="dialog_button_open_settings">Atidaryti nustatymus</string>
-    <string name="dialog_button_close_app">Uždaryti programą</string>
+    <string name="dialog_button_close_app">Uždaryti programėlę</string>
     <string name="dialog_button_check_for_updates">Tikrinti, ar yra atnaujinimų</string>
     <string name="dialog_web_view_outdated_message">Jūsų įrenginyje naudojama WebView realizacija yra pasenusi \nAtnaujinkite ją į suderinamą versiją.</string>
     <string name="dialog_web_view_outdated">WebView pasenęs</string>
@@ -82,14 +82,14 @@
     </plurals>
     <string name="menu_item_hardware_decoding">Aparatūrinis dekodavimas</string>
     <string name="bluetooth_permission_title">Leisti Bluetooth prieigą?</string>
-    <string name="bluetooth_permission_message">Programa reikalauja Bluetooth prieigos, kad atpažinti kada atjungiamos bevielės ausinės ar garsiakalbiai. Android operacinėje sistemoje, tai vadinama prieiga prie artimų įrenginių, bei joje įspėjama, kad Bluetooth įrenginiai gali būti naudojami gauti dabartinę lokaciją. Jellyfin programa niekada nenaudos šios prieigos aptikti lokaciją.</string>
+    <string name="bluetooth_permission_message">Programėlė reikalauja Bluetooth prieigos, kad atpažinti kada atjungiamos bevielės ausinės ar garsiakalbiai. Android operacinėje sistemoje, tai vadinama prieiga prie artimų įrenginių, bei joje įspėjama, kad Bluetooth įrenginiai gali būti naudojami gauti dabartinę lokaciją. Jellyfin programėlė niekada nenaudos šios prieigos aptikti lokaciją.</string>
     <string name="menu_item_auto">Auto</string>
     <string name="video_player_native_description">Remiantis ExoPlayer, palaikoma daugiau vaizdo įrašų formatų ir kodekų, jis labiau integruotas į operacinę sistemą</string>
     <string name="pref_exoplayer_start_landscape_video_in_landscape">Paleisti horizontaliojo režimo vaizdo įrašus horizontalia orientacija</string>
     <string name="external_player_mx_player_pro_description">Mokama MX Player versija, užtikrinanti nepertraukiamą vaizdo įrašų peržiūrą.</string>
     <string name="external_player_vlc_player_description">Nemokamas ir atvirojo kodo kelių platformų multimedijos grotuvas, atkuriantis daugumą multimedijos failų.</string>
     <string name="external_player_mpvkt_description">Žiniatinklio grotuvas, pagrįstas mpv-android, kurio tikslas - sukurti gražesnę naudotojo sąsają, palyginti su originalu.</string>
-    <string name="external_player_app">Išorinio grotuvo programa</string>
+    <string name="external_player_app">Išorinio grotuvo programėlė</string>
     <string name="external_player_mpvkt">mpvKt Player</string>
     <string name="external_player_mx_player_free">MX Player Free</string>
     <string name="failed_thumbnail">Nepavyko atsisiųsti miniatiūros</string>
@@ -106,7 +106,7 @@
     <string name="external_player_mx_player_free_description">Galingas vaizdo įrašų grotuvas su pažangiu aparatiniu pagreitinimu ir subtitrų palaikymu.</string>
     <string name="pref_category_downloads">Atsisiuntimai</string>
     <string name="external_player_vlc_player">VLC grotuvas</string>
-    <string name="video_player_external_description">Išorinės vaizdo įrašų atkūrimo programos, tokios kaip MX Player ir VLC</string>
+    <string name="video_player_external_description">Išorinės vaizdo įrašų atkūrimo programėlės, tokios kaip MX Player ir VLC</string>
     <string name="external_player_mx_player_pro">MX Player Pro</string>
     <string name="external_player_mpv">MPV Player</string>
     <string name="pref_exoplayer_allow_brightness_volume_gesture">Ryškumo ir garsumo gestai</string>
@@ -124,7 +124,7 @@
     <string name="failed_network_method_check">Patikrinkite leidžiamus atsisiuntimo būdus</string>
     <string name="thumbnail_desc">Miniatiūra</string>
     <string name="store_videos_in_internal_storage">Saugoti vaizdo įrašus vidinėje saugykloje</string>
-    <string name="stored_videos_in_internal_storage_desc">Vaizdo įrašai, pvz., filmai ir TV laidos, bus saugomi programos vidinėje atmintyje. Prieiga leidžiama iš programos.</string>
+    <string name="stored_videos_in_internal_storage_desc">Vaizdo įrašai, pavyzdžiui, filmai ir televizijos laidos, bus saugomi vidinėje programėlės atmintyje, suteikiant galimybę juos pasiekti tiesiogiai programėlėje.</string>
     <string name="downloaded">Atsisiųsta %1$s</string>
     <string name="skip_media_segment">Praleisti</string>
     <string name="special_episode">Specialus</string>
