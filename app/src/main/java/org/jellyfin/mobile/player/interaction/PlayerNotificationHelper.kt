@@ -128,6 +128,8 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
             }.build()
 
             nm.notify(VIDEO_PLAYER_NOTIFICATION_ID, notification)
+            // Hand the notification to a foreground service so the process keeps playing while the UI is hidden
+            PlayerService.start(context, notification)
         }
 
         if (receiverRegistered.compareAndSet(false, true)) {
@@ -145,6 +147,7 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
     }
 
     fun dismissNotification() {
+        PlayerService.stop(context)
         notificationManager?.cancel(VIDEO_PLAYER_NOTIFICATION_ID)
         if (receiverRegistered.compareAndSet(true, false)) {
             context.unregisterReceiver(notificationActionReceiver)

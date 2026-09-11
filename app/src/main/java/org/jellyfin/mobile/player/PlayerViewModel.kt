@@ -281,6 +281,8 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             setTrackSelector(trackSelector)
             setAnalyticsCollector(analyticsCollector)
             setLoadControl(loadControl)
+            // Keep the CPU and network available while playing, required for background playback
+            setWakeMode(C.WAKE_MODE_NETWORK)
             setHandleAudioBecomingNoisy(true)
         }.build().apply {
             addListener(this@PlayerViewModel)
