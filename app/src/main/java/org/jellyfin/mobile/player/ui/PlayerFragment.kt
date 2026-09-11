@@ -114,6 +114,9 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         viewModel.decoderType.observe(this) { type ->
             playerMenus?.updatedSelectedDecoder(type)
         }
+        viewModel.playbackSpeed.observe(this) { speed ->
+            playerMenus?.updateSelectedSpeed(speed)
+        }
         viewModel.error.observe(this) { message ->
             val safeMessage = message.ifEmpty { requireContext().getString(R.string.player_error_unspecific_exception) }
             requireContext().toast(safeMessage)
