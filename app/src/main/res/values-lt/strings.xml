@@ -159,7 +159,7 @@
     <string name="download_settings_dialog_title">Pasirinkite atsisiuntimo vietą</string>
     <string name="download_settings_dialog_message">Pasirinkite, kur turėtų būti išsaugota atsisiųsta medija. Pagal numatytuosius nustatymus atsisiuntimai naudoja tik Wi-Fi.</string>
     <string name="select_folder">Pasirinkite aplanką</string>
-    <string name="select_all">Pasirinkti viską</string>
+    <string name="select_all">Pasirinkti visus</string>
     <string name="deselect_all">Atšaukti visų žymėjimą</string>
     <string name="selected_count">Pasirinkta %1$d</string>
     <string name="download_location_not_set">Nėra atsisiuntimo vietos</string>
