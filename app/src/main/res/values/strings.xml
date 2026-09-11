@@ -106,6 +106,8 @@
     <string name="pref_exoplayer_remember_brightness">Remember display brightness</string>
     <string name="pref_exoplayer_allow_press_speed_up">Hold to speed up</string>
     <string name="pref_exoplayer_allow_press_speed_up_summary">Touch and hold the screen to temporarily speed up playback</string>
+    <string name="pref_exoplayer_auto_play_next_part">Automatically play next part</string>
+    <string name="pref_exoplayer_auto_play_next_part_summary">Automatically play the next part of a multi-part episode or movie</string>
     <string name="pref_exoplayer_allow_background_audio">Background audio</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Allow playing videos in the background with audio-only</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Horizontal gestures</string>
