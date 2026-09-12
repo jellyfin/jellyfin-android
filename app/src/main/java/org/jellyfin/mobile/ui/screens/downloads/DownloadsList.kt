@@ -112,7 +112,7 @@ fun DownloadItem(
             Text(
                 text = name,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
+                maxLines = 2,
             )
         },
         icon = {
