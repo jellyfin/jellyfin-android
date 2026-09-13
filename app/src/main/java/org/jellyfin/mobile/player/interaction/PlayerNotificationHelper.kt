@@ -128,7 +128,6 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
             }.build()
 
             nm.notify(VIDEO_PLAYER_NOTIFICATION_ID, notification)
-            // Hand the notification to a foreground service so the process keeps playing while the UI is hidden
             PlayerService.start(context, notification)
         }
 
