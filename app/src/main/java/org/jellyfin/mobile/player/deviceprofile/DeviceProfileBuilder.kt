@@ -66,7 +66,7 @@ class DeviceProfileBuilder(
                         }
                     }
                     is DeviceCodec.Audio -> {
-                        if (audioCodecs.containsKey(mimeType)) {
+                        if (audioCodecs.containsKey(name)) {
                             audioCodecs[name] = audioCodecs[name]!!.mergeCodec(codec)
                         } else {
                             audioCodecs[name] = codec
