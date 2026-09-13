@@ -6,7 +6,7 @@ android-targetSdk = "36"
 
 # Plugins
 android-plugin = "9.4.0"
-kotlin = "2.4.10"
+kotlin = "2.4.20"
 kotlin-ksp = "2.3.12"
 detekt = "1.23.8"
 android-junit5 = "2.0.1"
