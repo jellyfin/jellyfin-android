@@ -144,7 +144,7 @@ class PlayerGestureHelper(
                 val isFastForward = e.x.toInt() > viewCenterX
 
                 // Show ripple effect
-                playerView.foreground?.apply {
+                playerBinding.seekRippleOverlay.foreground?.apply {
                     val left = if (isFastForward) viewCenterX else 0
                     val right = if (isFastForward) viewWidth else viewCenterX
                     setBounds(left, viewCenterY - viewCenterX / 2, right, viewCenterY + viewCenterX / 2)
