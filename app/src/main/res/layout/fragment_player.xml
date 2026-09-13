@@ -10,9 +10,18 @@
         android:id="@+id/player_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:foreground="@drawable/ripple_background"
         app:pause_icon="@drawable/ic_pause_black_42dp"
         app:play_icon="@drawable/ic_play_black_42dp" />
+
+    <!-- Keep seek feedback independent of the player's mouse hover and focus state. -->
+    <View
+        android:id="@+id/seek_ripple_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:focusable="false"
+        android:importantForAccessibility="no"
+        android:foreground="@drawable/ripple_background" />
 
     <FrameLayout
         android:id="@+id/player_overlay"
