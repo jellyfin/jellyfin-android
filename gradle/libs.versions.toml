@@ -55,7 +55,7 @@ playservices = "22.3.1"
 libass-media = "0.5.1"
 
 # Room
-androidx-room = "2.8.4"
+androidx-room = "2.8.5"
 
 # Monitoring
 slf4j-timber = "0.0.4"
