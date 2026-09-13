@@ -281,6 +281,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             setTrackSelector(trackSelector)
             setAnalyticsCollector(analyticsCollector)
             setLoadControl(loadControl)
+            setWakeMode(C.WAKE_MODE_NETWORK)
             setHandleAudioBecomingNoisy(true)
         }.build().apply {
             addListener(this@PlayerViewModel)
