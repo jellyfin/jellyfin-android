@@ -154,13 +154,13 @@
     <plurals name="download_remove_title">
         <item quantity="one">הסר הורדה</item>
         <item quantity="two">הסר הורדות</item>
-        <item quantity="other"/>
+        <item quantity="other">הסר הורדות</item>
     </plurals>
     <string name="download_remove_keep_local">שמירת קבצים מקומיים</string>
     <plurals name="download_remove_description">
-        <item quantity="one">האם ברצונך להסיר \"%2$s\" מההרדות שלך ?</item>
-        <item quantity="two">"האם ברצונך להסיר את %1$d  ההורדות האלה ?"</item>
-        <item quantity="other"/>
+        <item quantity="one">האם ברצונך להסיר את \"%2$s\" מההרדות שלך?</item>
+        <item quantity="two">האם ברצונך להסיר את %1$d ההורדות האלו?</item>
+        <item quantity="other">האם ברצונך להסיר את %1$d ההורדות האלו?</item>
     </plurals>
     <string name="download_incomplete">הורדה מחוסרת</string>
     <string name="download_settings_dialog_title">בחר‬‬‬‫‫‬/י מיקום הורדה</string>
@@ -173,4 +173,7 @@
     <string name="download_location_not_set_description">כדי להוריד מדיה, נא לבחור מיקום בו ישמרו הקבצים.</string>
     <string name="download_location_inaccessible">אין אפשרות לגשת למיקום הורדות זה</string>
     <string name="download_location_inaccessible_description">מיקום ההורדה הנבחר כבר אינו זמין. נא לבחור תיקייה אחרת כדי להמשיך הורדה.</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">מחוות אופקיות</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">לאפשר דילוג בוידאו באמצעות שליטה במחוות אופקיות</string>
+    <string name="pref_exoplayer_direct_play_ass_description">שימוש ברינדור צד­­־לקוח ניסיוני של כתוביות, עשוי לא לעבוד לפעמים</string>
 </resources>
