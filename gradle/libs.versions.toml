@@ -43,7 +43,7 @@ compose-material = "1.12.1"
 compose-material-icons = "1.7.8"
 
 # Network
-jellyfin-sdk = "1.8.12"
+jellyfin-sdk = "1.9.1"
 coil = "3.6.2"
 
 # Media
