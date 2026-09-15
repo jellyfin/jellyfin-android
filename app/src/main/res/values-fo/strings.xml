@@ -72,8 +72,8 @@
     </plurals>
     <string name="download_remove_keep_local">Varðveit fílu(r) á eindini</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Ynskir tú at strika \"%2$s\" frá tínum niðurtøkum?</item>
-        <item quantity="other">Ynskir tú at strika hesar %1$d niðurtøkurnar?</item>
+        <item quantity="one">Vilt tú strika \"%2$s\" frá tínum niðurtøkum?</item>
+        <item quantity="other">Vilt tú strika hesar %1$d niðurtøkurnar?</item>
     </plurals>
     <string name="download_incomplete">Niðurtøka óliðug</string>
     <string name="download_settings_dialog_title">Vel niðurtøkustað</string>
@@ -91,7 +91,7 @@
     <string name="connection_error_unsupported_version_or_product">Ósambærilig útgáva ella ritbúnaður</string>
     <string name="battery_optimizations_message">Vinaliga óvirkja battarí-albøtanina fyri at miðlaspæl við slóktum skíggja ikki verður ávirkað.</string>
     <string name="network_title">Loyvd netsløg</string>
-    <string name="network_message">Ynskir tú at loyva niðurtøkum umvegis farnet ella reikandi farnetum? Hetta kann viðføra øktan kostnað frá tínum veitara. Hetta kann broytast seinni undir stillingum.</string>
+    <string name="network_message">Vilt tú loyva niðurtøkum umvegis farnet ella reikandi farnetum? Hetta kann viðføra øktan kostnað frá tínum veitara. Hetta kann broytast seinni undir stillingum.</string>
     <string name="mobile_data">Farnetsdáta</string>
     <string name="mobile_data_and_roaming">Farnetdáta og reikandi farnetdáta</string>
     <string name="wifi_only_summary">Margmiðlar verða einans niðurtiknir umvegis WiFi.</string>
