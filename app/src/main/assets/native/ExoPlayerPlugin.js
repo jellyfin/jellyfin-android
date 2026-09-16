@@ -27,9 +27,51 @@ export class ExoPlayerPlugin {
         options.ids = options.items.map(item => item.Id);
         delete options.items;
 
+        const preferredTranscodeVideoCodec = typeof this.appSettings.preferredTranscodeVideoCodec === 'function'
+            ? this.appSettings.preferredTranscodeVideoCodec()
+            : null;
+        const preferredTranscodeVideoAudioCodec = typeof this.appSettings.preferredTranscodeVideoAudioCodec === 'function'
+            ? this.appSettings.preferredTranscodeVideoAudioCodec()
+            : null;
+        let preferFmp4HlsContainer = null;
+        if (typeof this.appSettings?.preferFmp4HlsContainer === 'function') {
+            preferFmp4HlsContainer = this.appSettings.preferFmp4HlsContainer();
+        } else if (typeof this.appSettings?.preferFmp4HlsContainer === 'boolean') {
+            preferFmp4HlsContainer = this.appSettings.preferFmp4HlsContainer;
+        } else if (typeof this.appSettings?.preferForHls === 'function') {
+            preferFmp4HlsContainer = this.appSettings.preferForHls();
+        } else if (typeof this.appSettings?.get === 'function') {
+            const val = this.appSettings.get('preferFmp4HlsContainer') ?? this.appSettings.get('preferForHls') ?? this.appSettings.get('preferFmp4Hls');
+            if (typeof val === 'boolean') {
+                preferFmp4HlsContainer = val;
+            } else if (typeof val === 'string') {
+                preferFmp4HlsContainer = val === 'true';
+            }
+        }
+
+        if (preferFmp4HlsContainer === null) {
+            try {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && (key === 'preferFmp4HlsContainer' || key.endsWith('-preferFmp4HlsContainer') || key === 'preferForHls' || key.endsWith('-preferForHls'))) {
+                        const val = localStorage.getItem(key);
+                        if (val !== null) {
+                            preferFmp4HlsContainer = val === 'true';
+                            break;
+                        }
+                    }
+                }
+            } catch (err) {
+                // Ignore security/quota exceptions in restricted web views
+            }
+        }
+
         const preferences = {
             maxStreamingBitrateLocal: this.appSettings.maxStreamingBitrate(true, 'Video'),
             maxStreamingBitrateRemote: this.appSettings.maxStreamingBitrate(false, 'Video'),
+            preferredTranscodeVideoCodec: preferredTranscodeVideoCodec || null,
+            preferredTranscodeVideoAudioCodec: preferredTranscodeVideoAudioCodec || null,
+            preferFmp4HlsContainer: preferFmp4HlsContainer !== null ? preferFmp4HlsContainer : null,
         };
 
         this._paused = false;
