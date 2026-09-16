@@ -99,7 +99,7 @@
     <string name="no">Ne</string>
     <string name="downloading_desc">Atsisiunčiama %1$d pavadinimų</string>
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
-    <string name="host_input_hint">Hostas</string>
+    <string name="host_input_hint">Serveris</string>
     <string name="external_player_system_default_description">Tegul sistema pasirenka leistuvą, nes kai kurie leistuvai gali būti ne iki galo suderinami.</string>
     <string name="external_player_system_default">Sistemos numatytasis</string>
     <string name="pref_download_location">Atsisiuntimo vieta</string>
