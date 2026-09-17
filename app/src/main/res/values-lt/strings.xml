@@ -6,7 +6,7 @@
     <string name="wifi_only">Tik WiFi</string>
     <string name="network_message">Ar norite leisti duomenų siuntimą per mobilius arba tarptinklinius tinklus? Gali būti taikomi teikėjo mokesčiai. Šį nustatymą galėsite pakeisti vėliau.</string>
     <string name="network_title">Leidžiamos tinklo rūšys</string>
-    <string name="battery_optimizations_message">Prašome išjungti baterijos optimizavimą, tam kad medijos atkūrimas veiktų išjungus ekraną.</string>
+    <string name="battery_optimizations_message">Prašome išjungti akumuliatoriaus optimizavimą medijos atkūrimui, kai ekranas išjungtas.</string>
     <string name="activity_name_settings">Jellyfin Nustatymai</string>
     <string name="external_player_unknown_error">Nežinoma išorinio leistuvo klaida. Atkūrimo sekimas išjungtas.</string>
     <string name="external_player_invalid_player">Nepasirinktas tinkamas išorinis leistuvas. Atkūrimo sekimas išjungtas.</string>
