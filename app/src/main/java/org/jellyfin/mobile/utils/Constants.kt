@@ -123,6 +123,8 @@ object Constants {
     const val FULL_SWIPE_RANGE_SCREEN_RATIO = 0.66f
     const val SCREEN_BRIGHTNESS_MAX = 255
     const val HOLD_SPEEDUP_MULTIPLIER = 3f
+    const val LIVE_CATCH_UP_CHECK_INTERVAL_MS = 250L
+    const val LIVE_CATCH_UP_EDGE_THRESHOLD_MS = 3000L // lower measured to reliably stall due to bursty segment delivery
     const val ZOOM_SCALE_BASE = 1f
     const val ZOOM_SCALE_THRESHOLD = 0.01f
     val ASPECT_RATIO_16_9 = Rational(16, 9)
