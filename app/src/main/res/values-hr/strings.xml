@@ -141,4 +141,37 @@
     <string name="pref_exoplayer_network_buffer">Veličina međuspremnika za reprodukciju</string>
     <string name="network_buffer_auto">Automatski</string>
     <string name="network_buffer_auto_description">Zadani međuspremnik, prikladan za većinu scenarija reprodukcije</string>
+    <string name="network_buffer_large">Veliki</string>
+    <string name="network_buffer_large_description">Veći međuspremnik, može pomoći kod umjereno brzih ili nestabilnih veza</string>
+    <string name="network_buffer_extra_large">Vrlo veliki</string>
+    <string name="network_buffer_extra_large_description">Maksimalni međuspremnik, namijenjen sporim ili satelitskim vezama</string>
+    <string name="downloads_empty">Još nema preuzimanja</string>
+    <string name="downloads_empty_description">Filmove i TV serije možete preuzeti i gledati bez internetske veze. Potražite ikonu za preuzimanje na stranici s pojedinostima o sadržaju.</string>
+    <string name="special_episode">Specijal</string>
+    <string name="downloading_title">Preuzimanje: %1$s</string>
+    <string name="download_cancel">Otkaži</string>
+    <string name="download_completed">Preuzimanje dovršeno</string>
+    <string name="download_progress">%1$d%%</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Ukloni preuzimanje</item>
+        <item quantity="few">Ukloni preuzimanja</item>
+        <item quantity="other">Ukloni preuzimanja</item>
+    </plurals>
+    <string name="download_remove_keep_local">Zadrži lokalne datoteke</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Želite li ukloniti „%2$s” iz svojih preuzimanja?</item>
+        <item quantity="few">Želite li ukloniti ova %1$d preuzimanja?</item>
+        <item quantity="other">Želite li ukloniti ovih %1$d preuzimanja?</item>
+    </plurals>
+    <string name="download_incomplete">Preuzimanje nije dovršeno</string>
+    <string name="download_settings_dialog_title">Odaberite mjesto za preuzimanje</string>
+    <string name="download_settings_dialog_message">Odaberite gdje želite spremiti preuzete medijske sadržaje. Preuzimanja prema zadanim postavkama koriste samo Wi-Fi.</string>
+    <string name="select_folder">Odaberi mapu</string>
+    <string name="select_all">Odaberi sve</string>
+    <string name="deselect_all">Poništi odabir svega</string>
+    <string name="selected_count">%1$d odabrano</string>
+    <string name="download_location_not_set">Nije odabrano mjesto za preuzimanje</string>
+    <string name="download_location_not_set_description">Za preuzimanje medijskog sadržaja odaberite mapu u koju želite spremiti datoteke.</string>
+    <string name="download_location_inaccessible">Mjesto za preuzimanje nije dostupno</string>
+    <string name="download_location_inaccessible_description">Odabrano mjesto za preuzimanje više nije dostupno. Odaberite drugu mapu kako biste nastavili preuzimanja.</string>
 </resources>
