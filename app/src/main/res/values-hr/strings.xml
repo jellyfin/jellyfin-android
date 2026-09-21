@@ -131,4 +131,14 @@
     <string name="media_service_unknown_page">Nepoznata stranica</string>
     <string name="media_service_no_items">Nema pronađenih stavki</string>
     <string name="media_service_auth_expired">Otvorite aplikaciju na svom telefonu za prijavu na svoj Jellyfin poslužitelj.</string>
+    <string name="media_service_invalid_id">Neispravan ID stavke</string>
+    <string name="media_service_car_section_favorites">Omiljeni</string>
+    <string name="media_service_car_section_audiobooks">Audioknjige</string>
+    <string name="media_service_car_section_playlists">Popisi za reprodukciju</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Vodoravne geste</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Omogući vodoravne geste za premotavanje videozapisa</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Koristi eksperimentalno iscrtavanje titlova na klijentskoj strani; možda neće uvijek raditi</string>
+    <string name="pref_exoplayer_network_buffer">Veličina međuspremnika za reprodukciju</string>
+    <string name="network_buffer_auto">Automatski</string>
+    <string name="network_buffer_auto_description">Zadani međuspremnik, prikladan za većinu scenarija reprodukcije</string>
 </resources>
