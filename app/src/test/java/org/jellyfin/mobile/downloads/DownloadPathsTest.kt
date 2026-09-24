@@ -77,9 +77,73 @@ class DownloadPathsTest : FunSpec({
         DownloadPaths.forItem(movie(), seriesYear = 1999) shouldBe "Up (2009)"
     }
 
+    fun track(
+        albumArtist: String? = "Radiohead",
+        album: String? = "OK Computer",
+        year: Int? = 1997,
+        disc: Int? = null,
+        track: Int? = 1,
+    ) = BaseItemDto(
+        id = id,
+        type = BaseItemKind.AUDIO,
+        name = "Intro",
+        albumArtist = albumArtist,
+        album = album,
+        productionYear = year,
+        parentIndexNumber = disc,
+        indexNumber = track,
+    )
+
+    test("track goes in artist and album folders") {
+        DownloadPaths.forItem(track(), seriesYear = null) shouldBe "Radiohead/OK Computer (1997)/01 - Intro"
+    }
+
+    test("track with a disc number includes it") {
+        DownloadPaths.forItem(track(disc = 2, track = 3), seriesYear = null) shouldBe
+            "Radiohead/OK Computer (1997)/2-03 - Intro"
+    }
+
+    test("same track number on two discs gets different folders") {
+        DownloadPaths.forItem(track(disc = 1), seriesYear = null) shouldNotBe
+            DownloadPaths.forItem(track(disc = 2), seriesYear = null)
+    }
+
+    test("same-titled tracks on different albums get different folders") {
+        DownloadPaths.forItem(track(album = "Kid A", year = 2000), seriesYear = null) shouldNotBe
+            DownloadPaths.forItem(track(), seriesYear = null)
+    }
+
+    test("track without an album artist uses its first artist") {
+        val item = track(albumArtist = null).copy(artists = listOf("Björk", "Thom Yorke"))
+        DownloadPaths.forItem(item, seriesYear = null) shouldBe "Björk/OK Computer (1997)/01 - Intro"
+    }
+
+    test("track without an album goes straight in the artist folder") {
+        DownloadPaths.forItem(track(album = null), seriesYear = null) shouldBe "Radiohead/01 - Intro"
+    }
+
+    test("track without an artist goes straight in the album folder") {
+        DownloadPaths.forItem(track(albumArtist = ""), seriesYear = null) shouldBe "OK Computer (1997)/01 - Intro"
+    }
+
+    test("track without a number is just its title inside the album") {
+        DownloadPaths.forItem(track(track = null), seriesYear = null) shouldBe "Radiohead/OK Computer (1997)/Intro"
+    }
+
+    test("track without artist or album falls back to its title") {
+        DownloadPaths.forItem(track(albumArtist = null, album = null), seriesYear = null) shouldBe "Intro"
+    }
+
+    test("book and audiobook get their year, like a film") {
+        val book = BaseItemDto(id = id, type = BaseItemKind.BOOK, name = "Dune", productionYear = 1965)
+        val audiobook = BaseItemDto(id = id, type = BaseItemKind.AUDIO_BOOK, name = "Dune", productionYear = 1965)
+        DownloadPaths.forItem(book, seriesYear = null) shouldBe "Dune (1965)"
+        DownloadPaths.forItem(audiobook, seriesYear = null) shouldBe "Dune (1965)"
+    }
+
     test("other item types keep the bare title") {
-        val audio = BaseItemDto(id = id, type = BaseItemKind.AUDIO, name = "Song")
-        DownloadPaths.forItem(audio, seriesYear = null) shouldBe "Song"
+        val musicVideo = BaseItemDto(id = id, type = BaseItemKind.MUSIC_VIDEO, name = "Karma Police")
+        DownloadPaths.forItem(musicVideo, seriesYear = null) shouldBe "Karma Police"
     }
 
     test("item without a name uses its id") {

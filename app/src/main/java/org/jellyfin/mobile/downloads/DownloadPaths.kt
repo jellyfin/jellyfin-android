@@ -8,11 +8,16 @@ import org.jellyfin.sdk.model.api.BaseItemKind
  *
  * This is the only place that knows the folder layout, so changing it means changing only this file:
  *
- * | Item    | Folder                                           |
- * |---------|--------------------------------------------------|
- * | Episode | `Show Name (2008)/Season 01/S01E01 - Pilot`      |
- * | Film    | `Up (2009)`                                      |
- * | Other   | the item's name, as before this layout existed   |
+ * | Item              | Folder                                             |
+ * |-------------------|----------------------------------------------------|
+ * | Episode           | `Show Name (2008)/Season 01/S01E01 - Pilot`        |
+ * | Film              | `Up (2009)`                                        |
+ * | Book, audiobook   | `Dune (1965)`                                      |
+ * | Music track       | `Album Artist/Album (1997)/01 - Title`, or `1-01` with a disc number |
+ * | Other             | the item's name, as before this layout existed     |
+ *
+ * Every download gets a folder of its own, a music track included, because each one also saves its own
+ * `primary.webp` image and deleting a download deletes its folder once it is empty.
  *
  * The result is stored in [org.jellyfin.mobile.data.entity.DownloadEntity.path], with [SEPARATOR] between
  * folders. Downloads made before this layout keep their single-folder path, which is simply a path of one folder.
@@ -31,7 +36,10 @@ object DownloadPaths {
         val fallback = item.id.toString()
         val folders = when (item.type) {
             BaseItemKind.EPISODE -> episodeFolders(item, seriesYear)
-            BaseItemKind.MOVIE -> item.name?.let { name -> listOf(withYear(name, item.productionYear)) }
+            BaseItemKind.MOVIE,
+            BaseItemKind.BOOK,
+            BaseItemKind.AUDIO_BOOK -> item.name?.let { name -> listOf(withYear(name, item.productionYear)) }
+            BaseItemKind.AUDIO -> trackFolders(item)
             else -> null
         } ?: listOf(item.name ?: fallback)
 
@@ -55,6 +63,23 @@ object DownloadPaths {
         val episodeFolder = listOfNotNull(episodeCode, item.name).joinToString(" - ")
 
         return listOf(showFolder, seasonFolder, episodeFolder)
+    }
+
+    private fun trackFolders(item: BaseItemDto): List<String>? {
+        val artist = (item.albumArtist ?: item.artists?.firstOrNull())?.takeIf { it.isNotBlank() }
+        // A track's production year is its album's
+        val album = item.album?.takeIf { it.isNotBlank() }?.let { withYear(it, item.productionYear) }
+
+        // Without either there is nothing to group the track under
+        if (artist == null && album == null) return null
+
+        val trackNumber = item.indexNumber?.let { track ->
+            // With a disc number, "1-01", so track 1 of disc 1 and of disc 2 cannot share a folder
+            item.parentIndexNumber?.let { disc -> "$disc-${twoDigits(track)}" } ?: twoDigits(track)
+        }
+        val trackFolder = listOfNotNull(trackNumber, item.name).joinToString(" - ").ifEmpty { item.id.toString() }
+
+        return listOfNotNull(artist, album, trackFolder)
     }
 
     /** Not `String.format`, which uses the phone's locale and so can produce non-ASCII digits. */
