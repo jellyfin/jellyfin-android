@@ -30,8 +30,8 @@ class DeviceProfileBuilder(
     private val supportedAudioCodecs: Array<Array<String>>
     private val videoCodecsProfiles: Map<String, Set<String>>
     private val maxAvcRawLevel: Int
-
-    private val transcodingProfiles: List<TranscodingProfile>
+    private val hlsFmp4VideoCodecs: List<String>
+    private val hlsFmp4AudioCodecs: List<String>
 
     init {
         require(
@@ -90,35 +90,21 @@ class DeviceProfileBuilder(
         }
         videoCodecsProfiles = videoCodecs.entries.associate { (k, v) -> k to v.profiles }
 
-        transcodingProfiles = listOf(
-            TranscodingProfile(
-                type = DlnaProfileType.VIDEO,
-                container = "ts",
-                videoCodec = "h264",
-                audioCodec = "mp1,mp2,mp3,aac,ac3,eac3,dts,mlp,truehd",
-                protocol = MediaStreamProtocol.HLS,
-                conditions = emptyList(),
-            ),
-            TranscodingProfile(
-                type = DlnaProfileType.VIDEO,
-                container = "mkv",
-                videoCodec = "h264",
-                audioCodec = AVAILABLE_AUDIO_CODECS[SUPPORTED_CONTAINER_FORMATS.indexOf("mkv")].joinToString(","),
-                protocol = MediaStreamProtocol.HLS,
-                conditions = emptyList(),
-            ),
-            TranscodingProfile(
-                type = DlnaProfileType.AUDIO,
-                container = "mp3",
-                videoCodec = "",
-                audioCodec = "mp3",
-                protocol = MediaStreamProtocol.HTTP,
-                conditions = emptyList(),
-            ),
-        )
+        hlsFmp4VideoCodecs = listOf("av1", "hevc", "h264")
+            .filter { it in videoCodecs }
+            .ifEmpty { listOf("h264") }
+
+        val defaultHlsFmp4AudioCodecs = listOf("aac", "mp3", "ac3", "eac3", "opus", "flac", "alac")
+        hlsFmp4AudioCodecs = defaultHlsFmp4AudioCodecs.filter { codec ->
+            audioCodecs.containsKey(codec) || codec in FORCED_AUDIO_CODECS
+        }.ifEmpty { listOf("aac", "mp3") }
     }
 
-    fun getDeviceProfile(): DeviceProfile {
+    fun getDeviceProfile(
+        preferredVideoCodec: String? = null,
+        preferredAudioCodec: String? = null,
+        preferFmp4Hls: Boolean = true,
+    ): DeviceProfile {
         val containerProfiles = ArrayList<ContainerProfile>()
         val directPlayProfiles = ArrayList<DirectPlayProfile>()
         val codecProfiles = ArrayList<CodecProfile>()
@@ -155,6 +141,57 @@ class DeviceProfileBuilder(
             }
         }
 
+        val baseTranscodingProfiles = buildList {
+            if (preferFmp4Hls && hlsFmp4VideoCodecs.isNotEmpty()) {
+                add(
+                    TranscodingProfile(
+                        type = DlnaProfileType.VIDEO,
+                        container = "mp4",
+                        videoCodec = hlsFmp4VideoCodecs.joinToString(","),
+                        audioCodec = hlsFmp4AudioCodecs.joinToString(","),
+                        protocol = MediaStreamProtocol.HLS,
+                        conditions = emptyList(),
+                    ),
+                )
+            }
+            add(
+                TranscodingProfile(
+                    type = DlnaProfileType.VIDEO,
+                    container = "ts",
+                    videoCodec = "h264",
+                    audioCodec = "mp1,mp2,mp3,aac,ac3,eac3,dts,mlp,truehd",
+                    protocol = MediaStreamProtocol.HLS,
+                    conditions = emptyList(),
+                ),
+            )
+            add(
+                TranscodingProfile(
+                    type = DlnaProfileType.VIDEO,
+                    container = "mkv",
+                    videoCodec = "h264",
+                    audioCodec = AVAILABLE_AUDIO_CODECS[SUPPORTED_CONTAINER_FORMATS.indexOf("mkv")].joinToString(","),
+                    protocol = MediaStreamProtocol.HLS,
+                    conditions = emptyList(),
+                ),
+            )
+            add(
+                TranscodingProfile(
+                    type = DlnaProfileType.AUDIO,
+                    container = "mp3",
+                    videoCodec = "",
+                    audioCodec = "mp3",
+                    protocol = MediaStreamProtocol.HTTP,
+                    conditions = emptyList(),
+                ),
+            )
+        }
+
+        val transcodingProfiles = applyCodecPreferences(
+            profiles = baseTranscodingProfiles,
+            preferredVideoCodec = preferredVideoCodec,
+            preferredAudioCodec = preferredAudioCodec,
+        )
+
         val subtitleProfiles = when {
             appPreferences.exoPlayerDirectPlayAss -> {
                 getSubtitleProfiles(EXO_EMBEDDED_SUBTITLES + SUBTITLES_SSA, EXO_EXTERNAL_SUBTITLES + SUBTITLES_SSA)
@@ -173,6 +210,33 @@ class DeviceProfileBuilder(
             maxStaticBitrate = MAX_STATIC_BITRATE,
             musicStreamingTranscodingBitrate = MAX_MUSIC_TRANSCODING_BITRATE,
         )
+    }
+
+    private fun applyCodecPreferences(
+        profiles: List<TranscodingProfile>,
+        preferredVideoCodec: String?,
+        preferredAudioCodec: String?,
+    ): List<TranscodingProfile> {
+        val targetVideo = preferredVideoCodec?.takeUnless { it.isBlank() || it == "auto" }
+        val targetAudio = preferredAudioCodec?.takeUnless { it.isBlank() || it == "auto" }
+
+        if (targetVideo == null && targetAudio == null) return profiles
+
+        return profiles.map { profile ->
+            // only fMP4 supports flexible codec ordering; TS/MKV are fixed
+            if (profile.type != DlnaProfileType.VIDEO || profile.container != "mp4") profile
+            else profile.copy(
+                videoCodec = prioritizeCodec(profile.videoCodec, targetVideo),
+                audioCodec = prioritizeCodec(profile.audioCodec, targetAudio),
+            )
+        }
+    }
+
+    private fun prioritizeCodec(csv: String?, preferred: String?): String {
+        if (csv.isNullOrEmpty() || preferred == null) return csv.orEmpty()
+        val codecs = csv.split(',')
+        if (preferred !in codecs || codecs.first() == preferred) return csv
+        return (listOf(preferred) + (codecs - preferred)).joinToString(",")
     }
 
     private fun generateCodecProfile(
@@ -299,9 +363,9 @@ class DeviceProfileBuilder(
          */
         private val AVAILABLE_AUDIO_CODECS = arrayOf(
             // mp4
-            arrayOf("mp1", "mp2", "mp3", "aac", "alac", "ac3", "opus"),
+            arrayOf("mp1", "mp2", "mp3", "aac", "alac", "ac3", "eac3", "opus", "flac"),
             // fmp4
-            arrayOf("mp3", "aac", "ac3", "eac3"),
+            arrayOf("mp3", "aac", "ac3", "eac3", "opus", "flac", "alac"),
             // webm
             arrayOf("vorbis", "opus"),
             // mkv
