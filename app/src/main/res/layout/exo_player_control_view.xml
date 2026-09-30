@@ -154,7 +154,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="top"
-        app:constraint_referenced_ids="audio_streams_button,subtitles_button,fullscreen_switcher" />
+        app:constraint_referenced_ids="audio_streams_button,subtitles_button,fullscreen_switcher,dlna_button" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/lock_screen_button"
@@ -245,6 +245,18 @@
         android:src="@drawable/ic_fullscreen_enter_white_32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/dlna_button"
+        android:layout_width="@dimen/exo_bottom_controls_size"
+        android:layout_height="@dimen/exo_bottom_controls_size"
+        android:layout_marginBottom="@dimen/exo_bottom_controls_margin"
+        android:background="@drawable/ripple_background_circular"
+        android:contentDescription="@string/dlna_select_device"
+        android:padding="@dimen/exo_bottom_controls_padding"
+        android:src="@drawable/ic_cast_white_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fullscreen_switcher" />
 
     <FrameLayout
         android:id="@+id/trickplay_container"

@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import android.widget.ImageButton
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -29,12 +30,14 @@ import androidx.media3.common.Player
 import androidx.media3.ui.PlayerView
 import io.github.peerless2012.ass.media.AssHandler
 import io.github.peerless2012.ass.media.widget.AssSubtitleView
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
+import org.jellyfin.mobile.dlna.DlnaController
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
 import org.jellyfin.mobile.player.interaction.PlayOptions
@@ -74,6 +77,8 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     private val playerControlsView: View get() = playerControlsBinding.root
     private val toolbar: Toolbar get() = playerControlsBinding.toolbar
     private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
+    private val dlnaButton: ImageButton get() = playerControlsBinding.dlnaButton
+    private val dlnaController = DlnaController()
     private var playerMenus: PlayerMenus? = null
 
     private lateinit var playerFullscreenHelper: PlayerFullscreenHelper
@@ -226,6 +231,50 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         // Handle fullscreen switcher
         fullscreenSwitcher.setOnClickListener {
             toggleFullscreen()
+        }
+
+        dlnaButton.setOnClickListener { showDlnaDevices() }
+    }
+
+    private fun showDlnaDevices() {
+        dlnaButton.isEnabled = false
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val renderers = dlnaController.discover()
+                if (!isAdded) return@launch
+                if (renderers.isEmpty()) {
+                    requireContext().toast(R.string.dlna_no_devices)
+                    return@launch
+                }
+                AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.dlna_select_device)
+                    .setItems(renderers.map { it.friendlyName }.toTypedArray()) { _, which ->
+                        val renderer = renderers[which]
+                        val mediaUrl = viewModel.playerOrNull?.currentMediaItem?.localConfiguration?.uri?.toString()
+                        if (mediaUrl.isNullOrBlank()) {
+                            requireContext().toast(R.string.dlna_missing_url)
+                        } else {
+                            viewLifecycleOwner.lifecycleScope.launch {
+                                try {
+                                    dlnaController.play(renderer, mediaUrl, toolbar.title?.toString() ?: "Jellyfin")
+                                    viewModel.playerOrNull?.pause()
+                                    requireContext().toast(getString(R.string.dlna_started, renderer.friendlyName))
+                                } catch (error: CancellationException) {
+                                    throw error
+                                } catch (error: Exception) {
+                                    requireContext().toast(R.string.dlna_play_failed)
+                                }
+                            }
+                        }
+                    }
+                    .show()
+            } catch (error: CancellationException) {
+                throw error
+            } catch (error: Exception) {
+                if (isAdded) requireContext().toast(R.string.dlna_discovery_failed)
+            } finally {
+                _playerControlsBinding?.dlnaButton?.isEnabled = true
+            }
         }
     }
 

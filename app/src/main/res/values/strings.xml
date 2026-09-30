@@ -180,4 +180,10 @@
     <string name="download_location_not_set_description">To download media, please select a folder where the files should be stored.</string>
     <string name="download_location_inaccessible">Download location inaccessible</string>
     <string name="download_location_inaccessible_description">The selected download location is no longer accessible. Please select a different folder to resume downloads.</string>
+    <string name="dlna_select_device">Play on a DLNA device</string>
+    <string name="dlna_no_devices">No DLNA playback devices found</string>
+    <string name="dlna_missing_url">The current video has no casting URL</string>
+    <string name="dlna_started">Playing on %1$s</string>
+    <string name="dlna_play_failed">Unable to start DLNA playback</string>
+    <string name="dlna_discovery_failed">Unable to discover DLNA devices</string>
 </resources>
