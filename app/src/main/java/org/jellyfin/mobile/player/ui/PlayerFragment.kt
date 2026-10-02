@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.OrientationEventListener
 import android.view.View
@@ -46,6 +47,7 @@ import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.Constants.DEFAULT_CONTROLS_TIMEOUT_MS
 import org.jellyfin.mobile.utils.Constants.PIP_MAX_RATIONAL
 import org.jellyfin.mobile.utils.Constants.PIP_MIN_RATIONAL
+import org.jellyfin.mobile.utils.KeyEventInterceptor
 import org.jellyfin.mobile.utils.SmartOrientationListener
 import org.jellyfin.mobile.utils.brightness
 import org.jellyfin.mobile.utils.extensions.aspectRational
@@ -60,7 +62,7 @@ import kotlin.math.max
 import androidx.media3.ui.R as Media3R
 
 @Suppress("TooManyFunctions")
-class PlayerFragment : Fragment(), BackPressInterceptor {
+class PlayerFragment : Fragment(), BackPressInterceptor, KeyEventInterceptor {
     private val appPreferences: AppPreferences by inject()
     private val assHandler: AssHandler by inject()
     private val viewModel: PlayerViewModel by viewModels()
@@ -455,5 +457,73 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     fun setPlayerMenuHelper(menuHelper: PlayerMenuHelper) {
         viewModel.setPlayerMenuHelper(menuHelper)
+    }
+
+    override fun onInterceptKeyEvent(event: KeyEvent): Boolean {
+        val player = viewModel.playerOrNull ?: return false
+        if (!playerView.useController) {
+            if (event.action == KeyEvent.ACTION_DOWN) {
+                playerLockScreenHelper.peekUnlockButton()
+            }
+            return true
+        }
+
+        if (playerMenus?.isAnyMenuShowing == true) {
+            return false
+        }
+
+        return when (event.keyCode) {
+            KeyEvent.KEYCODE_SPACE, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> {
+                if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
+                    togglePlayPause(player)
+                }
+                true
+            }
+            KeyEvent.KEYCODE_MEDIA_PLAY -> {
+                if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
+                    playMedia(player)
+                }
+                true
+            }
+            KeyEvent.KEYCODE_MEDIA_PAUSE -> {
+                if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
+                    viewModel.pause()
+                    playerView.showController()
+                }
+                true
+            }
+            KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_MEDIA_REWIND, KeyEvent.KEYCODE_MEDIA_STEP_BACKWARD -> {
+                if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
+                    onSeekByOffset(-Constants.KEYBOARD_SEEK_TIME_MS)
+                    playerView.showController()
+                }
+                true
+            }
+            KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, KeyEvent.KEYCODE_MEDIA_STEP_FORWARD -> {
+                if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
+                    onSeekByOffset(Constants.KEYBOARD_SEEK_TIME_MS)
+                    playerView.showController()
+                }
+                true
+            }
+            else -> false
+        }
+    }
+
+    private fun togglePlayPause(player: Player) {
+        if (player.isPlaying) {
+            viewModel.pause()
+        } else {
+            playMedia(player)
+        }
+        playerView.showController()
+    }
+
+    private fun playMedia(player: Player) {
+        if (player.playbackState == Player.STATE_ENDED) {
+            player.seekTo(0)
+        }
+        viewModel.play()
+        playerView.showController()
     }
 }
