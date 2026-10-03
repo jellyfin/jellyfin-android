@@ -149,7 +149,7 @@
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Разрешить горизонтальные жесты для перемотки</string>
     <string name="downloads_empty">Загрузок пока нет</string>
     <string name="downloads_empty_description">Вы можете скачивать фильмы и сериалы, чтобы смотреть их без интернета. Поищите значок загрузки на странице с описанием.</string>
-    <string name="downloading_title">Загрузка%1$s</string>
+    <string name="downloading_title">Загрузка %1$s</string>
     <string name="download_cancel">Отменить</string>
     <string name="download_completed">Загрузка завершена</string>
     <string name="download_progress">%1$d%%</string>
@@ -165,4 +165,5 @@
     <string name="download_location_inaccessible">Выбранное место для загрузки недоступно</string>
     <string name="download_location_inaccessible_description">Выбранное место для загрузки больше недоступно. Выберите другую папку, чтобы продолжить загрузку.</string>
     <string name="download_remove_keep_local">Оставить локальные файл(ы)</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Использовать экспериментальный рендеринг субтитров на стороне клиента, может работать не всегда</string>
 </resources>

@@ -174,4 +174,5 @@
         <item quantity="many">Quiere quitar \"%2$s\" de sus descargas ?</item>
         <item quantity="other">Quiere quitar el resto de las descargas ?</item>
     </plurals>
+    <string name="pref_exoplayer_direct_play_ass_description">Usar representación de subtítulos experimental en el cliente, no siempre funciona</string>
 </resources>
