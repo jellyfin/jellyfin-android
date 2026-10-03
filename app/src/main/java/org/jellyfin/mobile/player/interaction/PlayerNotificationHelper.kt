@@ -78,57 +78,33 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
         // Create notification channel
         context.createMediaNotificationChannel(nm)
 
-        viewModel.viewModelScope.launch {
-            val style = Notification.MediaStyle().apply {
-                setMediaSession(viewModel.mediaSession.sessionToken)
-                setShowActionsInCompactView(0, 1, 2)
-            }
+        val style = Notification.MediaStyle().apply {
+            setMediaSession(viewModel.mediaSession.sessionToken)
+            setShowActionsInCompactView(0, 1, 2)
+        }
 
-            val notification = Notification.Builder(context).apply {
-                if (AndroidVersion.isAtLeastO) {
-                    // Set notification channel on Android O and above
-                    setChannelId(Constants.MEDIA_NOTIFICATION_CHANNEL_ID)
-                    setColorized(true)
-                } else {
-                    setPriority(Notification.PRIORITY_LOW)
+        // Build a minimal notification synchronously to start the foreground service immediately.
+        // Android requires startForeground() to be called within 5 seconds of startForegroundService(),
+        // so we must not delay the service start behind any async work (e.g. image loading).
+        val baseNotification = buildBaseNotification(style, player, currentMediaSource, hasPrevious, hasNext)
+        nm.notify(VIDEO_PLAYER_NOTIFICATION_ID, baseNotification)
+        PlayerService.start(context, baseNotification)
+
+        viewModel.viewModelScope.launch {
+            // On Android < Q, load the album art and post an updated notification with the image.
+            // The foreground service is already running at this point, so this is safe to do async.
+            if (!AndroidVersion.isAtLeastQ) {
+                val mediaIcon: Bitmap? = withContext(Dispatchers.IO) {
+                    loadImage(currentMediaSource)
                 }
-                setStyle(style)
-                setSmallIcon(R.drawable.ic_notification)
-                if (!AndroidVersion.isAtLeastQ) {
-                    val mediaIcon: Bitmap? = withContext(Dispatchers.IO) {
-                        loadImage(currentMediaSource)
-                    }
-                    if (mediaIcon != null) {
+                if (mediaIcon != null) {
+                    val updatedNotification = buildBaseNotification(style, player, currentMediaSource, hasPrevious, hasNext) {
                         setLargeIcon(mediaIcon)
                     }
+                    nm.notify(VIDEO_PLAYER_NOTIFICATION_ID, updatedNotification)
+                    PlayerService.start(context, updatedNotification)
                 }
-                setContentTitle(currentMediaSource.getName(context))
-                currentMediaSource.item?.artists?.joinToString()?.let { artists ->
-                    setContentText(artists)
-                }
-                setVisibility(Notification.VISIBILITY_PUBLIC)
-                when {
-                    hasPrevious -> addAction(generateAction(PlayerNotificationAction.PREVIOUS))
-                    else -> addAction(generateAction(PlayerNotificationAction.REWIND))
-                }
-                val playbackAction = when {
-                    !player.playWhenReady -> PlayerNotificationAction.PLAY
-                    else -> PlayerNotificationAction.PAUSE
-                }
-                addAction(generateAction(playbackAction))
-                when {
-                    hasNext -> addAction(generateAction(PlayerNotificationAction.NEXT))
-                    else -> addAction(generateAction(PlayerNotificationAction.FAST_FORWARD))
-                }
-                setContentIntent(buildContentIntent())
-                setDeleteIntent(buildDeleteIntent())
-
-                // prevents the notification from being dismissed while playback is ongoing
-                setOngoing(player.isPlaying)
-            }.build()
-
-            nm.notify(VIDEO_PLAYER_NOTIFICATION_ID, notification)
-            PlayerService.start(context, notification)
+            }
         }
 
         if (receiverRegistered.compareAndSet(false, true)) {
@@ -152,6 +128,47 @@ class PlayerNotificationHelper(private val viewModel: PlayerViewModel) : KoinCom
             context.unregisterReceiver(notificationActionReceiver)
         }
     }
+
+    @Suppress("DEPRECATION")
+    private fun buildBaseNotification(
+        style: Notification.MediaStyle,
+        player: Player,
+        currentMediaSource: JellyfinMediaSource,
+        hasPrevious: Boolean,
+        hasNext: Boolean,
+        extra: (Notification.Builder.() -> Unit)? = null,
+    ): Notification = Notification.Builder(context).apply {
+        if (AndroidVersion.isAtLeastO) {
+            setChannelId(Constants.MEDIA_NOTIFICATION_CHANNEL_ID)
+            setColorized(true)
+        } else {
+            setPriority(Notification.PRIORITY_LOW)
+        }
+        setStyle(style)
+        setSmallIcon(R.drawable.ic_notification)
+        setContentTitle(currentMediaSource.getName(context))
+        currentMediaSource.item?.artists?.joinToString()?.let { artists ->
+            setContentText(artists)
+        }
+        setVisibility(Notification.VISIBILITY_PUBLIC)
+        when {
+            hasPrevious -> addAction(generateAction(PlayerNotificationAction.PREVIOUS))
+            else -> addAction(generateAction(PlayerNotificationAction.REWIND))
+        }
+        val playbackAction = when {
+            !player.playWhenReady -> PlayerNotificationAction.PLAY
+            else -> PlayerNotificationAction.PAUSE
+        }
+        addAction(generateAction(playbackAction))
+        when {
+            hasNext -> addAction(generateAction(PlayerNotificationAction.NEXT))
+            else -> addAction(generateAction(PlayerNotificationAction.FAST_FORWARD))
+        }
+        setContentIntent(buildContentIntent())
+        setDeleteIntent(buildDeleteIntent())
+        setOngoing(player.isPlaying)
+        extra?.invoke(this)
+    }.build()
 
     private suspend fun loadImage(mediaSource: JellyfinMediaSource) = when (mediaSource) {
         is LocalJellyfinMediaSource -> null
