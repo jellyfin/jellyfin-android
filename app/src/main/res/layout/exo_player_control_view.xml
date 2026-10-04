@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.jellyfin.mobile.player.ui.StereoscopicFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/player_controls"
+    android:id="@+id/player_controls_stereo_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/playback_controls_background">
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/player_controls"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/playback_controls_background">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -136,7 +141,7 @@
             app:scrubber_dragged_size="24dp"
             app:scrubber_enabled_size="16dp"
             app:unplayed_color="@color/playback_timebar_unplayed" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/exo_duration"
@@ -302,4 +307,5 @@
                 android:textStyle="bold" />
         </LinearLayout>
     </FrameLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</org.jellyfin.mobile.player.ui.StereoscopicFrameLayout>

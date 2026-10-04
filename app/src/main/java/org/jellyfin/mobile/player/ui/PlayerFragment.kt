@@ -55,6 +55,7 @@ import org.jellyfin.mobile.utils.extensions.keepScreenOn
 import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaSegmentDto
 import org.jellyfin.sdk.model.api.MediaStream
+import org.jellyfin.sdk.model.api.Video3dFormat
 import org.koin.android.ext.android.inject
 import kotlin.math.max
 import androidx.media3.ui.R as Media3R
@@ -67,14 +68,16 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     private var _playerBinding: FragmentPlayerBinding? = null
     private val playerBinding: FragmentPlayerBinding get() = _playerBinding!!
     private val playerView: PlayerView get() = playerBinding.playerView
-    private val playerOverlay: View get() = playerBinding.playerOverlay
+    private val playerOverlay: StereoscopicFrameLayout get() = playerBinding.playerOverlay
     private val loadingIndicator: View get() = playerBinding.loadingIndicator
     private var _playerControlsBinding: ExoPlayerControlViewBinding? = null
     private val playerControlsBinding: ExoPlayerControlViewBinding get() = _playerControlsBinding!!
-    private val playerControlsView: View get() = playerControlsBinding.root
+    private val playerControlsView: View get() = playerBinding.root.findViewById(R.id.player_controls)
     private val toolbar: Toolbar get() = playerControlsBinding.toolbar
     private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
     private var playerMenus: PlayerMenus? = null
+    private var playerControlsStereoLayout: StereoscopicFrameLayout? = null
+    private var stereoscopicLayoutMode = StereoscopicLayoutMode.MONO
 
     private lateinit var playerFullscreenHelper: PlayerFullscreenHelper
     lateinit var playerLockScreenHelper: PlayerLockScreenHelper
@@ -120,6 +123,15 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             requireContext().toast(safeMessage)
         }
         viewModel.queueManager.currentMediaSource.observe(this) { mediaSource ->
+            stereoscopicLayoutMode = when (mediaSource.sourceInfo.video3dFormat) {
+                Video3dFormat.HALF_SIDE_BY_SIDE, Video3dFormat.FULL_SIDE_BY_SIDE ->
+                    StereoscopicLayoutMode.SIDE_BY_SIDE
+                Video3dFormat.HALF_TOP_AND_BOTTOM, Video3dFormat.FULL_TOP_AND_BOTTOM ->
+                    StereoscopicLayoutMode.TOP_AND_BOTTOM
+                else -> StereoscopicLayoutMode.MONO
+            }
+            updateStereoscopicLayoutMode()
+
             if (mediaSource.selectedVideoStream?.isLandscape == false) {
                 // For portrait videos, immediately enable fullscreen
                 playerFullscreenHelper.enableFullscreen()
@@ -153,8 +165,16 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _playerBinding = FragmentPlayerBinding.inflate(layoutInflater)
-        _playerControlsBinding = ExoPlayerControlViewBinding.bind(playerBinding.root.findViewById(R.id.player_controls))
+        val controlsStereoLayout = playerBinding.root.findViewById<StereoscopicFrameLayout>(R.id.player_controls_stereo_container)
+        playerControlsStereoLayout = controlsStereoLayout
+        _playerControlsBinding = ExoPlayerControlViewBinding.bind(controlsStereoLayout)
+        updateStereoscopicLayoutMode()
         return playerBinding.root
+    }
+
+    private fun updateStereoscopicLayoutMode() {
+        playerControlsStereoLayout?.stereoscopicLayoutMode = stereoscopicLayoutMode
+        _playerBinding?.playerOverlay?.stereoscopicLayoutMode = stereoscopicLayoutMode
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -437,6 +457,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         playerView.player = null
 
         // Set binding references to null
+        playerControlsStereoLayout = null
         _playerBinding = null
         _playerControlsBinding = null
         playerMenus = null
