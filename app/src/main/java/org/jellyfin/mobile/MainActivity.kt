@@ -22,10 +22,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.withStarted
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.jellyfin.mobile.downloads.DownloadsFragment
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.cast.Chromecast
 import org.jellyfin.mobile.player.cast.IChromecast
 import org.jellyfin.mobile.player.ui.PlayerFragment
+import org.jellyfin.mobile.settings.SettingsFragment
 import org.jellyfin.mobile.setup.ConnectFragment
 import org.jellyfin.mobile.utils.AndroidVersion
 import org.jellyfin.mobile.utils.BackPressInterceptor
@@ -164,6 +166,9 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 is ServerState.Available -> {
+                    if (currentFragment is SettingsFragment || currentFragment is DownloadsFragment || currentFragment is PlayerFragment) {
+                        return
+                    }
                     if (currentFragment !is WebViewFragment || currentFragment.server != state.server) {
                         replaceFragment<WebViewFragment>(
                             Bundle().apply {

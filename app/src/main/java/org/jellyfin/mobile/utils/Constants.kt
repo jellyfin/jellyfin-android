@@ -48,6 +48,14 @@ object Constants {
     const val PREF_SUBTITLE_STYLE = "pref_subtitle_style"
     const val PREF_STORAGE_LOCATION = "pref_storage_location"
     const val PREF_MEDIA_SEGMENT_ACTIONS = "pref_media_segment_actions"
+    const val PREF_AUTO_SERVER_SWITCH_ENABLED = "pref_auto_server_switch_enabled"
+    const val PREF_AUTO_SERVER_SWITCH_SSID = "pref_auto_server_switch_ssid"
+    const val PREF_AUTO_SERVER_SWITCH_LOCAL_URL = "pref_auto_server_switch_local_url"
+    const val PREF_AUTO_SERVER_SWITCH_MAPPINGS = "pref_auto_server_switch_mappings"
+    const val PREF_CURRENT_SERVER_INFO = "pref_current_server_info"
+
+    const val PREF_EXTERNAL_SERVER_URL = "pref_external_server_url"
+
 
     // InputManager commands
     const val PLAYBACK_MANAGER_COMMAND_PLAY = "unpause"

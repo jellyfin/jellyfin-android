@@ -46,6 +46,7 @@ import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.PermissionRequestHelper
 import org.jellyfin.mobile.utils.extractId
 import org.jellyfin.mobile.utils.isLowRamDevice
+import org.jellyfin.mobile.utils.NetworkHelper
 import org.jellyfin.mobile.webapp.RemoteVolumeProvider
 import org.jellyfin.mobile.webapp.WebViewFragment
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
@@ -62,17 +63,20 @@ const val PLAYER_EVENT_CHANNEL = "PlayerEventChannel"
 private const val TS_SEARCH_PACKETS = 1800
 
 val applicationModule = module {
+
     single { AppPreferences(androidApplication()) }
     single { OkHttpClient() }
     single { ImageLoader(androidApplication()) }
     single { PermissionRequestHelper() }
+    single { NetworkHelper(androidApplication()) }
     single { RemoteVolumeProvider(get()) }
     single(named(PLAYER_EVENT_CHANNEL)) { Channel<PlayerEvent>() }
     factory { WorkManager.getInstance(get()) }
     single { AssHandler(AssRenderType.OVERLAY_OPEN_GL) }
 
     // Controllers
-    single { ApiClientController(get(), get(), get(), get(), get()) }
+    single { ApiClientController(get(), get(), get(), get(), get(), get()) }
+
 
     // Event handlers and channels
     single { ActivityEventHandler(get()) }
@@ -83,7 +87,7 @@ val applicationModule = module {
     single { MediaSegments(get()) }
 
     // ViewModels
-    viewModel { MainViewModel(get(), get()) }
+    viewModel { MainViewModel(get(), get(), get()) }
     viewModel { DownloadsViewModel() }
 
     // Fragments

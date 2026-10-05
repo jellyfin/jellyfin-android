@@ -22,4 +22,8 @@ interface ServerDao {
 
     @Query("SELECT * FROM $TABLE_NAME WHERE hostname = :hostname")
     fun getServerByHostname(hostname: String): ServerEntity?
+
+    @Query("UPDATE $TABLE_NAME SET hostname = :hostname WHERE id = :id")
+    fun updateHostname(id: Long, hostname: String)
 }
+

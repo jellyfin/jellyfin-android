@@ -46,12 +46,15 @@ import org.jellyfin.mobile.utils.fadeIn
 import org.jellyfin.mobile.utils.isOutdated
 import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
 import org.jellyfin.mobile.utils.runOnUiThread
+import org.jellyfin.mobile.app.ApiClientController
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import timber.log.Timber
 
 class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClient.FileChooserListener {
     val appPreferences: AppPreferences by inject()
     private val mainViewModel: MainViewModel by activityViewModel()
+    private val apiClientController: ApiClientController by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private lateinit var assetsPathHandler: AssetsPathHandler
     private lateinit var jellyfinWebViewClient: JellyfinWebViewClient
@@ -62,6 +65,7 @@ class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClien
     lateinit var server: ServerEntity
         private set
     private var connected = false
+    private var isFallbackAttempted = false
     private val timeoutRunnable = Runnable {
         handleError()
     }
@@ -190,10 +194,36 @@ class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClien
         addJavascriptInterface(externalPlayer, "ExternalPlayer")
         addJavascriptInterface(mediaSegments, "MediaSegments")
 
+        syncWebCredentials(this, server.hostname)
+
         loadUrl("${server.hostname.trimEnd('/')}/")
         postDelayed(timeoutRunnable, Constants.INITIAL_CONNECTION_TIMEOUT)
         postDelayed(showLoadingContainerRunnable, Constants.SHOW_PROGRESS_BAR_DELAY)
     }
+
+    private fun syncWebCredentials(webView: WebView, activeServerUrl: String) {
+        val targetUrl = activeServerUrl.trimEnd('/')
+        val script = """
+            (function() {
+                try {
+                    var target = "$targetUrl";
+                    var raw = localStorage.getItem('jellyfin_credentials');
+                    if (raw) {
+                        var credentials = JSON.parse(raw);
+                        if (credentials && credentials.Servers && credentials.Servers.length > 0) {
+                            var s = credentials.Servers[0];
+                            if (s.ManualAddress !== target) {
+                                s.ManualAddress = target;
+                                localStorage.setItem('jellyfin_credentials', JSON.stringify(credentials));
+                            }
+                        }
+                    }
+                } catch(e) {}
+            })();
+        """.trimIndent()
+        webView.evaluateJavascript(script, null)
+    }
+
 
     private fun showOutdatedWebViewDialog(webView: WebView) {
         AlertDialog.Builder(requireContext()).apply {
@@ -256,7 +286,24 @@ class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClien
 
     private fun handleError() {
         connected = false
-        onSelectServer(error = true)
+        lifecycleScope.launch {
+            val externalServer = apiClientController.getSavedExternalServer()
+            if (!isFallbackAttempted && externalServer != null && server.hostname != externalServer.hostname) {
+                isFallbackAttempted = true
+                Timber.w("WebViewFragment: Failed to connect to local server '${server.hostname}'. Falling back to external server '${externalServer.hostname}'")
+                server = externalServer
+                apiClientController.configureApiClientServer(server)
+                runOnUiThread {
+                    val webView = webViewBinding?.webView ?: return@runOnUiThread
+                    webView.stopLoading()
+                    syncWebCredentials(webView, server.hostname)
+                    webView.loadUrl("${server.hostname.trimEnd('/')}/")
+                    webView.postDelayed(timeoutRunnable, Constants.INITIAL_CONNECTION_TIMEOUT)
+                }
+            } else {
+                onSelectServer(error = true)
+            }
+        }
     }
 
     override fun onShowFileChooser(intent: Intent, filePathCallback: ValueCallback<Array<Uri>>) {

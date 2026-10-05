@@ -11,9 +11,13 @@ import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.mobile.data.entity.UserEntity
 import java.util.UUID
 
+import kotlinx.coroutines.flow.collectLatest
+import org.jellyfin.mobile.utils.NetworkHelper
+
 class MainViewModel(
     app: Application,
     private val apiClientController: ApiClientController,
+    private val networkHelper: NetworkHelper,
 ) : AndroidViewModel(app) {
     private val _serverState: MutableStateFlow<ServerState> = MutableStateFlow(ServerState.Pending)
     val serverState: StateFlow<ServerState> get() = _serverState
@@ -25,6 +29,11 @@ class MainViewModel(
         viewModelScope.launch {
             refreshServer()
             refreshUser()
+        }
+        viewModelScope.launch {
+            networkHelper.observeNetworkChanges().collectLatest {
+                refreshServer()
+            }
         }
     }
 
@@ -39,7 +48,7 @@ class MainViewModel(
         refreshUser()
     }
 
-    private suspend fun refreshServer() {
+    suspend fun refreshServer() {
         val serverEntity = apiClientController.loadSavedServer()
         _serverState.value = serverEntity?.let { entity -> ServerState.Available(entity) } ?: ServerState.Unset
     }
@@ -48,6 +57,7 @@ class MainViewModel(
         val userEntity = apiClientController.loadSavedUser()
         _userState.value = userEntity?.let { entity -> UserState.Available(entity) } ?: UserState.Unset
     }
+
 
     /**
      * Temporarily unset the selected server to be able to connect to a different one
