@@ -129,4 +129,47 @@
     <string name="downloading_desc">Ladataan %1$d ohjelmaa</string>
     <string name="downloaded">%1$s ladattu</string>
     <string name="special_episode">Erikoisjakso</string>
+    <string name="media_service_unknown_page">Tuntematon sivu</string>
+    <string name="media_service_no_items">Kohteita ei löytynyt</string>
+    <string name="media_service_auth_expired">Ole hyvä ja avaa Jellyfin applikaatio puhelimellasi kirjautuaksesi sisään.</string>
+    <string name="media_service_invalid_id">Virheellinen kohde-ID</string>
+    <string name="media_service_car_section_favorites">Suosikit</string>
+    <string name="media_service_car_section_audiobooks">Äänikirjat</string>
+    <string name="media_service_car_section_playlists">Soittolistat</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">Vaakasuuntaiset eleet</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Salli vaakasuntaisten eleiden ohjata videon hakua</string>
+    <string name="pref_exoplayer_direct_play_ass_description">"Käytä kokeellista tekstityksen visualisointia asiakaslaitteella. Ei välttämättä toimi  aina"</string>
+    <string name="pref_exoplayer_network_buffer">Toistopuskurin koko</string>
+    <string name="network_buffer_auto">Automaattinen</string>
+    <string name="network_buffer_auto_description">Oletuspuskuri, sopiva yleisimmille toistotilanteille</string>
+    <string name="network_buffer_large">Iso</string>
+    <string name="network_buffer_large_description">Isompi puskuri, voi auttaa vaihtelevissa yhteyksissä</string>
+    <string name="network_buffer_extra_large">Erittäin iso</string>
+    <string name="network_buffer_extra_large_description">Suurin puskuri, tarkoitettu hitaille tai sateellittiyhteyksille</string>
+    <string name="downloads_empty">Ei latauksia vielä</string>
+    <string name="downloads_empty_description">Voit ladata elokuvia ja TV-ohjelmia katsoaksesi niitä paikallisesti. Etsi latauskuvake kohteen yksityiskohtasivulta.</string>
+    <string name="downloading_title">%1$s ladataan</string>
+    <string name="download_cancel">Peruuta</string>
+    <string name="download_completed">Lataus valmis</string>
+    <string name="download_progress">%1$d%%</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Poista lataus</item>
+        <item quantity="other">Poista lataukset</item>
+    </plurals>
+    <string name="download_remove_keep_local">Säilytä paikalliset tiedostot</string>
+    <plurals name="download_remove_description">
+        <item quantity="one">Haluatko poistaa latauksistasi tämän: %2$s ?</item>
+        <item quantity="other">Haluatko poistaa nämä: %1$s latauksistasi?</item>
+    </plurals>
+    <string name="download_incomplete">Lataus keskeneräinen</string>
+    <string name="download_settings_dialog_title">Valitse latausten sijainti</string>
+    <string name="download_settings_dialog_message">Valitse sijainti minne ladattu media pitäisi tallentaa. Lataukset käyttävät vain WiFi:ä oletuksena.</string>
+    <string name="select_folder">Valitse kansio</string>
+    <string name="select_all">Valitse kaikki</string>
+    <string name="deselect_all">Tyhjennä valinnat</string>
+    <string name="selected_count">%1$d valittuna</string>
+    <string name="download_location_not_set">Ei lataussijaintia</string>
+    <string name="download_location_not_set_description">Ladataksesi mediaa, valitse kansio minne tiedostot kuuluisi tallentaa.</string>
+    <string name="download_location_inaccessible">Lataussijainti saavuttamattomissa</string>
+    <string name="download_location_inaccessible_description">Valittu lataussijainti ei ole enää saavutettavissa. Valitse eri kansio jatkaaksesi latauksia.</string>
 </resources>
