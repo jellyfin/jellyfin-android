@@ -129,4 +129,12 @@
     <string name="downloaded">%1$s பதிவிறக்கப்பட்டது</string>
     <string name="skip_media_segment">தவிர்</string>
     <string name="special_episode">சிறப்பு</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">பதிவிறக்கத்தை அகற்று</item>
+        <item quantity="other">பதிவிறக்கங்களை அகற்று</item>
+    </plurals>
+    <plurals name="download_remove_description">
+        <item quantity="one">உங்கள் பதிவிறக்கங்களிலிருந்து \"%2$s\" என்பதை அகற்ற விரும்புகிறீர்களா?</item>
+        <item quantity="other">இந்த %1$d பதிவிறக்கங்களை நீக்க விரும்புகிறீர்களா?</item>
+    </plurals>
 </resources>
