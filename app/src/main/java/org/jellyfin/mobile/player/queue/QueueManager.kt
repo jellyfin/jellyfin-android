@@ -28,6 +28,7 @@ import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.systemApi
 import org.jellyfin.sdk.api.client.extensions.videosApi
 import org.jellyfin.sdk.api.operations.VideosApi
+import org.jellyfin.sdk.model.api.DeviceProfile
 import org.jellyfin.sdk.model.api.MediaProtocol
 import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.MediaStreamProtocol
@@ -49,7 +50,7 @@ class QueueManager(
     private val mediaSourceResolver: MediaSourceResolver by inject()
     private val deviceProfileBuilder: DeviceProfileBuilder by inject()
     private val downloadDao: DownloadDao by inject()
-    private val deviceProfile = deviceProfileBuilder.getDeviceProfile()
+    private var deviceProfile: DeviceProfile = deviceProfileBuilder.getDeviceProfile()
 
     private var currentQueue: List<UUID> = emptyList()
     private var currentQueueIndex: Int = 0
@@ -88,6 +89,10 @@ class QueueManager(
                 }
             }.getOrNull()
         }
+
+        // Rebuild the device profile for this session so the max allowed video resolution from the
+        // web client settings is included. The server uses it to scale the transcode output down.
+        deviceProfile = deviceProfileBuilder.getDeviceProfile(preferences?.maxVideoWidth ?: 0)
 
         when (playOptions.playFromDownloads) {
             true -> playOptions.mediaSourceId?.let {
