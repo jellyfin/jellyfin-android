@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.downloads
 
 import android.content.Context
+import androidx.documentfile.provider.DocumentFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.app.AppPreferences
@@ -9,8 +10,10 @@ import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.mobile.data.entity.UserEntity
+import org.jellyfin.mobile.utils.deleteEmptyFolders
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.itemsApi
+import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.ItemFields
 import java.util.UUID
 
@@ -51,6 +54,8 @@ class DownloadManager(
                 )
             }
 
+            val seriesYears = getSeriesYears(response.items.filter { it.id !in existingItems })
+
             for (item in response.items) {
                 var downloadEntity = existingItems[item.id]
                 if (downloadEntity != null) {
@@ -69,7 +74,7 @@ class DownloadManager(
                         userId = user.id,
                         itemId = item.id,
                         item = item,
-                        path = item.name ?: item.id.toString(),
+                        path = DownloadPaths.forItem(item, seriesYears[item.seriesId]),
                     )
                     downloadDao.insert(downloadEntity)
                 }
@@ -79,6 +84,20 @@ class DownloadManager(
         if (!DownloadWorker.isActive(context)) {
             DownloadWorker.start(context, appPreferences)
         }
+    }
+
+    /**
+     * The production year of the series of each episode in [items], for its folder name (see [DownloadPaths]).
+     * An episode only carries its own air year, so the series have to be fetched.
+     */
+    private suspend fun getSeriesYears(items: Collection<BaseItemDto>): Map<UUID, Int> {
+        val seriesIds = items.mapNotNull { it.seriesId }.distinct()
+        if (seriesIds.isEmpty()) return emptyMap()
+
+        val response by api.itemsApi.getItems(ids = seriesIds)
+        return response.items
+            .mapNotNull { series -> series.productionYear?.let { year -> series.id to year } }
+            .toMap()
     }
 
     suspend fun resume(downloadEntity: DownloadEntity) = withContext(Dispatchers.IO) {
@@ -105,6 +124,8 @@ class DownloadManager(
 
     suspend fun delete(id: Long, deleteFiles: Boolean) = withContext(Dispatchers.IO) {
         val download = downloadDao.getDownload(id) ?: return@withContext
+        // Read before deleting the download, which deletes its file rows with it
+        val files = downloadDao.getFiles(id)
 
         downloadDao.delete(id)
 
@@ -113,8 +134,13 @@ class DownloadManager(
         }
 
         if (deleteFiles) {
-            val storageLocation = storageManager.getStorageLocation()
-            storageLocation?.findFile(download.path)?.delete()
+            // Delete this download's own files rather than its whole folder: a download made before folders were
+            // unique can share its folder with another download that has the same title.
+            for (file in files) {
+                DocumentFile.fromSingleUri(context, file.uri)?.delete()
+            }
+            // Then its folder, and the season and show folders above it, once they are empty
+            storageManager.getStorageLocation()?.deleteEmptyFolders(download.path)
         }
     }
 }
