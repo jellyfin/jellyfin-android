@@ -38,9 +38,9 @@ fun JellyfinMediaSource.toMediaMetadata(): MediaMetadata = MediaMetadata.Builder
     putString(MediaMetadata.METADATA_KEY_ART_URI, imageUri.toString())
 }.build()
 
-fun MediaSession.setPlaybackState(playbackState: Int, position: Long, playbackActions: Long) {
+fun MediaSession.setPlaybackState(playbackState: Int, position: Long, playbackActions: Long, speed: Float = 1.0f) {
     val state = PlaybackState.Builder().apply {
-        setState(playbackState, position, 1.0f)
+        setState(playbackState, position, speed)
         setActions(playbackActions)
     }.build()
     setPlaybackState(state)
@@ -61,7 +61,7 @@ fun MediaSession.setPlaybackState(player: Player, playbackActions: Long) {
         Player.STATE_BUFFERING -> PlaybackState.STATE_BUFFERING
         else -> error("Invalid player playbackState $playerState")
     }
-    setPlaybackState(playbackState, player.currentPosition, playbackActions)
+    setPlaybackState(playbackState, player.currentPosition, playbackActions, player.playbackParameters.speed)
 }
 
 fun AudioManager.getVolumeRange(streamType: Int): IntRange {
