@@ -9,12 +9,14 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.OrientationEventListener
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
@@ -84,6 +86,23 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         get() = viewModel.mediaSourceOrNull?.selectedVideoStream
 
     /**
+     * The item name is often longer than the room a phone toolbar has. Instead of letting the
+     * single-line title get ellipsized (which hides the season/episode info in the middle of the
+     * string), let it scroll so the whole name stays reachable. The season/episode info is also
+     * shown separately as the toolbar subtitle, so it is always visible at a glance.
+     */
+    private fun Toolbar.enableScrollingTitle() {
+        for (i in 0 until childCount) {
+            val titleView = getChildAt(i) as? TextView ?: continue
+            if (titleView.text?.toString() != title?.toString()) continue
+            titleView.isSingleLine = true
+            titleView.ellipsize = TextUtils.TruncateAt.MARQUEE
+            titleView.marqueeRepeatLimit = -1
+            titleView.isSelected = true
+        }
+    }
+
+    /**
      * Listener that watches the current device orientation.
      * It makes sure that the orientation sensor can still be used (if enabled)
      * after toggling the orientation through the fullscreen button.
@@ -129,7 +148,9 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             }
 
             // Update title and player menus
-            toolbar.title = mediaSource.getName(requireContext())
+            toolbar.title = mediaSource.getTitle(requireContext())
+            toolbar.subtitle = mediaSource.getExtraInfo(requireContext())
+            toolbar.enableScrollingTitle()
             playerMenus?.onQueueItemChanged(mediaSource, viewModel.queueManager.hasNext())
         }
 
