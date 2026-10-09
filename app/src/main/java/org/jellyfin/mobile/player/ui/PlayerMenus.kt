@@ -354,6 +354,11 @@ class PlayerMenus(
         decoderMenu.menu.findItem(type.ordinal).isChecked = true
     }
 
+    fun updateSelectedSpeed(speed: Float) {
+        val step = (speed / SPEED_MENU_STEP_SIZE).toInt()
+        speedMenu.menu.findItem(step)?.isChecked = true
+    }
+
     private fun buildMenuItems(
         menu: Menu,
         groupId: Int,
