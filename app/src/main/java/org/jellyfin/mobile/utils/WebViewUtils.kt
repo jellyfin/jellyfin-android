@@ -72,6 +72,7 @@ private fun WebView.getDefaultUserAgentString(): String {
 fun WebSettings.applyDefault() {
     javaScriptEnabled = true
     domStorageEnabled = true
+    mediaPlaybackRequiresUserGesture = false
     setSupportMultipleWindows(true)
 }
 
