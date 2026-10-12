@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.sdk.model.api.MediaType
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
 
 class DownloadsViewModel : ViewModel(), KoinComponent {
@@ -28,6 +30,13 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
     private val downloadManager: DownloadManager by inject()
     private val activityEventHandler: ActivityEventHandler by inject()
     private val storageManager: StorageManager by inject()
+    private val musicPlayer = DownloadedMusicPlayer(get())
+
+    val nowPlaying: StateFlow<DownloadedMusicPlayer.NowPlaying?> = musicPlayer.nowPlaying
+
+    init {
+        musicPlayer.connect()
+    }
 
     val downloads: StateFlow<List<DownloadFiles>> = downloadDao
         .getAllDownloadsWithFiles()
@@ -55,7 +64,8 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
                 activityEventHandler.emit(ActivityEvent.LaunchNativePlayer(playOptions))
             }
 
-            MediaType.AUDIO,
+            MediaType.AUDIO -> playMusic(download)
+
             MediaType.PHOTO,
             MediaType.BOOK,
             MediaType.UNKNOWN -> {
@@ -75,6 +85,48 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
                 }
             }
         }
+    }
+
+    /**
+     * Plays the downloaded track inside the app. The queue is every downloaded track of the same album,
+     * in disc and track order, so the album plays on from the selected track.
+     */
+    private fun playMusic(download: DownloadEntity) {
+        viewModelScope.launch {
+            val (items, startIndex) = withContext(Dispatchers.IO) {
+                val albumId = download.item.albumId
+                val tracks = downloadDao.getAllDownloadsWithFiles().first()
+                    .filter { (other, _) ->
+                        other.id == download.id || albumId != null &&
+                            other.serverId == download.serverId &&
+                            other.item.mediaType == MediaType.AUDIO &&
+                            other.item.albumId == albumId
+                    }
+                    .filter { it.download.id == download.id || storageManager.verify(it) }
+                    .sortedWith(
+                        compareBy<DownloadFiles>(
+                            { it.download.item.parentIndexNumber ?: 0 },
+                            { it.download.item.indexNumber ?: Int.MAX_VALUE },
+                            { it.download.item.name.orEmpty() },
+                        ),
+                    )
+                val playable = tracks.mapNotNull { track -> DownloadedMusicPlayer.toMediaItem(track)?.let { track to it } }
+                playable.map { it.second } to playable.indexOfFirst { it.first.download.id == download.id }
+            }
+            if (startIndex >= 0) musicPlayer.play(items, startIndex)
+        }
+    }
+
+    fun togglePlayPause() = musicPlayer.togglePlayPause()
+
+    fun playNext() = musicPlayer.next()
+
+    fun playPrevious() = musicPlayer.previous()
+
+    fun stopMusic() = musicPlayer.stop()
+
+    override fun onCleared() {
+        musicPlayer.release()
     }
 
     fun download(download: DownloadEntity) {

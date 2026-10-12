@@ -62,6 +62,7 @@ fun DownloadsScreen(
     val downloads by viewModel.downloads.collectAsState()
     val storageLocation by viewModel.storageLocation.collectAsState()
     val storageLocationAccessible by viewModel.storageLocationAccessible.collectAsState()
+    val nowPlaying by viewModel.nowPlaying.collectAsState()
     val selection = remember { mutableStateSetOf<Long>() }
     var showDeleteConfirm by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
@@ -203,6 +204,23 @@ fun DownloadsScreen(
                 },
                 backgroundColor = Color.Transparent,
             )
+        },
+        bottomBar = {
+            AnimatedVisibility(
+                visible = nowPlaying != null,
+                enter = slideInVertically { height -> height } + fadeIn(),
+                exit = slideOutVertically { height -> height } + fadeOut(),
+            ) {
+                nowPlaying?.let { state ->
+                    MusicMiniPlayer(
+                        state = state,
+                        onTogglePlayPause = { viewModel.togglePlayPause() },
+                        onPrevious = { viewModel.playPrevious() },
+                        onNext = { viewModel.playNext() },
+                        onStop = { viewModel.stopMusic() },
+                    )
+                }
+            }
         },
         content = { innerPadding ->
             Column(

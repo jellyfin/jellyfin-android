@@ -180,4 +180,9 @@
     <string name="download_location_not_set_description">To download media, please select a folder where the files should be stored.</string>
     <string name="download_location_inaccessible">Download location inaccessible</string>
     <string name="download_location_inaccessible_description">The selected download location is no longer accessible. Please select a different folder to resume downloads.</string>
+    <string name="music_play">Play</string>
+    <string name="music_pause">Pause</string>
+    <string name="music_next">Next track</string>
+    <string name="music_previous">Previous track</string>
+    <string name="music_stop">Stop</string>
 </resources>

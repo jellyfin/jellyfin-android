@@ -11,7 +11,10 @@ import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.mobile.data.entity.UserEntity
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.itemsApi
+import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.ItemFields
+import org.jellyfin.sdk.model.api.MediaType
+import java.util.Locale
 import java.util.UUID
 
 class DownloadManager(
@@ -69,7 +72,7 @@ class DownloadManager(
                         userId = user.id,
                         itemId = item.id,
                         item = item,
-                        path = item.name ?: item.id.toString(),
+                        path = downloadFolderName(item),
                     )
                     downloadDao.insert(downloadEntity)
                 }
@@ -79,6 +82,23 @@ class DownloadManager(
         if (!DownloadWorker.isActive(context)) {
             DownloadWorker.start(context, appPreferences)
         }
+    }
+
+    /**
+     * Tracks of different albums often share a name ("Intro") and a file name, so music
+     * gets its own folder per album and track.
+     */
+    private fun downloadFolderName(item: BaseItemDto): String {
+        val name = item.name ?: item.id.toString()
+        if (item.mediaType != MediaType.AUDIO) return name
+        val prefix = listOfNotNull(item.albumArtist, item.album)
+            .filter(String::isNotBlank)
+            .joinToString(" - ")
+        val track = item.indexNumber?.let { "%02d. ".format(Locale.ROOT, it) }.orEmpty()
+        return listOf(prefix, track + name)
+            .filter(String::isNotBlank)
+            .joinToString(" - ")
+            .replace(Regex("[\\\\/:*?\"<>|]"), "_")
     }
 
     suspend fun resume(downloadEntity: DownloadEntity) = withContext(Dispatchers.IO) {

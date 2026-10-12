@@ -283,15 +283,20 @@ class QueueManager(
     suspend fun previous(): Boolean {
         if (!hasPrevious()) return false
 
-        val currentMediaSource = getCurrentMediaSourceOrNull() as? RemoteJellyfinMediaSource ?: return false
-
         resetPlaybackFallback()
 
-        startRemotePlayback(
-            itemId = currentQueue[--currentQueueIndex],
-            mediaSourceId = null,
-            maxStreamingBitrate = currentMediaSource.maxStreamingBitrate,
-        )
+        when (val currentMediaSource = getCurrentMediaSourceOrNull()) {
+            is LocalJellyfinMediaSource -> startDownloadPlayback(
+                itemId = currentQueue[--currentQueueIndex],
+                playWhenReady = true,
+            )
+            is RemoteJellyfinMediaSource -> startRemotePlayback(
+                itemId = currentQueue[--currentQueueIndex],
+                mediaSourceId = null,
+                maxStreamingBitrate = currentMediaSource.maxStreamingBitrate,
+            )
+            null -> return false
+        }
         return true
     }
 
