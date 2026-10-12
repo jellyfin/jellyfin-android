@@ -69,9 +69,9 @@
     <string name="pref_category_downloads">Arquivos</string>
     <string name="dialog_button_close_app">Fechar aplicativo</string>
     <string name="dialog_button_check_for_updates">Verifique se há atualizações</string>
-    <string name="dialog_web_view_outdated_message">A implementação do WebView usada pelo seu dispositivo está desatualizada.\nAtualize para uma versão compatível.</string>
-    <string name="dialog_web_view_outdated">WebView desatualizada</string>
-    <string name="dialog_web_view_not_supported_message">As WebViews não são suportadas por este dispositivo.\nInstale uma implementação de WebView compatível ou mude para um dispositivo suportado.</string>
+    <string name="dialog_web_view_outdated_message">A implementação do visualização web usada pelo seu dispositivo está desatualizada.\nAtualize para uma versão compatível.</string>
+    <string name="dialog_web_view_outdated">Visualização web desatualizada</string>
+    <string name="dialog_web_view_not_supported_message">As visualizações web não são suportadas por este dispositivo.\nInstale uma implementação de visualização web compatível ou mude para um dispositivo suportado.</string>
     <string name="dialog_web_view_not_supported">Visualização Web não suportada</string>
     <string name="pref_exoplayer_allow_background_audio_summary">Permite a reprodução de vídeos em segundo plano somente com o áudio</string>
     <string name="pref_music_notification_always_dismissible_summary_on">A notificação sempre pode ser descartada, mesmo enquanto ocorre a reprodução de mídia</string>
@@ -170,7 +170,7 @@
     <string name="selected_count">%1$d Selecionado</string>
     <string name="download_location_not_set">Nenhum local de download definido</string>
     <string name="download_location_not_set_description">Para fazer o download, selecione uma pasta para salvar os arquivos.</string>
-    <string name="download_location_inaccessible">Não foi possível acessar o local de download.</string>
+    <string name="download_location_inaccessible">Não foi possível acessar o local de download</string>
     <string name="download_location_inaccessible_description">O local de download está inacessível. Selecione outra pasta para retomar os downloads.</string>
     <string name="pref_exoplayer_direct_play_ass_description">Usar renderização experimental de legendas do lado do cliente, pode nem sempre funcionar</string>
 </resources>
