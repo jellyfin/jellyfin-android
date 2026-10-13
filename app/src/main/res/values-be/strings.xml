@@ -158,4 +158,5 @@
     <string name="select_folder">Выберыце папку</string>
     <string name="select_all">Выбраць усе</string>
     <string name="selected_count">Выбрана %1$d</string>
+    <string name="media_service_invalid_id">Няправільны ідэнтыфікатар</string>
 </resources>
