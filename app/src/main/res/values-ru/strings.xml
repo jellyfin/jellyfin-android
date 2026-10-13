@@ -166,4 +166,16 @@
     <string name="download_location_inaccessible_description">Выбранное место для загрузки больше недоступно. Выберите другую папку, чтобы продолжить загрузку.</string>
     <string name="download_remove_keep_local">Оставить локальные файл(ы)</string>
     <string name="pref_exoplayer_direct_play_ass_description">Использовать экспериментальный рендеринг субтитров на стороне клиента, может работать не всегда</string>
+    <plurals name="download_remove_title">
+        <item quantity="one">Удалить загрузку</item>
+        <item quantity="few">Удалить загрузки</item>
+        <item quantity="many">Удалить загрузки</item>
+        <item quantity="other">Удалить загрузки</item>
+    </plurals>
+    <plurals name="download_remove_description">
+        <item quantity="one">Удалить «%2$s» из загрузок?</item>
+        <item quantity="few">Удалить выбранные загрузки (%1$d)?</item>
+        <item quantity="many">Удалить выбранные загрузки (%1$d)?</item>
+        <item quantity="other">Удалить выбранные загрузки (%1$d)?</item>
+    </plurals>
 </resources>
