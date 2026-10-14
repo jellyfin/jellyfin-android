@@ -2,6 +2,7 @@ package org.jellyfin.mobile.player.ui
 
 import android.app.Activity
 import android.app.PictureInPictureParams
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Rect
@@ -9,6 +10,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.VibratorManager
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.OrientationEventListener
 import android.view.View
@@ -359,6 +362,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
                 R.string.speed_up_overlay,
                 NumberFormat.getNumberInstance().format(speedMultiplier)
             )
+            requireView().performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
         }
         speedUpOverlayText.visibility = if (isPressing) View.VISIBLE else View.GONE
         return viewModel.setPressSpeedUp(isPressing, speedMultiplier)
