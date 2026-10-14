@@ -56,6 +56,7 @@ import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaSegmentDto
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.android.ext.android.inject
+import java.text.NumberFormat
 import kotlin.math.max
 import androidx.media3.ui.R as Media3R
 
@@ -350,7 +351,17 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     }
 
     fun onPressSpeedUp(isPressing: Boolean): Boolean {
-        return viewModel.setPressSpeedUp(isPressing, appPreferences.exoPlayerPressSpeedUpMultiplier)
+        val speedUpOverlayText = playerBinding.speedUpOverlay
+        val speedMultiplier = appPreferences.exoPlayerPressSpeedUpMultiplier
+
+        if(isPressing) {
+            speedUpOverlayText.text = requireContext().getString(
+                R.string.speed_up_overlay,
+                NumberFormat.getNumberInstance().format(speedMultiplier)
+            )
+        }
+        speedUpOverlayText.visibility = if (isPressing) View.VISIBLE else View.GONE
+        return viewModel.setPressSpeedUp(isPressing, speedMultiplier)
     }
 
     fun onDecoderSelected(type: DecoderType) {
