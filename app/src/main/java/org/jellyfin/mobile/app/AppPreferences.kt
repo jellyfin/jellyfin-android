@@ -7,6 +7,7 @@ import androidx.core.content.edit
 import org.jellyfin.mobile.downloads.DownloadMethod
 import org.jellyfin.mobile.player.mediasegments.MediaSegmentAction
 import org.jellyfin.mobile.player.mediasegments.toMediaSegmentActionsString
+import org.jellyfin.mobile.player.ui.DecoderType
 import org.jellyfin.mobile.settings.ExternalPlayerPackage
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.mobile.utils.Constants
@@ -127,6 +128,13 @@ class AppPreferences(context: Context) {
 
     val exoPlayerNetworkBuffer: String
         get() = sharedPreferences.getString(Constants.PREF_EXOPLAYER_NETWORK_BUFFER, Constants.NETWORK_BUFFER_AUTO)!!
+
+    val exoPlayerDecoderType: DecoderType
+        get() = when (sharedPreferences.getString(Constants.PREF_EXOPLAYER_DECODER_TYPE, Constants.DECODER_TYPE_AUTO)) {
+            Constants.DECODER_TYPE_HARDWARE -> DecoderType.HARDWARE
+            Constants.DECODER_TYPE_SOFTWARE -> DecoderType.SOFTWARE
+            else -> DecoderType.AUTO
+        }
 
     @ExternalPlayerPackage
     var externalPlayerApp: String
