@@ -157,38 +157,68 @@ sealed class JellyfinMediaSource(
     /**
      * Get the formatted name of the source.
      */
-    @Suppress("CyclomaticComplexMethod")
     fun getName(context: Context): String {
-        return item?.let {
+        return item?.let { item ->
             buildString {
                 val name = if (
-                    it.type in arrayOf(BaseItemKind.PROGRAM, BaseItemKind.RECORDING) &&
-                    (it.isSeries == true || !it.episodeTitle.isNullOrEmpty())
+                    item.type in arrayOf(BaseItemKind.PROGRAM, BaseItemKind.RECORDING) &&
+                    (item.isSeries == true || !item.episodeTitle.isNullOrEmpty())
                 ) {
-                    it.episodeTitle
+                    item.episodeTitle
                 } else {
-                    it.name
+                    item.name
                 }
 
-                val extraInfo = when (it.type) {
-                    BaseItemKind.TV_CHANNEL if !it.channelNumber.isNullOrEmpty() -> it.channelNumber
-                    BaseItemKind.EPISODE if it.parentIndexNumber == 0 -> context.getString(R.string.special_episode)
-                    in arrayOf(BaseItemKind.EPISODE, BaseItemKind.RECORDING) if it.indexNumber != null && it.parentIndexNumber != null ->
-                        "S${it.parentIndexNumber}:E${it.indexNumber}${it.indexNumberEnd?.let { n -> "-$n" } ?: ""}"
-                    else -> ""
-                }
-
-                listOf(it.seriesName, extraInfo, name)
+                listOf(item.seriesName, item.buildExtraInfo(context), name)
                     .filter { str -> !str.isNullOrEmpty() }
                     .joinTo(this, separator = " - ")
 
-                if (it.type == BaseItemKind.MOVIE && it.productionYear != null) {
-                    append(" (${it.productionYear})")
-                } else if (it.premiereDate != null) {
-                    append(" (${it.premiereDate!!.year})")
+                if (item.type == BaseItemKind.MOVIE && item.productionYear != null) {
+                    append(" (${item.productionYear})")
+                } else if (item.premiereDate != null) {
+                    append(" (${item.premiereDate!!.year})")
                 }
             }.ifEmpty { null }
         } ?: sourceInfo.name.orEmpty()
+    }
+
+    /**
+     * Get the season/episode label (e.g. `Season 1 Episode 3`) or channel number of the source,
+     * or null when the item has no such information.
+     */
+    fun getExtraInfo(context: Context): String? = item?.buildExtraInfo(context)
+
+    /**
+     * Get the primary title of the source. Episodes use the series name so the season/episode
+     * label (see [getExtraInfo]) can be shown separately without duplicating it.
+     */
+    fun getTitle(context: Context): String {
+        val item = item ?: return sourceInfo.name.orEmpty()
+        val seriesName = item.seriesName
+        return if (item.type == BaseItemKind.EPISODE && seriesName != null && seriesName.isNotEmpty()) {
+            seriesName
+        } else {
+            getName(context)
+        }
+    }
+
+    private fun BaseItemDto.buildExtraInfo(context: Context): String? {
+        val seasonNumber = parentIndexNumber
+        val episodeNumber = indexNumber
+        return when {
+            type == BaseItemKind.TV_CHANNEL && !channelNumber.isNullOrEmpty() -> channelNumber
+            type == BaseItemKind.EPISODE && seasonNumber == 0 -> context.getString(R.string.special_episode)
+            type in arrayOf(BaseItemKind.EPISODE, BaseItemKind.RECORDING) &&
+                seasonNumber != null && episodeNumber != null -> {
+                val episodeEnd = indexNumberEnd
+                if (episodeEnd != null) {
+                    context.getString(R.string.season_episodes, seasonNumber, episodeNumber, episodeEnd)
+                } else {
+                    context.getString(R.string.season_episode, seasonNumber, episodeNumber)
+                }
+            }
+            else -> null
+        }
     }
 }
 
