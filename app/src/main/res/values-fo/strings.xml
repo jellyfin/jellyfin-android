@@ -95,8 +95,8 @@
     <string name="mobile_data">Farnetsdáta</string>
     <string name="mobile_data_and_roaming">Farnetdáta og reikandi farnetdáta</string>
     <string name="wifi_only_summary">Margmiðlar verða einans niðurtiknir umvegis WiFi.</string>
-    <string name="mobile_data_summary">Margmiðlar verða niðurtiknir umvegis WiFi og farnet.</string>
-    <string name="mobile_data_and_roaming_summary">Margmiðlar verða niðurtiknir umvegis WiFi, farnet og farnetum tú reikar á.</string>
+    <string name="mobile_data_summary">Miðlar verða niðurtiknir umvegis WiFi og farnet.</string>
+    <string name="mobile_data_and_roaming_summary">Miðlar verða niðurtiknir umvegis WiFi, farnet og farnetum tú reikar á.</string>
     <string name="media_service_item_not_found">Miðilin fanst ikki</string>
     <string name="media_service_car_section_recents">Nýliga spælt</string>
     <string name="media_service_car_section_playlists">Spælilistar</string>
