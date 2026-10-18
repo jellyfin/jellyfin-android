@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.app.StorageManager
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.data.entity.DownloadEntity
@@ -18,6 +19,7 @@ import org.jellyfin.mobile.data.entity.DownloadFiles
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.interaction.PlayOptions
+import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.sdk.model.api.MediaType
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -28,6 +30,7 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
     private val downloadManager: DownloadManager by inject()
     private val activityEventHandler: ActivityEventHandler by inject()
     private val storageManager: StorageManager by inject()
+    private val appPreferences: AppPreferences by inject()
 
     val downloads: StateFlow<List<DownloadFiles>> = downloadDao
         .getAllDownloadsWithFiles()
@@ -52,7 +55,27 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
                     subtitleStreamIndex = null,
                     playFromDownloads = true,
                 )
-                activityEventHandler.emit(ActivityEvent.LaunchNativePlayer(playOptions))
+                if (appPreferences.videoPlayerType == VideoPlayerType.EXTERNAL_PLAYER) {
+                    viewModelScope.launch {
+                        val files = withContext(Dispatchers.IO) {
+                            downloadDao.getFiles(download.id)
+                        }
+
+                        val mainFile = files.find { it.type == DownloadFileType.ITEM }
+
+                        mainFile?.let {
+                            activityEventHandler.emit(
+                                ActivityEvent.LaunchExternalPlayer(
+                                    uri = it.uri,
+                                    title = download.item.name,
+                                    targetApp = appPreferences.externalPlayerApp,
+                                ),
+                            )
+                        }
+                    }
+                } else {
+                    activityEventHandler.emit(ActivityEvent.LaunchNativePlayer(playOptions))
+                }
             }
 
             MediaType.AUDIO,
