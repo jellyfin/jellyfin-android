@@ -46,15 +46,6 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
     fun openDownload(download: DownloadEntity) {
         when (download.item.mediaType) {
             MediaType.VIDEO -> {
-                val playOptions = PlayOptions(
-                    ids = listOf(download.itemId),
-                    mediaSourceId = download.itemId.toString(),
-                    startIndex = 0,
-                    startPosition = null,
-                    audioStreamIndex = null,
-                    subtitleStreamIndex = null,
-                    playFromDownloads = true,
-                )
                 if (appPreferences.videoPlayerType == VideoPlayerType.EXTERNAL_PLAYER) {
                     viewModelScope.launch {
                         val files = withContext(Dispatchers.IO) {
@@ -74,6 +65,15 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
                         }
                     }
                 } else {
+                    val playOptions = PlayOptions(
+                        ids = listOf(download.itemId),
+                        mediaSourceId = download.itemId.toString(),
+                        startIndex = 0,
+                        startPosition = null,
+                        audioStreamIndex = null,
+                        subtitleStreamIndex = null,
+                        playFromDownloads = true,
+                    )
                     activityEventHandler.emit(ActivityEvent.LaunchNativePlayer(playOptions))
                 }
             }
