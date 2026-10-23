@@ -73,6 +73,8 @@ class PlayerMenus(
 
     private var subtitleCount = 0
     private var subtitlesEnabled = false
+    var isAnyMenuShowing: Boolean = false
+        private set
 
     private val trickplayHelper = TrickplayHelper(
         trickplayContainer,
@@ -114,6 +116,7 @@ class PlayerMenus(
         }
         audioStreamsButton.setOnClickListener {
             fragment.suppressControllerAutoHide(true)
+            isAnyMenuShowing = true
             audioStreamsMenu.show()
         }
         subtitlesButton.setOnClickListener {
@@ -127,20 +130,24 @@ class PlayerMenus(
                 }
                 else -> {
                     fragment.suppressControllerAutoHide(true)
+                    isAnyMenuShowing = true
                     subtitlesMenu.show()
                 }
             }
         }
         speedButton.setOnClickListener {
             fragment.suppressControllerAutoHide(true)
+            isAnyMenuShowing = true
             speedMenu.show()
         }
         qualityButton.setOnClickListener {
             fragment.suppressControllerAutoHide(true)
+            isAnyMenuShowing = true
             qualityMenu.show()
         }
         decoderButton.setOnClickListener {
             fragment.suppressControllerAutoHide(true)
+            isAnyMenuShowing = true
             decoderMenu.show()
         }
         infoButton.setOnClickListener {
@@ -407,6 +414,7 @@ class PlayerMenus(
     }
 
     override fun onDismiss(menu: PopupMenu) {
+        isAnyMenuShowing = false
         fragment.suppressControllerAutoHide(false)
         fragment.onPopupDismissed()
     }
