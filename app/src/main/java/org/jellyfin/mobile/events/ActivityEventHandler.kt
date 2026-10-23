@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,7 +22,9 @@ import org.jellyfin.mobile.settings.SettingsFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.extensions.addFragment
 import org.jellyfin.mobile.utils.requestDownload
+import org.jellyfin.mobile.utils.toast
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
+import org.jellyfin.sdk.api.client.exception.ApiClientException
 import timber.log.Timber
 
 class ActivityEventHandler(
@@ -77,7 +80,13 @@ class ActivityEventHandler(
             }
             is ActivityEvent.DownloadItems -> {
                 lifecycleScope.launch {
-                    with(event) { requestDownload(itemIds) }
+                    // A failed request (no connection, timeout) crashed the app: launched on the main thread
+                    try {
+                        with(event) { requestDownload(itemIds) }
+                    } catch (e: ApiClientException) {
+                        Timber.e(e, "Failed to start the download")
+                        toast(R.string.download_failed, Toast.LENGTH_LONG)
+                    }
                 }
             }
             ActivityEvent.OpenDownloads -> {
