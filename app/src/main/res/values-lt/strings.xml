@@ -147,7 +147,7 @@
         <item quantity="other">Pašalinti atsisiuntimų</item>
     </plurals>
     <string name="network_buffer_extra_large">Labai didelis</string>
-    <string name="network_buffer_extra_large_description">Maksimalus buferis, skirtas lėtiems arba palydoviniams ryšiams</string>
+    <string name="network_buffer_extra_large_description">Didžiausias buferis, skirtas lėtiems arba palydoviniams ryšiams</string>
     <string name="downloads_empty">Kol kas nėra atsisiuntimų</string>
     <string name="downloads_empty_description">Galite atsisiųsti filmus ir TV laidas, kad galėtumėte juos žiūrėti neprisijungę. Elemento informacijos puslapyje ieškokite atsisiuntimo piktogramos.</string>
     <string name="downloading_title">Atsisiunčiama %1$s</string>
