@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/comment_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/comments_item_padding"
+    android:paddingTop="8dp"
+    android:paddingEnd="@dimen/comments_item_padding"
+    android:paddingBottom="8dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/comment_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@color/comments_avatar_background"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/comment_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="maikel" />
+
+            <TextView
+                android:id="@+id/comment_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="#99FFFFFF"
+                android:textSize="12sp"
+                tools:text="5m" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/comment_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="#E6FFFFFF"
+            android:textSize="14sp"
+            tools:text="First! This episode is wild." />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/comment_like_button"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/comments_like"
+                android:padding="4dp"
+                android:src="@drawable/ic_favorite_border_white_24dp"
+                app:tint="#B3FFFFFF" />
+
+            <TextView
+                android:id="@+id/comment_like_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#99FFFFFF"
+                android:textSize="12sp"
+                tools:text="3" />
+
+            <TextView
+                android:id="@+id/comment_reply_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="4dp"
+                android:text="@string/comments_reply"
+                android:textColor="#B3FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/comment_delete_button"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/comments_delete"
+                android:padding="3dp"
+                android:src="@drawable/ic_delete_white_24dp"
+                android:visibility="gone"
+                app:tint="#80FFFFFF"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

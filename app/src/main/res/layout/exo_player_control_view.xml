@@ -154,85 +154,135 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="top"
-        app:constraint_referenced_ids="audio_streams_button,subtitles_button,fullscreen_switcher" />
+        app:barrierAllowsGoneWidgets="true"
+        app:constraint_referenced_ids="controls_group,controls_toggle,comments_button,fullscreen_switcher" />
+
+    <!--
+        Secondary controls, packed away behind the bottom-left toggle. They expand upwards so the
+        bottom bar itself stays down to three items: the toggle, the comment button in the middle
+        and fullscreen in the corner.
+    -->
+    <LinearLayout
+        android:id="@+id/controls_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/exo_bottom_controls_margin"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/controls_toggle"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/lock_screen_button"
+            android:layout_width="@dimen/exo_bottom_controls_size"
+            android:layout_height="@dimen/exo_bottom_controls_size"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/ripple_background_circular"
+            android:padding="@dimen/exo_bottom_controls_padding"
+            android:src="@drawable/ic_screen_lock_white_24dp" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/audio_streams_button"
+            android:layout_width="@dimen/exo_bottom_controls_size"
+            android:layout_height="@dimen/exo_bottom_controls_size"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/ripple_background_circular"
+            android:padding="@dimen/exo_bottom_controls_padding"
+            android:src="@drawable/ic_music_note_white_24dp" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/subtitles_button"
+            android:layout_width="@dimen/exo_bottom_controls_size"
+            android:layout_height="@dimen/exo_bottom_controls_size"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/ripple_background_circular"
+            android:padding="@dimen/exo_bottom_controls_padding"
+            android:src="@drawable/ic_subtitles_stateful_24dp" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/speed_button"
+            android:layout_width="@dimen/exo_bottom_controls_size"
+            android:layout_height="@dimen/exo_bottom_controls_size"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/ripple_background_circular"
+            android:padding="@dimen/exo_bottom_controls_padding"
+            android:src="@drawable/ic_slow_motion_video_white_24dp" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/quality_button"
+            android:layout_width="@dimen/exo_bottom_controls_size"
+            android:layout_height="@dimen/exo_bottom_controls_size"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/ripple_background_circular"
+            android:padding="@dimen/exo_bottom_controls_padding"
+            android:src="@drawable/ic_settings_white_24dp" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/decoder_button"
+            android:layout_width="@dimen/exo_bottom_controls_size"
+            android:layout_height="@dimen/exo_bottom_controls_size"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/ripple_background_circular"
+            android:padding="@dimen/exo_bottom_controls_padding"
+            android:src="@drawable/ic_video_settings_white_24dp" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/info_button"
+            android:layout_width="@dimen/exo_bottom_controls_size"
+            android:layout_height="@dimen/exo_bottom_controls_size"
+            android:background="@drawable/ripple_background_circular"
+            android:padding="@dimen/exo_bottom_controls_padding"
+            android:src="@drawable/ic_info_white_24dp" />
+    </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/lock_screen_button"
+        android:id="@+id/controls_toggle"
         android:layout_width="@dimen/exo_bottom_controls_size"
         android:layout_height="@dimen/exo_bottom_controls_size"
         android:layout_marginStart="@dimen/exo_bottom_controls_margin"
         android:layout_marginBottom="@dimen/exo_bottom_controls_margin"
         android:background="@drawable/ripple_background_circular"
+        android:contentDescription="@string/player_controls_expand"
         android:padding="@dimen/exo_bottom_controls_padding"
-        android:src="@drawable/ic_screen_lock_white_24dp"
+        android:src="@drawable/ic_tune_white_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/audio_streams_button"
-        android:layout_width="@dimen/exo_bottom_controls_size"
-        android:layout_height="@dimen/exo_bottom_controls_size"
+    <FrameLayout
+        android:id="@+id/comments_button_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/exo_bottom_controls_margin"
-        android:background="@drawable/ripple_background_circular"
-        android:padding="@dimen/exo_bottom_controls_padding"
-        android:src="@drawable/ic_music_note_white_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/lock_screen_button" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/subtitles_button"
-        android:layout_width="@dimen/exo_bottom_controls_size"
-        android:layout_height="@dimen/exo_bottom_controls_size"
-        android:layout_marginBottom="@dimen/exo_bottom_controls_margin"
-        android:background="@drawable/ripple_background_circular"
-        android:padding="@dimen/exo_bottom_controls_padding"
-        android:src="@drawable/ic_subtitles_stateful_24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/audio_streams_button" />
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/comments_button"
+            android:layout_width="@dimen/exo_bottom_controls_size"
+            android:layout_height="@dimen/exo_bottom_controls_size"
+            android:background="@drawable/ripple_background_circular"
+            android:contentDescription="@string/comments_title"
+            android:padding="@dimen/exo_bottom_controls_padding"
+            android:src="@drawable/ic_comment_white_24dp" />
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/speed_button"
-        android:layout_width="@dimen/exo_bottom_controls_size"
-        android:layout_height="@dimen/exo_bottom_controls_size"
-        android:layout_marginBottom="@dimen/exo_bottom_controls_margin"
-        android:background="@drawable/ripple_background_circular"
-        android:padding="@dimen/exo_bottom_controls_padding"
-        android:src="@drawable/ic_slow_motion_video_white_24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/subtitles_button" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/quality_button"
-        android:layout_width="@dimen/exo_bottom_controls_size"
-        android:layout_height="@dimen/exo_bottom_controls_size"
-        android:layout_marginBottom="@dimen/exo_bottom_controls_margin"
-        android:background="@drawable/ripple_background_circular"
-        android:padding="@dimen/exo_bottom_controls_padding"
-        android:src="@drawable/ic_settings_white_24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/speed_button" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/decoder_button"
-        android:layout_width="@dimen/exo_bottom_controls_size"
-        android:layout_height="@dimen/exo_bottom_controls_size"
-        android:layout_marginBottom="@dimen/exo_bottom_controls_margin"
-        android:background="@drawable/ripple_background_circular"
-        android:padding="@dimen/exo_bottom_controls_padding"
-        android:src="@drawable/ic_video_settings_white_24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/quality_button" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/info_button"
-        android:layout_width="@dimen/exo_bottom_controls_size"
-        android:layout_height="@dimen/exo_bottom_controls_size"
-        android:layout_marginBottom="@dimen/exo_bottom_controls_margin"
-        android:background="@drawable/ripple_background_circular"
-        android:padding="@dimen/exo_bottom_controls_padding"
-        android:src="@drawable/ic_info_white_24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/decoder_button" />
+        <TextView
+            android:id="@+id/comments_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:background="@drawable/comments_badge_background"
+            android:gravity="center"
+            android:minWidth="17dp"
+            android:minHeight="17dp"
+            android:paddingHorizontal="4dp"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            tools:text="3" />
+    </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/fullscreen_switcher"

@@ -21,4 +21,5 @@
     <!-- Skip Media Segment Button -->
     <color name="skip_media_segment_background">#202124</color>
     <color name="skip_media_segment_text">#DDDDDD</color>
+    <color name="comments_avatar_background">#3A3A40</color>
 </resources>

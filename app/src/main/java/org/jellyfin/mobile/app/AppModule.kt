@@ -29,6 +29,7 @@ import okhttp3.OkHttpClient
 import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.bridge.MediaSegments
 import org.jellyfin.mobile.bridge.NativePlayer
+import org.jellyfin.mobile.comments.CommentsRepository
 import org.jellyfin.mobile.downloads.DownloadManager
 import org.jellyfin.mobile.downloads.DownloadNotificationManager
 import org.jellyfin.mobile.downloads.DownloadQueue
@@ -98,6 +99,9 @@ val applicationModule = module {
     single { DeviceProfileBuilder(get()) }
     single { QualityOptionsProvider() }
     single { MediaSegmentRepository() }
+
+    // Comments on videos (Jellyfin Comments plugin)
+    single { CommentsRepository(get()) }
 
     // ExoPlayer factories
     single<DatabaseProvider> {

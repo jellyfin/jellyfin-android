@@ -182,4 +182,25 @@
     <string name="download_location_not_set_description">To download media, please select a folder where the files should be stored.</string>
     <string name="download_location_inaccessible">Download location inaccessible</string>
     <string name="download_location_inaccessible_description">The selected download location is no longer accessible. Please select a different folder to resume downloads.</string>
+
+    <!-- Comments -->
+    <string name="comments_title">Comments</string>
+    <string name="player_controls_expand">More controls</string>
+    <string name="comments_title_count">Comments (%1$d)</string>
+    <string name="comments_empty">No comments yet. Be the first to comment!</string>
+    <string name="comments_input_hint">Add a comment…</string>
+    <string name="comments_send">Post</string>
+    <string name="comments_reply">Reply</string>
+    <string name="comments_like">Like</string>
+    <string name="comments_delete">Delete</string>
+    <string name="comments_edited">edited</string>
+    <string name="comments_unknown_user">Unknown</string>
+    <string name="comments_replying_to">Replying to %1$s</string>
+    <string name="comments_cancel">Cancel</string>
+    <string name="comments_sort_newest">Newest</string>
+    <string name="comments_sort_top">Top</string>
+    <string name="comments_error">Could not load comments.</string>
+    <string name="comments_post_error">Could not post the comment.</string>
+    <string name="comments_delete_confirm">Delete this comment?</string>
+    <string name="comments_delete_error">Could not delete the comment.</string>
 </resources>

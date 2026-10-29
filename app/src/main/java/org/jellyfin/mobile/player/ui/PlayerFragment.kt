@@ -35,6 +35,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.comments.CommentsPanel
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.PlayerException
@@ -77,6 +78,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     private val toolbar: Toolbar get() = playerControlsBinding.toolbar
     private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
     private var playerMenus: PlayerMenus? = null
+    private var commentsPanel: CommentsPanel? = null
 
     private lateinit var playerFullscreenHelper: PlayerFullscreenHelper
     lateinit var playerLockScreenHelper: PlayerLockScreenHelper
@@ -223,11 +225,30 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             insets
         }
 
+        // The activity is edge-to-edge (MainActivity calls enableEdgeToEdge), so the window does
+        // NOT resize when the keyboard opens: the IME simply draws over the content. The comments
+        // panel is a bottom sheet, so its composer ended up underneath the keyboard and you could
+        // not see what you were typing. Shrinking the panel by the IME inset keeps the field above
+        // the keyboard while the list above it scrolls as usual.
+        ViewCompat.setOnApplyWindowInsetsListener(playerBinding.commentsContainer) { view, insets ->
+            val ime = insets.getInsets(WindowInsetsCompat.Type.ime())
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // playerOverlay already pads for the navigation bar, and the IME inset includes that
+            // same strip, so only the difference is added or the panel floats a gap too high.
+            view.setPadding(0, 0, 0, (ime.bottom - bars.bottom).coerceAtLeast(0))
+            insets
+        }
+
         // Handle toolbar back button
         toolbar.setNavigationOnClickListener { parentFragmentManager.popBackStack() }
 
         // Create playback menus
         playerMenus = PlayerMenus(this, playerBinding, playerControlsBinding)
+
+        // Create the comments panel (kept inside the player layout so playback is never paused)
+        commentsPanel = CommentsPanel(this, playerBinding) { count ->
+            playerMenus?.updateCommentsCount(count)
+        }
 
         // Set controller timeout
         suppressControllerAutoHide(false)
@@ -317,6 +338,14 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
      */
     fun suppressControllerAutoHide(suppress: Boolean) {
         playerView.controllerShowTimeoutMs = if (suppress) -1 else DEFAULT_CONTROLS_TIMEOUT_MS
+    }
+
+    fun toggleComments(itemId: String) {
+        commentsPanel?.toggle(itemId)
+    }
+
+    fun dismissComments() {
+        commentsPanel?.dismissIfVisible()
     }
 
     fun isLandscape(configuration: Configuration = resources.configuration) =
