@@ -28,7 +28,7 @@
     <string name="notification_action_stop">Sustabdyti</string>
     <string name="notification_action_next">Kitas</string>
     <string name="notification_action_fast_forward">Prasukti</string>
-    <string name="notification_action_pause">Pauzė</string>
+    <string name="notification_action_pause">Pristabdyti</string>
     <string name="notification_action_rewind">Atsukti</string>
     <string name="notification_action_previous">Ankstesnis</string>
     <string name="music_notification_channel_description">Naudojamas muzikos atkūrimo valdikliams</string>
