@@ -6,6 +6,8 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
@@ -275,12 +277,21 @@ class CommentsPanel(
                 .onSuccess {
                     input.text = null
                     setReplying(null)
+                    // The comment is gone from the field, so leaving the keyboard up only hides
+                    // the thread the user just posted into.
+                    hideKeyboard()
                     load(reset = true)
                 }
                 .onFailure { context.toast(context.getString(R.string.comments_post_error)) }
             sendButton.isEnabled = input.text?.isNotBlank() == true
             sendButton.alpha = if (sendButton.isEnabled) 1f else 0.45f
         }
+    }
+
+    /** Drops focus and dismisses the on-screen keyboard. */
+    private fun hideKeyboard() {
+        input.clearFocus()
+        ViewCompat.getWindowInsetsController(input)?.hide(WindowInsetsCompat.Type.ime())
     }
 
     private fun setReplying(comment: CommentDto?) {
