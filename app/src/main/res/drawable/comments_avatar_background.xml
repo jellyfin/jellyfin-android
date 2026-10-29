@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Circular, not square: the avatars are circle-cropped in Coil, so a square fill showed as
+     four grey corners around every circle. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/comments_avatar_background" />
+</shape>

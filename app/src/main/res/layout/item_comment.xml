@@ -15,7 +15,7 @@
         android:id="@+id/comment_avatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:background="@color/comments_avatar_background"
+        android:background="@drawable/comments_avatar_background"
         android:scaleType="centerCrop" />
 
     <LinearLayout
