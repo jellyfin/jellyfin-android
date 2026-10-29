@@ -163,6 +163,39 @@ class CommentsPanel(
         }.start()
     }
 
+    /**
+     * Takes the panel off screen at once, without the closing animation. Used when Android
+     * shrinks the window (picture-in-picture, freeform, split screen) and there is no room left
+     * for the video behind the sheet.
+     */
+    fun hideImmediately() {
+        if (!container.isVisible) {
+            return
+        }
+        isOpen = false
+        fragment.suppressControllerAutoHide(false)
+        setReplying(null)
+        input.text = null
+        sheet.animate().cancel()
+        container.animate().cancel()
+        sheet.translationY = sheet.height.toFloat()
+        container.alpha = 0f
+        container.isVisible = false
+    }
+
+    /** Brings back a panel that [hideImmediately] took away, keeping the loaded comments. */
+    fun restore() {
+        if (container.isVisible) {
+            return
+        }
+        isOpen = true
+        container.isVisible = true
+        container.alpha = 1f
+        fragment.suppressControllerAutoHide(true)
+        applySheetHeight()
+        sheet.translationY = 0f
+    }
+
     fun dismissIfVisible() {
         if (isVisible) hide()
     }

@@ -63,6 +63,9 @@ import kotlin.math.max
 import androidx.media3.ui.R as Media3R
 
 @Suppress("TooManyFunctions")
+/** Below this many density-independent pixels of window, the comments sheet is not shown. */
+private const val MIN_COMMENTS_WINDOW_DP = 480
+
 class PlayerFragment : Fragment(), BackPressInterceptor {
     private val appPreferences: AppPreferences by inject()
     private val assHandler: AssHandler by inject()
@@ -79,6 +82,9 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
     private var playerMenus: PlayerMenus? = null
     private var commentsPanel: CommentsPanel? = null
+
+    /** Set when the panel was taken away because the window shrank, so it can come back. */
+    private var commentsHiddenForSmallWindow = false
 
     private lateinit var playerFullscreenHelper: PlayerFullscreenHelper
     lateinit var playerLockScreenHelper: PlayerLockScreenHelper
@@ -237,6 +243,14 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             // same strip, so only the difference is added or the panel floats a gap too high.
             view.setPadding(0, 0, 0, (ime.bottom - bars.bottom).coerceAtLeast(0))
             insets
+        }
+
+        // Android can shrink this window to a thumbnail: picture-in-picture, freeform windows and
+        // split screen all do. A half-height sheet then pushes the video out of sight and the panel
+        // reads as broken ("comments" over nothing), so it gets out of the way while there is no
+        // room for both and comes back on its own once the window is large again.
+        playerBinding.commentsContainer.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            syncCommentsWithWindowSize()
         }
 
         // Handle toolbar back button
@@ -463,6 +477,40 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         if (isInPictureInPictureMode) {
             playerMenus?.dismissPlaybackInfo()
             playerLockScreenHelper.hideUnlockButton()
+
+            // A thumbnail window has no room for a sheet; the video is the point of it.
+            commentsPanel?.let { panel ->
+                if (panel.isVisible) {
+                    commentsHiddenForSmallWindow = true
+                    panel.hideImmediately()
+                }
+            }
+        } else {
+            playerBinding.commentsContainer.post { syncCommentsWithWindowSize() }
+        }
+    }
+
+    /**
+     * Hides the comments panel while the window is too short to show both it and the video, and
+     * restores it once there is room again. Covers picture-in-picture, freeform and split screen.
+     */
+    private fun syncCommentsWithWindowSize() {
+        val panel = commentsPanel ?: return
+        val container = playerBinding.commentsContainer
+        val available = container.height - container.paddingTop - container.paddingBottom
+        if (available <= 0) {
+            return
+        }
+
+        val minimum = (MIN_COMMENTS_WINDOW_DP * container.resources.displayMetrics.density).toInt()
+        if (available < minimum) {
+            if (panel.isVisible) {
+                commentsHiddenForSmallWindow = true
+                panel.hideImmediately()
+            }
+        } else if (commentsHiddenForSmallWindow) {
+            commentsHiddenForSmallWindow = false
+            panel.restore()
         }
     }
 
