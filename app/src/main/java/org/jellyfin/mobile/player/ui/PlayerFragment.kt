@@ -3,6 +3,7 @@ package org.jellyfin.mobile.player.ui
 import android.app.Activity
 import android.app.PictureInPictureParams
 import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Rect
 import android.os.Build
@@ -377,7 +378,11 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     fun onUserLeaveHint() {
         if (AndroidVersion.isAtLeastN && viewModel.playerOrNull != null) {
-            requireActivity().enterPictureInPicture()
+            val activity = requireActivity()
+            // Android 7 supports picture-in-picture on TVs only, phones throw an IllegalStateException
+            if (activity.packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)) {
+                activity.enterPictureInPicture()
+            }
         }
     }
 
