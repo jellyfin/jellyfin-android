@@ -61,6 +61,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
     private lateinit var horizontalGesturePreference: Preference
     private lateinit var directPlayAssPreference: Preference
     private lateinit var networkBufferPreference: Preference
+    private lateinit var resumeRewindPreference: Preference
     private lateinit var externalPlayerChoicePreference: Preference
     private lateinit var downloadLocationPreference: Preference
 
@@ -129,6 +130,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 horizontalGesturePreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 directPlayAssPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 networkBufferPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                resumeRewindPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
         }
@@ -193,6 +195,22 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
         networkBufferPreference = singleChoice(Constants.PREF_EXOPLAYER_NETWORK_BUFFER, networkBufferOptions) {
             titleRes = R.string.pref_exoplayer_network_buffer
             initialSelection = Constants.NETWORK_BUFFER_AUTO
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+        }
+        val resumeRewindOptions = listOf(
+            Constants.RESUME_REWIND_0_SECONDS,
+            Constants.RESUME_REWIND_5_SECONDS,
+            Constants.RESUME_REWIND_10_SECONDS,
+            Constants.RESUME_REWIND_30_SECONDS,
+        ).map { seconds ->
+            SelectionItem(
+                seconds,
+                resources.getQuantityString(R.plurals.resume_rewind_seconds, seconds, seconds),
+            )
+        }
+        resumeRewindPreference = singleChoice(Constants.PREF_EXOPLAYER_RESUME_REWIND, resumeRewindOptions) {
+            titleRes = R.string.pref_exoplayer_resume_rewind
+            initialSelection = Constants.DEFAULT_RESUME_REWIND_SECONDS
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
         }
 

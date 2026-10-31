@@ -41,6 +41,12 @@ object Constants {
     const val PREF_EXOPLAYER_ALLOW_HORIZONTAL_GESTURE = "pref_exoplayer_allow_horizontal_gesture"
     const val PREF_EXOPLAYER_DIRECT_PLAY_ASS = "pref_exoplayer_direct_play_ass"
     const val PREF_EXOPLAYER_NETWORK_BUFFER = "pref_exoplayer_network_buffer"
+    const val PREF_EXOPLAYER_RESUME_REWIND = "pref_exoplayer_resume_rewind"
+    const val RESUME_REWIND_0_SECONDS = 0
+    const val RESUME_REWIND_5_SECONDS = 5
+    const val RESUME_REWIND_10_SECONDS = 10
+    const val RESUME_REWIND_30_SECONDS = 30
+    const val DEFAULT_RESUME_REWIND_SECONDS = RESUME_REWIND_10_SECONDS
     const val NETWORK_BUFFER_AUTO = "auto"
     const val NETWORK_BUFFER_LARGE = "large"
     const val NETWORK_BUFFER_EXTRA_LARGE = "extra_large"

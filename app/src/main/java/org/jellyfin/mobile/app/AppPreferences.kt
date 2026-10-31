@@ -128,6 +128,22 @@ class AppPreferences(context: Context) {
     val exoPlayerNetworkBuffer: String
         get() = sharedPreferences.getString(Constants.PREF_EXOPLAYER_NETWORK_BUFFER, Constants.NETWORK_BUFFER_AUTO)!!
 
+    val exoPlayerResumeRewindSeconds: Int
+        get() {
+            val seconds = sharedPreferences.getInt(
+                Constants.PREF_EXOPLAYER_RESUME_REWIND,
+                Constants.DEFAULT_RESUME_REWIND_SECONDS,
+            )
+            return when (seconds) {
+                Constants.RESUME_REWIND_0_SECONDS,
+                Constants.RESUME_REWIND_5_SECONDS,
+                Constants.RESUME_REWIND_10_SECONDS,
+                Constants.RESUME_REWIND_30_SECONDS,
+                -> seconds
+                else -> Constants.DEFAULT_RESUME_REWIND_SECONDS
+            }
+        }
+
     @ExternalPlayerPackage
     var externalPlayerApp: String
         get() = sharedPreferences.getString(Constants.PREF_EXTERNAL_PLAYER_APP, ExternalPlayerPackage.SYSTEM_DEFAULT)!!

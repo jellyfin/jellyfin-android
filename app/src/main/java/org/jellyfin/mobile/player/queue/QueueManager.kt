@@ -11,10 +11,12 @@ import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.MergingMediaSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.downloads.DownloadFileType
 import org.jellyfin.mobile.player.PlayerException
 import org.jellyfin.mobile.player.PlayerViewModel
+import org.jellyfin.mobile.player.applyResumeRewind
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.interaction.PlayerWebPreferences
@@ -45,6 +47,7 @@ class QueueManager(
     private val viewModel: PlayerViewModel,
 ) : KoinComponent {
     private val apiClient: ApiClient = get()
+    private val appPreferences: AppPreferences by inject()
     private val videosApi: VideosApi = apiClient.videosApi
     private val mediaSourceResolver: MediaSourceResolver by inject()
     private val deviceProfileBuilder: DeviceProfileBuilder by inject()
@@ -89,10 +92,13 @@ class QueueManager(
             }.getOrNull()
         }
 
+        val startTime = playOptions.startPosition?.applyResumeRewind(appPreferences.exoPlayerResumeRewindSeconds)
+
         when (playOptions.playFromDownloads) {
             true -> playOptions.mediaSourceId?.let {
                 startDownloadPlayback(
                     itemId = itemId,
+                    startTime = startTime,
                     playWhenReady = true,
                 )
             }
@@ -100,7 +106,7 @@ class QueueManager(
                 itemId = itemId,
                 mediaSourceId = playOptions.mediaSourceId,
                 maxStreamingBitrate = maxStreamingBitrate,
-                startTime = playOptions.startPosition,
+                startTime = startTime,
                 audioStreamIndex = playOptions.audioStreamIndex,
                 subtitleStreamIndex = playOptions.subtitleStreamIndex,
                 playWhenReady = true,
