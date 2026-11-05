@@ -25,6 +25,7 @@ import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.ui.PlayerFragment
 import org.jellyfin.mobile.utils.toast
+import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -49,6 +50,7 @@ class CommentsPanel(
 
     private val repository: CommentsRepository by inject()
     private val imageLoader: ImageLoader by inject()
+    private val webappFunctionChannel: WebappFunctionChannel by inject()
 
     private val context get() = binding.root.context
     private val container: View = binding.commentsContainer
@@ -421,20 +423,31 @@ class CommentsPanel(
     }
 
     private fun onNotificationOpen(notification: CommentNotificationDto) {
-        if (notification.isRead) {
-            return
-        }
         fragment.lifecycleScope.launch {
-            runCatching { repository.markNotificationRead(notification.id) }
-                .onSuccess {
-                    notifications = notifications.map {
-                        if (it.id == notification.id) it.copy(isRead = true) else it
+            if (!notification.isRead) {
+                runCatching { repository.markNotificationRead(notification.id) }
+                    .onSuccess {
+                        notifications = notifications.map {
+                            if (it.id == notification.id) it.copy(isRead = true) else it
+                        }
+                        notificationsAdapter.submit(notifications)
+                        updateBellBadge(notifications.count { !it.isRead })
+                        updateTitle()
                     }
-                    notificationsAdapter.submit(notifications)
-                    updateBellBadge(notifications.count { !it.isRead })
-                    updateTitle()
-                }
-                .onFailure { context.toast(context.getString(R.string.comments_replies_error)) }
+                    .onFailure { context.toast(context.getString(R.string.comments_replies_error)) }
+            }
+        }
+
+        // The native player cannot be started from here: it needs play options that only the web
+        // client builds. So hand the item back to the web client, which opens it and presses play;
+        // that request comes straight back through the native-player bridge. Then drop the player
+        // that is on screen so the reply does not open underneath it.
+        if (notification.itemId.isNotEmpty()) {
+            webappFunctionChannel.call(
+                "window.JellyfinComments && window.JellyfinComments.openItemAndPlay(" +
+                    "'${notification.itemId}');",
+            )
+            fragment.parentFragmentManager.popBackStack()
         }
     }
 
