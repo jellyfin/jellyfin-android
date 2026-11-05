@@ -20,6 +20,7 @@ import androidx.media3.ui.DefaultTimeBar
 import androidx.media3.ui.TimeBar
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.comments.CommentsRepository
+import org.jellyfin.mobile.comments.PendingCommentThread
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
@@ -47,6 +48,8 @@ class PlayerMenus(
 
     private val context = playerBinding.root.context
     private val qualityOptionsProvider: QualityOptionsProvider by inject()
+
+    private val pendingCommentThread: PendingCommentThread by inject()
     private val commentsRepository: CommentsRepository by inject()
     private val playPauseContainer: View by playerControlsBinding::playPauseContainer
     private val previousButton: View by playerControlsBinding::previousButton
@@ -176,6 +179,12 @@ class PlayerMenus(
         currentItemId = mediaSource.itemId.toString()
         fragment.dismissComments()
         refreshCommentsCount(mediaSource.itemId.toString())
+
+        // A reply followed from a notification opens its comment once this episode is playing.
+        val followedComment = pendingCommentThread.take(mediaSource.itemId.toString())
+        if (followedComment != null) {
+            fragment.openCommentsThread(mediaSource.itemId.toString(), followedComment)
+        }
 
         // previousButton is always enabled and will rewind if at the start of the queue
         nextButton.isEnabled = hasNext

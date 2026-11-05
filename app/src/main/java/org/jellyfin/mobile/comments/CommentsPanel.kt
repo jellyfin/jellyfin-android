@@ -51,6 +51,7 @@ class CommentsPanel(
     private val repository: CommentsRepository by inject()
     private val imageLoader: ImageLoader by inject()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
+    private val pendingThread: PendingCommentThread by inject()
 
     private val context get() = binding.root.context
     private val container: View = binding.commentsContainer
@@ -409,6 +410,33 @@ class CommentsPanel(
         }
     }
 
+    /**
+     * Opens the sheet on one comment and its replies, for a reply followed from a notification.
+     */
+    fun showThread(itemId: String, commentId: String) {
+        show(itemId)
+
+        loadJob?.cancel()
+        loadJob = fragment.lifecycleScope.launch {
+            loading.isVisible = true
+            runCatching { repository.getNotificationThread(commentId) }
+                .onSuccess { thread ->
+                    showingReplies = false
+                    sortButton.isVisible = false
+                    list.adapter = adapter
+
+                    val threadRows = listOf(CommentItem(thread, isReply = false)) +
+                        thread.replies.map { CommentItem(it, isReply = true) }
+                    rows = threadRows
+                    adapter.submit(threadRows)
+                    empty.isVisible = false
+                    setReplying(null)
+                }
+                .onFailure { context.toast(context.getString(R.string.comments_error)) }
+            loading.isVisible = false
+        }
+    }
+
     /** Badge on the bell. Zero hides it rather than showing a "0". */
     private fun updateBellBadge(count: Int) {
         bellBadge.isVisible = count > 0
@@ -443,6 +471,9 @@ class CommentsPanel(
         // that request comes straight back through the native-player bridge. Then drop the player
         // that is on screen so the reply does not open underneath it.
         if (notification.itemId.isNotEmpty()) {
+            // The player the web client is about to open knows nothing about this tap, so the
+            // comment is carried across and opened once that player is ready.
+            pendingThread.set(notification.itemId, notification.commentId)
             webappFunctionChannel.call(
                 "window.JellyfinComments && window.JellyfinComments.openItemAndPlay(" +
                     "'${notification.itemId}', '${notification.commentId}');",

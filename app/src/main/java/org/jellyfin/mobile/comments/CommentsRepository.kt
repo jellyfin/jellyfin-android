@@ -71,6 +71,11 @@ class CommentsRepository(private val apiClient: ApiClient) {
             ).content
         }
 
+    /** One comment together with its replies, for following a notification to its thread. */
+    suspend fun getNotificationThread(commentId: String): CommentDto = withContext(Dispatchers.IO) {
+        apiClient.get<CommentDto>(pathTemplate = "/Comments/Notifications/Threads/$commentId").content
+    }
+
     /** Unread count, used for the badge on the bell. */
     suspend fun getNotificationCount(): CommentNotificationCountDto = withContext(Dispatchers.IO) {
         apiClient.get<CommentNotificationCountDto>("/Comments/Notifications/Count").content

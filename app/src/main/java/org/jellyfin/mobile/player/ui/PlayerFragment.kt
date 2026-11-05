@@ -354,6 +354,10 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         playerView.controllerShowTimeoutMs = if (suppress) -1 else DEFAULT_CONTROLS_TIMEOUT_MS
     }
 
+    fun openCommentsThread(itemId: String, commentId: String) {
+        commentsPanel?.showThread(itemId, commentId)
+    }
+
     fun toggleComments(itemId: String) {
         commentsPanel?.toggle(itemId)
     }

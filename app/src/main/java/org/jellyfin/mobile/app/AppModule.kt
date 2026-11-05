@@ -30,6 +30,7 @@ import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.bridge.MediaSegments
 import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.comments.CommentsRepository
+import org.jellyfin.mobile.comments.PendingCommentThread
 import org.jellyfin.mobile.downloads.DownloadManager
 import org.jellyfin.mobile.downloads.DownloadNotificationManager
 import org.jellyfin.mobile.downloads.DownloadQueue
@@ -102,6 +103,7 @@ val applicationModule = module {
 
     // Comments on videos (Jellyfin Comments plugin)
     single { CommentsRepository(get()) }
+    single { PendingCommentThread() }
 
     // ExoPlayer factories
     single<DatabaseProvider> {
