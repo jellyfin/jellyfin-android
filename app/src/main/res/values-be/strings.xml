@@ -143,9 +143,9 @@
     <string name="download_remove_keep_local">Пакінуць лакальны(-я) файл(-ы)</string>
     <plurals name="download_remove_description">
         <item quantity="one">Вы ўпэўнены, што хочаце выдаліць %2$s са спамповак?</item>
-        <item quantity="few">Вы ўпэўнены, што хочаце выдаліць %1$s спампоўкі?</item>
-        <item quantity="many">Вы ўпэўнены, што хочаце выдаліць %1$s спамповак?</item>
-        <item quantity="other">Вы ўпэўнены, што хочаце выдаліць %1$s спамповак?</item>
+        <item quantity="few">Вы ўпэўнены, што хочаце выдаліць %1$d спампоўкі?</item>
+        <item quantity="many">Вы ўпэўнены, што хочаце выдаліць %1$d спамповак?</item>
+        <item quantity="other">Вы ўпэўнены, што хочаце выдаліць %1$d спамповак?</item>
     </plurals>
     <string name="download_incomplete">Спампоўванне не завершана</string>
     <plurals name="download_remove_title">
@@ -159,4 +159,22 @@
     <string name="select_all">Выбраць усе</string>
     <string name="selected_count">Выбрана %1$d</string>
     <string name="media_service_invalid_id">Няправільны ідэнтыфікатар</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">Дазволіць гарызантальныя жэсты для перамоткі відэа</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Выкарыстоўваць эксперыментальны рэндэрынг субтытраў на кліенце — можа не заўсёды працаваць</string>
+    <string name="pref_exoplayer_network_buffer">Памер буфера прайгравання</string>
+    <string name="network_buffer_auto">Аўтаматычна</string>
+    <string name="network_buffer_auto_description">Стандартны буфер, прыдатны для большасці сцэнарыяў прайгравання</string>
+    <string name="network_buffer_large">Вялікі</string>
+    <string name="network_buffer_large_description">Большы буфер — можа дапамагчы пры сярэдніх або нестабільных злучэннях</string>
+    <string name="network_buffer_extra_large">Вельмі вялікі</string>
+    <string name="network_buffer_extra_large_description">Максімальны буфер — прызначаны для павольных або спадарожнікавых злучэнняў</string>
+    <string name="downloads_empty">Спамповак пакуль няма</string>
+    <string name="downloads_empty_description">Вы можаце спампаваць фільмы і серыялы, каб глядзець іх афлайн. Шукайце значок спампоўкі на старонцы звестак пра элемент.</string>
+    <string name="download_settings_dialog_title">Выберыце месца для спампоўкі</string>
+    <string name="download_settings_dialog_message">Калі ласка, выберыце, дзе захоўваць спампаваныя медыяфайлы. Па змаўчанні спампоўка ідзе толькі праз Wi-Fi.</string>
+    <string name="deselect_all">Зняць усё</string>
+    <string name="download_location_not_set">Месца спампоўкі не выбрана</string>
+    <string name="download_location_not_set_description">Выберыце папку, дзе будуць захоўвацца спампаваныя файлы.</string>
+    <string name="download_location_inaccessible">Месца спампоўкі недаступна</string>
+    <string name="download_location_inaccessible_description">Выбранае месца спампоўкі больш недаступнае. Калі ласка, выберыце іншую папку, каб працягнуць спампоўку.</string>
 </resources>
