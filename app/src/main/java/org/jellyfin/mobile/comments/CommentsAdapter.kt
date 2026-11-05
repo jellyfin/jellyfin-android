@@ -55,7 +55,18 @@ class CommentsAdapter(
         fun bind(item: CommentItem) {
             val comment = item.comment
 
-            username.text = comment.username.ifEmpty { itemView.context.getString(R.string.comments_unknown_user) }
+            val author = comment.username.ifEmpty { itemView.context.getString(R.string.comments_unknown_user) }
+            // A reply that answers another reply says who ("me > them"), as TikTok does; both sit
+            // at the same level, so the flat thread is unchanged.
+            val answered = comment.replyToUsername
+            val answersSibling = answered != null &&
+                comment.replyToCommentId != null &&
+                comment.replyToCommentId != comment.parentId
+            username.text = if (answersSibling) {
+                itemView.context.getString(R.string.comments_reply_to, author, answered)
+            } else {
+                author
+            }
             time.text = formatRelativeTime(comment.createdAt).let { relative ->
                 if (comment.editedAt != null) "$relative · ${itemView.context.getString(R.string.comments_edited)}" else relative
             }

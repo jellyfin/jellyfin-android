@@ -17,6 +17,8 @@ data class CommentDto(
     @SerialName("createdAt") val createdAt: String? = null,
     @SerialName("editedAt") val editedAt: String? = null,
     @SerialName("parentId") val parentId: String? = null,
+    @SerialName("replyToCommentId") val replyToCommentId: String? = null,
+    @SerialName("replyToUsername") val replyToUsername: String? = null,
     @SerialName("likeCount") val likeCount: Int = 0,
     @SerialName("userLiked") val userLiked: Boolean = false,
     @SerialName("isOwn") val isOwn: Boolean = false,

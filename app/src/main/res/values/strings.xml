@@ -210,4 +210,5 @@
     <string name="comments_replies_you_wrote">You wrote: %1$s</string>
     <string name="comments_replies_read_all">Mark all read</string>
     <string name="comments_back_to_comments">Back to comments</string>
+    <string name="comments_reply_to">%1$s \u203a %2$s</string>
 </resources>
