@@ -65,6 +65,8 @@ class CommentsPanel(
     private val replyingRow: View = binding.commentsReplying
     private val replyingText: TextView = binding.commentsReplyingText
     private val replyingCancel: TextView = binding.commentsReplyingCancel
+    private val bell: ImageButton = binding.commentsBell
+    private val bellBadge: TextView = binding.commentsBellBadge
 
     private val adapter = CommentsAdapter(
         onLike = ::onLike,
@@ -73,11 +75,21 @@ class CommentsPanel(
         onAvatar = ::loadAvatar,
     )
 
+    private val notificationsAdapter = NotificationsAdapter(
+        onOpen = ::onNotificationOpen,
+        onAvatar = ::loadNotificationAvatar,
+    )
+
     private var itemId: String? = null
     private var replyingTo: CommentDto? = null
     private var rows: List<CommentItem> = emptyList()
     private var sort: String = CommentsRepository.SORT_NEWEST
     private var loadJob: Job? = null
+
+    /** The replies list and the comments list share the RecyclerView; this says which is shown. */
+    private var showingReplies = false
+    private var notifications: List<CommentNotificationDto> = emptyList()
+    private var commentCount = 0
 
     val isVisible: Boolean get() = container.isVisible
 
@@ -111,6 +123,7 @@ class CommentsPanel(
         }
         sendButton.setOnClickListener { postComment() }
         replyingCancel.setOnClickListener { setReplying(null) }
+        bell.setOnClickListener { setMode(!showingReplies) }
 
         updateSortLabel()
 
@@ -136,6 +149,10 @@ class CommentsPanel(
         this.itemId = itemId
         setReplying(null)
         input.text = null
+        // Reopening always lands on the comments for this video; the bell is how you get back to
+        // the replies.
+        setMode(false)
+        refreshBell()
 
         isOpen = true
         container.isVisible = true
@@ -251,8 +268,10 @@ class CommentsPanel(
                             comment.replies.map { CommentItem(it, isReply = true) }
                     }
                     adapter.submit(rows)
-                    title.text = context.getString(R.string.comments_title_count, page.totalCount)
+                    commentCount = page.totalCount
+                    updateTitle()
                     onCountChanged(page.totalCount)
+                    empty.text = context.getString(R.string.comments_empty)
                     empty.isVisible = rows.isEmpty()
                 }
                 .onFailure {
@@ -334,6 +353,104 @@ class CommentsPanel(
             replyingText.text = context.getString(R.string.comments_replying_to, comment.username)
             input.requestFocus()
         }
+    }
+
+    // ------------------------------------------------------------------ replies
+
+    private fun setMode(replies: Boolean) {
+        showingReplies = replies
+        sortButton.isVisible = !replies
+        list.adapter = if (replies) notificationsAdapter else adapter
+        updateTitle()
+
+        if (replies) {
+            loadReplies()
+        } else if (rows.isNotEmpty()) {
+            adapter.submit(rows)
+            empty.isVisible = rows.isEmpty()
+        }
+    }
+
+    private fun updateTitle() {
+        val text = if (showingReplies) {
+            val unread = notifications.count { !it.isRead }
+            if (unread > 0) {
+                context.getString(R.string.comments_replies_count, unread)
+            } else {
+                context.getString(R.string.comments_replies)
+            }
+        } else {
+            context.getString(R.string.comments_title_count, commentCount)
+        }
+        title.text = text
+    }
+
+    private fun loadReplies() {
+        loadJob?.cancel()
+        loadJob = fragment.lifecycleScope.launch {
+            loading.isVisible = true
+            runCatching { repository.getNotifications(limit = 30) }
+                .onSuccess { page ->
+                    notifications = page.items
+                    notificationsAdapter.submit(notifications)
+                    empty.text = context.getString(R.string.comments_replies_empty)
+                    empty.isVisible = notifications.isEmpty()
+                    updateBellBadge(page.unreadCount)
+                    updateTitle()
+                }
+                .onFailure {
+                    empty.text = context.getString(R.string.comments_replies_empty)
+                    empty.isVisible = notifications.isEmpty()
+                    context.toast(context.getString(R.string.comments_replies_error))
+                }
+            loading.isVisible = false
+        }
+    }
+
+    /** Badge on the bell. Zero hides it rather than showing a "0". */
+    private fun updateBellBadge(count: Int) {
+        bellBadge.isVisible = count > 0
+        bellBadge.text = if (count > 99) "99+" else count.toString()
+    }
+
+    private fun refreshBell() {
+        fragment.lifecycleScope.launch {
+            runCatching { repository.getNotificationCount() }
+                .onSuccess { updateBellBadge(it.unreadCount) }
+        }
+    }
+
+    private fun onNotificationOpen(notification: CommentNotificationDto) {
+        if (notification.isRead) {
+            return
+        }
+        fragment.lifecycleScope.launch {
+            runCatching { repository.markNotificationRead(notification.id) }
+                .onSuccess {
+                    notifications = notifications.map {
+                        if (it.id == notification.id) it.copy(isRead = true) else it
+                    }
+                    notificationsAdapter.submit(notifications)
+                    updateBellBadge(notifications.count { !it.isRead })
+                    updateTitle()
+                }
+                .onFailure { context.toast(context.getString(R.string.comments_replies_error)) }
+        }
+    }
+
+    private fun loadNotificationAvatar(imageView: ImageView, notification: CommentNotificationDto) {
+        val path = notification.actorAvatarUrl ?: "/Users/${notification.actorId}/Images/Primary?height=64"
+        val request = ImageRequest.Builder(context)
+            .data(repository.absoluteUrl(path))
+            .transformations(CircleCropTransformation())
+            .httpHeaders(
+                NetworkHeaders.Builder()
+                    .set("Authorization", repository.buildAuthorizationHeader())
+                    .build(),
+            )
+            .target(ImageViewTarget(imageView))
+            .build()
+        imageLoader.enqueue(request)
     }
 
     private fun loadAvatar(imageView: ImageView, comment: CommentDto) {

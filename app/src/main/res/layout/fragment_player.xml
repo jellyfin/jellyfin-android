@@ -202,6 +202,37 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
+                    <FrameLayout
+                        android:id="@+id/comments_bell_container"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="2dp">
+
+                        <ImageButton
+                            android:id="@+id/comments_bell"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="?android:attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/comments_replies"
+                            android:padding="7dp"
+                            android:src="@drawable/ic_notifications_white_24dp"
+                            app:tint="#B3FFFFFF" />
+
+                        <TextView
+                            android:id="@+id/comments_bell_badge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="16dp"
+                            android:layout_gravity="top|end"
+                            android:background="@drawable/comments_badge_background"
+                            android:gravity="center"
+                            android:minWidth="16dp"
+                            android:paddingHorizontal="4dp"
+                            android:textColor="@android:color/white"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+                    </FrameLayout>
+
                     <TextView
                         android:id="@+id/comments_sort"
                         android:layout_width="wrap_content"

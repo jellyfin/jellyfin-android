@@ -58,3 +58,53 @@ data class CommentItem(
     val comment: CommentDto,
     val isReply: Boolean,
 )
+
+/**
+ * One reply notification, as returned by `/Comments/Notifications`.
+ *
+ * The server flattens these: it already drops self-replies and honours the recipient's mute
+ * setting, so anything that arrives here is something worth showing.
+ */
+@Serializable
+data class CommentNotificationDto(
+    @SerialName("id") val id: String,
+    @SerialName("commentId") val commentId: String = "",
+    @SerialName("parentCommentId") val parentCommentId: String = "",
+    @SerialName("itemId") val itemId: String = "",
+    @SerialName("itemName") val itemName: String? = null,
+    @SerialName("seriesName") val seriesName: String? = null,
+    @SerialName("itemType") val itemType: String? = null,
+    @SerialName("actorId") val actorId: String = "",
+    @SerialName("actorName") val actorName: String = "",
+    @SerialName("actorAvatarUrl") val actorAvatarUrl: String? = null,
+    @SerialName("text") val text: String = "",
+    @SerialName("parentText") val parentText: String? = null,
+    @SerialName("createdAt") val createdAt: String? = null,
+    @SerialName("readAt") val readAt: String? = null,
+    @SerialName("isRead") val isRead: Boolean = false,
+) {
+    /** "Series – Episode", or whichever of the two the server knows. */
+    val itemLabel: String
+        get() = when {
+            seriesName != null && itemName != null -> "$seriesName \u2013 $itemName"
+            else -> itemName ?: seriesName ?: ""
+        }
+}
+
+@Serializable
+data class CommentNotificationPageDto(
+    @SerialName("items") val items: List<CommentNotificationDto> = emptyList(),
+    @SerialName("totalCount") val totalCount: Int = 0,
+    @SerialName("unreadCount") val unreadCount: Int = 0,
+    @SerialName("startIndex") val startIndex: Int = 0,
+    @SerialName("hasMore") val hasMore: Boolean = false,
+    @SerialName("serverEnabled") val serverEnabled: Boolean = true,
+    @SerialName("userEnabled") val userEnabled: Boolean = true,
+)
+
+@Serializable
+data class CommentNotificationCountDto(
+    @SerialName("unreadCount") val unreadCount: Int = 0,
+    @SerialName("serverEnabled") val serverEnabled: Boolean = true,
+    @SerialName("userEnabled") val userEnabled: Boolean = true,
+)

@@ -57,6 +57,36 @@ class CommentsRepository(private val apiClient: ApiClient) {
     }
 
     /**
+     * The caller's reply notifications, newest first. The server suppresses replies to your own
+     * comments and returns an empty page when the user has muted them.
+     */
+    suspend fun getNotifications(limit: Int = 30, startIndex: Int = 0): CommentNotificationPageDto =
+        withContext(Dispatchers.IO) {
+            apiClient.get<CommentNotificationPageDto>(
+                pathTemplate = "/Comments/Notifications",
+                queryParameters = mapOf(
+                    "startIndex" to startIndex,
+                    "limit" to limit,
+                ),
+            ).content
+        }
+
+    /** Unread count, used for the badge on the bell. */
+    suspend fun getNotificationCount(): CommentNotificationCountDto = withContext(Dispatchers.IO) {
+        apiClient.get<CommentNotificationCountDto>("/Comments/Notifications/Count").content
+    }
+
+    suspend fun markNotificationRead(notificationId: String) = withContext(Dispatchers.IO) {
+        apiClient.request(HttpMethod.POST, "/Comments/Notifications/$notificationId/Read")
+        Unit
+    }
+
+    suspend fun markAllNotificationsRead() = withContext(Dispatchers.IO) {
+        apiClient.request(HttpMethod.POST, "/Comments/Notifications/ReadAll")
+        Unit
+    }
+
+    /**
      * Builds the Authorization header used both for API calls (by the SDK) and for loading avatars
      * through Coil, which does not know about the SDK.
      */

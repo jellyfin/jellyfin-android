@@ -203,4 +203,11 @@
     <string name="comments_post_error">Could not post the comment.</string>
     <string name="comments_delete_confirm">Delete this comment?</string>
     <string name="comments_delete_error">Could not delete the comment.</string>
+    <string name="comments_replies">Replies to you</string>
+    <string name="comments_replies_count">Replies to you (%1$d)</string>
+    <string name="comments_replies_empty">No replies yet.</string>
+    <string name="comments_replies_error">Could not load replies.</string>
+    <string name="comments_replies_you_wrote">You wrote: %1$s</string>
+    <string name="comments_replies_read_all">Mark all read</string>
+    <string name="comments_back_to_comments">Back to comments</string>
 </resources>
