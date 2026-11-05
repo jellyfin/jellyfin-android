@@ -445,7 +445,7 @@ class CommentsPanel(
         if (notification.itemId.isNotEmpty()) {
             webappFunctionChannel.call(
                 "window.JellyfinComments && window.JellyfinComments.openItemAndPlay(" +
-                    "'${notification.itemId}');",
+                    "'${notification.itemId}', '${notification.commentId}');",
             )
             fragment.parentFragmentManager.popBackStack()
         }

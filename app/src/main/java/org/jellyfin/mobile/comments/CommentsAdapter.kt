@@ -84,7 +84,9 @@ class CommentsAdapter(
             likeCount.text = if (comment.likeCount > 0) comment.likeCount.toString() else ""
             likeButton.setOnClickListener { onLike(comment) }
 
-            replyButton.isVisible = !item.isReply
+                // Replies can be replied to as well. The server attaches a reply to a reply to the same
+            // top-level thread, so the conversation continues without nesting any deeper.
+            replyButton.isVisible = true
             replyButton.setOnClickListener { onReply(comment) }
 
             deleteButton.isVisible = comment.isOwn
