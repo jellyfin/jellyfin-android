@@ -12,9 +12,9 @@ from not knowing **which of three comment UIs** a symptom belonged to.
 |---|---|
 | Server-side reply notifications | Done long ago (`/Comments/Notifications*`), covered by tests |
 | Web client (desktop browser) | Done and verified: header bell + replies overlay, click-through to episode + play + comment |
-| Android **native** sheet | Built and installed as `1.1.0-thevelvet.19`; the mark-read race and pending-thread atomicity are fixed, the final device handoff still needs a reachable server (see §5) |
-| Installed app | `1.1.0-thevelvet.19` — installed on the phone via ADB at `172.22.1.100:41821`, launches clean |
-| Plugin | `1.2.0.0`, released and deployed |
+| Android **native** sheet | Built and installed as `1.1.0-thevelvet.20`; the mark-read race, pending-thread atomicity and emoji-keyboard sheet dismissal are fixed (see §5) |
+| Installed app | `1.1.0-thevelvet.20` — installed on the phone via ADB at `172.22.1.100:40911`, launches clean |
+| Plugin | `1.2.0.1`, released and deployed |
 | Moonfin | **Dropped by the user** ("i dont care about it"); changes sit uncommitted in `~/code/Moonfin-Core`, do not touch |
 
 The one thing outstanding is **confirming that tapping a reply on the phone opens the sheet on
@@ -99,7 +99,7 @@ be done natively, or by driving the app's own fragments.
 
 **Does tapping a reply on the phone open the native sheet on that comment?**
 
-Expected after `1.1.0-thevelvet.19`: tapping a reply plays *that* episode (natively, no web page
+Expected after `1.1.0-thevelvet.20`: tapping a reply plays *that* episode (natively, no web page
 involved) and the native sheet opens on `/Comments/Notifications/Threads/{commentId}`. The
 mark-read POST is now awaited inside the same coroutine before the old player is popped, so the
 reply cannot be left unread by the navigation.
@@ -166,7 +166,8 @@ adb -s <device> install -r app/build/outputs/apk/proprietary/release/jellyfin-an
 
 JVM tests live in `app/src/test/java/…`: `PendingCommentThreadTest` (9),
 `PlayOptionsSingleItemTest` (2), `CommentModelsTest` (3),
-`CommentsAdapterFormatRelativeTimeTest` (4), `PendingCommentThreadConcurrencyTest` (1).
+`CommentsAdapterFormatRelativeTimeTest` (4), `PendingCommentThreadConcurrencyTest` (1),
+`CommentsWindowPolicyTest` (6).
 
 The instrumented bell-layout test runs locally on the `pana` AVD:
 
@@ -178,8 +179,10 @@ export ANDROID_SERIAL=emulator-5554
 ./gradlew :app:connectedProprietaryDebugAndroidTest
 ```
 
-Its source lives in `app/src/androidTest/java/…` (`CommentsBellLayoutTest`), which asserts the
-native bell is visible at zero unread and while its badge is hidden.
+Instrumented tests live in `app/src/androidTest/java/…`: `CommentsBellLayoutTest` asserts the
+native bell is visible at zero unread, and `CommentsWindowPolicyInstrumentedTest` checks the real
+emulator display metrics: a full window with an emoji IME stays visible while a genuinely small
+window still hides.
 
 ---
 
@@ -260,8 +263,8 @@ PY
 
 | Item | Value |
 |---|---|
-| Installed app | `1.1.0-thevelvet.19` (versionCode 1010019) |
-| Plugin | `1.2.0.0` |
+| Installed app | `1.1.0-thevelvet.20` (versionCode 1010020) |
+| Plugin | `1.2.0.1` |
 | Server | `https://thevelvet.space` (127.0.0.1:8096), Jellyfin 12.1, user `maikel` |
 | Admin token used for testing | in `~/.config/fish/private_vars/` and the session notes |
 | Plugin repo | `~/code/jellyfin-comments` |
