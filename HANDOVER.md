@@ -12,8 +12,8 @@ from not knowing **which of three comment UIs** a symptom belonged to.
 |---|---|
 | Server-side reply notifications | Done long ago (`/Comments/Notifications*`), covered by tests |
 | Web client (desktop browser) | Done and verified: header bell + replies overlay, click-through to episode + play + comment |
-| Android **native** sheet | Built and installed as `1.1.0-thevelvet.20`; the mark-read race, pending-thread atomicity and emoji-keyboard sheet dismissal are fixed (see §5) |
-| Installed app | `1.1.0-thevelvet.20` — installed on the phone via ADB at `172.22.1.100:40911`, launches clean |
+| Android **native** sheet | Built and installed as `1.1.0-thevelvet.21`; the mark-read race, the notification-switch crash, the followed-thread handoff and the emoji-keyboard sheet dismissal are fixed (see §5) |
+| Installed app | `1.1.0-thevelvet.21` — installed on the phone via ADB at `172.22.1.100:40911`, launches clean |
 | Plugin | `1.2.0.1`, released and deployed |
 | Moonfin | **Dropped by the user** ("i dont care about it"); changes sit uncommitted in `~/code/Moonfin-Core`, do not touch |
 
@@ -95,31 +95,20 @@ be done natively, or by driving the app's own fragments.
 
 ---
 
-## 5. PENDING — the one thing left to verify (start here)
+## 5. Notification follow flow — verified on the emulator
 
-**Does tapping a reply on the phone open the native sheet on that comment?**
+Tapping a reply now plays that episode and opens the native sheet on its thread. Verified on the
+`pana` emulator by moving between three notifications across E02 and E31: each tap switched
+episode, opened the right parent/reply thread, and produced no new crash.
 
-Expected after `1.1.0-thevelvet.20`: tapping a reply plays *that* episode (natively, no web page
-involved) and the native sheet opens on `/Comments/Notifications/Threads/{commentId}`. The
-mark-read POST is now awaited inside the same coroutine before the old player is popped, so the
-reply cannot be left unread by the navigation.
+How it is wired: `CommentsPanel.onNotificationOpen` marks the row read locally, fires the POST on
+an app-lived scope, then either opens the thread in the current player (same item) or starts a
+new `PlayerFragment` with `EXTRA_COMMENT_ID` / `EXTRA_COMMENT_ITEM_ID` in its arguments.
+`PlayerFragment` consumes those args once its media source is ready.
 
-How it is wired: `CommentsPanel.onNotificationOpen` → `pendingThread.set(itemId, commentId)` →
-pop player → `addFragment<PlayerFragment>(PlayOptions.forSingleItem(id))` →
-`PlayerMenus.onQueueItemChanged` → `pendingCommentThread.take(itemId)` → if it matches,
-`fragment.openCommentsThread(itemId, commentId)` → `CommentsPanel.showThread` (loads the thread).
-
-If the sheet does **not** open, check in this order:
-1. Does `PlayerMenus.onQueueItemChanged` actually run for a player started from arguments? It is
-   the only consumer of the pending thread. If it doesn't fire, open the thread from
-   `PlayerFragment` once the queue is initialised instead.
-2. Does `take()` get the same id? (It normalises, but log both sides.)
-3. `showThread` cancels `loadJob` that `show(itemId)` just started — confirm the thread call
-   actually lands (a slow comments fetch could overwrite the thread; verify rendering order).
-
-Add temporary `android.util.Log.i("CMTTRACE", …)` lines at those three points, rebuild, and read
-with `adb logcat -s CMTTRACE`. (Do this rather than guessing — blind UI driving is what wasted
-most of the previous session.)
+The previous crash — `Fragment PlayerFragment not associated with a fragment manager` — came from
+touching `parentFragmentManager` after a suspension, when the old player had already been popped.
+The manager is now captured before any suspension and the navigation is synchronous.
 
 Also unverified, lower priority:
 - "me › them" label rendering in the native list (code in `CommentsAdapter`, string
@@ -167,7 +156,7 @@ adb -s <device> install -r app/build/outputs/apk/proprietary/release/jellyfin-an
 JVM tests live in `app/src/test/java/…`: `PendingCommentThreadTest` (9),
 `PlayOptionsSingleItemTest` (2), `CommentModelsTest` (3),
 `CommentsAdapterFormatRelativeTimeTest` (4), `PendingCommentThreadConcurrencyTest` (1),
-`CommentsWindowPolicyTest` (6).
+`CommentsWindowPolicyTest` (6), `CommentIdsTest` (3).
 
 The instrumented bell-layout test runs locally on the `pana` AVD:
 
@@ -263,7 +252,7 @@ PY
 
 | Item | Value |
 |---|---|
-| Installed app | `1.1.0-thevelvet.20` (versionCode 1010020) |
+| Installed app | `1.1.0-thevelvet.21` (versionCode 1010021) |
 | Plugin | `1.2.0.1` |
 | Server | `https://thevelvet.space` (127.0.0.1:8096), Jellyfin 12.1, user `maikel` |
 | Admin token used for testing | in `~/.config/fish/private_vars/` and the session notes |
