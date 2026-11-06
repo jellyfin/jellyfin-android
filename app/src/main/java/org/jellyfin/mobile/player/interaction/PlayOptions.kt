@@ -26,6 +26,23 @@ data class PlayOptions(
     val playFromDownloads: Boolean?,
 ) : Parcelable {
     companion object {
+        /**
+         * Playback options for one item, with the server choosing the streams.
+         *
+         * Lets the app start an episode by itself -- for instance when following a reply -- instead
+         * of asking the web client to open the item's page and press Play, which raced the page
+         * load and could start whatever was already on screen.
+         */
+        fun forSingleItem(id: UUID): PlayOptions = PlayOptions(
+            ids = listOf(id),
+            mediaSourceId = null,
+            startIndex = 0,
+            startPosition = null,
+            audioStreamIndex = null,
+            subtitleStreamIndex = null,
+            playFromDownloads = false,
+        )
+
         fun fromJson(json: String): PlayOptions? = try {
             val jsonObject = Json.parseToJsonElement(json).jsonObject
             PlayOptions(

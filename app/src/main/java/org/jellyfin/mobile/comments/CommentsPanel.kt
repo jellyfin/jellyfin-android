@@ -1,5 +1,10 @@
 package org.jellyfin.mobile.comments
 
+import org.jellyfin.sdk.model.serializer.toUUIDOrNull
+import org.jellyfin.mobile.utils.extensions.addFragment
+import org.jellyfin.mobile.utils.Constants
+import org.jellyfin.mobile.player.interaction.PlayOptions
+import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageButton
@@ -25,7 +30,6 @@ import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.ui.PlayerFragment
 import org.jellyfin.mobile.utils.toast
-import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -50,7 +54,6 @@ class CommentsPanel(
 
     private val repository: CommentsRepository by inject()
     private val imageLoader: ImageLoader by inject()
-    private val webappFunctionChannel: WebappFunctionChannel by inject()
     private val pendingThread: PendingCommentThread by inject()
 
     private val context get() = binding.root.context
@@ -467,19 +470,23 @@ class CommentsPanel(
         }
 
         // The native player cannot be started from here: it needs play options that only the web
-        // client builds. So hand the item back to the web client, which opens it and presses play;
-        // that request comes straight back through the native-player bridge. Then drop the player
-        // that is on screen so the reply does not open underneath it.
-        if (notification.itemId.isNotEmpty()) {
-            // The player the web client is about to open knows nothing about this tap, so the
-            // comment is carried across and opened once that player is ready.
-            pendingThread.set(notification.itemId, notification.commentId)
-            webappFunctionChannel.call(
-                "window.JellyfinComments && window.JellyfinComments.openItemAndPlay(" +
-                    "'${notification.itemId}', '${notification.commentId}');",
-            )
-            fragment.parentFragmentManager.popBackStack()
+        // Play the item here rather than asking the web client to open its page and press Play:
+        // that raced the page load (the details page keeps the previous item's buttons while it
+        // loads), so following a reply could start the episode that was already on screen.
+        val itemId = notification.itemId.toUUIDOrNull() ?: return
+
+        // The player that is about to open knows nothing about this tap, so the comment is carried
+        // across and opened once that player is ready.
+        pendingThread.set(notification.itemId, notification.commentId)
+
+        val args = Bundle().apply {
+            putParcelable(Constants.EXTRA_MEDIA_PLAY_OPTIONS, PlayOptions.forSingleItem(itemId))
         }
+
+        // Replace this player instead of stacking another one on top of it.
+        fragment.parentFragmentManager.popBackStack()
+        fragment.parentFragmentManager.executePendingTransactions()
+        fragment.parentFragmentManager.addFragment<PlayerFragment>(args)
     }
 
     private fun loadNotificationAvatar(imageView: ImageView, notification: CommentNotificationDto) {

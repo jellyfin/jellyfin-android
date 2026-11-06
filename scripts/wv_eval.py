@@ -34,7 +34,7 @@ def connect(url):
     rest = url[len("ws://"):]
     hostport, path = rest.split("/", 1)
     host, port = hostport.split(":")
-    sock = socket.create_connection((host, int(port)), timeout=15)
+    sock = socket.create_connection((host, int(port)), timeout=90)
     key = base64.b64encode(os.urandom(16)).decode()
     req = (
         f"GET /{path} HTTP/1.1\r\n"
