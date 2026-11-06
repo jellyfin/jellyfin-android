@@ -337,32 +337,32 @@ class ExternalPlayer(
         }
     }
 
-    /**
-     * To ensure that the correct activity is called.
-     */
-    private fun getComponent(@ExternalPlayerPackage packageName: String): ComponentName? {
-        return when (packageName) {
-            ExternalPlayerPackage.MPV_PLAYER -> {
-                ComponentName(packageName, "$packageName.MPVActivity")
-            }
-            ExternalPlayerPackage.MX_PLAYER_FREE, ExternalPlayerPackage.MX_PLAYER_PRO -> {
-                ComponentName(packageName, "$packageName.ActivityScreen")
-            }
-            ExternalPlayerPackage.VLC_PLAYER -> {
-                ComponentName(packageName, "$packageName.StartActivity")
-            }
-            ExternalPlayerPackage.MPVKT_PLAYER -> {
-                ComponentName(packageName, "$packageName.ui.player.PlayerActivity")
-            }
-            else -> null
-        }
-    }
-
     companion object {
         private val ALLOWED_EVENTS = arrayOf(
             Constants.EVENT_CANCELED,
             Constants.EVENT_ENDED,
             Constants.EVENT_TIME_UPDATE,
         )
+
+        /**
+         * To ensure that the correct activity is called.
+         */
+        fun getComponent(@ExternalPlayerPackage packageName: String): ComponentName? {
+            return when (packageName) {
+                ExternalPlayerPackage.MPV_PLAYER -> {
+                    ComponentName(packageName, "$packageName.MPVActivity")
+                }
+                ExternalPlayerPackage.MX_PLAYER_FREE, ExternalPlayerPackage.MX_PLAYER_PRO -> {
+                    ComponentName(packageName, "$packageName.ActivityScreen")
+                }
+                ExternalPlayerPackage.VLC_PLAYER -> {
+                    ComponentName(packageName, "$packageName.StartActivity")
+                }
+                ExternalPlayerPackage.MPVKT_PLAYER -> {
+                    ComponentName(packageName, "$packageName.ui.player.PlayerActivity")
+                }
+                else -> null
+            }
+        }
     }
 }
