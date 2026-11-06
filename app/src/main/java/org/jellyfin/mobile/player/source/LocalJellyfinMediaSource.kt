@@ -7,6 +7,8 @@ import org.jellyfin.sdk.model.api.PlayMethod
 import java.util.UUID
 
 class LocalJellyfinMediaSource(
+    val serverId: Long,
+    val userId: Long,
     itemId: UUID,
     item: BaseItemDto?,
     sourceInfo: MediaSourceInfo,
