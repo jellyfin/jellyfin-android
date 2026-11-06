@@ -12,13 +12,16 @@ from not knowing **which of three comment UIs** a symptom belonged to.
 |---|---|
 | Server-side reply notifications | Done long ago (`/Comments/Notifications*`), covered by tests |
 | Web client (desktop browser) | Done and verified: header bell + replies overlay, click-through to episode + play + comment |
-| Android **native** sheet | Built and installed; **the last step is unverified** (see §5) |
-| Installed app | `1.1.0-thevelvet.18` — installed on the phone, launches clean |
-| Plugin | `1.11.3.0`, deployed and serving |
+| Android **native** sheet | Built and installed as `1.1.0-thevelvet.19`; the mark-read race and pending-thread atomicity are fixed, the final device handoff still needs a reachable server (see §5) |
+| Installed app | `1.1.0-thevelvet.19` — installed on the phone via ADB at `172.22.1.100:41821`, launches clean |
+| Plugin | `1.2.0.0`, released and deployed |
 | Moonfin | **Dropped by the user** ("i dont care about it"); changes sit uncommitted in `~/code/Moonfin-Core`, do not touch |
 
 The one thing outstanding is **confirming that tapping a reply on the phone opens the sheet on
-that comment**. Everything up to it is implemented, unit-tested and installed.
+that comment**. Everything up to it is implemented, unit-tested and installed. The app could not
+be smoke-tested over the WebView in the install session because the phone's WebView was showing
+`ERR_NAME_NOT_RESOLVED` for `thevelvet.space` (the phone could ping the host and the domain);
+retry with the phone unlocked and the server reachable.
 
 ---
 
@@ -96,8 +99,10 @@ be done natively, or by driving the app's own fragments.
 
 **Does tapping a reply on the phone open the native sheet on that comment?**
 
-Expected after `1.1.0-thevelvet.18`: tapping a reply plays *that* episode (natively, no web page
-involved) and the native sheet opens on `/Comments/Notifications/Threads/{commentId}`.
+Expected after `1.1.0-thevelvet.19`: tapping a reply plays *that* episode (natively, no web page
+involved) and the native sheet opens on `/Comments/Notifications/Threads/{commentId}`. The
+mark-read POST is now awaited inside the same coroutine before the old player is popped, so the
+reply cannot be left unread by the navigation.
 
 How it is wired: `CommentsPanel.onNotificationOpen` → `pendingThread.set(itemId, commentId)` →
 pop player → `addFragment<PlayerFragment>(PlayOptions.forSingleItem(id))` →
@@ -120,7 +125,13 @@ Also unverified, lower priority:
 - "me › them" label rendering in the native list (code in `CommentsAdapter`, string
   `comments_reply_to`), never seen on a device.
 - The header bell inside the app's WebView: confirmed present (46×46, badge hidden at 0 unread)
-  via the DevTools socket, but not confirmed **by eye**.
+  via the DevTools socket, but not confirmed **by eye**. It is now always mounted, including when
+  notifications are off.
+
+Native unit tests now cover the API contract (`CommentModelsTest`), relative time labels
+(`CommentsAdapterFormatRelativeTimeTest`), pending-thread concurrency
+(`PendingCommentThreadConcurrencyTest`), the existing pending-thread cases and `PlayOptions`.
+Run them with `./gradlew :app:testProprietaryDebugUnitTest`; release builds have no unit-test task.
 
 ---
 
@@ -149,12 +160,26 @@ adb -s <device> install -r app/build/outputs/apk/proprietary/release/jellyfin-an
 **Tests** (the release variant has no unit-test task — use debug):
 
 ```bash
-./gradlew :app:testProprietaryDebugUnitTest
+./gradlew :app:testProprietaryDebugUnitTest :app:testLibreDebugUnitTest
 # results: app/build/test-results/testProprietaryDebugUnitTest/*.xml
 ```
 
-Tests live in `app/src/test/java/…` (the config had JUnit5 + Kotest + MockK wired but **no test
-source set until this session**): `PendingCommentThreadTest` (9), `PlayOptionsSingleItemTest` (2).
+JVM tests live in `app/src/test/java/…`: `PendingCommentThreadTest` (9),
+`PlayOptionsSingleItemTest` (2), `CommentModelsTest` (3),
+`CommentsAdapterFormatRelativeTimeTest` (4), `PendingCommentThreadConcurrencyTest` (1).
+
+The instrumented bell-layout test runs locally on the `pana` AVD:
+
+```bash
+export ANDROID_SDK_ROOT=/home/maikel/android-sdk
+export LD_LIBRARY_PATH=/nix/store/d6ygipmny4pw7h61b255yafbnvqjbmnx-libx11-1.8.14/lib:$LD_LIBRARY_PATH
+$ANDROID_SDK_ROOT/emulator/emulator -avd pana -no-window -no-audio -gpu swiftshader_indirect -no-snapshot &
+export ANDROID_SERIAL=emulator-5554
+./gradlew :app:connectedProprietaryDebugAndroidTest
+```
+
+Its source lives in `app/src/androidTest/java/…` (`CommentsBellLayoutTest`), which asserts the
+native bell is visible at zero unread and while its badge is hidden.
 
 ---
 
@@ -235,8 +260,8 @@ PY
 
 | Item | Value |
 |---|---|
-| Installed app | `1.1.0-thevelvet.18` (versionCode 1010018) |
-| Plugin | `1.11.3.0` |
+| Installed app | `1.1.0-thevelvet.19` (versionCode 1010019) |
+| Plugin | `1.2.0.0` |
 | Server | `https://thevelvet.space` (127.0.0.1:8096), Jellyfin 12.1, user `maikel` |
 | Admin token used for testing | in `~/.config/fish/private_vars/` and the session notes |
 | Plugin repo | `~/code/jellyfin-comments` |
