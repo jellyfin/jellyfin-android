@@ -135,7 +135,7 @@
     <string name="media_service_auth_expired">Адкрыйце праграму на тэлефоне, каб увайсці на сервер Jellyfin.</string>
     <string name="media_service_car_section_favorites">Абранае</string>
     <string name="media_service_car_section_audiobooks">Аўдыякнігі</string>
-    <string name="media_service_car_section_playlists">Плэй-лісты</string>
+    <string name="media_service_car_section_playlists">Плэйлісты</string>
     <string name="downloading_title">Спампоўваецца %1$s</string>
     <string name="download_cancel">Скасаваць</string>
     <string name="download_completed">Спампоўванне завершана</string>
