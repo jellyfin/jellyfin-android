@@ -12,9 +12,9 @@ from not knowing **which of three comment UIs** a symptom belonged to.
 |---|---|
 | Server-side reply notifications | Done long ago (`/Comments/Notifications*`), covered by tests |
 | Web client (desktop browser) | Done and verified: header bell + replies overlay, click-through to episode + play + comment |
-| Android **native** sheet | Built and installed as `1.1.0-thevelvet.21`; the mark-read race, the notification-switch crash, the followed-thread handoff and the emoji-keyboard sheet dismissal are fixed (see §5) |
-| Installed app | `1.1.0-thevelvet.21` — installed on the phone via ADB at `172.22.1.100:40911`, launches clean |
-| Plugin | `1.2.0.1`, released and deployed |
+| Android **native** sheet | Built and installed as `1.1.0-thevelvet.22`; the mark-read race, the notification-switch crash, the followed-thread handoff and the emoji-keyboard sheet dismissal are fixed (see §5) |
+| Installed app | `1.1.0-thevelvet.22` — installed on the phone via ADB at `172.22.1.100:38843`, launches clean |
+| Plugin | `1.2.0.2`, released and deployed |
 | Moonfin | **Dropped by the user** ("i dont care about it"); changes sit uncommitted in `~/code/Moonfin-Core`, do not touch |
 
 The one thing outstanding is **confirming that tapping a reply on the phone opens the sheet on
@@ -109,6 +109,11 @@ new `PlayerFragment` with `EXTRA_COMMENT_ID` / `EXTRA_COMMENT_ITEM_ID` in its ar
 The previous crash — `Fragment PlayerFragment not associated with a fragment manager` — came from
 touching `parentFragmentManager` after a suspension, when the old player had already been popped.
 The manager is now captured before any suspension and the navigation is synchronous.
+
+The web header bell uses the same path on Android: `Web/comments.js` detects
+`NativePlayer.openCommentsThread(itemId, commentId)` and emits `ActivityEvent.OpenCommentsThread`,
+which starts the native player with the comment arguments. Without it, the web thread panel opened
+behind the native player and looked like nothing happened.
 
 Also unverified, lower priority:
 - "me › them" label rendering in the native list (code in `CommentsAdapter`, string
@@ -252,8 +257,8 @@ PY
 
 | Item | Value |
 |---|---|
-| Installed app | `1.1.0-thevelvet.21` (versionCode 1010021) |
-| Plugin | `1.2.0.1` |
+| Installed app | `1.1.0-thevelvet.22` (versionCode 1010022) |
+| Plugin | `1.2.0.2` |
 | Server | `https://thevelvet.space` (127.0.0.1:8096), Jellyfin 12.1, user `maikel` |
 | Admin token used for testing | in `~/.config/fish/private_vars/` and the session notes |
 | Plugin repo | `~/code/jellyfin-comments` |
