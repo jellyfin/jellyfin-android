@@ -30,6 +30,9 @@ export class ExoPlayerPlugin {
         const preferences = {
             maxStreamingBitrateLocal: this.appSettings.maxStreamingBitrate(true, 'Video'),
             maxStreamingBitrateRemote: this.appSettings.maxStreamingBitrate(false, 'Video'),
+            preferredTranscodeVideoCodec: this.appSettings.preferredTranscodeVideoCodec?.() ?? null,
+            preferredTranscodeVideoAudioCodec: this.appSettings.preferredTranscodeVideoAudioCodec?.() ?? null,
+            preferFmp4HlsContainer: this.appSettings.preferFmp4HlsContainer?.() ?? null,
         };
 
         this._paused = false;
