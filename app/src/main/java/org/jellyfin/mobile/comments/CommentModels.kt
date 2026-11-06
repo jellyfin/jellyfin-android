@@ -1,12 +1,16 @@
+@file:OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+
 package org.jellyfin.mobile.comments
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 
 /**
  * A comment on a video, as returned by the Jellyfin Comments plugin.
  */
 @Serializable
+@JsonIgnoreUnknownKeys
 data class CommentDto(
     @SerialName("id") val id: String,
     @SerialName("itemId") val itemId: String,
@@ -27,6 +31,7 @@ data class CommentDto(
 )
 
 @Serializable
+@JsonIgnoreUnknownKeys
 data class CommentPageDto(
     @SerialName("items") val items: List<CommentDto> = emptyList(),
     @SerialName("totalCount") val totalCount: Int = 0,
@@ -35,18 +40,21 @@ data class CommentPageDto(
 )
 
 @Serializable
+@JsonIgnoreUnknownKeys
 data class CommentRequest(
     @SerialName("text") val text: String,
     @SerialName("parentId") val parentId: String? = null,
 )
 
 @Serializable
+@JsonIgnoreUnknownKeys
 data class CommentCountDto(
     @SerialName("itemId") val itemId: String,
     @SerialName("count") val count: Int = 0,
 )
 
 @Serializable
+@JsonIgnoreUnknownKeys
 data class CommentLikeDto(
     @SerialName("commentId") val commentId: String,
     @SerialName("likeCount") val likeCount: Int = 0,
@@ -68,6 +76,7 @@ data class CommentItem(
  * setting, so anything that arrives here is something worth showing.
  */
 @Serializable
+@JsonIgnoreUnknownKeys
 data class CommentNotificationDto(
     @SerialName("id") val id: String,
     @SerialName("commentId") val commentId: String = "",
@@ -94,6 +103,7 @@ data class CommentNotificationDto(
 }
 
 @Serializable
+@JsonIgnoreUnknownKeys
 data class CommentNotificationPageDto(
     @SerialName("items") val items: List<CommentNotificationDto> = emptyList(),
     @SerialName("totalCount") val totalCount: Int = 0,
@@ -105,6 +115,7 @@ data class CommentNotificationPageDto(
 )
 
 @Serializable
+@JsonIgnoreUnknownKeys
 data class CommentNotificationCountDto(
     @SerialName("unreadCount") val unreadCount: Int = 0,
     @SerialName("serverEnabled") val serverEnabled: Boolean = true,

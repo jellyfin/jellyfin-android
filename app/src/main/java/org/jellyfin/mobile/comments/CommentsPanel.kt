@@ -94,6 +94,9 @@ class CommentsPanel(
 
     /** The replies list and the comments list share the RecyclerView; this says which is shown. */
     private var showingReplies = false
+
+    /** True while the sheet is pinned to one followed thread instead of the whole comment list. */
+    private var showingThread = false
     private var notifications: List<CommentNotificationDto> = emptyList()
     private var commentCount = 0
 
@@ -109,6 +112,13 @@ class CommentsPanel(
         scrim.setOnClickListener { hide() }
         closeButton.setOnClickListener { hide() }
         sortButton.setOnClickListener {
+            if (showingThread) {
+                // In a followed thread the same control is the way back to the full list.
+                showingThread = false
+                updateSortLabel()
+                load(reset = true)
+                return@setOnClickListener
+            }
             sort = if (sort == CommentsRepository.SORT_NEWEST) CommentsRepository.SORT_TOP else CommentsRepository.SORT_NEWEST
             updateSortLabel()
             load(reset = true)
@@ -156,8 +166,10 @@ class CommentsPanel(
         setReplying(null)
         input.text = null
         // Reopening always lands on the comments for this video; the bell is how you get back to
-        // the replies.
+        // the replies, and a followed thread is a one-off view.
+        showingThread = false
         setMode(false)
+        updateSortLabel()
         refreshBell()
 
         isOpen = true
@@ -254,7 +266,13 @@ class CommentsPanel(
     }
 
     private fun updateSortLabel() {
-        sortButton.setText(if (sort == CommentsRepository.SORT_NEWEST) R.string.comments_sort_newest else R.string.comments_sort_top)
+        sortButton.setText(
+            when {
+                showingThread -> R.string.comments_back_to_comments
+                sort == CommentsRepository.SORT_NEWEST -> R.string.comments_sort_newest
+                else -> R.string.comments_sort_top
+            },
+        )
     }
 
     private fun load(reset: Boolean) {
@@ -418,6 +436,9 @@ class CommentsPanel(
      */
     fun showThread(itemId: String, commentId: String) {
         show(itemId)
+        showingThread = true
+        sortButton.isVisible = true
+        updateSortLabel()
 
         loadJob?.cancel()
         loadJob = fragment.lifecycleScope.launch {
@@ -425,7 +446,6 @@ class CommentsPanel(
             runCatching { repository.getNotificationThread(commentId) }
                 .onSuccess { thread ->
                     showingReplies = false
-                    sortButton.isVisible = false
                     list.adapter = adapter
 
                     val threadRows = listOf(CommentItem(thread, isReply = false)) +
@@ -434,8 +454,22 @@ class CommentsPanel(
                     adapter.submit(threadRows)
                     empty.isVisible = false
                     setReplying(null)
+
+                    // The thread view hides the normal list, but the player's comment badge still
+                    // has to reflect the item's real total.
+                    runCatching { repository.getCount(itemId) }
+                        .onSuccess { count ->
+                            commentCount = count
+                            updateTitle()
+                            onCountChanged(count)
+                        }
                 }
-                .onFailure { context.toast(context.getString(R.string.comments_error)) }
+                .onFailure {
+                    context.toast(context.getString(R.string.comments_error))
+                    showingThread = false
+                    updateSortLabel()
+                    load(reset = true)
+                }
             loading.isVisible = false
         }
     }
@@ -454,6 +488,15 @@ class CommentsPanel(
     }
 
     private fun onNotificationOpen(notification: CommentNotificationDto) {
+        // The native player cannot be started from here: it needs play options that only the web
+        // Play the item here rather than asking the web client to open its page and press Play:
+        // that raced the page load (the details page keeps the previous item's buttons while it
+        // loads), so following a reply could start the episode that was already on screen.
+        val itemId = notification.itemId.toUUIDOrNull() ?: return
+
+        // Mark read *before* replacing the player. The old player's lifecycle scope is cancelled
+        // by the pop, so firing the request from a separate launch and navigating immediately
+        // could cancel the POST and leave the reply unread.
         fragment.lifecycleScope.launch {
             if (!notification.isRead) {
                 runCatching { repository.markNotificationRead(notification.id) }
@@ -467,26 +510,20 @@ class CommentsPanel(
                     }
                     .onFailure { context.toast(context.getString(R.string.comments_replies_error)) }
             }
+
+            // The player that is about to open knows nothing about this tap, so the comment is
+            // carried across and opened once that player is ready.
+            pendingThread.set(notification.itemId, notification.commentId)
+
+            val args = Bundle().apply {
+                putParcelable(Constants.EXTRA_MEDIA_PLAY_OPTIONS, PlayOptions.forSingleItem(itemId))
+            }
+
+            // Replace this player instead of stacking another one on top of it.
+            fragment.parentFragmentManager.popBackStack()
+            fragment.parentFragmentManager.executePendingTransactions()
+            fragment.parentFragmentManager.addFragment<PlayerFragment>(args)
         }
-
-        // The native player cannot be started from here: it needs play options that only the web
-        // Play the item here rather than asking the web client to open its page and press Play:
-        // that raced the page load (the details page keeps the previous item's buttons while it
-        // loads), so following a reply could start the episode that was already on screen.
-        val itemId = notification.itemId.toUUIDOrNull() ?: return
-
-        // The player that is about to open knows nothing about this tap, so the comment is carried
-        // across and opened once that player is ready.
-        pendingThread.set(notification.itemId, notification.commentId)
-
-        val args = Bundle().apply {
-            putParcelable(Constants.EXTRA_MEDIA_PLAY_OPTIONS, PlayOptions.forSingleItem(itemId))
-        }
-
-        // Replace this player instead of stacking another one on top of it.
-        fragment.parentFragmentManager.popBackStack()
-        fragment.parentFragmentManager.executePendingTransactions()
-        fragment.parentFragmentManager.addFragment<PlayerFragment>(args)
     }
 
     private fun loadNotificationAvatar(imageView: ImageView, notification: CommentNotificationDto) {

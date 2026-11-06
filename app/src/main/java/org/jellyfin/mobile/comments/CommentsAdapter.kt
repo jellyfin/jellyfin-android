@@ -109,10 +109,10 @@ class CommentsAdapter(
         /**
          * "just now", "5m", "3h", "2d" — the same compact style the web client uses.
          */
-        fun formatRelativeTime(value: String?): String {
+        fun formatRelativeTime(value: String?, nowMillis: Long = System.currentTimeMillis()): String {
             if (value.isNullOrEmpty()) return ""
             val then = runCatching { Instant.parse(value).toEpochMilli() }.getOrNull() ?: return ""
-            val seconds = ((System.currentTimeMillis() - then) / 1000).coerceAtLeast(0)
+            val seconds = ((nowMillis - then) / 1000).coerceAtLeast(0)
             if (seconds < 45) return "just now"
             val units = listOf(
                 "y" to ChronoUnit.YEARS.duration.seconds,

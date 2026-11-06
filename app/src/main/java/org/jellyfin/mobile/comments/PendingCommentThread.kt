@@ -20,6 +20,7 @@ class PendingCommentThread {
     @Volatile
     private var commentId: String? = null
 
+    @Synchronized
     fun set(itemId: String, commentId: String) {
         if (itemId.isEmpty() || commentId.isEmpty()) {
             return
@@ -32,6 +33,7 @@ class PendingCommentThread {
      * The comment to open for [playingItemId], if that is the episode this thread belongs to.
      * Clears the pending value either way: a different episode means the follow was abandoned.
      */
+    @Synchronized
     fun take(playingItemId: String): String? {
         val comment = commentId ?: return null
         val item = itemId
@@ -40,6 +42,7 @@ class PendingCommentThread {
         return if (item == normalize(playingItemId)) comment else null
     }
 
+    @Synchronized
     fun clear() {
         itemId = null
         commentId = null
