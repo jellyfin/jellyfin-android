@@ -11,6 +11,7 @@ import org.jellyfin.mobile.app.StorageManager
 import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.data.entity.DownloadFileEntity
 import org.jellyfin.mobile.data.entity.DownloadFiles
+import org.jellyfin.mobile.utils.findOrCreatePath
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.imageApi
 import org.jellyfin.sdk.api.client.extensions.libraryApi
@@ -131,8 +132,7 @@ class DownloadQueue(
 
     private suspend fun prepareFiles(api: ApiClient, downloadWithFiles: DownloadFiles): List<QueuedFile> {
         val storageLocation = storageManager.getStorageLocation()
-        val itemLocation = storageLocation?.findFile(downloadWithFiles.download.path)
-            ?: storageLocation?.createDirectory(downloadWithFiles.download.path)
+        val itemLocation = storageLocation?.findOrCreatePath(downloadWithFiles.download.path)
             ?: error("Unable to find or create folder ${downloadWithFiles.download.path}")
 
         return buildList {
