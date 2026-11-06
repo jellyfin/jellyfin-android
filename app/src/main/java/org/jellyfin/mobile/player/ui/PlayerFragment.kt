@@ -36,6 +36,7 @@ import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.comments.CommentsPanel
+import org.jellyfin.mobile.comments.CommentsWindowPolicy
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.PlayerException
@@ -63,9 +64,6 @@ import kotlin.math.max
 import androidx.media3.ui.R as Media3R
 
 @Suppress("TooManyFunctions")
-/** Below this many density-independent pixels of window, the comments sheet is not shown. */
-private const val MIN_COMMENTS_WINDOW_DP = 480
-
 class PlayerFragment : Fragment(), BackPressInterceptor {
     private val appPreferences: AppPreferences by inject()
     private val assHandler: AssHandler by inject()
@@ -501,18 +499,26 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     private fun syncCommentsWithWindowSize() {
         val panel = commentsPanel ?: return
         val container = playerBinding.commentsContainer
-        val available = container.height - container.paddingTop - container.paddingBottom
-        if (available <= 0) {
-            return
-        }
 
-        val minimum = (MIN_COMMENTS_WINDOW_DP * container.resources.displayMetrics.density).toInt()
-        if (available < minimum) {
+        // Use the raw container height, not the height left after the IME padding. A tall emoji
+        // keyboard can take more than half a full-size phone screen, which used to look exactly
+        // like a tiny PiP window and closed the sheet while the user was typing.
+        val imeVisible = ViewCompat.getRootWindowInsets(container)
+            ?.isVisible(WindowInsetsCompat.Type.ime()) == true
+        val tooSmall = CommentsWindowPolicy.shouldHide(
+            windowHeightPx = container.height,
+            density = container.resources.displayMetrics.density,
+            imeVisible = imeVisible,
+        )
+
+        if (tooSmall) {
             if (panel.isVisible) {
                 commentsHiddenForSmallWindow = true
                 panel.hideImmediately()
             }
-        } else if (commentsHiddenForSmallWindow) {
+        } else if (!imeVisible && commentsHiddenForSmallWindow) {
+            // Do not restore while the keyboard is up: the sheet is still open behind it, and
+            // restoring on an IME inset change would make it pop in and out with the keyboard.
             commentsHiddenForSmallWindow = false
             panel.restore()
         }
