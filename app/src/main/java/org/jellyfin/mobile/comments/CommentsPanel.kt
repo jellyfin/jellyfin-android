@@ -24,7 +24,10 @@ import coil3.request.ImageRequest
 import coil3.request.transformations
 import coil3.target.ImageViewTarget
 import coil3.transform.CircleCropTransformation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
@@ -50,11 +53,13 @@ class CommentsPanel(
 
         /** Never shrink below something you can still read a couple of comments in. */
         const val MIN_SHEET_DP = 240
+
+        /** Outlives the player being replaced, so marking a reply read is not cancelled by the pop. */
+        val markReadScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     }
 
     private val repository: CommentsRepository by inject()
     private val imageLoader: ImageLoader by inject()
-    private val pendingThread: PendingCommentThread by inject()
 
     private val context get() = binding.root.context
     private val container: View = binding.commentsContainer
@@ -488,42 +493,51 @@ class CommentsPanel(
     }
 
     private fun onNotificationOpen(notification: CommentNotificationDto) {
-        // The native player cannot be started from here: it needs play options that only the web
-        // Play the item here rather than asking the web client to open its page and press Play:
-        // that raced the page load (the details page keeps the previous item's buttons while it
-        // loads), so following a reply could start the episode that was already on screen.
         val itemId = notification.itemId.toUUIDOrNull() ?: return
-
-        // Mark read *before* replacing the player. The old player's lifecycle scope is cancelled
-        // by the pop, so firing the request from a separate launch and navigating immediately
-        // could cancel the POST and leave the reply unread.
-        fragment.lifecycleScope.launch {
-            if (!notification.isRead) {
-                runCatching { repository.markNotificationRead(notification.id) }
-                    .onSuccess {
-                        notifications = notifications.map {
-                            if (it.id == notification.id) it.copy(isRead = true) else it
-                        }
-                        notificationsAdapter.submit(notifications)
-                        updateBellBadge(notifications.count { !it.isRead })
-                        updateTitle()
-                    }
-                    .onFailure { context.toast(context.getString(R.string.comments_replies_error)) }
-            }
-
-            // The player that is about to open knows nothing about this tap, so the comment is
-            // carried across and opened once that player is ready.
-            pendingThread.set(notification.itemId, notification.commentId)
-
-            val args = Bundle().apply {
-                putParcelable(Constants.EXTRA_MEDIA_PLAY_OPTIONS, PlayOptions.forSingleItem(itemId))
-            }
-
-            // Replace this player instead of stacking another one on top of it.
-            fragment.parentFragmentManager.popBackStack()
-            fragment.parentFragmentManager.executePendingTransactions()
-            fragment.parentFragmentManager.addFragment<PlayerFragment>(args)
+        if (!fragment.isAdded) {
+            return
         }
+
+        // Capture the manager before any suspension. By the time a mark-read request returns, this
+        // fragment may already have been popped, and touching parentFragmentManager then throws
+        // "Fragment not associated with a fragment manager".
+        val fragmentManager = fragment.parentFragmentManager
+
+        if (!notification.isRead) {
+            // Update the visible list immediately; the POST itself runs on an app-lived scope so
+            // replacing the player cannot cancel it.
+            notifications = notifications.map {
+                if (it.id == notification.id) it.copy(isRead = true) else it
+            }
+            notificationsAdapter.submit(notifications)
+            updateBellBadge(notifications.count { !it.isRead })
+            updateTitle()
+            markReadScope.launch {
+                runCatching { repository.markNotificationRead(notification.id) }
+            }
+        }
+
+        // Already watching this item: open the thread in the current player instead of destroying
+        // and recreating the player for the same episode. Ids arrive in both dashed and 32-hex
+        // form, so compare them normalised.
+        if (CommentIds.sameItem(notification.itemId, this.itemId)) {
+            showThread(notification.itemId, notification.commentId)
+            return
+        }
+
+        // The item is different, so start the native player directly. The comment is carried in the
+        // new fragment's arguments and opened once its media source is ready, which is more
+        // reliable than a process-wide pending holder.
+        val args = Bundle().apply {
+            putParcelable(Constants.EXTRA_MEDIA_PLAY_OPTIONS, PlayOptions.forSingleItem(itemId))
+            putString(Constants.EXTRA_COMMENT_ID, notification.commentId)
+            putString(Constants.EXTRA_COMMENT_ITEM_ID, notification.itemId)
+        }
+
+        // Replace this player instead of stacking another one on top of it.
+        fragmentManager.popBackStack()
+        fragmentManager.executePendingTransactions()
+        fragmentManager.addFragment<PlayerFragment>(args)
     }
 
     private fun loadNotificationAvatar(imageView: ImageView, notification: CommentNotificationDto) {

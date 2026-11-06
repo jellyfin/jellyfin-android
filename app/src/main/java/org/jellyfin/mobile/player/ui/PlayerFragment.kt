@@ -35,6 +35,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.comments.CommentIds
 import org.jellyfin.mobile.comments.CommentsPanel
 import org.jellyfin.mobile.comments.CommentsWindowPolicy
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
@@ -63,6 +64,9 @@ import org.koin.android.ext.android.inject
 import kotlin.math.max
 import androidx.media3.ui.R as Media3R
 
+private const val STATE_COMMENT_ID = "org.jellyfin.mobile.STATE_COMMENT_ID"
+private const val STATE_COMMENT_ITEM_ID = "org.jellyfin.mobile.STATE_COMMENT_ITEM_ID"
+
 @Suppress("TooManyFunctions")
 class PlayerFragment : Fragment(), BackPressInterceptor {
     private val appPreferences: AppPreferences by inject()
@@ -83,6 +87,10 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     /** Set when the panel was taken away because the window shrank, so it can come back. */
     private var commentsHiddenForSmallWindow = false
+
+    /** A reply followed from a notification, opened once this fragment has a media source. */
+    private var pendingCommentId: String? = null
+    private var pendingCommentItemId: String? = null
 
     private lateinit var playerFullscreenHelper: PlayerFullscreenHelper
     lateinit var playerLockScreenHelper: PlayerLockScreenHelper
@@ -121,6 +129,11 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        pendingCommentId = savedInstanceState?.getString(STATE_COMMENT_ID)
+            ?: arguments?.getString(Constants.EXTRA_COMMENT_ID)
+        pendingCommentItemId = savedInstanceState?.getString(STATE_COMMENT_ITEM_ID)
+            ?: arguments?.getString(Constants.EXTRA_COMMENT_ITEM_ID)
+
         val window = requireActivity().window
         playerFullscreenHelper = PlayerFullscreenHelper(window)
 
@@ -158,6 +171,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             toolbar.subtitle = mediaSource.getExtraInfo(requireContext())
             toolbar.enableScrollingTitle()
             playerMenus?.onQueueItemChanged(mediaSource, viewModel.queueManager.hasNext())
+            openPendingCommentThread(mediaSource.itemId.toString())
         }
 
         // Handle fragment arguments, extract playback options and start playback
@@ -261,6 +275,8 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         commentsPanel = CommentsPanel(this, playerBinding) { count ->
             playerMenus?.updateCommentsCount(count)
         }
+        // The media-source observer may already have fired while this view was being built.
+        openPendingCommentThread(viewModel.mediaSourceOrNull?.itemId?.toString())
 
         // Set controller timeout
         suppressControllerAutoHide(false)
@@ -354,6 +370,22 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     fun openCommentsThread(itemId: String, commentId: String) {
         commentsPanel?.showThread(itemId, commentId)
+    }
+
+    private fun openPendingCommentThread(playingItemId: String?) {
+        val commentId = pendingCommentId ?: return
+        val expectedItemId = pendingCommentItemId ?: return
+        if (commentsPanel == null || playingItemId == null
+            || !CommentIds.sameItem(playingItemId, expectedItemId)
+        ) {
+            return
+        }
+
+        pendingCommentId = null
+        pendingCommentItemId = null
+        arguments?.remove(Constants.EXTRA_COMMENT_ID)
+        arguments?.remove(Constants.EXTRA_COMMENT_ITEM_ID)
+        commentsPanel?.showThread(playingItemId, commentId)
     }
 
     fun toggleComments(itemId: String) {
@@ -532,6 +564,12 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             updateFullscreenState(newConfig)
             playerGestureHelper.handleConfiguration(newConfig)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        pendingCommentId?.let { outState.putString(STATE_COMMENT_ID, it) }
+        pendingCommentItemId?.let { outState.putString(STATE_COMMENT_ITEM_ID, it) }
     }
 
     override fun onStop() {
