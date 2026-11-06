@@ -8,6 +8,10 @@ package org.jellyfin.mobile.comments
  * options), and the player it opens is a new fragment with no knowledge of what was tapped. This
  * holder carries that one piece of state across the handoff, and is consumed exactly once so a
  * later episode does not reopen somebody else's thread.
+ *
+ * Ids are compared in a normalised form: the plugin serialises a Guid as 32 hex characters with no
+ * dashes, while the player reports the same item through `UUID.toString()`, which is 36 characters
+ * with dashes. Comparing the raw strings never matches, and the follow silently does nothing.
  */
 class PendingCommentThread {
     @Volatile
@@ -20,7 +24,7 @@ class PendingCommentThread {
         if (itemId.isEmpty() || commentId.isEmpty()) {
             return
         }
-        this.itemId = itemId
+        this.itemId = normalize(itemId)
         this.commentId = commentId
     }
 
@@ -33,11 +37,14 @@ class PendingCommentThread {
         val item = itemId
         itemId = null
         commentId = null
-        return if (item == playingItemId) comment else null
+        return if (item == normalize(playingItemId)) comment else null
     }
 
     fun clear() {
         itemId = null
         commentId = null
     }
+
+    private fun normalize(id: String): String =
+        id.trim().removePrefix("{").removeSuffix("}").replace("-", "").lowercase()
 }
