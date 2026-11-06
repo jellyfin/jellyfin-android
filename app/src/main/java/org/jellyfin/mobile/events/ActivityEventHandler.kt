@@ -15,6 +15,7 @@ import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.bridge.JavascriptCallback
 import org.jellyfin.mobile.downloads.DownloadsFragment
+import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.mobile.player.ui.PlayerFragment
 import org.jellyfin.mobile.player.ui.PlayerFullscreenHelper
 import org.jellyfin.mobile.settings.SettingsFragment
@@ -63,6 +64,14 @@ class ActivityEventHandler(
                 val args = Bundle().apply {
                     putParcelable(Constants.EXTRA_MEDIA_PLAY_OPTIONS, event.playOptions)
                     putParcelable(Constants.EXTRA_WEB_PREFERENCES, event.preferences)
+                }
+                supportFragmentManager.addFragment<PlayerFragment>(args)
+            }
+            is ActivityEvent.OpenCommentsThread -> {
+                val args = Bundle().apply {
+                    putParcelable(Constants.EXTRA_MEDIA_PLAY_OPTIONS, PlayOptions.forSingleItem(event.itemId))
+                    putString(Constants.EXTRA_COMMENT_ID, event.commentId)
+                    putString(Constants.EXTRA_COMMENT_ITEM_ID, event.itemId.toString())
                 }
                 supportFragmentManager.addFragment<PlayerFragment>(args)
             }

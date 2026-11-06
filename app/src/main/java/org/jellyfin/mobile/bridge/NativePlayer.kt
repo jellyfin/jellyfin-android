@@ -11,6 +11,7 @@ import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.player.interaction.PlayerWebPreferences
 import org.jellyfin.mobile.settings.VideoPlayerType
 import org.jellyfin.sdk.model.extensions.ticks
+import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("unused")
@@ -29,6 +30,16 @@ class NativePlayer(
         val preferences = Json.decodeFromString<PlayerWebPreferences>(preferencesRaw)
 
         activityEventHandler.emit(ActivityEvent.LaunchNativePlayer(playOptions, preferences))
+    }
+
+    /**
+     * Opens a comment thread in the native player, used by the web replies overlay on Android.
+     * The web panel itself would render behind the native player, so the click has to come here.
+     */
+    @JavascriptInterface
+    fun openCommentsThread(itemId: String, commentId: String) {
+        val uuid = itemId.toUUIDOrNull() ?: return
+        activityEventHandler.emit(ActivityEvent.OpenCommentsThread(uuid, commentId))
     }
 
     @JavascriptInterface
