@@ -6,4 +6,5 @@ package org.jellyfin.mobile.player.ui
 enum class DecoderType {
     HARDWARE,
     SOFTWARE,
+    AUTO,
 }
