@@ -5,6 +5,7 @@ import org.jellyfin.mobile.utils.extensions.addFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
@@ -31,6 +32,7 @@ import coil3.target.ImageViewTarget
 import coil3.transform.CircleCropTransformation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
@@ -76,9 +78,12 @@ class CommentsPanel(
     private val title: TextView = binding.commentsTitle
     private val sortButton: TextView = binding.commentsSort
     private val closeButton: ImageButton = binding.commentsClose
-    private val input: EditText = binding.commentsInput
+    private val input: GifEditText = binding.commentsInput
     private val sendButton: TextView = binding.commentsSend
     private val mentionSuggestions: LinearLayout = binding.commentsMentionSuggestions
+    private val mediaRow: View = binding.commentsMediaRow
+    private val mediaPreview: ImageView = binding.commentsMediaPreview
+    private val mediaRemove: TextView = binding.commentsMediaRemove
     private val replyingRow: View = binding.commentsReplying
     private val replyingText: TextView = binding.commentsReplyingText
     private val replyingCancel: TextView = binding.commentsReplyingCancel
@@ -91,6 +96,7 @@ class CommentsPanel(
         onEdit = ::onEdit,
         onDelete = ::onDelete,
         onAvatar = ::loadAvatar,
+        onMedia = ::loadMedia,
     )
 
     private val notificationsAdapter = NotificationsAdapter(
@@ -105,6 +111,8 @@ class CommentsPanel(
     private var loadJob: Job? = null
     private var mentionUsers: List<String>? = null
     private var mentionLoading = false
+    private var pendingMediaFileName: String? = null
+    private var mediaUploading = false
 
     /** The replies list and the comments list share the RecyclerView; this says which is shown. */
     private var showingReplies = false
@@ -139,11 +147,11 @@ class CommentsPanel(
         }
 
         input.doAfterTextChanged {
-            val enabled = it?.isNotBlank() == true
-            sendButton.isEnabled = enabled
-            sendButton.alpha = if (enabled) 1f else 0.45f
+            updateSendEnabled()
             updateMentionSuggestions()
         }
+        input.onGifPicked = ::handleGifPicked
+        mediaRemove.setOnClickListener { clearMedia() }
         input.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 hideMentionSuggestions()
@@ -185,6 +193,7 @@ class CommentsPanel(
         this.itemId = itemId
         setReplying(null)
         input.text = null
+        clearMedia()
         hideMentionSuggestions()
         // Reopening always lands on the comments for this video; the bell is how you get back to
         // the replies, and a followed thread is a one-off view.
@@ -212,6 +221,7 @@ class CommentsPanel(
         fragment.suppressControllerAutoHide(false)
         setReplying(null)
         input.text = null
+        clearMedia()
         hideMentionSuggestions()
         sheet.animate().translationY(sheet.height.toFloat()).setDuration(180).start()
         container.animate().alpha(0f).setDuration(180).withEndAction {
@@ -405,14 +415,17 @@ class CommentsPanel(
     private fun postComment() {
         val id = itemId ?: return
         val text = input.text?.toString()?.trim().orEmpty()
-        if (text.isEmpty()) return
+        val media = pendingMediaFileName
+        if (text.isEmpty() && media == null) return
+        if (mediaUploading) return
 
         sendButton.isEnabled = false
         val parentId = replyingTo?.id
         fragment.lifecycleScope.launch {
-            runCatching { repository.postComment(id, text, parentId) }
+            runCatching { repository.postComment(id, text, parentId, media) }
                 .onSuccess {
                     input.text = null
+                    clearMedia()
                     setReplying(null)
                     // The comment is gone from the field, so leaving the keyboard up only hides
                     // the thread the user just posted into.
@@ -420,9 +433,58 @@ class CommentsPanel(
                     load(reset = true)
                 }
                 .onFailure { context.toast(context.getString(R.string.comments_post_error)) }
-            sendButton.isEnabled = input.text?.isNotBlank() == true
-            sendButton.alpha = if (sendButton.isEnabled) 1f else 0.45f
+            updateSendEnabled()
         }
+    }
+
+    private fun updateSendEnabled() {
+        val enabled = !mediaUploading && (input.text?.isNotBlank() == true || pendingMediaFileName != null)
+        sendButton.isEnabled = enabled
+        sendButton.alpha = if (enabled) 1f else 0.45f
+    }
+
+    private fun handleGifPicked(uri: Uri, contentType: String) {
+        fragment.lifecycleScope.launch {
+            mediaUploading = true
+            updateSendEnabled()
+            val bytes = runCatching {
+                withContext(Dispatchers.IO) {
+                    context.contentResolver.openInputStream(uri)?.use { it.readBytes() }
+                }
+            }.getOrNull()
+            if (bytes == null) {
+                mediaUploading = false
+                updateSendEnabled()
+                context.toast(context.getString(R.string.comments_gif_error))
+                return@launch
+            }
+
+            val uploaded = runCatching { repository.uploadMedia(bytes, contentType) }.getOrNull()
+            if (uploaded == null) {
+                mediaUploading = false
+                updateSendEnabled()
+                context.toast(context.getString(R.string.comments_gif_error))
+                return@launch
+            }
+
+            pendingMediaFileName = uploaded.fileName
+            mediaUploading = false
+            mediaRow.isVisible = true
+            imageLoader.enqueue(
+                ImageRequest.Builder(context)
+                    .data(uri)
+                    .target(ImageViewTarget(mediaPreview))
+                    .build(),
+            )
+            updateSendEnabled()
+        }
+    }
+
+    private fun clearMedia() {
+        pendingMediaFileName = null
+        mediaRow.isVisible = false
+        mediaPreview.setImageDrawable(null)
+        updateSendEnabled()
     }
 
     /** Drops focus and dismisses the on-screen keyboard. */
@@ -672,6 +734,20 @@ class CommentsPanel(
         val request = ImageRequest.Builder(context)
             .data(repository.absoluteUrl(path))
             .transformations(CircleCropTransformation())
+            .httpHeaders(
+                NetworkHeaders.Builder()
+                    .set("Authorization", repository.buildAuthorizationHeader())
+                    .build(),
+            )
+            .target(ImageViewTarget(imageView))
+            .build()
+        imageLoader.enqueue(request)
+    }
+
+    private fun loadMedia(imageView: ImageView, comment: CommentDto) {
+        val path = comment.mediaUrl ?: return
+        val request = ImageRequest.Builder(context)
+            .data(repository.absoluteUrl(path))
             .httpHeaders(
                 NetworkHeaders.Builder()
                     .set("Authorization", repository.buildAuthorizationHeader())

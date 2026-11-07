@@ -28,6 +28,7 @@ class CommentsAdapter(
     private val onEdit: (CommentDto) -> Unit,
     private val onDelete: (CommentDto) -> Unit,
     private val onAvatar: (ImageView, CommentDto) -> Unit,
+    private val onMedia: (ImageView, CommentDto) -> Unit,
 ) : RecyclerView.Adapter<CommentsAdapter.CommentViewHolder>() {
 
     private var items: List<CommentItem> = emptyList()
@@ -53,6 +54,7 @@ class CommentsAdapter(
         private val username: TextView = itemView.findViewById(R.id.comment_username)
         private val time: TextView = itemView.findViewById(R.id.comment_time)
         private val text: TextView = itemView.findViewById(R.id.comment_text)
+        private val media: ImageView = itemView.findViewById(R.id.comment_media)
         private val likeButton: ImageButton = itemView.findViewById(R.id.comment_like_button)
         private val likeCount: TextView = itemView.findViewById(R.id.comment_like_count)
         private val replyButton: TextView = itemView.findViewById(R.id.comment_reply_button)
@@ -78,6 +80,15 @@ class CommentsAdapter(
                 if (comment.editedAt != null) "$relative · ${itemView.context.getString(R.string.comments_edited)}" else relative
             }
             text.setText(highlightMentions(comment.text), TextView.BufferType.SPANNABLE)
+
+            val mediaUrl = comment.mediaUrl
+            if (mediaUrl != null) {
+                media.isVisible = true
+                onMedia(media, comment)
+            } else {
+                media.isVisible = false
+                media.setImageDrawable(null)
+            }
 
             // Replies are indented under their parent.
             val base = itemView.resources.getDimensionPixelSize(R.dimen.comments_item_padding)

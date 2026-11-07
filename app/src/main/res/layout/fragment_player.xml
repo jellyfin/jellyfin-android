@@ -316,6 +316,35 @@
                         android:visibility="gone" />
 
                     <LinearLayout
+                        android:id="@+id/comments_media_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:paddingBottom="6dp"
+                        android:visibility="gone">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/comments_media_preview"
+                            android:layout_width="160dp"
+                            android:layout_height="110dp"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop" />
+
+                        <TextView
+                            android:id="@+id/comments_media_remove"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:paddingHorizontal="6dp"
+                            android:paddingVertical="4dp"
+                            android:text="@string/comments_remove_gif"
+                            android:textColor="#FE2C55"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/comments_replying"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -354,7 +383,7 @@
                         android:gravity="bottom"
                         android:orientation="horizontal">
 
-                        <EditText
+                        <org.jellyfin.mobile.comments.GifEditText
                             android:id="@+id/comments_input"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"

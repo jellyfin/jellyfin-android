@@ -21,6 +21,7 @@ data class CommentDto(
     @SerialName("createdAt") val createdAt: String? = null,
     @SerialName("editedAt") val editedAt: String? = null,
     @SerialName("parentId") val parentId: String? = null,
+    @SerialName("mediaUrl") val mediaUrl: String? = null,
     @SerialName("replyToCommentId") val replyToCommentId: String? = null,
     @SerialName("replyToUsername") val replyToUsername: String? = null,
     @SerialName("likeCount") val likeCount: Int = 0,
@@ -46,6 +47,14 @@ data class CommentPageDto(
 data class CommentRequest(
     @SerialName("text") val text: String,
     @SerialName("parentId") val parentId: String? = null,
+    @SerialName("mediaFileName") val mediaFileName: String? = null,
+)
+
+@Serializable
+@JsonIgnoreUnknownKeys
+data class MediaUploadDto(
+    @SerialName("fileName") val fileName: String,
+    @SerialName("url") val url: String,
 )
 
 @Serializable

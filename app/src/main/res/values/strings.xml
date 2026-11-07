@@ -206,6 +206,8 @@
     <string name="comments_delete_confirm">Delete this comment?</string>
     <string name="comments_delete_error">Could not delete the comment.</string>
     <string name="comments_edit_error">Could not edit the comment.</string>
+    <string name="comments_remove_gif">Remove GIF</string>
+    <string name="comments_gif_error">Could not add the GIF.</string>
     <string name="comments_replies">Replies to you</string>
     <string name="comments_replies_count">Replies to you (%1$d)</string>
     <string name="comments_replies_empty">No replies yet.</string>

@@ -102,7 +102,7 @@ val applicationModule = module {
     single { MediaSegmentRepository() }
 
     // Comments on videos (Jellyfin Comments plugin)
-    single { CommentsRepository(get()) }
+    single { CommentsRepository(get(), get()) }
     single { PendingCommentThread() }
 
     // ExoPlayer factories

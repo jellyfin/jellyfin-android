@@ -17,6 +17,11 @@ import org.jellyfin.sdk.api.client.util.AuthorizationHeaderBuilder
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
  * Talks to the Jellyfin Comments plugin's `/Comments` endpoints.
@@ -25,7 +30,10 @@ import java.net.URL
  * the same access token the rest of the app already uses. The endpoints are documented in the
  * plugin's `docs/client-api-guide.md`.
  */
-class CommentsRepository(private val apiClient: ApiClient) {
+class CommentsRepository(
+    private val apiClient: ApiClient,
+    private val httpClient: OkHttpClient,
+) {
 
     suspend fun getComments(
         itemId: String,
@@ -47,13 +55,45 @@ class CommentsRepository(private val apiClient: ApiClient) {
         apiClient.get<CommentCountDto>(pathTemplate = "/Comments/Items/$itemId/Count").content.count
     }
 
-    suspend fun postComment(itemId: String, text: String, parentId: String? = null): CommentDto =
-        withContext(Dispatchers.IO) {
-            apiClient.post<CommentDto>(
-                pathTemplate = "/Comments/Items/$itemId",
-                requestBody = CommentRequest(text = text, parentId = parentId),
-            ).content
+    suspend fun postComment(
+        itemId: String,
+        text: String,
+        parentId: String? = null,
+        mediaFileName: String? = null,
+    ): CommentDto = withContext(Dispatchers.IO) {
+        apiClient.post<CommentDto>(
+            pathTemplate = "/Comments/Items/$itemId",
+            requestBody = CommentRequest(text = text, parentId = parentId, mediaFileName = mediaFileName),
+        ).content
+    }
+
+    /** Uploads a GIF/image picked by the keyboard and returns its stored file name. */
+    suspend fun uploadMedia(bytes: ByteArray, contentType: String): MediaUploadDto = withContext(Dispatchers.IO) {
+        val baseUrl = apiClient.baseUrl?.trimEnd('/') ?: throw IOException("No server configured")
+        val extension = when (contentType.lowercase()) {
+            "image/gif" -> "gif"
+            "image/webp" -> "webp"
+            "image/png" -> "png"
+            else -> "jpg"
         }
+        val body = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("file", "upload.$extension", bytes.toRequestBody(contentType.toMediaType()))
+            .build()
+        val request = Request.Builder()
+            .url("$baseUrl/Comments/Media")
+            .header("Authorization", buildAuthorizationHeader())
+            .post(body)
+            .build()
+
+        httpClient.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) {
+                throw IOException("HTTP ${response.code}")
+            }
+            val json = response.body?.string() ?: throw IOException("Empty response")
+            Json.decodeFromString<MediaUploadDto>(json)
+        }
+    }
 
     /** Usernames available for @mention suggestions. */
     suspend fun getMentionableUsers(): List<String> = withContext(Dispatchers.IO) {
