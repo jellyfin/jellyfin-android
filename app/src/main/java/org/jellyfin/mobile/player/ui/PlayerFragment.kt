@@ -9,12 +9,14 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.OrientationEventListener
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
@@ -33,6 +35,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.comments.CommentIds
+import org.jellyfin.mobile.comments.CommentsPanel
+import org.jellyfin.mobile.comments.CommentsWindowPolicy
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.PlayerException
@@ -59,6 +64,9 @@ import org.koin.android.ext.android.inject
 import kotlin.math.max
 import androidx.media3.ui.R as Media3R
 
+private const val STATE_COMMENT_ID = "org.jellyfin.mobile.STATE_COMMENT_ID"
+private const val STATE_COMMENT_ITEM_ID = "org.jellyfin.mobile.STATE_COMMENT_ITEM_ID"
+
 @Suppress("TooManyFunctions")
 class PlayerFragment : Fragment(), BackPressInterceptor {
     private val appPreferences: AppPreferences by inject()
@@ -75,6 +83,14 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     private val toolbar: Toolbar get() = playerControlsBinding.toolbar
     private val fullscreenSwitcher: ImageButton get() = playerControlsBinding.fullscreenSwitcher
     private var playerMenus: PlayerMenus? = null
+    private var commentsPanel: CommentsPanel? = null
+
+    /** Set when the panel was taken away because the window shrank, so it can come back. */
+    private var commentsHiddenForSmallWindow = false
+
+    /** A reply followed from a notification, opened once this fragment has a media source. */
+    private var pendingCommentId: String? = null
+    private var pendingCommentItemId: String? = null
 
     private lateinit var playerFullscreenHelper: PlayerFullscreenHelper
     lateinit var playerLockScreenHelper: PlayerLockScreenHelper
@@ -82,6 +98,23 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     private val currentVideoStream: MediaStream?
         get() = viewModel.mediaSourceOrNull?.selectedVideoStream
+
+    /**
+     * The item name is often longer than the room a phone toolbar has. Instead of letting the
+     * single-line title get ellipsized (which hides the season/episode info in the middle of the
+     * string), let it scroll so the whole name stays reachable. The season/episode info is also
+     * shown separately as the toolbar subtitle, so it is always visible at a glance.
+     */
+    private fun Toolbar.enableScrollingTitle() {
+        for (i in 0 until childCount) {
+            val titleView = getChildAt(i) as? TextView ?: continue
+            if (titleView.text?.toString() != title?.toString()) continue
+            titleView.isSingleLine = true
+            titleView.ellipsize = TextUtils.TruncateAt.MARQUEE
+            titleView.marqueeRepeatLimit = -1
+            titleView.isSelected = true
+        }
+    }
 
     /**
      * Listener that watches the current device orientation.
@@ -95,6 +128,11 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        pendingCommentId = savedInstanceState?.getString(STATE_COMMENT_ID)
+            ?: arguments?.getString(Constants.EXTRA_COMMENT_ID)
+        pendingCommentItemId = savedInstanceState?.getString(STATE_COMMENT_ITEM_ID)
+            ?: arguments?.getString(Constants.EXTRA_COMMENT_ITEM_ID)
 
         val window = requireActivity().window
         playerFullscreenHelper = PlayerFullscreenHelper(window)
@@ -129,8 +167,11 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             }
 
             // Update title and player menus
-            toolbar.title = mediaSource.getName(requireContext())
+            toolbar.title = mediaSource.getTitle(requireContext())
+            toolbar.subtitle = mediaSource.getExtraInfo(requireContext())
+            toolbar.enableScrollingTitle()
             playerMenus?.onQueueItemChanged(mediaSource, viewModel.queueManager.hasNext())
+            openPendingCommentThread(mediaSource.itemId.toString())
         }
 
         // Handle fragment arguments, extract playback options and start playback
@@ -202,11 +243,40 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             insets
         }
 
+        // The activity is edge-to-edge (MainActivity calls enableEdgeToEdge), so the window does
+        // NOT resize when the keyboard opens: the IME simply draws over the content. The comments
+        // panel is a bottom sheet, so its composer ended up underneath the keyboard and you could
+        // not see what you were typing. Shrinking the panel by the IME inset keeps the field above
+        // the keyboard while the list above it scrolls as usual.
+        ViewCompat.setOnApplyWindowInsetsListener(playerBinding.commentsContainer) { view, insets ->
+            val ime = insets.getInsets(WindowInsetsCompat.Type.ime())
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // playerOverlay already pads for the navigation bar, and the IME inset includes that
+            // same strip, so only the difference is added or the panel floats a gap too high.
+            view.setPadding(0, 0, 0, (ime.bottom - bars.bottom).coerceAtLeast(0))
+            insets
+        }
+
+        // Android can shrink this window to a thumbnail: picture-in-picture, freeform windows and
+        // split screen all do. A half-height sheet then pushes the video out of sight and the panel
+        // reads as broken ("comments" over nothing), so it gets out of the way while there is no
+        // room for both and comes back on its own once the window is large again.
+        playerBinding.commentsContainer.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            syncCommentsWithWindowSize()
+        }
+
         // Handle toolbar back button
         toolbar.setNavigationOnClickListener { parentFragmentManager.popBackStack() }
 
         // Create playback menus
         playerMenus = PlayerMenus(this, playerBinding, playerControlsBinding)
+
+        // Create the comments panel (kept inside the player layout so playback is never paused)
+        commentsPanel = CommentsPanel(this, playerBinding) { count ->
+            playerMenus?.updateCommentsCount(count)
+        }
+        // The media-source observer may already have fired while this view was being built.
+        openPendingCommentThread(viewModel.mediaSourceOrNull?.itemId?.toString())
 
         // Set controller timeout
         suppressControllerAutoHide(false)
@@ -296,6 +366,34 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
      */
     fun suppressControllerAutoHide(suppress: Boolean) {
         playerView.controllerShowTimeoutMs = if (suppress) -1 else DEFAULT_CONTROLS_TIMEOUT_MS
+    }
+
+    fun openCommentsThread(itemId: String, commentId: String) {
+        commentsPanel?.showThread(itemId, commentId)
+    }
+
+    private fun openPendingCommentThread(playingItemId: String?) {
+        val commentId = pendingCommentId ?: return
+        val expectedItemId = pendingCommentItemId ?: return
+        if (commentsPanel == null || playingItemId == null
+            || !CommentIds.sameItem(playingItemId, expectedItemId)
+        ) {
+            return
+        }
+
+        pendingCommentId = null
+        pendingCommentItemId = null
+        arguments?.remove(Constants.EXTRA_COMMENT_ID)
+        arguments?.remove(Constants.EXTRA_COMMENT_ITEM_ID)
+        commentsPanel?.showThread(playingItemId, commentId)
+    }
+
+    fun toggleComments(itemId: String) {
+        commentsPanel?.toggle(itemId)
+    }
+
+    fun dismissComments() {
+        commentsPanel?.dismissIfVisible()
     }
 
     fun isLandscape(configuration: Configuration = resources.configuration) =
@@ -413,6 +511,48 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
         if (isInPictureInPictureMode) {
             playerMenus?.dismissPlaybackInfo()
             playerLockScreenHelper.hideUnlockButton()
+
+            // A thumbnail window has no room for a sheet; the video is the point of it.
+            commentsPanel?.let { panel ->
+                if (panel.isVisible) {
+                    commentsHiddenForSmallWindow = true
+                    panel.hideImmediately()
+                }
+            }
+        } else {
+            playerBinding.commentsContainer.post { syncCommentsWithWindowSize() }
+        }
+    }
+
+    /**
+     * Hides the comments panel while the window is too short to show both it and the video, and
+     * restores it once there is room again. Covers picture-in-picture, freeform and split screen.
+     */
+    private fun syncCommentsWithWindowSize() {
+        val panel = commentsPanel ?: return
+        val container = playerBinding.commentsContainer
+
+        // Use the raw container height, not the height left after the IME padding. A tall emoji
+        // keyboard can take more than half a full-size phone screen, which used to look exactly
+        // like a tiny PiP window and closed the sheet while the user was typing.
+        val imeVisible = ViewCompat.getRootWindowInsets(container)
+            ?.isVisible(WindowInsetsCompat.Type.ime()) == true
+        val tooSmall = CommentsWindowPolicy.shouldHide(
+            windowHeightPx = container.height,
+            density = container.resources.displayMetrics.density,
+            imeVisible = imeVisible,
+        )
+
+        if (tooSmall) {
+            if (panel.isVisible) {
+                commentsHiddenForSmallWindow = true
+                panel.hideImmediately()
+            }
+        } else if (!imeVisible && commentsHiddenForSmallWindow) {
+            // Do not restore while the keyboard is up: the sheet is still open behind it, and
+            // restoring on an IME inset change would make it pop in and out with the keyboard.
+            commentsHiddenForSmallWindow = false
+            panel.restore()
         }
     }
 
@@ -424,6 +564,12 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             updateFullscreenState(newConfig)
             playerGestureHelper.handleConfiguration(newConfig)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        pendingCommentId?.let { outState.putString(STATE_COMMENT_ID, it) }
+        pendingCommentItemId?.let { outState.putString(STATE_COMMENT_ITEM_ID, it) }
     }
 
     override fun onStop() {

@@ -143,6 +143,8 @@ object Constants {
 
     // Video player intent extras
     const val EXTRA_MEDIA_PLAY_OPTIONS = "org.jellyfin.mobile.MEDIA_PLAY_OPTIONS"
+    const val EXTRA_COMMENT_ID = "org.jellyfin.mobile.COMMENT_ID"
+    const val EXTRA_COMMENT_ITEM_ID = "org.jellyfin.mobile.COMMENT_ITEM_ID"
     const val EXTRA_WEB_PREFERENCES = "org.jellyfin.mobile.WEB_PREFERENCES"
 
     // External player result actions

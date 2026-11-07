@@ -153,6 +153,8 @@
     <string name="store_videos_in_internal_storage">Store videos in internal storage</string>
     <string name="stored_videos_in_internal_storage_desc">Videos such as movies and TV shows will be stored in the app\'s internal storage. Allowing access from within the app.</string>
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
+    <string name="season_episode">Season %1$d Episode %2$d</string>
+    <string name="season_episodes">Season %1$d Episodes %2$d-%3$d</string>
     <string name="downloading_desc">Downloading %1$d titles</string>
     <string name="downloaded">Downloaded %1$s</string>
     <string name="special_episode">Special</string>
@@ -180,4 +182,39 @@
     <string name="download_location_not_set_description">To download media, please select a folder where the files should be stored.</string>
     <string name="download_location_inaccessible">Download location inaccessible</string>
     <string name="download_location_inaccessible_description">The selected download location is no longer accessible. Please select a different folder to resume downloads.</string>
+
+    <!-- Comments -->
+    <string name="comments_title">Comments</string>
+    <string name="player_controls_expand">More controls</string>
+    <string name="comments_title_count">Comments (%1$d)</string>
+    <string name="comments_empty">No comments yet. Be the first to comment!</string>
+    <string name="comments_input_hint">Add a comment…</string>
+    <string name="comments_send">Post</string>
+    <string name="comments_reply">Reply</string>
+    <string name="comments_like">Like</string>
+    <string name="comments_delete">Delete</string>
+    <string name="comments_edit">Edit</string>
+    <string name="comments_save">Save</string>
+    <string name="comments_edited">edited</string>
+    <string name="comments_unknown_user">Unknown</string>
+    <string name="comments_replying_to">Replying to %1$s</string>
+    <string name="comments_cancel">Cancel</string>
+    <string name="comments_sort_newest">Newest</string>
+    <string name="comments_sort_top">Top</string>
+    <string name="comments_error">Could not load comments.</string>
+    <string name="comments_post_error">Could not post the comment.</string>
+    <string name="comments_delete_confirm">Delete this comment?</string>
+    <string name="comments_delete_error">Could not delete the comment.</string>
+    <string name="comments_edit_error">Could not edit the comment.</string>
+    <string name="comments_replies">Replies to you</string>
+    <string name="comments_replies_count">Replies to you (%1$d)</string>
+    <string name="comments_replies_empty">No replies yet.</string>
+    <string name="comments_replies_error">Could not load replies.</string>
+    <string name="comments_replies_you_wrote">You wrote: %1$s</string>
+    <string name="comments_replied_to_you">replied to your comment</string>
+    <string name="comments_mentioned_you">mentioned you</string>
+    <string name="comments_notification_actor">%1$s %2$s</string>
+    <string name="comments_replies_read_all">Mark all read</string>
+    <string name="comments_back_to_comments">Back to comments</string>
+    <string name="comments_reply_to">%1$s \u203a %2$s</string>
 </resources>

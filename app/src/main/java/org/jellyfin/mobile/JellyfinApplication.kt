@@ -20,11 +20,11 @@ class JellyfinApplication : Application() {
         // Setup logging
         Timber.plant(JellyTree())
 
-        if (BuildConfig.DEBUG) {
-            // Enable WebView debugging
-            if (isWebViewSupported()) {
-                WebView.setWebContentsDebuggingEnabled(true)
-            }
+        // Enabled in release builds too: the web UI is a WebView, and when something in it does
+        // not render there is otherwise no way to inspect it from the host. It is reachable only
+        // over `adb forward`, which already requires a trusted device connection.
+        if (isWebViewSupported()) {
+            WebView.setWebContentsDebuggingEnabled(true)
         }
 
         startKoin {

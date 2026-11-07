@@ -15,9 +15,11 @@ import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.view.size
 import androidx.core.view.updateLayoutParams
+import androidx.lifecycle.lifecycleScope
 import androidx.media3.ui.DefaultTimeBar
 import androidx.media3.ui.TimeBar
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.comments.CommentsRepository
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
@@ -30,6 +32,7 @@ import org.jellyfin.sdk.model.api.ChapterInfo
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 /**
@@ -44,6 +47,8 @@ class PlayerMenus(
 
     private val context = playerBinding.root.context
     private val qualityOptionsProvider: QualityOptionsProvider by inject()
+
+    private val commentsRepository: CommentsRepository by inject()
     private val playPauseContainer: View by playerControlsBinding::playPauseContainer
     private val previousButton: View by playerControlsBinding::previousButton
     private val nextButton: View by playerControlsBinding::nextButton
@@ -56,6 +61,10 @@ class PlayerMenus(
     private val qualityButton: View by playerControlsBinding::qualityButton
     private val decoderButton: View by playerControlsBinding::decoderButton
     private val infoButton: View by playerControlsBinding::infoButton
+    private val commentsButton: View by playerControlsBinding::commentsButton
+    private val commentsBadge: TextView by playerControlsBinding::commentsBadge
+    private val controlsToggle: View by playerControlsBinding::controlsToggle
+    private val controlsGroup: View by playerControlsBinding::controlsGroup
     private val playbackInfo: TextView by playerBinding::playbackInfo
     private val audioStreamsMenu: PopupMenu = createAudioStreamsMenu()
     private val subtitlesMenu: PopupMenu = createSubtitlesMenu()
@@ -73,6 +82,9 @@ class PlayerMenus(
 
     private var subtitleCount = 0
     private var subtitlesEnabled = false
+
+    /** The item currently playing, used by the comments panel. */
+    private var currentItemId: String? = null
 
     private val trickplayHelper = TrickplayHelper(
         trickplayContainer,
@@ -146,6 +158,13 @@ class PlayerMenus(
         infoButton.setOnClickListener {
             playbackInfo.isVisible = !playbackInfo.isVisible
         }
+        commentsButton.setOnClickListener {
+            currentItemId?.let { fragment.toggleComments(it) }
+        }
+        // The secondary controls live in a collapsible group above this toggle.
+        controlsToggle.setOnClickListener {
+            controlsGroup.isVisible = !controlsGroup.isVisible
+        }
         playbackInfo.setOnClickListener {
             dismissPlaybackInfo()
         }
@@ -154,6 +173,11 @@ class PlayerMenus(
     }
 
     fun onQueueItemChanged(mediaSource: JellyfinMediaSource, hasNext: Boolean) {
+        // A new episode gets its own comment thread.
+        currentItemId = mediaSource.itemId.toString()
+        fragment.dismissComments()
+        refreshCommentsCount(mediaSource.itemId.toString())
+
         // previousButton is always enabled and will rewind if at the start of the queue
         nextButton.isEnabled = hasNext
 
@@ -220,6 +244,24 @@ class PlayerMenus(
             videoTracksInfo,
             audioTracksInfo,
         ).joinToString("\n\n")
+    }
+
+    /**
+     * Fetches the comment count for an item and shows it on the button.
+     */
+    private fun refreshCommentsCount(itemId: String) {
+        fragment.lifecycleScope.launch {
+            val count = runCatching { commentsRepository.getCount(itemId) }.getOrDefault(0)
+            updateCommentsCount(count)
+        }
+    }
+
+    /**
+     * Sets the number shown on the comment button. Called both when the item changes and by the
+     * comments panel after it loads, posts or deletes.
+     */
+    fun updateCommentsCount(count: Int) {
+        commentsBadge.text = count.toString()
     }
 
     private fun updateLayoutConstraints(hasChapters: Boolean) {

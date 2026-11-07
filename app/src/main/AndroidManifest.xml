@@ -50,6 +50,7 @@
             android:name=".MainActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation|uiMode"
             android:exported="true"
+            android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTask"
             android:supportsPictureInPicture="true">
             <intent-filter>

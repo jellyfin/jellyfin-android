@@ -16,4 +16,7 @@
     <dimen name="exo_chapter_marking_width">3dp</dimen>
     <dimen name="exo_chapter_marking_height">15dp</dimen>
     <dimen name="trickplay_thumbnail_height">160dp</dimen>
+    <!-- Comments panel -->
+    <dimen name="comments_reply_indent">40dp</dimen>
+    <dimen name="comments_item_padding">12dp</dimen>
 </resources>

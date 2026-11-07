@@ -8,3 +8,7 @@ build
 /captures
 .externalNativeBuild
 .cxx
+
+# Signing config (never commit)
+keystore.properties
+*.jks
