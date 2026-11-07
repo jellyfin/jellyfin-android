@@ -12,9 +12,9 @@ from not knowing **which of three comment UIs** a symptom belonged to.
 |---|---|
 | Server-side reply notifications | Done long ago (`/Comments/Notifications*`), covered by tests |
 | Web client (desktop browser) | Done and verified: header bell + replies overlay, click-through to episode + play + comment |
-| Android **native** sheet | Built and installed as `1.1.0-thevelvet.23`; the mark-read race, the notification-switch crash, the followed-thread handoff, the emoji-keyboard dismissal and comment editing are fixed (see §5) |
-| Installed app | `1.1.0-thevelvet.23` — installed on the phone via ADB at `172.22.1.100:38843`, launches clean |
-| Plugin | `1.2.0.2`, released and deployed |
+| Android **native** sheet | Built and installed as `1.1.0-thevelvet.25`; the mark-read race, the notification-switch crash, the followed-thread handoff, the emoji-keyboard dismissal and comment editing and @mentions are fixed (see §5) |
+| Installed app | `1.1.0-thevelvet.25` — installed on the phone via ADB at `172.22.1.100:38843`, launches clean |
+| Plugin | `1.2.0.3`, released and deployed |
 | Moonfin | **Dropped by the user** ("i dont care about it"); changes sit uncommitted in `~/code/Moonfin-Core`, do not touch |
 
 The one thing outstanding is **confirming that tapping a reply on the phone opens the sheet on
@@ -110,7 +110,7 @@ The previous crash — `Fragment PlayerFragment not associated with a fragment m
 touching `parentFragmentManager` after a suspension, when the old player had already been popped.
 The manager is now captured before any suspension and the navigation is synchronous.
 
-Comment editing uses the same comment DTO permission flags as the web (`canEdit` / `canDelete`, falling back to `isOwn` for older servers). The native Edit button opens an AlertDialog, PUTs `/Comments/{id}`, and updates the row in place.
+@mentions are parsed on the server and create `mention` notifications; the native composer suggests usernames while typing after `@`. Comment editing uses the same comment DTO permission flags as the web (`canEdit` / `canDelete`, falling back to `isOwn` for older servers). The native Edit button opens an AlertDialog, PUTs `/Comments/{id}`, and updates the row in place.
 
 The web header bell uses the same path on Android: `Web/comments.js` detects
 `NativePlayer.openCommentsThread(itemId, commentId)` and emits `ActivityEvent.OpenCommentsThread`,
@@ -259,8 +259,8 @@ PY
 
 | Item | Value |
 |---|---|
-| Installed app | `1.1.0-thevelvet.23` (versionCode 1010023) |
-| Plugin | `1.2.0.2` |
+| Installed app | `1.1.0-thevelvet.25` (versionCode 1010025) |
+| Plugin | `1.2.0.3` |
 | Server | `https://thevelvet.space` (127.0.0.1:8096), Jellyfin 12.1, user `maikel` |
 | Admin token used for testing | in `~/.config/fish/private_vars/` and the session notes |
 | Plugin repo | `~/code/jellyfin-comments` |
