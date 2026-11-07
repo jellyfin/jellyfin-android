@@ -82,6 +82,7 @@ data class CommentItem(
 data class CommentNotificationDto(
     @SerialName("id") val id: String,
     @SerialName("commentId") val commentId: String = "",
+    @SerialName("type") val type: String = "reply",
     @SerialName("parentCommentId") val parentCommentId: String = "",
     @SerialName("itemId") val itemId: String = "",
     @SerialName("itemName") val itemName: String? = null,

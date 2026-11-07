@@ -211,6 +211,9 @@
     <string name="comments_replies_empty">No replies yet.</string>
     <string name="comments_replies_error">Could not load replies.</string>
     <string name="comments_replies_you_wrote">You wrote: %1$s</string>
+    <string name="comments_replied_to_you">replied to your comment</string>
+    <string name="comments_mentioned_you">mentioned you</string>
+    <string name="comments_notification_actor">%1$s %2$s</string>
     <string name="comments_replies_read_all">Mark all read</string>
     <string name="comments_back_to_comments">Back to comments</string>
     <string name="comments_reply_to">%1$s \u203a %2$s</string>

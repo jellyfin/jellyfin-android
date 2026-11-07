@@ -4,12 +4,14 @@ import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import org.jellyfin.mobile.utils.extensions.addFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.player.interaction.PlayOptions
+import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -74,8 +76,9 @@ class CommentsPanel(
     private val title: TextView = binding.commentsTitle
     private val sortButton: TextView = binding.commentsSort
     private val closeButton: ImageButton = binding.commentsClose
-    private val input: TextView = binding.commentsInput
+    private val input: EditText = binding.commentsInput
     private val sendButton: TextView = binding.commentsSend
+    private val mentionSuggestions: LinearLayout = binding.commentsMentionSuggestions
     private val replyingRow: View = binding.commentsReplying
     private val replyingText: TextView = binding.commentsReplyingText
     private val replyingCancel: TextView = binding.commentsReplyingCancel
@@ -100,6 +103,8 @@ class CommentsPanel(
     private var rows: List<CommentItem> = emptyList()
     private var sort: String = CommentsRepository.SORT_NEWEST
     private var loadJob: Job? = null
+    private var mentionUsers: List<String>? = null
+    private var mentionLoading = false
 
     /** The replies list and the comments list share the RecyclerView; this says which is shown. */
     private var showingReplies = false
@@ -137,6 +142,12 @@ class CommentsPanel(
             val enabled = it?.isNotBlank() == true
             sendButton.isEnabled = enabled
             sendButton.alpha = if (enabled) 1f else 0.45f
+            updateMentionSuggestions()
+        }
+        input.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                hideMentionSuggestions()
+            }
         }
         input.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEND) {
@@ -174,6 +185,7 @@ class CommentsPanel(
         this.itemId = itemId
         setReplying(null)
         input.text = null
+        hideMentionSuggestions()
         // Reopening always lands on the comments for this video; the bell is how you get back to
         // the replies, and a followed thread is a one-off view.
         showingThread = false
@@ -200,6 +212,7 @@ class CommentsPanel(
         fragment.suppressControllerAutoHide(false)
         setReplying(null)
         input.text = null
+        hideMentionSuggestions()
         sheet.animate().translationY(sheet.height.toFloat()).setDuration(180).start()
         container.animate().alpha(0f).setDuration(180).withEndAction {
             if (!isVisible) return@withEndAction
@@ -416,6 +429,77 @@ class CommentsPanel(
     private fun hideKeyboard() {
         input.clearFocus()
         ViewCompat.getWindowInsetsController(input)?.hide(WindowInsetsCompat.Type.ime())
+    }
+
+    private data class MentionToken(val start: Int, val end: Int, val query: String)
+
+    private fun currentMentionToken(): MentionToken? {
+        val text = input.text?.toString().orEmpty()
+        val caret = input.selectionStart.coerceAtLeast(0).coerceAtMost(text.length)
+        val match = Regex("(^|[\\s(])@([A-Za-z0-9._-]*)$").find(text.substring(0, caret))
+            ?: return null
+        val query = match.groupValues[2]
+        return MentionToken(caret - query.length - 1, caret, query)
+    }
+
+    private fun updateMentionSuggestions() {
+        val token = currentMentionToken() ?: run {
+            hideMentionSuggestions()
+            return
+        }
+
+        val users = mentionUsers
+        if (users == null) {
+            if (!mentionLoading) {
+                mentionLoading = true
+                fragment.lifecycleScope.launch {
+                    mentionUsers = runCatching { repository.getMentionableUsers() }
+                        .getOrDefault(emptyList())
+                    mentionLoading = false
+                    updateMentionSuggestions()
+                }
+            }
+            return
+        }
+
+        val matches = users
+            .filter { it.lowercase().startsWith(token.query.lowercase()) }
+            .take(6)
+        if (matches.isEmpty()) {
+            hideMentionSuggestions()
+            return
+        }
+
+        val padding = (10 * context.resources.displayMetrics.density).toInt()
+        mentionSuggestions.removeAllViews()
+        matches.forEach { name ->
+            val row = TextView(context).apply {
+                text = "@$name"
+                setTextColor(Color.WHITE)
+                textSize = 14f
+                setPadding(padding, padding, padding, padding)
+                setBackgroundResource(android.R.drawable.list_selector_background)
+                isClickable = true
+                setOnClickListener { insertMention(name) }
+            }
+            mentionSuggestions.addView(row)
+        }
+        mentionSuggestions.visibility = View.VISIBLE
+    }
+
+    private fun insertMention(name: String) {
+        val token = currentMentionToken() ?: return
+        val text = input.text?.toString().orEmpty()
+        val insertion = "@$name "
+        val updated = text.substring(0, token.start) + insertion + text.substring(token.end)
+        input.setText(updated)
+        input.setSelection((token.start + insertion.length).coerceAtMost(updated.length))
+        hideMentionSuggestions()
+    }
+
+    private fun hideMentionSuggestions() {
+        mentionSuggestions.visibility = View.GONE
+        mentionSuggestions.removeAllViews()
     }
 
     private fun setReplying(comment: CommentDto?) {

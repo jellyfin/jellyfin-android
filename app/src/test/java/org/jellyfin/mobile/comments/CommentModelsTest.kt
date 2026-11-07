@@ -76,7 +76,8 @@ class CommentModelsTest {
                 {
                   "id": "33333333333333333333333333333333",
                   "commentId": "11111111111111111111111111111111",
-                  "parentCommentId": "fc40a184b83c4517b280e4f5585e0404",
+                  "type": "mention",
+                  "parentCommentId": "11111111111111111111111111111111",
                   "itemId": "62bd50f7c9916a91bfd43765e2594df8",
                   "itemName": "Pilot",
                   "seriesName": "The Show",
@@ -102,6 +103,7 @@ class CommentModelsTest {
         )
 
         val notification = page.items.single()
+        notification.type shouldBe "mention"
         notification.itemLabel shouldBe "The Show \u2013 Pilot"
         notification.isRead shouldBe false
         page.unreadCount shouldBe 1

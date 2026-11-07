@@ -3,6 +3,10 @@ package org.jellyfin.mobile.comments
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.coroutines.withContext
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.HttpMethod
@@ -50,6 +54,32 @@ class CommentsRepository(private val apiClient: ApiClient) {
                 requestBody = CommentRequest(text = text, parentId = parentId),
             ).content
         }
+
+    /** Usernames available for @mention suggestions. */
+    suspend fun getMentionableUsers(): List<String> = withContext(Dispatchers.IO) {
+        val baseUrl = apiClient.baseUrl?.trimEnd('/') ?: return@withContext emptyList()
+        val connection = (URL("$baseUrl/Users").openConnection() as HttpURLConnection).apply {
+            requestMethod = "GET"
+            setRequestProperty("Authorization", buildAuthorizationHeader())
+            setRequestProperty("Accept", "application/json")
+        }
+
+        try {
+            if (connection.responseCode !in 200..299) {
+                return@withContext emptyList()
+            }
+            val body = connection.inputStream.bufferedReader().use { it.readText() }
+            Json.parseToJsonElement(body).jsonArray
+                .mapNotNull { element ->
+                    element.jsonObject["Name"]?.jsonPrimitive?.contentOrNull?.takeIf { it.isNotBlank() }
+                }
+                .sortedWith(String.CASE_INSENSITIVE_ORDER)
+        } catch (e: IOException) {
+            emptyList()
+        } finally {
+            connection.disconnect()
+        }
+    }
 
     suspend fun toggleLike(commentId: String): CommentLikeDto = withContext(Dispatchers.IO) {
         apiClient.post<CommentLikeDto>(pathTemplate = "/Comments/$commentId/Like").content

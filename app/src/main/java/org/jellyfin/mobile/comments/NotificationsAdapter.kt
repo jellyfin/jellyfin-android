@@ -48,7 +48,13 @@ class NotificationsAdapter(
         private val itemLabel: TextView = itemView.findViewById(R.id.notification_item_label)
 
         fun bind(item: CommentNotificationDto) {
-            actor.text = item.actorName.ifEmpty { itemView.context.getString(R.string.comments_unknown_user) }
+            val actorName = item.actorName.ifEmpty { itemView.context.getString(R.string.comments_unknown_user) }
+            val action = if (item.type == "mention") {
+                itemView.context.getString(R.string.comments_mentioned_you)
+            } else {
+                itemView.context.getString(R.string.comments_replied_to_you)
+            }
+            actor.text = itemView.context.getString(R.string.comments_notification_actor, actorName, action)
             time.text = CommentsAdapter.formatRelativeTime(item.createdAt)
             text.text = item.text
             text.isVisible = item.text.isNotBlank()

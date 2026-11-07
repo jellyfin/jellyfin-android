@@ -298,6 +298,7 @@
                     android:background="#1FFFFFFF" />
 
                 <LinearLayout
+                    android:id="@+id/comments_composer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -305,6 +306,14 @@
                     android:paddingTop="8dp"
                     android:paddingEnd="12dp"
                     android:paddingBottom="12dp">
+
+                    <LinearLayout
+                        android:id="@+id/comments_mention_suggestions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="4dp"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:id="@+id/comments_replying"
