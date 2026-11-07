@@ -2,6 +2,11 @@ package org.jellyfin.mobile.comments
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,7 +77,7 @@ class CommentsAdapter(
             time.text = formatRelativeTime(comment.createdAt).let { relative ->
                 if (comment.editedAt != null) "$relative · ${itemView.context.getString(R.string.comments_edited)}" else relative
             }
-            text.text = comment.text
+            text.setText(highlightMentions(comment.text), TextView.BufferType.SPANNABLE)
 
             // Replies are indented under their parent.
             val base = itemView.resources.getDimensionPixelSize(R.dimen.comments_item_padding)
@@ -111,6 +116,31 @@ class CommentsAdapter(
     }
 
     companion object {
+        private val mentionRegex = Regex("(?<![\\w@])@[A-Za-z0-9._-]+")
+        private val mentionColor = 0xFFFE2C55.toInt()
+
+        /**
+         * Draws @handles in the velvet accent and bold, matching the web panel.
+         */
+        fun highlightMentions(value: String): CharSequence {
+            val text = SpannableString(value)
+            mentionRegex.findAll(value).forEach { match ->
+                text.setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    match.range.first,
+                    match.range.last + 1,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+                )
+                text.setSpan(
+                    ForegroundColorSpan(mentionColor),
+                    match.range.first,
+                    match.range.last + 1,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+                )
+            }
+            return text
+        }
+
         /**
          * "just now", "5m", "3h", "2d" — the same compact style the web client uses.
          */

@@ -464,7 +464,7 @@ class CommentsPanel(
 
         val matches = users
             .filter { it.lowercase().startsWith(token.query.lowercase()) }
-            .take(6)
+            .take(3)
         if (matches.isEmpty()) {
             hideMentionSuggestions()
             return

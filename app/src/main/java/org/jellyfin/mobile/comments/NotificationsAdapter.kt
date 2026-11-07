@@ -56,7 +56,7 @@ class NotificationsAdapter(
             }
             actor.text = itemView.context.getString(R.string.comments_notification_actor, actorName, action)
             time.text = CommentsAdapter.formatRelativeTime(item.createdAt)
-            text.text = item.text
+            text.setText(CommentsAdapter.highlightMentions(item.text), TextView.BufferType.SPANNABLE)
             text.isVisible = item.text.isNotBlank()
 
             parent.text = item.parentText?.takeIf { it.isNotBlank() }?.let {
