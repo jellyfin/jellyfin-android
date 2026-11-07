@@ -1,6 +1,8 @@
 package org.jellyfin.mobile.comments
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import kotlinx.coroutines.withContext
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.HttpMethod
@@ -8,6 +10,9 @@ import org.jellyfin.sdk.api.client.extensions.delete
 import org.jellyfin.sdk.api.client.extensions.get
 import org.jellyfin.sdk.api.client.extensions.post
 import org.jellyfin.sdk.api.client.util.AuthorizationHeaderBuilder
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 
 /**
  * Talks to the Jellyfin Comments plugin's `/Comments` endpoints.
@@ -48,6 +53,31 @@ class CommentsRepository(private val apiClient: ApiClient) {
 
     suspend fun toggleLike(commentId: String): CommentLikeDto = withContext(Dispatchers.IO) {
         apiClient.post<CommentLikeDto>(pathTemplate = "/Comments/$commentId/Like").content
+    }
+
+    suspend fun updateComment(commentId: String, text: String): CommentDto = withContext(Dispatchers.IO) {
+        // The SDK has no PUT helper, so use the same Authorization header it builds.
+        val baseUrl = apiClient.baseUrl?.trimEnd('/') ?: throw IOException("No server configured")
+        val connection = (URL("$baseUrl/Comments/$commentId").openConnection() as HttpURLConnection).apply {
+            requestMethod = "PUT"
+            doOutput = true
+            setRequestProperty("Authorization", buildAuthorizationHeader())
+            setRequestProperty("Content-Type", "application/json")
+            setRequestProperty("Accept", "application/json")
+        }
+
+        try {
+            connection.outputStream.use { stream ->
+                stream.write(Json.encodeToString(CommentRequest(text = text)).toByteArray())
+            }
+            if (connection.responseCode !in 200..299) {
+                throw IOException("HTTP ${connection.responseCode}")
+            }
+            val body = connection.inputStream.bufferedReader().use { it.readText() }
+            Json.decodeFromString<CommentDto>(body)
+        } finally {
+            connection.disconnect()
+        }
     }
 
     suspend fun deleteComment(commentId: String) = withContext(Dispatchers.IO) {

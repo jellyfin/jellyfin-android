@@ -5,8 +5,11 @@ import org.jellyfin.mobile.utils.extensions.addFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -82,6 +85,7 @@ class CommentsPanel(
     private val adapter = CommentsAdapter(
         onLike = ::onLike,
         onReply = ::onReply,
+        onEdit = ::onEdit,
         onDelete = ::onDelete,
         onAvatar = ::loadAvatar,
     )
@@ -330,6 +334,45 @@ class CommentsPanel(
 
     private fun onReply(comment: CommentDto) {
         setReplying(comment)
+    }
+
+    private fun onEdit(comment: CommentDto) {
+        val editText = EditText(context).apply {
+            setText(comment.text)
+            setSelection(text.length)
+            inputType = InputType.TYPE_CLASS_TEXT or
+                InputType.TYPE_TEXT_FLAG_MULTI_LINE or
+                InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+            maxLines = 4
+        }
+        val padding = (16 * context.resources.displayMetrics.density).toInt()
+        val container = FrameLayout(context).apply {
+            setPadding(padding, padding / 2, padding, 0)
+            addView(editText)
+        }
+
+        AlertDialog.Builder(context)
+            .setTitle(R.string.comments_edit)
+            .setView(container)
+            .setPositiveButton(R.string.comments_save) { _, _ ->
+                val text = editText.text?.toString()?.trim().orEmpty()
+                if (text.isEmpty()) {
+                    return@setPositiveButton
+                }
+
+                fragment.lifecycleScope.launch {
+                    runCatching { repository.updateComment(comment.id, text) }
+                        .onSuccess { updated ->
+                            rows = rows.map { item ->
+                                if (item.comment.id == updated.id) item.copy(comment = updated) else item
+                            }
+                            adapter.submit(rows)
+                        }
+                        .onFailure { context.toast(context.getString(R.string.comments_edit_error)) }
+                }
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 
     private fun onDelete(comment: CommentDto) {

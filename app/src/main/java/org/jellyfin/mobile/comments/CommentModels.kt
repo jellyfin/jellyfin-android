@@ -26,6 +26,8 @@ data class CommentDto(
     @SerialName("likeCount") val likeCount: Int = 0,
     @SerialName("userLiked") val userLiked: Boolean = false,
     @SerialName("isOwn") val isOwn: Boolean = false,
+    @SerialName("canEdit") val canEdit: Boolean = false,
+    @SerialName("canDelete") val canDelete: Boolean = false,
     @SerialName("replyCount") val replyCount: Int = 0,
     @SerialName("replies") val replies: List<CommentDto> = emptyList(),
 )
@@ -121,3 +123,7 @@ data class CommentNotificationCountDto(
     @SerialName("serverEnabled") val serverEnabled: Boolean = true,
     @SerialName("userEnabled") val userEnabled: Boolean = true,
 )
+
+/** Older servers did not send the permission flags, so fall back to authorship. */
+val CommentDto.mayEdit: Boolean get() = canEdit || isOwn
+val CommentDto.mayDelete: Boolean get() = canDelete || isOwn

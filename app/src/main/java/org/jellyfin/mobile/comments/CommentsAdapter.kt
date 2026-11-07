@@ -20,6 +20,7 @@ import java.time.temporal.ChronoUnit
 class CommentsAdapter(
     private val onLike: (CommentDto) -> Unit,
     private val onReply: (CommentDto) -> Unit,
+    private val onEdit: (CommentDto) -> Unit,
     private val onDelete: (CommentDto) -> Unit,
     private val onAvatar: (ImageView, CommentDto) -> Unit,
 ) : RecyclerView.Adapter<CommentsAdapter.CommentViewHolder>() {
@@ -50,6 +51,7 @@ class CommentsAdapter(
         private val likeButton: ImageButton = itemView.findViewById(R.id.comment_like_button)
         private val likeCount: TextView = itemView.findViewById(R.id.comment_like_count)
         private val replyButton: TextView = itemView.findViewById(R.id.comment_reply_button)
+        private val editButton: TextView = itemView.findViewById(R.id.comment_edit_button)
         private val deleteButton: ImageButton = itemView.findViewById(R.id.comment_delete_button)
 
         fun bind(item: CommentItem) {
@@ -100,7 +102,10 @@ class CommentsAdapter(
             replyButton.isVisible = true
             replyButton.setOnClickListener { onReply(comment) }
 
-            deleteButton.isVisible = comment.isOwn
+            editButton.isVisible = comment.mayEdit
+            editButton.setOnClickListener { onEdit(comment) }
+
+            deleteButton.isVisible = comment.mayDelete
             deleteButton.setOnClickListener { onDelete(comment) }
         }
     }

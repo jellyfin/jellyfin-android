@@ -193,6 +193,8 @@
     <string name="comments_reply">Reply</string>
     <string name="comments_like">Like</string>
     <string name="comments_delete">Delete</string>
+    <string name="comments_edit">Edit</string>
+    <string name="comments_save">Save</string>
     <string name="comments_edited">edited</string>
     <string name="comments_unknown_user">Unknown</string>
     <string name="comments_replying_to">Replying to %1$s</string>
@@ -203,6 +205,7 @@
     <string name="comments_post_error">Could not post the comment.</string>
     <string name="comments_delete_confirm">Delete this comment?</string>
     <string name="comments_delete_error">Could not delete the comment.</string>
+    <string name="comments_edit_error">Could not edit the comment.</string>
     <string name="comments_replies">Replies to you</string>
     <string name="comments_replies_count">Replies to you (%1$d)</string>
     <string name="comments_replies_empty">No replies yet.</string>

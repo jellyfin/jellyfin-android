@@ -110,6 +110,37 @@ class CommentModelsTest {
     }
 
     @Test
+    fun `parses edit and delete permissions and falls back to authorship`() {
+        val allowed = json.decodeFromString<CommentDto>(
+            """
+            {
+              "id": "fc40a184b83c4517b280e4f5585e0404",
+              "itemId": "62bd50f7c9916a91bfd43765e2594df8",
+              "userId": "5ad4d64132c50e8831c828656af05055",
+              "isOwn": false,
+              "canEdit": true,
+              "canDelete": true
+            }
+            """.trimIndent(),
+        )
+        allowed.mayEdit shouldBe true
+        allowed.mayDelete shouldBe true
+
+        val legacy = json.decodeFromString<CommentDto>(
+            """
+            {
+              "id": "fc40a184b83c4517b280e4f5585e0404",
+              "itemId": "62bd50f7c9916a91bfd43765e2594df8",
+              "userId": "5ad4d64132c50e8831c828656af05055",
+              "isOwn": true
+            }
+            """.trimIndent(),
+        )
+        legacy.mayEdit shouldBe true
+        legacy.mayDelete shouldBe true
+    }
+
+    @Test
     fun `missing optional fields fall back to safe defaults`() {
         val comment = json.decodeFromString<CommentDto>(
             """
