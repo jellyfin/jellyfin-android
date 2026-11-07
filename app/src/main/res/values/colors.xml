@@ -7,7 +7,7 @@
     <color name="jellyfin_accent">#00a4dc</color>
 
     <!-- Launcher icon background -->
-    <color name="ic_launcher_background">#000b25</color>
+    <color name="ic_launcher_background">#170a2b</color>
 
     <!-- Splash logo color for API < 24. API >= 24 will have the default gradient. -->
     <color name="splash_fill">#fafafa</color>
