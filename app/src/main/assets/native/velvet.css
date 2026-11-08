@@ -19,3 +19,8 @@
 .detailLogo {
     background-image: url("velvet-logo.png") !important;
 }
+
+/* Sidebar logo in the app's MUI drawer. */
+img[src*="icon-transparent"] {
+    content: url("velvet-logo.png");
+}
