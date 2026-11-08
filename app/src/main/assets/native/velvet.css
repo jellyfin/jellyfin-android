@@ -1,0 +1,21 @@
+.splashLogo {
+    background-image: url("velvet-logo.png") !important;
+    background-size: contain !important;
+    background-position: 50% 50% !important;
+}
+
+.pageTitleWithLogo,
+.pageTitleWithDefaultLogo {
+    background-image: url("velvet-logo.png") !important;
+    background-size: contain !important;
+    background-position: 0 50% !important;
+    width: 2.2em !important;
+}
+
+.adminDrawerLogo img {
+    content: url("velvet-logo.png");
+}
+
+.detailLogo {
+    background-image: url("velvet-logo.png") !important;
+}

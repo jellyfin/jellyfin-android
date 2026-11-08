@@ -1,4 +1,9 @@
 (() => {
+    const style = document.createElement('link');
+    style.rel = 'stylesheet';
+    style.href = '/native/velvet.css';
+    document.head.appendChild(style);
+
     const scripts = [
         '/native/nativeshell.js',
         '/native/EventEmitter.js',
