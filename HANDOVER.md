@@ -12,8 +12,8 @@ from not knowing **which of three comment UIs** a symptom belonged to.
 |---|---|
 | Server-side reply notifications | Done long ago (`/Comments/Notifications*`), covered by tests |
 | Web client (desktop browser) | Done and verified: header bell + replies overlay, click-through to episode + play + comment |
-| Android **native** sheet | Built `1.1.0-thevelvet.34` (served by the plugin; phone install pending); the mark-read race, the notification-switch crash, the followed-thread handoff, the emoji-keyboard dismissal and comment editing, @mentions and keyboard GIFs are fixed (see §5) |
-| Installed app | `1.1.0-thevelvet.32` on the phone; `1.1.0-thevelvet.34` is served by the plugin. Launcher label "Velvetok"; the artwork is used for the launcher, splash, connect-screen logo and notification/car icons |
+| Android **native** sheet | Built `1.1.0-thevelvet.35` (served by the plugin; phone install pending); the mark-read race, the notification-switch crash, the followed-thread handoff, the emoji-keyboard dismissal and comment editing, @mentions and keyboard GIFs are fixed (animated GIFs now decode through Coil's GIF decoder) (see §5) |
+| Installed app | `1.1.0-thevelvet.32` on the phone; `1.1.0-thevelvet.35` is served by the plugin. Launcher label "Velvetok"; the artwork is used for the launcher, splash, connect-screen logo and notification/car icons |
 | Plugin | `1.2.0.5`, released and deployed |
 | Moonfin | **Dropped by the user** ("i dont care about it"); changes sit uncommitted in `~/code/Moonfin-Core`, do not touch |
 
@@ -141,8 +141,8 @@ KA=$(grep '^signing.key.alias=' ~/.config/jellyfin-android/keystore.properties |
 KW=$(grep '^signing.key.password=' ~/.config/jellyfin-android/keystore.properties | cut -d= -f2-)
 export KEYSTORE_FILE="$KS" KEYSTORE_PASSWORD="$KP" SIGNING_KEY_ALIAS="$KA" SIGNING_KEY_PASSWORD="$KW"
 
-./gradlew :app:assembleProprietaryRelease --no-daemon -q -Pjellyfin.version=1.1.0-thevelvet.34
-adb -s <device> install -r app/build/outputs/apk/proprietary/release/jellyfin-android-v1.1.0-thevelvet.34-proprietary-release.apk
+./gradlew :app:assembleProprietaryRelease --no-daemon -q -Pjellyfin.version=1.1.0-thevelvet.35
+adb -s <device> install -r app/build/outputs/apk/proprietary/release/jellyfin-android-v1.1.0-thevelvet.35-proprietary-release.apk
 ```
 
 - Never `.` source `keystore.properties` (parse with grep/cut).
@@ -157,10 +157,10 @@ adb -s <device> install -r app/build/outputs/apk/proprietary/release/jellyfin-an
 
 ```bash
 cd ~/code/jellyfin-android
-fj -H "$FORGEJO_SITE" release create 'Velvetok 1.1.0-thevelvet.34' \
-  -r maikelthedev/velvetok -T v1.1.0-thevelvet.34 \
-  -b 'Velvetok Android 1.1.0-thevelvet.34.' \
-  -a 'app/build/outputs/apk/proprietary/release/jellyfin-android-v1.1.0-thevelvet.34-proprietary-release.apk:Velvetok-Android-v1.1.0-thevelvet.34.apk'
+fj -H "$FORGEJO_SITE" release create 'Velvetok 1.1.0-thevelvet.35' \
+  -r maikelthedev/velvetok -T v1.1.0-thevelvet.35 \
+  -b 'Velvetok Android 1.1.0-thevelvet.35.' \
+  -a 'app/build/outputs/apk/proprietary/release/jellyfin-android-v1.1.0-thevelvet.35-proprietary-release.apk:Velvetok-Android-v1.1.0-thevelvet.35.apk'
 ```
 
 The blog's App page is `~/code/velvet_blog/pages/03.app/default.md`; update its
