@@ -12,8 +12,8 @@ from not knowing **which of three comment UIs** a symptom belonged to.
 |---|---|
 | Server-side reply notifications | Done long ago (`/Comments/Notifications*`), covered by tests |
 | Web client (desktop browser) | Done and verified: header bell + replies overlay, click-through to episode + play + comment |
-| Android **native** sheet | Built `1.1.0-thevelvet.29` (served by the plugin; phone install pending); the mark-read race, the notification-switch crash, the followed-thread handoff, the emoji-keyboard dismissal and comment editing, @mentions and keyboard GIFs are fixed (see §5) |
-| Installed app | `1.1.0-thevelvet.29` — launcher label "Velvetok" with the Velvetok icon |
+| Android **native** sheet | Built `1.1.0-thevelvet.31` (served by the plugin; phone install pending); the mark-read race, the notification-switch crash, the followed-thread handoff, the emoji-keyboard dismissal and comment editing, @mentions and keyboard GIFs are fixed (see §5) |
+| Installed app | `1.1.0-thevelvet.31` — launcher label "Velvetok" with the better-icon artwork scaled inside the adaptive-icon safe zone so the whole triangle is visible |
 | Plugin | `1.2.0.5`, released and deployed |
 | Moonfin | **Dropped by the user** ("i dont care about it"); changes sit uncommitted in `~/code/Moonfin-Core`, do not touch |
 
@@ -259,7 +259,7 @@ PY
 
 | Item | Value |
 |---|---|
-| Installed app | `1.1.0-thevelvet.29` (versionCode 1010029), label Velvetok |
+| Installed app | `1.1.0-thevelvet.31` (versionCode 1010031), label Velvetok |
 | Plugin | `1.2.0.5` |
 | Server | `https://thevelvet.space` (127.0.0.1:8096), Jellyfin 12.1, user `maikel` |
 | Admin token used for testing | in `~/.config/fish/private_vars/` and the session notes |
