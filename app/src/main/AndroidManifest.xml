@@ -115,10 +115,10 @@
             android:resource="@xml/automotive_app_desc" />
         <meta-data
             android:name="com.google.android.gms.car.notification.SmallIcon"
-            android:resource="@drawable/ic_launcher_foreground" />
+            android:resource="@mipmap/ic_launcher_foreground" />
         <meta-data
             android:name="androidx.car.app.TintableAttributionIcon"
-            android:resource="@drawable/ic_launcher_foreground" />
+            android:resource="@mipmap/ic_launcher_foreground" />
         <meta-data
             android:name="android.webkit.WebView.EnableSafeBrowsing"
             android:value="false" />

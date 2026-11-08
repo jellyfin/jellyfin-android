@@ -12,7 +12,7 @@
 
     <style name="AppTheme.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/theme_background</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <item name="postSplashScreenTheme">@style/AppTheme</item>
     </style>
 
