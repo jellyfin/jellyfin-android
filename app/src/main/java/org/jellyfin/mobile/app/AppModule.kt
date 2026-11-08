@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.app
 
 import android.content.Context
+import android.os.Build
 import androidx.core.net.toUri
 import androidx.media3.common.util.Util
 import androidx.media3.database.DatabaseProvider
@@ -20,6 +21,8 @@ import androidx.media3.extractor.DefaultExtractorsFactory
 import androidx.media3.extractor.ts.TsExtractor
 import androidx.work.WorkManager
 import coil3.ImageLoader
+import coil3.gif.AnimatedImageDecoder
+import coil3.gif.GifDecoder
 import io.github.peerless2012.ass.media.AssHandler
 import io.github.peerless2012.ass.media.kt.withAssMkvSupport
 import io.github.peerless2012.ass.media.parser.AssSubtitleParserFactory
@@ -66,7 +69,17 @@ private const val TS_SEARCH_PACKETS = 1800
 val applicationModule = module {
     single { AppPreferences(androidApplication()) }
     single { OkHttpClient() }
-    single { ImageLoader(androidApplication()) }
+    single {
+        ImageLoader.Builder(androidApplication())
+            .components {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    add(AnimatedImageDecoder.Factory())
+                } else {
+                    add(GifDecoder.Factory())
+                }
+            }
+            .build()
+    }
     single { PermissionRequestHelper() }
     single { RemoteVolumeProvider(get()) }
     single(named(PLAYER_EVENT_CHANNEL)) { Channel<PlayerEvent>() }
