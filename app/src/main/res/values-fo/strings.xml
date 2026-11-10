@@ -10,7 +10,7 @@
     <string name="available_servers_title">Tøkir ambætarar</string>
     <string name="button_use_different_server">Vel ein annan ambætara</string>
     <string name="bluetooth_permission_title">Játta Bluetooth rættindi?</string>
-    <string name="bluetooth_permission_message">Appin tørvar Bluetooth rættindi, til tess at varnast nær høvuðlurt ella hátalarir verða sambundnir slitnir frá. Á Android eru hesi rættindi lýst sum atgongd til eindir í nánd, og ávara verður at Bluetooth eindir kunnu brúkast til at sipa til núverandi staðseting. Jellyfin appin fer tó ongantíð at brúka hesi rættindi at varnast tína staðseting.</string>
+    <string name="bluetooth_permission_message">Appin tørvar Bluetooth rættindi, til tess at varnast nær høvuðlurt ella hátalarir verða sambundnir slitnir frá. Á Android eru rættindini lýst sum atgongd til eindir í nánd, og ávara verður at Bluetooth eindir kunnu brúkast til at sipa til núverandi staðseting. Jellyfin appin fer tó ongantíð at brúka rættindini at varnast tína staðseting.</string>
     <string name="bluetooth_permission_continue">Hald áfram</string>
     <string name="bluetooth_permission_granted">Bluetooth rættindi vóru játtaði</string>
     <string name="wifi_only">Einans WiFi</string>
@@ -106,7 +106,7 @@
     <string name="notification_action_stop">Steðga</string>
     <string name="player_error_invalid_play_options">Bar ikki til at greina spæliupplýsingar</string>
     <string name="player_error_network_failure">Bar ikki til at útvega miðlaupplýsingar frá ambætaranum</string>
-    <string name="player_error_unsupported_content">Hendan eindin kann ikki spæla hendan miðilin</string>
+    <string name="player_error_unsupported_content">Eindin kann ikki spæla hendan miðilin</string>
     <string name="player_error_unspecific_exception">Okkurt óvæntað gekk galið við spælaranum</string>
     <string name="playback_info_play_method">Spæliháttalag: %s</string>
     <string name="playback_info_video_streams">Kykmyndastroymar</string>
