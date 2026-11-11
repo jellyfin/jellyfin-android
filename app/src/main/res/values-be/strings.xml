@@ -51,9 +51,9 @@
     <string name="dialog_web_view_outdated">WebView састарэў</string>
     <string name="dialog_button_ignore">Ігнараваць</string>
     <string name="dialog_button_close_app">Закрыць праграму</string>
-    <string name="connect_to_server_title">Падлучыцца да сервера</string>
+    <string name="connect_to_server_title">Падключыцца да сервера</string>
     <string name="host_input_hint">Хост</string>
-    <string name="connect_button_text">Падлучыцца</string>
+    <string name="connect_button_text">Падключыцца</string>
     <string name="available_servers_title">Даступныя серверы</string>
     <string name="network_title">Дазволеныя тыпы сетак</string>
     <string name="wifi_only">Толькі WiFi</string>
