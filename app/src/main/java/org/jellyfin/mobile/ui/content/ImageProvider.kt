@@ -20,6 +20,7 @@ import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import org.jellyfin.mobile.BuildConfig
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.imageApi
 import org.jellyfin.sdk.api.client.util.AuthorizationHeaderBuilder
@@ -35,6 +36,7 @@ class ImageProvider : ContentProvider(), KoinComponent {
 
     companion object {
         private const val AUTHORITY = "${BuildConfig.APPLICATION_ID}.image-provider"
+        private const val BLUETOOTH_PACKAGE = "com.android.bluetooth"
 
         private const val PATH_SEGMENTS_COUNT = 3
 
@@ -54,6 +56,7 @@ class ImageProvider : ContentProvider(), KoinComponent {
         }
     }
 
+    private val appPreferences: AppPreferences by inject()
     private val apiClient: ApiClient by inject()
     private val imageApi: ImageApi by lazy { apiClient.imageApi }
     private val imageLoader: ImageLoader by inject()
@@ -88,6 +91,10 @@ class ImageProvider : ContentProvider(), KoinComponent {
 
     @Suppress("ThrowsCount")
     private fun loadImage(uri: Uri, size: Point?): AssetFileDescriptor {
+        if (callingPackage == BLUETOOTH_PACKAGE && appPreferences.exoPlayerDisableBluetoothArtwork) {
+            throw FileNotFoundException("Bluetooth artwork is disabled")
+        }
+
         val pathSegments = uri.pathSegments
         if (pathSegments.size < PATH_SEGMENTS_COUNT) {
             throw FileNotFoundException("Unsupported number of parameters")
