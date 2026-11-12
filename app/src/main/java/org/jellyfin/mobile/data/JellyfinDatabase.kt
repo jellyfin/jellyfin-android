@@ -12,10 +12,12 @@ import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.serialization.json.Json
 import org.jellyfin.mobile.data.dao.DownloadDao
+import org.jellyfin.mobile.data.dao.PlaybackSyncDao
 import org.jellyfin.mobile.data.dao.ServerDao
 import org.jellyfin.mobile.data.dao.UserDao
 import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.data.entity.DownloadFileEntity
+import org.jellyfin.mobile.data.entity.PlaybackSyncQueueEntity
 import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.mobile.data.entity.UserEntity
 import org.jellyfin.sdk.model.api.BaseItemDto
@@ -29,12 +31,14 @@ import java.util.UUID
         UserEntity::class,
         DownloadEntity::class,
         DownloadFileEntity::class,
+        PlaybackSyncQueueEntity::class,
     ],
-    version = 5,
+    version = 6,
     autoMigrations = [
         AutoMigration(from = 2, to = 3),
         AutoMigration(from = 3, to = 4, spec = JellyfinDatabase.MigrateV4::class),
         AutoMigration(from = 4, to = 5, spec = JellyfinDatabase.MigrateV5::class),
+        AutoMigration(from = 5, to = 6),
     ],
 )
 @TypeConverters(JellyfinDatabase.Converters::class)
@@ -42,6 +46,7 @@ abstract class JellyfinDatabase : RoomDatabase() {
     abstract val serverDao: ServerDao
     abstract val userDao: UserDao
     abstract val downloadDao: DownloadDao
+    abstract val playbackSyncDao: PlaybackSyncDao
 
     // Converters
 
