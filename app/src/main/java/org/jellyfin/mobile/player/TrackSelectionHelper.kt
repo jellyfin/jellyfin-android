@@ -11,6 +11,7 @@ import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.MediaStreamType
 import org.jellyfin.sdk.model.api.PlayMethod
 import org.jellyfin.sdk.model.api.SubtitleDeliveryMethod
+import java.util.Locale
 
 class TrackSelectionHelper(
     private val viewModel: PlayerViewModel,
@@ -75,12 +76,18 @@ class TrackSelectionHelper(
 
         val player = viewModel.playerOrNull ?: return false
         val embeddedStreamIndex = mediaSource.getEmbeddedStreamIndex(audioStream)
-        val sortedTrackGroups = player.currentTracks.groups.sortedBy { group ->
-            val formatId = group.mediaTrackGroup.getFormat(0).id
+        val sortedTrackGroups = player.currentTracks.groups
+            // External subtitles are not embedded streams, so they must not shift the embedded stream index
+            .filterNot { group ->
+                group.mediaTrackGroup.getFormat(0).id?.contains(ExternalSubtitleStream.ID_PREFIX) == true
+            }
+            .sortedBy { group ->
+                // Remove the period ID prepended by MergingMediaPeriod when external subtitles are loaded
+                val formatId = group.mediaTrackGroup.getFormat(0).id?.removePrefix("0:")
 
-            // Sort by format ID, but pad number string with zeroes to ensure proper sorting
-            formatId?.toIntOrNull()?.let { id -> "%05d".format(id) } ?: formatId
-        }
+                // Sort by format ID, but pad number string with zeroes to ensure proper sorting
+                formatId?.toIntOrNull()?.let { id -> "%05d".format(Locale.ROOT, id) } ?: formatId
+            }
         val audioGroup = sortedTrackGroups.getOrNull(embeddedStreamIndex) ?: return false
 
         return trackSelector.selectTrackByTypeAndGroup(C.TRACK_TYPE_AUDIO, audioGroup.mediaTrackGroup)
