@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import org.jellyfin.mobile.MainActivity
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.bridge.JavascriptCallback
 import org.jellyfin.mobile.downloads.DownloadsFragment
 import org.jellyfin.mobile.player.ui.PlayerFragment
@@ -20,6 +21,7 @@ import org.jellyfin.mobile.player.ui.PlayerFullscreenHelper
 import org.jellyfin.mobile.settings.SettingsFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.extensions.addFragment
+import org.jellyfin.mobile.utils.isPackageInstalled
 import org.jellyfin.mobile.utils.requestDownload
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import timber.log.Timber
@@ -65,6 +67,23 @@ class ActivityEventHandler(
                     putParcelable(Constants.EXTRA_WEB_PREFERENCES, event.preferences)
                 }
                 supportFragmentManager.addFragment<PlayerFragment>(args)
+            }
+            is ActivityEvent.LaunchExternalPlayer -> {
+                val playerIntent = Intent(Intent.ACTION_VIEW).apply {
+                    if (packageManager.isPackageInstalled(event.targetApp)) {
+                        component = ExternalPlayer.getComponent(event.targetApp)
+                    }
+                    setDataAndType(event.uri, "video/*")
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    putExtra("return_result", true)
+                    putExtra("secure_uri", true)
+                    event.title?.let { putExtra("title", it) }
+                }
+                try {
+                    startActivity(playerIntent)
+                } catch (e: ActivityNotFoundException) {
+                    Timber.e("launchExternalPlayer: %s", e.message)
+                }
             }
             is ActivityEvent.OpenUrl -> {
                 try {
