@@ -27,9 +27,15 @@ export class ExoPlayerPlugin {
         options.ids = options.items.map(item => item.Id);
         delete options.items;
 
+        // Read the "limit maximum supported video resolution" setting, when the server's web
+        // client provides it. Older servers don't, so only forward a limit when it is enabled.
+        const limitVideoResolution = this.appSettings.limitSupportedVideoResolution?.();
+        const maxVideoWidth = limitVideoResolution ? (this.appSettings.maxVideoWidth?.() ?? 0) : 0;
+
         const preferences = {
             maxStreamingBitrateLocal: this.appSettings.maxStreamingBitrate(true, 'Video'),
             maxStreamingBitrateRemote: this.appSettings.maxStreamingBitrate(false, 'Video'),
+            maxVideoWidth,
         };
 
         this._paused = false;
