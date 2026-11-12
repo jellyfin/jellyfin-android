@@ -142,10 +142,10 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Пакінуць лакальны(-я) файл(-ы)</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Вы ўпэўнены, што хочаце выдаліць %2$s са спамповак?</item>
-        <item quantity="few">Вы ўпэўнены, што хочаце выдаліць %1$d спампоўкі?</item>
-        <item quantity="many">Вы ўпэўнены, што хочаце выдаліць %1$d спамповак?</item>
-        <item quantity="other">Вы ўпэўнены, што хочаце выдаліць %1$d спамповак?</item>
+        <item quantity="one">Вы ўпэўнены, што жадаеце выдаліць %2$s са спамповак?</item>
+        <item quantity="few">Вы ўпэўнены, што жадаеце выдаліць %1$d спампоўкі?</item>
+        <item quantity="many">Вы ўпэўнены, што жадаеце выдаліць %1$d спамповак?</item>
+        <item quantity="other">Вы ўпэўнены, што жадаеце выдаліць %1$d спамповак?</item>
     </plurals>
     <string name="download_incomplete">Спампоўванне не завершана</string>
     <plurals name="download_remove_title">
@@ -155,7 +155,7 @@
         <item quantity="other">Выдаліць спампоўкі</item>
     </plurals>
     <string name="pref_exoplayer_allow_horizontal_gesture">Гарызантальныя жэсты</string>
-    <string name="select_folder">Выберыце папку</string>
+    <string name="select_folder">Выберыце тэчку</string>
     <string name="select_all">Выбраць усе</string>
     <string name="selected_count">Выбрана %1$d</string>
     <string name="media_service_invalid_id">Няправільны ідэнтыфікатар</string>
@@ -174,7 +174,7 @@
     <string name="download_settings_dialog_message">Калі ласка, выберыце, дзе захоўваць спампаваныя медыяфайлы. Па змаўчанні спампоўка ідзе толькі праз Wi-Fi.</string>
     <string name="deselect_all">Зняць усё</string>
     <string name="download_location_not_set">Месца спампоўкі не выбрана</string>
-    <string name="download_location_not_set_description">Выберыце папку для медыя, дзе будуць захоўвацца спампаваныя файлы.</string>
+    <string name="download_location_not_set_description">Выберыце тэчку для медыя, дзе будуць захоўвацца спампаваныя файлы.</string>
     <string name="download_location_inaccessible">Месца спампоўкі недаступна</string>
-    <string name="download_location_inaccessible_description">Выбранае месца спампоўкі больш недаступнае. Калі ласка, выберыце іншую папку, каб працягнуць спампоўку.</string>
+    <string name="download_location_inaccessible_description">Выбранае месца спампоўкі больш недаступнае. Калі ласка, выберыце іншую тэчку, каб працягнуць спампоўку.</string>
 </resources>
