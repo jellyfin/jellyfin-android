@@ -351,7 +351,7 @@ class PlayerMenus(
     }
 
     fun updatedSelectedDecoder(type: DecoderType) {
-        decoderMenu.menu.findItem(type.ordinal).isChecked = true
+        decoderMenu.menu.findItem(type.ordinal)?.isChecked = true
     }
 
     private fun buildMenuItems(
