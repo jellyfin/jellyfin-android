@@ -18,6 +18,7 @@ import org.jellyfin.mobile.data.entity.DownloadFiles
 import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.interaction.PlayOptions
+import org.jellyfin.mobile.utils.findPath
 import org.jellyfin.sdk.model.api.MediaType
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -62,7 +63,7 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
                 viewModelScope.launch {
                     withContext(Dispatchers.IO) {
                         val storageLocation = storageManager.getStorageLocation()
-                        val itemLocation = storageLocation?.findFile(download.path)
+                        val itemLocation = storageLocation?.findPath(download.path)
                         if (itemLocation != null && itemLocation.isDirectory) {
                             val filename = download.item.path?.replace(Regex("^.*[\\\\/]"), "")
                             if (filename != null) itemLocation.findFile(filename)?.uri else null
