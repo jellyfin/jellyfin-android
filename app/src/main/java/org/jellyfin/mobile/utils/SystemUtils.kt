@@ -1,6 +1,5 @@
 package org.jellyfin.mobile.utils
 
-import android.Manifest
 import android.app.Activity
 import android.app.ActivityManager
 import android.app.NotificationChannel
@@ -71,12 +70,11 @@ suspend fun MainActivity.requestDownload(itemIds: Collection<UUID>) {
     if (appPreferences.storageLocation == null) return
 
     // Request permissions to send notifications about download progress
-    suspendCancellableCoroutine { continuation ->
-        requestPermission("android.permission.POST_NOTIFICATIONS") { permissionsMap ->
-            if (permissionsMap[Manifest.permission.POST_NOTIFICATIONS] == PackageManager.PERMISSION_GRANTED) {
-                continuation.resume(true)
-            } else {
-                continuation.cancel(null)
+    // Downloads also work without notifications, so the result is ignored
+    if (AndroidVersion.isAtLeastT) {
+        suspendCancellableCoroutine { continuation ->
+            requestPermission("android.permission.POST_NOTIFICATIONS") {
+                continuation.resume(Unit)
             }
         }
     }
