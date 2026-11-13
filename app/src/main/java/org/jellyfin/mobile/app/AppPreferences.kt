@@ -125,6 +125,20 @@ class AppPreferences(context: Context) {
     val exoPlayerDirectPlayAss: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_DIRECT_PLAY_ASS, false)
 
+    val exoPlayerForceTransparentSubtitles: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_FORCE_TRANSPARENT_SUBTITLES, false)
+
+    val exoPlayerDraggableSubtitles: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_DRAGGABLE_SUBTITLES, true)
+
+    var subtitleVerticalOffset: Float
+        get() = sharedPreferences.getFloat(Constants.PREF_EXOPLAYER_SUBTITLE_OFFSET, 0f)
+        set(value) {
+            sharedPreferences.edit {
+                putFloat(Constants.PREF_EXOPLAYER_SUBTITLE_OFFSET, value)
+            }
+        }
+
     val exoPlayerNetworkBuffer: String
         get() = sharedPreferences.getString(Constants.PREF_EXOPLAYER_NETWORK_BUFFER, Constants.NETWORK_BUFFER_AUTO)!!
 

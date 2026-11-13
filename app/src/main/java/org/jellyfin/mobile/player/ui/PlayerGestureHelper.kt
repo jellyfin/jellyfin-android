@@ -14,7 +14,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.getSystemService
 import androidx.core.view.isVisible
-import androidx.core.view.postDelayed
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import org.jellyfin.mobile.R
@@ -45,6 +44,7 @@ class PlayerGestureHelper(
     private val seekPositionText: TextView by playerBinding::seekPositionText
     private val seekOverlayProgress: ProgressBar by playerBinding::seekOverlayProgress
     private var isOnPressingSpeedUp = false
+    val subtitleDragHelper = SubtitleDragHelper()
 
     init {
         if (appPreferences.exoPlayerRememberBrightness) {
@@ -118,6 +118,24 @@ class PlayerGestureHelper(
     }
 
     /**
+     * Runnable that resets the double-tap ripple drawable state
+     */
+    private val resetRippleStateAction = Runnable {
+        playerBinding.seekRippleOverlay.foreground?.state = IntArray(0)
+    }
+
+    /**
+     * Cancels the delayed hide callbacks posted on the views, so they can't
+     * fire after the view is destroyed. Call from onDestroyView.
+     */
+    fun onViewDestroyed() {
+        playerView.removeCallbacks(hidePlayerViewControllerAction)
+        playerView.removeCallbacks(resetRippleStateAction)
+        seekOverlayLayout.removeCallbacks(hideSeekOverlayAction)
+        gestureIndicatorOverlayLayout.removeCallbacks(hideGestureIndicatorOverlayAction)
+    }
+
+    /**
      * Handles taps when controls are locked
      */
     private val unlockDetector = GestureDetector(
@@ -150,9 +168,9 @@ class PlayerGestureHelper(
                     setBounds(left, viewCenterY - viewCenterX / 2, right, viewCenterY + viewCenterX / 2)
                     setHotspot(e.x, e.y)
                     state = intArrayOf(android.R.attr.state_enabled, android.R.attr.state_pressed)
-                    playerView.postDelayed(Constants.DOUBLE_TAP_RIPPLE_DURATION_MS) {
-                        state = IntArray(0)
-                    }
+                    // Cancel previous reset to not stack pending resets
+                    playerView.removeCallbacks(resetRippleStateAction)
+                    playerView.postDelayed(resetRippleStateAction, Constants.DOUBLE_TAP_RIPPLE_DURATION_MS)
                 }
 
                 // Fast-forward/rewind
@@ -192,15 +210,6 @@ class PlayerGestureHelper(
             ): Boolean {
                 if (firstEvent == null) return false
 
-                // Check whether swipe was started in excluded region (vertical)
-                val exclusionSizeVertical = playerView.resources.dip(Constants.SWIPE_GESTURE_EXCLUSION_SIZE_VERTICAL)
-                if (
-                    firstEvent.y < exclusionSizeVertical ||
-                    firstEvent.y > playerView.height - exclusionSizeVertical
-                ) {
-                    return false
-                }
-
                 // Determine/lock gesture direction
                 if (currentGesture == GestureDirection.NONE) {
                     val deltaX = currentEvent.x - firstEvent.x
@@ -213,6 +222,14 @@ class PlayerGestureHelper(
 
                 // Handle horizontal swipe for seek
                 if (currentGesture == GestureDirection.HORIZONTAL && appPreferences.exoPlayerAllowHorizontalGesture) {
+                    // Swipes starting in the top/bottom exclusion zones do nothing
+                    val exclusionSizeVertical = playerView.resources.dip(Constants.SWIPE_GESTURE_EXCLUSION_SIZE_VERTICAL)
+                    if (
+                        firstEvent.y < exclusionSizeVertical ||
+                        firstEvent.y > playerView.height - exclusionSizeVertical
+                    ) {
+                        return false
+                    }
                     // Check horizontal exclusion zones (edges of screen)
                     val exclusionSizeHorizontal = playerView.resources.dip(Constants.SWIPE_GESTURE_EXCLUSION_SIZE_HORIZONTAL)
                     if (
@@ -299,11 +316,32 @@ class PlayerGestureHelper(
                 }
 
 
-                if (!appPreferences.exoPlayerAllowSwipeGestures) {
-                    return false
-                }
                 // Handle vertical swipe for brightness/volume (existing logic)
                 if (currentGesture != GestureDirection.VERTICAL) {
+                    return false
+                }
+
+                // MX-style subtitle drag wins over brightness/volume when the
+                // swipe starts on the subtitle strip (middle third only, two
+                // lines tall). It bypasses the edge exclusion zones below on
+                // purpose: the resting position sits inside the bottom zone,
+                // so it would otherwise never be grabbable. Independent of
+                // the swipe-gestures toggle, it has its own setting.
+                if (subtitleDragHelper.handleVerticalDrag(firstEvent, distanceY)) {
+                    return true
+                }
+
+                // Swipes starting in the top/bottom exclusion zones must not
+                // trigger brightness/volume (reserved for system gestures).
+                val exclusionSizeVertical = playerView.resources.dip(Constants.SWIPE_GESTURE_EXCLUSION_SIZE_VERTICAL)
+                if (
+                    firstEvent.y < exclusionSizeVertical ||
+                    firstEvent.y > playerView.height - exclusionSizeVertical
+                ) {
+                    return false
+                }
+
+                if (!appPreferences.exoPlayerAllowSwipeGestures) {
                     return false
                 }
 
@@ -311,14 +349,16 @@ class PlayerGestureHelper(
                 seekOverlayLayout.isVisible = false
                 seekOverlayLayout.removeCallbacks(hideSeekOverlayAction)
 
-                val viewCenterX = playerView.measuredWidth / 2
+                val viewWidth = playerView.measuredWidth
+                val leftThird = viewWidth / 3f
+                val rightThird = viewWidth * 2f / 3f
 
                 // Distance to swipe to go from min to max
                 val distanceFull = playerView.measuredHeight * Constants.FULL_SWIPE_RANGE_SCREEN_RATIO
                 val ratioChange = distanceY / distanceFull
 
-                if (firstEvent.x.toInt() > viewCenterX) {
-                    // Swiping on the right, change volume
+                if (firstEvent.x > rightThird) {
+                    // Swiping on the right third, change volume
 
                     val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
                     if (swipeGestureValueTracker == -1f) swipeGestureValueTracker = currentVolume.toFloat()
@@ -333,8 +373,8 @@ class PlayerGestureHelper(
                     gestureIndicatorOverlayImage.setImageResource(R.drawable.ic_volume_white_24dp)
                     gestureIndicatorOverlayProgress.max = maxVolume
                     gestureIndicatorOverlayProgress.progress = toSet
-                } else {
-                    // Swiping on the left, change brightness
+                } else if (firstEvent.x < leftThird) {
+                    // Swiping on the left third, change brightness
 
                     val window = fragment.requireActivity().window
                     val brightnessRange = BRIGHTNESS_OVERRIDE_OFF..BRIGHTNESS_OVERRIDE_FULL
@@ -362,6 +402,9 @@ class PlayerGestureHelper(
                     gestureIndicatorOverlayImage.setImageResource(R.drawable.ic_brightness_white_24dp)
                     gestureIndicatorOverlayProgress.max = Constants.PERCENT_MAX
                     gestureIndicatorOverlayProgress.progress = (swipeGestureValueTracker * Constants.PERCENT_MAX).toInt()
+                } else {
+                    // Middle third: dead zone, no brightness/volume action
+                    return false
                 }
 
                 gestureIndicatorOverlayLayout.isVisible = true
@@ -403,6 +446,7 @@ class PlayerGestureHelper(
                 unlockDetector.onTouchEvent(event)
             }
             if (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_CANCEL) {
+                subtitleDragHelper.endDrag()
                 if (isOnPressingSpeedUp) {
                     isOnPressingSpeedUp = false
                     with(fragment) {

@@ -60,6 +60,9 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
     private lateinit var backgroundAudioPreference: Preference
     private lateinit var horizontalGesturePreference: Preference
     private lateinit var directPlayAssPreference: Preference
+    private lateinit var forceTransparentSubtitlesPreference: Preference
+    private lateinit var draggableSubtitlesPreference: Preference
+    private lateinit var resetSubtitlePositionPreference: Preference
     private lateinit var networkBufferPreference: Preference
     private lateinit var externalPlayerChoicePreference: Preference
     private lateinit var downloadLocationPreference: Preference
@@ -128,6 +131,9 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 horizontalGesturePreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 directPlayAssPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                forceTransparentSubtitlesPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                draggableSubtitlesPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                resetSubtitlePositionPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 networkBufferPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
@@ -172,6 +178,28 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
             titleRes = R.string.pref_exoplayer_direct_play_ass
             summaryRes = R.string.pref_exoplayer_direct_play_ass_description
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+        }
+        forceTransparentSubtitlesPreference = checkBox(Constants.PREF_EXOPLAYER_FORCE_TRANSPARENT_SUBTITLES) {
+            titleRes = R.string.pref_exoplayer_force_transparent_subtitles
+            summaryRes = R.string.pref_exoplayer_force_transparent_subtitles_description
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+        }
+        draggableSubtitlesPreference = checkBox(Constants.PREF_EXOPLAYER_DRAGGABLE_SUBTITLES) {
+            titleRes = R.string.pref_exoplayer_draggable_subtitles
+            summaryRes = R.string.pref_exoplayer_draggable_subtitles_description
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+            defaultValue = true
+        }
+        resetSubtitlePositionPreference = pref(Constants.PREF_EXOPLAYER_RESET_SUBTITLE_POSITION) {
+            titleRes = R.string.pref_exoplayer_reset_subtitle_position
+            summary = getResetSubtitlePositionSummary()
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+            onClick {
+                appPreferences.subtitleVerticalOffset = 0f
+                resetSubtitlePositionPreference.summary = getResetSubtitlePositionSummary()
+                resetSubtitlePositionPreference.requestRebindAndHighlight()
+                false
+            }
         }
         val networkBufferOptions = listOf(
             SelectionItem(
@@ -288,6 +316,14 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 storageLocationPicker.launch(location?.uri ?: storageManager.defaultStorageLocation)
                 false
             }
+        }
+    }
+
+    private fun getResetSubtitlePositionSummary(): String {
+        return if (appPreferences.subtitleVerticalOffset == 0f) {
+            getString(R.string.pref_exoplayer_reset_subtitle_position_summary_default)
+        } else {
+            getString(R.string.pref_exoplayer_reset_subtitle_position_summary_custom)
         }
     }
 

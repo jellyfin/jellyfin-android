@@ -112,6 +112,13 @@
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Allow horizontal gesture control for video seeking</string>
     <string name="pref_exoplayer_direct_play_ass">Allow SSA/ASS subtitles in direct play</string>
     <string name="pref_exoplayer_direct_play_ass_description">Use experimental client-side subtitle rendering, may not always work</string>
+    <string name="pref_exoplayer_force_transparent_subtitles">Force transparent subtitles</string>
+    <string name="pref_exoplayer_force_transparent_subtitles_description">Ignore background box from Android captions and subtitle file, keep text color and auto-adjust outline for readability</string>
+    <string name="pref_exoplayer_draggable_subtitles">Draggable subtitles (srt/vtt)</string>
+    <string name="pref_exoplayer_draggable_subtitles_description">Drag subtitles up or down from where they sit to move them. Position is remembered across playbacks.</string>
+    <string name="pref_exoplayer_reset_subtitle_position">Reset subtitle position</string>
+    <string name="pref_exoplayer_reset_subtitle_position_summary_default">Subtitles are at the default position</string>
+    <string name="pref_exoplayer_reset_subtitle_position_summary_custom">A custom subtitle position is saved — tap to reset to the default</string>
     <string name="pref_exoplayer_network_buffer">Playback buffer size</string>
     <string name="network_buffer_auto">Auto</string>
     <string name="network_buffer_auto_description">Default buffer, suitable for most playback scenarios</string>

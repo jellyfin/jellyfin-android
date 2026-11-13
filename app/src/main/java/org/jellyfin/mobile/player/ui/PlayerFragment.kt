@@ -78,7 +78,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     private lateinit var playerFullscreenHelper: PlayerFullscreenHelper
     lateinit var playerLockScreenHelper: PlayerLockScreenHelper
-    lateinit var playerGestureHelper: PlayerGestureHelper
+    private var playerGestureHelper: PlayerGestureHelper? = null
 
     private val currentVideoStream: MediaStream?
         get() = viewModel.mediaSourceOrNull?.selectedVideoStream
@@ -220,8 +220,15 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             }
         }
 
+        if (appPreferences.exoPlayerForceTransparentSubtitles) {
+            // Applies to Media3 cues (SRT/VTT/TTML). ASS direct-play uses libass file styles instead.
+            playerView.subtitleView?.let(TransparentSubtitles::applyForceTransparent)
+        }
+
         playerLockScreenHelper = PlayerLockScreenHelper(this, playerBinding, orientationListener)
         playerGestureHelper = PlayerGestureHelper(this, playerBinding, playerLockScreenHelper)
+        // Restore saved subtitle position (also covers rotation: view is new, player survived)
+        playerGestureHelper?.subtitleDragHelper?.attach(playerView.subtitleView, playerView)
 
         // Handle fullscreen switcher
         fullscreenSwitcher.setOnClickListener {
@@ -422,7 +429,7 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
             if (!isAdded) return@post
 
             updateFullscreenState(newConfig)
-            playerGestureHelper.handleConfiguration(newConfig)
+            playerGestureHelper?.handleConfiguration(newConfig)
         }
     }
 
@@ -433,6 +440,17 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // Detach subtitle drag listener, cancel pending view callbacks, and
+        // drop the helper so it can't keep the old binding reachable.
+        // Load-bearing order: this must stay before _playerBinding = null
+        // below, since onViewDestroyed() dereferences the binding via
+        // `by playerBinding::playerView` delegates.
+        playerGestureHelper?.apply {
+            subtitleDragHelper.detach()
+            onViewDestroyed()
+        }
+        playerGestureHelper = null
+
         // Detach player from PlayerView
         playerView.player = null
 
