@@ -10,7 +10,7 @@
     <string name="available_servers_title">Tøkir ambætarar</string>
     <string name="button_use_different_server">Vel ein annan ambætara</string>
     <string name="bluetooth_permission_title">Játta Bluetooth rættindi?</string>
-    <string name="bluetooth_permission_message">Appin tørvar Bluetooth rættindi, til tess at varnast nær høvuðlurt ella hátalarir verða sambundnir slitnir frá. Á Android eru hesi rættindi lýst sum atgongd til eindir í nánd, og ávara verður at Bluetooth eindir kunnu brúkast til at sipa til núverandi staðseting. Jellyfin appin fer tó ongantíð at brúka hesi rættindi at varnast tína staðseting.</string>
+    <string name="bluetooth_permission_message">Appin tørvar Bluetooth rættindi, til tess at varnast nær høvuðlurt ella hátalarir verða sambundnir slitnir frá. Á Android eru rættindini lýst sum atgongd til eindir í nánd, og ávara verður at Bluetooth eindir kunnu brúkast til at sipa til núverandi staðseting. Jellyfin appin fer tó ongantíð at brúka rættindini at varnast tína staðseting.</string>
     <string name="bluetooth_permission_continue">Hald áfram</string>
     <string name="bluetooth_permission_granted">Bluetooth rættindi vóru játtaði</string>
     <string name="wifi_only">Einans WiFi</string>
@@ -77,7 +77,7 @@
     </plurals>
     <string name="download_incomplete">Niðurtøka óliðug</string>
     <string name="download_settings_dialog_title">Vel niðurtøkustað</string>
-    <string name="download_settings_dialog_message">Vinaliga áset hvar niðurtiknir miðlar skulu goymast. Niðurtøkur verða einans gjørdar umvegis WiFi um annað ikki er stillað.</string>
+    <string name="download_settings_dialog_message">Vinaliga áset hvar niðurtiknir miðlar skulu goymast. Niðurtøkur verða einans gjørdar umvegis WiFi um annað ikki er loyvt.</string>
     <string name="select_folder">Vel skjáttu</string>
     <string name="download_location_not_set">Eingin skjátta ásett til niðurtøkur</string>
     <string name="dialog_web_view_not_supported">WebView er ikki ein møgulleiki</string>
@@ -95,8 +95,8 @@
     <string name="mobile_data">Farnetsdáta</string>
     <string name="mobile_data_and_roaming">Farnetdáta og reikandi farnetdáta</string>
     <string name="wifi_only_summary">Margmiðlar verða einans niðurtiknir umvegis WiFi.</string>
-    <string name="mobile_data_summary">Margmiðlar verða niðurtiknir umvegis WiFi og farnet.</string>
-    <string name="mobile_data_and_roaming_summary">Margmiðlar verða niðurtiknir umvegis WiFi, farnet og farnetum tú reikar á.</string>
+    <string name="mobile_data_summary">Miðlar verða niðurtiknir umvegis WiFi og farnet.</string>
+    <string name="mobile_data_and_roaming_summary">Miðlar verða niðurtiknir umvegis WiFi, farnet og farnetum tú reikar á.</string>
     <string name="media_service_item_not_found">Miðilin fanst ikki</string>
     <string name="media_service_car_section_recents">Nýliga spælt</string>
     <string name="media_service_car_section_playlists">Spælilistar</string>
@@ -106,7 +106,7 @@
     <string name="notification_action_stop">Steðga</string>
     <string name="player_error_invalid_play_options">Bar ikki til at greina spæliupplýsingar</string>
     <string name="player_error_network_failure">Bar ikki til at útvega miðlaupplýsingar frá ambætaranum</string>
-    <string name="player_error_unsupported_content">Hendan eindin kann ikki spæla hendan miðilin</string>
+    <string name="player_error_unsupported_content">Eindin kann ikki spæla hendan miðilin</string>
     <string name="player_error_unspecific_exception">Okkurt óvæntað gekk galið við spælaranum</string>
     <string name="playback_info_play_method">Spæliháttalag: %s</string>
     <string name="playback_info_video_streams">Kykmyndastroymar</string>

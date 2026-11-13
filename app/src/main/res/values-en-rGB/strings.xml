@@ -125,7 +125,7 @@
     <string name="tv_show_desc">%1$s - S%2$dE%3$d</string>
     <string name="downloading_desc">Downloading %1$d titles</string>
     <string name="downloaded">Downloaded %1$s</string>
-    <string name="special_episode">Specijal</string>
+    <string name="special_episode">Special</string>
     <string name="media_service_unknown_page">Unknown page</string>
     <string name="media_service_no_items">No items found</string>
     <string name="media_service_auth_expired">Please open the app on your phone to sign in to your Jellyfin server.</string>
@@ -146,7 +146,7 @@
     <string name="download_progress">%1$d%%</string>
     <string name="download_remove_keep_local">Keep local file(s)</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Do you want to remove %1$s from your downloads?</item>
+        <item quantity="one">Do you want to remove \"%2$s\" from your downloads?</item>
         <item quantity="other">Do you want to remove these %1$d downloads?</item>
     </plurals>
     <string name="download_incomplete">Download incomplete</string>
@@ -167,4 +167,6 @@
     <string name="download_location_not_set_description">To download media, please select a folder where the files should be stored.</string>
     <string name="download_location_inaccessible">Download location inaccessible</string>
     <string name="download_location_inaccessible_description">The selected download location is no longer accessible. Please select a different folder to resume downloads.</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Use experimental client-side subtitle rendering, may not always work</string>
+    <string name="selected_count">%1$d selected</string>
 </resources>

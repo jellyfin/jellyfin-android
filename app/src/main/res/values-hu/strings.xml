@@ -171,4 +171,5 @@
     <string name="download_location_inaccessible">A letöltési hely nem érhető el</string>
     <string name="download_location_inaccessible_description">A kiválasztott letöltési hely már nem érhető el. Kérjük, válasszon egy másik mappát a letöltések folytatásához.</string>
     <string name="selected_count">%1$d kijelölve</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Kísérleti, kliensoldali feliratmegjelenítés használata – nem mindig működik megfelelően.</string>
 </resources>

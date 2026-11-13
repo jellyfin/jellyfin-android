@@ -162,4 +162,13 @@
     <string name="media_service_auth_expired">Por favor abra a aplicação no seu telemóvel para iniciar sessão no seu servidor do Jellyfin.</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Permitir controlo por gestos horizontais para navegar no vídeo</string>
     <string name="pref_exoplayer_network_buffer">Tamanho do buffer de reprodução</string>
+    <string name="network_buffer_auto_description">Buffer predefinido, apto para a maioria dos cenários de reprodução</string>
+    <string name="network_buffer_large_description">Buffer maior, poderá ajudar em conexões moderadas ou instáveis</string>
+    <string name="network_buffer_extra_large">Extra grande</string>
+    <string name="select_folder">Selecionar pasta</string>
+    <string name="select_all">Selecionar tudo</string>
+    <string name="deselect_all">Desselecionar tudo</string>
+    <string name="selected_count">%1$d selecionado</string>
+    <string name="download_location_not_set">Sem destino de transferência</string>
+    <string name="download_location_inaccessible">Local de transferência inacessível</string>
 </resources>
