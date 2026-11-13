@@ -104,4 +104,24 @@
     <string name="button_use_different_server">వేరే సర్వర్‌ని ఉపయోగించండి</string>
     <string name="wifi_only_summary">మీడియా WiFi ద్వారా మాత్రమే డౌన్‌లోడ్ చేయబడుతుంది.</string>
     <string name="player_error_unspecific_exception">ప్లేయర్ లో ఎదో తప్పు జరిగింది</string>
+    <string name="media_service_unknown_page">తెలియని పేజీ</string>
+    <string name="media_service_no_items">ఏ అంశాలు కనుగొనబడలేదు</string>
+    <string name="media_service_auth_expired">మీ Jellyfin సర్వర్‌కి సైన్ ఇన్ చేయడానికి, మీ ఫోన్‌లోని యాప్‌ను తెరవండి.</string>
+    <string name="media_service_invalid_id">చెల్లని ఐటమ్ ID</string>
+    <string name="media_service_car_section_favorites">ఇష్టమైనవి</string>
+    <string name="media_service_car_section_audiobooks">ఆడియోబుక్‌లు</string>
+    <string name="media_service_car_section_playlists">ప్లేలిస్ట్‌లు</string>
+    <string name="menu_item_hardware_decoding">హార్డ్‌వేర్ డీకోడింగ్</string>
+    <string name="menu_item_software_decoding">సాఫ్ట్‌వేర్ డీకోడింగ్</string>
+    <string name="skip_media_segment">దాటవేయి</string>
+    <string name="pref_exoplayer_start_landscape_video_in_landscape">ల్యాండ్‌స్కేప్ ఓరియంటేషన్‌లో ల్యాండ్‌స్కేప్ మోడ్ వీడియోలను ప్రారంభించండి</string>
+    <string name="pref_exoplayer_allow_press_speed_up">వేగం పెంచడానికి పట్టుకుని ఉంచండి</string>
+    <string name="pref_exoplayer_allow_press_speed_up_summary">ప్లేబ్యాక్‌ను తాత్కాలికంగా వేగవంతం చేయడానికి స్క్రీన్‌ను తాకి, పట్టుకోండి</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">క్షితిజ సమాంతర సంజ్ఞలు</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">వీడియో సీకింగ్ కోసం క్షితిజ సమాంతర సంజ్ఞ నియంత్రణను అనుమతించండి</string>
+    <string name="pref_exoplayer_direct_play_ass_description">ప్రయోగాత్మక క్లయింట్-సైడ్ సబ్‌టైటిల్ రెండరింగ్‌ను ఉపయోగించండి, ఇది ఎల్లప్పుడూ పని చేయకపోవచ్చు</string>
+    <string name="pref_exoplayer_network_buffer">ప్లేబ్యాక్ బఫర్ పరిమాణం</string>
+    <string name="network_buffer_auto">ఆటో</string>
+    <string name="network_buffer_auto_description">డిఫాల్ట్ బఫర్, చాలా వరకు ప్లేబ్యాక్ సందర్భాలకు అనువైనది</string>
+    <string name="network_buffer_large">పెద్ద</string>
 </resources>

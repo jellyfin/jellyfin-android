@@ -141,4 +141,32 @@
     <string name="network_buffer_large_description">大きなバッファ。中程度または不安定な接続で役立つ場合があります</string>
     <string name="network_buffer_extra_large">特大</string>
     <string name="network_buffer_extra_large_description">最大バッファ。低速または衛星接続向け</string>
+    <string name="media_service_car_section_playlists">プレーリスト</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture">横のジェスチャー</string>
+    <string name="pref_exoplayer_allow_horizontal_gesture_summary">動画のシークに横のジェスチャーを許可する</string>
+    <string name="pref_exoplayer_direct_play_ass_description">実験的なクライアント側での字幕レンダリングを利用。常に動作するとは限りません</string>
+    <string name="downloads_empty">ダウンロードはありません</string>
+    <string name="downloads_empty_description">映画とテレビ番組をオフライン視聴用にダウンロードできます。アイテムの詳細ページのダウンロードアイコンをご確認ください。</string>
+    <string name="downloading_title">%1$s をダウンロード中</string>
+    <string name="download_cancel">キャンセル</string>
+    <string name="download_completed">ダウンロード完了</string>
+    <string name="download_progress">%1$d%%</string>
+    <plurals name="download_remove_title">
+        <item quantity="other">ダウンロードしたものを削除</item>
+    </plurals>
+    <string name="download_remove_keep_local">ローカルファイルをキープ</string>
+    <plurals name="download_remove_description">
+        <item quantity="other">%1$d のダウンロードを削除しますか？</item>
+    </plurals>
+    <string name="download_incomplete">ダウンロードは完了していません</string>
+    <string name="download_settings_dialog_title">ダウンロード場所を選択</string>
+    <string name="download_settings_dialog_message">ダウンロードしたメディアの保存先を選択してください。デフォルトでは、ダウンロードにはWi-Fiのみを使用します。</string>
+    <string name="select_folder">フォルダーを選択してください</string>
+    <string name="select_all">すべて選択</string>
+    <string name="deselect_all">すべて選択解除</string>
+    <string name="selected_count">%1$d 件選択</string>
+    <string name="download_location_not_set">ダウンロード場所を指定していません</string>
+    <string name="download_location_not_set_description">メディアをダウンロードするには、ファイルを保存するフォルダーを選択してください。</string>
+    <string name="download_location_inaccessible">ダウンロード場所にアクセスできません</string>
+    <string name="download_location_inaccessible_description">選択したダウンロード場所はすでにアクセスできません。ダウンロードを再開するには、別のフォルダーを選んでください。</string>
 </resources>

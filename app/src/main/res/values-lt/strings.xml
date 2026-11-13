@@ -6,7 +6,7 @@
     <string name="wifi_only">Tik WiFi</string>
     <string name="network_message">Ar norite leisti duomenų siuntimą per mobilius arba tarptinklinius tinklus? Gali būti taikomi teikėjo mokesčiai. Šį nustatymą galėsite pakeisti vėliau.</string>
     <string name="network_title">Leidžiamos tinklo rūšys</string>
-    <string name="battery_optimizations_message">Prašome išjungti baterijos optimizavimą, tam kad medijos atkūrimas veiktų išjungus ekraną.</string>
+    <string name="battery_optimizations_message">Prašome išjungti akumuliatoriaus optimizavimą medijos atkūrimui, kai ekranas išjungtas.</string>
     <string name="activity_name_settings">Jellyfin Nustatymai</string>
     <string name="external_player_unknown_error">Nežinoma išorinio leistuvo klaida. Atkūrimo sekimas išjungtas.</string>
     <string name="external_player_invalid_player">Nepasirinktas tinkamas išorinis leistuvas. Atkūrimo sekimas išjungtas.</string>
@@ -26,9 +26,9 @@
     <string name="player_error_network_failure">Nepavyko įkelti informacijos iš serverio</string>
     <string name="player_error_invalid_play_options">Klaidinga atkūrimo informacija</string>
     <string name="notification_action_stop">Sustabdyti</string>
-    <string name="notification_action_next">Sekantis</string>
+    <string name="notification_action_next">Kitas</string>
     <string name="notification_action_fast_forward">Prasukti</string>
-    <string name="notification_action_pause">Pauzė</string>
+    <string name="notification_action_pause">Pristabdyti</string>
     <string name="notification_action_rewind">Atsukti</string>
     <string name="notification_action_previous">Ankstesnis</string>
     <string name="music_notification_channel_description">Naudojamas muzikos atkūrimo valdikliams</string>
@@ -147,9 +147,9 @@
         <item quantity="other">Pašalinti atsisiuntimų</item>
     </plurals>
     <string name="network_buffer_extra_large">Labai didelis</string>
-    <string name="network_buffer_extra_large_description">Maksimalus buferis, skirtas lėtiems arba palydoviniams ryšiams</string>
+    <string name="network_buffer_extra_large_description">Didžiausias buferis, skirtas lėtiems arba palydoviniams ryšiams</string>
     <string name="downloads_empty">Kol kas nėra atsisiuntimų</string>
-    <string name="downloads_empty_description">Galite atsisiųsti filmus ir TV laidas, kad galėtumėte juos žiūrėti neprisijungę. Elemento informacijos puslapyje ieškokite atsisiuntimo piktogramos.</string>
+    <string name="downloads_empty_description">Galite atsisiųsti filmus ir TV laidas, kad galėtumėte juos žiūrėti neprisijungę. Elemento išsamios informacijos puslapyje ieškokite atsisiuntimo piktogramos.</string>
     <string name="downloading_title">Atsisiunčiama %1$s</string>
     <string name="download_cancel">Atšaukti</string>
     <string name="download_completed">Atsisiuntimas baigtas</string>
