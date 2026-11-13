@@ -60,6 +60,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
     private lateinit var backgroundAudioPreference: Preference
     private lateinit var horizontalGesturePreference: Preference
     private lateinit var directPlayAssPreference: Preference
+    private lateinit var defaultSpeedPreference: Preference
     private lateinit var networkBufferPreference: Preference
     private lateinit var externalPlayerChoicePreference: Preference
     private lateinit var downloadLocationPreference: Preference
@@ -128,6 +129,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 horizontalGesturePreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 directPlayAssPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                defaultSpeedPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 networkBufferPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
@@ -171,6 +173,16 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
         directPlayAssPreference = checkBox(Constants.PREF_EXOPLAYER_DIRECT_PLAY_ASS) {
             titleRes = R.string.pref_exoplayer_direct_play_ass
             summaryRes = R.string.pref_exoplayer_direct_play_ass_description
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+        }
+        val speedOptions = (2..8).map { step ->
+            val speed = step * 0.25f
+            SelectionItem(speed.toString(), "${speed}x", "")
+        }
+        defaultSpeedPreference = singleChoice(Constants.PREF_EXOPLAYER_DEFAULT_SPEED, speedOptions) {
+            titleRes = R.string.pref_exoplayer_default_speed
+            summaryRes = R.string.pref_exoplayer_default_speed_description
+            initialSelection = appPreferences.exoPlayerDefaultSpeed.toString()
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
         }
         val networkBufferOptions = listOf(

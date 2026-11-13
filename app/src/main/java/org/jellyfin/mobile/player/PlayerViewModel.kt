@@ -288,6 +288,13 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             applyDefaultAudioAttributes(C.AUDIO_CONTENT_TYPE_MOVIE)
             if (appPreferences.exoPlayerDirectPlayAss) get<AssHandler>().init(this)
         }
+        // Apply default speed from settings to every launched playback.
+        // Speed changes made in the player only touch this instance and are never saved back.
+        playerOrNull?.let { player ->
+            val defaultSpeed = appPreferences.exoPlayerDefaultSpeed
+            playSpeed = defaultSpeed
+            player.playbackParameters = player.playbackParameters.withSpeed(defaultSpeed)
+        }
     }
 
     /**

@@ -40,6 +40,7 @@ object Constants {
     const val PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO = "pref_exoplayer_allow_background_audio"
     const val PREF_EXOPLAYER_ALLOW_HORIZONTAL_GESTURE = "pref_exoplayer_allow_horizontal_gesture"
     const val PREF_EXOPLAYER_DIRECT_PLAY_ASS = "pref_exoplayer_direct_play_ass"
+    const val PREF_EXOPLAYER_DEFAULT_SPEED = "pref_exoplayer_default_speed"
     const val PREF_EXOPLAYER_NETWORK_BUFFER = "pref_exoplayer_network_buffer"
     const val NETWORK_BUFFER_AUTO = "auto"
     const val NETWORK_BUFFER_LARGE = "large"

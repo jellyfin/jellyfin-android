@@ -18,6 +18,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.media3.ui.DefaultTimeBar
 import androidx.media3.ui.TimeBar
 import org.jellyfin.mobile.R
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.databinding.ExoPlayerControlViewBinding
 import org.jellyfin.mobile.databinding.FragmentPlayerBinding
 import org.jellyfin.mobile.player.qualityoptions.QualityOptionsProvider
@@ -43,6 +44,7 @@ class PlayerMenus(
     KoinComponent {
 
     private val context = playerBinding.root.context
+    private val appPreferences: AppPreferences by inject()
     private val qualityOptionsProvider: QualityOptionsProvider by inject()
     private val playPauseContainer: View by playerControlsBinding::playPauseContainer
     private val previousButton: View by playerControlsBinding::previousButton
@@ -304,7 +306,7 @@ class PlayerMenus(
     private fun createSpeedMenu() = PopupMenu(context, speedButton).apply {
         for (step in SPEED_MENU_STEP_MIN..SPEED_MENU_STEP_MAX) {
             val newSpeed = step * SPEED_MENU_STEP_SIZE
-            menu.add(SPEED_MENU_GROUP, step, Menu.NONE, "${newSpeed}x").isChecked = newSpeed == 1f
+            menu.add(SPEED_MENU_GROUP, step, Menu.NONE, "${newSpeed}x").isChecked = newSpeed == appPreferences.exoPlayerDefaultSpeed
         }
         menu.setGroupCheckable(SPEED_MENU_GROUP, true, true)
         setOnMenuItemClickListener { clickedItem: MenuItem ->
