@@ -77,7 +77,7 @@ class ActivityEventHandler(
             }
             is ActivityEvent.DownloadItems -> {
                 lifecycleScope.launch {
-                    with(event) { requestDownload(itemIds) }
+                    with(event) { requestDownload(itemIds, collectionName) }
                 }
             }
             ActivityEvent.OpenDownloads -> {

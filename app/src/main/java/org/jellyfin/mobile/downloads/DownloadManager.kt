@@ -9,6 +9,8 @@ import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.mobile.data.entity.UserEntity
+import org.jellyfin.mobile.utils.findDirectory
+import org.jellyfin.mobile.utils.sanitizeFileName
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.itemsApi
 import org.jellyfin.sdk.model.api.ItemFields
@@ -33,7 +35,10 @@ class DownloadManager(
         server: ServerEntity,
         user: UserEntity,
         items: Collection<UUID>,
+        collectionName: String? = null,
     ) = withContext(Dispatchers.IO) {
+        val collection = collectionName?.let(::sanitizeFileName)?.ifEmpty { null }
+
         for (itemsChunk in items.chunked(ITEMS_BATCH)) {
             val existingItems = downloadDao.getDownloadsByItemIds(itemsChunk)
                 .filter { it.serverId == server.id }
@@ -70,6 +75,7 @@ class DownloadManager(
                         itemId = item.id,
                         item = item,
                         path = item.name ?: item.id.toString(),
+                        collection = collection,
                     )
                     downloadDao.insert(downloadEntity)
                 }
@@ -113,8 +119,17 @@ class DownloadManager(
         }
 
         if (deleteFiles) {
-            val storageLocation = storageManager.getStorageLocation()
-            storageLocation?.findFile(download.path)?.delete()
+            val storageLocation = storageManager.getStorageLocation() ?: return@withContext
+            storageLocation.findDirectory(download.getDirectoryNames())?.delete()
+
+            // Remove the collection folder once the last download in it is deleted
+            val collection = download.collection
+            if (collection != null) {
+                val collectionDirectory = storageLocation.findFile(collection)
+                if (collectionDirectory != null && collectionDirectory.listFiles().isEmpty()) {
+                    collectionDirectory.delete()
+                }
+            }
         }
     }
 }

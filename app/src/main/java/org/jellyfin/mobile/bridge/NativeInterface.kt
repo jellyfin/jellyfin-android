@@ -143,18 +143,22 @@ class NativeInterface(private val context: Context) : KoinComponent {
     fun downloadFiles(args: String): Boolean {
         try {
             val files = Json.parseToJsonElement(args).jsonArray
-            val itemIds = mutableSetOf<UUID>()
+            // Items downloaded from a collection are grouped so they can be saved in a folder for that collection
+            val itemIdsByCollection = mutableMapOf<String?, MutableSet<UUID>>()
 
             files.forEach { element ->
                 val file = element.jsonObject
                 val itemId = file["itemId"]?.jsonPrimitive?.contentOrNull?.toUUID()
+                val collectionName = file["collectionName"]?.jsonPrimitive?.contentOrNull
 
                 if (itemId != null) {
-                    itemIds.add(itemId)
+                    itemIdsByCollection.getOrPut(collectionName, ::mutableSetOf).add(itemId)
                 }
             }
 
-            emitEvent(ActivityEvent.DownloadItems(itemIds))
+            itemIdsByCollection.forEach { (collectionName, itemIds) ->
+                emitEvent(ActivityEvent.DownloadItems(itemIds, collectionName))
+            }
         } catch (e: Exception) {
             Timber.e("Download failed: %s", e.message)
             return false

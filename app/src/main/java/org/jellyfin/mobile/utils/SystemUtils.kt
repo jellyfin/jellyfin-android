@@ -55,7 +55,7 @@ fun WebViewFragment.requestNoBatteryOptimizations(rootView: CoordinatorLayout) {
     }
 }
 
-suspend fun MainActivity.requestDownload(itemIds: Collection<UUID>) {
+suspend fun MainActivity.requestDownload(itemIds: Collection<UUID>, collectionName: String? = null) {
     if (itemIds.isEmpty()) return
 
     val appPreferences: AppPreferences = get()
@@ -85,7 +85,7 @@ suspend fun MainActivity.requestDownload(itemIds: Collection<UUID>) {
     val server = mainViewModel.serverState.value.server ?: return
     val user = mainViewModel.userState.value.user ?: return
 
-    downloadManager.enqueueItems(server, user, itemIds)
+    downloadManager.enqueueItems(server, user, itemIds, collectionName)
 }
 
 fun Activity.isAutoRotateOn() = Settings.System.getInt(contentResolver, ACCELEROMETER_ROTATION, 0) == 1

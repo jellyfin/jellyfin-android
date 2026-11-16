@@ -39,6 +39,8 @@ data class DownloadEntity(
     @ColumnInfo(name = "item_id") val itemId: UUID,
 
     @ColumnInfo(name = "path") val path: String,
+    /** Name of the collection the item was downloaded from, used as the parent folder of [path]. */
+    @ColumnInfo(name = "collection") val collection: String? = null,
     @ColumnInfo(name = "item") val item: BaseItemDto,
 
     @ColumnInfo(name = "status") val status: DownloadStatus = DownloadStatus.QUEUED,
@@ -46,6 +48,9 @@ data class DownloadEntity(
     @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "modified_at") var modifiedAt: Long = System.currentTimeMillis(),
 ) {
+    /** The folders, relative to the storage location, that the files of this download are stored in. */
+    fun getDirectoryNames(): List<String> = listOfNotNull(collection, path)
+
     fun getDisplayName(context: Context) = buildString {
         val name = if (
             item.type in arrayOf(BaseItemKind.PROGRAM, BaseItemKind.RECORDING) &&
