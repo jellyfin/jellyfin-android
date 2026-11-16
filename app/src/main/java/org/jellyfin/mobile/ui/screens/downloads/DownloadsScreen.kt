@@ -26,6 +26,7 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -36,12 +37,15 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateSetOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,13 +64,34 @@ fun DownloadsScreen(
     onBackPressed: () -> Unit = {},
 ) {
     val downloads by viewModel.downloads.collectAsState()
+    val libraries by viewModel.libraries.collectAsState()
+    val availableIds by viewModel.availableIds.collectAsState()
+    val refreshing by viewModel.refreshingCatalog.collectAsState()
+    val refreshFailed by viewModel.catalogRefreshFailed.collectAsState()
+    var selectedSeriesKey by rememberSaveable { mutableStateOf<String?>(null) }
+    val selectedSeries = libraries.flatMap { it.cards }.firstOrNull { it.key == selectedSeriesKey }
+    val visibleDownloads = selectedSeries?.downloads ?: downloads
     val storageLocation by viewModel.storageLocation.collectAsState()
     val storageLocationAccessible by viewModel.storageLocationAccessible.collectAsState()
     val selection = remember { mutableStateSetOf<Long>() }
     var showDeleteConfirm by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
 
-    val selectionMode = selection.isNotEmpty()
+    val selectionSnapshot = selection.toSet()
+    val selectionMode = selectionSnapshot.isNotEmpty()
+    val goBack: () -> Unit = {
+        if (selectedSeriesKey != null) selectedSeriesKey = null else onBackPressed()
+    }
+    LaunchedEffect(downloads) {
+        selection.retainAll(downloads.map { it.download.id }.toSet())
+    }
+    LaunchedEffect(libraries, selectedSeriesKey) {
+        if (libraries.isNotEmpty() && selectedSeriesKey != null && selectedSeries == null) {
+            selectedSeriesKey = null
+        }
+    }
+    // Do not clear a restored series key while the initial catalog is empty.
+    BackHandler(enabled = selectedSeriesKey != null && !selectionMode) { selectedSeriesKey = null }
 
     val storageLocationPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
         if (uri != null) viewModel.changeStorageLocation(uri)
@@ -77,10 +102,10 @@ fun DownloadsScreen(
     }
 
     if (showDeleteConfirm) {
-        val downloadsToRemove = remember(selection, downloads) {
+        val downloadsToRemove = remember(selectionSnapshot, downloads) {
             downloads
                 .map { it.download }
-                .filter { it.id in selection }
+                .filter { it.id in selectionSnapshot }
         }
         DownloadRemoveDialog(
             downloads = downloadsToRemove,
@@ -118,7 +143,7 @@ fun DownloadsScreen(
                         if (isSelectionMode) {
                             Text(text = stringResource(R.string.selected_count, selection.size))
                         } else {
-                            Text(text = stringResource(R.string.downloads))
+                            Text(text = selectedSeries?.title ?: stringResource(R.string.downloads))
                         }
                     }
                 },
@@ -138,7 +163,7 @@ fun DownloadsScreen(
                             }
                         } else {
                             IconButton(
-                                onClick = { onBackPressed() },
+                                onClick = goBack,
                             ) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
@@ -150,6 +175,11 @@ fun DownloadsScreen(
                 },
                 actions = {
                     Row {
+                        if (!selectionMode) {
+                            IconButton(onClick = { viewModel.refreshCatalog() }, enabled = !refreshing) {
+                                Icon(Icons.Outlined.Refresh, contentDescription = stringResource(R.string.offline_refresh))
+                            }
+                        }
                         AnimatedVisibility(
                             visible = selectionMode,
                             enter = fadeIn(),
@@ -174,10 +204,10 @@ fun DownloadsScreen(
                                         expanded = showMenu,
                                         onDismissRequest = { showMenu = false },
                                     ) {
-                                        if (selection.size < downloads.size) {
+                                        if (visibleDownloads.any { it.download.id !in selection }) {
                                             DropdownMenuItem(
                                                 onClick = {
-                                                    selection.addAll(downloads.map { it.download.id })
+                                                    selection.addAll(visibleDownloads.map { it.download.id })
                                                     showMenu = false
                                                 },
                                             ) {
@@ -222,17 +252,39 @@ fun DownloadsScreen(
                     )
                 }
 
+                if (refreshing) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                if (refreshFailed && !refreshing) {
+                    Text(
+                        text = stringResource(R.string.offline_refresh_failed),
+                        style = MaterialTheme.typography.caption,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    )
+                }
                 if (downloads.isEmpty()) {
                     DownloadsEmpty(modifier = Modifier.weight(1f))
-                } else {
-                    DownloadsList(
-                        downloads = downloads,
-                        onOpen = { viewModel.openDownload(it) },
-                        onDownload = { viewModel.download(it) },
-                        selection = selection,
+                } else if (selectedSeries != null) {
+                    DownloadSeriesEpisodes(
+                        card = selectedSeries,
+                        selection = selectionSnapshot,
+                        onOpen = viewModel::openDownload,
+                        onDownload = viewModel::download,
                         onToggleSelection = { download ->
-                            if (selection.contains(download.id)) selection.remove(download.id)
-                            else selection.add(download.id)
+                            if (!selection.add(download.id)) selection.remove(download.id)
+                        },
+                        modifier = Modifier.weight(1f),
+                    )
+                } else {
+                    DownloadsCatalog(
+                        libraries = libraries,
+                        availableIds = availableIds,
+                        selection = selectionSnapshot,
+                        posterFile = viewModel::catalogPoster,
+                        onOpen = viewModel::openDownload,
+                        onDownload = viewModel::download,
+                        onSeries = { selectedSeriesKey = it },
+                        onToggleSelection = { ids ->
+                            if (selection.containsAll(ids)) selection.removeAll(ids)
+                            else selection.addAll(ids)
                         },
                         modifier = Modifier.weight(1f),
                     )

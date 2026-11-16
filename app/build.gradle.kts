@@ -185,6 +185,7 @@ dependencies {
     // Testing
     testImplementation(libs.junit.api)
     testRuntimeOnly(libs.junit.engine)
+    testRuntimeOnly(libs.junit.launcher)
     testImplementation(libs.bundles.kotest)
     testImplementation(libs.mockk)
     androidTestImplementation(libs.bundles.androidx.test)
@@ -202,7 +203,7 @@ tasks {
 
     // Testing
     withType<Test> {
-        useJUnit()
+        useJUnitPlatform()
         testLogging {
             events(
                 org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,

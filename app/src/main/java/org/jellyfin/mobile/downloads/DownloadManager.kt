@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.downloads
 
 import android.content.Context
+import java.util.UUID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.app.AppPreferences
@@ -12,7 +13,6 @@ import org.jellyfin.mobile.data.entity.UserEntity
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.itemsApi
 import org.jellyfin.sdk.model.api.ItemFields
-import java.util.UUID
 
 class DownloadManager(
     private val context: Context,
@@ -20,6 +20,7 @@ class DownloadManager(
     private val downloadDao: DownloadDao,
     private val appPreferences: AppPreferences,
     private val storageManager: StorageManager,
+    private val offlineCatalog: OfflineCatalogRepository,
 ) {
     companion object {
         /**
@@ -116,5 +117,6 @@ class DownloadManager(
             val storageLocation = storageManager.getStorageLocation()
             storageLocation?.findFile(download.path)?.delete()
         }
+        offlineCatalog.prune()
     }
 }
