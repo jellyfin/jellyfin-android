@@ -150,8 +150,9 @@ fun DownloadItem(
             if (download.status == DownloadStatus.DOWNLOADING || download.status == DownloadStatus.QUEUED) {
                 LinearProgressIndicator()
             } else if (isVerified) {
+                val size = Formatter.formatShortFileSize(context, files.sumOf { it.size })
                 Text(
-                    text = Formatter.formatShortFileSize(context, files.sumOf { it.size }),
+                    text = listOfNotNull(download.getPlaybackProgress(context), size).joinToString(" · "),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                 )

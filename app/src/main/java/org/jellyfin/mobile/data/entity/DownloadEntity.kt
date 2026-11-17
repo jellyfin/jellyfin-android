@@ -1,6 +1,7 @@
 package org.jellyfin.mobile.data.entity
 
 import android.content.Context
+import android.text.format.DateUtils
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -10,6 +11,7 @@ import org.jellyfin.mobile.R
 import org.jellyfin.mobile.downloads.DownloadStatus
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.BaseItemKind
+import org.jellyfin.sdk.model.extensions.ticks
 import java.util.UUID
 
 @Entity(
@@ -59,6 +61,16 @@ data class DownloadEntity(
             playbackPositionTicks = item.userData?.playbackPositionTicks ?: 0L,
             played = item.userData?.played == true,
         )
+    }
+
+    /**
+     * Where the playback of this download stopped, like "11:00 / 23:07", or null when it was never started.
+     */
+    fun getPlaybackProgress(context: Context): String? = when {
+        played -> context.getString(R.string.download_played)
+        playbackPositionTicks > 0 -> listOfNotNull(playbackPositionTicks, item.runTimeTicks)
+            .joinToString(" / ") { ticks -> DateUtils.formatElapsedTime(ticks.ticks.inWholeSeconds) }
+        else -> null
     }
 
     fun getDisplayName(context: Context) = buildString {

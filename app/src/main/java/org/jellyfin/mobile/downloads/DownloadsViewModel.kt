@@ -20,6 +20,7 @@ import org.jellyfin.mobile.events.ActivityEvent
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.sdk.model.api.MediaType
+import org.jellyfin.sdk.model.extensions.ticks
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.core.component.inject
@@ -54,7 +55,7 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
                     ids = listOf(download.itemId),
                     mediaSourceId = download.itemId.toString(),
                     startIndex = 0,
-                    startPosition = null,
+                    startPosition = download.playbackPositionTicks.takeIf { it > 0 }?.ticks,
                     audioStreamIndex = null,
                     subtitleStreamIndex = null,
                     playFromDownloads = true,

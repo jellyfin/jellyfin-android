@@ -170,6 +170,7 @@
         <item quantity="other">Do you want to remove these %1$d downloads?</item>
     </plurals>
     <string name="download_incomplete">Download incomplete</string>
+    <string name="download_played">Played</string>
     <string name="download_settings_dialog_title">Choose download location</string>
     <string name="download_settings_dialog_message">Please choose where downloaded media should be saved. Downloads use WiFi only by default.</string>
     <string name="select_folder">Select folder</string>
