@@ -2,11 +2,14 @@ package org.jellyfin.mobile
 
 import android.app.Application
 import android.webkit.WebView
+import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.app.apiModule
 import org.jellyfin.mobile.app.applicationModule
 import org.jellyfin.mobile.data.databaseModule
+import org.jellyfin.mobile.downloads.SmartDownloadsWorker
 import org.jellyfin.mobile.utils.JellyTree
 import org.jellyfin.mobile.utils.isWebViewSupported
+import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.koin.fragmentFactory
 import org.koin.core.context.startKoin
@@ -37,5 +40,7 @@ class JellyfinApplication : Application() {
                 databaseModule,
             )
         }
+
+        SmartDownloadsWorker.update(this, get<AppPreferences>().smartDownloads)
     }
 }

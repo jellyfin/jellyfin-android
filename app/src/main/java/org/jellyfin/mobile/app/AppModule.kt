@@ -35,6 +35,7 @@ import org.jellyfin.mobile.downloads.DownloadPlaybackSync
 import org.jellyfin.mobile.downloads.DownloadQueue
 import org.jellyfin.mobile.downloads.DownloadsViewModel
 import org.jellyfin.mobile.downloads.FileDownloader
+import org.jellyfin.mobile.downloads.SmartDownloads
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.deviceprofile.DeviceProfileBuilder
 import org.jellyfin.mobile.player.interaction.PlayerEvent
@@ -188,4 +189,5 @@ val applicationModule = module {
     single { DownloadQueue(get(), get(), get(), get(), get(), get()) }
     single { FileDownloader(get()) }
     single { DownloadPlaybackSync(get(), get(), get()) }
+    single { SmartDownloads(get(), get(), get(), get(), get(), get()) }
 }

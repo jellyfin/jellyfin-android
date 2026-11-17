@@ -14,7 +14,8 @@ import org.koin.core.component.inject
 import timber.log.Timber
 
 /**
- * Syncs the playback state of downloads with the server as soon as there is a connection.
+ * Syncs the playback state of downloads with the server as soon as there is a connection, then lets smart downloads
+ * catch up with what was watched since their last run.
  */
 class DownloadPlaybackSyncWorker(
     context: Context,
@@ -35,9 +36,12 @@ class DownloadPlaybackSyncWorker(
     }
 
     private val downloadPlaybackSync by inject<DownloadPlaybackSync>()
+    private val smartDownloads by inject<SmartDownloads>()
 
     override suspend fun doWork(): Result = try {
-        if (downloadPlaybackSync.sync()) Result.success() else Result.retry()
+        val isSynced = downloadPlaybackSync.sync()
+        smartDownloads.run()
+        if (isSynced) Result.success() else Result.retry()
     } catch (e: CancellationException) {
         throw e
     } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {

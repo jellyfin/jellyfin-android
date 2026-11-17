@@ -3,6 +3,7 @@ package org.jellyfin.mobile.settings
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.text.format.Formatter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import de.Maxr1998.modernpreferences.helpers.defaultOnSelectionChange
 import de.Maxr1998.modernpreferences.helpers.onClick
 import de.Maxr1998.modernpreferences.helpers.pref
 import de.Maxr1998.modernpreferences.helpers.screen
+import de.Maxr1998.modernpreferences.helpers.seekBar
 import de.Maxr1998.modernpreferences.helpers.singleChoice
 import de.Maxr1998.modernpreferences.preferences.CheckBoxPreference
 import de.Maxr1998.modernpreferences.preferences.choice.SelectionItem
@@ -27,6 +29,7 @@ import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.app.StorageManager
 import org.jellyfin.mobile.databinding.FragmentSettingsBinding
 import org.jellyfin.mobile.downloads.DownloadMethod
+import org.jellyfin.mobile.downloads.SmartDownloadsWorker
 import org.jellyfin.mobile.utils.BackPressInterceptor
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.applyWindowInsetsAsMargins
@@ -63,6 +66,9 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
     private lateinit var networkBufferPreference: Preference
     private lateinit var externalPlayerChoicePreference: Preference
     private lateinit var downloadLocationPreference: Preference
+    private lateinit var smartDownloadsEpisodeCountPreference: Preference
+    private lateinit var smartDownloadsMaxEpisodesPreference: Preference
+    private lateinit var smartDownloadsMovieCountPreference: Preference
 
     init {
         Preference.Config.titleMaxLines = 2
@@ -289,11 +295,54 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 false
             }
         }
+        checkBox(Constants.PREF_SMART_DOWNLOADS) {
+            titleRes = R.string.pref_smart_downloads
+            summaryRes = R.string.pref_smart_downloads_summary
+            defaultOnCheckedChange { checked ->
+                smartDownloadsEpisodeCountPreference.enabled = checked
+                smartDownloadsMaxEpisodesPreference.enabled = checked
+                smartDownloadsMovieCountPreference.enabled = checked
+                SmartDownloadsWorker.update(requireContext(), checked)
+                // Smart downloads have nowhere to go without a download location
+                if (checked && storageManager.getStorageLocation() == null) {
+                    storageLocationPicker.launch(storageManager.defaultStorageLocation)
+                }
+            }
+        }
+        smartDownloadsEpisodeCountPreference = seekBar(Constants.PREF_SMART_DOWNLOADS_EPISODE_COUNT) {
+            titleRes = R.string.pref_smart_downloads_episode_count
+            max = SMART_DOWNLOADS_MAX_COUNT
+            default = AppPreferences.SMART_DOWNLOADS_DEFAULT_EPISODE_COUNT
+            enabled = appPreferences.smartDownloads
+        }
+        smartDownloadsMaxEpisodesPreference = seekBar(Constants.PREF_SMART_DOWNLOADS_MAX_EPISODES) {
+            titleRes = R.string.pref_smart_downloads_max_episodes
+            val episodesSize = appPreferences.smartDownloadsEpisodesSize
+            summary = when {
+                episodesSize > 0 -> getString(
+                    R.string.pref_smart_downloads_max_episodes_summary_size,
+                    Formatter.formatShortFileSize(requireContext(), episodesSize),
+                )
+                else -> getString(R.string.pref_smart_downloads_max_episodes_summary)
+            }
+            max = SMART_DOWNLOADS_MAX_EPISODES
+            default = AppPreferences.SMART_DOWNLOADS_DEFAULT_MAX_EPISODES
+            enabled = appPreferences.smartDownloads
+        }
+        smartDownloadsMovieCountPreference = seekBar(Constants.PREF_SMART_DOWNLOADS_MOVIE_COUNT) {
+            titleRes = R.string.pref_smart_downloads_movie_count
+            summaryRes = R.string.pref_smart_downloads_movie_count_summary
+            max = SMART_DOWNLOADS_MAX_COUNT
+            default = AppPreferences.SMART_DOWNLOADS_DEFAULT_MOVIE_COUNT
+            enabled = appPreferences.smartDownloads
+        }
     }
 
     companion object {
         const val PREF_CATEGORY_MUSIC_PLAYER = "pref_category_music"
         const val PREF_CATEGORY_VIDEO_PLAYER = "pref_category_video"
         const val PREF_CATEGORY_DOWNLOADS = "pref_category_downloads"
+        private const val SMART_DOWNLOADS_MAX_COUNT = 10
+        private const val SMART_DOWNLOADS_MAX_EPISODES = 30
     }
 }

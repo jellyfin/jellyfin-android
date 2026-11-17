@@ -48,6 +48,8 @@ data class DownloadEntity(
 
     @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "modified_at") var modifiedAt: Long = System.currentTimeMillis(),
+    /** Whether smart downloads added this download, in which case it is removed once watched. */
+    @ColumnInfo(name = "smart", defaultValue = "0") val smart: Boolean = false,
     @ColumnInfo(name = "playback_position_ticks", defaultValue = "0") val playbackPositionTicks: Long = 0L,
     @ColumnInfo(name = "played", defaultValue = "0") val played: Boolean = false,
     /** The intro, outro and so on of the item, kept to skip them without the server. */

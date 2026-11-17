@@ -35,6 +35,7 @@ class DownloadManager(
         server: ServerEntity,
         user: UserEntity,
         items: Collection<UUID>,
+        smart: Boolean = false,
     ) = withContext(Dispatchers.IO) {
         for (itemsChunk in items.chunked(ITEMS_BATCH)) {
             val existingItems = downloadDao.getDownloadsByItemIds(itemsChunk)
@@ -80,7 +81,13 @@ class DownloadManager(
                         userId = user.id,
                         itemId = item.id,
                         item = item,
-                        path = item.name ?: item.id.toString(),
+                        path = when {
+                            // Smart downloads delete their files: episodes of different shows often share a name,
+                            // and must not share a folder
+                            smart && item.name != null -> "${item.name} [${item.id}]"
+                            else -> item.name ?: item.id.toString()
+                        },
+                        smart = smart,
                         mediaSegments = mediaSegments,
                     ).withPlaybackOf(item)
                     downloadDao.insert(downloadEntity)

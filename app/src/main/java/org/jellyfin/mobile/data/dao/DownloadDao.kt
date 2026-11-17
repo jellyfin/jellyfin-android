@@ -34,6 +34,9 @@ interface DownloadDao {
     @Query("SELECT * FROM download WHERE id = :id")
     suspend fun getDownload(id: Long): DownloadEntity?
 
+    @Query("SELECT * FROM download WHERE server_id = :serverId AND user_id = :userId")
+    suspend fun getDownloads(serverId: Long, userId: Long): List<DownloadEntity>
+
     @Query("SELECT * FROM download WHERE playback_synced = 0")
     suspend fun getDownloadsWithUnsyncedPlayback(): List<DownloadEntity>
 

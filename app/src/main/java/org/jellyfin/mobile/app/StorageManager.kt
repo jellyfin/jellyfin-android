@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Environment
+import android.system.Os
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import org.jellyfin.mobile.R
@@ -42,6 +43,17 @@ class StorageManager(
             Timber.e(err, "Failed to change storage location to $location")
         }.isFailure
     }
+
+    /**
+     * The free space at the storage location in bytes, or null when it cannot be determined.
+     */
+    fun getFreeSpace(): Long? = runCatching {
+        val location = getStorageLocation() ?: return null
+        context.contentResolver.openFileDescriptor(location.uri, "r")?.use { descriptor ->
+            val stats = Os.fstatvfs(descriptor.fileDescriptor)
+            stats.f_bavail * stats.f_frsize
+        }
+    }.getOrNull()
 
     fun verify(download: DownloadFiles): Boolean {
         if (download.files.isEmpty()) return false

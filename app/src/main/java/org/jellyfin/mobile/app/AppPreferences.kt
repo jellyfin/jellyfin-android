@@ -64,6 +64,34 @@ class AppPreferences(context: Context) {
             }
         }
 
+    val smartDownloads: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_SMART_DOWNLOADS, false)
+
+    val smartDownloadsEpisodeCount: Int
+        get() = sharedPreferences.getInt(
+            Constants.PREF_SMART_DOWNLOADS_EPISODE_COUNT,
+            SMART_DOWNLOADS_DEFAULT_EPISODE_COUNT,
+        )
+
+    val smartDownloadsMaxEpisodes: Int
+        get() = sharedPreferences.getInt(
+            Constants.PREF_SMART_DOWNLOADS_MAX_EPISODES,
+            SMART_DOWNLOADS_DEFAULT_MAX_EPISODES,
+        )
+
+    /** How many bytes the episodes kept by smart downloads took at their last run, 0 when they never ran. */
+    var smartDownloadsEpisodesSize: Long
+        get() = sharedPreferences.getLong(Constants.PREF_SMART_DOWNLOADS_EPISODES_SIZE, 0L)
+        set(value) {
+            sharedPreferences.edit { putLong(Constants.PREF_SMART_DOWNLOADS_EPISODES_SIZE, value) }
+        }
+
+    val smartDownloadsMovieCount: Int
+        get() = sharedPreferences.getInt(
+            Constants.PREF_SMART_DOWNLOADS_MOVIE_COUNT,
+            SMART_DOWNLOADS_DEFAULT_MOVIE_COUNT,
+        )
+
     var storageLocation: String?
         get() = sharedPreferences.getString(Constants.PREF_STORAGE_LOCATION, null)
         set(value) {
@@ -132,4 +160,10 @@ class AppPreferences(context: Context) {
     var externalPlayerApp: String
         get() = sharedPreferences.getString(Constants.PREF_EXTERNAL_PLAYER_APP, ExternalPlayerPackage.SYSTEM_DEFAULT)!!
         set(value) = sharedPreferences.edit { putString(Constants.PREF_EXTERNAL_PLAYER_APP, value) }
+
+    companion object {
+        const val SMART_DOWNLOADS_DEFAULT_EPISODE_COUNT = 3
+        const val SMART_DOWNLOADS_DEFAULT_MOVIE_COUNT = 2
+        const val SMART_DOWNLOADS_DEFAULT_MAX_EPISODES = 10
+    }
 }
