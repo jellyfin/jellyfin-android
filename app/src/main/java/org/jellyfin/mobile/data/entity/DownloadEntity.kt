@@ -11,6 +11,7 @@ import org.jellyfin.mobile.R
 import org.jellyfin.mobile.downloads.DownloadStatus
 import org.jellyfin.sdk.model.api.BaseItemDto
 import org.jellyfin.sdk.model.api.BaseItemKind
+import org.jellyfin.sdk.model.api.MediaSegmentDto
 import org.jellyfin.sdk.model.extensions.ticks
 import java.util.UUID
 
@@ -49,6 +50,8 @@ data class DownloadEntity(
     @ColumnInfo(name = "modified_at") var modifiedAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "playback_position_ticks", defaultValue = "0") val playbackPositionTicks: Long = 0L,
     @ColumnInfo(name = "played", defaultValue = "0") val played: Boolean = false,
+    /** The intro, outro and so on of the item, kept to skip them without the server. */
+    @ColumnInfo(name = "media_segments") val mediaSegments: List<MediaSegmentDto>? = null,
     /** False while the playback state above still has to be sent to the server. */
     @ColumnInfo(name = "playback_synced", defaultValue = "1") val playbackSynced: Boolean = true,
 ) {

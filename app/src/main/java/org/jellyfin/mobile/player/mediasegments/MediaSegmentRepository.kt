@@ -3,6 +3,7 @@ package org.jellyfin.mobile.player.mediasegments
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jellyfin.mobile.app.AppPreferences
+import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.utils.extensions.duration
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.mediaSegmentsApi
@@ -41,6 +42,7 @@ class MediaSegmentRepository : KoinComponent {
     }
 
     private val appPreferences: AppPreferences by inject()
+    private val downloadDao: DownloadDao by inject()
     private val apiClient: ApiClient = get()
     private val mediaSegmentsApi: MediaSegmentsApi = apiClient.mediaSegmentsApi
 
@@ -92,12 +94,19 @@ class MediaSegmentRepository : KoinComponent {
         return action
     }
 
-    suspend fun getSegmentsForItem(item: BaseItemDto): List<MediaSegmentDto> = runCatching {
-        withContext(Dispatchers.IO) {
+    /**
+     * The segments kept with a download are used first: its playback must not wait for a server
+     * that is often unreachable.
+     */
+    suspend fun getSegmentsForItem(item: BaseItemDto): List<MediaSegmentDto> = withContext(Dispatchers.IO) {
+        val downloadSegments = downloadDao.getDownloadByItemId(item.id)?.mediaSegments
+        if (!downloadSegments.isNullOrEmpty()) return@withContext downloadSegments
+
+        runCatching {
             mediaSegmentsApi.getItemSegments(
                 itemId = item.id,
                 includeSegmentTypes = SUPPORTED_TYPES,
             ).content.items
-        }
-    }.getOrDefault(emptyList())
+        }.getOrDefault(emptyList())
+    }
 }

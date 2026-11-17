@@ -19,6 +19,7 @@ import org.jellyfin.mobile.data.entity.DownloadFileEntity
 import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.mobile.data.entity.UserEntity
 import org.jellyfin.sdk.model.api.BaseItemDto
+import org.jellyfin.sdk.model.api.MediaSegmentDto
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import timber.log.Timber
 import java.util.UUID
@@ -30,12 +31,13 @@ import java.util.UUID
         DownloadEntity::class,
         DownloadFileEntity::class,
     ],
-    version = 6,
+    version = 7,
     autoMigrations = [
         AutoMigration(from = 2, to = 3),
         AutoMigration(from = 3, to = 4, spec = JellyfinDatabase.MigrateV4::class),
         AutoMigration(from = 4, to = 5, spec = JellyfinDatabase.MigrateV5::class),
         AutoMigration(from = 5, to = 6),
+        AutoMigration(from = 6, to = 7),
     ],
 )
 @TypeConverters(JellyfinDatabase.Converters::class)
@@ -58,6 +60,12 @@ abstract class JellyfinDatabase : RoomDatabase() {
 
         @TypeConverter
         fun toBaseItemDto(json: String?): BaseItemDto? = json?.let(Json::decodeFromString)
+
+        @TypeConverter
+        fun fromMediaSegments(mediaSegments: List<MediaSegmentDto>?): String? = mediaSegments?.let(Json::encodeToString)
+
+        @TypeConverter
+        fun toMediaSegments(json: String?): List<MediaSegmentDto>? = json?.let(Json::decodeFromString)
 
         @TypeConverter
         fun fromUri(uri: Uri?): String? = uri?.toString()

@@ -9,8 +9,10 @@ import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.data.entity.DownloadEntity
 import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.mobile.data.entity.UserEntity
+import org.jellyfin.mobile.player.mediasegments.MediaSegmentRepository
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.itemsApi
+import org.jellyfin.sdk.api.client.extensions.mediaSegmentsApi
 import org.jellyfin.sdk.model.api.ItemFields
 import java.util.UUID
 
@@ -52,6 +54,14 @@ class DownloadManager(
             }
 
             for (item in response.items) {
+                // Without them, the intro cannot be skipped when the download plays offline
+                val mediaSegments = runCatching {
+                    api.mediaSegmentsApi.getItemSegments(
+                        itemId = item.id,
+                        includeSegmentTypes = MediaSegmentRepository.SUPPORTED_TYPES,
+                    ).content.items
+                }.getOrNull()
+
                 var downloadEntity = existingItems[item.id]
                 if (downloadEntity != null) {
                     // If the item already exists we just update the local information for it and requeue it
@@ -60,6 +70,7 @@ class DownloadManager(
                         item = item,
                         status = DownloadStatus.QUEUED,
                         modifiedAt = System.currentTimeMillis(),
+                        mediaSegments = mediaSegments ?: downloadEntity.mediaSegments,
                     ).withPlaybackOf(item)
                     downloadDao.update(downloadEntity)
                 } else {
@@ -70,6 +81,7 @@ class DownloadManager(
                         itemId = item.id,
                         item = item,
                         path = item.name ?: item.id.toString(),
+                        mediaSegments = mediaSegments,
                     ).withPlaybackOf(item)
                     downloadDao.insert(downloadEntity)
                 }
