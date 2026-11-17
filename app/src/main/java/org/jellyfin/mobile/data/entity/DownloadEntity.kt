@@ -76,6 +76,18 @@ data class DownloadEntity(
         else -> null
     }
 
+    /**
+     * How much of this download was watched, from 0 to 1, or null when it was never started.
+     */
+    fun getPlaybackFraction(): Float? {
+        val runTimeTicks = item.runTimeTicks ?: 0L
+        return when {
+            played -> 1f
+            playbackPositionTicks > 0 && runTimeTicks > 0 -> playbackPositionTicks.toFloat() / runTimeTicks
+            else -> null
+        }
+    }
+
     fun getDisplayName(context: Context) = buildString {
         val name = if (
             item.type in arrayOf(BaseItemKind.PROGRAM, BaseItemKind.RECORDING) &&
