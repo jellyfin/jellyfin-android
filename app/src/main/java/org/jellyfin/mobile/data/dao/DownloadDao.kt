@@ -34,6 +34,9 @@ interface DownloadDao {
     @Query("SELECT * FROM download WHERE id = :id")
     suspend fun getDownload(id: Long): DownloadEntity?
 
+    @Query("SELECT * FROM download WHERE playback_synced = 0")
+    suspend fun getDownloadsWithUnsyncedPlayback(): List<DownloadEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: DownloadEntity): Long
 

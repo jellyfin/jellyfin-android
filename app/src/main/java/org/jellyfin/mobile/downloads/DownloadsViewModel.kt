@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.downloads
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +21,7 @@ import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.interaction.PlayOptions
 import org.jellyfin.sdk.model.api.MediaType
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
 
 class DownloadsViewModel : ViewModel(), KoinComponent {
@@ -39,6 +41,11 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
 
     private val _storageLocationAccessible = MutableStateFlow(storageManager.isStorageLocationAccessible())
     val storageLocationAccessible = _storageLocationAccessible.asStateFlow()
+
+    init {
+        // The list shows what the server knew at the last sync
+        DownloadPlaybackSyncWorker.start(get<Context>())
+    }
 
     fun openDownload(download: DownloadEntity) {
         when (download.item.mediaType) {

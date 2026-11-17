@@ -45,7 +45,22 @@ data class DownloadEntity(
 
     @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "modified_at") var modifiedAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "playback_position_ticks", defaultValue = "0") val playbackPositionTicks: Long = 0L,
+    @ColumnInfo(name = "played", defaultValue = "0") val played: Boolean = false,
+    /** False while the playback state above still has to be sent to the server. */
+    @ColumnInfo(name = "playback_synced", defaultValue = "1") val playbackSynced: Boolean = true,
 ) {
+    /**
+     * Takes over the playback state of the server, unless this device still has a newer one to send.
+     */
+    fun withPlaybackOf(item: BaseItemDto) = when {
+        !playbackSynced -> this
+        else -> copy(
+            playbackPositionTicks = item.userData?.playbackPositionTicks ?: 0L,
+            played = item.userData?.played == true,
+        )
+    }
+
     fun getDisplayName(context: Context) = buildString {
         val name = if (
             item.type in arrayOf(BaseItemKind.PROGRAM, BaseItemKind.RECORDING) &&

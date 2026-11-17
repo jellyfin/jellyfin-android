@@ -31,6 +31,7 @@ import org.jellyfin.mobile.bridge.MediaSegments
 import org.jellyfin.mobile.bridge.NativePlayer
 import org.jellyfin.mobile.downloads.DownloadManager
 import org.jellyfin.mobile.downloads.DownloadNotificationManager
+import org.jellyfin.mobile.downloads.DownloadPlaybackSync
 import org.jellyfin.mobile.downloads.DownloadQueue
 import org.jellyfin.mobile.downloads.DownloadsViewModel
 import org.jellyfin.mobile.downloads.FileDownloader
@@ -186,4 +187,5 @@ val applicationModule = module {
     single { DownloadNotificationManager(get()) }
     single { DownloadQueue(get(), get(), get(), get(), get(), get()) }
     single { FileDownloader(get()) }
+    single { DownloadPlaybackSync(get(), get(), get()) }
 }

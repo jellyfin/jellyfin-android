@@ -60,7 +60,7 @@ class DownloadManager(
                         item = item,
                         status = DownloadStatus.QUEUED,
                         modifiedAt = System.currentTimeMillis(),
-                    )
+                    ).withPlaybackOf(item)
                     downloadDao.update(downloadEntity)
                 } else {
                     // Otherwise we create a new one
@@ -70,7 +70,7 @@ class DownloadManager(
                         itemId = item.id,
                         item = item,
                         path = item.name ?: item.id.toString(),
-                    )
+                    ).withPlaybackOf(item)
                     downloadDao.insert(downloadEntity)
                 }
             }

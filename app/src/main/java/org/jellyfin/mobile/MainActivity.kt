@@ -22,6 +22,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.withStarted
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.jellyfin.mobile.downloads.DownloadPlaybackSyncWorker
 import org.jellyfin.mobile.events.ActivityEventHandler
 import org.jellyfin.mobile.player.cast.Chromecast
 import org.jellyfin.mobile.player.cast.IChromecast
@@ -149,6 +150,8 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         orientationListener.enable()
+        // Anything may have been watched on another device while the app was in the background
+        DownloadPlaybackSyncWorker.start(this)
     }
 
     private fun handleServerState(state: ServerState) {
