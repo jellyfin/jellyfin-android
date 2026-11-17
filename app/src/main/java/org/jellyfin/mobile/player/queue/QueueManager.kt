@@ -33,6 +33,7 @@ import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.MediaStreamProtocol
 import org.jellyfin.sdk.model.api.MediaStreamType
 import org.jellyfin.sdk.model.api.PlayMethod
+import org.jellyfin.sdk.model.extensions.ticks
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -127,6 +128,9 @@ class QueueManager(
         }
 
         val mainFile = files.find { it.type == DownloadFileType.ITEM } ?: return PlayerException.NetworkFailure()
+
+        // An episode reached through the queue resumes where it was left, like the one picked in the list
+        val startTime = startTime ?: download.playbackPositionTicks.takeIf { it > 0 }?.ticks
 
         val mediaSource = LocalJellyfinMediaSource(
             itemId = download.itemId,
@@ -284,15 +288,20 @@ class QueueManager(
     suspend fun previous(): Boolean {
         if (!hasPrevious()) return false
 
-        val currentMediaSource = getCurrentMediaSourceOrNull() as? RemoteJellyfinMediaSource ?: return false
-
         resetPlaybackFallback()
 
-        startRemotePlayback(
-            itemId = currentQueue[--currentQueueIndex],
-            mediaSourceId = null,
-            maxStreamingBitrate = currentMediaSource.maxStreamingBitrate,
-        )
+        when (val currentMediaSource = getCurrentMediaSourceOrNull()) {
+            is LocalJellyfinMediaSource -> startDownloadPlayback(
+                itemId = currentQueue[--currentQueueIndex],
+                playWhenReady = true,
+            )
+            is RemoteJellyfinMediaSource -> startRemotePlayback(
+                itemId = currentQueue[--currentQueueIndex],
+                mediaSourceId = null,
+                maxStreamingBitrate = currentMediaSource.maxStreamingBitrate,
+            )
+            null -> return false
+        }
         return true
     }
 

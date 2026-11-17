@@ -52,7 +52,7 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
         when (download.item.mediaType) {
             MediaType.VIDEO -> {
                 val playOptions = PlayOptions(
-                    ids = listOf(download.itemId),
+                    ids = listOf(download.itemId) + getFollowingEpisodes(download).map { it.itemId },
                     mediaSourceId = download.itemId.toString(),
                     startIndex = 0,
                     startPosition = download.playbackPositionTicks.takeIf { it > 0 }?.ticks,
@@ -83,6 +83,23 @@ class DownloadsViewModel : ViewModel(), KoinComponent {
                 }
             }
         }
+    }
+
+    /**
+     * The downloaded episodes of the same show that come after [download], in the order they are watched.
+     */
+    private fun getFollowingEpisodes(download: DownloadEntity): List<DownloadEntity> {
+        val seriesId = download.item.seriesId ?: return emptyList()
+        val episodeOrder = compareBy<DownloadEntity>({ it.item.parentIndexNumber }, { it.item.indexNumber })
+
+        return downloads.value
+            .map { it.download }
+            .filter { other ->
+                other.item.seriesId == seriesId &&
+                    other.status == DownloadStatus.DOWNLOADED &&
+                    episodeOrder.compare(other, download) > 0
+            }
+            .sortedWith(episodeOrder)
     }
 
     fun download(download: DownloadEntity) {

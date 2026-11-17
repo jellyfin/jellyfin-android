@@ -172,6 +172,10 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private var displayPreferences = DisplayPreferences()
     private var autoPlayNextEpisodeEnabled: Boolean = false
 
+    // The setting is read from the server, which downloads often play without
+    private val isAutoPlayEnabled: Boolean
+        get() = autoPlayNextEpisodeEnabled || mediaSourceOrNull is LocalJellyfinMediaSource
+
     init {
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
 
@@ -642,6 +646,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
             // Skip to previous element
             player.currentPosition <= Constants.MAX_SKIP_TO_PREV_MS -> viewModelScope.launch {
                 pause()
+                saveDownloadPlayback()
                 if (!queueManager.previous()) {
                     // Skip to previous failed, go to start of video anyway
                     playerOrNull?.seekTo(0)
@@ -655,8 +660,18 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
 
     fun skipToNext() {
         viewModelScope.launch {
+            saveDownloadPlayback()
             queueManager.next()
         }
+    }
+
+    /**
+     * Keeps the position of a download that is left for another episode, as its playback does not stop.
+     */
+    private fun saveDownloadPlayback() {
+        val mediaSource = mediaSourceOrNull as? LocalJellyfinMediaSource ?: return
+        val player = playerOrNull ?: return
+        downloadPlaybackSync.onPlaybackStopped(mediaSource, player.currentPosition.milliseconds.inWholeTicks)
     }
 
     fun skipMediaSegment(mediaSegmentDto: MediaSegmentDto?) {
@@ -773,7 +788,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
                 }
                 Player.STATE_ENDED -> {
                     reportPlaybackStop()
-                    if (!autoPlayNextEpisodeEnabled || !queueManager.next()) {
+                    if (!isAutoPlayEnabled || !queueManager.next()) {
                         releasePlayer()
                     }
                 }
