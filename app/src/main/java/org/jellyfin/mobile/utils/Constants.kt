@@ -15,11 +15,13 @@ object Constants {
     const val MINIMUM_WEB_VIEW_VERSION = 80
     const val SHOW_PROGRESS_BAR_DELAY = 1000L
     const val INITIAL_CONNECTION_TIMEOUT = 10000L // 10 seconds
+    const val OFFLINE_CHECK_TIMEOUT = 3000L // 3 seconds
     val MAIN_BUNDLE_PATH_REGEX = Regex(""".*/main\.[^/\s]+\.bundle\.js""")
     const val CAST_SDK_PATH = "cast_sender.js"
     const val SESSION_CAPABILITIES_PATH = "sessions/capabilities/full"
 
     const val FRAGMENT_CONNECT_EXTRA_ERROR = "org.jellyfin.mobile.intent.extra.ERROR"
+    const val FRAGMENT_DOWNLOADS_EXTRA_OFFLINE = "org.jellyfin.mobile.intent.extra.OFFLINE"
     const val FRAGMENT_WEB_VIEW_EXTRA_SERVER = "org.jellyfin.mobile.intent.extra.SERVER"
 
     // Preference keys

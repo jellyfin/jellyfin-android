@@ -46,7 +46,9 @@ fun ConnectScreen(
                 },
             )
             StyledTextButton(
-                onClick = { activityEventHandler.emit(ActivityEvent.OpenDownloads) },
+                onClick = {
+                    activityEventHandler.emit(ActivityEvent.OpenDownloads(offline = showExternalConnectionError))
+                },
                 text = stringResource(R.string.view_downloads),
             )
         }

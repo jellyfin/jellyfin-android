@@ -15,5 +15,6 @@ sealed class ActivityEvent {
     data object OpenSettings : ActivityEvent()
     data object SelectServer : ActivityEvent()
     data object ExitApp : ActivityEvent()
-    data object OpenDownloads : ActivityEvent()
+    class OpenDownloads(val offline: Boolean = false) : ActivityEvent()
+    data object Reconnect : ActivityEvent()
 }

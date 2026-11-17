@@ -20,7 +20,9 @@ import org.jellyfin.mobile.player.ui.PlayerFullscreenHelper
 import org.jellyfin.mobile.settings.SettingsFragment
 import org.jellyfin.mobile.utils.Constants
 import org.jellyfin.mobile.utils.extensions.addFragment
+import org.jellyfin.mobile.utils.extensions.replaceFragment
 import org.jellyfin.mobile.utils.requestDownload
+import org.jellyfin.mobile.webapp.WebViewFragment
 import org.jellyfin.mobile.webapp.WebappFunctionChannel
 import timber.log.Timber
 
@@ -80,8 +82,21 @@ class ActivityEventHandler(
                     with(event) { requestDownload(itemIds) }
                 }
             }
-            ActivityEvent.OpenDownloads -> {
-                supportFragmentManager.addFragment<DownloadsFragment>()
+            is ActivityEvent.OpenDownloads -> {
+                val args = Bundle().apply {
+                    putBoolean(Constants.FRAGMENT_DOWNLOADS_EXTRA_OFFLINE, event.offline)
+                }
+                supportFragmentManager.addFragment<DownloadsFragment>(args)
+            }
+            ActivityEvent.Reconnect -> {
+                val server = mainViewModel.serverState.value.server ?: return
+                // The downloads were opened on top of the connection error screen, both make way for the web app
+                supportFragmentManager.popBackStack()
+                supportFragmentManager.replaceFragment<WebViewFragment>(
+                    Bundle().apply {
+                        putParcelable(Constants.FRAGMENT_WEB_VIEW_EXTRA_SERVER, server)
+                    },
+                )
             }
             is ActivityEvent.CastMessage -> {
                 val action = event.action

@@ -171,6 +171,7 @@
     </plurals>
     <string name="download_incomplete">Download incomplete</string>
     <string name="download_played">Played</string>
+    <string name="downloads_offline_reconnect">Reconnect to the server</string>
     <string name="download_settings_dialog_title">Choose download location</string>
     <string name="download_settings_dialog_message">Please choose where downloaded media should be saved. Downloads use WiFi only by default.</string>
     <string name="select_folder">Select folder</string>

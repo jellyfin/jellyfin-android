@@ -22,7 +22,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.webkit.WebViewAssetLoader.AssetsPathHandler
 import androidx.webkit.WebViewCompat
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import org.jellyfin.mobile.MainViewModel
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
@@ -30,6 +34,7 @@ import org.jellyfin.mobile.bridge.ExternalPlayer
 import org.jellyfin.mobile.bridge.MediaSegments
 import org.jellyfin.mobile.bridge.NativeInterface
 import org.jellyfin.mobile.bridge.NativePlayer
+import org.jellyfin.mobile.data.dao.DownloadDao
 import org.jellyfin.mobile.data.entity.ServerEntity
 import org.jellyfin.mobile.databinding.FragmentWebviewBinding
 import org.jellyfin.mobile.setup.ConnectFragment
@@ -46,11 +51,15 @@ import org.jellyfin.mobile.utils.fadeIn
 import org.jellyfin.mobile.utils.isOutdated
 import org.jellyfin.mobile.utils.requestNoBatteryOptimizations
 import org.jellyfin.mobile.utils.runOnUiThread
+import org.jellyfin.sdk.api.client.ApiClient
+import org.jellyfin.sdk.api.client.extensions.systemApi
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClient.FileChooserListener {
     val appPreferences: AppPreferences by inject()
+    private val apiClient: ApiClient by inject()
+    private val downloadDao: DownloadDao by inject()
     private val mainViewModel: MainViewModel by activityViewModel()
     private val webappFunctionChannel: WebappFunctionChannel by inject()
     private lateinit var assetsPathHandler: AssetsPathHandler
@@ -193,6 +202,23 @@ class WebViewFragment : Fragment(), BackPressInterceptor, JellyfinWebChromeClien
         loadUrl("${server.hostname.trimEnd('/')}/")
         postDelayed(timeoutRunnable, Constants.INITIAL_CONNECTION_TIMEOUT)
         postDelayed(showLoadingContainerRunnable, Constants.SHOW_PROGRESS_BAR_DELAY)
+        openDownloadsEarlyWhenUnreachable()
+    }
+
+    /**
+     * The web app is loaded from the cache and only gives up on the server after [timeoutRunnable].
+     * Downloads are watchable without the server, so they should not have to wait that long.
+     */
+    private fun openDownloadsEarlyWhenUnreachable() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val isServerUnreachable = withContext(Dispatchers.IO) {
+                val hasDownloads = downloadDao.getAllDownloads().first().isNotEmpty()
+                hasDownloads && withTimeoutOrNull(Constants.OFFLINE_CHECK_TIMEOUT) {
+                    runCatching { apiClient.systemApi.getPublicSystemInfo() }.isSuccess
+                } != true
+            }
+            if (isServerUnreachable && !connected) handleError()
+        }
     }
 
     private fun showOutdatedWebViewDialog(webView: WebView) {

@@ -34,6 +34,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.CloudOff
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.Composable
@@ -57,6 +58,8 @@ import org.jellyfin.mobile.downloads.DownloadsViewModel
 @Composable
 fun DownloadsScreen(
     viewModel: DownloadsViewModel = viewModel(),
+    isOffline: Boolean = false,
+    onReconnect: () -> Unit = {},
     onBackPressed: () -> Unit = {},
 ) {
     val downloads by viewModel.downloads.collectAsState()
@@ -150,6 +153,16 @@ fun DownloadsScreen(
                 },
                 actions = {
                     Row {
+                        // The downloads opened because the server did not answer
+                        if (isOffline) {
+                            IconButton(onClick = onReconnect) {
+                                Icon(
+                                    imageVector = Icons.Outlined.CloudOff,
+                                    contentDescription = stringResource(R.string.downloads_offline_reconnect),
+                                )
+                            }
+                        }
+
                         AnimatedVisibility(
                             visible = selectionMode,
                             enter = fadeIn(),
