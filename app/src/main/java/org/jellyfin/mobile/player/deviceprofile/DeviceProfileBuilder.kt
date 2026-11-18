@@ -1,5 +1,6 @@
 package org.jellyfin.mobile.player.deviceprofile
 
+import android.media.MediaCodecInfo
 import android.media.MediaCodecList
 import android.media.MediaFormat
 import kotlinx.serialization.json.buildJsonObject
@@ -31,6 +32,16 @@ class DeviceProfileBuilder(
     private val videoCodecsProfiles: Map<String, Set<String>>
     private val maxAvcRawLevel: Int
 
+    /**
+     * True if the device has a regular (non-secure) Dolby Vision decoder.
+     *
+     * Without one, ExoPlayer falls back to the HEVC decoder only for Dolby Vision profiles with a
+     * backwards compatible base layer (profile 8.x). Profile 5 (no compatible base layer) and
+     * profile 7 (dual layer) are not decodable and play as a black screen, see
+     * `MediaCodecUtil.getAlternativeCodecMimeType` in Media3.
+     */
+    private val hasDolbyVisionDecoder: Boolean
+
     private val transcodingProfiles: List<TranscodingProfile>
 
     init {
@@ -42,12 +53,19 @@ class DeviceProfileBuilder(
         val videoCodecs: MutableMap<String, DeviceCodec.Video> = HashMap()
         val audioCodecs: MutableMap<String, DeviceCodec.Audio> = HashMap()
         var maxAvcLevel = 0
+        var dolbyVisionDecoder = false
         val androidCodecs = MediaCodecList(MediaCodecList.REGULAR_CODECS)
         for (codecInfo in androidCodecs.codecInfos) {
             if (codecInfo.isEncoder) continue
 
             for (mimeType in codecInfo.supportedTypes) {
                 val capabilities = codecInfo.getCapabilitiesForType(mimeType)
+
+                if (mimeType.equals(MediaFormat.MIMETYPE_VIDEO_DOLBY_VISION, ignoreCase = true) &&
+                    !capabilities.isFeatureRequired(MediaCodecInfo.CodecCapabilities.FEATURE_SecurePlayback)
+                ) {
+                    dolbyVisionDecoder = true
+                }
 
                 if (mimeType == MediaFormat.MIMETYPE_VIDEO_AVC) {
                     for (pl in capabilities.profileLevels) {
@@ -76,6 +94,7 @@ class DeviceProfileBuilder(
             }
         }
         maxAvcRawLevel = maxAvcLevel
+        hasDolbyVisionDecoder = dolbyVisionDecoder
 
         // Build map of supported codecs from device support and hardcoded data
         supportedVideoCodecs = Array(AVAILABLE_VIDEO_CODECS.size) { i ->
@@ -179,24 +198,42 @@ class DeviceProfileBuilder(
         container: String,
         videoCodec: String,
     ): CodecProfile? {
-        val profilesSet = videoCodecsProfiles[videoCodec]
-        if (profilesSet?.isNotEmpty() != true) {
-            return null
-        }
+        val conditions = ArrayList<ProfileCondition>()
 
-        return CodecProfile(
-            type = CodecType.VIDEO,
-            container = container,
-            codec = videoCodec,
-            applyConditions = listOf(),
-            conditions = listOf(
+        val profilesSet = videoCodecsProfiles[videoCodec]
+        if (profilesSet?.isNotEmpty() == true) {
+            conditions.add(
                 ProfileCondition(
                     condition = ProfileConditionType.EQUALS_ANY,
                     property = ProfileConditionValue.VIDEO_PROFILE,
                     value = profilesSet.joinToString("|"),
                     isRequired = false,
                 ),
-            ),
+            )
+        }
+
+        // Without a Dolby Vision decoder, exclude the ranges ExoPlayer can't decode with the plain HEVC decoder:
+        // Dolby Vision profile 5 ("DOVI") and profile 7 ("DOVIWithEL", "DOVIWithELHDR10Plus").
+        // The server then transcodes them instead of direct playing a black screen.
+        if (videoCodec == "hevc" && !hasDolbyVisionDecoder) {
+            conditions.add(
+                ProfileCondition(
+                    condition = ProfileConditionType.EQUALS_ANY,
+                    property = ProfileConditionValue.VIDEO_RANGE_TYPE,
+                    value = HEVC_RANGE_TYPES_WITHOUT_DOLBY_VISION.joinToString("|"),
+                    isRequired = false,
+                ),
+            )
+        }
+
+        if (conditions.isEmpty()) return null
+
+        return CodecProfile(
+            type = CodecType.VIDEO,
+            container = container,
+            codec = videoCodec,
+            applyConditions = listOf(),
+            conditions = conditions,
         )
     }
 
@@ -238,6 +275,16 @@ class DeviceProfileBuilder(
     companion object {
         private const val EXTERNAL_PLAYER_PROFILE_NAME = Constants.APP_INFO_NAME + " External Player"
         private const val DEFAULT_H264_MAX_LEVEL = "41"
+
+        /**
+         * Video range types (server `VideoRangeType`) that a device without a Dolby Vision decoder can still
+         * play with its HEVC decoder: everything except Dolby Vision profile 5 and 7.
+         * `DOVIInvalid` is kept to not change existing behavior for files with non-standard Dolby Vision metadata.
+         */
+        private val HEVC_RANGE_TYPES_WITHOUT_DOLBY_VISION = arrayOf(
+            "SDR", "HDR10", "HDR10Plus", "HLG",
+            "DOVIWithSDR", "DOVIWithHDR10", "DOVIWithHDR10Plus", "DOVIWithHLG", "DOVIInvalid",
+        )
 
         /**
          * List of container formats supported by ExoPlayer
