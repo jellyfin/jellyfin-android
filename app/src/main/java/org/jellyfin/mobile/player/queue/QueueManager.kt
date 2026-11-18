@@ -33,6 +33,7 @@ import org.jellyfin.sdk.model.api.MediaStream
 import org.jellyfin.sdk.model.api.MediaStreamProtocol
 import org.jellyfin.sdk.model.api.MediaStreamType
 import org.jellyfin.sdk.model.api.PlayMethod
+import org.jellyfin.sdk.model.extensions.ticks
 import org.jellyfin.sdk.model.serializer.toUUIDOrNull
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -126,6 +127,8 @@ class QueueManager(
         }
 
         val mainFile = files.find { it.type == DownloadFileType.ITEM } ?: return PlayerException.NetworkFailure()
+        val resumeTime = if (download.playbackPositionTicks > 0) download.playbackPositionTicks.ticks else null
+        val startTime = startTime ?: resumeTime
 
         val mediaSource = LocalJellyfinMediaSource(
             itemId = download.itemId,
