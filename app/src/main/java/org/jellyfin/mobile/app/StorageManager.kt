@@ -8,6 +8,7 @@ import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.data.entity.DownloadFiles
+import org.jellyfin.mobile.downloads.DownloadFileType
 import org.jellyfin.mobile.downloads.DownloadStatus
 import timber.log.Timber
 
@@ -44,9 +45,10 @@ class StorageManager(
     }
 
     fun verify(download: DownloadFiles): Boolean {
-        if (download.files.isEmpty()) return false
+        val mediaFiles = download.files.filter { it.type == DownloadFileType.ITEM }
+        if (mediaFiles.isEmpty()) return false
 
-        for (file in download.files) {
+        for (file in mediaFiles) {
             if (file.status != DownloadStatus.DOWNLOADED) return false
             val documentFile = DocumentFile.fromSingleUri(context, file.uri)
             if (documentFile == null || !documentFile.exists() || documentFile.length() != file.size) {

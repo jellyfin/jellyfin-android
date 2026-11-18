@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
+import java.io.IOException
 import kotlinx.coroutines.CancellationException
 import okhttp3.OkHttpClient
 import org.jellyfin.mobile.app.ApiClientController
@@ -16,7 +17,7 @@ import org.jellyfin.sdk.api.client.extensions.imageApi
 import org.jellyfin.sdk.api.client.extensions.libraryApi
 import org.jellyfin.sdk.model.api.ImageFormat
 import org.jellyfin.sdk.model.api.ImageType
-import java.io.IOException
+import timber.log.Timber
 
 class DownloadQueue(
     private val context: Context,
@@ -25,6 +26,7 @@ class DownloadQueue(
     private val downloadNotificationManager: DownloadNotificationManager,
     private val storageManager: StorageManager,
     okHttpClient: OkHttpClient,
+    private val offlineCatalog: OfflineCatalogRepository,
 ) {
     private data class QueuedFile(val file: DownloadFileEntity, val remoteUri: Uri)
 
@@ -66,7 +68,14 @@ class DownloadQueue(
             )
 
             for (queuedFile in queuedFiles) {
-                download(api, queuedFile, notificationProgressCallback)
+                try {
+                    download(api, queuedFile, notificationProgressCallback)
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    if (queuedFile.file.type == DownloadFileType.ITEM) throw e
+                    Timber.w("Optional download artwork failed")
+                }
             }
 
             notificationProgressCallback.onEnd()
@@ -84,6 +93,14 @@ class DownloadQueue(
         } catch (e: Exception) {
             downloadDao.update(downloadWithFiles.download.copy(status = DownloadStatus.ERROR))
             throw e
+        }
+        // Metadata is optional and must not alter a successful media download state.
+        try {
+            offlineCatalog.refresh(listOf(downloadWithFiles.download))
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Timber.w("Offline catalog update failed")
         }
     }
 
@@ -137,7 +154,13 @@ class DownloadQueue(
 
         return buildList {
             // Add image as first item so it can be shown in UI during downloads
-            preparePrimaryImageFile(api, downloadWithFiles, itemLocation)?.let(::add)
+            try {
+                preparePrimaryImageFile(api, downloadWithFiles, itemLocation)?.let(::add)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Timber.w("Could not prepare optional artwork")
+            }
 
             // Add main item second as it is (often) the largest and important file
             prepareMainFile(api, downloadWithFiles, itemLocation).let(::add)

@@ -91,7 +91,7 @@ fun DownloadItem(
 
     val isVerified by produceState(initialValue = false, downloadFiles) {
         value = withContext(Dispatchers.IO) {
-            storageManager.verify(downloadFiles)
+            try { storageManager.verify(downloadFiles) } catch (e: SecurityException) { false }
         }
     }
 

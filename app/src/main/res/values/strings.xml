@@ -180,4 +180,11 @@
     <string name="download_location_not_set_description">To download media, please select a folder where the files should be stored.</string>
     <string name="download_location_inaccessible">Download location inaccessible</string>
     <string name="download_location_inaccessible_description">The selected download location is no longer accessible. Please select a different folder to resume downloads.</string>
+    <string name="offline_unassigned">Unassigned</string>
+    <string name="offline_ready_items">%1$d of %2$d available offline</string>
+    <string name="offline_season">Season %1$d</string>
+    <string name="offline_unknown_season">Other episodes</string>
+    <string name="offline_specials">Specials</string>
+    <string name="offline_refresh">Refresh library information and posters</string>
+    <string name="offline_refresh_failed">Some library information or artwork could not be updated. Your downloads remain available.</string>
 </resources>
