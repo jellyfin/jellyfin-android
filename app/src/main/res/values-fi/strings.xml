@@ -138,7 +138,7 @@
     <string name="media_service_car_section_playlists">Soittolistat</string>
     <string name="pref_exoplayer_allow_horizontal_gesture">Vaakasuuntaiset eleet</string>
     <string name="pref_exoplayer_allow_horizontal_gesture_summary">Salli vaakasuntaisten eleiden ohjata videon hakua</string>
-    <string name="pref_exoplayer_direct_play_ass_description">"Käytä kokeellista tekstityksen visualisointia asiakaslaitteella. Ei välttämättä toimi  aina"</string>
+    <string name="pref_exoplayer_direct_play_ass_description">Käytä kokeellista tekstitysten renderöintiä, ei välttämättä toimi luotettavasti</string>
     <string name="pref_exoplayer_network_buffer">Toistopuskurin koko</string>
     <string name="network_buffer_auto">Automaattinen</string>
     <string name="network_buffer_auto_description">Oletuspuskuri, sopiva yleisimmille toistotilanteille</string>
@@ -158,8 +158,8 @@
     </plurals>
     <string name="download_remove_keep_local">Säilytä paikalliset tiedostot</string>
     <plurals name="download_remove_description">
-        <item quantity="one">Haluatko poistaa latauksistasi tämän: %2$s ?</item>
-        <item quantity="other">Haluatko poistaa nämä: %1$s latauksistasi?</item>
+        <item quantity="one">Haluatko poistaa kohteen \"%2$s\" latauksistasi?</item>
+        <item quantity="other">Haluatko poistaa nämä %1$d latauksistasi?</item>
     </plurals>
     <string name="download_incomplete">Lataus keskeneräinen</string>
     <string name="download_settings_dialog_title">Valitse latausten sijainti</string>
@@ -168,8 +168,8 @@
     <string name="select_all">Valitse kaikki</string>
     <string name="deselect_all">Tyhjennä valinnat</string>
     <string name="selected_count">%1$d valittuna</string>
-    <string name="download_location_not_set">Ei lataussijaintia</string>
-    <string name="download_location_not_set_description">Ladataksesi mediaa, valitse kansio minne tiedostot kuuluisi tallentaa.</string>
-    <string name="download_location_inaccessible">Lataussijainti saavuttamattomissa</string>
-    <string name="download_location_inaccessible_description">Valittu lataussijainti ei ole enää saavutettavissa. Valitse eri kansio jatkaaksesi latauksia.</string>
+    <string name="download_location_not_set">Lataussijaintia ei ole asetettu</string>
+    <string name="download_location_not_set_description">Ladataksesi mediaa, valitse kansio minne tiedostot tallennetaan.</string>
+    <string name="download_location_inaccessible">Lataussijainti ei saatavilla</string>
+    <string name="download_location_inaccessible_description">Valittu lataussijainti ei ole enää saatavilla. Valitse eri kansio jatkaaksesi latauksia.</string>
 </resources>
