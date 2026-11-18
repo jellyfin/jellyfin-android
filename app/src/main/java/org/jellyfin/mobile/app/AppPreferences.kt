@@ -119,6 +119,9 @@ class AppPreferences(context: Context) {
     val exoPlayerAllowBackgroundAudio: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO, false)
 
+    val exoPlayerDisableBluetoothArtwork: Boolean
+        get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_DISABLE_BLUETOOTH_ARTWORK, false)
+
     val exoPlayerAllowHorizontalGesture: Boolean
         get() = sharedPreferences.getBoolean(Constants.PREF_EXOPLAYER_ALLOW_HORIZONTAL_GESTURE, true)
 
