@@ -61,6 +61,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
     private lateinit var horizontalGesturePreference: Preference
     private lateinit var directPlayAssPreference: Preference
     private lateinit var networkBufferPreference: Preference
+    private lateinit var decoderTypePreference: Preference
     private lateinit var externalPlayerChoicePreference: Preference
     private lateinit var downloadLocationPreference: Preference
 
@@ -129,6 +130,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 horizontalGesturePreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 directPlayAssPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 networkBufferPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                decoderTypePreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 externalPlayerChoicePreference.enabled = selection == VideoPlayerType.EXTERNAL_PLAYER
             }
         }
@@ -193,6 +195,28 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
         networkBufferPreference = singleChoice(Constants.PREF_EXOPLAYER_NETWORK_BUFFER, networkBufferOptions) {
             titleRes = R.string.pref_exoplayer_network_buffer
             initialSelection = Constants.NETWORK_BUFFER_AUTO
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+        }
+        val decoderTypeOptions = listOf(
+            SelectionItem(
+                Constants.DECODER_TYPE_AUTO,
+                R.string.decoder_type_auto,
+                R.string.decoder_type_auto_description,
+            ),
+            SelectionItem(
+                Constants.DECODER_TYPE_HARDWARE,
+                R.string.decoder_type_hardware,
+                R.string.decoder_type_hardware_description,
+            ),
+            SelectionItem(
+                Constants.DECODER_TYPE_SOFTWARE,
+                R.string.decoder_type_software,
+                R.string.decoder_type_software_description,
+            ),
+        )
+        decoderTypePreference = singleChoice(Constants.PREF_EXOPLAYER_DECODER_TYPE, decoderTypeOptions) {
+            titleRes = R.string.pref_exoplayer_decoder_type
+            initialSelection = Constants.DECODER_TYPE_AUTO
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
         }
 
