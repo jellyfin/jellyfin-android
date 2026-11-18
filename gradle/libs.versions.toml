@@ -24,7 +24,7 @@ androidx-appcompat = "1.8.0"
 androidx-activity = "1.13.0"
 androidx-documentfile = "1.1.0"
 androidx-fragment = "1.9.1"
-androidx-work = "2.11.2"
+androidx-work = "2.12.0"
 androiddesugarlibs = "2.1.5"
 
 # Lifecycle extensions
