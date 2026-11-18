@@ -2,6 +2,7 @@ package org.jellyfin.mobile.player.ui
 
 import android.app.Activity
 import android.app.PictureInPictureParams
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Rect
@@ -9,6 +10,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.VibratorManager
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.OrientationEventListener
 import android.view.View
@@ -56,6 +59,7 @@ import org.jellyfin.mobile.utils.toast
 import org.jellyfin.sdk.model.api.MediaSegmentDto
 import org.jellyfin.sdk.model.api.MediaStream
 import org.koin.android.ext.android.inject
+import java.text.NumberFormat
 import kotlin.math.max
 import androidx.media3.ui.R as Media3R
 
@@ -350,7 +354,18 @@ class PlayerFragment : Fragment(), BackPressInterceptor {
     }
 
     fun onPressSpeedUp(isPressing: Boolean): Boolean {
-        return viewModel.setPressSpeedUp(isPressing, Constants.HOLD_SPEEDUP_MULTIPLIER)
+        val speedUpOverlayText = playerBinding.speedUpOverlay
+        val speedMultiplier = appPreferences.exoPlayerPressSpeedUpMultiplier
+
+        if(isPressing) {
+            speedUpOverlayText.text = requireContext().getString(
+                R.string.speed_up_overlay,
+                NumberFormat.getNumberInstance().format(speedMultiplier)
+            )
+            requireView().performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+        }
+        speedUpOverlayText.visibility = if (isPressing) View.VISIBLE else View.GONE
+        return viewModel.setPressSpeedUp(isPressing, speedMultiplier)
     }
 
     fun onDecoderSelected(type: DecoderType) {
