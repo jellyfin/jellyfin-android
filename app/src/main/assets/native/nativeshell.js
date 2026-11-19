@@ -2,6 +2,7 @@ const features = [
     "castmenuhashchange",
     "clientsettings",
     "displaylanguage",
+    "displaymode",
     "downloadmanagement",
     "exit",
     "externallinks",
