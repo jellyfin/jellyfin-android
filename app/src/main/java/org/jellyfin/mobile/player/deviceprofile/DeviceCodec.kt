@@ -1,7 +1,9 @@
 package org.jellyfin.mobile.player.deviceprofile
 
 import android.media.MediaCodecInfo.CodecCapabilities
+import android.media.MediaCodecInfo.VideoCapabilities
 import android.util.Range
+import android.util.Size
 import org.jellyfin.mobile.player.deviceprofile.CodecHelpers.getAudioCodec
 import org.jellyfin.mobile.player.deviceprofile.CodecHelpers.getAudioProfile
 import org.jellyfin.mobile.player.deviceprofile.CodecHelpers.getVideoCodec
@@ -21,6 +23,10 @@ sealed class DeviceCodec(
         profiles: Set<String>,
         private val levels: Set<Int>,
         maxBitrate: Int,
+        /**
+         * Largest landscape resolution supported by the decoder, or `null` if unknown.
+         */
+        val maxResolution: Size?,
     ) : DeviceCodec(name, mimeType, profiles, maxBitrate) {
 
         fun mergeCodec(codecToMerge: Video): Video = Video(
@@ -29,6 +35,8 @@ sealed class DeviceCodec(
             profiles = profiles + codecToMerge.profiles,
             levels = levels + codecToMerge.levels,
             maxBitrate = max(maxBitrate, codecToMerge.maxBitrate),
+            maxResolution = listOfNotNull(maxResolution, codecToMerge.maxResolution)
+                .maxByOrNull { size -> size.width.toLong() * size.height },
         )
     }
 
@@ -58,6 +66,18 @@ sealed class DeviceCodec(
     }
 
     companion object {
+        /**
+         * Returns the largest landscape resolution supported by the decoder.
+         *
+         * Width and height limits can't be used independently, as decoders often report a max size like
+         * 2560x1440 that also allows portrait content, which would otherwise be reported as 2560x2560.
+         */
+        private fun getMaxResolution(videoCapabilities: VideoCapabilities): Size? = runCatching {
+            val maxWidth = videoCapabilities.supportedWidths.upper
+            val maxHeight = videoCapabilities.getSupportedHeightsFor(maxWidth).upper
+            Size(maxWidth, maxHeight)
+        }.getOrNull()
+
         fun from(codecCapabilities: CodecCapabilities): DeviceCodec? {
             val mimeType = codecCapabilities.mimeType
 
@@ -79,6 +99,7 @@ sealed class DeviceCodec(
                         profiles = profiles,
                         levels = levels,
                         maxBitrate = codecCapabilities.videoCapabilities!!.bitrateRange.upper,
+                        maxResolution = getMaxResolution(codecCapabilities.videoCapabilities!!),
                     )
                 }
                 audioCodec != null -> {
