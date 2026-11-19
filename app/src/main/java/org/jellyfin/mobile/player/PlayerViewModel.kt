@@ -40,6 +40,7 @@ import org.jellyfin.mobile.BuildConfig
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
 import org.jellyfin.mobile.app.PLAYER_EVENT_CHANNEL
+import org.jellyfin.mobile.downloads.DownloadPlaybackSync
 import org.jellyfin.mobile.player.interaction.PlayerEvent
 import org.jellyfin.mobile.player.interaction.PlayerLifecycleObserver
 import org.jellyfin.mobile.player.interaction.PlayerMediaSessionCallback
@@ -48,6 +49,7 @@ import org.jellyfin.mobile.player.mediasegments.MediaSegmentAction
 import org.jellyfin.mobile.player.mediasegments.MediaSegmentRepository
 import org.jellyfin.mobile.player.queue.QueueManager
 import org.jellyfin.mobile.player.source.JellyfinMediaSource
+import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
 import org.jellyfin.mobile.player.ui.DecoderType
 import org.jellyfin.mobile.player.ui.DisplayPreferences
@@ -105,6 +107,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     private val userApi: UserApi = apiClient.userApi
 
     private val appPreferences: AppPreferences by inject()
+    private val downloadPlaybackSync: DownloadPlaybackSync by inject()
     private val lifecycleObserver = PlayerLifecycleObserver(this)
     private val audioManager: AudioManager by lazy { getApplication<Application>().getSystemService()!! }
     val notificationHelper: PlayerNotificationHelper by lazy { PlayerNotificationHelper(this) }
@@ -474,13 +477,17 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application),
     }
 
     private fun reportPlaybackStop() {
-        val mediaSource = mediaSourceOrNull as? RemoteJellyfinMediaSource ?: return
+        val mediaSource = mediaSourceOrNull ?: return
         val player = playerOrNull ?: return
         val hasFinished = player.playbackState == Player.STATE_ENDED
         val lastPositionTicks = when {
             hasFinished -> mediaSource.runTime.inWholeTicks
             else -> player.currentPosition.milliseconds.inWholeTicks
         }
+        if (mediaSource is LocalJellyfinMediaSource) {
+            downloadPlaybackSync.onPlaybackStopped(mediaSource, lastPositionTicks)
+        }
+        if (mediaSource !is RemoteJellyfinMediaSource) return
 
         // viewModelScope may already be cancelled at this point, so we need to fallback
         CoroutineScope(Dispatchers.Main).launch {
