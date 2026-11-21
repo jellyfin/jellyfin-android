@@ -19,8 +19,10 @@ import de.Maxr1998.modernpreferences.helpers.defaultOnSelectionChange
 import de.Maxr1998.modernpreferences.helpers.onClick
 import de.Maxr1998.modernpreferences.helpers.pref
 import de.Maxr1998.modernpreferences.helpers.screen
+import de.Maxr1998.modernpreferences.helpers.seekBar
 import de.Maxr1998.modernpreferences.helpers.singleChoice
 import de.Maxr1998.modernpreferences.preferences.CheckBoxPreference
+import de.Maxr1998.modernpreferences.preferences.SeekBarPreference
 import de.Maxr1998.modernpreferences.preferences.choice.SelectionItem
 import org.jellyfin.mobile.R
 import org.jellyfin.mobile.app.AppPreferences
@@ -34,6 +36,7 @@ import org.jellyfin.mobile.utils.extensions.requireMainActivity
 import org.jellyfin.mobile.utils.isPackageInstalled
 import org.jellyfin.mobile.utils.withThemedContext
 import org.koin.android.ext.android.inject
+import java.text.NumberFormat
 
 class SettingsFragment : Fragment(), BackPressInterceptor {
 
@@ -56,6 +59,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
     private lateinit var startLandscapeVideoInLandscapePreference: CheckBoxPreference
     private lateinit var swipeGesturesPreference: CheckBoxPreference
     private lateinit var pressSpeedUpPreference: CheckBoxPreference
+    private lateinit var pressSpeedUpMultiplierPreference: SeekBarPreference
     private lateinit var rememberBrightnessPreference: Preference
     private lateinit var backgroundAudioPreference: Preference
     private lateinit var horizontalGesturePreference: Preference
@@ -125,6 +129,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 swipeGesturesPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 rememberBrightnessPreference.enabled = selection == VideoPlayerType.EXO_PLAYER && swipeGesturesPreference.checked
                 pressSpeedUpPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                pressSpeedUpMultiplierPreference.enabled = selection == VideoPlayerType.EXO_PLAYER && pressSpeedUpPreference.checked
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 horizontalGesturePreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 directPlayAssPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
@@ -156,6 +161,16 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
             summaryRes = R.string.pref_exoplayer_allow_press_speed_up_summary
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
             defaultValue = true
+            defaultOnCheckedChange { checked -> pressSpeedUpMultiplierPreference.enabled = checked }
+        }
+        pressSpeedUpMultiplierPreference = seekBar(Constants.PREF_EXOPLAYER_PRESS_SPEED_UP_MULTIPLIER) {
+            titleRes = R.string.pref_exoplayer_press_speed_up_multiplier
+            summaryRes = R.string.pref_exoplayer_press_speed_up_multiplier_summary
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER && appPreferences.exoPlayerAllowPressSpeedUp
+            default = 60 // 3.0x
+            min = 5 // 0.25x
+            max = 80 // 4.0x
+            formatter = { i -> NumberFormat.getNumberInstance().format(0.05 *  i) + "x" }
         }
         backgroundAudioPreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_BACKGROUND_AUDIO) {
             titleRes = R.string.pref_exoplayer_allow_background_audio

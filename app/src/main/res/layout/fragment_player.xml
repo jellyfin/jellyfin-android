@@ -159,5 +159,19 @@
             android:textColor="@color/skip_media_segment_text"
             android:textSize="18sp"
             tools:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/speed_up_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/speed_up_overlay_background"
+            android:clickable="false"
+            android:paddingHorizontal="18dp"
+            android:paddingVertical="8dp"
+            android:visibility="gone"
+            tools:text="2x"
+            tools:visibility="visible" />
     </FrameLayout>
 </FrameLayout>
