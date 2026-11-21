@@ -49,7 +49,12 @@ class QueueManager(
     private val mediaSourceResolver: MediaSourceResolver by inject()
     private val deviceProfileBuilder: DeviceProfileBuilder by inject()
     private val downloadDao: DownloadDao by inject()
-    private val deviceProfile = deviceProfileBuilder.getDeviceProfile()
+    private var deviceProfile = deviceProfileBuilder.getDeviceProfile()
+
+    private var preferredVideoCodec: String? = null
+    private var preferredAudioCodec: String? = null
+    private var userPreferFmp4Hls: Boolean = false
+    private var fallbackDisableFmp4: Boolean = false
 
     private var currentQueue: List<UUID> = emptyList()
     private var currentQueueIndex: Int = 0
@@ -72,6 +77,12 @@ class QueueManager(
     suspend fun initializePlaybackQueue(playOptions: PlayOptions, preferences: PlayerWebPreferences? = null): PlayerException? {
         currentQueue = playOptions.ids
         currentQueueIndex = playOptions.startIndex
+
+        preferredVideoCodec = preferences?.preferredTranscodeVideoCodec?.ifBlank { null }
+        preferredAudioCodec = preferences?.preferredTranscodeVideoAudioCodec?.ifBlank { null }
+        userPreferFmp4Hls = preferences?.preferFmp4HlsContainer ?: true
+        fallbackDisableFmp4 = false  // reset per session, not per track
+
         resetPlaybackFallback()
 
         val itemId = when {
@@ -205,9 +216,19 @@ class QueueManager(
         }
     }
 
+    private fun updateDeviceProfile() {
+        val currentPreferFmp4Hls = userPreferFmp4Hls && !fallbackDisableFmp4
+        deviceProfile = deviceProfileBuilder.getDeviceProfile(
+            preferredVideoCodec = preferredVideoCodec,
+            preferredAudioCodec = preferredAudioCodec,
+            preferFmp4Hls = currentPreferFmp4Hls,
+        )
+    }
+
     private fun resetPlaybackFallback() {
         playbackRetries = 0
         lastPlaybackError = 0L
+        updateDeviceProfile()
         viewModel.cancelFallbackRetry()
     }
 
@@ -237,8 +258,28 @@ class QueueManager(
 
         Timber.i("Retrying playback (attempt %d of %d)", playbackRetries, MAX_PLAYBACK_RETRIES)
 
-        // If already transcoding, only retry once (for transient errors); flags are null on
-        // retry 1 anyway, so no special-casing needed in the startRemotePlayback call.
+        val container = currentMediaSource.sourceInfo.transcodingContainer
+        // profile advertises "mp4"; server echoes back "mp4" or "fmp4" depending on version
+        val isFmp4Transcode = currentMediaSource.playMethod == PlayMethod.TRANSCODE &&
+            container in setOf("mp4", "fmp4")
+        if (isFmp4Transcode && userPreferFmp4Hls && !fallbackDisableFmp4) {
+            Timber.w("fMP4 transcoding failed on this device, falling back to MPEG-TS for remaining playback")
+            fallbackDisableFmp4 = true
+            updateDeviceProfile()
+
+            startRemotePlayback(
+                itemId = currentMediaSource.itemId,
+                mediaSourceId = currentMediaSource.id,
+                maxStreamingBitrate = currentMediaSource.maxStreamingBitrate,
+                startTime = startPosition,
+                audioStreamIndex = currentMediaSource.selectedAudioStreamIndex,
+                subtitleStreamIndex = currentMediaSource.selectedSubtitleStreamIndex,
+                playWhenReady = true,
+            )
+            return true
+        }
+
+        // fMP4 failures are handled above; anything still transcoding here gets one retry
         if (currentMediaSource.playMethod == PlayMethod.TRANSCODE && playbackRetries > 1) return false
 
         return startRemotePlayback(
