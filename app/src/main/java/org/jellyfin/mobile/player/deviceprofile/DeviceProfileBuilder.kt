@@ -118,7 +118,10 @@ class DeviceProfileBuilder(
         )
     }
 
-    fun getDeviceProfile(): DeviceProfile {
+    /**
+     * Build the device profile for the native player, limiting video to [maxVideoWidth] when non-zero.
+     */
+    fun getDeviceProfile(maxVideoWidth: Int = 0): DeviceProfile {
         val containerProfiles = ArrayList<ContainerProfile>()
         val directPlayProfiles = ArrayList<DirectPlayProfile>()
         val codecProfiles = ArrayList<CodecProfile>()
@@ -138,7 +141,7 @@ class DeviceProfileBuilder(
                     ),
                 )
                 for (videoCodec in supportedVideoCodecs[i]) {
-                    generateCodecProfile(container, videoCodec)?.let(codecProfiles::add)
+                    generateCodecProfile(container, videoCodec, maxVideoWidth)?.let(codecProfiles::add)
                 }
             }
             if (supportedAudioCodecs[i].isNotEmpty()) {
@@ -153,6 +156,26 @@ class DeviceProfileBuilder(
                     ),
                 )
             }
+        }
+
+        // Match the codec-less "global video conditions" profile Jellyfin Web sends, which is what lets
+        // the server cap the transcoded output. Per-container profiles are not applied while transcoding
+        // because they are matched against the transcoding container.
+        if (maxVideoWidth > 0) {
+            codecProfiles.add(
+                CodecProfile(
+                    type = CodecType.VIDEO,
+                    applyConditions = emptyList(),
+                    conditions = listOf(
+                        ProfileCondition(
+                            condition = ProfileConditionType.LESS_THAN_EQUAL,
+                            property = ProfileConditionValue.WIDTH,
+                            value = maxVideoWidth.toString(),
+                            isRequired = false,
+                        ),
+                    ),
+                ),
+            )
         }
 
         val subtitleProfiles = when {
@@ -178,10 +201,32 @@ class DeviceProfileBuilder(
     private fun generateCodecProfile(
         container: String,
         videoCodec: String,
+        maxVideoWidth: Int,
     ): CodecProfile? {
         val profilesSet = videoCodecsProfiles[videoCodec]
         if (profilesSet?.isNotEmpty() != true) {
             return null
+        }
+
+        val conditions = mutableListOf(
+            ProfileCondition(
+                condition = ProfileConditionType.EQUALS_ANY,
+                property = ProfileConditionValue.VIDEO_PROFILE,
+                value = profilesSet.joinToString("|"),
+                isRequired = false,
+            ),
+        )
+
+        // The same width limit Jellyfin Web applies to its codec profiles.
+        if (maxVideoWidth > 0) {
+            conditions.add(
+                ProfileCondition(
+                    condition = ProfileConditionType.LESS_THAN_EQUAL,
+                    property = ProfileConditionValue.WIDTH,
+                    value = maxVideoWidth.toString(),
+                    isRequired = false,
+                ),
+            )
         }
 
         return CodecProfile(
@@ -189,14 +234,7 @@ class DeviceProfileBuilder(
             container = container,
             codec = videoCodec,
             applyConditions = listOf(),
-            conditions = listOf(
-                ProfileCondition(
-                    condition = ProfileConditionType.EQUALS_ANY,
-                    property = ProfileConditionValue.VIDEO_PROFILE,
-                    value = profilesSet.joinToString("|"),
-                    isRequired = false,
-                ),
-            ),
+            conditions = conditions,
         )
     }
 
