@@ -14,4 +14,5 @@ val databaseModule = module {
     single { get<JellyfinDatabase>().serverDao }
     single { get<JellyfinDatabase>().userDao }
     single { get<JellyfinDatabase>().downloadDao }
+    single { get<JellyfinDatabase>().playbackSyncDao }
 }
