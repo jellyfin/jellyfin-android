@@ -2,6 +2,7 @@ package org.jellyfin.mobile.player.deviceprofile
 
 import android.media.MediaCodecList
 import android.media.MediaFormat
+import android.util.Size
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import org.jellyfin.mobile.app.AppPreferences
@@ -29,6 +30,7 @@ class DeviceProfileBuilder(
     private val supportedVideoCodecs: Array<Array<String>>
     private val supportedAudioCodecs: Array<Array<String>>
     private val videoCodecsProfiles: Map<String, Set<String>>
+    private val videoCodecsMaxResolution: Map<String, Size>
     private val maxAvcRawLevel: Int
 
     private val transcodingProfiles: List<TranscodingProfile>
@@ -89,6 +91,9 @@ class DeviceProfileBuilder(
             }.toTypedArray()
         }
         videoCodecsProfiles = videoCodecs.entries.associate { (k, v) -> k to v.profiles }
+        videoCodecsMaxResolution = videoCodecs.entries
+            .mapNotNull { (k, v) -> v.maxResolution?.let { size -> k to size } }
+            .toMap()
 
         transcodingProfiles = listOf(
             TranscodingProfile(
@@ -155,6 +160,11 @@ class DeviceProfileBuilder(
             }
         }
 
+        // Resolution limits apply to all containers, so that they're also used for transcoding targets (e.g. h264 in ts)
+        for (videoCodec in supportedVideoCodecs.flatten().distinct()) {
+            generateResolutionCodecProfile(videoCodec)?.let(codecProfiles::add)
+        }
+
         val subtitleProfiles = when {
             appPreferences.exoPlayerDirectPlayAss -> {
                 getSubtitleProfiles(EXO_EMBEDDED_SUBTITLES + SUBTITLES_SSA, EXO_EXTERNAL_SUBTITLES + SUBTITLES_SSA)
@@ -194,6 +204,34 @@ class DeviceProfileBuilder(
                     condition = ProfileConditionType.EQUALS_ANY,
                     property = ProfileConditionValue.VIDEO_PROFILE,
                     value = profilesSet.joinToString("|"),
+                    isRequired = false,
+                ),
+            ),
+        )
+    }
+
+    /**
+     * Limits the video resolution to what the device's decoders support, so that the server
+     * downscales content that can't be decoded (e.g. 4K on a device whose decoder supports up to 1440p).
+     */
+    private fun generateResolutionCodecProfile(videoCodec: String): CodecProfile? {
+        val maxResolution = videoCodecsMaxResolution[videoCodec] ?: return null
+
+        return CodecProfile(
+            type = CodecType.VIDEO,
+            codec = videoCodec,
+            applyConditions = listOf(),
+            conditions = listOf(
+                ProfileCondition(
+                    condition = ProfileConditionType.LESS_THAN_EQUAL,
+                    property = ProfileConditionValue.WIDTH,
+                    value = maxResolution.width.toString(),
+                    isRequired = false,
+                ),
+                ProfileCondition(
+                    condition = ProfileConditionType.LESS_THAN_EQUAL,
+                    property = ProfileConditionValue.HEIGHT,
+                    value = maxResolution.height.toString(),
                     isRequired = false,
                 ),
             ),
