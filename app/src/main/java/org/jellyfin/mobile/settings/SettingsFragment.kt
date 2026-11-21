@@ -58,6 +58,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
     private lateinit var pressSpeedUpPreference: CheckBoxPreference
     private lateinit var rememberBrightnessPreference: Preference
     private lateinit var backgroundAudioPreference: Preference
+    private lateinit var disableBluetoothArtworkPreference: Preference
     private lateinit var horizontalGesturePreference: Preference
     private lateinit var directPlayAssPreference: Preference
     private lateinit var networkBufferPreference: Preference
@@ -126,6 +127,7 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 rememberBrightnessPreference.enabled = selection == VideoPlayerType.EXO_PLAYER && swipeGesturesPreference.checked
                 pressSpeedUpPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 backgroundAudioPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
+                disableBluetoothArtworkPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 horizontalGesturePreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 directPlayAssPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
                 networkBufferPreference.enabled = selection == VideoPlayerType.EXO_PLAYER
@@ -161,6 +163,12 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
             titleRes = R.string.pref_exoplayer_allow_background_audio
             summaryRes = R.string.pref_exoplayer_allow_background_audio_summary
             enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+        }
+        disableBluetoothArtworkPreference = checkBox(Constants.PREF_EXOPLAYER_DISABLE_BLUETOOTH_ARTWORK) {
+            titleRes = R.string.pref_exoplayer_disable_bluetooth_artwork
+            summaryRes = R.string.pref_exoplayer_disable_bluetooth_artwork_summary
+            enabled = appPreferences.videoPlayerType == VideoPlayerType.EXO_PLAYER
+            defaultValue = false
         }
         horizontalGesturePreference = checkBox(Constants.PREF_EXOPLAYER_ALLOW_HORIZONTAL_GESTURE) {
             titleRes = R.string.pref_exoplayer_allow_horizontal_gesture
