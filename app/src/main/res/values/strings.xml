@@ -47,6 +47,8 @@
     <string name="media_service_invalid_id">Invalid item ID</string>
 
     <!-- MediaService / Car-related strings -->
+    <string name="media_service_enable_shuffle">Turn shuffle on</string>
+    <string name="media_service_disable_shuffle">Turn shuffle off</string>
     <string name="media_service_car_section_recents">Recently played</string>
     <string name="media_service_car_section_favorites">Favorites</string>
     <string name="media_service_car_section_albums">Albums</string>
