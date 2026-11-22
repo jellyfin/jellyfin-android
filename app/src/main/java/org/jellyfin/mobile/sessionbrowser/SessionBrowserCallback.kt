@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
@@ -15,6 +16,7 @@ import androidx.media3.session.MediaLibraryService.MediaLibrarySession
 import androidx.media3.session.MediaSession
 import androidx.media3.session.SessionError
 import com.google.common.collect.ImmutableList
+import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,8 +43,10 @@ import org.jellyfin.mobile.sessionbrowser.page.SearchLibraryPage
 import org.jellyfin.mobile.sessionbrowser.page.SuggestedLibraryPage
 import org.jellyfin.mobile.sessionbrowser.page.UserViewLibraryPage
 import org.jellyfin.sdk.api.client.ApiClient
+import org.jellyfin.sdk.api.client.extensions.imageApi
 import org.jellyfin.sdk.api.client.extensions.universalAudioApi
 import org.jellyfin.sdk.api.client.extensions.userLibraryApi
+import org.jellyfin.sdk.model.api.ImageType
 import org.jellyfin.sdk.model.api.MediaStreamProtocol
 import org.jellyfin.sdk.model.extensions.ticks
 import timber.log.Timber
@@ -51,6 +55,8 @@ import timber.log.Timber
 class SessionBrowserCallback(
     private val context: Context,
     private val api: ApiClient,
+    private val history: PlaybackHistory,
+    private val onResumeItem: (MediaItem) -> Unit,
 ) : MediaLibrarySession.Callback {
     companion object {
         const val MAX_PAGE_SIZE = 250
@@ -316,36 +322,54 @@ class SessionBrowserCallback(
     ): ListenableFuture<List<MediaItem>> = CoroutineScope(Dispatchers.IO).future {
         Timber.d("onAddMediaItems $mediaSession $controller $mediaItems")
 
-        mediaItems.mapNotNull {
-            val libraryMediaId = runCatching { Json.decodeFromString<LibraryMediaId>(it.mediaId) }.getOrNull()
-            if (libraryMediaId !is LibraryMediaId.Item) return@mapNotNull null
+        mediaItems.mapNotNull(::resolveMediaItem)
+    }
 
-            val playbackUri = api.universalAudioApi.getUniversalAudioStreamUrl(
-                itemId = libraryMediaId.itemId,
-                deviceId = api.deviceInfo.id,
-                maxStreamingBitrate = 140000000,
-                container = listOf(
-                    "opus",
-                    "mp3|mp3",
-                    "aac",
-                    "m4a",
-                    "m4b|aac",
-                    "flac",
-                    "webma",
-                    "webm",
-                    "wav",
-                    "ogg",
-                ),
-                transcodingProtocol = MediaStreamProtocol.HLS,
-                transcodingContainer = "ts",
-                audioCodec = "aac",
-                enableRemoteMedia = true,
-            )
+    private fun resolveMediaItem(item: MediaItem): MediaItem? {
+        val libraryMediaId = runCatching { Json.decodeFromString<LibraryMediaId>(item.mediaId) }.getOrNull()
+        if (libraryMediaId !is LibraryMediaId.Item) return null
 
-            it.buildUpon().apply {
-                setUri(playbackUri + "&ApiKey=${api.accessToken}")
-            }.build()
-        }
+        val playbackUri = api.universalAudioApi.getUniversalAudioStreamUrl(
+            itemId = libraryMediaId.itemId,
+            deviceId = api.deviceInfo.id,
+            maxStreamingBitrate = 140000000,
+            container = listOf(
+                "opus",
+                "mp3|mp3",
+                "aac",
+                "m4a",
+                "m4b|aac",
+                "flac",
+                "webma",
+                "webm",
+                "wav",
+                "ogg",
+            ),
+            transcodingProtocol = MediaStreamProtocol.HLS,
+            transcodingContainer = "ts",
+            audioCodec = "aac",
+            enableRemoteMedia = true,
+        )
+
+        val metadata = item.mediaMetadata
+        val artwork = metadata.artworkUri
+            ?: api.imageApi.getItemImageUrl(itemId = libraryMediaId.itemId, imageType = ImageType.PRIMARY).toUri()
+        return item.buildUpon()
+            .setTag(history.account)
+            .setMediaMetadata(metadata.buildUpon().setArtworkUri(artwork).build())
+            .setUri(playbackUri + "&ApiKey=${api.accessToken}")
+            .build()
+    }
+
+    override fun onPlaybackResumption(
+        mediaSession: MediaSession,
+        controller: MediaSession.ControllerInfo,
+        isForPlayback: Boolean,
+    ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
+        val queue = history.resume(isForPlayback, ::resolveMediaItem)
+            ?: MediaSession.MediaItemsWithStartPosition(emptyList(), C.INDEX_UNSET, C.TIME_UNSET)
+        if (isForPlayback) queue.mediaItems.getOrNull(queue.startIndex)?.let(onResumeItem)
+        return Futures.immediateFuture(queue)
     }
 
     override fun onSetMediaItems(
