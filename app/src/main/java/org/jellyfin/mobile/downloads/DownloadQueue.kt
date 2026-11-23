@@ -14,6 +14,7 @@ import org.jellyfin.mobile.data.entity.DownloadFiles
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.imageApi
 import org.jellyfin.sdk.api.client.extensions.libraryApi
+import org.jellyfin.sdk.api.client.extensions.subtitleApi
 import org.jellyfin.sdk.model.api.ImageFormat
 import org.jellyfin.sdk.model.api.ImageType
 import java.io.IOException
@@ -100,7 +101,9 @@ class DownloadQueue(
             if (documentFile?.exists() == true && documentFile.length() == file.size) return
         }
 
-        val fileDescriptor = context.contentResolver.openFileDescriptor(file.uri, "rw")
+        // Subtitle responses may be re-encoded by the server and do not support byte-range resuming.
+        val mode = if (file.type == DownloadFileType.SUBTITLE) "rwt" else "rw"
+        val fileDescriptor = context.contentResolver.openFileDescriptor(file.uri, mode)
             ?: error("Unable to open file descriptor for ${file.fileName}")
 
         downloadDao.updateFile(file.copy(status = DownloadStatus.DOWNLOADING))
@@ -141,6 +144,40 @@ class DownloadQueue(
 
             // Add main item second as it is (often) the largest and important file
             prepareMainFile(api, downloadWithFiles, itemLocation).let(::add)
+
+            addAll(prepareSubtitleFiles(api, downloadWithFiles, itemLocation))
+        }
+    }
+
+    private suspend fun prepareSubtitleFiles(
+        api: ApiClient,
+        downloadWithFiles: DownloadFiles,
+        itemLocation: DocumentFile,
+    ): List<QueuedFile> {
+        val item = downloadWithFiles.download.item
+        val source = item.mediaSources?.firstOrNull() ?: return emptyList()
+
+        return buildList {
+            for (stream in source.mediaStreams.orEmpty()) {
+                val fileName = stream.subtitleDownloadFileName ?: continue
+                add(
+                    QueuedFile(
+                        file = createOrUpdateFile(
+                            filter = { it.type == DownloadFileType.SUBTITLE && it.fileName == fileName },
+                            downloadWithFiles = downloadWithFiles,
+                            itemLocation = itemLocation,
+                            type = DownloadFileType.SUBTITLE,
+                            fileName = fileName,
+                        ),
+                        remoteUri = api.subtitleApi.getSubtitleUrl(
+                            routeItemId = item.id,
+                            routeMediaSourceId = requireNotNull(source.id) { "Missing media source id" },
+                            routeIndex = stream.index,
+                            routeFormat = "srt",
+                        ).toUri(),
+                    ),
+                )
+            }
         }
     }
 
