@@ -15,6 +15,7 @@ import android.provider.Settings
 import android.provider.Settings.System.ACCELEROMETER_ROTATION
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.getSystemService
+import androidx.media3.datasource.DataSpec
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.jellyfin.mobile.BuildConfig
@@ -111,6 +112,11 @@ fun Context.createMediaNotificationChannel(notificationManager: NotificationMana
 
 val Context.isLowRamDevice: Boolean
     get() = getSystemService<ActivityManager>()!!.isLowRamDevice
+
+internal fun DataSpec.getMediaCacheKey(): String = key ?: when (uri.scheme) {
+    "content", "file" -> uri.toString()
+    else -> uri.extractId()
+}
 
 fun Uri.extractId(): String {
     val uri = toString()
