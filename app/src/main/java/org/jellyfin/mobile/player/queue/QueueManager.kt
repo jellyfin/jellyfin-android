@@ -24,6 +24,7 @@ import org.jellyfin.mobile.player.source.LocalJellyfinMediaSource
 import org.jellyfin.mobile.player.source.MediaSourceResolver
 import org.jellyfin.mobile.player.source.PlaybackDetails
 import org.jellyfin.mobile.player.source.RemoteJellyfinMediaSource
+import org.jellyfin.mobile.player.source.withDownloadedSubtitles
 import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.extensions.systemApi
 import org.jellyfin.sdk.api.client.extensions.videosApi
@@ -130,7 +131,7 @@ class QueueManager(
         val mediaSource = LocalJellyfinMediaSource(
             itemId = download.itemId,
             item = download.item,
-            sourceInfo = download.item.mediaSources!!.first(),
+            sourceInfo = download.item.mediaSources!!.first().withDownloadedSubtitles(files),
             playSessionId = download.id.toString(),
             playbackDetails = PlaybackDetails(startTime, audioStreamIndex, subtitleStreamIndex),
             remoteFileUri = mainFile.uri,
@@ -324,7 +325,11 @@ class QueueManager(
      */
     @CheckResult
     private fun prepareStreams(source: LocalJellyfinMediaSource): MediaSource {
-        return createDownloadVideoMediaSource(source.id, source.remoteFileUri)
+        return createDownloadVideoMediaSource(
+            source.id,
+            source.remoteFileUri,
+            createExternalSubtitleMediaSources(source),
+        )
     }
 
     private fun prepareStreams(source: RemoteJellyfinMediaSource): MediaSource {
@@ -412,7 +417,10 @@ class QueueManager(
         source: JellyfinMediaSource,
     ): List<MediaItem.SubtitleConfiguration> {
         return source.externalSubtitleStreams.map { stream ->
-            val uri = apiClient.createUrl(stream.deliveryUrl).toUri()
+            val uri = when (source) {
+                is LocalJellyfinMediaSource -> stream.deliveryUrl.toUri()
+                is RemoteJellyfinMediaSource -> apiClient.createUrl(stream.deliveryUrl).toUri()
+            }
             MediaItem.SubtitleConfiguration.Builder(uri).apply {
                 setId("${ExternalSubtitleStream.ID_PREFIX}${stream.index}")
                 setLabel(stream.displayTitle)
@@ -423,13 +431,18 @@ class QueueManager(
     }
 
     @CheckResult
-    private fun createDownloadVideoMediaSource(mediaSourceId: String, fileUri: Uri): MediaSource {
+    private fun createDownloadVideoMediaSource(
+        mediaSourceId: String,
+        fileUri: Uri,
+        subtitleConfigurations: List<MediaItem.SubtitleConfiguration>,
+    ): MediaSource {
         val factory: MediaSource.Factory = get()
 
         val mediaItem = MediaItem.Builder()
             .setMediaId(mediaSourceId)
             .setUri(fileUri)
             .setCustomCacheKey(fileUri.toString())
+            .setSubtitleConfigurations(subtitleConfigurations)
             .build()
 
         return factory.createMediaSource(mediaItem)
