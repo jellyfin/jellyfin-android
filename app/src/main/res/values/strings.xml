@@ -131,6 +131,8 @@
     <string name="external_player_vlc_player_description">Free and open source cross-platform multimedia player that plays most multimedia files.</string>
     <string name="external_player_mpvkt">mpvKt Player</string>
     <string name="external_player_mpvkt_description">A media player based on mpv-android aiming to provide a nicer user interface over the original.</string>
+    <string name="external_player_mpvex">mpvEx Player</string>
+    <string name="external_player_mpvex_description">A powerful media player built on mpv with an improved user interface.</string>
     <string name="external_player_system_default">System default</string>
     <string name="external_player_system_default_description">Let the system handle the player choice, some players may not be fully compatible.</string>
 

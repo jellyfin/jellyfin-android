@@ -64,6 +64,9 @@ class ExternalPlayer(
             Constants.MX_PLAYER_RESULT_ACTION -> handleMXPlayer(resultCode, intent)
             Constants.VLC_PLAYER_RESULT_ACTION -> handleVLCPlayer(resultCode, intent)
             Constants.MPVKT_PLAYER_RESULT_ACTION -> handleMPVKTPlayer(resultCode, intent)
+            Constants.MPVEX_PLAYER_RESULT_ACTION,
+            Constants.MPVEX_PLAY_STORE_PLAYER_RESULT_ACTION,
+            -> handleMPVEXPlayer(resultCode, intent)
             else -> {
                 if (action != null && resultCode != Activity.RESULT_CANCELED) {
                     Timber.d("Unknown action $action [resultCode=$resultCode]")
@@ -337,6 +340,45 @@ class ExternalPlayer(
         }
     }
 
+    // https://github.com/marlboro-advance/mpvEx/blob/master/app/src/main/java/app/marlboroadvance/mpvex/ui/player/PlayerActivity.kt
+    private fun handleMPVEXPlayer(resultCode: Int, data: Intent) {
+        val player = "mpvEx Player"
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                // mpvEx still sends "position" at EOF, so compare it against "duration" to detect completion
+                val position = data.getIntExtra("position", -1)
+                val duration = data.getIntExtra("duration", -1)
+                when {
+                    duration > 0 && position >= duration -> {
+                        Timber.d("Playback completed [player=$player, position=$position, duration=$duration]")
+                        notifyEvent(Constants.EVENT_TIME_UPDATE)
+                        notifyEvent(Constants.EVENT_ENDED)
+                    }
+                    position > 0 -> {
+                        Timber.d("Playback stopped [player=$player, position=$position, duration=$duration]")
+                        notifyEvent(Constants.EVENT_TIME_UPDATE, "$position")
+                        notifyEvent(Constants.EVENT_ENDED)
+                    }
+                    else -> {
+                        // position == 0 (closed immediately) or -1 (file never loaded)
+                        Timber.d("Playback canceled [player=$player, position=$position, duration=$duration]")
+                        notifyEvent(Constants.EVENT_CANCELED)
+                    }
+                }
+            }
+            Activity.RESULT_CANCELED -> {
+                Timber.d("Playback stopped by unknown error [player=$player]")
+                notifyEvent(Constants.EVENT_CANCELED)
+                context.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
+            }
+            else -> {
+                Timber.d("Invalid state [player=$player, resultCode=$resultCode]")
+                notifyEvent(Constants.EVENT_CANCELED)
+                context.toast(R.string.external_player_unknown_error, Toast.LENGTH_LONG)
+            }
+        }
+    }
+
     /**
      * To ensure that the correct activity is called.
      */
@@ -351,7 +393,10 @@ class ExternalPlayer(
             ExternalPlayerPackage.VLC_PLAYER -> {
                 ComponentName(packageName, "$packageName.StartActivity")
             }
-            ExternalPlayerPackage.MPVKT_PLAYER -> {
+            ExternalPlayerPackage.MPVKT_PLAYER,
+            ExternalPlayerPackage.MPVEX_PLAYER,
+            ExternalPlayerPackage.MPVEX_PLAYER_PLAY_STORE,
+            -> {
                 ComponentName(packageName, "$packageName.ui.player.PlayerActivity")
             }
             else -> null
