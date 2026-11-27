@@ -150,6 +150,8 @@ object Constants {
     const val MX_PLAYER_RESULT_ACTION = "com.mxtech.intent.result.VIEW"
     const val VLC_PLAYER_RESULT_ACTION = "org.videolan.vlc.player.result"
     const val MPVKT_PLAYER_RESULT_ACTION = "live.mehiz.mpvkt.ui.player.PlayerActivity.result"
+    const val MPVEX_PLAYER_RESULT_ACTION = "app.marlboroadvance.mpvex.ui.player.PlayerActivity.result"
+    const val MPVEX_PLAY_STORE_PLAYER_RESULT_ACTION = "app.adityanarvekar.mpvex.ui.player.PlayerActivity.result"
 
     // External player webapp events
     const val EVENT_ENDED = "Ended"

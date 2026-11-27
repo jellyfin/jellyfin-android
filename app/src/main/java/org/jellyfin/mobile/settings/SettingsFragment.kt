@@ -229,6 +229,16 @@ class SettingsFragment : Fragment(), BackPressInterceptor {
                 R.string.external_player_mpvkt,
                 R.string.external_player_mpvkt_description,
             ),
+            SelectionItem(
+                ExternalPlayerPackage.MPVEX_PLAYER,
+                R.string.external_player_mpvex,
+                R.string.external_player_mpvex_description,
+            ),
+            SelectionItem(
+                ExternalPlayerPackage.MPVEX_PLAYER_PLAY_STORE,
+                R.string.external_player_mpvex,
+                R.string.external_player_mpvex_description,
+            ),
         ).filter { item ->
             item.key == ExternalPlayerPackage.SYSTEM_DEFAULT || packageManager.isPackageInstalled(item.key)
         }
